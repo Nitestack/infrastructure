@@ -1,5 +1,6 @@
 {{ if ne .chezmoi.os "windows" }}
 Documents
+.wslconfig
 {{ else }}
 .hushlogin
 .profile
