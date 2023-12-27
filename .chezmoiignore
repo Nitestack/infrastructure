@@ -1,5 +1,7 @@
 {{ if ne .chezmoi.os "windows" }}
 .hushlogin
+{{ else }}
+Documents/PowerShell/Microsoft.PowerShell_profile.ps1
 {{ end }}
 
 README.md
