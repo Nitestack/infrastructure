@@ -2,6 +2,7 @@
 Documents
 {{ else }}
 .hushlogin
+.profile
 {{ end }}
 
 README.md
