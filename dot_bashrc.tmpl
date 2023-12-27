@@ -1,0 +1,6 @@
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{-     include ".bashrc_wsl" -}}
+{{-   end -}}
+{{-   include ".bashrc_linux" -}}
+{{- end -}}
