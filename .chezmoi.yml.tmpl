@@ -4,7 +4,7 @@
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
-  editor: nvim
+  editor: "nvim"
   # do not override the following values
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
@@ -12,4 +12,16 @@ data:
 {{-   end -}}
 {{- else }}
   is_wsl: false
-{{- end -}}
+{{- end }}
+{{ if eq .chezmoi.os "windows" }}
+interpreters:
+  ps1:
+    command: "pwsh"
+    args:
+      - "-NoLogo"
+{{- end }}
+diff:
+  exclude: 
+    - "scripts"
+
+progress: true

@@ -1,0 +1,44 @@
+---
+base: lua51
+
+globals:
+  s:
+    type: any
+  ms:
+    type: any
+  sn:
+    type: any
+  isn:
+    type: any
+  t:
+    type: any
+  i:
+    type: any
+  f:
+    type: any
+  c:
+    type: any
+  d:
+    type: any
+  r:
+    type: any
+  l:
+    type: any
+  rep:
+    type: any
+  p:
+    type: any
+  m:
+    type: any
+  n:
+    type: any
+  dl:
+    type: any
+  fmt:
+    type: any
+  fmta:
+    type: any
+  conds:
+    type: any
+  postfix:
+    type: any

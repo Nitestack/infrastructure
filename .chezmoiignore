@@ -5,7 +5,7 @@ AppData
 {{ else }}
 .hushlogin
 .profile
-.config
+.config/lazygit
 {{ end }}
 
 README.md
