@@ -2,13 +2,13 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 
 data:
-    name: {{ $name | quote }}
-    email: {{ $email | quote }}
-    editor: nvim
+  name: {{ $name | quote }}
+  email: {{ $email | quote }}
+  editor: nvim
 {{- if eq .chezmoi.os "linux" }}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
-    is_wsl: true
+  is_wsl: true
 {{-   end }}
 {{- else }}
-    is_wsl: false
+  is_wsl: false
 {{- end }}
