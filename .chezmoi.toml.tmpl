@@ -4,3 +4,11 @@
 [data]
     email = {{ $email | quote }}
     name = {{ $name | quote }}
+    editor = "nvim"
+{{ if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+    is_wsl = true
+{{   end }}
+{{ else }}
+    is_wsl = false
+{{ end }}
