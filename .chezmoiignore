@@ -2,6 +2,7 @@
 Documents
 AppData
 .wslconfig
+.chezmoiscripts/windows/**
 {{ else }}
 .hushlogin
 .profile
