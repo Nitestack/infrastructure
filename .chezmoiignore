@@ -1,9 +1,11 @@
 {{ if ne .chezmoi.os "windows" }}
 Documents
+AppData
 .wslconfig
 {{ else }}
 .hushlogin
 .profile
+.config
 {{ end }}
 
 README.md
