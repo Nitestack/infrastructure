@@ -5,6 +5,7 @@ data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
   editor: nvim
+  # do not override the following values
 {{- if eq .chezmoi.os "linux" }}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
   is_wsl: true
