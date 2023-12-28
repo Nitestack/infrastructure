@@ -2,5 +2,5 @@
 {{-   if (.is_wsl) -}}
 {{-     include ".bashrc_wsl" -}}
 {{-   end -}}
-{{-   include ".bashrc_linux" -}}
+{{-   template "bash/bashrc_linux" . -}}
 {{- end -}}

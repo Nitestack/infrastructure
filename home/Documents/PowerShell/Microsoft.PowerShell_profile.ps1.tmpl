@@ -121,4 +121,4 @@ if (Test-Path($ChocolateyProfile))
   Import-Module "$ChocolateyProfile"
 }
 
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\emodipt-extend.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\{{- .oh_my_posh_theme_name -}}.omp.json" | Invoke-Expression

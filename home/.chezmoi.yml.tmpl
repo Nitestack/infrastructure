@@ -5,6 +5,7 @@ data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
   editor: "nvim"
+  oh_my_posh_theme_name: "emodipt-extend"
   # do not override the following values
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
