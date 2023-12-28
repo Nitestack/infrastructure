@@ -3,4 +3,5 @@
 {{-     include ".bashrc_wsl" -}}
 {{-   end -}}
 {{-   template "bash/bashrc_linux" . -}}
-{{- end -}}
+{{- end }}
+export EDITOR={{- .editor | quote -}}
