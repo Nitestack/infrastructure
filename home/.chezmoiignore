@@ -8,6 +8,7 @@ AppData
 .profile
 .config/lazygit
 .config/Code
+.config/project-manager
 .bashrc
 .bash_aliases
 {{ end }}
