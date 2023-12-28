@@ -1,0 +1,55 @@
+---@type LazySpec
+return {
+  {
+    "alker0/chezmoi.vim",
+    event = "VeryLazy",
+    init = function()
+      -- This option is required.
+      vim.g["chezmoi#use_tmp_buffer"] = true
+
+      vim.g["chezmoi#source_dir_path"] = {{ .chezmoi.sourceDir | quote }}
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    ---@type TSConfig
+    ---@diagnostic disable-next-line: missing-fields
+    opts = {
+      highlight = {
+        disable = function()
+          -- check if 'filetype' option includes 'chezmoitmpl'
+          if string.find(vim.bo.filetype, "chezmoitmpl") then
+            return true
+          end
+        end,
+      },
+    },
+  },
+  {
+    "xvzc/chezmoi.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    keys = core.lazy_map({
+      n = {
+        ["<leader>cz"] = {
+          function()
+            require("telescope").extensions.chezmoi.find_files()
+          end,
+          "Chezmoi: Find Files",
+        },
+      },
+    }),
+    opts = {},
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = {
+      load_extensions = {
+        ["chezmoi"] = true,
+      },
+    },
+  },
+}
