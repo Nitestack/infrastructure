@@ -8,6 +8,8 @@ AppData
 .profile
 .config/lazygit
 .config/Code
+.bashrc
+.bash_aliases
 {{ end }}
 
 README.md

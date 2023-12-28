@@ -4,7 +4,10 @@ Import-Module Terminal-Icons
 Import-Module -Name $powershell_dev_path\Nvim-Switcher
 
 # Aliases
-Set-Alias vim nvim.exe
+if (Get-Command "nvim.exe" -ErrorAction SilentlyContinue)
+{
+  Set-Alias vim nvim.exe
+}
 Set-Alias lvim 'C:\Users\hydra\.local\bin\lvim.ps1'
 
 # Utilities
@@ -46,13 +49,6 @@ function Open-PowerShellConfig()
 Set-Alias psc Open-PowerShellConfig
 
 Remove-Variable powershell_dev_path
-
-# Open Neovim test environment
-function Open-NvimTestEnvironment()
-{
-  nvim.exe $args --clean
-}
-Set-Alias nvt Open-NvimTestEnvironment
 
 # Linux utils
 function ll()
