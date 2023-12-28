@@ -1,10 +1,23 @@
 {{- $name := promptStringOnce . "name" "Name" -}}
 {{- $email := promptStringOnce . "email" "Email address" -}}
+{{- $hosttype_choices := list "personal" "work" -}}
+{{- $hosttype := promptChoiceOnce . "hosttype" "What type of host are you on" $hosttype_choices -}}
+{{- $project_base_path := "" -}}
+{{- if eq $hosttype "personal" -}}
+  {{- if eq .chezmoi.os "windows" -}}
+    {{- $project_base_path = "Documents/Programmierung/projects" -}}
+  {{- else if eq .chezmoi.os "linux" -}}
+    {{- $project_base_path = "projects" -}}
+  {{- end -}}
+{{- end -}}
 
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
   editor: "nvim"
+  hosttype: {{ $hosttype | quote }}
+  project_base_path: {{ $project_base_path | quote }}
+  # Theme options
   oh_my_posh_theme_name: "emodipt-extend"
   # do not override the following values
 {{- if eq .chezmoi.os "linux" -}}
@@ -14,7 +27,7 @@ data:
 {{- else }}
   is_wsl: false
 {{- end }}
-{{ if eq .chezmoi.os "windows" }}
+{{ if eq .chezmoi.os "windows" -}}
 interpreters:
   ps1:
     command: "pwsh"
