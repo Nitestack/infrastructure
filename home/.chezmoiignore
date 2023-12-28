@@ -1,16 +1,20 @@
 {{ if ne .chezmoi.os "windows" }}
-Documents
-AppData
-.wslconfig
 .chezmoiscripts/windows/**
+
+AppData
+Documents
+
+.wslconfig
 {{ else }}
+.config/Code
+.config/lazygit
+.config/project-manager
+
+.bash_aliases
+.bashrc
 .hushlogin
 .profile
-.config/lazygit
-.config/Code
-.config/project-manager
-.bashrc
-.bash_aliases
+.zshrc
 {{ end }}
 
 README.md
