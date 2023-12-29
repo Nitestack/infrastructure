@@ -1,1 +1,14 @@
-
+{{- if ne .chezmoi.os "windows" -}}
+".oh-my-zsh":
+  type: archive
+  url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+  stripComponents: 1
+  refreshPeriod: "168h"
+{{- $spaceshipPromptVersionTag := (gitHubLatestRelease "spaceship-prompt/spaceship-prompt").TagName }}
+".oh-my-zsh/custom/themes/spaceship-prompt":
+  type: "archive"
+  url: "https://github.com/spaceship-prompt/spaceship-prompt/archive/{{ $spaceshipPromptVersionTag }}.tar.gz"
+  exact: true
+  stripComponents: 1
+  refreshPeriod: "168h"
+{{- end }}

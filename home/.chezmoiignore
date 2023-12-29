@@ -1,11 +1,13 @@
-{{ if ne .chezmoi.os "windows" }}
+{{- if ne .chezmoi.os "windows" -}}
 .chezmoiscripts/windows/**
 
 AppData
 Documents
 
 .wslconfig
-{{ else }}
+{{- else }}
+.chezmoiscripts/unix
+
 .config/Code
 .config/lazygit
 .config/project-manager
@@ -15,7 +17,7 @@ Documents
 .hushlogin
 .profile
 .zshrc
-{{ end }}
+{{- end }}
 
 README.md
 LICENSE
