@@ -2,6 +2,4 @@
 {{-   if (.is_wsl) -}}
 {{-     include ".bashrc_wsl" -}}
 {{-   end -}}
-{{-   template "shellrc_unix" . -}}
 {{- end }}
-export EDITOR={{- .editor | quote -}}

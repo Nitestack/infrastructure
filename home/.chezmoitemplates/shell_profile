@@ -1,7 +1,10 @@
+# cargo
+source "$HOME/.cargo/env"
+
+# bob
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 
-. "$HOME/.cargo/env"
-
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
@@ -12,4 +15,11 @@ case ":$PATH:" in
 *":$PNPM_HOME:"*) ;;
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-# pnpm end
+
+# Editor
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR="vim"
+else
+  export EDITOR={{- .editor | quote }}
+fi
