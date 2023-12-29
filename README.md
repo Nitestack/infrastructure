@@ -17,7 +17,7 @@ sh -c "$(wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scr
 > We use `wget` here because it comes preinstalled with most Ubuntu versions. But you can also use `curl`:
 >
 > ```sh
->  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
+> sh -c "$(curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
 > ```
 
 #### PowerShell Core
