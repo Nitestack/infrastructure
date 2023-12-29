@@ -34,6 +34,14 @@ sourceDir: {{ .chezmoi.workingTree | quote }}
 diff:
   exclude: 
     - "scripts"
+    - "externals"
+merge:
+  command: "nvim"
+  args:
+    - "-d"
+    - "{{- '{{' -}} .Destination {{- '}}' -}}"
+    - "{{- '{{' -}} .Source {{- '}}' -}}"
+    - "{{- '{{' -}} .Target {{- '}}' -}}"
 status:
   exclude:
     - always
