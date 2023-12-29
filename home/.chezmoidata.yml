@@ -1,6 +1,5 @@
 ---
 prompts:
-  intro: "Welcome to my dotfiles!"
   setup_instruction: "This is an automated setup to init/update the dotfiles. Answer followup questions if needed. Lets get started!"
   press_enter_to_continue: "Press enter to continue"
   ascii_logo:
