@@ -1,5 +1,3 @@
-{{- if (eq .chezmoi.os "linux") -}}
-{{-   if (.is_wsl) -}}
-{{-     include ".bashrc_wsl" -}}
-{{-   end -}}
-{{- end }}
+{{- if (.is_wsl) -}}
+{{-   template "wsl_bashrc" . -}}
+{{- end -}}
