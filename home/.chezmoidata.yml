@@ -1,4 +1,12 @@
+---
 prompts:
   intro: "Welcome to my dotfiles!"
   setup_instruction: "This is an automated setup to init/update the dotfiles. Answer followup questions if needed. Lets get started!"
-  press_enter_to_continue: "Press enter to continue..."
+  press_enter_to_continue: "Press enter to continue"
+  ascii_logo:
+    - "     _       _    __ _ _"
+    - "    | |     | |  / _(_) |"
+    - "  __| | ___ | |_| |_ _| | ___  ___"
+    - " / _` |/ _ \\| __|  _| | |/ _ \\/ __|"
+    - "| (_| | (_) | |_| | | | |  __/\\__ \\"
+    - " \\__,_|\\___/ \\__|_| |_|_|\\___||___/"
