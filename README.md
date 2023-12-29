@@ -85,13 +85,13 @@ To update my dotfiles, run:
 #### Bash
 
 ```bash
-chezmoi update --source="$HOME/.dotfiles"
+chezmoi update
 ```
 
 #### PowerShell Core
 
 ```pwsh
-chezmoi update --source="$env:USERPROFILE\.dotfiles"
+chezmoi update
 ```
 
 To force a refresh the downloaded external archives, use the `--refresh-externals` or `-R` flag:
@@ -99,13 +99,13 @@ To force a refresh the downloaded external archives, use the `--refresh-external
 #### Bash
 
 ```bash
-chezmoi update --source="$HOME/.dotfiles" -R
+chezmoi update
 ```
 
 #### PowerShell Core
 
 ```pwsh
-chezmoi update --source="$env:USERPROFILE\.dotfiles" -R
+chezmoi update
 ```
 
 ---
