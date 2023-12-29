@@ -1,0 +1,11 @@
+if (!(Get-Command figlet -ErrorAction SilentlyContinue)) 
+{
+  Install-Module -Name Figlet
+}
+
+figlet "{{ .name }}/dotfiles"
+
+Write-Host {{ .prompts.intro | quote }}
+Write-Host {{ .prompts.setup_instruction | quote }}
+
+Read-Host {{ .prompts.press_enter_to_continue | quote }}
