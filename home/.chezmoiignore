@@ -6,7 +6,7 @@ Documents
 
 .wslconfig
 {{- else }}
-.chezmoiscripts/unix
+.chezmoiscripts/unix/**
 
 .config/Code
 .config/lazygit
