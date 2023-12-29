@@ -2,7 +2,6 @@ export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-eval "$(oh-my-posh init bash --config $(brew --prefix oh-my-posh)/themes/{{- .oh_my_posh_theme_name -}}.omp.json)"
 . "$HOME/.cargo/env"
 
 export NVM_DIR="$HOME/.nvm"
