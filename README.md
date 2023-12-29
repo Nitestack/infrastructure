@@ -13,7 +13,7 @@ You need to have chezmoi installed. You can visit the [install page](https://che
 ### Terminal
 
 ```bash
-chezmoi init Nitestack
+chezmoi init --apply Nitestack
 ```
 
 ## Update
