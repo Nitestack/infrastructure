@@ -1,13 +1,9 @@
-if (!(Get-Command figlet -ErrorAction SilentlyContinue)) 
-{
-  Set-PSRepository PSGallery -InstallationPolicy Trusted
-  Install-Module -Name Figlet -Scope CurrentUser -Confirm:$False -Force
-  Import-Module -Name Figlet
-}
+{{- range $_, $line := .prompts.ascii_logo }}
+Write-Host '{{ $line }}'
+{{- end }}
 
-figlet "{{ .name }}/dotfiles"
-
-Write-Host {{ .prompts.intro | quote }}
+Write-Host
+Write-Host "{{- .name -}}/dotfiles -> https://github.com/{{- .name -}}/dotfiles"
 Write-Host {{ .prompts.setup_instruction | quote }}
-
+Write-Host
 Read-Host {{ .prompts.press_enter_to_continue | quote }}
