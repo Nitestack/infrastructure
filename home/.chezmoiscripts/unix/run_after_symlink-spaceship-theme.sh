@@ -21,4 +21,4 @@ fi
 ln -s "$symlink_path" "$target_path"
 
 echo "     Symbolic link for Spaceship theme created."
-echo "     $symlink_path -> $target_path"
+echo "     $target_path -> $symlink_path"

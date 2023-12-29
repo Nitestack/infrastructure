@@ -20,4 +20,4 @@ if (Test-Path("$target_path"))
 New-Item -Path "$symlink_path" -ItemType SymbolicLink -Value "$target_path"
 
 Write-Host "      Symbolic link for Neovim configuration created."
-Write-Host "      $symlink_path -> $target_path"
+Write-Host "      $target_path -> $symlink_path"
