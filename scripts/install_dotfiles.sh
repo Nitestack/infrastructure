@@ -20,15 +20,15 @@ log_blue() {
 }
 
 log_task() {
-	log_blue "??" "$@"
+	log_blue "🔃" "$@"
 }
 
 log_manual_action() {
-	log_red "??" "$@"
+	log_red "⚠️" "$@"
 }
 
 log_error() {
-	log_red "?" "$@"
+	log_red "❌" "$@"
 }
 
 error() {
@@ -97,4 +97,5 @@ else
 fi
 
 log_task "Running '${INSTALL_SCRIPT}'"
+chmod +x "${INSTALL_SCRIPT}"
 exec "${INSTALL_SCRIPT}" "$@"
