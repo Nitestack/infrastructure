@@ -1,6 +1,8 @@
 if (!(Get-Command figlet -ErrorAction SilentlyContinue)) 
 {
-  Install-Module -Name Figlet
+  Set-PSRepository PSGallery -InstallationPolicy Trusted
+  Install-Module -Name Figlet -Scope CurrentUser -Confirm:$False -Force
+  Import-Module -Name Figlet
 }
 
 figlet "{{ .name }}/dotfiles"
