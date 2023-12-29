@@ -82,14 +82,30 @@ iex "$env:USERPROFILE\.dotfiles\install.ps1"
 
 To update my dotfiles, run:
 
-```sh
-chezmoi update
+#### Bash
+
+```bash
+chezmoi update --source="$HOME/.dotfiles"
+```
+
+#### PowerShell Core
+
+```pwsh
+chezmoi update --source="$env:USERPROFILE\.dotfiles"
 ```
 
 To force a refresh the downloaded external archives, use the `--refresh-externals` or `-R` flag:
 
-```sh
-chezmoi update -R
+#### Bash
+
+```bash
+chezmoi update --source="$HOME/.dotfiles" -R
+```
+
+#### PowerShell Core
+
+```pwsh
+chezmoi update --source="$env:USERPROFILE\.dotfiles" -R
 ```
 
 ---
