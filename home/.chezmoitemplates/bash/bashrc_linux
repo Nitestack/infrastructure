@@ -1,7 +1,5 @@
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
 . "$HOME/.cargo/env"
 
 export NVM_DIR="$HOME/.nvm"
