@@ -11,12 +11,18 @@ Documents
 .config/Code
 .config/lazygit
 .config/project-manager
+.config/tmux
 
-.bash_aliases
+.oh-my-zsh
+
+.bash_profile
 .bashrc
-.hushlogin
-.profile
+.bash_aliases
+
 .zshrc
+.zprofile
+
+.hushlogin
 {{- end }}
 
 README.md
