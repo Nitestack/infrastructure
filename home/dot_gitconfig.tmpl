@@ -3,3 +3,24 @@
 	email = {{ .email }}
 [core]
   editor = {{ .editor }}
+{{- if eq .editor "nvim" }}
+  pager = delta
+{{- end }}
+[pull]
+  rebase = true
+[merge]
+autoStash = true
+[rebase]
+autoStash = true
+[push]
+autoSetupRemote = true
+[init]
+defaultBranch = master
+[gitreview]
+remote = origin
+[color]
+ui = auto
+status = auto
+diff = auto
+branch = auto
+interactive = auto
