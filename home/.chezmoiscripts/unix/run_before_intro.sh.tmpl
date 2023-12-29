@@ -1,6 +1,8 @@
 #!/bin/bash
 
-{{- range $_, $line := .prompts.ascii_logo }}
+clear
+
+{{ range $_, $line := .prompts.ascii_logo }}
 echo '{{ $line}}'
 {{- end }}
 
