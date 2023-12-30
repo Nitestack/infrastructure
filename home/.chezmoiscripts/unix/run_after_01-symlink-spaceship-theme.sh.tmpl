@@ -1,0 +1,27 @@
+#!/bin/bash
+# vim: set ft=spaceship
+
+{{ template "bash-library.sh" . -}}
+
+log_info "zsh: Setting up Spaceship theme..."
+
+ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
+target_path="${ZSH_CUSTOM}/themes/spaceship.zsh-theme"
+symlink_path="${ZSH_CUSTOM}/themes/spaceship-prompt/spaceship.zsh-theme"
+
+# Check if the path exists
+if [[ ! -e "${symlink_path}" ]]; then
+	log_error "Spaceship theme not found. Skipping."
+	exit 0
+fi
+
+# Check if the symbolic link already exists
+if [[ -L "${target_path}" ]]; then
+	log_warning "Symbolic link for Spaceship theme already exists. Skipping."
+	exit 0
+fi
+
+ln -s "${symlink_path}" "${target_path}"
+
+log_success "Symbolic link for Spaceship theme created."
+log_green "${target_path} -> ${symlink_path}"
