@@ -1,5 +1,9 @@
 Import-Module Terminal-Icons
 
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+
 # Aliases
 if (Get-Command "nvim.exe" -ErrorAction SilentlyContinue)
 {
