@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # -e: exit on error
 # -u: exit on unset variables
@@ -53,13 +53,13 @@ script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
 
 set -- init --source="${script_dir}" --verbose=false "$@"
 
-if [ -n "${DOTFILES_ONE_SHOT-}" ]; then
+if [[ -n "${DOTFILES_ONE_SHOT-}" ]]; then
 	set -- "$@" --one-shot
 else
 	set -- "$@" --apply
 fi
 
-if [ -n "${DOTFILES_DEBUG-}" ]; then
+if [[ -n "${DOTFILES_DEBUG-}" ]]; then
 	set -- "$@" --debug
 fi
 
