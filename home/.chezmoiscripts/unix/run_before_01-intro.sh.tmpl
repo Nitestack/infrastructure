@@ -3,7 +3,7 @@
 {{ template "bash-library.sh" . }}
 
 {{ range $_, $line := .prompts.ascii_logo }}
-log_blue '{{ $line}}'
+log_blue '{{- $line -}}'
 {{- end }}
 
 echo
