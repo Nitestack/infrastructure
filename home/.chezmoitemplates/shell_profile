@@ -1,3 +1,4 @@
+# vim: set ft=sh 
 # cargo
 source "$HOME/.cargo/env"
 
@@ -21,5 +22,5 @@ esac
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR="vim"
 else
-  export EDITOR={{- .editor | quote }}
+  export EDITOR="{{- .editor -}}"
 fi

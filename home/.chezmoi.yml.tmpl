@@ -1,3 +1,5 @@
+# vim: set ft=yaml 
+
 {{- $name := promptStringOnce . "name" "Name" -}}
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $hosttype_choices := list "personal" "work" -}}
