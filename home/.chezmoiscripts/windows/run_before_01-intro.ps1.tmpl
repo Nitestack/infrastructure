@@ -1,9 +1,12 @@
-{{- range $_, $line := .prompts.ascii_logo }}
-Write-Host '{{ $line }}'
+{{- template "pwsh-library.ps1" . }}
+
+{{ range $_, $line := .prompts.ascii_logo }}
+Write-LogBlue '{{- $line -}}'
 {{- end }}
 
 Write-Host
-Write-Host "{{- .name -}}/dotfiles -> https://github.com/{{- .name -}}/dotfiles"
+Write-LogYellow "{{- .name -}}/dotfiles -> https://github.com/{{- .name -}}/dotfiles"
 Write-Host {{ .prompts.setup_instruction | quote }}
 Write-Host
-Read-Host {{ .prompts.press_enter_to_continue | quote }}
+Write-LogRed {{ .prompts.press_enter_to_continue | quote }}
+Read-Host
