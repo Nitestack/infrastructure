@@ -1,6 +1,4 @@
-cls
-
-{{ range $_, $line := .prompts.ascii_logo }}
+{{- range $_, $line := .prompts.ascii_logo }}
 Write-Host '{{ $line }}'
 {{- end }}
 
