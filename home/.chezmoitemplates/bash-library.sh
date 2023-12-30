@@ -57,6 +57,19 @@ function error() {
 	exit 1
 }
 
+function ensure_installed() {
+	local cmd_name="$1"
+	shift
+
+	if command -v "${cmd_name}" >/dev/null 2>&1; then
+		log_info "${cmd_name} is already installed. Skipping."
+		return
+	fi
+
+	log_task "Installing ${cmd_name}"
+	command_exec "$@"
+}
+
 function sudo() {
 	local exec=false
 	if [[ "$1" == "exec" ]]; then

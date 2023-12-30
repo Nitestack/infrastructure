@@ -9,3 +9,27 @@ prompts:
     - " / _` |/ _ \\| __|  _| | |/ _ \\/ __|"
     - "| (_| | (_) | |_| | | | |  __/\\__ \\"
     - " \\__,_|\\___/ \\__|_| |_|_|\\___||___/"
+packages:
+  apt:
+    - curl: "curl"
+    - git: "git"
+    - vim: "vim"
+    - tmux: "tmux"
+    - fzf: "fzf"
+    - rg: "ripgrep"
+    - fdfind: "fd-find"
+    - unzip: "unzip"
+    - python3: "python3 python3-pip python3-venv"
+  custom:
+    - rustup:
+        - "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
+    - bob:
+        - "cargo install bob-nvim"
+    - node:
+        - "nvm install --lts"
+    - lazygit:
+        - "LAZYGIT_VERSION=$(curl -s \"https://api.github.com/repos/jesseduffield/lazygit/releases/latest\" | grep -Po '\"tag_name\": \"v\\K[^\"]*')"
+        - 'curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"'
+        - "tar xf lazygit.tar.gz lazygit"
+        - "sudo install lazygit /usr/local/bin"
+        - "rm lazygit.tar.gz lazygit"
