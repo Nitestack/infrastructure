@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # -e: exit on error
 # -u: exit on unset variables
@@ -38,7 +38,7 @@ error() {
 
 sudo() {
 	# shellcheck disable=SC2312
-	if [ "$(id -u)" -eq 0 ]; then
+	if [[ "$(id -u)" -eq 0 ]]; then
 		"$@"
 	else
 		if ! command sudo --non-interactive true 2>/dev/null; then
@@ -81,16 +81,16 @@ if ! command -v git >/dev/null 2>&1; then
 	sudo apt install git --yes
 fi
 
-if [ -d "${DOTFILES_DIR}" ]; then
+if [[ -d "${DOTFILES_DIR}" ]]; then
 	git_clean "${DOTFILES_DIR}" "${DOTFILES_REPO}" "${DOTFILES_BRANCH}"
 else
 	log_task "Cloning '${DOTFILES_REPO}' at branch '${DOTFILES_BRANCH}' to '${DOTFILES_DIR}'"
 	git clone --branch "${DOTFILES_BRANCH}" "${DOTFILES_REPO}" "${DOTFILES_DIR}"
 fi
 
-if [ -f "${DOTFILES_DIR}/install.sh" ]; then
+if [[ -f "${DOTFILES_DIR}/install.sh" ]]; then
 	INSTALL_SCRIPT="${DOTFILES_DIR}/install.sh"
-elif [ -f "${DOTFILES_DIR}/install" ]; then
+elif [[ -f "${DOTFILES_DIR}/install" ]]; then
 	INSTALL_SCRIPT="${DOTFILES_DIR}/install"
 else
 	error "No install script found in the dotfiles."
