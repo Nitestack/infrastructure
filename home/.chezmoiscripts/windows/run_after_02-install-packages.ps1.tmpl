@@ -33,7 +33,7 @@ if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 # {{ end }}
 # {{ end }}
 
-# Neovim Node plugin
+# Global npm dependencies
 $pnpmList = pnpm list -g --depth 0
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if ($pnpmList -match "{{- $package_name -}}") 

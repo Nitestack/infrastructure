@@ -35,7 +35,7 @@ fi
 # {{ end }}
 # {{ end }}
 
-# Neovim Node plugin
+# Global npm packages
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
 	log_info "pnpm: {{ $package_name }} is already installed. Skipping."
