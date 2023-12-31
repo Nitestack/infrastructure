@@ -8,8 +8,8 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install "build-essential"
 
 # Install packages
-# {{ range $_, $pkg_map := .packages.apt }}
-#   {{ range $cmd_name, $to_install := $pkg_map }}
+# {{ range $_, $pkg := concat .dependencies.ubuntu.apt .dependencies.all.packages }}
+#   {{ range $cmd_name, $to_install := $pkg }}
 ensure_installed "{{- $cmd_name -}}" sudo apt install "{{- splitList " " $to_install | join "\" \"" -}}"
 #   {{ end }}
 # {{ end }}
@@ -22,9 +22,9 @@ else
 fi
 
 # Custom installation
-# {{ range $_, $pkg := .packages.custom }}
+# {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
-if command -v {{ $cmd_name | quote }} >/dev/null 2>&1; then
+if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
 	log_info "{{- $cmd_name }} is already installed. Skipping."
 else
 	log_task "Installing {{ $cmd_name -}}"
@@ -35,13 +35,12 @@ fi
 # {{ end }}
 # {{ end }}
 
-# pnpm
-if command -v "corepack" >/dev/null 2>&1; then
-	ensure_installed "pnpm" corepack prepare pnpm@latest --activate
-else
-	ensure_installed "pnpm" npm install -g pnpm
-fi
 # Neovim Node plugin
-pnpm add -g neovim
-pnpm add -g tree-sitter-cli
-pnpm add -g @nitestack/project-manager
+# {{ range $_, $package_name := .dependencies.all.pnpm }}
+if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
+	log_info "pnpm: {{ $package_name }} is already installed. Skipping."
+else
+	log_task "Installing {{ $package_name }} via pnpm"
+	pnpm add -g "{{- $package_name -}}"
+fi
+# {{ end }}
