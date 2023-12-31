@@ -17,7 +17,6 @@ dependencies:
       - fzf: "fzf"
       - rg: "ripgrep"
       - unzip: "unzip"
-      - python3: "python3 python3-venv"
       - pip3: "python3-pip"
     pnpm:
       - neovim
@@ -34,6 +33,7 @@ dependencies:
           - "corepack prepare pnpm@latest --activate"
   ubuntu:
     apt:
+      - python3: "python3 python3-venv"
       - fdfind: "fd-find"
       - curl: "curl"
       - tmux: "tmux"
@@ -50,6 +50,7 @@ dependencies:
           - "rm lazygit.tar.gz lazygit"
   windows:
     choco:
+      - python3: "python3 python3-virtualenv"
       - fd: "fd"
       - rustup: "rustup"
       - node: "nodejs-lts"

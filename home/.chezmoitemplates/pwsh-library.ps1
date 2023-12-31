@@ -76,3 +76,16 @@ function Invoke-Error
   exit 1
 }
 
+function Invoke-EnsureInstalled
+{
+  param([string]$cmd_name, [string]$command)
+  if (Get-Command $cmd_name -ErrorAction SilentlyContinue)
+  {
+    Write-LogInfo "$cmd_name is already installed. Skipping."
+    return
+  }
+
+  Write-LogTask "Installing $cmd_name"
+  Invoke-Expression $command
+}
+

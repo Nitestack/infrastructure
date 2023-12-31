@@ -1,0 +1,50 @@
+# {{ template "pwsh-library.ps1" . }}
+
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
+{
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000)
+  {
+    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath pwsh -Verb Runas -ArgumentList $CommandLine
+    Exit
+  }
+}
+
+# Install packages
+# {{ range $_, $pkg := concat .dependencies.windows.choco .dependencies.all.packages }}
+#   {{ range $cmd_name, $to_install := $pkg }}
+Invoke-EnsureInstalled "{{- $cmd_name -}}" 'choco install {{ $to_install -}}'
+#   {{ end }}
+# {{ end }}
+
+# Custom installation
+# {{ range $_, $pkg := concat .dependencies.all.custom }}
+# {{ range $cmd_name, $to_install := $pkg }}
+if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
+{
+  Write-LogInfo "{{- $cmd_name }} is already installed. Skipping."
+} else
+{
+  Write-LogTask "Installing {{ $cmd_name -}}"
+  # {{ range $_, $line := $to_install }}
+  Invoke-Expression "{{- $line -}}"
+  # {{ end }}
+}
+# {{ end }}
+# {{ end }}
+
+# Neovim Node plugin
+$pnpmList = pnpm list -g --depth 0
+# {{ range $_, $package_name := .dependencies.all.pnpm }}
+if ($pnpmList -match "{{- $package_name -}}") 
+{	
+  Write-LogInfo "pnpm: {{ $package_name }} is already installed. Skipping."
+} else
+{
+  Write-LogTask "Installing {{ $package_name }} via pnpm"
+  pnpm add -g "{{- $package_name -}}"
+}
+# {{ end }}
+
+Write-LogRed "{{- .prompts.press_enter_to_continue -}}"
+Read-Host
