@@ -27,7 +27,7 @@ if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 {
   Write-LogTask "Installing {{ $cmd_name -}}"
   # {{ range $_, $line := $to_install }}
-  Invoke-Expression "{{- $line -}}"
+	# {{ "\n" }}{{ $line }}
   # {{ end }}
 }
 # {{ end }}
