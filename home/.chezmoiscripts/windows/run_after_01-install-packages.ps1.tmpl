@@ -13,7 +13,7 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # Install packages
 # {{ range $_, $pkg := concat .dependencies.windows.choco .dependencies.all.packages }}
 #   {{ range $cmd_name, $to_install := $pkg }}
-Invoke-EnsureInstalled "{{- $cmd_name -}}" 'choco install {{ $to_install -}}'
+Invoke-EnsureInstalled "{{- $cmd_name -}}" 'choco install -y {{ $to_install -}}'
 #   {{ end }}
 # {{ end }}
 
