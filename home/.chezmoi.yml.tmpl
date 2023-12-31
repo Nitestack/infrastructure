@@ -9,8 +9,7 @@
   {{- else if eq .chezmoi.os "linux" -}}
     {{- $project_base_path = "projects" -}}
   {{- end -}}
-{{- end }}
-{{ "" }}
+{{- end -}}
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
