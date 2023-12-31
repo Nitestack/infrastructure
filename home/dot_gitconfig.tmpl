@@ -1,12 +1,10 @@
-# vim: set ft=gitconfig 
-
 [user]
-  name = {{ .name }}
-	email = {{ .email }}
+  name = "{{- .name -}}"
+  email = "{{- .email -}}"
 [core]
-  editor = {{ .editor }}
+  editor = "{{ .editor }}"
 {{- if eq .editor "nvim" }}
-  pager = delta
+  pager = "delta"
 {{- end }}
 [pull]
   rebase = true
@@ -17,12 +15,12 @@ autoStash = true
 [push]
 autoSetupRemote = true
 [init]
-defaultBranch = master
+defaultBranch = "master"
 [gitreview]
-remote = origin
+remote = "origin"
 [color]
-ui = auto
-status = auto
-diff = auto
-branch = auto
-interactive = auto
+ui = "auto"
+status = "auto"
+diff = "auto"
+branch = "auto"
+interactive = "auto"

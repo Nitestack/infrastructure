@@ -1,15 +1,15 @@
 #!/bin/bash
 
-{{ template "bash-library.sh" . }}
+# {{ template "bash-library.sh" . }}
 
 log_task "Setting zsh as default shell"
 
 ensure_installed zsh sudo apt install zsh
 
 # Check if the current shell is zsh already
-if [[ "$SHELL" == "$(which zsh)" ]]; then
-  log_info "Shell is already zsh. Skipping."
-  exit 0
+if [[ "${SHELL}" == "$(which zsh)" ]]; then
+	log_info "Shell is already zsh. Skipping."
+	exit 0
 fi
 
 chsh -s "$(which zsh)"

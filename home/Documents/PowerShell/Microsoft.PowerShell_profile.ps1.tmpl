@@ -199,4 +199,4 @@ if (Test-Path($ChocolateyProfile))
 
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\{{- .windows.oh_my_posh_theme_name -}}.omp.json" | Invoke-Expression
 
-# $env:EDITOR = {{- .editor | quote -}}
+$env:EDITOR = "{{- .editor -}}"

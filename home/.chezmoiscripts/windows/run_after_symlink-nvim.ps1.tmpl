@@ -1,4 +1,4 @@
-{{- template "pwsh-library.ps1" . }}
+# {{ template "pwsh-library.ps1" . }}
 
 Write-LogTask "nvim: Setting up Neovim configuration..."
 
@@ -23,4 +23,3 @@ New-Item -Path "$symlink_path" -ItemType SymbolicLink -Value "$target_path"
 
 Write-LogSuccess "Symbolic link for Neovim configuration created."
 Write-LogGreen "$target_path -> $symlink_path"
-

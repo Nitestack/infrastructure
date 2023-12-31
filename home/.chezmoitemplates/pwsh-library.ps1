@@ -1,3 +1,5 @@
+# PowerShell Core library
+
 function Write-LogColor
 {
   param([string]$colorCode, [string]$message)

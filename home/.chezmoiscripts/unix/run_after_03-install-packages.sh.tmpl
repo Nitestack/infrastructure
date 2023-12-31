@@ -1,7 +1,6 @@
 #!/bin/bash
-# vim: set ft=sh
 
-{{ template "bash-library.sh" . }}
+# {{ template "bash-library.sh" . }}
 
 sudo apt-get update && sudo apt-get upgrade -y
 
@@ -9,38 +8,38 @@ sudo apt-get update && sudo apt-get upgrade -y
 sudo apt install "build-essential"
 
 # Install packages
-{{- range $_, $pkg_map := .packages.apt -}}
-  {{- range $cmd_name, $to_install := $pkg_map }}
-ensure_installed {{ $cmd_name | quote }} sudo apt install "{{ splitList " " $to_install | join "\" \"" }}"
-  {{- end -}}
-{{- end }}
+# {{ range $_, $pkg_map := .packages.apt }}
+#   {{ range $cmd_name, $to_install := $pkg_map }}
+ensure_installed "{{- $cmd_name -}}" sudo apt install "{{- splitList " " $to_install | join "\" \"" -}}"
+#   {{ end }}
+# {{ end }}
 
 # NVM
 if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
-  log_info "nvm is already installed. Skipping."
+	log_info "nvm is already installed. Skipping."
 else
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 fi
 
 # Custom installation
-{{- range $_, $pkg := .packages.custom -}}
-  {{- range $cmd_name, $to_install := $pkg }}
+# {{ range $_, $pkg := .packages.custom }}
+# {{ range $cmd_name, $to_install := $pkg }}
 if command -v {{ $cmd_name | quote }} >/dev/null 2>&1; then
-  log_info "{{- $cmd_name }} is already installed. Skipping."
+	log_info "{{- $cmd_name }} is already installed. Skipping."
 else
-  log_task "Installing {{ $cmd_name -}}"
-  {{- range $_, $line := $to_install }}
-  {{ $line }}
-  {{- end }}
+	log_task "Installing {{ $cmd_name -}}"
+	# {{ range $_, $line := $to_install }}
+	# {{ "\n" }}{{ $line }}
+	# {{ end }}
 fi
-  {{- end -}}
-{{- end }}
+# {{ end }}
+# {{ end }}
 
 # pnpm
 if command -v "corepack" >/dev/null 2>&1; then
-  ensure_installed "pnpm" corepack prepare pnpm@latest --activate
+	ensure_installed "pnpm" corepack prepare pnpm@latest --activate
 else
-  ensure_installed "pnpm" npm install -g pnpm
+	ensure_installed "pnpm" npm install -g pnpm
 fi
 # Neovim Node plugin
 pnpm add -g neovim

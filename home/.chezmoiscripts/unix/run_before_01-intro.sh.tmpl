@@ -1,14 +1,14 @@
 #!/bin/bash
 
-{{ template "bash-library.sh" . }}
+# {{ template "bash-library.sh" . }}
 
-{{ range $_, $line := .prompts.ascii_logo }}
+# {{ range $_, $line := .prompts.ascii_logo }}
 log_blue '{{- $line -}}'
-{{- end }}
+# {{ end }}
 
 echo
 log_yellow "{{- .name -}}/dotfiles -> https://github.com/{{- .name -}}/dotfiles"
 echo {{ .prompts.setup_instruction | quote }}
 echo
-log_red {{ .prompts.press_enter_to_continue | quote }}
-read
+log_red "{{- .prompts.press_enter_to_continue -}}"
+read -r
