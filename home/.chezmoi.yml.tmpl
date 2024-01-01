@@ -3,6 +3,10 @@
 {{- $hosttype_choices := list "personal" "work" -}}
 {{- $hosttype := promptChoiceOnce . "hosttype" "What type of host are you on" $hosttype_choices -}}
 {{- $project_base_path := "" -}}
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
 {{- if eq $hosttype "personal" -}}
   {{- if eq .chezmoi.os "windows" -}}
     {{- $project_base_path = "Documents/Programmierung/projects" -}}
@@ -15,6 +19,7 @@ data:
   email: {{ $email | quote }}
   editor: "nvim"
   hosttype: {{ $hosttype | quote }}
+  osid: {{ $osID | quote }}
   project_base_path: {{ $project_base_path | quote }}
 {{- if eq .chezmoi.os "windows" }}
   # Windows options
