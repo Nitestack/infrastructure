@@ -81,6 +81,7 @@ plugins=(
   nvm
   python
   pip
+  spaceship-vi-mode
   tmux
   tmuxinator
   vi-mode

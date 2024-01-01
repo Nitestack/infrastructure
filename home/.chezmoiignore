@@ -11,6 +11,7 @@ Documents
 .config/Code
 .config/lazygit
 .config/project-manager
+.config/spaceship.zsh
 .config/tmux
 
 .oh-my-zsh
