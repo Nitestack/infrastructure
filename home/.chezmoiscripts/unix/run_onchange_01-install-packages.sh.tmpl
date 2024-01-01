@@ -2,7 +2,7 @@
 
 # {{ template "bash-library.sh" . }}
 
-sudo apt update && sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y
 
 # Build essential
 sudo apt install "build-essential"
@@ -10,7 +10,7 @@ sudo apt install "build-essential"
 # Install packages
 # {{ range $_, $pkg := concat .dependencies.ubuntu.apt .dependencies.all.packages }}
 #   {{ range $cmd_name, $to_install := $pkg }}
-ensure_installed "{{- $cmd_name -}}" sudo apt install "{{- splitList " " $to_install | join "\" \"" -}}"
+ensure_installed "{{- $cmd_name -}}" sudo apt install -y "{{- splitList " " $to_install | join "\" \"" -}}"
 #   {{ end }}
 # {{ end }}
 
