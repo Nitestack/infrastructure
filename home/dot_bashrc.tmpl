@@ -1,3 +1,5 @@
 {{- if (.is_wsl) -}}
 {{-   template "wsl_bashrc" . -}}
-{{- end -}}
+{{- end }}
+
+eval "$(zoxide init bash)"
