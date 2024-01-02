@@ -33,7 +33,6 @@ M.options = {
 --------------------------------------------------------------------------------
 M.globals = {
   mapleader = " ",
-  maplocalleader = " ",
 }
 
 --------------------------------------------------------------------------------
@@ -55,7 +54,7 @@ function M.run()
 
   -- Windows
   if utils.general.is_win() then
-    -- Shell
+    -- Use PowerShell Core instead of Windows CMD
     vim.o.shell = "pwsh"
     vim.o.shellcmdflag =
       "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
@@ -67,7 +66,7 @@ function M.run()
 
   -- Linux
   if utils.general.is_linux() then
-    -- WSL Clipboard
+    -- Sync clipboard with Windows clipboard
     vim.g.clipboard = {
       name = "WslClipboard",
       copy = {
