@@ -7,7 +7,6 @@
 ---@field auto_cmd_opts vim.api.keyset.create_autocmd
 ---@field user_cmds UserCommand[]
 ---@field user_cmd_opts vim.api.keyset.user_command
----@field au_groups AutoCommandGroup[]
 ---@field au_group_opts vim.api.keyset.create_augroup
 
 ---@type CommandConfiguration
@@ -61,6 +60,7 @@ M.auto_cmds = {
   {
     "FileType",
     {
+      group = "lazyvim_close_with_q",
       pattern = {
         "toggleterm",
       },
@@ -113,8 +113,8 @@ M.user_cmd_opts = {}
 --------------------------------------------------------------------------------
 --  Autocommand groups
 --------------------------------------------------------------------------------
-M.au_groups = {}
-
-M.au_group_opts = {}
+M.au_group_opts = {
+  clear = true,
+}
 
 return M

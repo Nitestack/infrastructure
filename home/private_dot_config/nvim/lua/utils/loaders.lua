@@ -64,9 +64,8 @@ end
 
 ---@param config CommandConfiguration
 function M.load_commands(config)
-  require("utils.cmds").auto_cmds(config.auto_cmds, config.auto_cmd_opts)
+  require("utils.cmds").auto_cmds(config.auto_cmds, config.auto_cmd_opts, config.au_group_opts)
   require("utils.cmds").user_cmds(config.user_cmds, config.user_cmd_opts)
-  require("utils.cmds").au_groups(config.au_groups, config.au_group_opts)
 end
 
 return M
