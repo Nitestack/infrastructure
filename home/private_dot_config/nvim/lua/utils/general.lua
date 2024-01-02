@@ -4,7 +4,7 @@
 local M = {}
 
 ---@param plugins string[]
----@return LazySpec
+---@return LazyPluginSpec[]
 function M.disabled_plugins(plugins)
   local spec = {}
 
