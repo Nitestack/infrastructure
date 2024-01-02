@@ -108,6 +108,27 @@ M.mappings.v = {
     "<gv",
     "Indent left",
   },
+  -- Quotes
+  ["<leader>\""] = {
+    [[c"<c-r>""<esc>]],
+    "Surround selection with double quotes",
+  },
+  ["<leader>'"] = {
+    [[c'<c-r>"'<esc>]],
+    "Surround selection with single quotes",
+  },
+  ["<leader>`"] = {
+    [[c`<c-r>"`<esc>]],
+    "Surround selection with backticks",
+  },
+  ["<leader>)"] = {
+    [[c(<c-r>")<esc>]],
+    "Surround selection with parentheses",
+  },
+  ["<leader>}"] = {
+    [[c{<c-r>"}<esc>]],
+    "Surround selection with braces",
+  },
   -- End of line
   ["$"] = {
     "g_",
