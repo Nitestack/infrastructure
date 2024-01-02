@@ -56,11 +56,11 @@ return {
       return highlights
     end,
     integrations = {
-      dashboard = true,
-      dropbar = {
-        enabled = true,
-        color_mode = false,
+      barbecue = {
+        bold_basename = true,
+        dim_context = true,
       },
+      dashboard = true,
       flash = true,
       gitsigns = true,
       harpoon = true,
