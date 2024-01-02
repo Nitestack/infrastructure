@@ -16,15 +16,16 @@ local M = {}
 --  Options
 --------------------------------------------------------------------------------
 M.options = {
+  -- Backup
   swapfile = false,
   backup = false,
   undodir = vim.fn.expand("~/.vim/undodir"),
   undofile = true,
 
-  pumblend = 0,
-  list = false,
-
-  modeline = true,
+  -- Other
+  pumblend = 0, -- fixes icon bug in nvim-cmp
+  list = false, -- don't show invisible characters
+  guifont = "monospace:h17", -- set font for graphical Neovim apps
 }
 
 --------------------------------------------------------------------------------
