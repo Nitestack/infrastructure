@@ -23,7 +23,7 @@ return {
     core.auto_cmds({
       {
         {
-          "WinScrolled", -- or WinResized on NVIM-v0.9 and higher
+          "WinResized", -- or WinResized on NVIM-v0.9 and higher
           "BufWinEnter",
           "CursorHold",
           "InsertLeave",
