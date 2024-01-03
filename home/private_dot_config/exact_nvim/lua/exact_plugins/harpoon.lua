@@ -88,14 +88,18 @@ return {
         },
         [{ "<leader>h0", "<M-0>" }] = {
           function()
-            require("harpoon"):list():select(0)
+            require("harpoon"):list():select(10)
           end,
-          "Harpoon: Select file Nr. 0",
+          "Harpoon: Select file Nr. 10",
         },
       },
     }),
     ---@type HarpoonPartialConfig
-    opts = {},
+    opts = {
+      settings = {
+        save_on_toggle = true,
+      },
+    },
   },
   {
     "folke/which-key.nvim",

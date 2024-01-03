@@ -9,6 +9,7 @@ end
 ---@type LazyPluginSpec
 return {
   "akinsho/bufferline.nvim",
+  enabled = not core.config.ui.disable_bufferline,
   ---@param opts bufferline.UserConfig
   opts = function(_, opts)
     local C = require("catppuccin.palettes").get_palette()

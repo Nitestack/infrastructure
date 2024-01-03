@@ -185,6 +185,11 @@ M.unmappings = {
   },
 }
 
+if require("core.config").ui.disable_bufferline then
+  ---@diagnostic disable-next-line: param-type-mismatch
+  vim.list_extend(M.unmappings.n, { "<S-h>", "<S-l>" })
+end
+
 M.mapping_opts = {
   silent = true,
   noremap = true,
