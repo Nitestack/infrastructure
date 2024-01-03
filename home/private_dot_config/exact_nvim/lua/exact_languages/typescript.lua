@@ -144,6 +144,11 @@ return utils.lsp.load_language({
       end,
     },
     {
+      "dmmulroy/tsc.nvim",
+      cmd = "TSC",
+      opts = {},
+    },
+    {
       "vuki656/package-info.nvim",
       dependencies = {
         "MunifTanjim/nui.nvim",
