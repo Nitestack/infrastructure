@@ -1,15 +1,55 @@
+---@diagnostic disable: missing-fields
+---@type _.lspconfig.settings.vtsls.Typescript
+local tsserver_settings = {
+  locale = "en",
+  format = {
+    insertSpaceAfterFunctionKeywordForAnonymousFunctions = false,
+    insertSpaceAfterTypeAssertion = true,
+    semicolons = "insert",
+
+    indentSize = vim.opt.shiftwidth,
+    convertTabsToSpaces = vim.opt.expandtab,
+    tabSize = vim.opt.tabstop,
+  },
+  preferences = {
+    quoteStyle = "double",
+    importModuleSpecifier = "non-relative",
+    renameMatchingJsxTags = true,
+  },
+  suggest = {
+    completeFunctionCalls = true,
+    jsdoc = {
+      generateReturns = false,
+    },
+  },
+  inlayHints = {
+    parameterNames = { enabled = "literals" },
+    functionParameterTypes = { enabled = true },
+    variableTypes = { enabled = true },
+    propertyDeclarationTypes = { enabled = true },
+    enumMemberValues = { enabled = true },
+  },
+}
+
 return utils.lsp.load_language({
   lsp = {
     servers = {
-      -- Disable tsserver because typescript-tools.nvim is used
+      -- Disable tsserver because it is bad
       tsserver = {
         autostart = false,
         mason = false,
+      },
+      vtsls = {
+        settings = {
+          typescript = tsserver_settings,
+          javascript = tsserver_settings,
+        },
       },
     },
   },
   mason = {
     "typescript-language-server",
+    "vtsls",
     "eslint_d",
     "prettierd",
   },
@@ -51,6 +91,7 @@ return utils.lsp.load_language({
     { import = "lazyvim.plugins.extras.lang.typescript" },
     {
       "pmizio/typescript-tools.nvim",
+      enabled = false,
       event = {
         "BufReadPre *.*ts,*.tsx,*.*js,*.jsx",
         "BufNewFile *.*ts,*.tsx,*.*js,*.jsx",
@@ -87,6 +128,20 @@ return utils.lsp.load_language({
           },
         },
       },
+    },
+    {
+      "neovim/nvim-lspconfig",
+      dependencies = {
+        {
+          "yioneko/nvim-vtsls",
+          config = function()
+            require("vtsls").config({})
+          end,
+        },
+      },
+      opts = function()
+        require("lspconfig.configs").vtsls = require("vtsls").lspconfig
+      end,
     },
     {
       "vuki656/package-info.nvim",
