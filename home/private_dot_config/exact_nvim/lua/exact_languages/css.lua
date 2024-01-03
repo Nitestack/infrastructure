@@ -1,3 +1,4 @@
+---@diagnostic disable: missing-fields
 return utils.lsp.load_language({
   mason = {
     "css-lsp",
@@ -13,6 +14,25 @@ return utils.lsp.load_language({
     servers = {
       cssls = {},
       cssmodules_ls = {},
+      ---@type lspconfig.options.tailwindcss
+      tailwindcss = {
+        settings = {
+          tailwindCSS = {
+            classAttributes = { "class", "class.*", ".*Class.*", ".*Class", ".*Style.*" },
+            emmetCompletions = true,
+            experimental = {
+              classRegex = {
+                { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+                "(?:enter|leave)(?:From|To)?=\\s*(?:\"|')([^(?:\"|')]*)",
+                { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+              },
+            },
+            lint = {
+              cssConflict = "error",
+            },
+          },
+        },
+      },
     },
   },
   linter = {
