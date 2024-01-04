@@ -2,6 +2,8 @@
 
 # {{ template "bash-library.sh" . }}
 
+# {{ if eq .osid "linux-ubuntu" -}}
+
 sudo apt update -y && sudo apt upgrade -y
 
 # Build essential
@@ -43,4 +45,6 @@ else
 	log_task "Installing {{ $package_name }} via pnpm"
 	pnpm add -g "{{- $package_name -}}"
 fi
+# {{ end }}
+
 # {{ end }}
