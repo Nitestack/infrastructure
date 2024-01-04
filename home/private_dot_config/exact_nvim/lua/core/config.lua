@@ -97,7 +97,6 @@ M.plugins = {
 
 M.disabled_plugins = {
   "folke/flash.nvim",
-  "rcarriga/nvim-notify",
 }
 
 return M
