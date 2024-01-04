@@ -2,7 +2,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   dependencies = {
-    "andymasson/vim-matchup",
+    "andymass/vim-matchup",
   },
   event = function()
     return {
