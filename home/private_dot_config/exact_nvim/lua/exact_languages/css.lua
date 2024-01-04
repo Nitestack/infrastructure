@@ -12,7 +12,16 @@ return utils.lsp.load_language({
   },
   lsp = {
     servers = {
-      cssls = {},
+      ---@type lspconfig.options.cssls
+      cssls = {
+        settings = {
+          css = {
+            lint = {
+              unknownAtRules = "ignore",
+            },
+          },
+        },
+      },
       cssmodules_ls = {},
       ---@type lspconfig.options.tailwindcss
       tailwindcss = {
