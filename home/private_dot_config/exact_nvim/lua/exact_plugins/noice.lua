@@ -2,30 +2,38 @@
 return {
   "folke/noice.nvim",
   opts = function(_, opts)
-    -- Ignore "No information available" messages
-    table.insert(opts.routes, {
-      filter = {
-        event = "notify",
-        find = "No information available",
-      },
-      opts = { skip = true },
-    })
     -- Show @recording messages
     table.insert(opts.routes, {
       view = "notify",
       filter = { event = "msg_showmode" },
     })
+    -- Disable various messages
+    table.insert(opts.routes, {
+      opts = { skip = true },
+      filter = {
+        any = {
+          { event = "msg_show", find = "written" },
+          { event = "msg_show", find = "%d+ lines, %d+ bytes" },
+          { event = "msg_show", kind = "search_count" },
+          { event = "msg_show", find = "%d+L, %d+B" },
+          { event = "msg_show", find = "^Hunk %d+ of %d" },
+          { event = "msg_show", find = "%d+ change" },
+          { event = "msg_show", find = "%d+ line" },
+          { event = "msg_show", find = "%d+ more line" },
+        },
+      },
+    })
 
     -- Disable notify
-    opts.messages = opts.messages or {}
-    opts.messages.enabled = true
-    opts.messages.view = "mini"
-    opts.messages.view_error = "mini"
-    opts.messages.view_warn = "mini"
-
-    opts.notify = opts.notify or {}
-    opts.notify.enabled = true
-    opts.notify.view = "mini"
+    -- opts.messages = opts.messages or {}
+    -- opts.messages.enabled = true
+    -- opts.messages.view = "mini"
+    -- opts.messages.view_error = "mini"
+    -- opts.messages.view_warn = "mini"
+    --
+    -- opts.notify = opts.notify or {}
+    -- opts.notify.enabled = true
+    -- opts.notify.view = "mini"
 
     -- Disable cmdline
     opts.cmdline = opts.cmdline or {}
@@ -36,8 +44,8 @@ return {
     opts.lsp.hover = opts.lsp.hover or {}
     opts.lsp.hover.silent = true
 
-    opts.lsp.message = opts.lsp.message or {}
-    opts.lsp.message.view = "mini"
+    -- opts.lsp.message = opts.lsp.message or {}
+    -- opts.lsp.message.view = "mini"
 
     ---@type NoiceConfigViews
     local views = {
