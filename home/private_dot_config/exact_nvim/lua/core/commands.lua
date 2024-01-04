@@ -42,20 +42,6 @@ M.auto_cmds = {
       end,
     },
   },
-  {
-    "BufWritePre",
-    {
-      group = vim.api.nvim_create_augroup("better_backup", { clear = true }),
-      callback = function(event)
-        local file = vim.loop.fs_realpath(event.match) or event.match
-        local backup = vim.fn.fnamemodify(file, ":p:~:h")
-        if backup ~= nil then
-          backup = backup:gsub("[/\\]", "%%")
-          vim.go.backupext = backup
-        end
-      end,
-    },
-  },
   -- Close some filetypes with <q>
   {
     "FileType",
