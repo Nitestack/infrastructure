@@ -1,6 +1,11 @@
 ---@type LazyPluginSpec
 return {
   "smjonas/inc-rename.nvim",
+  dependencies = {
+    "stevearc/dressing.nvim",
+  },
   cmd = "IncRename",
-  opts = {},
+  opts = {
+    input_buffer_type = "dressing",
+  },
 }
