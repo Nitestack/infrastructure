@@ -57,6 +57,9 @@ return {
       },
     },
     default_component_configs = {
+      name = {
+        highlight_opened_files = true,
+      },
       icon = {
         folder_closed = core.icons.ui.Folder,
         folder_open = core.icons.ui.FolderOpen,
