@@ -67,6 +67,15 @@ M.auto_cmds = {
       end,
     },
   },
+  -- Remove any trailing whitespace on save
+  {
+    "BufWritePre",
+    {
+      group = "remove_trailing_whitespace",
+      pattern = "*",
+      command = [[%s/\s\+$//e]],
+    },
+  },
 }
 
 M.auto_cmd_opts = {}
