@@ -1,6 +1,5 @@
 return {
   "L3MON4D3/LuaSnip",
-  event = "InsertEnter",
   dependencies = {
     {
       "Exafunction/codeium.vim",
@@ -24,8 +23,8 @@ return {
     i = {
       ["<Tab>"] = {
         function()
-          if require("luasnip").expand_or_jumpable() then
-            return "<Plug>luasnip-expand-or-jump"
+          if require("luasnip").jumpable(1) then
+            return "<Plug>luasnip-jump-next"
           else
             return vim.fn["codeium#Accept"]()
           end

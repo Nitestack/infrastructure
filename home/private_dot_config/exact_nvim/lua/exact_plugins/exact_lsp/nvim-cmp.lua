@@ -13,10 +13,12 @@ return {
       "hrsh7th/cmp-calc",
       "hrsh7th/cmp-emoji",
       "ray-x/cmp-treesitter",
+      "L3MON4D3/LuaSnip",
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       local cmp = require("cmp")
+      local luasnip = require("luasnip")
 
       local min_menu_width, max_menu_width = 25, math.min(50, math.floor(vim.o.columns * 0.5))
 
@@ -66,6 +68,18 @@ return {
       -- Experimental
       opts.experimental = opts.experimental or {}
       opts.experimental.ghost_text = false
+
+      opts.mapping = vim.tbl_extend("force", opts.mapping, {
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+      })
 
       if utils.general.is_win() then
         opts.mapping = vim.tbl_extend("force", opts.mapping, {
