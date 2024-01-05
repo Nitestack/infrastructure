@@ -14,7 +14,6 @@ return {
         any = {
           { event = "msg_show", find = "written" },
           { event = "msg_show", find = "%d+ lines, %d+ bytes" },
-          { event = "msg_show", kind = "search_count" },
           { event = "msg_show", find = "%d+L, %d+B" },
           { event = "msg_show", find = "^Hunk %d+ of %d" },
           { event = "msg_show", find = "%d+ change" },
