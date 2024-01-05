@@ -92,10 +92,7 @@ return utils.lsp.load_language({
     {
       "pmizio/typescript-tools.nvim",
       enabled = false,
-      event = {
-        "BufReadPre *.*ts,*.tsx,*.*js,*.jsx",
-        "BufNewFile *.*ts,*.tsx,*.*js,*.jsx",
-      },
+      ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
       dependencies = {
         "nvim-lua/plenary.nvim",
         "neovim/nvim-lspconfig",
