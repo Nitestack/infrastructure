@@ -26,6 +26,16 @@ function M.is_linux()
   return vim.loop.os_uname().sysname == "Linux"
 end
 
+function M.is_nightly()
+  local version = vim.version()
+
+  if version.prerelease then
+    return true
+  else
+    return false
+  end
+end
+
 ---@param paths string|string[]
 function M.resolve_path(paths)
   return vim.fn.expand(type(paths) == "string" and paths or vim.fn.join(paths, "/"))
