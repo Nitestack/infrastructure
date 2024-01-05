@@ -42,6 +42,7 @@ return {
   -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
   event = utils.general.is_nightly() and "LspAttach" or "BufReadPre",
   ---@type UserOpts
+  ---@diagnostic disable-next-line: missing-fields
   opts = {
     references = {
       enabled = true,
