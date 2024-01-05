@@ -44,24 +44,25 @@ return {
         ellipsis_char = core.icons.ui.Ellipsis,
         preset = "codicons",
         menu = {
-          nvim_lsp = "(LSP)",
-          emoji = "(Emoji)",
-          path = "(Path)",
-          calc = "(Calc)",
-          cmp_tabnine = "(Tabnine)",
-          vsnip = "(Snippet)",
-          luasnip = "(Snippet)",
-          buffer = "(Buffer)",
-          tmux = "(TMUX)",
-          copilot = "(Copilot)",
-          treesitter = "(Treesitter)",
+          nvim_lsp = "[LSP]",
+          emoji = "[Emoji]",
+          path = "[Path]",
+          calc = "[Calc]",
+          cmp_tabnine = "[Tabnine]",
+          vsnip = "[Snippet]",
+          luasnip = "[Snippet]",
+          buffer = "[Buffer]",
+          tmux = "[TMUX]",
+          copilot = "[Copilot]",
+          treesitter = "[Treesitter]",
         },
         before = function(entry, vim_item)
           local label, length = vim_item.abbr, vim.api.nvim_strwidth(vim_item.abbr)
+          vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
           if length < min_menu_width then
             vim_item.abbr = label .. string.rep(" ", min_menu_width - length)
           end
-          return require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
+          return vim_item
         end,
       })
 
