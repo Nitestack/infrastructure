@@ -10,7 +10,6 @@ return {
       "onsails/lspkind.nvim",
       -- Sources
       "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-calc",
       "hrsh7th/cmp-emoji",
       "ray-x/cmp-treesitter",
       "L3MON4D3/LuaSnip",
@@ -26,7 +25,6 @@ return {
       opts.sources = opts.sources or {}
       opts.sources = vim.list_extend(opts.sources, {
         { name = "nvim_lua" },
-        { name = "calc" },
         { name = "emoji" },
         { name = "treesitter" },
       })
@@ -47,9 +45,6 @@ return {
           nvim_lsp = "[LSP]",
           emoji = "[Emoji]",
           path = "[Path]",
-          calc = "[Calc]",
-          cmp_tabnine = "[Tabnine]",
-          vsnip = "[Snippet]",
           luasnip = "[Snippet]",
           buffer = "[Buffer]",
           tmux = "[TMUX]",
