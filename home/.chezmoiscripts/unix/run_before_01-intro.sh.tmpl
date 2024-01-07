@@ -9,6 +9,3 @@ log_blue '{{- $line -}}'
 echo
 log_yellow "{{- .name -}}/dotfiles -> https://github.com/{{- .name -}}/dotfiles"
 echo {{ .prompts.setup_instruction | quote }}
-echo
-log_red "{{- .prompts.press_enter_to_continue -}}"
-read -r
