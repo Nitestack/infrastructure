@@ -5,9 +5,14 @@ return {
   color_scheme = "Catppuccin Mocha",
 
   -- Font
-  font = wezterm.font("MonaspiceNe Nerd Font", { weight = "Bold" }),
+  font = wezterm.font_with_fallback({
+    {
+      family = "Geist Mono",
+      weight = "Bold",
+    },
+    "Symbols Nerd Font",
+  }),
   font_size = 18.0,
-  line_height = 1.2,
 
   animation_fps = 144,
   max_fps = 144,
@@ -30,8 +35,14 @@ return {
   -- Tab Bar
   show_tab_index_in_tab_bar = false,
   switch_to_last_active_tab_when_closing_tab = true,
-  tab_max_width = 25,
   window_frame = {
-    font = wezterm.font("MonaspiceNe Nerd Font", { weight = "Bold" }),
+    font = wezterm.font_with_fallback({
+      {
+        family = "Geist Mono",
+        weight = "Black",
+      },
+      "Symbols Nerd Font",
+    }),
+    font_size = 14.0,
   },
 }
