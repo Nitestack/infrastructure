@@ -26,10 +26,10 @@ return {
   -- Window
   window_decorations = "INTEGRATED_BUTTONS|RESIZE",
   window_padding = {
-    top = 4,
-    bottom = 4,
+    top = 0,
+    bottom = 0,
     left = 4,
-    right = 4,
+    right = 0,
   },
 
   -- Tab Bar
