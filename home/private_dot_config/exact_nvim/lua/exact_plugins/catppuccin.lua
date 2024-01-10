@@ -11,7 +11,6 @@ return {
       booleans = { "italic" },
       comments = { "italic" },
       conditionals = { "italic" },
-      functions = { "italic" },
       keywords = { "italic" },
     },
     custom_highlights = function(C)
