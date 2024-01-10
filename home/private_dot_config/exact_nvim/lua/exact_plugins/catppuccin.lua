@@ -88,6 +88,9 @@ return {
         },
         inlay_hints = { background = true },
       },
+      navic = {
+        enabled = true,
+      },
       notify = true,
       treesitter_context = true,
       treesitter = true,

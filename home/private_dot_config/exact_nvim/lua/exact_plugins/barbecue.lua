@@ -4,7 +4,12 @@ return {
   name = "barbecue",
   version = "*",
   dependencies = {
-    "SmiteshP/nvim-navic",
+    {
+      "SmiteshP/nvim-navic",
+      opts = {
+        highlight = true,
+      },
+    },
     "nvim-tree/nvim-web-devicons",
   },
   event = "LazyFile",
