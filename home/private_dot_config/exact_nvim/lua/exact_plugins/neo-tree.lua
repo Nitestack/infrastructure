@@ -40,7 +40,7 @@ return {
       popup = {
         position = "50%",
         border = {
-          style = "none",
+          style = core.config.ui.transparent.floats and "rounded" or "none",
           padding = { 1, 1 },
         },
         size = {

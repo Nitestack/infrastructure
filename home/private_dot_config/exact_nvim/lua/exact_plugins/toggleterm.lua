@@ -18,7 +18,7 @@ return {
       },
     },
     float_opts = {
-      border = "none",
+      border = core.config.ui.transparent.floats and "curved" or "none",
     },
   },
 }
