@@ -70,7 +70,7 @@ return {
     }
     ---@type NoicePresets
     local presets = {
-      lsp_doc_border = false,
+      lsp_doc_border = core.config.ui.transparent.floats and true or false,
       inc_rename = false,
     }
 
