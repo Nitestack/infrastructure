@@ -13,11 +13,15 @@ return {
       "hrsh7th/cmp-emoji",
       "ray-x/cmp-treesitter",
       "L3MON4D3/LuaSnip",
+      "windwp/nvim-autopairs",
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       local cmp = require("cmp")
       local luasnip = require("luasnip")
+      local lspkind = require("lspkind")
+
+      lspkind.init()
 
       local min_menu_width, max_menu_width = 25, math.min(50, math.floor(vim.o.columns * 0.5))
 
@@ -41,7 +45,7 @@ return {
         "abbr",
         "menu",
       }
-      opts.formatting.format = require("lspkind").cmp_format({
+      opts.formatting.format = lspkind.cmp_format({
         mode = "symbol",
         maxwidth = max_menu_width,
         ellipsis_char = core.icons.ui.Ellipsis,
@@ -89,6 +93,10 @@ return {
           ["<C-x>"] = cmp.mapping.complete(),
         })
       end
+
+      -- Autopairs
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
     end,
   },
   {
