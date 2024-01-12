@@ -1,4 +1,3 @@
----@diagnostic disable: missing-fields
 return utils.lsp.load_language({
   mason = {
     "css-lsp",

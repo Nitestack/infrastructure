@@ -12,7 +12,6 @@
 --------------------------------------------------------------------------------
 
 ---@type MappingsConfig
----@diagnostic disable-next-line: missing-fields
 local M = {}
 
 M.mappings = {

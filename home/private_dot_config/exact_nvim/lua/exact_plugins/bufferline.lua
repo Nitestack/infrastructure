@@ -59,7 +59,6 @@ return {
       return "(" .. count .. ")"
     end
     -- Custom areas
-    ---@diagnostic disable-next-line: inject-field Missing field in plugin type definition
     opts.options.custom_areas = {
       right = function()
         local result = {}

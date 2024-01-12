@@ -22,7 +22,6 @@
 ---@field formatting LanguageFormatterConfig
 
 ---@type UserConfig
----@diagnostic disable-next-line: missing-fields
 local M = {}
 
 --------------------------------------------------------------------------------

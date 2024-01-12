@@ -9,7 +9,6 @@
 ---@field run fun()
 
 ---@type SettingsConfig
----@diagnostic disable-next-line: missing-fields
 local M = {}
 
 --------------------------------------------------------------------------------

@@ -1,4 +1,3 @@
----@diagnostic disable: missing-fields
 ---@type _.lspconfig.settings.vtsls.Typescript
 local tsserver_settings = {
   locale = "en",

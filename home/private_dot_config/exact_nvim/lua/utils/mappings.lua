@@ -125,9 +125,7 @@ function M.lazy_map(mappings, mapping_opts)
     for mapping, mapping_info in pairs(mode_mappings) do
       local opts = vim.tbl_deep_extend("force", mapping_opts or {}, mapping_info.opts or {})
 
-      ---@diagnostic disable-next-line: inject-field
       opts.desc = mapping_info[2]
-      ---@diagnostic disable-next-line: inject-field
       opts.mode = mode
 
       if type(mapping) == "string" then

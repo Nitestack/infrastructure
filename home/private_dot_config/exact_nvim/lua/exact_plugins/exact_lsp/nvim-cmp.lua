@@ -111,7 +111,6 @@ return {
       local cmp = require("cmp")
 
       -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-      ---@diagnostic disable-next-line: missing-fields
       cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
@@ -120,7 +119,6 @@ return {
       })
 
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      ---@diagnostic disable-next-line: missing-fields
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({

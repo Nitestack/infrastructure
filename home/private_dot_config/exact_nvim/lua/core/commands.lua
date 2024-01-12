@@ -10,7 +10,6 @@
 ---@field au_group_opts vim.api.keyset.create_augroup
 
 ---@type CommandConfiguration
----@diagnostic disable-next-line: missing-fields
 local M = {}
 
 --------------------------------------------------------------------------------
