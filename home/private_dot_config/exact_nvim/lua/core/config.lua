@@ -65,7 +65,7 @@ M.ui = {
   ]],
   transparent = {
     enabled = true,
-    floats = false,
+    floats = true,
   },
   width = 0.8,
   height = 0.8,
@@ -99,6 +99,7 @@ M.disabled_plugins = {
   "folke/flash.nvim",
   "echasnovski/mini.indentscope",
   "pmizio/typescript-tools.nvim",
+  "echasnovski/mini.pairs",
 }
 
 return M
