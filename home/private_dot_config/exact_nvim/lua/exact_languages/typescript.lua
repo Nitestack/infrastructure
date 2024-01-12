@@ -91,7 +91,6 @@ return utils.lsp.load_language({
     { import = "lazyvim.plugins.extras.lang.typescript" },
     {
       "pmizio/typescript-tools.nvim",
-      enabled = false,
       ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
       dependencies = {
         "nvim-lua/plenary.nvim",
