@@ -29,6 +29,11 @@ return {
         { name = "treesitter" },
       })
 
+      -- Window
+      opts.window = opts.window or {}
+      opts.window.completion = cmp.config.window.bordered()
+      opts.window.documentation = cmp.config.window.bordered()
+
       -- Formatting (VSCode-like completion window)
       opts.formatting = opts.formatting or {}
       opts.formatting.fields = {
@@ -50,7 +55,9 @@ return {
           tmux = "[TMUX]",
           copilot = "[Copilot]",
           treesitter = "[Treesitter]",
+          cmdline = "[Cmdline]",
         },
+        show_menu_labelDetails = true,
         before = function(entry, vim_item)
           local label, length = vim_item.abbr, vim.api.nvim_strwidth(vim_item.abbr)
           vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
