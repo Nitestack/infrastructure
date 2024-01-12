@@ -32,8 +32,6 @@ function M.foreach(callback, list)
   end
 end
 
-M.highlights = require("utils.highlights")
-
 M.ft_plugin = require("utils.loaders").load_ftplugin
 M.map = require("utils.mappings").map
 M.single_map = require("utils.mappings").single_map
