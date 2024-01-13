@@ -75,6 +75,17 @@ M.auto_cmds = {
       command = [[%s/\s\+$//e]],
     },
   },
+  -- Disable diagnostics in `node_modules`
+  {
+    { "BufReadPre", "BufNewFile" },
+    {
+      group = "disable_diagnostics",
+      pattern = "*/node_modules/*",
+      callback = function()
+        vim.diagnostic.disable(0)
+      end,
+    },
+  },
 }
 
 M.auto_cmd_opts = {}
