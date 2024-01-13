@@ -90,6 +90,7 @@ M.user_cmds = {
       for r in regs:gmatch(".") do
         vim.fn.setreg(r, {})
       end
+      vim.notify("Registers cleared!", vim.log.levels.INFO, { title = "Editor" })
     end,
   },
   {
