@@ -13,6 +13,7 @@ return {
       "hrsh7th/cmp-emoji",
       "ray-x/cmp-treesitter",
       "L3MON4D3/LuaSnip",
+      -- Auto pairs
       "windwp/nvim-autopairs",
     },
     ---@param opts cmp.ConfigSchema
