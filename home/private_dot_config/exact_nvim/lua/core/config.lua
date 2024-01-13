@@ -95,7 +95,6 @@ M.plugins = {
 }
 
 M.disabled_plugins = {
-  "folke/flash.nvim",
   "echasnovski/mini.indentscope",
   "pmizio/typescript-tools.nvim",
   "echasnovski/mini.pairs",
