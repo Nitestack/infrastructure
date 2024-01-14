@@ -206,6 +206,11 @@ return utils.lsp.load_language({
       },
     },
     {
+      "axelvc/template-string.nvim",
+      ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      opts = {},
+    },
+    {
       "nvim-telescope/telescope.nvim",
       opts = {
         load_extensions = {
