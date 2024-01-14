@@ -28,9 +28,11 @@ return {
   window_padding = {
     top = 0,
     bottom = 0,
-    left = 4,
+    left = 0,
     right = 0,
   },
+
+  enable_scroll_bar = false,
 
   -- Tab Bar
   show_tab_index_in_tab_bar = false,
