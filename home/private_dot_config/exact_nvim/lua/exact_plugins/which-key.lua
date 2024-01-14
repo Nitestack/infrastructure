@@ -11,5 +11,8 @@ return {
       breadcrumb = core.icons.ui.DoubleChevronRight,
       separator = core.icons.ui.BoldArrowRight,
     },
+    window = {
+      border = core.config.ui.transparent.floats and "rounded" or "none",
+    },
   },
 }
