@@ -33,6 +33,23 @@ local keys = {
     mods = "CTRL",
     action = act.ActivateCommandPalette,
   },
+  {
+    key = "R",
+    mods = "CTRL|SHIFT",
+    action = act.PromptInputLine({
+      description = "Enter new name for tab",
+      action = wezterm.action_callback(function(window, _, line)
+        -- line will be `nil` if they hit escape without entering anything
+        -- An empty string if they just hit enter
+        -- Or the actual line of text they wrote
+        if line then
+          window:active_tab():set_title(line)
+        end
+      end),
+    }),
+  },
+  { key = "F11", mods = "NONE", action = act.ToggleFullScreen },
+  { key = "F", mods = "CTRL|SHIFT", action = act.Search({ CaseInSensitiveString = "" }) },
 }
 
 for i = 1, 9, 1 do
@@ -40,38 +57,6 @@ for i = 1, 9, 1 do
 end
 
 if utils.is_win() then
-  local function is_inside_vim(pane)
-    if utils.is_win() then
-      return pane:get_foreground_process_name():find("n?vim") ~= nil
-    else
-      local tty = pane:get_tty_name()
-      if tty == nil then
-        return false
-      end
-      local success, _, _ = wezterm.run_child_process({
-        "sh",
-        "-c",
-        "ps -o state= -o comm= -t"
-          .. wezterm.shell_quote_arg(tty)
-          .. " | "
-          .. "grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|l?n?vim?x?)(diff)?$'",
-      })
-      return success
-    end
-  end
-
-  ---@param pane_direction "Left"|"Down"|"Up"|"Right"
-  ---@param vim_direction string
-  local function vim_mux_navigate(pane_direction, vim_direction)
-    return function(window, pane)
-      if is_inside_vim(pane) then
-        window:perform_action(act.SendKey({ key = vim_direction, mods = "CTRL" }), pane)
-      else
-        window:perform_action(act.ActivatePaneDirection(pane_direction), pane)
-      end
-    end
-  end
-
   local tmux_bindings = {
     -- horizontal and vertical splits
     { key = "|", mods = "LEADER|SHIFT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
@@ -97,10 +82,6 @@ if utils.is_win() then
     -- panes
     { key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
 
-    { key = "h", mods = "CTRL", action = wezterm.action_callback(vim_mux_navigate("Left", "h")) },
-    { key = "j", mods = "CTRL", action = wezterm.action_callback(vim_mux_navigate("Down", "j")) },
-    { key = "k", mods = "CTRL", action = wezterm.action_callback(vim_mux_navigate("Up", "k")) },
-    { key = "l", mods = "CTRL", action = wezterm.action_callback(vim_mux_navigate("Right", "l")) },
     { key = "LeftArrow", mods = "LEADER", action = act.AdjustPaneSize({ "Left", 8 }) },
     { key = "DownArrow", mods = "LEADER", action = act.AdjustPaneSize({ "Down", 4 }) },
     { key = "UpArrow", mods = "LEADER", action = act.AdjustPaneSize({ "Up", 4 }) },
