@@ -8,6 +8,7 @@ return {
       "SymbolUsage*",
       "LineNr",
       "CursorLineNr",
+      "Comment",
     },
   },
 }
