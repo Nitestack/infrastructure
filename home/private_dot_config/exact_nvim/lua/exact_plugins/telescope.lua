@@ -9,6 +9,7 @@ return {
       },
       ["<leader>/"] = { false },
       ["<leader>,"] = { false },
+      ["<leader>sR"] = { false },
       ["<leader>fp"] = {
         function()
           require("telescope.builtin").find_files({
