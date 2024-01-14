@@ -7,7 +7,7 @@ local Config = {}
 
 function Config:init()
   self.__index = self
-  local config = setmetatable({ options = {} }, self)
+  local config = setmetatable({ options = wezterm.config_builder() }, self)
   return config
 end
 
