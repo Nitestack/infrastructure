@@ -21,6 +21,7 @@ dependencies:
       - neovim
       - tree-sitter-cli
       - "@nitestack/project-manager"
+      - "@bitwarden/cli"
     custom:
       - bob:
           - "cargo install bob-nvim"
