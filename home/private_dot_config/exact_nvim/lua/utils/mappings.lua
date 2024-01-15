@@ -17,17 +17,17 @@ local M = {}
 ---@field ['""']? table<string, KeymapConfig> Normal, Visual and Operating-Pending Mode keymaps
 
 ---@class DisableMappings
----@field n? DisableKeymapConfig Normal Mode keymaps
----@field x? DisableKeymapConfig Visual Mode keymaps
----@field s? DisableKeymapConfig Select Mode keymaps
----@field v? DisableKeymapConfig Visual + Select Mode keymaps
----@field o? DisableKeymapConfig Operator-Pending Mode keymaps
----@field i? DisableKeymapConfig Insert Mode keymaps
----@field c? DisableKeymapConfig Command-Line Mode keymaps
----@field l? DisableKeymapConfig Insert + Command-Line + Lang-Arg Mode keymaps
----@field t? DisableKeymapConfig Terminal Mode keymaps
----@field ['"!"']? DisableKeymapConfig Insert + Command-Line Mode keymaps
----@field ['""']? DisableKeymapConfig Normal, Visual and Operating-Pending Mode keymaps
+---@field n? DisableKeymapConfig[] Normal Mode keymaps
+---@field x? DisableKeymapConfig[] Visual Mode keymaps
+---@field s? DisableKeymapConfig[] Select Mode keymaps
+---@field v? DisableKeymapConfig[] Visual + Select Mode keymaps
+---@field o? DisableKeymapConfig[] Operator-Pending Mode keymaps
+---@field i? DisableKeymapConfig[] Insert Mode keymaps
+---@field c? DisableKeymapConfig[] Command-Line Mode keymaps
+---@field l? DisableKeymapConfig[] Insert + Command-Line + Lang-Arg Mode keymaps
+---@field t? DisableKeymapConfig[] Terminal Mode keymaps
+---@field ['"!"']? DisableKeymapConfig[] Insert + Command-Line Mode keymaps
+---@field ['""']? DisableKeymapConfig[] Normal, Visual and Operating-Pending Mode keymaps
 
 ---@class LazyMappings
 ---@field n?   table<string, LazyKeymapConfig> Normal Mode keymaps
@@ -52,7 +52,8 @@ local M = {}
 ---@field [2]? string
 ---@field opts? KeymapOpts
 
----@alias DisableKeymapConfig string|string[]
+---@alias DisableKeymapOpts { buffer?: integer|boolean }
+---@alias DisableKeymapConfig string|{ [1]: string, opts?: DisableKeymapOpts }
 
 ---@class KeymapOpts
 ---@field nowait? boolean If true, once the `lhs` is matched, the `rhs` will be executed
@@ -159,13 +160,15 @@ end
 
 ---Disables mappings (with `vim.keymap.del`)
 ---@param mappings DisableMappings
-function M.disable_mapping(mappings)
+---@param mapping_opts? DisableKeymapOpts
+function M.disable_mapping(mappings, mapping_opts)
   for mode, mode_mappings in pairs(mappings) do
-    if type(mode_mappings) == "string" then
-      vim.keymap.del(mode, mode_mappings)
-    else
-      for _, mapping in ipairs(mode_mappings) do
-        vim.keymap.del(mode, mapping)
+    for _, mapping_info in ipairs(mode_mappings) do
+      if type(mapping_info) == "string" then
+        vim.keymap.del(mode, mapping_info, mapping_opts or {})
+      else
+        local opts = vim.tbl_deep_extend("force", mapping_info.opts or {}, mapping_opts or {})
+        vim.keymap.del(mode, mapping_info[1], opts)
       end
     end
   end
