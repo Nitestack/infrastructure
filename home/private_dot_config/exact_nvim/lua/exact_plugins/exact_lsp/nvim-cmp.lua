@@ -76,6 +76,7 @@ return {
       -- Experimental
       opts.experimental = opts.experimental or {}
       opts.experimental.ghost_text = false
+      opts.experimental.native_menu = false
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<S-Tab>"] = cmp.mapping(function(fallback)
