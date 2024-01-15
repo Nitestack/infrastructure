@@ -42,7 +42,19 @@ return {
       },
     },
   }),
-  opts = {
-    default_mappings = false,
-  },
+  opts = function(_, opts)
+    opts.default_mappings = false
+    opts.border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+    opts.post_open_hook = function(bufnr)
+      core.single_map("n", "q", {
+        vim.cmd.q,
+        "Preview: Close Preview",
+        opts = {
+          noremap = true,
+          silent = true,
+          buffer = bufnr,
+        },
+      })
+    end
+  end,
 }

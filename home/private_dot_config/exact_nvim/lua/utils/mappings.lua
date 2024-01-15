@@ -71,7 +71,11 @@ local M = {}
 ---@param lhs string
 ---@param mappings_spec KeymapConfig
 function M.single_map(mode, lhs, mappings_spec)
-  local opts = vim.tbl_deep_extend("force", { mode = mode, desc = mappings_spec[2] }, mappings_spec.opts or {})
+  local opts = vim.tbl_deep_extend(
+    "force",
+    core.falsy(mappings_spec[2]) and {} or { desc = mappings_spec[2] },
+    mappings_spec.opts or {}
+  )
   vim.keymap.set(mode, lhs, mappings_spec[1], opts)
 end
 
