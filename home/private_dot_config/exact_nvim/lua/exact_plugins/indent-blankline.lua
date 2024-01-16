@@ -37,6 +37,7 @@ return {
     require("rainbow-delimiters.setup").setup({
       highlight = highlight,
       query = {
+        [""] = "rainbow-delimiters",
         javascript = "rainbow-delimiters-react",
         tsx = "rainbow-tags-react",
         typescript = "rainbow-parens",
