@@ -44,19 +44,58 @@ return {
       },
     }),
     opts = function(_, opts)
-      opts.default_mappings = false
-      opts.border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
-      opts.post_open_hook = function(bufnr)
-        core.single_map("n", "q", {
-          vim.cmd.q,
-          "Preview: Close Preview",
-          opts = {
-            noremap = true,
-            silent = true,
-            buffer = bufnr,
-          },
+      local function reset_mappings(bufnr)
+        core.disable_mapping({
+          n = { "q", "<leader>|", "<leader>-", "<CR>" },
+        }, {
+          buffer = bufnr,
         })
       end
+      opts.default_mappings = false
+      opts.border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+      opts.post_open_hook = function(bufnr, winnr)
+        core.map({
+          n = {
+            ["q"] = {
+              function()
+                reset_mappings(bufnr)
+                vim.api.nvim_win_close(winnr, true)
+              end,
+              "Preview: Close current window",
+            },
+            ["<leader>|"] = {
+              function()
+                vim.cmd("wincmd L")
+                require("goto-preview").close_all_win({ skip_curr_window = true })
+                reset_mappings(bufnr)
+              end,
+              "Preview: Split vertically",
+            },
+            ["<leader>-"] = {
+              function()
+                vim.cmd("wincmd J")
+                require("goto-preview").close_all_win({ skip_curr_window = true })
+                reset_mappings(bufnr)
+              end,
+              "Preview: Split horizontally",
+            },
+            ["<CR>"] = {
+              function()
+                local cursor_position = vim.api.nvim_win_get_cursor(winnr)
+                require("goto-preview").close_all_win()
+                vim.api.nvim_set_current_buf(bufnr)
+                vim.api.nvim_win_set_cursor(0, cursor_position or { 0, 0 })
+              end,
+              "Preview: Expand fullscreen",
+            },
+          },
+        }, {
+          noremap = true,
+          silent = true,
+          buffer = bufnr,
+        })
+      end
+      opts.post_close_hook = reset_mappings
     end,
   },
   {
