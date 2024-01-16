@@ -50,6 +50,15 @@ M.auto_cmds = {
       command = [[%s/\s\+$//e]],
     },
   },
+  -- Disable inserting comments on new line
+  {
+    "BufWinEnter",
+    {
+      callback = function()
+        vim.opt.formatoptions:remove({ "c", "r", "o" })
+      end,
+    },
+  },
   -- Disable diagnostics in `node_modules`
   {
     { "BufReadPre", "BufNewFile" },
