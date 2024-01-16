@@ -59,6 +59,15 @@ M.auto_cmds = {
       end,
     },
   },
+  -- Equalize window dimensions
+  {
+    "VimResized",
+    {
+      callback = function()
+        vim.cmd("tabdo wincmd =")
+      end,
+    },
+  },
   -- Disable diagnostics in `node_modules`
   {
     { "BufReadPre", "BufNewFile" },
