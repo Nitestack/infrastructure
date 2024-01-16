@@ -8,6 +8,7 @@ return {
     extended_keymaps = true,
     override_keymaps = true,
 
+    default_delay = 1,
     hide_cursor = true,
     scroll_limit = 50,
   },
