@@ -46,8 +46,9 @@ return {
 
     -- Extensions
     opts.extensions = vim.list_extend(opts.extensions or {}, {
+      -- don't include mason in lualine
+      -- lualine is loaded via the "VeryLazy" event and loading mason on startup is heavy
       "lazy",
-      "mason",
       "neo-tree",
       "quickfix",
       "toggleterm",
