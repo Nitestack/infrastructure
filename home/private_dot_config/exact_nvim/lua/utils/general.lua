@@ -11,7 +11,7 @@ function M.disabled_plugins(plugins)
   for _, plugin in ipairs(plugins) do
     table.insert(spec, {
       plugin,
-      enabled = false,
+      cond = false,
     })
   end
 
