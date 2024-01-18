@@ -10,7 +10,7 @@ return {
       "onsails/lspkind.nvim",
       -- Sources
       "hrsh7th/cmp-emoji",
-      "ray-x/cmp-treesitter",
+      -- Snippets
       "L3MON4D3/LuaSnip",
       -- Auto pairs
       "windwp/nvim-autopairs",
@@ -29,7 +29,6 @@ return {
       opts.sources = opts.sources or {}
       opts.sources = vim.list_extend(opts.sources, {
         { name = "emoji" },
-        { name = "treesitter" },
       })
 
       -- Window
