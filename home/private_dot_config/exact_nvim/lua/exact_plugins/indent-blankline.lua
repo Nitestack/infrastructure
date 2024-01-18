@@ -38,8 +38,8 @@ return {
       highlight = highlight,
       query = {
         [""] = "rainbow-delimiters",
-        javascript = "rainbow-delimiters-react",
-        tsx = "rainbow-tags-react",
+        javascript = "rainbow-parens",
+        tsx = "rainbow-parens",
         typescript = "rainbow-parens",
       },
     })
