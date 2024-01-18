@@ -100,6 +100,7 @@ M.disabled_plugins = {
   "echasnovski/mini.indentscope",
   "pmizio/typescript-tools.nvim",
   "echasnovski/mini.pairs",
+  "folke/tokyonight.nvim",
 }
 
 return M
