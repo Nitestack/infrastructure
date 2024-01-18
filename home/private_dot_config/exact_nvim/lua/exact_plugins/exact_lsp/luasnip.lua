@@ -1,8 +1,10 @@
+---@type LazyPluginSpec
 return {
   "L3MON4D3/LuaSnip",
   dependencies = {
     {
       "Exafunction/codeium.vim",
+      build = ":Codeium Auth",
       keys = core.lazy_map({
         i = {
           ["<C-a>"] = {
