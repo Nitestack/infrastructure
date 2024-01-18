@@ -1,6 +1,11 @@
 ---@type LazyPluginSpec
 return {
   "williamboman/mason.nvim",
+  keys = core.lazy_map({
+    n = {
+      ["<leader>cm"] = { false },
+    },
+  }),
   opts = function(_, opts)
     opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.config.plugins.mason)
 
