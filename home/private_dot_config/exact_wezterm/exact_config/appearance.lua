@@ -7,9 +7,17 @@ return {
   -- Font
   font = wezterm.font_with_fallback({
     {
-      family = "Geist Mono",
-      weight = "Bold",
+      family = "MonoLisa",
+      weight = "Medium",
     },
+    -- {
+    --   family = "Geist Mono",
+    --   weight = "Bold",
+    -- },
+    -- {
+    --   family = "SF Mono",
+    --   weight = "Bold",
+    -- },
     "Symbols Nerd Font",
   }),
   font_size = 18.0,
