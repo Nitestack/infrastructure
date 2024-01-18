@@ -23,7 +23,7 @@ return {
 
       lspkind.init()
 
-      local min_menu_width, max_menu_width = 25, math.min(50, math.floor(vim.o.columns * 0.5))
+      local max_menu_width = math.min(50, math.floor(vim.o.columns * 0.5))
 
       -- Sources
       opts.sources = opts.sources or {}
@@ -61,11 +61,7 @@ return {
         },
         show_menu_labelDetails = true,
         before = function(entry, vim_item)
-          local label, length = vim_item.abbr, vim.api.nvim_strwidth(vim_item.abbr)
           vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
-          if length < min_menu_width then
-            vim_item.abbr = label .. string.rep(" ", min_menu_width - length)
-          end
           return vim_item
         end,
       })
