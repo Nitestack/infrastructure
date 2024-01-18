@@ -10,6 +10,7 @@
 
 ---@class UserConfigUI
 ---@field disable_bufferline boolean
+---@field disable_toggleterm boolean
 ---@field logo string Generate ANSI art with: https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow
 ---@field width number
 ---@field height number
@@ -53,6 +54,7 @@ M.lazyvim = {
 --------------------------------------------------------------------------------
 M.ui = {
   disable_bufferline = true,
+  disable_toggleterm = true,
   logo = [[
       ████ ██████           █████      ██
      ███████████             █████ 
