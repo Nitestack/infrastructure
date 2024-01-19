@@ -49,8 +49,8 @@ return {
   window_frame = {
     font = wezterm.font_with_fallback({
       {
-        family = "Geist Mono",
-        weight = "Black",
+        family = "MonoLisa",
+        weight = "Bold",
       },
       "Symbols Nerd Font",
     }),
