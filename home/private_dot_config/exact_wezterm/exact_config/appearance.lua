@@ -21,6 +21,7 @@ return {
     "Symbols Nerd Font",
   }),
   font_size = 18.0,
+  line_height = 1.2,
 
   animation_fps = 144,
   max_fps = 144,
