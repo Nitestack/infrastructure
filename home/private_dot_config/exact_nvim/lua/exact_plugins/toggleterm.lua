@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "akinsho/toggleterm.nvim",
-  cond = not core.config.ui.disable_toggleterm,
+  enabled = not core.config.ui.disable_toggleterm,
   version = "*",
   keys = core.lazy_map({
     [{ "n", "i", "t" }] = {
