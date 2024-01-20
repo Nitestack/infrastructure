@@ -57,6 +57,17 @@ return {
       height = core.config.ui.height,
       preview_cutoff = 120,
     }
+    opts.defaults.path_display = { "truncate" }
+
+    opts.pickers = opts.pickers or {}
+    opts.pickers.find_files = {
+      theme = "dropdown",
+      previewer = false,
+    }
+    opts.pickers.git_files = {
+      theme = "dropdown",
+      previewer = false,
+    }
 
     -- Load extensions
     opts.load_extensions = opts.load_extensions or {}
