@@ -102,6 +102,7 @@ M.disabled_plugins = {
   "echasnovski/mini.pairs",
   "folke/tokyonight.nvim",
   "Wansmer/symbol-usage.nvim",
+  "m4xshen/hardtime.nvim",
 }
 
 return M
