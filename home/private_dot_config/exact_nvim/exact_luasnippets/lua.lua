@@ -6,9 +6,9 @@ return {
       [[
         ---@type LazyPluginSpec
         return {{
-          "{}", 
-          {} 
-          {} 
+          "{}",
+          {}
+          {}
           {}
           opts = {{
             {}
@@ -20,18 +20,18 @@ return {
           return sn("", { i(1, vim.fn.fnamemodify(vim.fn.expand("%"), ":t:r")) })
         end),
         c(2, {
-          sn(nil, fmt([[dependencies = "{}",]], { i(1, "DEPENDENCY") })),
-          sn(nil, fmt([[dependencies = {{ {} }},]], { i(1, "DEPENDENCIES") })),
           t(""),
+          sn(nil, fmt([[dependencies = {{ {} }},]], { i(1, "DEPENDENCIES") })),
+          sn(nil, fmt([[dependencies = "{}",]], { i(1, "DEPENDENCY") })),
         }),
         c(3, {
+          t(""),
           sn(nil, fmt([[event = "{}",]], { i(1, "EVENT") })),
           sn(nil, fmt([[event = {{ {} }},]], { i(1, "EVENTS") })),
-          t(""),
         }),
         c(4, {
-          t("keys = core.lazy_map({}),"),
           t(""),
+          t("keys = core.lazy_map({}),"),
         }),
         i(0),
       }
