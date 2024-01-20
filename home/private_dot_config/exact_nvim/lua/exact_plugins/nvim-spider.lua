@@ -23,5 +23,7 @@ return {
       },
     },
   }),
-  opts = {},
+  opts = {
+    skipInsignificantPunctuation = false,
+  },
 }
