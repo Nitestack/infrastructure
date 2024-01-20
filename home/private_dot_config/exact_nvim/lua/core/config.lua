@@ -101,6 +101,7 @@ M.disabled_plugins = {
   "pmizio/typescript-tools.nvim",
   "echasnovski/mini.pairs",
   "folke/tokyonight.nvim",
+  "Wansmer/symbol-usage.nvim",
 }
 
 return M
