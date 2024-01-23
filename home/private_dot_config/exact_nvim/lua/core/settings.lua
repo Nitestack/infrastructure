@@ -21,6 +21,11 @@ M.options = {
   undodir = vim.fn.expand("~/.vim/undodir"),
   undofile = true,
 
+  -- Wrap
+  wrap = true,
+  linebreak = true,
+  breakindent = true,
+
   -- Other
   pumblend = 0, -- fixes icon bug in nvim-cmp
   list = false, -- don't show invisible characters
