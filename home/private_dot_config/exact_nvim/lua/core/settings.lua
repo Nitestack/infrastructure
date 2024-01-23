@@ -56,6 +56,9 @@ function M.run()
   -- add binaries installed by mason.nvim to path
   vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (utils.general.is_win() and ";" or ":") .. vim.env.PATH
 
+  -- TailwindCSS wraps
+  vim.opt.breakat:remove({ ":", "/", "-" })
+
   -- Windows
   if utils.general.is_win() then
     -- Use PowerShell Core instead of Windows CMD
