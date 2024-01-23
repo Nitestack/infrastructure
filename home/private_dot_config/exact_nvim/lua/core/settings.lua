@@ -25,6 +25,7 @@ M.options = {
   wrap = true,
   linebreak = true,
   breakindent = true,
+  showbreak = core.icons.ui.Tab .. " ",
 
   -- Other
   pumblend = 0, -- fixes icon bug in nvim-cmp
