@@ -7,7 +7,7 @@ local M = {}
 function M.load_ftplugin(config)
   if config.options then
     for k, v in pairs(config.options) do
-      vim.opt[k] = v
+      vim.wo[k] = v
     end
   end
   if config.config then
