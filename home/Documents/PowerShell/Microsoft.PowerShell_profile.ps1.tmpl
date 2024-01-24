@@ -9,7 +9,7 @@ if (Get-Command "nvim.exe" -ErrorAction SilentlyContinue)
 {
   Set-Alias vim nvim.exe
 }
-Set-Alias lvim "C:\Users\hydra\.local\bin\lvim.ps1"
+Set-Alias lvim "$env:USERPROFILE\.local\bin\lvim.ps1"
 
 # Find out if the current user identity is elevated (has admin rights)
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
