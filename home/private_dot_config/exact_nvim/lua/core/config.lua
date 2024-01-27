@@ -101,6 +101,7 @@ M.disabled_plugins = {
   "m4xshen/hardtime.nvim",
   "akinsho/bufferline.nvim",
   "akinsho/toggleterm.nvim",
+  "nvim-neo-tree/neo-tree.nvim",
 }
 
 return M
