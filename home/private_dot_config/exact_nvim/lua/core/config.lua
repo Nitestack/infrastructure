@@ -97,11 +97,12 @@ M.disabled_plugins = {
   "pmizio/typescript-tools.nvim",
   "echasnovski/mini.pairs",
   "folke/tokyonight.nvim",
-  "Wansmer/symbol-usage.nvim",
-  "m4xshen/hardtime.nvim",
   "akinsho/bufferline.nvim",
   "akinsho/toggleterm.nvim",
   "nvim-neo-tree/neo-tree.nvim",
+  "sindrets/diffview.nvim",
+  "andweeb/presence.nvim",
+  "folke/zen-mode.nvim",
 }
 
 return M
