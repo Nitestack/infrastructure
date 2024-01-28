@@ -52,8 +52,27 @@ local function modify_line_end_delimiter(character)
     end
   end
 end
-
 M.mappings.n = {
+  -- Smart delete line
+  ["dd"] = {
+    function()
+      if vim.api.nvim_get_current_line():match("^%s*$") then
+        return "\"_dd"
+      else
+        return "dd"
+      end
+    end,
+    "Delete line",
+    opts = {
+      expr = true,
+      silent = true,
+    },
+  },
+  -- Show diagnostics in a floating window
+  ["D"] = {
+    vim.diagnostic.open_float,
+    "Show diagnostics in a floating window",
+  },
   -- End of line
   ["<leader>,"] = {
     modify_line_end_delimiter(","),
@@ -98,6 +117,11 @@ M.mappings.n = {
 }
 
 M.mappings.v = {
+  -- Jump back
+  ["<BS>"] = {
+    "<C-o>",
+    "Jump back",
+  },
   -- Indent
   ["<Tab>"] = {
     ">gv",
