@@ -17,6 +17,9 @@ return utils.lsp.load_language({
               arrayIndex = "Disable",
               setType = true,
             },
+            diagnostics = {
+              unusedLocalExclude = { "_*" },
+            },
           },
         },
       },
