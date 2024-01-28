@@ -1,0 +1,14 @@
+{
+  "lspconfig": {
+    "lua_ls": {
+      "Lua.workspace.library": [
+        "C:\\Users\\hydra\\AppData\\Local\\nvim-data\\lazy\\wezterm-types\\types"
+      ],
+      "Lua.diagnostics.disable": [
+        "assign-type-mismatch",
+        "inject-field",
+        "missing-fields"
+      ]
+    }
+  }
+}

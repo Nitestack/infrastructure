@@ -10,12 +10,6 @@ return utils.lsp.load_language({
       lua_ls = {
         settings = {
           Lua = {
-            diagnostics = {
-              disable = {
-                "inject-field",
-                "missing-fields",
-              },
-            },
             hint = {
               enable = true,
               paramName = "All",

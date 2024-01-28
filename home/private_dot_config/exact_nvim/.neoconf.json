@@ -1,0 +1,25 @@
+{
+  "neodev": {
+    "library": {
+      "enabled": true,
+      "plugins": true,
+      "types": true,
+      "runtime": true
+    },
+    "setup_jsonls": true,
+    "lspconfig": true,
+    "pathStrict": true
+  },
+  "neoconf": {
+    "plugins": {
+      "lua_ls": {
+        "enabled": true
+      }
+    }
+  },
+  "lspconfig": {
+    "lua_ls": {
+      "Lua.diagnostics.disable": ["inject-field", "missing-fields"]
+    }
+  }
+}
