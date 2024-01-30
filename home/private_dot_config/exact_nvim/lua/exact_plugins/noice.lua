@@ -71,7 +71,6 @@ return {
     ---@type NoicePresets
     local presets = {
       lsp_doc_border = core.config.ui.transparent.floats and true or false,
-      inc_rename = not utils.general.is_nightly(),
     }
 
     opts.views = vim.tbl_deep_extend("force", opts.views or {}, views)
