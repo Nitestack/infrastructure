@@ -26,18 +26,54 @@ M.auto_cmds = {
       },
       callback = function(event)
         vim.bo[event.buf].buflisted = false
-        core.map({
-          n = {
-            ["q"] = {
-              vim.cmd.close,
-              "Close",
-              opts = {
-                buffer = event.buf,
-                silent = true,
-              },
-            },
+        core.single_map("n", "q", {
+          vim.cmd.close,
+          "Close",
+          opts = {
+            buffer = event.buf,
+            silent = true,
           },
         })
+      end,
+    },
+  },
+  {
+    "FileType",
+    {
+      group = "lazyvim_close_with_q",
+      pattern = "*",
+      callback = function(event)
+        if vim.bo[event.buf].buftype == "nofile" then
+          vim.bo[event.buf].buflisted = false
+          core.single_map("n", "q", {
+            vim.cmd.close,
+            "Close",
+            opts = {
+              buffer = event.buf,
+              silent = true,
+            },
+          })
+        end
+      end,
+    },
+  },
+  {
+    "BufEnter",
+    {
+      group = "lazyvim_close_with_q",
+      pattern = "*",
+      callback = function(event)
+        if vim.bo[event.buf].buftype == "" then
+          vim.bo[event.buf].buflisted = false
+          core.single_map("n", "q", {
+            vim.cmd.close,
+            "Close",
+            opts = {
+              buffer = event.buf,
+              silent = true,
+            },
+          })
+        end
       end,
     },
   },
