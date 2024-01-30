@@ -9,6 +9,7 @@ return {
         function()
           require("cloak").toggle()
         end,
+        "Cloak: Toggle",
       },
     },
   }),
