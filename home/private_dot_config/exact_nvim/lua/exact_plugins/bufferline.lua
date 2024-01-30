@@ -58,24 +58,6 @@ return {
     opts.options.diagnostics_indicator = function(count)
       return "(" .. count .. ")"
     end
-    -- Custom areas
-    opts.options.custom_areas = {
-      right = function()
-        local result = {}
-        local seve = vim.diagnostic.severity
-        local error = #vim.diagnostic.get(0, { severity = seve.ERROR })
-        local warning = #vim.diagnostic.get(0, { severity = seve.WARN })
-        local info = #vim.diagnostic.get(0, { severity = seve.INFO })
-        local hint = #vim.diagnostic.get(0, { severity = seve.HINT })
-
-        set_diagnostic_count(result, core.icons.diagnostics.Error, error, C.red)
-        set_diagnostic_count(result, core.icons.diagnostics.Warning, warning, C.yellow)
-        set_diagnostic_count(result, core.icons.diagnostics.Information, info, C.sky)
-        set_diagnostic_count(result, core.icons.diagnostics.Hint, hint, C.teal)
-
-        return result
-      end,
-    }
     -- Styling
     opts.options.style_preset = {
       require("bufferline").style_preset.no_italic,
