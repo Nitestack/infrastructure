@@ -5,14 +5,6 @@ local M = {}
 
 ---@alias StringOrArray string|string[]
 
----@param str_or_arr StringOrArray
-local function resolve_str_or_arr(str_or_arr)
-  if type(str_or_arr) == "string" then
-    return { str_or_arr }
-  end
-  return str_or_arr
-end
-
 ---@class LanguageConfig
 ---@field lsp? LanguageLspConfig
 ---@field mason? StringOrArray
@@ -53,7 +45,7 @@ function M.load_language(config)
     table.insert(spec, {
       "williamboman/mason.nvim",
       opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, resolve_str_or_arr(config.mason))
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.mason))
       end,
     })
   end
@@ -62,7 +54,7 @@ function M.load_language(config)
     table.insert(spec, {
       "nvim-treesitter/nvim-treesitter",
       opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, resolve_str_or_arr(config.treesitter))
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.treesitter))
       end,
     })
   end

@@ -55,6 +55,15 @@ function M.falsy(item)
   return item ~= nil
 end
 
+---Convert a string or table to a table
+---@param str_or_tbl string|table
+function M.str_to_tbl(str_or_tbl)
+  if type(str_or_tbl) == "string" then
+    return { str_or_tbl }
+  end
+  return str_or_tbl
+end
+
 M.ft_plugin = require("utils.loaders").load_ftplugin
 M.map = require("utils.mappings").map
 M.single_map = require("utils.mappings").single_map
