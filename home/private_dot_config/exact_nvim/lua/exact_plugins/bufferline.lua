@@ -1,11 +1,5 @@
 ---@diagnostic disable: need-check-nil
 
-local function set_diagnostic_count(result, icon, count, fg)
-  if count ~= 0 then
-    table.insert(result, { text = " " .. icon .. " " .. count, fg = fg })
-  end
-end
-
 ---@type LazyPluginSpec
 return {
   "akinsho/bufferline.nvim",
