@@ -96,7 +96,6 @@ M.disabled_plugins = {
   "pmizio/typescript-tools.nvim",
   "echasnovski/mini.pairs",
   "folke/tokyonight.nvim",
-  "akinsho/bufferline.nvim",
   "akinsho/toggleterm.nvim",
   "nvim-neo-tree/neo-tree.nvim",
   "sindrets/diffview.nvim",
