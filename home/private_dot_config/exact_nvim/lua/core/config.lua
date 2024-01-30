@@ -71,7 +71,7 @@ M.ui = {
 --  Plugins
 --------------------------------------------------------------------------------
 M.plugins = {
-  mason = { "codespell" },
+  mason = { "codespell", "emmet-language-server" },
   treesitter = {
     "diff",
     "query",

@@ -24,5 +24,8 @@ return {
     inlay_hints = {
       enable = true,
     },
+    servers = {
+      emmet_language_server = {},
+    },
   },
 }
