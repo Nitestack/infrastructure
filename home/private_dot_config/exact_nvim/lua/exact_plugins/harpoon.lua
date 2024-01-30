@@ -100,6 +100,25 @@ return {
         save_on_toggle = true,
       },
     },
+    config = function(_, opts)
+      require("harpoon"):setup(opts)
+
+      core.auto_cmds({
+        {
+          "FileType",
+          {
+            group = "harpoon",
+            pattern = { "harpoon" },
+            callback = function()
+              if core.config.ui.transparent.floats then
+                local win_id = vim.fn.win_getid()
+                vim.api.nvim_win_set_config(win_id, { title = "Harpoon", title_pos = "center", border = "rounded" })
+              end
+            end,
+          },
+        },
+      })
+    end,
   },
   {
     "folke/which-key.nvim",
