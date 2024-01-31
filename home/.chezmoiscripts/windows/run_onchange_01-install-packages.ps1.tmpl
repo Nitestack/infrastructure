@@ -20,10 +20,10 @@ Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
 # {{ range $cmd_name, $to_install := $pkg }}
 if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 {
-  Write-LogInfo "{{- $cmd_name }} is already installed. Skipping."
+  Write-LogInfo "{{- $cmd_name | squote }} is already installed. Skipping."
 } else
 {
-  Write-LogTask "Installing {{ $cmd_name -}}"
+  Write-LogTask "Installing {{ $cmd_name | squote -}}"
   # {{ range $_, $line := $to_install }}
     # {{ "\n" }} Invoke-Command {{ $line | quote }}
   # {{ end }}
@@ -36,10 +36,10 @@ $pnpmList = pnpm list -g --depth 0
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if ($pnpmList -match "{{- $package_name -}}")
 {
-  Write-LogInfo "pnpm: {{ $package_name }} is already installed. Skipping."
+  Write-LogInfo "pnpm: package {{ $package_name | squote }} is already installed. Skipping."
 } else
 {
-  Write-LogTask "Installing {{ $package_name }} via pnpm"
+  Write-LogTask "Installing package {{ $package_name | squote }} via pnpm"
   Invoke-Command 'pnpm add -g "{{- $package_name -}}"'
 }
 # {{ end }}

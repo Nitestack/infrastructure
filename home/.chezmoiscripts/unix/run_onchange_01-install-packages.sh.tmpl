@@ -39,9 +39,9 @@ fi
 # {{ range $_, $pkg := concat .dependencies.arch.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	log_info "{{- $cmd_name }} is already installed. Skipping."
+	log_info "{{- $cmd_name | squote }} is already installed. Skipping."
 else
-	log_task "Installing {{ $cmd_name -}}"
+	log_task "Installing {{ $cmd_name | squote -}}"
 	# {{ range $_, $line := $to_install }}
 	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
@@ -53,9 +53,9 @@ fi
 # {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	log_info "{{- $cmd_name }} is already installed. Skipping."
+	log_info "{{- $cmd_name | squote }} is already installed. Skipping."
 else
-	log_task "Installing {{ $cmd_name -}}"
+	log_task "Installing {{ $cmd_name | squote -}}"
 	# {{ range $_, $line := $to_install }}
 	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
@@ -68,9 +68,9 @@ fi
 # Global npm packages
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
-	log_info "pnpm: {{ $package_name }} is already installed. Skipping."
+	log_info "pnpm: package {{ $package_name | squote }} is already installed. Skipping."
 else
-	log_task "Installing {{ $package_name }} via pnpm"
+	log_task "Installing package {{ $package_name | squote }} via pnpm"
 	command_exec pnpm add -g "{{- $package_name -}}"
 fi
 # {{ end }}
