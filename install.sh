@@ -40,7 +40,7 @@ if ! chezmoi="$(command -v chezmoi)"; then
 	# Check operating system and install chezmoi accordingly
 	if [[ -f "/etc/arch-release" ]]; then
 		log_task "Installing chezmoi for Arch Linux"
-		pacman -S --needed --noconfirm chezmoi
+		sudo pacman -S --needed --noconfirm chezmoi
 	else
 		log_task "Installing chezmoi to '${chezmoi}'"
 		if command -v curl >/dev/null; then
