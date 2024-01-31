@@ -65,7 +65,7 @@ fi
 # {{ end }}
 
 # Global npm packages
-pnpm_list="$(pnpm list -g --depth 0)"
+pnpm_list="$(command_exec pnpm list -g --depth 0)"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if "${pnpm_list}" | grep -q "{{- $package_name -}}"; then
 	log_info "pnpm: {{ $package_name }} is already installed. Skipping."
