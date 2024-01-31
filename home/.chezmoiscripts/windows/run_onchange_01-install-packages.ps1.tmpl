@@ -11,10 +11,8 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 # Install packages
-# {{ range $_, $pkg := concat .dependencies.windows.choco .dependencies.all.packages }}
-#   {{ range $cmd_name, $to_install := $pkg }}
-Invoke-EnsureInstalled "{{- $cmd_name -}}" 'choco install -y {{ $to_install -}}'
-#   {{ end }}
+# {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
+Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
 
 # Custom installation
@@ -36,8 +34,8 @@ if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 # Global npm dependencies
 $pnpmList = pnpm list -g --depth 0
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
-if ($pnpmList -match "{{- $package_name -}}") 
-{	
+if ($pnpmList -match "{{- $package_name -}}")
+{
   Write-LogInfo "pnpm: {{ $package_name }} is already installed. Skipping."
 } else
 {
@@ -45,6 +43,3 @@ if ($pnpmList -match "{{- $package_name -}}")
   pnpm add -g "{{- $package_name -}}"
 }
 # {{ end }}
-
-Write-LogRed "{{- .prompts.press_enter_to_continue -}}"
-Read-Host

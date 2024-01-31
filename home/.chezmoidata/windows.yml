@@ -2,11 +2,13 @@
 dependencies:
   windows:
     choco:
-      - fzf: "fzf"
-      - python3: "python3 python3-virtualenv"
-      - fd: "fd"
-      - rustup: "rustup"
-      - node: "nodejs-lts"
-      - lazygit: "lazygit"
-      - bat: "bat"
-      - zoxide: "zoxide"
+      - "fzf"
+      - "python3"
+      - "python3-virtualenv"
+      - "fd"
+      - "rustup"
+      - "nodejs-lts"
+      - "lazygit"
+      - "bat"
+      - "zoxide"
+    custom: []
