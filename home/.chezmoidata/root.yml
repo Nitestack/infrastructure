@@ -29,7 +29,8 @@ dependencies:
           - "bob install nightly"
           - "bob use nightly"
       - pnpm:
-          - "corepack prepare pnpm@latest --activate"
+          - "corepack enable pnpm"
+          - "corepack use pnpm@latest"
   unix:
     packages:
       - "curl"
