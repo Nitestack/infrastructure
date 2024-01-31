@@ -36,4 +36,5 @@ dependencies:
       - "curl"
       - "tmux"
     custom:
-      - "nvm install --lts"
+      - node:
+          - "nvm install --lts"
