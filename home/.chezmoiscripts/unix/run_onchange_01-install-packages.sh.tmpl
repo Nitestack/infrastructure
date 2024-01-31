@@ -2,18 +2,23 @@
 
 # {{ template "bash-library.sh" . }}
 
-# {{ if eq .osid "linux-ubuntu" -}}
-
-sudo apt update -y && sudo apt upgrade -y
-
-# Build essential
-sudo apt install "build-essential"
+log_task "Installing packages"
 
 # Install packages
-# {{ range $_, $pkg := concat .dependencies.ubuntu.apt .dependencies.all.packages }}
-#   {{ range $cmd_name, $to_install := $pkg }}
-ensure_installed "{{- $cmd_name -}}" sudo apt install -y "{{- splitList " " $to_install | join "\" \"" -}}"
-#   {{ end }}
+# {{ if eq .osID "linux-arch" }}
+sudo pacman -Syu
+
+# {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages }}
+pacman_ensure_installed "{{- $package_name -}}"
+# {{ end }}
+
+# {{ else if eq .osID "linux-ubuntu" }}
+sudo apt update -y && sudo apt upgrade -y
+
+# {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.unix.packages .dependencies.all.packages }}
+apt_ensure_installed "{{- $package_name -}}"
+# {{ end }}
+
 # {{ end }}
 
 # NVM
@@ -24,7 +29,8 @@ else
 fi
 
 # Custom installation
-# {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.all.custom }}
+# {{ if eq .osID "linux-arch" }}
+# {{ range $_, $pkg := concat .dependencies.arch.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
 	log_info "{{- $cmd_name }} is already installed. Skipping."
@@ -37,6 +43,22 @@ fi
 # {{ end }}
 # {{ end }}
 
+# {{ else if eq .osID "linux-ubuntu" }}
+# {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.unix.custom .dependencies.all.custom }}
+# {{ range $cmd_name, $to_install := $pkg }}
+if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
+	log_info "{{- $cmd_name }} is already installed. Skipping."
+else
+	log_task "Installing {{ $cmd_name -}}"
+	# {{ range $_, $line := $to_install }}
+	# {{ "\n" }}{{ $line }}
+	# {{ end }}
+fi
+# {{ end }}
+# {{ end }}
+
+# {{ end }}
+
 # Global npm packages
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
@@ -45,6 +67,4 @@ else
 	log_task "Installing {{ $package_name }} via pnpm"
 	pnpm add -g "{{- $package_name -}}"
 fi
-# {{ end }}
-
 # {{ end }}

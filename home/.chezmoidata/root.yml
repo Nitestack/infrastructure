@@ -12,11 +12,11 @@ prompts:
 dependencies:
   all:
     packages:
-      - git: "git"
-      - vim: "vim"
-      - rg: "ripgrep"
-      - unzip: "unzip"
-      - pip3: "python3-pip"
+      - "git"
+      - "vim"
+      - "ripgrep"
+      - "unzip"
+      - "python3-pip"
     pnpm:
       - neovim
       - tree-sitter-cli
@@ -31,3 +31,9 @@ dependencies:
           - "bob use nightly"
       - pnpm:
           - "corepack prepare pnpm@latest --activate"
+  unix:
+    packages:
+      - "curl"
+      - "tmux"
+    custom:
+      - "nvm install --lts"

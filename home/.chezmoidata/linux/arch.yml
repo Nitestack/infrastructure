@@ -1,0 +1,13 @@
+---
+dependencies:
+  arch:
+    pacman:
+      - "base-devel"
+      - "python"
+      - "fzf"
+      - "rustup"
+      - "lazygit"
+      - "bat"
+      - "fd"
+      - "zoxide"
+    custom: []
