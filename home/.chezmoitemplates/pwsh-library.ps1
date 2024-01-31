@@ -66,7 +66,13 @@ function Invoke-Command
 {
   param([string]$message)
   Write-LogCommand -message $message
-  Invoke-Expression $message
+  try
+  {
+    Invoke-Expression $message
+  } catch
+  {
+    Write-LogError -message "Command failed: $_"
+  }
 }
 
 function Invoke-Error
@@ -86,7 +92,7 @@ function Invoke-EnsureInstalled
   }
 
   Write-LogTask "Installing $cmd_name"
-  Invoke-Expression $command
+  Invoke-Command $command
 }
 
 function Invoke-ChocoEnsureInstalled

@@ -49,7 +49,7 @@ function log_command() {
 }
 function command_exec() {
 	log_command "$@"
-	"$@"
+	"$@" || log_error "Command failed: $*"
 }
 
 function error() {
