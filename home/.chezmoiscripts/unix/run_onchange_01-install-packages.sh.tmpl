@@ -5,14 +5,14 @@
 log_task "Installing packages"
 
 # Install packages
-# {{ if eq .osID "linux-arch" }}
+# {{ if eq .osid "linux-arch" }}
 sudo pacman -Syu
 
 # {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages }}
 pacman_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
-# {{ else if eq .osID "linux-ubuntu" }}
+# {{ else if eq .osid "linux-ubuntu" }}
 sudo apt update -y && sudo apt upgrade -y
 
 # {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.unix.packages .dependencies.all.packages }}
@@ -29,7 +29,7 @@ else
 fi
 
 # Custom installation
-# {{ if eq .osID "linux-arch" }}
+# {{ if eq .osid "linux-arch" }}
 # {{ range $_, $pkg := concat .dependencies.arch.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
@@ -43,7 +43,7 @@ fi
 # {{ end }}
 # {{ end }}
 
-# {{ else if eq .osID "linux-ubuntu" }}
+# {{ else if eq .osid "linux-ubuntu" }}
 # {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then

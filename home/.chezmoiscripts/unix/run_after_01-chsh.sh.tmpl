@@ -5,9 +5,9 @@
 log_task "Setting zsh as default shell"
 
 # Check if zsh is installed
-# {{ if eq .osID "linux-arch" }}
+# {{ if eq .osid "linux-arch" }}
 pacman_ensure_installed zsh
-# {{ else if eq .osID "linux-ubuntu" }}
+# {{ else if eq .osid "linux-ubuntu" }}
 apt_ensure_installed zsh
 # {{ end }}
 
