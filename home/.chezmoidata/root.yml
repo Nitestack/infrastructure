@@ -35,7 +35,5 @@ dependencies:
       - "curl"
       - "tmux"
     custom:
-      - rustup:
-          - "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
       - node:
           - "nvm install --lts"
