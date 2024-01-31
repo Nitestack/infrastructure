@@ -2,7 +2,7 @@
 
 This repo contains my dotfiles. To manage my dotfiles across different devices and operating systems, I use [`chezmoi`](https://chezmoi.io/).
 
-It is currently aimed for Windows, Ubuntu and WSL (Ubuntu), as they are the most common platforms I use.
+> It is currently aimed for Windows, Ubuntu and Arch Linux, as they are the most common platforms I use.
 
 ## Getting started
 
@@ -14,7 +14,7 @@ You can use the convenience scripts to install the dotfiles. Simply run the foll
 sh -c "$(wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
 ```
 
-> We use `wget` here because it comes preinstalled with most Ubuntu versions. But you can also use `curl`:
+> We use `wget` here because it comes preinstalled with most Linux distros. But you can also use `curl`:
 >
 > ```sh
 > sh -c "$(curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
@@ -100,4 +100,4 @@ chezmoi update -R
 
 - [Felipe Santos](https://github.com/felipecrs) - take a look at his [dotfiles](https://github.com/felipecrs/dotfiles)
   - parts of his README are used
-  - the install scripts for Ubuntu are used
+  - the install scripts for Ubuntu are used, modified and extended
