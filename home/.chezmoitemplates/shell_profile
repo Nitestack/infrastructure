@@ -1,5 +1,5 @@
 # cargo
-source "$HOME/.cargo/env"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # bob
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
