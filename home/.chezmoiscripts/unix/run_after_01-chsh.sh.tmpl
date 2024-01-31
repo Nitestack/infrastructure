@@ -6,9 +6,9 @@ log_task "Setting zsh as default shell"
 
 # Check if zsh is installed
 # {{ if eq .osID "linux-arch" }}
-ensure_installed zsh sudo pacman -S --needed --noconfirm zsh
+pacman_ensure_installed zsh
 # {{ else if eq .osID "linux-ubuntu" }}
-ensure_installed zsh sudo apt install zsh
+apt_ensure_installed zsh
 # {{ end }}
 
 # Check if the current shell is zsh already
