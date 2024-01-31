@@ -26,6 +26,7 @@ if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
 	log_info "nvm is already installed. Skipping."
 else
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+	exec zsh
 fi
 
 # Custom installation
