@@ -42,7 +42,7 @@ if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
 else
 	log_task "Installing {{ $cmd_name -}}"
 	# {{ range $_, $line := $to_install }}
-	# {{ "\n" }}{{ $line }}
+	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
 fi
 # {{ end }}
@@ -56,7 +56,7 @@ if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
 else
 	log_task "Installing {{ $cmd_name -}}"
 	# {{ range $_, $line := $to_install }}
-	# {{ "\n" }}{{ $line }}
+	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
 fi
 # {{ end }}
@@ -71,6 +71,6 @@ if "${pnpm_list}" | grep -q "{{- $package_name -}}"; then
 	log_info "pnpm: {{ $package_name }} is already installed. Skipping."
 else
 	log_task "Installing {{ $package_name }} via pnpm"
-	pnpm add -g "{{- $package_name -}}"
+	command_exec pnpm add -g "{{- $package_name -}}"
 fi
 # {{ end }}
