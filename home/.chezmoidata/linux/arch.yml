@@ -5,7 +5,6 @@ dependencies:
       - "base-devel"
       - "python"
       - "fzf"
-      - "rustup"
       - "lazygit"
       - "bat"
       - "fd"
