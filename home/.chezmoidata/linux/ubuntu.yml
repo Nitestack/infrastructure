@@ -4,6 +4,7 @@ dependencies:
     apt:
       - "build-essential"
       - "python3"
+      - "python3-pip"
       - "python3-venv"
     custom:
       - fzf:

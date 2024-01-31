@@ -16,7 +16,6 @@ dependencies:
       - "vim"
       - "ripgrep"
       - "unzip"
-      - "python3-pip"
     pnpm:
       - neovim
       - tree-sitter-cli
