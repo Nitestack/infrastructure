@@ -57,15 +57,28 @@ function error() {
 	exit 1
 }
 
-function ensure_installed() {
-	local cmd_name="$1"
+function apt_ensure_installed() {
+	local package_name="$1"
 	shift
 
-	if command -v "${cmd_name}" >/dev/null 2>&1; then
-		log_info "${cmd_name} is already installed. Skipping."
+	if dpkg-query -W "${package_name}" &>/dev/null; then
+		log_info "Package '${package_name}' is already installed. Skipping."
 		return
 	fi
 
-	log_task "Installing ${cmd_name}"
-	command_exec "$@"
+	log_task "Installing package '${package_name}'"
+	command_exec sudo apt install -y "${package_name}"
+}
+
+function pacman_ensure_installed() {
+	local package_name="$1"
+	shift
+
+	if pacman -Qi "${package_name}" &>/dev/null; then
+		log_info "Package '${package_name}' is already installed. Skipping."
+		return
+	fi
+
+	log_task "Installing package '${package_name}'"
+	command_exec sudo pacman -S --needed --noconfirm "${package_name}"
 }
