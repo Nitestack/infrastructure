@@ -88,3 +88,15 @@ function Invoke-EnsureInstalled
   Write-LogTask "Installing $cmd_name"
   Invoke-Expression $command
 }
+
+function Invoke-ChocoEnsureInstalled
+{
+  param([string]$package_name)
+  if (choco list --lo -r -e $package_name)
+  {
+    Write-LogInfo "Package '$package_name' is already installed. Skipping."
+  }
+
+  Write-LogTask "Installing package '$package_name'"
+  Invoke-Command "choco install -y $package_name"
+}
