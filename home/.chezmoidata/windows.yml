@@ -12,4 +12,7 @@ dependencies:
       - "lazygit"
       - "bat"
       - "zoxide"
-    custom: []
+    custom:
+      - "rustup":
+          - "choco install -y rustup"
+          - "rustup default stable"
