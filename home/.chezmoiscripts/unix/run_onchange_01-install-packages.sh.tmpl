@@ -28,7 +28,7 @@ apt_ensure_installed "{{- $package_name -}}"
 
 # NVM
 if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
-	log_info "nvm is already installed. Skipping."
+	log_info "'nvm' is already installed. Skipping."
 else
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
