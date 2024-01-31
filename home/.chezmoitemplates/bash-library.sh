@@ -69,29 +69,3 @@ function ensure_installed() {
 	log_task "Installing ${cmd_name}"
 	command_exec "$@"
 }
-
-function sudo() {
-	local exec=false
-	if [[ "$1" == "exec" ]]; then
-		shift
-		exec=true
-	fi
-
-	if [[ "$(id -u || true)" -eq 0 ]]; then
-		if [[ "${exec}" == "true" ]]; then
-			exec "$@"
-		else
-			"$@"
-		fi
-	else
-		if ! command sudo --non-interactive true 2>/dev/null; then
-			log_manual_action "Root privileges are required, please enter your password below"
-			command sudo --validate
-		fi
-		if [[ "${exec}" == "true" ]]; then
-			exec sudo "$@"
-		else
-			command sudo "$@"
-		fi
-	fi
-}
