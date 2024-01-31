@@ -4,13 +4,18 @@
 
 log_task "Setting zsh as default shell"
 
+# Check if zsh is installed
+# {{ if eq .osID "linux-arch" }}
+ensure_installed zsh sudo pacman -S --needed --noconfirm zsh
+# {{ else if eq .osID "linux-ubuntu" }}
 ensure_installed zsh sudo apt install zsh
+# {{ end }}
 
 # Check if the current shell is zsh already
-if [[ "${SHELL}" == "$(which zsh)" ]]; then
+if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
 	log_info "Shell is already zsh. Skipping."
 	exit 0
 fi
 
-chsh -s "$(which zsh)"
+chsh -s "/usr/bin/zsh"
 log_success "Shell changed to zsh"
