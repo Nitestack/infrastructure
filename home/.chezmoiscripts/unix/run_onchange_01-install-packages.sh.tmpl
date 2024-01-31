@@ -28,8 +28,6 @@ else
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 fi
 
-source "${NVM_DIR:-"~/.nvm"}/nvm.sh"
-
 # Custom installation
 # {{ if eq .osid "linux-arch" }}
 # {{ range $_, $pkg := concat .dependencies.arch.custom .dependencies.unix.custom .dependencies.all.custom }}
