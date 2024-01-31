@@ -70,6 +70,7 @@ if ! command -v git >/dev/null 2>&1; then
 	# Check operating system and install git accordingly
 	if [[ -f "/etc/arch-release" ]]; then
 		log_task "Installing git for Arch Linux"
+		sudo pacman -Syu
 		sudo pacman -S --needed --noconfirm git
 	elif [[ "${distro_name}" == "Ubuntu" ]]; then
 		log_task "Installing git for Ubuntu"
