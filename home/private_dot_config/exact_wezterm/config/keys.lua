@@ -58,9 +58,8 @@ function M.setup(config)
 
     -- Tab
     { key = "T", mods = "CTRL", action = act.SpawnTab("DefaultDomain") },
-    { key = "1", mods = "SHIFT|CTRL", action = act.SpawnTab("DefaultDomain") },
-    { key = "2", mods = "SHIFT|CTRL", action = act.SpawnTab({ DomainName = "WSL:Ubuntu" }) },
-    { key = "W", mods = "CTRL", action = act.CloseCurrentTab({ confirm = false }) },
+    { key = "phys:1", mods = "SHIFT|CTRL", action = act.SpawnTab("DefaultDomain") },
+    { key = "W", mods = "CTRL|SHIFT", action = act.CloseCurrentTab({ confirm = false }) },
     { key = "RightArrow", mods = mod.SUPER_REV, action = act.ActivateTabRelative(1) },
     { key = "LeftArrow", mods = mod.SUPER_REV, action = act.ActivateTabRelative(-1) },
 
