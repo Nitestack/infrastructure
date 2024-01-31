@@ -88,4 +88,3 @@ function Invoke-EnsureInstalled
   Write-LogTask "Installing $cmd_name"
   Invoke-Expression $command
 }
-
