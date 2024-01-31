@@ -101,6 +101,7 @@ function Invoke-ChocoEnsureInstalled
   if (choco list --lo -r -e $package_name)
   {
     Write-LogInfo "Package '$package_name' is already installed. Skipping."
+    return
   }
 
   Write-LogTask "Installing package '$package_name'"
