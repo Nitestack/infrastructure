@@ -36,8 +36,6 @@ if (!(Get-Command chezmoi -ErrorAction SilentlyContinue))
   Write-LogTask "Installing chezmoi"
 
   winget install twpayne.chezmoi  --accept-package-agreements --accept-source-agreements
-
-  Remove-Variable chezmoiInstallScript, binDir
 }
 
 # Get script's dir
