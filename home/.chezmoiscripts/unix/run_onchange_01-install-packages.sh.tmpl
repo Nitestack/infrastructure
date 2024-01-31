@@ -6,7 +6,7 @@ log_task "Installing packages"
 
 if [[ -f "${HOME}/.zprofile" ]]; then
 	log_task "Loading .zprofile"
-	source "$HOME/.zprofile"
+	source "$HOME/.zprofile" || log_error "Failed to load .zprofile: $*"
 fi
 
 # Install packages
