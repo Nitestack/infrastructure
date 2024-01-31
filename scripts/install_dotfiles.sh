@@ -56,18 +56,31 @@ git_clean() {
 	unset path remote branch git
 }
 
+# User configuration
 DOTFILES_REPO_HOST=${DOTFILES_REPO_HOST:-"https://github.com"}
 DOTFILES_USER=${DOTFILES_USER:-"Nitestack"}
 DOTFILES_REPO="${DOTFILES_REPO_HOST}/${DOTFILES_USER}/dotfiles"
 DOTFILES_BRANCH=${DOTFILES_BRANCH:-"master"}
 DOTFILES_DIR="${HOME}/.dotfiles"
 
+# Check if git is installed
 if ! command -v git >/dev/null 2>&1; then
-	log_task "Installing git"
-	sudo apt update --yes
-	sudo apt install git --yes
+	distro_name=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
+
+	# Check operating system and install git accordingly
+	if [[ -f "/etc/arch-release" ]]; then
+		log_task "Installing git for Arch Linux"
+		pacman -S --needed --noconfirm git
+	elif [[ "${distro_name}" == "Ubuntu" ]]; then
+		log_task "Installing git for Ubuntu"
+		sudo apt update --yes
+		sudo apt install git --yes
+	else
+		error "To install the dotfiles, you must have git."
+	fi
 fi
 
+# Check if the dotfiles are installed
 if [[ -d "${DOTFILES_DIR}" ]]; then
 	git_clean "${DOTFILES_DIR}" "${DOTFILES_REPO}" "${DOTFILES_BRANCH}"
 else
@@ -75,6 +88,7 @@ else
 	git clone --branch "${DOTFILES_BRANCH}" "${DOTFILES_REPO}" "${DOTFILES_DIR}"
 fi
 
+# Check if an install script is available
 if [[ -f "${DOTFILES_DIR}/install.sh" ]]; then
 	INSTALL_SCRIPT="${DOTFILES_DIR}/install.sh"
 elif [[ -f "${DOTFILES_DIR}/install" ]]; then
