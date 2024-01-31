@@ -4,6 +4,11 @@
 
 log_task "Installing packages"
 
+if [[ -f "${HOME}/.zprofile" ]]; then
+	log_task "Loading .zprofile"
+	source "$HOME/.zprofile"
+fi
+
 # Install packages
 # {{ if eq .osid "linux-arch" }}
 sudo pacman -Syu
