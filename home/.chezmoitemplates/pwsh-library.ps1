@@ -100,10 +100,23 @@ function Invoke-ChocoEnsureInstalled
   param([string]$package_name)
   if (choco list --lo -r -e $package_name)
   {
-    Write-LogInfo "Package '$package_name' is already installed. Skipping."
+    Write-LogInfo "choco: Package '$package_name' is already installed. Skipping."
     return
   }
 
-  Write-LogTask "Installing package '$package_name'"
+  Write-LogTask "choco: Installing package '$package_name'"
   Invoke-Command "choco install -y $package_name"
+}
+
+function Invoke-WingetEnsureInstalled
+{
+  param([string]$package_name)
+  if (winget list --id $package_name)
+  {
+    Write-LogInfo "winget: Package '$package_name' is already installed. Skipping."
+    return
+  }
+
+  Write-LogTask "winget: Installing package '$package_name'"
+  Invoke-Command "winget install -e --accept-package-agreements --accept-source-agreements --id $package_name"
 }
