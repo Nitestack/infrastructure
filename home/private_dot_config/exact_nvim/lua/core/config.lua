@@ -84,6 +84,7 @@ M.plugins = {
     "gitignore",
 
     "ssh_config",
+    "ini",
   },
   linting = {
     linters_by_ft = {
