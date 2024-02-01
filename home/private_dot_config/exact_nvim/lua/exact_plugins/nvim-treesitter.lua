@@ -28,5 +28,14 @@ return {
       enable = true,
       disable_virtual_text = true,
     }
+
+    -- disable highlighting in chezmoi templates
+    opts.highlight = opts.highlight or {}
+    opts.highlight.disable = function()
+      -- check if 'filetype' option includes 'chezmoitmpl'
+      if string.find(vim.bo.filetype, "chezmoitmpl") then
+        return true
+      end
+    end
   end,
 }
