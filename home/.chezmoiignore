@@ -1,6 +1,8 @@
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
 
+.config/winfetch
+
 AppData
 Documents
 
@@ -13,6 +15,7 @@ Documents
 .config/project-manager
 .config/spaceship.zsh
 .config/tmux
+.config/neofetch
 
 .oh-my-zsh
 
