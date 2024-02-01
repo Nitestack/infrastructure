@@ -12,6 +12,7 @@ dependencies:
       - "lazygit"
       - "bat"
       - "zoxide"
+      - "winfetch"
     custom:
       - "rustup":
           - "choco install -y rustup"
