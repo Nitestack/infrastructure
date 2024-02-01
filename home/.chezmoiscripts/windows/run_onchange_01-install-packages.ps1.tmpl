@@ -14,6 +14,9 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
 Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
+# {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
+Invoke-WingetEnsureInstalled "{{- $package_name -}}"
+# {{ end }}
 
 # Custom installation
 # {{ range $_, $pkg := concat .dependencies.all.custom }}
