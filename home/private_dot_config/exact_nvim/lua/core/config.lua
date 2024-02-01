@@ -82,6 +82,8 @@ M.plugins = {
     "gitattributes",
     "gitcommit",
     "gitignore",
+
+    "ssh_config",
   },
   linting = {
     linters_by_ft = {
