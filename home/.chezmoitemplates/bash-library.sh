@@ -62,11 +62,11 @@ function apt_ensure_installed() {
 	shift
 
 	if dpkg-query -W "${package_name}" &>/dev/null; then
-		log_info "Package '${package_name}' is already installed. Skipping."
+		log_info "apt: Package '${package_name}' is already installed. Skipping."
 		return
 	fi
 
-	log_task "Installing package '${package_name}'"
+	log_task "apt: Installing package '${package_name}'"
 	command_exec sudo apt install -y "${package_name}"
 }
 
@@ -75,10 +75,10 @@ function pacman_ensure_installed() {
 	shift
 
 	if pacman -Qi "${package_name}" &>/dev/null; then
-		log_info "Package '${package_name}' is already installed. Skipping."
+		log_info "pacman: Package '${package_name}' is already installed. Skipping."
 		return
 	fi
 
-	log_task "Installing package '${package_name}'"
+	log_task "pacman: Installing package '${package_name}'"
 	command_exec sudo pacman -S --needed --noconfirm "${package_name}"
 }
