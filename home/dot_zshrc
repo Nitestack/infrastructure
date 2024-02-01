@@ -41,7 +41,7 @@ ZSH_THEME="spaceship"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
@@ -71,8 +71,8 @@ HIST_STAMPS="dd.mm.yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  aliases 
-  colorize 
+  aliases
+  colorize
   command-not-found
   cp
   git
@@ -109,5 +109,10 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
+source .bash_aliases
+
 # Load zoxide
 eval "$(zoxide init zsh)"
+
+# Run neofetch
+neofetch
