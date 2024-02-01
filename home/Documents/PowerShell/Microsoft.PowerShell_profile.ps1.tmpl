@@ -16,16 +16,16 @@ $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = New-Object Security.Principal.WindowsPrincipal $identity
 $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-# If so and the current host is a command line, then change to red color 
+# If so and the current host is a command line, then change to red color
 # as warning to user that they are operating in an elevated context
 # Useful shortcuts for traversing directories
 function cd...
-{ 
-  Set-Location ..\.. 
+{
+  Set-Location ..\..
 }
 function cd....
-{ 
-  Set-Location ..\..\.. 
+{
+  Set-Location ..\..\..
 }
 
 function which($command)
@@ -34,18 +34,18 @@ function which($command)
 }
 
 function n()
-{ 
-  notepad $args 
+{
+  notepad $args
 }
 
-# Set up command prompt and window title. Use UNIX-style convention for identifying 
+# Set up command prompt and window title. Use UNIX-style convention for identifying
 # whether user is elevated (root) or not. Window title shows current version of PowerShell
 # and appends [ADMIN] if appropriate for easy taskbar identification
 function prompt
-{ 
+{
   if ($isAdmin)
   {
-    "[" + (Get-Location) + "] # " 
+    "[" + (Get-Location) + "] # "
   } else
   {
     "[" + (Get-Location) + "] $ "
@@ -70,13 +70,13 @@ function dirs
   }
 }
 
-# Simple function to start a new elevated process. If arguments are supplied then 
+# Simple function to start a new elevated process. If arguments are supplied then
 # a single command is started with admin rights; if not then a new admin instance
 # of PowerShell is started.
 function admin
 {
   if ($args.Count -gt 0)
-  {   
+  {
     $argList = "& '" + $args + "'"
     Start-Process "$PSHome\pwsh.exe" -Verb runAs -ArgumentList $argList
   } else
@@ -85,7 +85,7 @@ function admin
   }
 }
 # Set UNIX-like aliases for the admin command, so sudo <command> will run the command
-# with elevated rights. 
+# with elevated rights.
 Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 
@@ -104,24 +104,24 @@ Function Test-CommandExists
   $oldPreference = $ErrorActionPreference
   $ErrorActionPreference = 'SilentlyContinue'
   try
-  { 
+  {
     if (Get-Command $command)
     {
-      return $true 
-    } 
+      return $true
+    }
   } Catch
-  { 
-    Write-Host "$command does not exist"; return $false 
+  {
+    Write-Host "$command does not exist"; return $false
   } Finally
-  { 
-    $ErrorActionPreference = $oldPreference 
+  {
+    $ErrorActionPreference = $oldPreference
   }
 }
 
 # Linux utils
 function ll()
-{ 
-  Get-ChildItem -Path $pwd -File 
+{
+  Get-ChildItem -Path $pwd -File
 }
 function la()
 {
@@ -197,8 +197,12 @@ if (Test-Path($ChocolateyProfile))
   Import-Module "$ChocolateyProfile"
 }
 
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\{{- .windows.oh_my_posh_theme_name -}}.omp.json" | Invoke-Expression
-
 $env:EDITOR = "{{- .editor -}}"
 
+# Initialize zoxide
 Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+# Run winfetch
+winfetch
+# Initialize oh-my-posh
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\{{- .windows.oh_my_posh_theme_name -}}.omp.json" | Invoke-Expression

@@ -1,5 +1,9 @@
-{{- if (.is_wsl) -}}
-{{-   template "wsl_bashrc" . -}}
+{{- if eq .osid "linux-ubuntu" -}}
+{{-   template "ubuntu_bashrc" . -}}
 {{- end }}
 
+# Load zoxide
 eval "$(zoxide init bash)"
+
+# Run neofetch
+neofetch
