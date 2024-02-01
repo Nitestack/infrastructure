@@ -2,6 +2,7 @@
 dependencies:
   arch:
     pacman:
+      - "openssh"
       - "base-devel"
       - "python"
       - "fzf"
