@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+# {{ if eq .osid "linux-arch" }}
+
+log_task "arch: Setting up mirrorlist..."
+
+if [[ -f "/etc/pacman.d/mirrorlist.bak" ]]; then
+	log_info "Mirrorlist backup already exists. Skipping."
+	exit 0
+fi
+
+pacman_ensure_installed reflector
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak || error "Failed to backup mirrorlist."
+sudo reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist || error "Failed to update mirrorlist."
+
+# {{ end }}
