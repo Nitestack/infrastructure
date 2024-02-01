@@ -116,6 +116,16 @@ M.mappings.n = {
   ["x"] = { "\"_x" },
 }
 
+if not utils.general.is_win() then
+  -- Make file executable
+  M.mappings.n["<leader>cx"] = {
+    function()
+      vim.cmd("!chmod +x %")
+    end,
+    "Make file executable",
+  }
+end
+
 M.mappings.v = {
   -- Jump back
   ["<BS>"] = {
