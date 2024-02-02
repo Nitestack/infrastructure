@@ -21,7 +21,7 @@ Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
 
 # Custom installation
-# {{ range $_, $pkg := concat .dependencies.all.custom }}
+# {{ range $_, $pkg := concat .dependencies.windows.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 {
