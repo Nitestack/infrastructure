@@ -4,25 +4,6 @@ help: CLI tool for managing dotfiles with chezmoi
 version: 0.1.0
 
 commands:
-  - name: edit
-    help: Edit your dotfiles
-    args:
-      - name: target
-        help: Target file or directory to edit
-        default: ""
-        validate: file_exists
-    flags:
-      - long: --apply
-        short: -a
-        help: Apply target immediately after editing. Ignored if there are no targets.
-      - long: --hardlink
-        arg: "bool"
-        allowed:
-          - "true"
-          - "false"
-        help: Invoke the editor with a hard link to the source file with a name matching the target filename. This can help the editor determine the type of the file correctly. This is the default.
-      - long: --watch
-        help: Automatically apply changes when files are saved
   - name: download
     help: Download dotfiles from the internet
     args:
@@ -57,3 +38,22 @@ commands:
         help: Attempts to install your dotfiles with chezmoi and then remove all traces of chezmoi from the system. This is useful for setting up temporary environments (e.g. Docker containers).
       - long: --debug
         help: Include debug information in output
+  - name: edit
+    help: Edit your dotfiles
+    args:
+      - name: target
+        help: Target file or directory to edit
+        default: ""
+        validate: file_exists
+    flags:
+      - long: --apply
+        short: -a
+        help: Apply target immediately after editing. Ignored if there are no targets.
+      - long: --hardlink
+        arg: "bool"
+        allowed:
+          - "true"
+          - "false"
+        help: Invoke the editor with a hard link to the source file with a name matching the target filename. This can help the editor determine the type of the file correctly. This is the default.
+      - long: --watch
+        help: Automatically apply changes when files are saved
