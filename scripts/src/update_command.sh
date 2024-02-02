@@ -9,7 +9,7 @@ command_exec chezmoi "$@"
 log_success "Updated dotfiles"
 
 if [[ -n "${args["--cli"]}" ]]; then
-	script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
+	script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)/dotfiles"
 
 	updated_script_dir=$(realpath "$(eval echo "$(chezmoi source-path)")/../scripts/dotfiles")
 
