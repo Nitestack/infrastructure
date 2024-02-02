@@ -6,21 +6,33 @@ This repo contains my dotfiles. To manage my dotfiles across different devices a
 
 ## Getting started
 
-You can use the convenience scripts to install the dotfiles. Simply run the following command in your terminal:
-
 #### Bash
 
+First you need to install the `dotfiles` CLI. Simply run the following command in your terminal:
+
 ```sh
-sh -c "$(wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
+wget -O ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/dotfiles
 ```
 
 > We use `wget` here because it comes preinstalled with most Linux distros. But you can also use `curl`:
 >
 > ```sh
-> sh -c "$(curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
+> curl -o ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/dotfiles
 > ```
 
+To make it executable, run:
+
+```sh
+chmod +x ~/.local/bin/dotfiles
+```
+
+> :warning: **Make sure to add the `~/.local/bin` directory to your `$PATH` variable or use another location.**
+
+Now you can run `dotfiles download` and `dotfiles install` to download and install the dotfiles. Run `dotfiles --help` to see the available commands.
+
 #### PowerShell Core
+
+The CLI for Windows is not available yet. That's why you have to use the old convenience script.
 
 ```pwsh
 iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.ps1 -UseBasicParsing | iex
@@ -46,12 +58,6 @@ It supports some environment variables:
 
 For example, you can use it to clone and install the dotfiles repository at the `beta` branch with:
 
-#### Bash
-
-```sh
-DOTFILES_BRANCH="beta" sh -c "$(wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.sh)"
-```
-
 #### PowerShell Core
 
 ```pwsh
@@ -61,14 +67,6 @@ pwsh -c { $env:DOTFILES_BRANCH="beta"; iwr https://raw.githubusercontent.com/Nit
 ### Installing without the convenience script
 
 If you prefer not to use the convenience script to install the dotfiles, you can also do it manually:
-
-#### Bash
-
-```bash
-git clone https://github.com/Nitestack/dotfiles "$HOME/.dotfiles"
-
-"$HOME/.dotfiles/install.sh"
-```
 
 #### PowerShell Core
 
