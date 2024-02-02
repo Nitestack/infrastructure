@@ -1,4 +1,8 @@
-set -- update
+if [[ -n "${args[--local]}" ]]; then
+	set -- apply
+else
+	set -- update
+fi
 
 if [[ -n "${args["--refresh-externals"]}" ]]; then
 	set -- "$@" --refresh-externals="${args["--refresh-externals"]}"

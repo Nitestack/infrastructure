@@ -166,6 +166,10 @@ dotfiles_update_usage() {
     printf "    Default: auto\n"
     echo
 
+    printf "  %s\n" "--local, -l"
+    printf "    Apply local changes with \`chezmoi apply\`.\n"
+    echo
+
     printf "  %s\n" "--cli"
     printf "    Update the CLI itself. This defaults to false.\n"
     echo
@@ -410,7 +414,11 @@ dotfiles_install_command() {
 }
 
 dotfiles_update_command() {
-  set -- update
+  if [[ -n "${args[--local]}" ]]; then
+  	set -- apply
+  else
+  	set -- update
+  fi
 
   if [[ -n "${args["--refresh-externals"]}" ]]; then
   	set -- "$@" --refresh-externals="${args["--refresh-externals"]}"
@@ -732,6 +740,12 @@ dotfiles_update_parse_requirements() {
           printf "%s\n" "--refresh-externals requires an argument: --refresh-externals, -R OPTION" >&2
           exit 1
         fi
+        ;;
+
+      --local | -l)
+
+        args['--local']=1
+        shift
         ;;
 
       --cli)

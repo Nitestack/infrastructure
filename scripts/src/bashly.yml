@@ -50,6 +50,9 @@ commands:
           - "auto"
           - "never"
         default: auto
+      - long: --local
+        short: -l
+        help: Apply local changes with `chezmoi apply`.
       - long: --cli
         help: Update the CLI itself. This defaults to false.
   - name: edit
