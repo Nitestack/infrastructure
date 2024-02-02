@@ -13,7 +13,7 @@ dependencies:
       - "winfetch"
     winget: []
     custom:
-      - "rustup":
+      - rustup:
           - "choco install -y rustup.install"
           - "rustup update"
           - "rustup default stable"

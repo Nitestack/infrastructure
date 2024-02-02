@@ -11,8 +11,9 @@ dependencies:
       - "bat"
       - "fd"
       - "zoxide"
+      - "ruby"
     custom:
-      - "rustup":
+      - rustup:
           - "sudo pacman -S --needed --noconfirm rustup"
           - "rustup update"
           - "rustup default stable"
