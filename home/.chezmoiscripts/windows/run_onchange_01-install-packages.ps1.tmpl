@@ -1,5 +1,10 @@
 # {{ template "pwsh-library.ps1" . }}
 
+# Install winget packages
+# {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
+Invoke-WingetEnsureInstalled "{{- $package_name -}}"
+# {{ end }}
+
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
 {
   if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000)
@@ -10,12 +15,9 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 }
 
-# Install packages
+# Install choco packages
 # {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
 Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
-# {{ end }}
-# {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
-Invoke-WingetEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
 
 # Custom installation
