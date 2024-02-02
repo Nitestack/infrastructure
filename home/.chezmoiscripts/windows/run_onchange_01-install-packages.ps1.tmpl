@@ -1,7 +1,7 @@
 # {{ template "pwsh-library.ps1" . }}
 
 # Install winget packages
-# {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
+# {{ range $_, $package_name := concat .dependencies.windows.winget }}
 Invoke-WingetEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
 
