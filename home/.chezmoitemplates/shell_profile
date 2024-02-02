@@ -4,6 +4,9 @@ export PATH="$PATH:$HOME/.cargo/bin"
 # bob
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
 
+# gem
+export PATH="$PATH:$(gem env path | sed 's#[^:]\+#&/bin#g')"
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm

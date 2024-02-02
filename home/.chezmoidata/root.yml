@@ -36,5 +36,7 @@ dependencies:
       - "tmux"
       - "neofetch"
     custom:
+      - bashly:
+          - "sudo gem install bashly"
       - node:
           - "nvm install --lts"
