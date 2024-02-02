@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "mrjones2014/smart-splits.nvim",
-  event = vim.fn.executable("wezterm") == 1 and "VeryLazy" or nil,
+  event = "VeryLazy",
   keys = core.lazy_map({
     n = {
       ["<C-h>"] = {
