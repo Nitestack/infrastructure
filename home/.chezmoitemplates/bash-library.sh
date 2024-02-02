@@ -2,10 +2,6 @@
 
 set -euo pipefail
 
-if [[ -n "${DOTFILES_DEBUG:-}" ]]; then
-	set -x
-fi
-
 function log_color() {
 	local color_code="$1"
 	shift
@@ -26,26 +22,26 @@ function log_yellow() {
 }
 
 function log_task() {
-	log_blue "🔃 TASK:" "$@"
+	log_blue " TASK:" "$@"
 }
 function log_manual_action() {
-	log_red "⚠️ MANUAL ACTION REQUIRED:" "$@"
+	log_red " MANUAL ACTION REQUIRED:" "$@"
 }
 function log_error() {
-	log_red "❌ ERROR:" "$@"
+	log_red " ERROR:" "$@"
 }
 function log_info() {
-	log_blue "ℹ️ INFO:" "$@"
+	log_blue " INFO:" "$@"
 }
 function log_success() {
-	log_green "✅ SUCCESS:" "$@"
+	log_green " SUCCESS:" "$@"
 }
 function log_warning() {
-	log_yellow "⚠️ WARNING:" "$@"
+	log_yellow " WARNING:" "$@"
 }
 
 function log_command() {
-	log_yellow "👉 COMMAND:" "$@"
+	log_yellow " COMMAND:" "$@"
 }
 function command_exec() {
 	log_command "$@"

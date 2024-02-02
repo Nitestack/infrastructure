@@ -29,38 +29,38 @@ function Write-LogYellow
 function Write-LogTask
 {
   param([string]$message)
-  Write-LogBlue -message "🔃 TASK: $message"
+  Write-LogBlue -message " TASK: $message"
 }
 function Write-ManualAction
 {
   param([string]$message)
-  Write-LogRed -message "⚠️ MANUAL ACTION: $message"
+  Write-LogRed -message " MANUAL ACTION: $message"
 }
 function Write-LogError
 {
   param([string]$message)
-  Write-LogRed -message "❌  ERROR:$message"
+  Write-LogRed -message " ERROR:$message"
 }
 function Write-LogInfo
 {
   param([string]$message)
-  Write-LogBlue -message "ℹ️ INFO: $message"
+  Write-LogBlue -message " INFO: $message"
 }
 function Write-LogSuccess
 {
   param([string]$message)
-  Write-LogGreen -message "✅ SUCCESS: $message"
+  Write-LogGreen -message " SUCCESS: $message"
 }
 function Write-LogWarning
 {
   param([string]$message)
-  Write-LogYellow -message "⚠️ WARNING: $message"
+  Write-LogYellow -message " WARNING: $message"
 }
 
 function Write-LogCommand
 {
   param([string]$message)
-  Write-LogYellow -message "👉 COMMAND: $message"
+  Write-LogYellow -message " COMMAND: $message"
 }
 function Invoke-Command
 {
