@@ -6,7 +6,6 @@ dependencies:
       - "python3"
       - "python3-virtualenv"
       - "fd"
-      - "rustup"
       - "nodejs-lts"
       - "lazygit"
       - "bat"
@@ -16,5 +15,6 @@ dependencies:
       - "charmbracelet.gum"
     custom:
       - "rustup":
-          - "choco install -y rustup"
+          - "choco install -y rustup.install"
+          - "rustup update"
           - "rustup default stable"

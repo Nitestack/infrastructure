@@ -15,4 +15,5 @@ dependencies:
     custom:
       - "rustup":
           - "sudo pacman -S --needed --noconfirm rustup"
+          - "rustup update"
           - "rustup default stable"
