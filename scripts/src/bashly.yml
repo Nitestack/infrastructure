@@ -38,8 +38,22 @@ commands:
         help: Attempts to install your dotfiles with chezmoi and then remove all traces of chezmoi from the system. This is useful for setting up temporary environments (e.g. Docker containers).
       - long: --debug
         help: Include debug information in output
+  - name: update
+    help: Update dotfiles and the CLI
+    flags:
+      - long: --refresh-externals
+        short: -R
+        help: Refresh external cache. This defaults to auto.
+        arg: "option"
+        allowed:
+          - "always"
+          - "auto"
+          - "never"
+        default: auto
+      - long: --cli
+        help: Update the CLI itself. This defaults to false.
   - name: edit
-    help: Edit your dotfiles
+    help: Edit dotfiles
     args:
       - name: target
         help: Target file or directory to edit

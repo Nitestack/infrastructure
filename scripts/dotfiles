@@ -29,9 +29,10 @@ dotfiles_usage() {
   echo
 
   printf "%s\n" "Commands:"
-  printf "  %s   Edit your dotfiles\n" "edit    "
   printf "  %s   Download dotfiles from the internet\n" "download"
   printf "  %s   Install dotfiles\n" "install "
+  printf "  %s   Update dotfiles and the CLI\n" "update  "
+  printf "  %s   Edit dotfiles\n" "edit    "
   echo
 
   if [[ -n $long_usage ]]; then
@@ -42,52 +43,6 @@ dotfiles_usage() {
     echo
     printf "  %s\n" "--version, -v"
     printf "    Show version number\n"
-    echo
-
-  fi
-}
-
-dotfiles_edit_usage() {
-  if [[ -n $long_usage ]]; then
-    printf "dotfiles edit - Edit your dotfiles\n"
-    echo
-
-  else
-    printf "dotfiles edit - Edit your dotfiles\n"
-    echo
-
-  fi
-
-  printf "%s\n" "Usage:"
-  printf "  dotfiles edit [TARGET] [OPTIONS]\n"
-  printf "  dotfiles edit --help | -h\n"
-  echo
-
-  if [[ -n $long_usage ]]; then
-    printf "%s\n" "Options:"
-
-    printf "  %s\n" "--apply, -a"
-    printf "    Apply target immediately after editing. Ignored if there are no targets.\n"
-    echo
-
-    printf "  %s\n" "--hardlink BOOL"
-    printf "    Invoke the editor with a hard link to the source file with a name matching\n    the target filename. This can help the editor determine the type of the file\n    correctly. This is the default.\n"
-    printf "    Allowed: true, false\n"
-    echo
-
-    printf "  %s\n" "--watch"
-    printf "    Automatically apply changes when files are saved\n"
-    echo
-
-    printf "  %s\n" "--help, -h"
-    printf "    Show this help\n"
-    echo
-
-    printf "%s\n" "Arguments:"
-
-    printf "  %s\n" "TARGET"
-    printf "    Target file or directory to edit\n"
-    printf "    Default: \n"
     echo
 
   fi
@@ -186,6 +141,88 @@ dotfiles_install_usage() {
   fi
 }
 
+dotfiles_update_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "dotfiles update - Update dotfiles and the CLI\n"
+    echo
+
+  else
+    printf "dotfiles update - Update dotfiles and the CLI\n"
+    echo
+
+  fi
+
+  printf "%s\n" "Usage:"
+  printf "  dotfiles update [OPTIONS]\n"
+  printf "  dotfiles update --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    printf "  %s\n" "--refresh-externals, -R OPTION"
+    printf "    Refresh external cache. This defaults to auto.\n"
+    printf "    Allowed: always, auto, never\n"
+    printf "    Default: auto\n"
+    echo
+
+    printf "  %s\n" "--cli"
+    printf "    Update the CLI itself. This defaults to false.\n"
+    echo
+
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+dotfiles_edit_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "dotfiles edit - Edit dotfiles\n"
+    echo
+
+  else
+    printf "dotfiles edit - Edit dotfiles\n"
+    echo
+
+  fi
+
+  printf "%s\n" "Usage:"
+  printf "  dotfiles edit [TARGET] [OPTIONS]\n"
+  printf "  dotfiles edit --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    printf "  %s\n" "--apply, -a"
+    printf "    Apply target immediately after editing. Ignored if there are no targets.\n"
+    echo
+
+    printf "  %s\n" "--hardlink BOOL"
+    printf "    Invoke the editor with a hard link to the source file with a name matching\n    the target filename. This can help the editor determine the type of the file\n    correctly. This is the default.\n"
+    printf "    Allowed: true, false\n"
+    echo
+
+    printf "  %s\n" "--watch"
+    printf "    Automatically apply changes when files are saved\n"
+    echo
+
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+    printf "%s\n" "Arguments:"
+
+    printf "  %s\n" "TARGET"
+    printf "    Target file or directory to edit\n"
+    printf "    Default: \n"
+    echo
+
+  fi
+}
+
 normalize_input() {
   local arg flags
 
@@ -212,7 +249,7 @@ normalize_input() {
 
 expand_tilde() {
 	local path="$1"
-	echo "${path/#\~/${HOME}}"
+	eval echo "${path}"
 }
 
 log_color() {
@@ -275,28 +312,6 @@ validate_integer() {
 
 validate_not_empty() {
   [[ -z "$1" ]] && echo "must not be empty"
-}
-
-dotfiles_edit_command() {
-  if [[ "${#args[@]}" -eq 0 ]]; then
-  	cd ~/.dotfiles || exit 1
-  	command -v nvim >/dev/null && nvim
-  else
-  	set -- "${args[target]}"
-
-  	if [[ -n "${args[--apply]}" ]]; then
-  		set -- "$@" --apply
-  	fi
-  	if [[ -n "${args[--hardlink]}" ]]; then
-  		set -- "$@" --hardlink="${args[--hardlink]}"
-  	fi
-  	if [[ -n "${args[--watch]}" ]]; then
-  		set -- "$@" --watch
-  	fi
-
-  	chezmoi edit "$@"
-  fi
-
 }
 
 dotfiles_download_command() {
@@ -388,7 +403,54 @@ dotfiles_install_command() {
   	set -- "$@" --debug
   fi
 
-  chezmoi init "$@"
+  command_exec chezmoi init "$@"
+
+  log_success "Installed dotfiles"
+
+}
+
+dotfiles_update_command() {
+  set -- update
+
+  if [[ -n "${args["--refresh-externals"]}" ]]; then
+  	set -- "$@" --refresh-externals="${args["--refresh-externals"]}"
+  fi
+
+  command_exec chezmoi "$@"
+
+  log_success "Updated dotfiles"
+
+  if [[ -n "${args["--cli"]}" ]]; then
+  	script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
+
+  	updated_script_dir=$(realpath "$(eval echo "$(chezmoi source-path)")/../scripts/dotfiles")
+
+  	command_exec cp -f "${updated_script_dir}" "${script_dir}"
+
+  	log_success "Updated the CLI to the latest version"
+  fi
+
+}
+
+dotfiles_edit_command() {
+  if [[ "${#args[@]}" -eq 0 ]]; then
+  	cd ~/.dotfiles || exit 1
+  	command -v nvim >/dev/null && nvim
+  else
+  	set -- "${args[target]}"
+
+  	if [[ -n "${args[--apply]}" ]]; then
+  		set -- "$@" --apply
+  	fi
+  	if [[ -n "${args[--hardlink]}" ]]; then
+  		set -- "$@" --hardlink="${args[--hardlink]}"
+  	fi
+  	if [[ -n "${args[--watch]}" ]]; then
+  		set -- "$@" --watch
+  	fi
+
+  	chezmoi edit "$@"
+  fi
 
 }
 
@@ -419,13 +481,6 @@ parse_requirements() {
   case $action in
     -*) ;;
 
-    edit)
-      action="edit"
-      shift
-      dotfiles_edit_parse_requirements "$@"
-      shift $#
-      ;;
-
     download)
       action="download"
       shift
@@ -437,6 +492,20 @@ parse_requirements() {
       action="install"
       shift
       dotfiles_install_parse_requirements "$@"
+      shift $#
+      ;;
+
+    update)
+      action="update"
+      shift
+      dotfiles_update_parse_requirements "$@"
+      shift $#
+      ;;
+
+    edit)
+      action="edit"
+      shift
+      dotfiles_edit_parse_requirements "$@"
       shift $#
       ;;
 
@@ -470,89 +539,6 @@ parse_requirements() {
 
     esac
   done
-
-}
-
-dotfiles_edit_parse_requirements() {
-
-  while [[ $# -gt 0 ]]; do
-    case "${1:-}" in
-      --help | -h)
-        long_usage=yes
-        dotfiles_edit_usage
-        exit
-        ;;
-
-      *)
-        break
-        ;;
-
-    esac
-  done
-
-  action="edit"
-
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-
-      --apply | -a)
-
-        args['--apply']=1
-        shift
-        ;;
-
-      --hardlink)
-
-        if [[ -n ${2+x} ]]; then
-
-          args['--hardlink']="$2"
-          shift
-          shift
-        else
-          printf "%s\n" "--hardlink requires an argument: --hardlink BOOL" >&2
-          exit 1
-        fi
-        ;;
-
-      --watch)
-
-        args['--watch']=1
-        shift
-        ;;
-
-      -?*)
-        printf "invalid option: %s\n" "$key" >&2
-        exit 1
-        ;;
-
-      *)
-
-        if [[ -z ${args['target']+x} ]]; then
-
-          if [[ -n $(validate_file_exists "$1") ]]; then
-            printf "validation error in %s:\n%s\n" "TARGET" "$(validate_file_exists "$1")" >&2
-            exit 1
-          fi
-
-          args['target']=$1
-          shift
-        else
-          printf "invalid argument: %s\n" "$key" >&2
-          exit 1
-        fi
-
-        ;;
-
-    esac
-  done
-
-  [[ -n ${args['target']:-} ]] || args['target']=""
-
-  if [[ ${args['--hardlink']:-} ]] && [[ ! ${args['--hardlink']:-} =~ ^(true|false)$ ]]; then
-    printf "%s\n" "--hardlink must be one of: true, false" >&2
-    exit 1
-  fi
 
 }
 
@@ -712,6 +698,155 @@ dotfiles_install_parse_requirements() {
 
 }
 
+dotfiles_update_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        dotfiles_update_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="update"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      --refresh-externals | -R)
+
+        if [[ -n ${2+x} ]]; then
+
+          args['--refresh-externals']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--refresh-externals requires an argument: --refresh-externals, -R OPTION" >&2
+          exit 1
+        fi
+        ;;
+
+      --cli)
+
+        args['--cli']=1
+        shift
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+  [[ -n ${args['--refresh-externals']:-} ]] || args['--refresh-externals']="auto"
+
+  if [[ ${args['--refresh-externals']:-} ]] && [[ ! ${args['--refresh-externals']:-} =~ ^(always|auto|never)$ ]]; then
+    printf "%s\n" "--refresh-externals must be one of: always, auto, never" >&2
+    exit 1
+  fi
+
+}
+
+dotfiles_edit_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        dotfiles_edit_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="edit"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      --apply | -a)
+
+        args['--apply']=1
+        shift
+        ;;
+
+      --hardlink)
+
+        if [[ -n ${2+x} ]]; then
+
+          args['--hardlink']="$2"
+          shift
+          shift
+        else
+          printf "%s\n" "--hardlink requires an argument: --hardlink BOOL" >&2
+          exit 1
+        fi
+        ;;
+
+      --watch)
+
+        args['--watch']=1
+        shift
+        ;;
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        if [[ -z ${args['target']+x} ]]; then
+
+          if [[ -n $(validate_file_exists "$1") ]]; then
+            printf "validation error in %s:\n%s\n" "TARGET" "$(validate_file_exists "$1")" >&2
+            exit 1
+          fi
+
+          args['target']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
+
+    esac
+  done
+
+  [[ -n ${args['target']:-} ]] || args['target']=""
+
+  if [[ ${args['--hardlink']:-} ]] && [[ ! ${args['--hardlink']:-} =~ ^(true|false)$ ]]; then
+    printf "%s\n" "--hardlink must be one of: true, false" >&2
+    exit 1
+  fi
+
+}
+
 initialize() {
   version="0.1.0"
   long_usage=''
@@ -729,9 +864,10 @@ run() {
   parse_requirements "${input[@]}"
 
   case "$action" in
-    "edit") dotfiles_edit_command ;;
     "download") dotfiles_download_command ;;
     "install") dotfiles_install_command ;;
+    "update") dotfiles_update_command ;;
+    "edit") dotfiles_edit_command ;;
   esac
 }
 
