@@ -1,0 +1,59 @@
+---
+name: dotfiles
+help: CLI tool for managing dotfiles with chezmoi
+version: 0.1.0
+
+commands:
+  - name: edit
+    help: Edit your dotfiles
+    args:
+      - name: target
+        help: Target file or directory to edit
+        default: ""
+        validate: file_exists
+    flags:
+      - long: --apply
+        short: -a
+        help: Apply target immediately after editing. Ignored if there are no targets.
+      - long: --hardlink
+        arg: "bool"
+        allowed:
+          - "true"
+          - "false"
+        help: Invoke the editor with a hard link to the source file with a name matching the target filename. This can help the editor determine the type of the file correctly. This is the default.
+      - long: --watch
+        help: Automatically apply changes when files are saved
+  - name: download
+    help: Download dotfiles from the internet
+    args:
+      - name: target
+        help: Target directory to download to
+        default: ~/.dotfiles
+    flags:
+      - long: --repo
+        short: -r
+        help: Repo to download from
+        arg: "repo"
+        default: Nitestack/dotfiles
+      - long: --branch
+        short: -b
+        help: Branch to download from
+        arg: "branch"
+        default: master
+      - long: --ssh
+        help: Use SSH instead of HTTPS
+  - name: install
+    help: Install dotfiles
+    args:
+      - name: sourceDir
+        help: Source directory of dotfiles
+        default: ~/.dotfiles
+    flags:
+      - long: --bin
+        help: Binary directory to install chezmoi to if not installed
+        arg: "path"
+        default: ~/.local/bin
+      - long: --one-shot
+        help: Attempts to install your dotfiles with chezmoi and then remove all traces of chezmoi from the system. This is useful for setting up temporary environments (e.g. Docker containers).
+      - long: --debug
+        help: Include debug information in output
