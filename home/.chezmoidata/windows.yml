@@ -11,8 +11,7 @@ dependencies:
       - "bat"
       - "zoxide"
       - "winfetch"
-    winget:
-      - "charmbracelet.gum"
+    winget: []
     custom:
       - "rustup":
           - "choco install -y rustup.install"
