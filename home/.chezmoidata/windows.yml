@@ -4,7 +4,6 @@ dependencies:
     choco:
       - "fzf"
       - "python3"
-      - "python3-pip"
       - "python3-virtualenv"
       - "fd"
       - "rustup"
@@ -13,6 +12,8 @@ dependencies:
       - "bat"
       - "zoxide"
       - "winfetch"
+    winget:
+      - "charmbracelet.gum"
     custom:
       - "rustup":
           - "choco install -y rustup"
