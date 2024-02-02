@@ -36,4 +36,6 @@ if [[ -n "${args[--debug]}" ]]; then
 	set -- "$@" --debug
 fi
 
-chezmoi init "$@"
+command_exec chezmoi init "$@"
+
+log_success "Installed dotfiles"
