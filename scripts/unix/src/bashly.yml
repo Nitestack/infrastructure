@@ -34,10 +34,6 @@ commands:
         help: Source directory of dotfiles
         default: ~/.dotfiles
     flags:
-      - long: --bin
-        help: Binary directory to install chezmoi to if not installed
-        arg: "path"
-        default: ~/.local/bin
       - long: --one-shot
         help: Attempts to install your dotfiles with chezmoi and then remove all traces of chezmoi from the system. This is useful for setting up temporary environments (e.g. Docker containers).
   - name: update
