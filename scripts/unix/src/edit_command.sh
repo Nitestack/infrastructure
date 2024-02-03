@@ -1,5 +1,5 @@
 if [[ "${#args[@]}" -eq 0 ]]; then
-	cd ~/.dotfiles || exit 1
+	cd $(realpath "$(chezmoi source-path)/..") || exit 1
 	command -v nvim >/dev/null && nvim
 else
 	set -- "${args[target]}"
