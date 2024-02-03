@@ -319,22 +319,6 @@ validate_not_empty() {
 }
 
 dotfiles_download_command() {
-  if ! command -v git >/dev/null 2>&1; then
-  	distro_name=$(awk -F= '/^NAME/{print $2}' /etc/os-release)
-
-  	if [[ -f "/etc/arch-release" ]]; then
-  		log_task "Installing git for Arch Linux"
-  		command_exec sudo pacman -Syu
-  		command_exec sudo pacman -S --needed --noconfirm git
-  	elif [[ "${distro_name}" == "Ubuntu" ]]; then
-  		log_task "Installing git for Ubuntu"
-  		command_exec sudo apt update --yes
-  		command_exec sudo apt install git --yes
-  	else
-  		error "To download dotfiles, you must have git."
-  	fi
-  fi
-
   dotfiles_dir=$(expand_tilde "${args[target]}")
   repo=${args[--repo]}
   branch=${args[--branch]}
@@ -351,15 +335,15 @@ dotfiles_download_command() {
 
   	log_task "Cleaning '${path}' with '${remote}' at branch '${branch}'"
   	git="git -C ${path}"
-  	if ${git} remote | grep -q "^origin$"; then
-  		${git} remote set-url origin "${remote}"
+  	if git remote | grep -q "^origin$"; then
+  		git remote set-url origin "${remote}"
   	else
-  		${git} remote add origin "${remote}"
+  		git remote add origin "${remote}"
   	fi
-  	${git} checkout -B "${branch}"
-  	${git} fetch origin "${branch}"
-  	${git} reset --hard FETCH_HEAD
-  	${git} clean -fdx
+  	git checkout -B "${branch}"
+  	git fetch origin "${branch}"
+  	git reset --hard FETCH_HEAD
+  	git clean -fdx
   	unset path remote branch git
   else
   	log_task "Cloning '${repo}' at branch '${branch}' to '${dotfiles_dir}'"
@@ -371,28 +355,6 @@ dotfiles_download_command() {
 }
 
 dotfiles_install_command() {
-  if ! chezmoi="$(command -v chezmoi)"; then
-  	bin_dir=$(expand_tilde "${args[--bin]}")
-  	chezmoi="${bin_dir}/chezmoi"
-
-  	if [[ -f "/etc/arch-release" ]]; then
-  		log_task "Installing chezmoi for Arch Linux"
-  		command_exec sudo pacman -Syu
-  		command_exec sudo pacman -S --needed --noconfirm chezmoi
-  	else
-  		log_task "Installing chezmoi to '${chezmoi}'"
-  		if command -v curl >/dev/null; then
-  			chezmoi_install_script="$(curl -fsSL https://get.chezmoi.io)"
-  		elif command -v wget >/dev/null; then
-  			chezmoi_install_script="$(wget -qO- https://get.chezmoi.io)"
-  		else
-  			error "To install chezmoi, you must have curl or wget."
-  		fi
-  		command_exec sh -c "${chezmoi_install_script}" -- -b "${bin_dir}"
-  		unset chezmoi_install_script bin_dir
-  	fi
-  fi
-
   sourceDir=$(expand_tilde "${args[sourceDir]}")
 
   set -- --source="${sourceDir}" --verbose=false
@@ -434,16 +396,9 @@ dotfiles_update_command() {
   fi
 
   if [[ -n "${args["--nvim"]}" ]]; then
-  	if ! command -v bob >/dev/null; then
-  		error "To update Neovim, you must have bob."
-  	fi
   	log_task "Updating Neovim"
   	command_exec bob update --all
   	log_success "Updated Neovim"
-
-  	if ! command -v nvim >/dev/null; then
-  		error "To update Neovim plugins and Mason packages, you must have Neovim."
-  	fi
 
   	log_task "Updating Neovim plugins"
   	command_exec nvim --headless -c "lua vim.schedule(function() require('lazy').sync(); vim.cmd('qa!') end)"
@@ -452,10 +407,6 @@ dotfiles_update_command() {
   	log_task "Updating Mason packages"
   	command_exec nvim --headless -c "lua vim.schedule(function() require('mason-tool-installer').check_install(true); vim.cmd('qa!') end)"
   	log_success "Updated Mason packages"
-
-  	if ! command -v chezmoi >/dev/null; then
-  		error "To sync the 'lazy.lock.json' file, you must have chezmoi."
-  	fi
 
   	log_task "Syncing 'lazy.lock.json' file"
   	source_path=$(chezmoi source-path)
@@ -471,9 +422,6 @@ dotfiles_update_command() {
   	command_exec cp -f "${updated_lazy_lock_path}" "${lazy_lock_path}"
   	log_success "Synced 'lazy-lock.json' file"
 
-  	if ! command -v git >/dev/null; then
-  		error "To sync the 'lazy.lock.json' file, you must have git."
-  	fi
   	if git diff --exit-code -- "${lazy_lock_path}"; then
   		log_info "No changes in 'lazy-lock.json' file. Skip committing."
   		exit 0
@@ -490,7 +438,7 @@ dotfiles_update_command() {
 
 dotfiles_edit_command() {
   if [[ "${#args[@]}" -eq 0 ]]; then
-  	cd ~/.dotfiles || exit 1
+  	cd $(realpath "$(chezmoi source-path)/..") || exit 1
   	command -v nvim >/dev/null && nvim
   else
   	set -- "${args[target]}"
@@ -531,6 +479,22 @@ parse_requirements() {
 
     esac
   done
+
+  if command -v chezmoi >/dev/null 2>&1; then
+    deps['chezmoi']="$(command -v chezmoi | head -n1)"
+  else
+    printf "missing dependency: chezmoi\n" >&2
+    printf "%s\n" "Visit 'https://www.chezmoi.io/install' to install chezmoi" >&2
+    exit 1
+  fi
+
+  if command -v git >/dev/null 2>&1; then
+    deps['git']="$(command -v git | head -n1)"
+  else
+    printf "missing dependency: git\n" >&2
+    printf "%s\n" "Visit 'https://git-scm.com/downloads' to install git" >&2
+    exit 1
+  fi
 
   action=${1:-}
 
@@ -764,6 +728,22 @@ dotfiles_update_parse_requirements() {
 
     esac
   done
+
+  if command -v nvim >/dev/null 2>&1; then
+    deps['nvim']="$(command -v nvim | head -n1)"
+  else
+    printf "missing dependency: nvim\n" >&2
+    printf "%s\n" "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires \`bob\` to be installed)" >&2
+    exit 1
+  fi
+
+  if command -v bob >/dev/null 2>&1; then
+    deps['bob']="$(command -v bob | head -n1)"
+  else
+    printf "missing dependency: bob\n" >&2
+    printf "%s\n" "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires \`cargo\` to be installed)" >&2
+    exit 1
+  fi
 
   action="update"
 
