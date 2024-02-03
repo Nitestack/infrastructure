@@ -22,6 +22,7 @@ if ! chezmoi="$(command -v chezmoi)"; then
 	fi
 fi
 
+## Set arguments
 sourceDir=$(expand_tilde "${args[sourceDir]}")
 
 set -- --source="${sourceDir}" --verbose=false
