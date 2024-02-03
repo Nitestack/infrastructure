@@ -24,7 +24,7 @@ commands:
       - long: --ssh
         help: Use SSH instead of HTTPS
   - name: install
-    help: Install dotfiles
+    help: Install dotfiles with chezmoi
     args:
       - name: sourceDir
         help: Source directory of dotfiles
@@ -36,10 +36,8 @@ commands:
         default: ~/.local/bin
       - long: --one-shot
         help: Attempts to install your dotfiles with chezmoi and then remove all traces of chezmoi from the system. This is useful for setting up temporary environments (e.g. Docker containers).
-      - long: --debug
-        help: Include debug information in output
   - name: update
-    help: Update dotfiles and the CLI
+    help: Update dotfiles with chezmoi
     flags:
       - long: --refresh-externals
         short: -R
@@ -61,7 +59,7 @@ commands:
     help: Edit dotfiles
     args:
       - name: target
-        help: Target file or directory to edit
+        help: Target file to edit
         default: ""
         validate: file_exists
     flags:
@@ -75,4 +73,5 @@ commands:
           - "false"
         help: Invoke the editor with a hard link to the source file with a name matching the target filename. This can help the editor determine the type of the file correctly. This is the default.
       - long: --watch
+        short: -w
         help: Automatically apply changes when files are saved
