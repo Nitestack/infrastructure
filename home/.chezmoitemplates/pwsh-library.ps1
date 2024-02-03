@@ -62,7 +62,7 @@ function Write-LogCommand
   param([string]$message)
   Write-LogYellow -message " COMMAND: $message"
 }
-function Invoke-Command
+function Invoke-CommandExpression
 {
   param([string]$message)
   Write-LogCommand -message $message
@@ -92,7 +92,7 @@ function Invoke-EnsureInstalled
   }
 
   Write-LogTask "Installing $cmd_name"
-  Invoke-Command $command
+  Invoke-CommandExpression $command
 }
 
 function Invoke-ChocoEnsureInstalled
@@ -105,7 +105,7 @@ function Invoke-ChocoEnsureInstalled
   }
 
   Write-LogTask "choco: Installing package '$package_name'"
-  Invoke-Command "choco install -y $package_name"
+  Invoke-CommandExpression "choco install -y $package_name"
 }
 
 function Invoke-WingetEnsureInstalled
@@ -118,5 +118,5 @@ function Invoke-WingetEnsureInstalled
   }
 
   Write-LogTask "winget: Installing package '$package_name'"
-  Invoke-Command "winget install -e --accept-package-agreements --accept-source-agreements --id $package_name"
+  Invoke-CommandExpression "winget install -e --accept-package-agreements --accept-source-agreements --id $package_name"
 }
