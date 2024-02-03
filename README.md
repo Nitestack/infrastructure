@@ -11,13 +11,13 @@ This repo contains my dotfiles. To manage my dotfiles across different devices a
 First you need to install the `dotfiles` CLI. Simply run the following command in your terminal:
 
 ```sh
-wget -O ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/dotfiles
+wget -O ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/unix/dotfiles
 ```
 
 > We use `wget` here because it comes preinstalled with most Linux distros. But you can also use `curl`:
 >
 > ```sh
-> curl -o ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/dotfiles
+> curl -o ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/unix/dotfiles
 > ```
 
 To make it executable, run:
@@ -35,7 +35,7 @@ Now you can run `dotfiles download` and `dotfiles install` to download and insta
 The CLI for Windows is not available yet. That's why you have to use the old convenience script.
 
 ```pwsh
-iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.ps1 -UseBasicParsing | iex
+iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/windows/install_dotfiles.ps1 -UseBasicParsing | iex
 ```
 
 ---
@@ -61,7 +61,7 @@ For example, you can use it to clone and install the dotfiles repository at the 
 #### PowerShell Core
 
 ```pwsh
-pwsh -c { $env:DOTFILES_BRANCH="beta"; iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install_dotfiles.ps1 -UseBasicParsing | iex }
+pwsh -c { $env:DOTFILES_BRANCH="beta"; iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/windows/install_dotfiles.ps1 -UseBasicParsing | iex }
 ```
 
 ### Installing without the convenience script

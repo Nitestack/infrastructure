@@ -16,7 +16,7 @@ log_success "Updated dotfiles"
 if [[ -n "${args["--cli"]}" ]]; then
 	script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)/dotfiles"
 
-	updated_script_dir=$(realpath "$(eval echo "$(chezmoi source-path)")/../scripts/dotfiles")
+	updated_script_dir=$(realpath "$(chezmoi source-path)/../scripts/unix/dotfiles")
 
 	log_task "Replacing CLI executable in '${script_dir}'"
 	command_exec cp -f "${updated_script_dir}" "${script_dir}"
