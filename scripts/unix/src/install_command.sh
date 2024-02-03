@@ -33,10 +33,6 @@ else
 	set -- "$@" --apply
 fi
 
-if [[ -n "${args[--debug]}" ]]; then
-	set -- "$@" --debug
-fi
-
 command_exec chezmoi init "$@"
 
 log_success "Installed dotfiles"
