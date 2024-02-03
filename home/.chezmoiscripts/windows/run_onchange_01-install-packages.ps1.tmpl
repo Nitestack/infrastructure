@@ -30,7 +30,7 @@ if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 {
   Write-LogTask "Installing {{ $cmd_name | squote -}}"
   # {{ range $_, $line := $to_install }}
-    # {{ "\n" }} Invoke-Command {{ $line | quote }}
+  # {{ "\n" }} Invoke-CommandExpression {{ $line | quote }}
   # {{ end }}
 }
 # {{ end }}
@@ -45,6 +45,6 @@ if ($pnpmList -match "{{- $package_name -}}")
 } else
 {
   Write-LogTask "Installing package {{ $package_name | squote }} via pnpm"
-  Invoke-Command 'pnpm add -g "{{- $package_name -}}"'
+  Invoke-CommandExpression 'pnpm add -g "{{- $package_name -}}"'
 }
 # {{ end }}
