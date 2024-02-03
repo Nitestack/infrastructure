@@ -58,7 +58,7 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/windows/do
 > $env:PATH += ";$env:USERPROFILE\.local\bin"
 > ```
 >
-> Alternatively, you use the following command to permanently add it to your `PATH` environment variable, if it's not already there (therefore you don't need to add it into your PowerShell config).
+> Alternatively, you can use the following command to permanently add it to your `PATH` environment variable, if it's not already there (therefore you don't need to add it into your PowerShell config).
 >
 > ```pwsh
 > if (!([System.Environment]::GetEnvironmentVariable("PATH", "User").Split(";") -contains "$env:USERPROFILE\.local\bin")) { [System.Environment]::SetEnvironmentVariable("PATH", "$([System.Environment]::GetEnvironmentVariable('PATH', 'User'));$env:USERPROFILE\.local\bin", "User") }
@@ -72,18 +72,19 @@ Now you can run `dotfiles download` and `dotfiles install` to download and insta
 
 ## Documentation
 
-The UNIX cli version of `dotfiles` was created with [`Bashly`](https://bashly.dannyb.co).
-The Windows version of `dotfiles` was created with pure PowerShell.
+The UNIX CLI version of `dotfiles` was created with [`Bashly`](https://bashly.dannyb.co).
+The Windows CLI version of `dotfiles` was created with pure PowerShell.
 
 Because PowerShell and Bash/zsh are different from each other, the flags are not the same.
 
 The convention for UNIX-style CLI's is to use `-` for short flags and `--` for long flags. It uses the `kebab-case` if it is a long flag.
 For example, `dotfiles -h` and `dotfiles --help` are the same command.
 
-The convention for Windows style CLI's is to use only `-`, but for short and long flags. It uses the `PascalCase` if it is a long flag.
+The convention for PowerShell is to use only `-`, but for short and long flags. It uses the `PascalCase` if it is a long flag.
 For example, `dotfiles -h` and `dotfiles -Help` or even `Get-Help dotfiles` are the same command.
 
 > :bulb: **As you might have noticed, the `-h` flag works on both Windows and UNIX!**
+
 > :bulb: **The short flags (if any) also work on both Windows and UNIX!**
 
 Other than these conventions, the UNIX cli version of `dotfiles` is similar to the Windows version. They use the same commands with the same flags.
