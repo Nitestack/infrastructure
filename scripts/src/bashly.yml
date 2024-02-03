@@ -55,6 +55,8 @@ commands:
         help: Apply local changes with `chezmoi apply`.
       - long: --cli
         help: Update the CLI itself. This defaults to false.
+      - long: --nvim
+        help: Update Neovim plugins, Mason packages and sync lazy-lock.json file if it exists.
   - name: edit
     help: Edit dotfiles
     args:
