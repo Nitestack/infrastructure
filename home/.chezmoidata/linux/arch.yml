@@ -12,6 +12,7 @@ dependencies:
       - "fd"
       - "zoxide"
       - "ruby"
+      - "man-db"
     custom:
       - rustup:
           - "sudo pacman -S --needed --noconfirm rustup"
