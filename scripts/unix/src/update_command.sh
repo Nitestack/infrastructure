@@ -26,18 +26,11 @@ fi
 ## Update Neovim related files
 if [[ -n "${args["--nvim"]}" ]]; then
 	## Update Neovim
-	if ! command -v bob >/dev/null; then
-		error "To update Neovim, you must have bob."
-	fi
 	log_task "Updating Neovim"
 	command_exec bob update --all
 	log_success "Updated Neovim"
 
 	## Update Lazy plugins and Mason packages
-	if ! command -v nvim >/dev/null; then
-		error "To update Neovim plugins and Mason packages, you must have Neovim."
-	fi
-
 	log_task "Updating Neovim plugins"
 	command_exec nvim --headless -c "lua vim.schedule(function() require('lazy').sync(); vim.cmd('qa!') end)"
 	log_success "Updated Neovim plugins"
@@ -47,10 +40,6 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	log_success "Updated Mason packages"
 
 	## Sync lazy-lock.json file
-	if ! command -v chezmoi >/dev/null; then
-		error "To sync the 'lazy.lock.json' file, you must have chezmoi."
-	fi
-
 	log_task "Syncing 'lazy.lock.json' file"
 	source_path=$(chezmoi source-path)
 	lazy_lock_path=$(find "${source_path}" -type f -name "*lazy-lock.json" -print -quit)
@@ -66,9 +55,6 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	log_success "Synced 'lazy-lock.json' file"
 
 	## Commit the updated 'lazy-lock.json' file
-	if ! command -v git >/dev/null; then
-		error "To sync the 'lazy.lock.json' file, you must have git."
-	fi
 	## Check if there are any changes
 	if git diff --exit-code -- "${lazy_lock_path}"; then
 		log_info "No changes in 'lazy-lock.json' file. Skip committing."
