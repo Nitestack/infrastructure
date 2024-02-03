@@ -43,7 +43,7 @@ function M.load_language(config)
 
   if config.mason then
     table.insert(spec, {
-      "williamboman/mason.nvim",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
       opts = function(_, opts)
         opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.mason))
       end,
