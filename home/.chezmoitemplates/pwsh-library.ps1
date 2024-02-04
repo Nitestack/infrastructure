@@ -39,7 +39,7 @@ function Write-ManualAction
 function Write-LogError
 {
   param([string]$message)
-  Write-LogRed -message " ERROR:$message"
+  Write-LogRed -message " ERROR: $message"
 }
 function Write-LogInfo
 {
