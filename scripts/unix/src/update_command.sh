@@ -30,10 +30,14 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	command_exec bob update --all
 	log_success "Updated Neovim to the latest version"
 
-	## Update Lazy plugins
+	## Update Lazy plugins and Mason packages
 	log_task "Updating Neovim plugins"
-	command_exec nvim --headless -c "lua vim.schedule(function() require('lazy').sync(); vim.cmd('qa!') end)"
+	command_exec nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'LazySync', command = 'qa' }); require('lazy').sync({ show = false }) end)"
 	log_success "Updated Neovim plugins"
+
+	log_task "Updating Mason packages"
+	command_exec nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)"
+	log_success "Updated Mason packages"
 
 	## Sync lazy-lock.json file
 	log_task "Syncing 'lazy.lock.json' file"
@@ -52,12 +56,14 @@ if [[ -n "${args["--nvim"]}" ]]; then
 
 	## Commit the updated 'lazy-lock.json' file
 	## Check if there are any changes
-	if git diff --exit-code -- "${lazy_lock_path}"; then
+	if git diff --quiet --exit-code -- "${lazy_lock_path}"; then
 		log_info "No changes in 'lazy-lock.json' file. Skip committing."
 		exit 0
 	fi
-	git="git -C $(realpath "$(chezmoi source-path)/..")"
-	command_exec "${git}" add "${lazy_lock_path}" || error "Could not add 'lazy-lock.json' file"
-	command_exec "${git}" commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
+	current_path=$(pwd)
+	cd "$(realpath "$(chezmoi source-path)/..")" || error "Could not cd to '$(chezmoi source-path)/..'"
+	command_exec git add "${lazy_lock_path}" || error "Could not add 'lazy-lock.json' file"
+	command_exec git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json" || error "Could not commit 'lazy-lock.json' file"
+	cd "${current_path}" || error "Could not cd back to current working directory"
 	log_success "Committed 'lazy-lock.json' file"
 fi
