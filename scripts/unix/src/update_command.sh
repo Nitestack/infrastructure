@@ -52,7 +52,7 @@ if [[ -n "${args["--nvim"]}" ]]; then
 
 	## Commit the updated 'lazy-lock.json' file
 	## Check if there are any changes
-	if git diff --quiet -- "${lazy_lock_path}"; then
+	if git diff --exit-code -- "${lazy_lock_path}"; then
 		log_info "No changes in 'lazy-lock.json' file. Skip committing."
 		exit 0
 	fi
