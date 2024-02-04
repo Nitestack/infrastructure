@@ -107,6 +107,33 @@ function Invoke-Error
   Write-LogError -message $message
   exit 1
 }
+function Invoke-EnsureInstalled(
+  [string]$command,
+  [string]$message
+)
+{
+  if (!(Get-Command $command -ErrorAction SilentlyContinue))
+  {
+    Write-LogError "Missing dependency: '$command'"
+    Invoke-Error "$message"
+  }
+}
+function Invoke-EnsureGitInstalled()
+{
+  Invoke-EnsureInstalled -command "git" -message "Visit 'https://git-scm.com/downloads' to install git"
+}
+function Invoke-EnsureChezmoiInstalled()
+{
+  Invoke-EnsureInstalled -command "chezmoi" -message "Visit 'https://www.chezmoi.io/install' to install chezmoi"
+}
+function Invoke-EnsureNeovimInstalled()
+{
+  Invoke-EnsureInstalled -command "nvim" -message "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires `bob` to be installed)"
+}
+function Invoke-EnsureBobInstalled()
+{
+  Invoke-EnsureInstalled -command "bob" -message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
+}
 
 function Invoke-Download
 {
@@ -391,6 +418,10 @@ if ($Command -eq "-v" -or $Command -eq "-Version")
   exit
 }
 
+# Make sure dependencies are installed
+Invoke-EnsureGitInstalled
+Invoke-EnsureChezmoiInstalled
+
 # Handling commands
 switch ($Command)
 {
@@ -414,6 +445,8 @@ switch ($Command)
   }
   "update"
   {
+    Invoke-EnsureNeovimInstalled
+    Invoke-EnsureBobInstalled
     if ($Help)
     {
       Get-Help Invoke-Update -Full
