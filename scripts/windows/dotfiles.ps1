@@ -272,6 +272,7 @@ USAGE:
     [Alias("nvim")]
     [Switch]$Neovim
   )
+  Write-LogTask "Updating dotfiles"
   # Check for local/global updates
   $arguments = @()
   if ($Local)
@@ -287,17 +288,25 @@ USAGE:
     $arguments += "--refresh-externals='$RefreshExternals'"
   }
 
-  Invoke-CommandExpression "chezmoi $arguments"
+  chezmoi $arguments || Invoke-Error "Failed to update dotfiles"
   Write-LogSuccess "Updated dotfiles"
 
   # Update the CLI
   if ($CLI)
   {
     $ScriptDir = Resolve-Path "$PSScriptRoot\dotfiles.ps1"
+    if (!(Test-Path "$ScriptDir"))
+    {
+      Invoke-Error "Could not find '$ScriptDir'"
+    }
     $UpdatedScriptDir = Resolve-Path "$(chezmoi source-path)\..\scripts\windows\dotfiles.ps1"
+    if (!(Test-Path "$UpdatedScriptDir"))
+    {
+      Invoke-Error "Could not find '$UpdatedScriptDir'"
+    }
 
-    Write-LogTask "Replacing CLI executable in '$ScriptDir'"
-    Invoke-CommandExpression "Copy-Item -Path '$UpdatedScriptDir' -Destination '$ScriptDir' -Force"
+    Write-LogTask "Updating CLI"
+    Copy-Item -Path "$UpdatedScriptDir" -Destination "$ScriptDir" -Force || Invoke-Error "Failed to sync 'dotfiles.ps1' file"
     Write-LogSuccess "Updated CLI to the latest version"
   }
 
@@ -306,13 +315,17 @@ USAGE:
   {
     # Update Neovim
     Write-LogTask "Updating Neovim"
-    Invoke-CommandExpression "bob update --all"
+    bob update --all || Invoke-Error "Failed to update Neovim"
     Write-LogSuccess "Updated Neovim to the latest version"
 
-    # Update Lazy plugins
+    # Update Lazy plugins and Mason packages
     Write-LogTask "Updating Neovim plugins"
-    Invoke-CommandExpression "nvim --headless -c `"lua vim.schedule(function() require('lazy').sync(); vim.schedule(function() vim.cmd('qa!') end) end)`""
+    nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'LazySync', command = 'qa' }); require('lazy').sync({ show = false }) end)" || Invoke-Error "Failed to update Neovim plugins"
     Write-LogSuccess "Updated Neovim plugins"
+
+    Write-LogTask "Updating Mason packages"
+    nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)" || Invoke-Error "Failed to update Mason packages"
+    Write-LogSuccess "Updated Mason packages"
 
     # Sync lazy-lock.json file
     Write-LogTask "Syncing 'lazy-lock.json' file"
@@ -328,10 +341,11 @@ USAGE:
     {
       Write-LogError "Could not find 'lazy-lock.json' file in '$ConfigPath'"
     }
-    Invoke-CommandExpression "Copy-Item -Path '$UpdatedLazyLockPath' -Destination '$LazyLockPath' -Force"
+    Copy-Item -Path "$UpdatedLazyLockPath" -Destination "$LazyLockPath" -Force || Invoke-Error "Failed to sync 'lazy-lock.json' file"
     Write-LogSuccess "Synced 'lazy-lock.json' file"
 
     # Commit the updated 'lazy-lock.json' file
+    Write-LogTask "Committing 'lazy-lock.json' file"
     # Check if there are any changes
     Invoke-Expression "git diff --quiet -- $LazyLockPath"
     if ($LASTEXITCODE -eq 0)
@@ -339,10 +353,12 @@ USAGE:
       Write-LogInfo "No changes in 'lazy-lock.json' file. Skip committing."
       exit
     }
-    $Git="git -C $(Resolve-Path "$(chezmoi source-path)/..")"
-    Invoke-Expression "$Git add $LazyLockPath"
-    Invoke-Expression "$Git commit -m 'chore(nvim): update lazy-lock.json'"
+    $CurrentPath = Get-Location
+    Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || Invoke-Error "Failed to set current path to '$(chezmoi source-path)/..'"
+    git add "$LazyLockPath" || Invoke-Error "Failed to add 'lazy-lock.json' file to git"
+    git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json" || Invoke-Error "Failed to commit 'lazy-lock.json' file"
     Write-LogSuccess "Committed 'lazy-lock.json' file"
+    Set-Location "$CurrentPath" || Invoke-Error "Failed to set current path to '$CurrentPath'"
   }
 }
 
