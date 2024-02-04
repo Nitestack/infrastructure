@@ -17,15 +17,15 @@ if [[ -d "${dotfiles_dir}" ]]; then
 	log_task "Cleaning '${path}' with '${remote}' at branch '${branch}'"
 	git="git -C ${path}"
 	## Ensure that the remote is set to the correct URL
-	if git remote | grep -q "^origin$"; then
-		git remote set-url origin "${remote}"
+	if ${git} remote | grep -q "^origin$"; then
+		${git} remote set-url origin "${remote}"
 	else
-		git remote add origin "${remote}"
+		${git} remote add origin "${remote}"
 	fi
-	git checkout -B "${branch}"
-	git fetch origin "${branch}"
-	git reset --hard FETCH_HEAD
-	git clean -fdx
+	${git} checkout -B "${branch}"
+	${git} fetch origin "${branch}"
+	${git} reset --hard FETCH_HEAD
+	${git} clean -fdx
 	unset path remote branch git
 else
 	log_task "Cloning '${repo}' at branch '${branch}' to '${dotfiles_dir}'"
