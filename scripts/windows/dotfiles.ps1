@@ -305,6 +305,13 @@ USAGE:
       Invoke-Error "Could not find '$UpdatedScriptDir'"
     }
 
+    # Check if the CLI is already up to date
+    if ("$ScriptDir" -eq "$UpdatedScriptDir")
+    {
+      Write-LogInfo "The CLI is already up to date"
+      exit
+    }
+
     Write-LogTask "Updating CLI"
     Copy-Item -Path "$UpdatedScriptDir" -Destination "$ScriptDir" -Force || Invoke-Error "Failed to sync 'dotfiles.ps1' file"
     Write-LogSuccess "Updated CLI to the latest version"
