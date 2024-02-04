@@ -28,7 +28,7 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	## Update Neovim
 	log_task "Updating Neovim"
 	command_exec bob update --all
-	log_success "Updated Neovim"
+	log_success "Updated Neovim to the latest version"
 
 	## Update Lazy plugins and Mason packages
 	log_task "Updating Neovim plugins"
@@ -60,10 +60,8 @@ if [[ -n "${args["--nvim"]}" ]]; then
 		log_info "No changes in 'lazy-lock.json' file. Skip committing."
 		exit 0
 	fi
-	current_path=$(pwd)
-	cd $(realpath "$(chezmoi source-path)/..") || error "Could not cd to dotfiles directory"
-	command_exec git add "${lazy_lock_path}" || error "Could not add 'lazy-lock.json' file"
-	command_exec git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
-	cd "${current_path}" || error "Could not cd to current directory"
+	git="git -C $(realpath "$(chezmoi source-path)/..")"
+	command_exec "${git}" add "${lazy_lock_path}" || error "Could not add 'lazy-lock.json' file"
+	command_exec "${git}" commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
 	log_success "Committed 'lazy-lock.json' file"
 fi
