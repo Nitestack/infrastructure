@@ -71,7 +71,7 @@ function Write-ManualAction
 function Write-LogError
 {
   param([string]$message)
-  Write-LogRed -message " ERROR:$message"
+  Write-LogRed -message " ERROR: $message"
 }
 function Write-LogInfo
 {
@@ -89,7 +89,7 @@ function Write-LogCommand
   param([string]$message)
   Write-LogYellow -message " COMMAND: $message"
 }
-function Invoke-Command
+function Invoke-CommandExpression
 {
   param([string]$message)
   Write-LogCommand -message $message
@@ -140,6 +140,42 @@ USAGE:
 
     [Switch]$SSH
   )
+  # Set remote depending on the ssh flag
+  if ($SSH)
+  {
+    $Remote = "ssh://github.com/$Repo.git"
+  } else
+  {
+    $Remote = "https://github.com/$Repo.git"
+  }
+
+  # Check if dotfiles are already downloaded
+  if (Test-Path "$Target")
+  {
+    $Path = Resolve-Path "$Target"
+
+    Write-LogTask "Cleaning '$Path' with '$Remote' at branch '$Branch'"
+    $Git="git -C $Path"
+    # Ensure that the remote is set to the correct URL
+    if (Invoke-Expression "$Git remote | Select-String `"^origin$`" -Quiet")
+    {
+      Invoke-Expression "$Git remote set-url origin $Remote"
+    } else
+    {
+      Invoke-Expression "$Git remote add origin $Remote"
+    }
+    Invoke-Expression "$Git checkout -B $Branch"
+    Invoke-Expression "$Git fetch origin $Branch"
+    Invoke-Expression "$Git reset --hard FETCH_HEAD"
+    Invoke-Expression "$Git clean -fdx"
+    Remove-Variable Path, Remote, Branch, Git
+  } else
+  {
+    Write-LogTask "Cloning '$Repo' at branch '$Branch' to '$Target'"
+    Invoke-CommandExpression "git clone -b '$Branch' '$Remote' '$Target'"
+  }
+
+  Write-LogSuccess "Dotfiles downloaded to '$Target'"
 }
 
 
@@ -167,9 +203,22 @@ USAGE:
       })]
     [string]$SourceDir = "$env:USERPROFILE\.dotfiles",
 
-    [string]$Bin = "$env:USERPROFILE\.local\bin",
     [Switch]$OneShot
   )
+  # Set arguments
+  $arguments = @("--source='$SourceDir'", "--verbose=false")
+
+  if ($OneShot)
+  {
+    $arguments += "--one-shot"
+  } else
+  {
+    $arguments += "--apply"
+  }
+
+  Invoke-CommandExpression "chezmoi init $arguments"
+
+  Write-LogSuccess "Installed dotfiles"
 }
 
 function Invoke-Update
@@ -185,7 +234,7 @@ USAGE:
   param(
     [Alias("R")]
     [ValidateSet("always", "auto", "never")]
-    [string]$RefreshExternals = "auto",
+    [string]$RefreshExternals,
 
     [Alias("l")]
     [Switch]$Local,
@@ -196,6 +245,78 @@ USAGE:
     [Alias("nvim")]
     [Switch]$Neovim
   )
+  # Check for local/global updates
+  $arguments = @()
+  if ($Local)
+  {
+    $arguments += "apply"
+  } else
+  {
+    $arguments += "update"
+  }
+
+  if (![string]::IsNullOrEmpty($RefreshExternals))
+  {
+    $arguments += "--refresh-externals='$RefreshExternals'"
+  }
+
+  Invoke-CommandExpression "chezmoi $arguments"
+  Write-LogSuccess "Updated dotfiles"
+
+  # Update the CLI
+  if ($CLI)
+  {
+    $ScriptDir = Resolve-Path "$PSScriptRoot\dotfiles.ps1"
+    $UpdatedScriptDir = Resolve-Path "$(chezmoi source-path)\..\scripts\windows\dotfiles.ps1"
+
+    Write-LogTask "Replacing CLI executable in '$ScriptDir'"
+    Invoke-CommandExpression "Copy-Item -Path '$UpdatedScriptDir' -Destination '$ScriptDir' -Force"
+    Write-LogSuccess "Updated CLI to the latest version"
+  }
+
+  # Update Neovim related files
+  if ($Neovim)
+  {
+    # Update Neovim
+    Write-LogTask "Updating Neovim"
+    Invoke-CommandExpression "bob update --all"
+    Write-LogSuccess "Updated Neovim to the latest version"
+
+    # Update Lazy plugins
+    Write-LogTask "Updating Neovim plugins"
+    Invoke-CommandExpression "nvim --headless -c `"lua vim.schedule(function() require('lazy').sync(); vim.schedule(function() vim.cmd('qa!') end) end)`""
+    Write-LogSuccess "Updated Neovim plugins"
+
+    # Sync lazy-lock.json file
+    Write-LogTask "Syncing 'lazy-lock.json' file"
+    $SourcePath = chezmoi source-path
+    $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
+    if ([string]::IsNullOrEmpty($LazyLockPath))
+    {
+      Write-LogError "Could not find 'lazy-lock.json' file in '$SourcePath'"
+    }
+    $ConfigPath="$env:LOCALAPPDATA\nvim"
+    $UpdatedLazyLockPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazy-lock.json" -File | Select-Object -First 1).FullName
+    if ([string]::IsNullOrEmpty($UpdatedLazyLockPath))
+    {
+      Write-LogError "Could not find 'lazy-lock.json' file in '$ConfigPath'"
+    }
+    Invoke-CommandExpression "Copy-Item -Path '$UpdatedLazyLockPath' -Destination '$LazyLockPath' -Force"
+    Write-LogSuccess "Synced 'lazy-lock.json' file"
+
+    # Commit the updated 'lazy-lock.json' file
+    # Check if there are any changes
+    Invoke-Expression "git diff --quiet -- $LazyLockPath"
+    if ($LASTEXITCODE -eq 0)
+    {
+      Write-LogInfo "No changes in 'lazy-lock.json' file. Skip committing."
+      exit
+    }
+    $Git="git -C $(Resolve-Path "$(chezmoi source-path)/..")"
+    Invoke-Expression "$Git add $LazyLockPath"
+    Invoke-Expression "$Git commit -m 'chore(nvim): update lazy-lock.json'"
+    Write-LogSuccess "Committed 'lazy-lock.json' file"
+  }
 }
 
 function Invoke-Edit
@@ -212,7 +333,7 @@ USAGE:
     [Parameter(Position=0)]
     [Alias("t")]
     [ValidateScript({
-        if (Test-Path $_ -IsValid -and (Get-Item $_).PSIsContainer -eq $false)
+        if ((Test-Path $_ -IsValid) -and ((Get-Item $_).PSIsContainer -eq $false))
         {
           $true
         } else
@@ -225,11 +346,37 @@ USAGE:
     [Alias("a")]
     [Switch]$Apply,
 
-    [Boolean]$HardLink,
+    [Switch]$HardLink,
 
     [Alias("w")]
     [Switch]$Watch
   )
+  if ([string]::IsNullOrEmpty($Target))
+  {
+    Set-Location $(Resolve-Path "$(chezmoi source-path)/..")
+    if (Get-Command nvim -ErrorAction SilentlyContinue)
+    {
+      nvim
+    }
+  } else
+  {
+    $arguments = @($Target)
+
+    if ($Apply)
+    {
+      $arguments += "--apply"
+    }
+    if ($HardLink)
+    {
+      $arguments += "--hardlink=$HardLink"
+    }
+    if ($Watch)
+    {
+      $arguments += "--watch"
+    }
+
+    Invoke-CommandExpression "chezmoi edit $arguments"
+  }
 }
 
 # Handling help and version
@@ -254,7 +401,7 @@ switch ($Command)
       Get-Help Invoke-Download -Full
       exit
     }
-    Invoke-Download
+    Invoke-Expression "Invoke-Download $Rest"
   }
   "install"
   {
@@ -263,7 +410,7 @@ switch ($Command)
       Get-Help Invoke-Install -Full
       exit
     }
-    Invoke-Install
+    Invoke-Expression "Invoke-Install $Rest"
   }
   "update"
   {
@@ -272,7 +419,7 @@ switch ($Command)
       Get-Help Invoke-Update -Full
       exit
     }
-    Invoke-Update
+    Invoke-Expression "Invoke-Update $Rest"
   }
   "edit"
   {
@@ -281,7 +428,7 @@ switch ($Command)
       Get-Help Invoke-Edit -Full
       exit
     }
-    Invoke-Edit
+    Invoke-Expression "Invoke-Edit $Rest"
   }
   default
   {
