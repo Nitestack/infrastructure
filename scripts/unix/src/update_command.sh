@@ -30,7 +30,7 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	command_exec bob update --all
 	log_success "Updated Neovim to the latest version"
 
-	## Update Lazy plugins and Mason packages
+	## Update Lazy plugins
 	log_task "Updating Neovim plugins"
 	command_exec nvim --headless -c "lua vim.schedule(function() require('lazy').sync(); vim.cmd('qa!') end)"
 	log_success "Updated Neovim plugins"
