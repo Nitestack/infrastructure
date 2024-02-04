@@ -36,6 +36,10 @@ function M.is_nightly()
   end
 end
 
+function M.is_wsl()
+  return os.getenv("WSL_DISTRO_NAME") ~= nil
+end
+
 ---@param paths string|string[]
 function M.resolve_path(paths)
   return vim.fn.expand(type(paths) == "string" and paths or vim.fn.join(paths, "/"))

@@ -73,7 +73,7 @@ function M.run()
   end
 
   -- Linux
-  if utils.general.is_linux() then
+  if utils.general.is_wsl() then
     -- Sync clipboard with Windows clipboard
     vim.g.clipboard = {
       name = "WslClipboard",
