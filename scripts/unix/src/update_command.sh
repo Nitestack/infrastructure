@@ -35,10 +35,6 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	command_exec nvim --headless -c "lua vim.schedule(function() require('lazy').sync(); vim.cmd('qa!') end)"
 	log_success "Updated Neovim plugins"
 
-	log_task "Updating Mason packages"
-	command_exec nvim --headless -c "lua vim.schedule(function() require('mason-tool-installer').check_install(true); vim.cmd('qa!') end)"
-	log_success "Updated Mason packages"
-
 	## Sync lazy-lock.json file
 	log_task "Syncing 'lazy.lock.json' file"
 	source_path=$(chezmoi source-path)
@@ -56,7 +52,7 @@ if [[ -n "${args["--nvim"]}" ]]; then
 
 	## Commit the updated 'lazy-lock.json' file
 	## Check if there are any changes
-	if git diff --exit-code -- "${lazy_lock_path}"; then
+	if git diff --quiet -- "${lazy_lock_path}"; then
 		log_info "No changes in 'lazy-lock.json' file. Skip committing."
 		exit 0
 	fi
