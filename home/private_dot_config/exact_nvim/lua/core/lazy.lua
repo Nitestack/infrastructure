@@ -19,6 +19,7 @@ return {
   ui = {
     size = { width = core.config.ui.width, height = core.config.ui.height },
     border = core.config.ui.transparent.floats and "rounded" or "none",
+    title = core.config.ui.transparent.floats and "lazy.nvim" or nil,
     icons = {
       loaded = core.icons.ui.PackageInstalled,
       not_loaded = core.icons.ui.PackageUninstalled,
