@@ -413,7 +413,7 @@ dotfiles_update_command() {
   	command_exec cp -f "${updated_lazy_lock_path}" "${lazy_lock_path}"
   	log_success "Synced 'lazy-lock.json' file"
 
-  	if git diff --quiet -- "${lazy_lock_path}"; then
+  	if git diff --exit-code -- "${lazy_lock_path}"; then
   		log_info "No changes in 'lazy-lock.json' file. Skip committing."
   		exit 0
   	fi
