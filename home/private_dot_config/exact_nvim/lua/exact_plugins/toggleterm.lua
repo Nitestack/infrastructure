@@ -1,10 +1,12 @@
+local mapping = "<C-t>"
+
 ---@type LazyPluginSpec
 return {
   "akinsho/toggleterm.nvim",
   version = "*",
   keys = core.lazy_map({
     [{ "n", "i", "t" }] = {
-      ["<C-t>"] = {},
+      [mapping] = {},
     },
   }),
   ---@param opts ToggleTermConfig
@@ -18,7 +20,7 @@ return {
       end
     end
 
-    opts.open_mapping = "<C-t>"
+    opts.open_mapping = mapping
     opts.direction = "float"
 
     opts.highlights = opts.highlights or {}
