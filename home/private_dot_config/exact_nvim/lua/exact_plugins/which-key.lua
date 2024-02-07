@@ -1,6 +1,9 @@
 ---@type LazyPluginSpec
 return {
   "folke/which-key.nvim",
+  event = function()
+    return {}
+  end,
   keys = core.lazy_map({
     n = {
       [{ "<leader>\"", "<leader>'", "<leader>`" }] = { false },
