@@ -3,6 +3,12 @@ return utils.lsp.load_language({
     "markdown",
     "markdown_inline",
   },
+  formatter = {
+    formatters_by_ft = {
+      ["markdown"] = { "prettierd" },
+      ["markdown.mdx"] = { "prettierd" },
+    },
+  },
   plugins = {
     { import = "lazyvim.plugins.extras.lang.markdown" },
     {
@@ -14,11 +20,12 @@ return utils.lsp.load_language({
         },
       },
     },
-  },
-  formatter = {
-    formatters_by_ft = {
-      ["markdown"] = { "prettierd" },
-      ["markdown.mdx"] = { "prettierd" },
+    {
+      "iamcco/markdown-preview.nvim",
+      build = "cd app && yarn install",
+      init = function()
+        vim.g.mkdp_filetypes = { "markdown" }
+      end,
     },
   },
 })
