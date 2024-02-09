@@ -46,7 +46,7 @@ if [[ -n "${args["--nvim"]}" ]]; then
 
 	## Update Lazy plugins and Mason packages
 	log_task "Updating Neovim plugins"
-	nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'LazySync', command = 'qa' }); require('lazy').sync({ show = false }) end)" || error "Failed to update Neovim plugins"
+	nvim --headless -c "Lazy! sync" +qa || error "Failed to update Neovim plugins"
 	log_success "Updated Neovim plugins"
 
 	log_task "Updating Mason packages"

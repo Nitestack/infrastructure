@@ -331,7 +331,7 @@ USAGE:
 
     # Update Lazy plugins and Mason packages
     Write-LogTask "Updating Neovim plugins"
-    nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'LazySync', command = 'qa' }); require('lazy').sync({ show = false }) end)" || Invoke-Error "Failed to update Neovim plugins"
+    nvim --headless -c "Lazy! sync" +qa || Invoke-Error "Failed to update Neovim plugins"
     Write-LogSuccess "Updated Neovim plugins"
 
     Write-LogTask "Updating Mason packages"
