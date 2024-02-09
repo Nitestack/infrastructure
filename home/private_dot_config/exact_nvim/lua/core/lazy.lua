@@ -15,7 +15,7 @@ return {
     lazy = true,
     version = false,
   },
-  install = { colorscheme = { "catppuccin", "habamax" } },
+  install = { colorscheme = { core.config.ui.theme, "habamax" } },
   ui = {
     size = { width = core.config.ui.width, height = core.config.ui.height },
     border = core.config.ui.transparent.floats and "rounded" or "none",

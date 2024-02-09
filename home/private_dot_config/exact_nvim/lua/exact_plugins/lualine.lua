@@ -6,8 +6,7 @@ return {
 
     -- Options
     opts.options = opts.options or {}
-    opts.options.theme = type(core.config.lazyvim.colorscheme) == "function" and core.config.lazyvim.colorscheme()
-      or core.config.lazyvim.colorscheme
+    opts.options.theme = core.config.ui.theme
     opts.options.component_separators = { left = "", right = "" }
     opts.options.section_separators = { left = "", right = "" }
 
