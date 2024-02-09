@@ -56,18 +56,6 @@ return {
         maxwidth = max_menu_width,
         ellipsis_char = core.icons.ui.Ellipsis,
         preset = "codicons",
-        menu = {
-          nvim_lsp = "[LSP]",
-          emoji = "[Emoji]",
-          path = "[Path]",
-          luasnip = "[Snippet]",
-          buffer = "[Buffer]",
-          tmux = "[TMUX]",
-          copilot = "[Copilot]",
-          treesitter = "[Treesitter]",
-          cmdline = "[Cmdline]",
-        },
-        show_menu_labelDetails = true,
         before = function(entry, vim_item)
           vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
           if vim.tbl_contains({ "nvim_lsp" }, entry.source.name) then
