@@ -9,6 +9,8 @@ return {
     opts.options.theme = core.config.ui.theme
     opts.options.component_separators = { left = "", right = "" }
     opts.options.section_separators = { left = "", right = "" }
+    opts.options.disabled_filetypes = opts.options.disabled_filetypes or {}
+    opts.options.disabled_filetypes.statusline = {}
 
     -- Sections
     opts.sections = opts.sections or {}
