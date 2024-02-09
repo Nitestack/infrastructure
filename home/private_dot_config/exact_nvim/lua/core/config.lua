@@ -96,6 +96,7 @@ M.plugins = {
 }
 
 M.disabled_plugins = {
+  "akinsho/bufferline.nvim",
   "echasnovski/mini.indentscope",
   "pmizio/typescript-tools.nvim",
   "echasnovski/mini.pairs",
