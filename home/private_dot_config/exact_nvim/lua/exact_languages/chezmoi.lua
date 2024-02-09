@@ -19,6 +19,15 @@ return utils.lsp.load_language({
           require("lspconfig.server_configurations.powershell_es").default_config.filetypes
         opts.servers.powershell_es = opts.servers.powershell_es or {}
         opts.servers.powershell_es.filetypes = vim.list_extend(powershell_es_filetypes, { "ps1.chezmoitmpl" })
+        -- JSON
+        local jsonls_filetypes = require("lspconfig.server_configurations.jsonls").default_config.filetypes
+        opts.servers.jsonls = opts.servers.jsonls or {}
+        opts.servers.jsonls.filetypes = vim.list_extend(jsonls_filetypes, { "json.chezmoitmpl", "jsonc.chezmoitmpl" })
+        -- YAML
+        local yamlls_filetypes = require("lspconfig.server_configurations.yamlls").default_config.filetypes
+        opts.servers.yamlls = opts.servers.yamlls or {}
+        opts.servers.yamlls.filetypes =
+          vim.list_extend(yamlls_filetypes, { "yaml.chezmoitmpl", "yaml.docker-compose.chezmoitmpl" })
       end,
     },
   },
