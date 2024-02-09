@@ -314,6 +314,8 @@ validate_not_empty() {
 }
 
 dotfiles_download_command() {
+  log_task "Downloading dotfiles"
+
   dotfiles_dir=$(expand_tilde "${args[target]}")
   repo=${args[--repo]}
   branch=${args[--branch]}
@@ -350,6 +352,8 @@ dotfiles_download_command() {
 }
 
 dotfiles_install_command() {
+  log_task "Installing dotfiles"
+
   sourceDir=$(expand_tilde "${args[sourceDir]}")
 
   set -- --source="${sourceDir}" --verbose=false

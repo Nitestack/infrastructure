@@ -167,6 +167,8 @@ USAGE:
 
     [Switch]$SSH
   )
+  Write-LogTask "Downloading dotfiles"
+
   # Set remote depending on the ssh flag
   if ($SSH)
   {
@@ -232,6 +234,8 @@ USAGE:
 
     [Switch]$OneShot
   )
+  Write-LogTask "Installing dotfiles"
+
   # Set arguments
   $arguments = @("--source='$SourceDir'", "--verbose=false")
 

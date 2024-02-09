@@ -1,3 +1,5 @@
+log_task "Downloading dotfiles"
+
 dotfiles_dir=$(expand_tilde "${args[target]}")
 repo=${args[--repo]}
 branch=${args[--branch]}

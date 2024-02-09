@@ -1,3 +1,5 @@
+log_task "Installing dotfiles"
+
 ## Set arguments
 sourceDir=$(expand_tilde "${args[sourceDir]}")
 
