@@ -39,8 +39,8 @@ M.ui = {
 - Nitestack -
 ]],
   transparent = {
-    enabled = true,
-    floats = true,
+    enabled = not vim.g.neovide,
+    floats = not vim.g.neovide,
   },
   width = 0.8,
   height = 0.8,

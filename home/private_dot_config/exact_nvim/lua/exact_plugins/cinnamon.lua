@@ -1,6 +1,9 @@
 ---@type LazyPluginSpec
 return {
   "declancm/cinnamon.nvim",
+  cond = function()
+    return not utils.general.is_neovide()
+  end,
   event = "LazyFile",
   opts = {
     default_keymaps = true,

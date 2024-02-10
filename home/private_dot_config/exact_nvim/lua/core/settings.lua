@@ -30,7 +30,7 @@ M.options = {
   -- Other
   pumblend = 0, -- fixes icon bug in nvim-cmp
   list = false, -- don't show invisible characters
-  guifont = "monospace:h17", -- set font for graphical Neovim apps
+  guifont = "MonoLisa,Symbols Nerd Font:h18", -- set font for graphical Neovim apps
 }
 
 --------------------------------------------------------------------------------
@@ -51,8 +51,10 @@ M.disabled_providers = { "perl", "ruby", "node", "python3" }
 function M.run()
   -- Neovide
   if utils.general.is_neovide() then
-    vim.opt.guifont = "MonoLisa,Symbols Nerd Font:h18:b"
+    vim.opt.linespace = 6
+    vim.g.neovide_hide_mouse_when_typing = true
   end
+
   -- undercurl
   vim.cmd([[let &t_Cs = "\e[4:3m"]])
   vim.cmd([[let &t_Ce = "\e[4:0m"]])
