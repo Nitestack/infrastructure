@@ -1,5 +1,8 @@
 [wsl2]
 memory=4GB
+swap=2GB
+localhostForwarding=true
+kernelCommandLine="sysctl.vm.swappiness=10"
 
 [experimental]
 autoMemoryReclaim=gradual
