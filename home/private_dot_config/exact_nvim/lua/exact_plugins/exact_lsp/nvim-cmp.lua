@@ -81,7 +81,7 @@ return {
         end, { "i", "s" }),
       })
 
-      if utils.general.is_win() then
+      if utils.general.is_win() and not utils.general.is_neovide() then
         opts.mapping = vim.tbl_extend("force", opts.mapping, {
           ["<C-x>"] = cmp.mapping.complete(),
         })
