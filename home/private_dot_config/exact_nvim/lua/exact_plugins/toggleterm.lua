@@ -3,6 +3,9 @@ local mapping = "<C-t>"
 ---@type LazyPluginSpec
 return {
   "akinsho/toggleterm.nvim",
+  cond = function()
+    return utils.general.is_neovide()
+  end,
   version = "*",
   keys = core.lazy_map({
     [{ "n", "i", "t" }] = {
