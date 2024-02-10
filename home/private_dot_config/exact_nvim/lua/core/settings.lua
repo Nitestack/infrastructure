@@ -49,6 +49,10 @@ M.disabled_providers = { "perl", "ruby", "node", "python3" }
 --  Additional settings
 --------------------------------------------------------------------------------
 function M.run()
+  -- Neovide
+  if utils.general.is_neovide() then
+    vim.opt.guifont = "MonoLisa,Symbols Nerd Font:h18:b"
+  end
   -- undercurl
   vim.cmd([[let &t_Cs = "\e[4:3m"]])
   vim.cmd([[let &t_Ce = "\e[4:0m"]])

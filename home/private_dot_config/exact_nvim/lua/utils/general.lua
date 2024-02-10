@@ -40,6 +40,10 @@ function M.is_wsl()
   return os.getenv("WSL_DISTRO_NAME") ~= nil
 end
 
+function M.is_neovide()
+  return vim.g.neovide
+end
+
 ---@param paths string|string[]
 function M.resolve_path(paths)
   return vim.fn.expand(type(paths) == "string" and paths or vim.fn.join(paths, "/"))
