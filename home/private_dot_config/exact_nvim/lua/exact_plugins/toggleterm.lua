@@ -1,4 +1,4 @@
-local mapping = "<C-t>"
+local mapping = "<C-\\>"
 
 ---@type LazyPluginSpec
 return {
