@@ -9,9 +9,9 @@ dependencies:
       - "nodejs-lts"
       - "lazygit"
       - "bat"
-      - "zoxide"
       - "winfetch"
-    winget: []
+    winget:
+      - "ajeetdsouza.zoxide"
     custom:
       - rustup:
           - "choco install -y rustup.install"
