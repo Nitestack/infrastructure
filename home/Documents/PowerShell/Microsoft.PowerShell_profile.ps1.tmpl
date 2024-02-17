@@ -200,7 +200,7 @@ if (Test-Path($ChocolateyProfile))
 $env:EDITOR = "{{- .editor -}}"
 
 # Initialize zoxide
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
+Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
 
 # Run winfetch
 winfetch
