@@ -1,5 +1,4 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+local keymaps = require("core.mappings")
 
-require("utils.loaders").load_mappings(require("core.mappings"))
+require("utils.mappings").map(keymaps.mappings, keymaps.mapping_opts)
+require("utils.mappings").disable_mapping(keymaps.unmappings)

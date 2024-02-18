@@ -64,7 +64,21 @@ function M.str_to_tbl(str_or_tbl)
   return str_or_tbl
 end
 
-M.ft_plugin = require("utils.loaders").load_ftplugin
+---@param config { options?: vim.opt, config?: fun(), mappings?: Mappings, mapping_opts?: KeymapOpts }
+function M.load_ftplugin(config)
+  if config.options then
+    for k, v in pairs(config.options) do
+      vim.wo[k] = v
+    end
+  end
+  if config.config then
+    config.config()
+  end
+  if config.mappings then
+    require("utils.mappings").map(config.mappings, config.mapping_opts)
+  end
+end
+
 M.map = require("utils.mappings").map
 M.single_map = require("utils.mappings").single_map
 M.lazy_map = require("utils.mappings").lazy_map
