@@ -397,6 +397,9 @@ USAGE:
       })]
     [string]$Target,
 
+    [Alias("n")]
+    [Switch]$Neovide,
+
     [Alias("a")]
     [Switch]$Apply,
 
@@ -408,7 +411,10 @@ USAGE:
   if ([string]::IsNullOrEmpty($Target))
   {
     Set-Location $(Resolve-Path "$(chezmoi source-path)/..")
-    if (Get-Command nvim -ErrorAction SilentlyContinue)
+    if ($Neovide -and (Get-Command neovide -ErrorAction SilentlyContinue))
+    {
+      neovide
+    } else if (Get-Command nvim -ErrorAction SilentlyContinue)
     {
       nvim
     }

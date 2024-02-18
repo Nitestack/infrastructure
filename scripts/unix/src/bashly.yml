@@ -66,6 +66,9 @@ commands:
         default: ""
         validate: file_exists
     flags:
+      - long: --neovide
+        short: -n
+        help: Use Neovide (Neovim GUI) instead of Neovim
       - long: --apply
         short: -a
         help: Apply target immediately after editing. Ignored if there are no targets.
