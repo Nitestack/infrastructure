@@ -414,7 +414,7 @@ USAGE:
     if ($Neovide -and (Get-Command neovide -ErrorAction SilentlyContinue))
     {
       neovide
-    } else if (Get-Command nvim -ErrorAction SilentlyContinue)
+    } elseif (Get-Command nvim -ErrorAction SilentlyContinue)
     {
       nvim
     }
