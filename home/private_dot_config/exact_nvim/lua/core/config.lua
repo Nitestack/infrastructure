@@ -104,9 +104,6 @@ M.disabled_plugins = {
   "echasnovski/mini.pairs",
   "folke/tokyonight.nvim",
   "nvim-neo-tree/neo-tree.nvim",
-  "sindrets/diffview.nvim",
-  "andweeb/presence.nvim",
-  "folke/zen-mode.nvim",
 }
 
 return M
