@@ -3,38 +3,21 @@ return {
   "L3MON4D3/LuaSnip",
   dependencies = {
     {
-      "Exafunction/codeium.vim",
-      commit = "a1c3d6b369a18514d656dac149de807becacbdf7",
-      build = ":Codeium Auth",
-      keys = core.lazy_map({
-        i = {
-          ["<C-a>"] = {
-            function()
-              return vim.fn["codeium#Accept"]()
-            end,
-            "Codeium: Accept suggestion",
-            opts = {
-              silent = true,
-              expr = true,
-            },
-          },
-        },
-      }),
+      "kawre/neotab.nvim",
+      ---@type ntab.user.config
+      opts = {
+        tabkey = "",
+      },
     },
   },
   keys = core.lazy_map({
     i = {
       ["<Tab>"] = {
         function()
-          if require("luasnip").jumpable(1) then
-            return "<Plug>luasnip-jump-next"
-          else
-            return vim.fn["codeium#Accept"]()
-          end
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<Plug>(neotab-out)"
         end,
-        "Super-tab: expand/jump or accept Codeium suggestion",
+        "Super-tab: expand/jump or tabout",
         opts = {
-          silent = true,
           expr = true,
         },
       },
@@ -47,11 +30,10 @@ return {
             ls.change_choice(1)
           end
         end,
-        opts = {
-          silent = true,
-        },
       },
     },
+  }, {
+    silent = true,
   }),
   opts = function(_, opts)
     local ls = require("luasnip")
