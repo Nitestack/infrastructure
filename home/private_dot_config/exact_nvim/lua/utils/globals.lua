@@ -65,7 +65,7 @@ function M.str_to_tbl(str_or_tbl)
 end
 
 ---@param config { options?: vim.opt, config?: fun(), mappings?: Mappings, mapping_opts?: KeymapOpts }
-function M.load_ftplugin(config)
+function M.ft_plugin(config)
   if config.options then
     for k, v in pairs(config.options) do
       vim.wo[k] = v
