@@ -88,6 +88,9 @@ M.plugins = {
 
     "ssh_config",
     "ini",
+    "tmux",
+    "xml",
+    "toml",
   },
   linting = {
     linters_by_ft = {
