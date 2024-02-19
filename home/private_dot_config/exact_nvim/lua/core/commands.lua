@@ -57,26 +57,6 @@ M.auto_cmds = {
       end,
     },
   },
-  {
-    "BufEnter",
-    {
-      group = "lazyvim_close_with_q",
-      pattern = "*",
-      callback = function(event)
-        if vim.bo[event.buf].buftype == "" then
-          vim.bo[event.buf].buflisted = false
-          core.single_map("n", "q", {
-            vim.cmd.close,
-            "Close",
-            opts = {
-              buffer = event.buf,
-              silent = true,
-            },
-          })
-        end
-      end,
-    },
-  },
   -- Remove any trailing whitespace on save
   {
     "BufWritePre",
