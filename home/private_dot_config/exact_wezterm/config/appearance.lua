@@ -10,29 +10,20 @@ function M.setup(config)
 
   -- Font
   config.font = wezterm.font_with_fallback({
+    "MonoLisa",
     {
       family = "MonoLisa",
       weight = "Medium",
     },
-    -- {
-    --   family = "Geist Mono",
-    --   weight = "Bold",
-    -- },
-    -- {
-    --   family = "SF Mono",
-    --   weight = "Bold",
-    -- },
+    "SF Mono",
     "Symbols Nerd Font",
   })
   config.font_size = 18.0
   config.line_height = 1.2
-  config.bold_brightens_ansi_colors = true
 
   -- Rendering
   config.animation_fps = 144
   config.max_fps = 144
-  config.front_end = "WebGpu"
-  config.webgpu_power_preference = "HighPerformance"
 
   config.underline_thickness = 3
   config.cursor_thickness = 4
@@ -61,7 +52,7 @@ function M.setup(config)
   config.window_frame = {
     font = wezterm.font_with_fallback({
       {
-        family = "MonoLisa",
+        family = "Geist",
         weight = "Bold",
       },
       "Symbols Nerd Font",
