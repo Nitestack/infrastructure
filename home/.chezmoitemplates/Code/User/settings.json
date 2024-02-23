@@ -43,14 +43,14 @@
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.detectIndentation": false,
-  "editor.fontFamily": "\"BlexMono Nerd Font\", \"JetBrainsMono Nerd Font\", \"Operator Mono\", \"Dank Mono\", \"CaskaydiaCove NF\", \"Cascadia Code\", Consolas, \"Courier New\", monospace",
+  "editor.fontFamily": "\"Geist Mono\", monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 18,
-  "editor.fontWeight": "500",
+  "editor.fontWeight": "400",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
-  "editor.inlayHints.fontFamily": "\"Dank Mono\", \"CaskaydiaCove NF\", \"Cascadia Code\", Consolas, \"Courier New\", monospace",
+  "editor.inlayHints.fontFamily": "\"Geist Mono\", monospace",
   "editor.inlayHints.padding": true,
   "editor.inlineSuggest.enabled": true,
   "editor.lineNumbers": "relative",
@@ -268,7 +268,7 @@
       ]
     }
   },
-  "scm.inputFontFamily": "\"Fira Code\", \"CaskaydiaCove NF\", \"Cascadia Code\", Consolas, \"Courier New\", monospace",
+  "scm.inputFontFamily": "\"Geist Mono\", monospace",
   "security.allowedUNCHosts": ["wsl.localhost"],
   "security.workspace.trust.untrustedFiles": "open",
   "settingsSync.ignoredExtensions": ["heybourn.headwind", "zenclabs.previewjs"],
@@ -285,7 +285,7 @@
   "terminal.external.windowsExec": "C:\\Users\\hydra\\AppData\\Local\\Microsoft\\WindowsApps\\wt.exe",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
   "terminal.integrated.env.windows": {},
-  "terminal.integrated.fontFamily": "\"JetBrainsMono Nerd Font\", \"Cascadia Code\", Consolas, \"Courier New\", monospace",
+  "terminal.integrated.fontFamily": "\"Geist Mono\", monospace",
   "terminal.integrated.profiles.windows": {
     "Command Prompt": {
       "path": [
@@ -436,7 +436,7 @@
   ],
   "vim.whichwrap": "<,>,[,],h,l",
   "vite.autoStart": false,
-  "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\hydra\\AppData/Local\\bob\\nvim-bin\\nvim.exe",
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\Users\\hydra\\AppData\\Local\\bob\\nvim-bin\\nvim.exe",
   "vscode-pets.theme": "forest",
   "window.commandCenter": true,
   "window.zoomLevel": 1,
