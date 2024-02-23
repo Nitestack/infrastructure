@@ -53,8 +53,8 @@ function M.setup(config)
   config.disable_default_key_bindings = true
 
   config.keys = {
-    { key = "c", mods = "CTRL", action = act.CopyTo("Clipboard") },
-    { key = "v", mods = "CTRL", action = act.PasteFrom("Clipboard") },
+    { key = "C", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
+    { key = "V", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
 
     -- Tab
     { key = "T", mods = "CTRL", action = act.SpawnTab("DefaultDomain") },
