@@ -57,7 +57,6 @@ function M.setup(config)
       },
       "Symbols Nerd Font",
     }),
-    font_size = 14.0,
   }
 end
 
