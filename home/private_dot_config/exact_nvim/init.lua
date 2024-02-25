@@ -143,3 +143,24 @@ require("lazy").setup({
     },
   },
 })
+
+core.auto_cmds({
+  -- Auto load session
+  {
+    "User",
+    {
+      group = "persistence",
+      pattern = "VeryLazy",
+      callback = function()
+        require("lazy").load({ plugins = { "persistence.nvim" } })
+        local persistence = require("persistence")
+        if vim.fn.argc() == 0 and not vim.g.started_with_stdin then
+          persistence.load()
+        else
+          persistence.stop()
+        end
+      end,
+      nested = true,
+    },
+  },
+})
