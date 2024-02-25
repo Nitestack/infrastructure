@@ -2,10 +2,10 @@
 return {
   "catppuccin/nvim",
   name = "catppuccin",
-  lazy = not core.config.ui.theme == "catppuccin",
+  lazy = false,
   priority = 1000,
   enabled = function()
-    return not core.is_win() and core.config.ui.theme == "catppuccin"
+    return core.config.ui.theme == "catppuccin"
   end,
   ---@type CatppuccinOptions
   opts = {

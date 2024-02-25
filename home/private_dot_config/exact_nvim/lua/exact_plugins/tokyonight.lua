@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "folke/tokyonight.nvim",
-  lazy = not core.config.ui.theme == "tokyonight",
+  lazy = false,
   priority = 1000,
   enabled = function()
     return core.config.ui.theme == "tokyonight"

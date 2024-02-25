@@ -26,7 +26,9 @@ return {
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
-      enabled = vim.fn.executable("make") == 1,
+      enabled = function()
+        return vim.fn.executable("make") == 1
+      end,
     },
   },
   keys = core.lazy_map({
