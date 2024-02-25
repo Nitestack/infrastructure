@@ -58,7 +58,7 @@ return {
     ---@type vim.diagnostic.Opts
     local diagnostic_opts = {
       underline = true,
-      update_in_insert = false,
+      update_in_insert = not core.config.performance_mode,
       virtual_text = {
         spacing = 4,
         source = "if_many",

@@ -1,3 +1,6 @@
+local use_navic = false
+local show_modified = true
+
 ---@type LazyPluginSpec
 return {
   "utilyre/barbecue.nvim",
@@ -11,36 +14,46 @@ return {
   ---@type barbecue.Config
   opts = {
     theme = core.config.ui.theme,
-    create_autocmd = false, -- prevent barbecue from updating itself automatically
-    show_modified = true,
+    -- prevent barbecue from updating itself automatically when in performance mode
+    create_autocmd = not core.config.performance_mode,
+    show_modified = show_modified,
     symbols = {
       modified = core.icons.ui.Circle,
       elipsis = core.icons.ui.Ellipsis,
     },
     -- Disable navic completely
-    attach_navic = false,
-    show_navic = false,
+    attach_navic = use_navic,
+    show_navic = use_navic,
   },
   config = function(_, opts)
     require("barbecue").setup(opts)
 
-    core.auto_cmds({
-      {
-        {
-          "WinResized",
-          "BufWinEnter",
-          "CursorHold",
-          "InsertLeave",
+    if core.config.performance_mode then
+      local events = {
+        "WinResized",
+        "BufWinEnter",
+      }
 
-          "BufModifiedSet", -- include this if you have set `show_modified` to `true`
-        },
+      if show_modified then
+        table.insert(events, "BufModifiedSet")
+      end
+
+      if use_navic then
+        table.insert(events, "CursorHold")
+        table.insert(events, "InsertLeave")
+      end
+
+      core.auto_cmds({
         {
-          group = "barbecue.updater",
-          callback = function()
-            require("barbecue.ui").update()
-          end,
+          events,
+          {
+            group = "barbecue.updater",
+            callback = function()
+              require("barbecue.ui").update()
+            end,
+          },
         },
-      },
-    })
+      })
+    end
   end,
 }

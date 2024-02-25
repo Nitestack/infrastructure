@@ -25,9 +25,15 @@ return {
     end
     lint.linters_by_ft = opts.linters_by_ft
 
+    local events = { "BufWritePost", "BufReadPost" }
+
+    if not core.config.performance_mode then
+      table.insert(events, "InsertLeave")
+    end
+
     core.auto_cmds({
       {
-        { "BufWritePost", "BufReadPost", "InsertLeave" },
+        events,
         {
           group = "nvim-lint",
           callback = function()

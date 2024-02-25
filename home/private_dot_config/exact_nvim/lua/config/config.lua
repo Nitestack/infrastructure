@@ -3,6 +3,7 @@
 --------------------------------------------------------------------------------
 
 ---@class UserConfig
+---@field performance_mode boolean
 ---@field ui UserConfigUI
 ---@field plugins UserConfigPlugins
 ---@field disabled_plugins string[]
@@ -21,7 +22,9 @@
 ---@field formatting LanguageFormatterConfig
 
 ---@type UserConfig
-local M = {}
+local M = {
+  performance_mode = true,
+}
 
 M.ui = {
   theme = "tokyonight",
