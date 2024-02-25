@@ -43,6 +43,7 @@ return {
         function()
           vim.b.disable_autoformat = false
           vim.g.disable_autoformat = false
+          vim.notify("Autoformat enabled", vim.log.levels.INFO, { title = "Editor" })
         end,
         {
           desc = "Re-enable autoformat on save",
@@ -54,8 +55,10 @@ return {
           if args.bang then
             -- FormatDisable! will disable formatting just for this buffer
             vim.b.disable_autoformat = true
+            vim.notify("Autoformat for current buffer disabled", vim.log.levels.INFO, { title = "Editor" })
           else
             vim.g.disable_autoformat = true
+            vim.notify("Autoformat disabled", vim.log.levels.INFO, { title = "Editor" })
           end
         end,
         {
