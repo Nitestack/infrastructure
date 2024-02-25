@@ -1,6 +1,6 @@
 return {
   "lewis6991/gitsigns.nvim",
-  event = { "BufReadPre", "BufNewFile", "BufReadPost" },
+  event = "LazyFile",
   opts = {
     signs = {
       add = { text = core.icons.ui.BoldLineLeft },

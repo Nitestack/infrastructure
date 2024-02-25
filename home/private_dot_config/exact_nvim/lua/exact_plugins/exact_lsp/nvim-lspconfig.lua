@@ -46,7 +46,7 @@ return {
       opts = {},
     },
   },
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  event = "LazyFile",
   opts = {
     servers = {
       emmet_language_server = {},

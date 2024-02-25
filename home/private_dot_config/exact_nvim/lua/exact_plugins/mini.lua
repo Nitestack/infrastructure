@@ -85,7 +85,7 @@ return {
   },
   {
     "echasnovski/mini.indentscope",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LazyFile",
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = {
@@ -146,7 +146,7 @@ return {
   {
     "echasnovski/mini.ai",
     dependencies = { "folke/which-key.nvim" },
-    event = { "BufReadPre", "BufNewFile", "BufReadPost" },
+    event = "LazyFile",
     opts = function()
       local ai = require("mini.ai")
       return {
