@@ -34,7 +34,6 @@ return {
     },
     {
       "nvim-treesitter/nvim-treesitter-context",
-      event = "LazyFile",
       opts = {
         mode = "cursor",
         max_lines = 3,
@@ -43,6 +42,7 @@ return {
     },
     "andymass/vim-matchup",
   },
+  version = false, -- last release is way too old and doesn't work on Windows
   build = ":TSUpdate",
   event = "LazyFile",
   cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
@@ -55,30 +55,34 @@ return {
   --   require("lazy.core.loader").add_to_rtp(plugin)
   --   require("nvim-treesitter.query_predicates")
   -- end,
-  keys = core.lazy_map({
-    n = {
-      ["<C-Space>"] = {},
-    },
-    x = {
-      ["<BS>"] = {},
-    },
-  }),
+  keys = {
+    { "<C-Space>", desc = "Increment selection" },
+    { "<BS>", desc = "Decrement selection", mode = "x" },
+  },
   opts = function(_, opts)
-    if type(opts.ensure_installed) == "table" then
-      vim.list_extend(opts.ensure_installed --[[@as table]], core.config.plugins.treesitter)
-    end
+    opts.ensure_installed = opts.ensure_installed or {}
+    local ensure_installed = vim.list_extend(opts.ensure_installed, core.config.plugins.treesitter)
 
     ---@type TSConfig
     return {
+      ensure_installed = ensure_installed,
       highlight = {
         enable = true,
         -- disable highlighting in chezmoi templates
-        disable = function()
+        disable = function(_lang, buf)
           -- check if 'filetype' option includes 'chezmoitmpl'
           if string.find(vim.bo.filetype, "chezmoitmpl") then
             return true
           end
+
+          -- check for file size
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then
+            return true
+          end
         end,
+        additional_vim_regex_highlighting = false,
       },
       -- Auto-install missing parsers on startup
       auto_install = true,
@@ -111,5 +115,8 @@ return {
         disable_virtual_text = true,
       },
     }
+  end,
+  config = function(_, opts)
+    require("nvim-treesitter.configs").setup(opts)
   end,
 }
