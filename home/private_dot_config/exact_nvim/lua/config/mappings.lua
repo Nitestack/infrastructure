@@ -3,8 +3,9 @@
 --------------------------------------------------------------------------------
 
 ---@class MappingsConfig
----@field mappings Mappings
+---@field lsp_mappings fun(args):Mappings
 ---@field terminal_mappings KeymapConfig
+---@field mappings Mappings
 ---@field unmappings DisableMappings
 ---@field mapping_opts KeymapOpts
 
@@ -12,10 +13,132 @@
 local M = {}
 
 --------------------------------------------------------------------------------
---  Mappings
+--  LSP mappings
 --------------------------------------------------------------------------------
-M.mappings = {}
+function M.lsp_mappings()
+  return {
+    n = {
+      ["gd"] = {
+        function()
+          require("telescope.builtin").lsp_definitions({ reuse_win = true })
+        end,
+        "Goto Definition",
+        has = "definition",
+      },
+      ["gD"] = {
+        vim.lsp.buf.declaration,
+        "Goto Declaration",
+      },
+      ["gr"] = {
+        require("telescope.builtin").lsp_references,
+        "References",
+      },
+      ["gi"] = {
+        function()
+          require("telescope.builtin").lsp_implementations({ reuse_win = true })
+        end,
+        "Goto Implementation",
+      },
+      ["go"] = {
+        function()
+          require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+        end,
+        "Goto Type Definition",
+      },
+      ["<leader>cd"] = {
+        vim.diagnostic.open_float,
+        "Line Diagnostics",
+      },
+      ["K"] = {
+        vim.lsp.buf.hover,
+        "Hover",
+      },
+      ["]d"] = {
+        vim.diagnostic.goto_next,
+        "Next Diagnostic",
+      },
+      ["[d"] = {
+        vim.diagnostic.goto_prev,
+        "Prev Diagnostic",
+      },
+      ["]e"] = {
+        function()
+          vim.diagnostic.goto_next({
+            severity = vim.diagnostic.severity.ERROR,
+          })
+        end,
+        "Next Error",
+      },
+      ["[e"] = {
+        function()
+          vim.diagnostic.goto_prev({
+            severity = vim.diagnostic.severity.ERROR,
+          })
+        end,
+        "Prev Error",
+      },
+      ["]w"] = {
+        function()
+          vim.diagnostic.goto_next({
+            severity = vim.diagnostic.severity.WARN,
+          })
+        end,
+        "Next Warning",
+      },
+      ["[w"] = {
+        function()
+          vim.diagnostic.goto_prev({
+            severity = vim.diagnostic.severity.WARN,
+          })
+        end,
+        "Prev Warning",
+      },
+      ["<leader>cA"] = {
+        function()
+          vim.lsp.buf.code_action({
+            context = {
+              only = {
+                "source",
+              },
+              diagnostics = {},
+            },
+          })
+        end,
+        "Source Action",
+        has = "codeAction",
+      },
+      [{ "<leader>cr", "<F2>" }] = {
+        vim.lsp.buf.rename,
+        "Rename",
+        has = "rename",
+      },
+    },
+    i = {
+      ["<C-k>"] = {
+        vim.lsp.buf.signature_help,
+        "Signature Help",
+        has = "signatureHelp",
+      },
+    },
+    [{ "n", "v" }] = {
+      ["<leader>ca"] = {
+        function()
+          -- Ensure plugin is loaded
+          if not pcall(require, "actions-preview") then
+            require("lazy").load({ plugins = { "actions-preview.nvim" } })
+          end
+          require("actions-preview").code_actions()
+        end,
+        "Code Action",
+        has = "codeAction",
+      },
+    },
+  }
+end
 
+--------------------------------------------------------------------------------
+--  Terminal mappings
+--------------------------------------------------------------------------------
 M.terminal_mappings = {
   ["<Esc>"] = {
     "<C-\\><C-n>",
@@ -46,6 +169,11 @@ M.terminal_mappings = {
     "Window right",
   },
 }
+
+--------------------------------------------------------------------------------
+--  Mappings
+--------------------------------------------------------------------------------
+M.mappings = {}
 
 -- Delete into void register
 M.mappings[{ "n", "v" }] = {
