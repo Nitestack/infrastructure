@@ -10,6 +10,7 @@ return core.load_language({
   mason = {
     "prettierd",
     "jsonlint",
+    "json-lsp",
   },
   lsp = {
     servers = {
