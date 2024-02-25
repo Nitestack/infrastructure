@@ -1,35 +1,21 @@
+--------------------------------------------------------------------------------
+--  GlOBALS
+--------------------------------------------------------------------------------
 local M = {}
 
---- Call the given function and use `vim.notify` to notify of any errors
---- this function is a wrapper around `xpcall` which allows having a single
---- error handler for all errors
----@param msg string
----@param f async fun(...):...
----@param ... any
----@return boolean, any
----@overload fun(f: async fun(...):..., ...): boolean, any
-function M.pcall(msg, f, ...)
-  local args = { ... }
-  if type(msg) == "function" then
-    local arg = f --[[@as any]]
-    ---@diagnostic disable-next-line: cast-local-type
-    args, f, msg = { arg, unpack(args) }, msg, nil
-  end
-  return xpcall(f, function(err)
-    msg = debug.traceback(msg and string.format("%s:\n%s\n%s", msg, vim.inspect(args), err) or err)
-    vim.schedule(function()
-      vim.notify(msg, vim.log.levels.ERROR, { title = "ERROR" })
-    end)
-  end, unpack(args))
-end
+---@param plugins string[]
+---@return LazyPluginSpec[]
+function M.disabled_plugins(plugins)
+  local spec = {}
 
----@generic T:table
----@param callback fun(item: T, key: any)
----@param list table<any, T>
-function M.foreach(callback, list)
-  for k, v in pairs(list) do
-    callback(v, k)
+  for _, plugin in ipairs(plugins) do
+    table.insert(spec, {
+      plugin,
+      enabled = false,
+    })
   end
+
+  return spec
 end
 
 ---Determine if a value of any type is empty
@@ -64,6 +50,115 @@ function M.str_to_tbl(str_or_tbl)
   return str_or_tbl
 end
 
+---@alias StringOrArray string|string[]
+
+---@class LanguageConfig
+---@field lsp? LanguageLspConfig
+---@field mason? StringOrArray
+---@field treesitter? StringOrArray
+---@field formatter? LanguageFormatterConfig
+---@field linter? LanguageLinterConfig
+---@field plugins? LazyPluginSpec[]
+
+---@class LanguageLspConfig
+---@field servers? table<string, table>
+---@field setup? table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+
+---@class LanguageFormatterConfig
+---@field formatters_by_ft? table<string, conform.FormatterUnit[]>
+---@field formatters? table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
+
+---@class LanguageLinterConfig
+---@field linters_by_ft? table<string, string[]>
+---@field linters? table<string,table>
+
+---@param config LanguageConfig
+function M.load_language(config)
+  ---@type LazyPluginSpec[]
+  local spec = {}
+
+  if config.lsp then
+    table.insert(spec, {
+      "neovim/nvim-lspconfig",
+      ---@type PluginLspOpts
+      opts = {
+        setup = config.lsp.setup or {},
+        servers = config.lsp.servers or {},
+      },
+    })
+  end
+
+  if config.mason then
+    table.insert(spec, {
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
+      opts = function(_, opts)
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.mason))
+      end,
+    })
+  end
+
+  if config.treesitter then
+    table.insert(spec, {
+      "nvim-treesitter/nvim-treesitter",
+      opts = function(_, opts)
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.treesitter))
+      end,
+    })
+  end
+
+  if config.formatter then
+    table.insert(spec, {
+      "stevearc/conform.nvim",
+      opts = {
+        formatters_by_ft = config.formatter.formatters_by_ft or {},
+        formatters = config.formatter.formatters or {},
+      },
+    })
+  end
+
+  if config.linter then
+    table.insert(spec, {
+      "mfussenegger/nvim-lint",
+      opts = {
+        linters_by_ft = config.linter.linters_by_ft or {},
+        linters = config.linter.linters or {},
+      },
+    })
+  end
+
+  if config.plugins then
+    vim.list_extend(spec, config.plugins)
+  end
+
+  return spec
+end
+
+function M.is_win()
+  return vim.loop.os_uname().sysname == "Windows_NT"
+end
+
+function M.is_linux()
+  return vim.loop.os_uname().sysname == "Linux"
+end
+
+function M.is_nightly()
+  local version = vim.version()
+
+  if version.prerelease then
+    return true
+  else
+    return false
+  end
+end
+
+function M.is_wsl()
+  return os.getenv("WSL_DISTRO_NAME") ~= nil
+end
+
+function M.is_neovide()
+  return vim.g.neovide
+end
+
 ---@param config { options?: vim.opt, config?: fun(), mappings?: Mappings, mapping_opts?: KeymapOpts }
 function M.ft_plugin(config)
   if config.options then
@@ -84,7 +179,7 @@ M.single_map = require("utils.mappings").single_map
 M.lazy_map = require("utils.mappings").lazy_map
 M.single_lazy_map = require("utils.mappings").single_lazy_map
 M.disable_mapping = require("utils.mappings").disable_mapping
-M.auto_cmds = require("utils.cmds").auto_cmds
-M.user_cmds = require("utils.cmds").user_cmds
+M.auto_cmds = require("utils.commands").auto_cmds
+M.user_cmds = require("utils.commands").user_cmds
 
 return M

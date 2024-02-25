@@ -16,12 +16,94 @@ local M = {}
 --  Autocommands
 --------------------------------------------------------------------------------
 M.auto_cmds = {
+  -- Setup terminal mappings
+  {
+    "TermOpen",
+    {
+      pattern = "term://*",
+      callback = function(args)
+        if vim.bo.filetype == "" or vim.bo.filetype == "toggleterm" then
+          core.map({
+            t = require("config.mappings").terminal_mappings,
+          }, { silent = false, buffer = args.buf })
+        end
+      end,
+    },
+  },
+  -- Check if we need to reload the file when it changed
+  {
+    { "FocusGained", "TermClose", "TermLeave" },
+    {
+      group = "checktime",
+      callback = function()
+        if vim.o.buftype ~= "nofile" then
+          vim.cmd("checktime")
+        end
+      end,
+    },
+  },
+  -- Highlight on yank
+  {
+    "TextYankPost",
+    {
+      group = "highlight_yank",
+      callback = function()
+        vim.highlight.on_yank()
+      end,
+    },
+  },
+  -- resize splits if window got resized
+  {
+    "VimResized",
+    {
+      group = "resize_splits",
+      callback = function()
+        local current_tab = vim.fn.tabpagenr()
+        vim.cmd("tabdo wincmd =")
+        vim.cmd("tabnext " .. current_tab)
+      end,
+    },
+  },
+  -- go to last loc when opening a buffer
+  {
+    "BufReadPost",
+    {
+      group = "last_loc",
+      callback = function(event)
+        local exclude = { "gitcommit" }
+        local buf = event.buf
+        if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+          return
+        end
+        vim.b[buf].lazyvim_last_loc = true
+        local mark = vim.api.nvim_buf_get_mark(buf, "\"")
+        local lcount = vim.api.nvim_buf_line_count(buf)
+        if mark[1] > 0 and mark[1] <= lcount then
+          pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+      end,
+    },
+  },
   -- Close some filetypes with <q>
   {
     "FileType",
     {
-      group = "lazyvim_close_with_q",
+      group = "close_with_q",
       pattern = {
+        "PlenaryTestPopup",
+        "help",
+        "lspinfo",
+        "man",
+        "notify",
+        "qf",
+        "query",
+        "spectre_panel",
+        "startuptime",
+        "tsplayground",
+        "neotest-output",
+        "checkhealth",
+        "neotest-summary",
+        "neotest-output-panel",
         "toggleterm",
       },
       callback = function(event)
@@ -40,7 +122,7 @@ M.auto_cmds = {
   {
     "FileType",
     {
-      group = "lazyvim_close_with_q",
+      group = "close_with_q",
       pattern = "*",
       callback = function(event)
         if vim.bo[event.buf].buftype == "nofile" then
@@ -54,6 +136,32 @@ M.auto_cmds = {
             },
           })
         end
+      end,
+    },
+  },
+  -- wrap and check for spell in text filetypes
+  {
+    "FileType",
+    {
+      group = "wrap_spell",
+      pattern = { "gitcommit", "markdown" },
+      callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.spell = true
+      end,
+    },
+  },
+  -- auto create dir when saving a file, in case some intermediate directory does not exist
+  {
+    "BufWritePre",
+    {
+      group = "auto_create_dir",
+      callback = function(event)
+        if event.match:match("^%w%w+://") then
+          return
+        end
+        local file = vim.loop.fs_realpath(event.match) or event.match
+        vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
       end,
     },
   },
@@ -116,9 +224,6 @@ M.user_cmds = {
 
 M.user_cmd_opts = {}
 
---------------------------------------------------------------------------------
---  Autocommand groups
---------------------------------------------------------------------------------
 M.au_group_opts = {
   clear = true,
 }

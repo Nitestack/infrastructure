@@ -1,68 +1,17 @@
 ---@type LazySpec
 return {
   {
-    "echasnovski/mini.indentscope",
-    opts = {
-      symbol = core.icons.ui.LineLeft,
-    },
-  },
-  {
-    "echasnovski/mini.move",
-    keys = core.lazy_map({
-      [{ "n", "x" }] = {
-        [{ "<M-j>", "<M-k>", "<M-h>", "<M-l>" }] = {},
-      },
-    }),
-    opts = {},
-  },
-  {
-    "echasnovski/mini.ai",
-    event = function()
-      return {
-        "LazyFile",
-      }
-    end,
-  },
-  {
-    "echasnovski/mini.comment",
-    event = function()
-      return {}
-    end,
-    keys = core.lazy_map({
-      n = {
-        ["gcc"] = {},
-      },
-      [{ "n", "x", "o" }] = {
-        ["gc"] = {},
-      },
-    }),
-  },
-  {
-    "echasnovski/mini.pairs",
-    event = function()
-      return { "InsertEnter" }
-    end,
-  },
-  { import = "lazyvim.plugins.extras.editor.mini-files" },
-  {
     "echasnovski/mini.files",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = core.lazy_map({
       n = {
-        [{ "<leader>fm", "<leader>e" }] = {
+        ["<leader>e"] = {
           function()
             if not MiniFiles.close() then
               MiniFiles.open(vim.api.nvim_buf_get_name(0), true)
             end
           end,
-          "Open mini.files (directory of current file)",
-        },
-        [{ "<leader>fM", "<leader>E" }] = {
-          function()
-            if not MiniFiles.close() then
-              MiniFiles.open(vim.loop.cwd(), true)
-            end
-          end,
-          "Open mini.files (cwd)",
+          "Toggle File Explorer (directory of current file)",
         },
       },
     }),
@@ -74,6 +23,11 @@ return {
           end
           return MiniFiles.default_prefix(fs_entry)
         end,
+      },
+      windows = {
+        preview = true,
+        width_focus = 30,
+        width_preview = 30,
       },
     },
     config = function(_, opts)
@@ -94,5 +48,164 @@ return {
       })
     end,
   },
-  -- { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
+  {
+    "echasnovski/mini.comment",
+    dependencies = {
+      {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+        opts = {
+          enable_autocmd = false,
+        },
+      },
+    },
+    keys = core.lazy_map({
+      n = {
+        ["gcc"] = {},
+      },
+      [{ "n", "x", "o" }] = {
+        ["gc"] = {},
+      },
+    }),
+    opts = {
+      options = {
+        custom_commentstring = function()
+          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+        end,
+      },
+    },
+  },
+  {
+    "echasnovski/mini.move",
+    keys = core.lazy_map({
+      [{ "n", "x" }] = {
+        [{ "<M-j>", "<M-k>", "<M-h>", "<M-l>" }] = {},
+      },
+    }),
+    opts = {},
+  },
+  {
+    "echasnovski/mini.indentscope",
+    event = { "BufReadPre", "BufNewFile" },
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "help",
+          "alpha",
+          "dashboard",
+          "neo-tree",
+          "Trouble",
+          "trouble",
+          "lazy",
+          "mason",
+          "notify",
+          "toggleterm",
+          "lazyterm",
+        },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+    end,
+    opts = {
+      symbol = core.icons.ui.LineLeft,
+      options = { try_as_border = true },
+    },
+  },
+  {
+    "echasnovski/mini.surround",
+    keys = function(_, keys)
+      -- Populate the keys based on the user's options
+      local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
+      local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+      local mappings = {
+        { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
+        { opts.mappings.delete, desc = "Delete surrounding" },
+        { opts.mappings.find, desc = "Find right surrounding" },
+        { opts.mappings.find_left, desc = "Find left surrounding" },
+        { opts.mappings.highlight, desc = "Highlight surrounding" },
+        { opts.mappings.replace, desc = "Replace surrounding" },
+        { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
+      }
+      mappings = vim.tbl_filter(function(m)
+        return m[1] and #m[1] > 0
+      end, mappings)
+      return vim.list_extend(mappings, keys)
+    end,
+    opts = {
+      mappings = {
+        add = "gsa", -- Add surrounding in Normal and Visual modes
+        delete = "gsd", -- Delete surrounding
+        find = "gsf", -- Find surrounding (to the right)
+        find_left = "gsF", -- Find surrounding (to the left)
+        highlight = "gsh", -- Highlight surrounding
+        replace = "gsr", -- Replace surrounding
+        update_n_lines = "gsn", -- Update `n_lines`
+      },
+    },
+  },
+  {
+    "echasnovski/mini.ai",
+    dependencies = { "folke/which-key.nvim" },
+    event = { "BufReadPre", "BufNewFile", "BufReadPost" },
+    opts = function()
+      local ai = require("mini.ai")
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }, {}),
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
+        },
+      }
+    end,
+    config = function(_, opts)
+      require("mini.ai").setup(opts)
+
+      -- register all text objects with which-key
+      ---@type table<string, string|table>
+      local i = {
+        [" "] = "Whitespace",
+        ["\""] = "Balanced \"",
+        ["'"] = "Balanced '",
+        ["`"] = "Balanced `",
+        ["("] = "Balanced (",
+        [")"] = "Balanced ) including white-space",
+        [">"] = "Balanced > including white-space",
+        ["<lt>"] = "Balanced <",
+        ["]"] = "Balanced ] including white-space",
+        ["["] = "Balanced [",
+        ["}"] = "Balanced } including white-space",
+        ["{"] = "Balanced {",
+        ["?"] = "User Prompt",
+        _ = "Underscore",
+        a = "Argument",
+        b = "Balanced ), ], }",
+        c = "Class",
+        f = "Function",
+        o = "Block, conditional, loop",
+        q = "Quote `, \", '",
+        t = "Tag",
+      }
+      local a = vim.deepcopy(i)
+      for k, v in pairs(a) do
+        a[k] = v:gsub(" including.*", "")
+      end
+
+      local ic = vim.deepcopy(i)
+      local ac = vim.deepcopy(a)
+      for key, name in pairs({ n = "Next", l = "Last" }) do
+        i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+        a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
+      end
+      require("which-key").register({
+        mode = { "o", "x" },
+        i = i,
+        a = a,
+      })
+    end,
+  },
 }

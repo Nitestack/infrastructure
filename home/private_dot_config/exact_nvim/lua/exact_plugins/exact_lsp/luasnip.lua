@@ -3,25 +3,16 @@ return {
   "L3MON4D3/LuaSnip",
   dependencies = {
     {
-      "kawre/neotab.nvim",
-      ---@type ntab.user.config
-      opts = {
-        tabkey = "",
-      },
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end,
     },
   },
+  build = (not jit.os:find("Windows"))
+      and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
+    or nil,
   keys = core.lazy_map({
-    i = {
-      ["<Tab>"] = {
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<Plug>(neotab-out)"
-        end,
-        "Super-tab: expand/jump or tabout",
-        opts = {
-          expr = true,
-        },
-      },
-    },
     [{ "i", "s" }] = {
       ["<C-l>"] = {
         function()
@@ -39,9 +30,11 @@ return {
     local ls = require("luasnip")
     local extras = require("luasnip.extras")
 
+    opts.history = true
+    opts.delete_check_events = "TextChanged"
     opts.enable_autosnippets = true
     opts.update_events = { "TextChanged", "TextChangedI" }
-    opts.snip_env = vim.tbl_deep_extend("force", opts.snip_env or {}, {
+    opts.snip_env = {
       s = ls.snippet,
       ms = ls.multi_snippet,
       sn = ls.snippet_node,
@@ -62,7 +55,7 @@ return {
       fmta = require("luasnip.extras.fmt").fmta,
       conds = require("luasnip.extras.expand_conditions"),
       postfix = require("luasnip.extras.postfix").postfix,
-    })
+    }
   end,
   config = function(_, opts)
     local ls = require("luasnip")

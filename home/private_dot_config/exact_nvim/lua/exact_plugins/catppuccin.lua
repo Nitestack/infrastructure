@@ -2,6 +2,10 @@
 return {
   "catppuccin/nvim",
   name = "catppuccin",
+  priority = 1000,
+  enabled = function()
+    return not core.is_win() and core.config.ui.theme == "catppuccin"
+  end,
   ---@type CatppuccinOptions
   opts = {
     transparent_background = core.config.ui.transparent.enabled,
@@ -105,4 +109,9 @@ return {
       which_key = true,
     },
   },
+  config = function(_, opts)
+    require("catppuccin").setup(opts)
+
+    vim.cmd.colorscheme("catppuccin")
+  end,
 }

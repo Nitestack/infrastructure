@@ -4,85 +4,133 @@
 
 ---@class MappingsConfig
 ---@field mappings Mappings
+---@field terminal_mappings KeymapConfig
 ---@field unmappings DisableMappings
 ---@field mapping_opts KeymapOpts
-
---------------------------------------------------------------------------------
---  Mappings
---------------------------------------------------------------------------------
 
 ---@type MappingsConfig
 local M = {}
 
-M.mappings = {
-  [{ "n", "v" }] = {
-    ["<leader>d"] = {
-      [["_d]],
-      "Delete into void register",
+--------------------------------------------------------------------------------
+--  Mappings
+--------------------------------------------------------------------------------
+M.mappings = {}
+
+M.terminal_mappings = {
+  ["<Esc>"] = {
+    "<C-\\><C-n>",
+    "Enter Normal Mode",
+  },
+  ["<C-h>"] = {
+    function()
+      vim.cmd.wincmd("h")
+    end,
+    "Window left",
+  },
+  ["<C-j>"] = {
+    function()
+      vim.cmd.wincmd("j")
+    end,
+    "Window down",
+  },
+  ["<C-k>"] = {
+    function()
+      vim.cmd.wincmd("k")
+    end,
+    "Window up",
+  },
+  ["<C-l>"] = {
+    function()
+      vim.cmd.wincmd("l")
+    end,
+    "Window right",
+  },
+}
+
+-- Delete into void register
+M.mappings[{ "n", "v" }] = {
+  ["<leader>d"] = {
+    [["_d]],
+    "Delete into void register",
+  },
+}
+
+-- Move around wrapped lines
+M.mappings[{ "n", "x" }] = {
+  [{ "j", "<Down>" }] = {
+    "v:count == 0 ? 'gj' : 'j'",
+    "Move down",
+    opts = {
+      expr = true,
+    },
+  },
+  [{ "k", "<Up>" }] = {
+    "v:count == 0 ? 'gk' : 'k'",
+    "Move up",
+    opts = {
+      expr = true,
     },
   },
 }
 
--- TLDR: Conditionally modify character at end of line
--- Description:
--- This function takes a delimiter character and:
---   * removes that character from the end of the line if the character at the end
---     of the line is that character
---   * removes the character at the end of the line if that character is a
---     delimiter that is not the input character and appends that character to
---     the end of the line
---   * adds that character to the end of the line if the line does not end with
---     a delimiter
--- Delimiters:
--- - ","
--- - ";"
----@param character string
----@return function
-local function modify_line_end_delimiter(character)
-  local delimiters = { ",", ";" }
-  return function()
-    local line = vim.api.nvim_get_current_line()
-    local last_char = line:sub(-1)
-    if last_char == character then
-      vim.api.nvim_set_current_line(line:sub(1, #line - 1))
-    elseif vim.tbl_contains(delimiters, last_char) then
-      vim.api.nvim_set_current_line(line:sub(1, #line - 1) .. character)
-    else
-      vim.api.nvim_set_current_line(line .. character)
-    end
-  end
-end
 M.mappings.n = {
-  -- Smart delete line
-  ["dd"] = {
-    function()
-      if vim.api.nvim_get_current_line():match("^%s*$") then
-        return "\"_dd"
-      else
-        return "dd"
-      end
-    end,
-    "Delete line",
+  -- Windows
+  ["<C-h>"] = {
+    "<C-W>h",
+    "Window left",
     opts = {
-      expr = true,
-      silent = true,
+      noremap = false,
+      remap = true,
     },
   },
-  -- Show diagnostics in a floating window
-  ["D"] = {
-    vim.diagnostic.open_float,
-    "Show diagnostics in a floating window",
+  ["<C-j>"] = {
+    "<C-W>j",
+    "Window down",
+    opts = {
+      noremap = false,
+      remap = true,
+    },
   },
-  -- End of line
-  ["<leader>,"] = {
-    modify_line_end_delimiter(","),
-    "Modify line end delimiter",
+  ["<C-k>"] = {
+    "<C-W>k",
+    "Window up",
+    opts = {
+      noremap = false,
+      remap = true,
+    },
   },
-  ["<leader>;"] = {
-    modify_line_end_delimiter(";"),
-    "Modify line end delimiter",
+  ["<C-l>"] = {
+    "<C-W>l",
+    "Window right",
+    opts = {
+      noremap = false,
+      remap = true,
+    },
   },
-  -- Windows
+  ["<C-Up>"] = {
+    function()
+      vim.cmd("resize +2")
+    end,
+    "Increase window height",
+  },
+  ["<C-Down>"] = {
+    function()
+      vim.cmd("resize -2")
+    end,
+    "Decrease window height",
+  },
+  ["<C-Left>"] = {
+    function()
+      vim.cmd("vertical resize -2")
+    end,
+    "Decrease window width",
+  },
+  ["<C-Right>"] = {
+    function()
+      vim.cmd("vertical resize +2")
+    end,
+    "Increase window width",
+  },
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
     "Change two horizontal windows to vertical",
@@ -112,11 +160,42 @@ M.mappings.n = {
     [[ciw{<c-r>"}<esc>]],
     "Surround with braces",
   },
+  -- Clear hlsearch with <ESC>
+  ["<ESC>"] = {
+    "<cmd>noh<cr><esc>",
+    "Escape and clear hlsearch",
+  },
+  -- Quit
+  ["<leader>qq"] = {
+    vim.cmd.qa,
+    "Quit all",
+  },
+  -- Smart delete line
+  ["dd"] = {
+    function()
+      if vim.api.nvim_get_current_line():match("^%s*$") then
+        return "\"_dd"
+      else
+        return "dd"
+      end
+    end,
+    "Delete line",
+    opts = {
+      expr = true,
+      silent = true,
+    },
+  },
   -- General
   ["x"] = { "\"_x" },
+  ["<leader>l"] = {
+    function()
+      vim.cmd("Lazy")
+    end,
+    "Lazy",
+  },
 }
 
-if not utils.general.is_win() then
+if not core.is_win() then
   -- Make file executable
   M.mappings.n["<leader>cx"] = {
     function()
@@ -165,7 +244,7 @@ M.mappings.v = {
   -- End of line
   ["$"] = {
     "g_",
-    "Go to end of line (ignore whitespace)",
+    "End of line (ignore whitespace)",
   },
 }
 
@@ -184,44 +263,18 @@ M.mappings.x = {
   },
 }
 
-M.mappings.t = {
-  ["<Esc>"] = {
-    "<C-\\><C-n>",
-    "Enter Normal Mode",
-  },
-}
+-- Save file
+-- M.mappings[{ "i", "x", "n", "s" }] = {
+--   ["<C-s>"] = {
+--     "<cmd>w<cr><esc>",
+--     "Save file",
+--   },
+-- }
 
 --------------------------------------------------------------------------------
 --  Unmappings
 --------------------------------------------------------------------------------
-M.unmappings = {
-  n = {
-    -- Buffers
-    "<leader>bb",
-    "<leader>`",
-    -- LazyVim terminal
-    "<leader>ft",
-    "<leader>fT",
-    "<C-/>",
-    "<C-_>",
-  },
-  v = {
-    -- Indenting
-    "<",
-    ">",
-  },
-  -- LazyVim terminal
-  t = {
-    "<esc><esc>",
-    "<C-/>",
-    "<C-_>",
-  },
-}
-
-if require("core.config").ui.disable_bufferline then
-  ---@diagnostic disable-next-line: param-type-mismatch
-  vim.list_extend(M.unmappings.n, { "<S-h>", "<S-l>" })
-end
+M.unmappings = {}
 
 M.mapping_opts = {
   silent = true,

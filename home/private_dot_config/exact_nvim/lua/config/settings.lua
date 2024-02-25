@@ -15,11 +15,63 @@ local M = {}
 --  Options
 --------------------------------------------------------------------------------
 M.options = {
+  -- Clipboard
+  autowrite = true,
+  clipboard = "unnamedplus",
+  completeopt = "menu,menuone,noselect",
+  conceallevel = 2,
+  confirm = true,
+  cursorline = true,
+  expandtab = true,
+  formatoptions = "jqlnt",
+  grepformat = "%f:%l:%c:%m",
+  grepprg = "rg --vimgrep",
+  helplang = "de,en",
+  ignorecase = true,
+  inccommand = "nosplit",
+  laststatus = 3,
+  mouse = "a",
+  pumheight = 10,
+  scrolloff = 4,
+  shiftround = true,
+  shiftwidth = 2,
+  showmode = false,
+  sidescrolloff = 8,
+  signcolumn = "yes",
+  smartcase = true,
+  smartindent = true,
+  smoothscroll = true,
+  spelllang = { "en", "de" },
+  splitbelow = true,
+  splitkeep = "screen",
+  splitright = true,
+  tabstop = 2,
+  termguicolors = true,
+  timeoutlen = 300,
+  updatetime = 200,
+  fillchars = {
+    foldopen = "",
+    foldclose = "",
+    -- fold = "⸱",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    eob = " ",
+  },
+
+  -- Number
+  number = true,
+  relativenumber = true,
+
+  -- Session
+  sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
+
   -- Backup
   swapfile = false,
   backup = false,
   undodir = vim.fn.expand("~/.vim/undodir"),
   undofile = true,
+  undolevels = 10000,
 
   -- Wrap
   wrap = true,
@@ -27,10 +79,9 @@ M.options = {
   breakindent = true,
   showbreak = core.icons.ui.Tab .. " ",
 
-  -- Other
-  pumblend = 0, -- fixes icon bug in nvim-cmp
-  list = false, -- don't show invisible characters
+  -- GUI settings
   guifont = "MonoLisa,Symbols Nerd Font:h18", -- set font for graphical Neovim apps
+  linespace = 6,
 }
 
 --------------------------------------------------------------------------------
@@ -38,6 +89,8 @@ M.options = {
 --------------------------------------------------------------------------------
 M.globals = {
   mapleader = " ",
+  maplocalleader = "\\",
+  markdown_recommended_style = 0,
 }
 
 --------------------------------------------------------------------------------
@@ -50,8 +103,7 @@ M.disabled_providers = { "perl", "ruby", "node", "python3" }
 --------------------------------------------------------------------------------
 function M.run()
   -- Neovide
-  if utils.general.is_neovide() then
-    vim.opt.linespace = 6
+  if core.is_neovide() then
     vim.g.neovide_hide_mouse_when_typing = true
   end
 
@@ -61,13 +113,15 @@ function M.run()
   -- go to previous/next line with h,l,left arrow and right arrow when cursor reaches end/beginning of line
   vim.opt.whichwrap:append("<>[]hl")
   -- add binaries installed by mason.nvim to path
-  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (utils.general.is_win() and ";" or ":") .. vim.env.PATH
+  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (core.is_win() and ";" or ":") .. vim.env.PATH
 
   -- TailwindCSS wraps
   vim.opt.breakat:remove({ ":", "/", "-" })
 
+  vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
+
   -- Windows
-  if utils.general.is_win() then
+  if core.is_win() then
     -- Use PowerShell Core instead of Windows CMD
     vim.o.shell = "pwsh"
     vim.o.shellcmdflag =
@@ -78,8 +132,8 @@ function M.run()
     vim.o.shellxquote = ""
   end
 
-  -- Linux
-  if utils.general.is_wsl() then
+  -- WSL
+  if core.is_wsl() then
     -- Sync clipboard with Windows clipboard
     vim.g.clipboard = {
       name = "WslClipboard",

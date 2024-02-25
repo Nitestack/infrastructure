@@ -3,13 +3,13 @@ local mapping = "<C-\\>"
 ---@type LazyPluginSpec
 return {
   "akinsho/toggleterm.nvim",
-  cond = function()
-    return utils.general.is_neovide()
-  end,
   version = "*",
   keys = core.lazy_map({
     [{ "n", "i", "t" }] = {
       [mapping] = {},
+    },
+    n = {
+      ["<leader>gg"] = {},
     },
   }),
   ---@param opts ToggleTermConfig
@@ -35,5 +35,34 @@ return {
     opts.float_opts.border = core.config.ui.transparent.floats and "curved" or "none"
     opts.width = math.floor(core.config.ui.width * vim.fn.winwidth(0))
     opts.height = math.floor(core.config.ui.height * vim.fn.winheight(0))
+
+    local lazygit = require("toggleterm.terminal").Terminal:new({
+      display_name = "LazyGit",
+      cmd = "lazygit",
+      dir = "git_dir",
+      direction = "float",
+      hidden = true,
+      float_opts = {
+        border = core.config.ui.transparent.floats and "curved" or "none",
+        width = math.floor(0.9 * vim.fn.winwidth(0)),
+        height = math.floor(0.9 * vim.fn.winheight(0)),
+      },
+      on_open = function(term)
+        if not core.falsy(vim.fn.mapcheck("<Esc>", "t")) then
+          vim.keymap.del("t", "<Esc>", { buffer = term.bufnr })
+        end
+      end,
+    })
+
+    core.single_map("n", "<leader>gg", {
+      function()
+        lazygit:toggle()
+      end,
+      "Git: Lazygit",
+      opts = {
+        silent = true,
+        noremap = true,
+      },
+    })
   end,
 }
