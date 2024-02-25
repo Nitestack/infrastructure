@@ -64,7 +64,7 @@ M.options = {
   relativenumber = true,
 
   -- Session
-  sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
+  sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" },
 
   -- Backup
   swapfile = false,
