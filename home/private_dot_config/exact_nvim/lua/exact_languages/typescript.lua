@@ -1,3 +1,7 @@
+--------------------------------------------------------------------------------
+--  TypeScript
+--------------------------------------------------------------------------------
+
 ---@type _.lspconfig.settings.vtsls.Typescript
 local tsserver_settings = {
   locale = "en",
@@ -30,7 +34,7 @@ local tsserver_settings = {
   },
 }
 
-return utils.lsp.load_language({
+return core.load_language({
   lsp = {
     servers = {
       -- Disable tsserver because it is bad
@@ -62,12 +66,8 @@ return utils.lsp.load_language({
     formatters = {
       prettierd = {
         env = {
-          PRETTIERD_DEFAULT_CONFIG = utils.general.resolve_path({
-            vim.fn.stdpath("config") --[[@as string]],
-            "tools",
-            "formatters",
-            ".prettierrc.json",
-          }),
+          PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath("config") --[[@as string]]
+            .. "tools/formatters/.prettierrc.json",
         },
       },
     },
@@ -87,7 +87,6 @@ return utils.lsp.load_language({
     },
   },
   plugins = {
-    { import = "lazyvim.plugins.extras.lang.typescript" },
     {
       "pmizio/typescript-tools.nvim",
       ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },

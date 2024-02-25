@@ -1,4 +1,7 @@
-return utils.lsp.load_language({
+--------------------------------------------------------------------------------
+--  Lua
+--------------------------------------------------------------------------------
+return core.load_language({
   treesitter = {
     "lua",
     "luadoc",
@@ -10,6 +13,15 @@ return utils.lsp.load_language({
       lua_ls = {
         settings = {
           Lua = {
+            telemetry = {
+              enable = false,
+            },
+            workspace = {
+              checkThirdParty = false,
+            },
+            completion = {
+              callSnippet = "Replace",
+            },
             hint = {
               enable = true,
               paramName = "All",

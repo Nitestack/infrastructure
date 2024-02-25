@@ -1,4 +1,7 @@
-return utils.lsp.load_language({
+--------------------------------------------------------------------------------
+--  PowerShell
+--------------------------------------------------------------------------------
+return core.load_language({
   mason = {
     "powershell-editor-services",
   },

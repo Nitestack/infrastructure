@@ -1,4 +1,7 @@
-return utils.lsp.load_language({
+--------------------------------------------------------------------------------
+--  CSS
+--------------------------------------------------------------------------------
+return core.load_language({
   mason = {
     "css-lsp",
     "cssmodules-language-server",
@@ -56,8 +59,5 @@ return utils.lsp.load_language({
       ["scss"] = { "prettierd" },
       ["sass"] = { "prettierd" },
     },
-  },
-  plugins = {
-    { import = "lazyvim.plugins.extras.lang.tailwind" },
   },
 })

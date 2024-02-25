@@ -1,9 +1,6 @@
 --------------------------------------------------------------------------------
 --  NEOVIM CONFIGURATION
 --------------------------------------------------------------------------------
-if vim.env.VSCODE then
-  vim.g.vscode = true
-end
 
 if vim.loader then
   vim.loader.enable()
@@ -14,17 +11,59 @@ end
 --------------------------------------------------------------------------------
 _G.core = require("utils.globals")
 
-_G.core.icons = require("core.icons")
-_G.core.config = require("core.config")
+_G.core.config = require("config.config")
+_G.core.icons = require("config.icons")
 
-_G.utils = {}
-_G.utils.general = require("utils.general")
-_G.utils.lsp = require("utils.lsp")
+--------------------------------------------------------------------------------
+--  Settings
+--------------------------------------------------------------------------------
+local settings = require("config.settings")
+
+-- Options
+for option, val in pairs(settings.options) do
+  vim.opt[option] = val
+end
+
+-- Globals
+for global, val in pairs(settings.globals) do
+  vim.g[global] = val
+end
+
+-- Providers
+for _, provider in ipairs(settings.disabled_providers) do
+  vim.g["loaded_" .. provider .. "_provider"] = 0
+end
+
+-- Additional settings to run
+settings.run()
+
+--------------------------------------------------------------------------------
+--  Filetypes
+--------------------------------------------------------------------------------
+vim.filetype.add(require("config.filetypes"))
+
+--------------------------------------------------------------------------------
+--  Commands
+--------------------------------------------------------------------------------
+local commands = require("config.commands")
+
+core.auto_cmds(commands.auto_cmds, commands.auto_cmd_opts, commands.au_group_opts)
+core.user_cmds(commands.user_cmds, commands.user_cmd_opts)
+
+--------------------------------------------------------------------------------
+--  Keymaps
+--------------------------------------------------------------------------------
+local keymaps = require("config.mappings")
+
+core.map(keymaps.mappings, keymaps.mapping_opts)
+core.disable_mapping(keymaps.unmappings)
 
 --------------------------------------------------------------------------------
 --  Plugins
 --------------------------------------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+-- Bootstrap lazy.nvim if it isn't installed
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -35,6 +74,69 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
+
+-- Add lazy.nvim to runtimepath
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
-require("lazy").setup(require("core.lazy"))
+-- Initialize lazy.nvim and load plugins
+require("lazy").setup({
+  spec = {
+    { import = "languages" },
+    { import = "plugins.lsp" },
+    { import = "plugins" },
+    core.disabled_plugins(core.config.disabled_plugins),
+  },
+  defaults = {
+    lazy = true,
+    version = false,
+  },
+  install = {
+    colorscheme = { core.config.ui.theme, "habamax" },
+  },
+  checker = { enabled = true },
+  change_detection = {
+    notify = false,
+  },
+  ui = {
+    size = { width = core.config.ui.width, height = core.config.ui.height },
+    border = core.config.ui.transparent.floats and "rounded" or "none",
+    title = core.config.ui.transparent.floats and "lazy.nvim" or nil,
+    icons = {
+      loaded = core.icons.ui.PackageInstalled,
+      not_loaded = core.icons.ui.PackageUninstalled,
+    },
+  },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "2html_plugin",
+        "bugreport",
+        "compiler",
+        "ftplugin",
+        "getscript",
+        "getscriptPlugin",
+        "gzip",
+        "logipat",
+        "matchit",
+        "netrw",
+        "netrwFileHandlers",
+        "netrwPlugin",
+        "netrwSettings",
+        "optwin",
+        "rplugin",
+        "rrhelper",
+        "spellfile_plugin",
+        "synmenu",
+        "syntax",
+        "tar",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "vimball",
+        "vimballPlugin",
+        "zip",
+        "zipPlugin",
+      },
+    },
+  },
+})
