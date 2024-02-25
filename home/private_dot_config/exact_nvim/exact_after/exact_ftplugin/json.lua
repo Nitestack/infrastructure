@@ -1,7 +1,6 @@
 core.ft_plugin({
   options = {
     spell = false,
-    conceallevel = 0,
   },
   mappings = {
     n = {
