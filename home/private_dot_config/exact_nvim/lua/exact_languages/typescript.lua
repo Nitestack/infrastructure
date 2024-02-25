@@ -37,11 +37,6 @@ local tsserver_settings = {
 return core.load_language({
   lsp = {
     servers = {
-      -- Disable tsserver because it is bad
-      tsserver = {
-        autostart = false,
-        mason = false,
-      },
       vtsls = {
         settings = {
           typescript = tsserver_settings,
@@ -51,7 +46,6 @@ return core.load_language({
     },
   },
   mason = {
-    "typescript-language-server",
     "vtsls",
     "eslint_d",
     "prettierd",
