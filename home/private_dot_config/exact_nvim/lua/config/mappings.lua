@@ -123,10 +123,7 @@ function M.lsp_mappings()
     [{ "n", "v" }] = {
       ["<leader>ca"] = {
         function()
-          -- Ensure plugin is loaded
-          if not pcall(require, "actions-preview") then
-            require("lazy").load({ plugins = { "actions-preview.nvim" } })
-          end
+          require("lazy").load({ plugins = { "actions-preview.nvim" } })
           require("actions-preview").code_actions()
         end,
         "Code Action",
