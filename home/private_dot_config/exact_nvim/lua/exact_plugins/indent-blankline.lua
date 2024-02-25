@@ -2,7 +2,7 @@
 return {
   "lukas-reineke/indent-blankline.nvim",
   main = "ibl",
-  event = { "BufReadPre", "BufNewFile" },
+  event = "LazyFile",
   opts = {
     indent = {
       char = core.icons.ui.LineLeft,

@@ -78,6 +78,9 @@ end
 -- Add lazy.nvim to runtimepath
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+-- Setup LazyFile event
+require("utils.lazy-file").lazy_file()
+
 -- Initialize lazy.nvim and load plugins
 require("lazy").setup({
   spec = {

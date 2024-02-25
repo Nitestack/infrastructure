@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "NvChad/nvim-colorizer.lua",
-  event = { "BufReadPost", "BufNewFile" },
+  event = "LazyFile",
   opts = {
     user_default_options = {
       css = true,

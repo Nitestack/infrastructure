@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "mfussenegger/nvim-lint",
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  event = "LazyFile",
   keys = core.lazy_map({
     n = {
       ["<leader>cl"] = {

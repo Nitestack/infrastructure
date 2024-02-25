@@ -29,12 +29,12 @@ return {
     },
     {
       "windwp/nvim-ts-autotag",
-      event = { "BufReadPost", "BufNewFile" },
+      event = "InsertEnter",
       opts = {},
     },
     {
       "nvim-treesitter/nvim-treesitter-context",
-      event = { "BufReadPost", "BufNewFile" },
+      event = "LazyFile",
       opts = {
         mode = "cursor",
         max_lines = 3,
@@ -44,7 +44,7 @@ return {
     "andymass/vim-matchup",
   },
   build = ":TSUpdate",
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  event = "LazyFile",
   cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
   -- init = function(plugin)
   --   -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early

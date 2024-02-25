@@ -2,7 +2,7 @@
 return {
   "folke/todo-comments.nvim",
   cmd = { "TodoTrouble", "TodoTelescope" },
-  event = { "BufReadPost", "BufNewFile" },
+  event = "LazyFile",
   keys = core.lazy_map({
     n = {
       ["<leader>xt"] = {
