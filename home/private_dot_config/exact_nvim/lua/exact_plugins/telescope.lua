@@ -61,68 +61,72 @@ return {
       },
     },
   }),
-  opts = {
-    defaults = {
-      prompt_prefix = core.icons.ui.Telescope .. " ",
-      selection_caret = core.icons.ui.ChevronShortRight .. " ",
-      sorting_strategy = "ascending",
-      get_selection_window = function()
-        local wins = vim.api.nvim_list_wins()
-        table.insert(wins, 1, vim.api.nvim_get_current_win())
-        for _, win in ipairs(wins) do
-          local buf = vim.api.nvim_win_get_buf(win)
-          if vim.bo[buf].buftype == "" then
-            return win
+  opts = function()
+    local actions = require("telescope.actions")
+    local trouble_providers = require("trouble.providers.telescope")
+    return {
+      defaults = {
+        prompt_prefix = core.icons.ui.Telescope .. " ",
+        selection_caret = core.icons.ui.ChevronShortRight .. " ",
+        sorting_strategy = "ascending",
+        get_selection_window = function()
+          local wins = vim.api.nvim_list_wins()
+          table.insert(wins, 1, vim.api.nvim_get_current_win())
+          for _, win in ipairs(wins) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            if vim.bo[buf].buftype == "" then
+              return win
+            end
           end
-        end
-        return 0
-      end,
-      layout_config = {
-        horizontal = {
-          prompt_position = "top",
-          preview_width = 0.5,
+          return 0
+        end,
+        layout_config = {
+          horizontal = {
+            prompt_position = "top",
+            preview_width = 0.5,
+          },
+          vertical = {
+            mirror = false,
+          },
+          width = core.config.ui.width,
+          height = core.config.ui.height,
+          preview_cutoff = 120,
         },
-        vertical = {
-          mirror = false,
-        },
-        width = core.config.ui.width,
-        height = core.config.ui.height,
-        preview_cutoff = 120,
-      },
-      path_display = { "truncate" },
-      file_ignore_patterns = { "node_modules" },
-      mappings = {
-        i = {
-          ["<C-t>"] = function(...)
-            return require("trouble.providers.telescope").open_with_trouble(...)
-          end,
-          ["<M-t>"] = function(...)
-            return require("trouble.providers.telescope").open_selected_with_trouble(...)
-          end,
-          ["<C-Down>"] = require("telescope.actions").cycle_history_next,
-          ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
-          ["<C-f>"] = require("telescope.actions").preview_scrolling_down,
-          ["<C-b>"] = require("telescope.actions").preview_scrolling_up,
-        },
-        n = {
-          ["q"] = require("telescope.actions").close,
+        path_display = { "truncate" },
+        file_ignore_patterns = { "node_modules" },
+        mappings = {
+          i = {
+            ["<C-t>"] = function(...)
+              return trouble_providers.open_with_trouble(...)
+            end,
+            ["<M-t>"] = function(...)
+              return trouble_providers.open_selected_with_trouble(...)
+            end,
+            ["<C-Down>"] = actions.cycle_history_next,
+            ["<C-Up>"] = actions.cycle_history_prev,
+            ["<C-f>"] = actions.preview_scrolling_down,
+            ["<C-b>"] = actions.preview_scrolling_up,
+          },
+          n = {
+            ["q"] = actions.close,
+          },
         },
       },
-    },
-    pickers = {
-      find_files = {
-        theme = "dropdown",
-        previewer = false,
+      pickers = {
+        find_files = {
+          theme = "dropdown",
+          previewer = false,
+        },
+        git_files = {
+          theme = "dropdown",
+          previewer = false,
+        },
       },
-      git_files = {
-        theme = "dropdown",
-        previewer = false,
+      load_extensions = {
+        ["fzf"] = {},
       },
-    },
-    load_extensions = {
-      ["fzf"] = {},
-    },
-  },
+    }
+  end,
   config = function(_, opts)
     require("telescope").setup(opts)
 
