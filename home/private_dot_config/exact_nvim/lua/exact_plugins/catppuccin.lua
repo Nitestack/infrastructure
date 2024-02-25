@@ -2,6 +2,7 @@
 return {
   "catppuccin/nvim",
   name = "catppuccin",
+  lazy = not core.config.ui.theme == "catppuccin",
   priority = 1000,
   enabled = function()
     return not core.is_win() and core.config.ui.theme == "catppuccin"
