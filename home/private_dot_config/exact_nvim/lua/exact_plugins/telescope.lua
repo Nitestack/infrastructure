@@ -41,7 +41,7 @@ return {
       },
       ["<leader>fg"] = {
         function()
-          vim.cmd("Telescope git_files")
+          require("telescope.builtin").git_files({ show_untracked = true })
         end,
         "Telescope: Git Files",
       },
