@@ -19,7 +19,7 @@ if (Test-Path("$target_path"))
   return
 }
 
-New-Item -Path "$symlink_path" -ItemType SymbolicLink -Value "$target_path"
+New-Item -Path "$target_path" -ItemType SymbolicLink -Value "$symlink_path"
 
 Write-LogSuccess "Symbolic link for Neovim configuration created."
 Write-LogGreen "$target_path -> $symlink_path"
