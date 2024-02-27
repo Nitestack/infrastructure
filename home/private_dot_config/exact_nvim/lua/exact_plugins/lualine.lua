@@ -136,7 +136,6 @@ return {
 
               return language_servers
             end,
-            color = { gui = "bold" },
             cond = hide_in_width,
           },
           {
@@ -146,7 +145,10 @@ return {
             end,
             padding = 1,
           },
-          "filetype",
+          {
+            "filetype",
+            color = { gui = "bold" },
+          },
         },
         lualine_y = { "location" },
         lualine_z = {
