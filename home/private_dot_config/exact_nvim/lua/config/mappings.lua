@@ -33,7 +33,7 @@ function M.lsp_mappings()
         require("telescope.builtin").lsp_references,
         "References",
       },
-      ["gi"] = {
+      ["gI"] = {
         function()
           require("telescope.builtin").lsp_implementations({ reuse_win = true })
         end,
