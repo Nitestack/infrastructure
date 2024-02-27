@@ -10,7 +10,6 @@ return {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "L3MON4D3/LuaSnip",
-      "windwp/nvim-autopairs",
       {
         "roobert/tailwindcss-colorizer-cmp.nvim",
         opts = {},
@@ -90,10 +89,6 @@ return {
           ["<C-x>"] = cmp.mapping.complete(),
         })
       end
-
-      -- Autopairs
-      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
       ---@type cmp.ConfigSchema
       return {
