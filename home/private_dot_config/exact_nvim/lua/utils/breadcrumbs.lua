@@ -1,3 +1,6 @@
+--------------------------------------------------------------------------------
+--  BREADCRUMBS (credits to `LunarVim/breadcrumbs.nvim` and `utilyre/barbecue.nvim`)
+--------------------------------------------------------------------------------
 local M = {}
 
 function M.str_is_empty(s)
