@@ -122,10 +122,7 @@ function M.lsp_mappings()
     },
     [{ "n", "v" }] = {
       ["<leader>ca"] = {
-        function()
-          require("lazy").load({ plugins = { "actions-preview.nvim" } })
-          require("actions-preview").code_actions()
-        end,
+        vim.lsp.buf.code_action,
         "Code Action",
         has = "codeAction",
       },
