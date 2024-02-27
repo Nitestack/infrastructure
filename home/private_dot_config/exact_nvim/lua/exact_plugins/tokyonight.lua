@@ -9,16 +9,20 @@ return {
   ---@type Config
   opts = {
     style = "storm",
+    transparent = core.config.ui.transparent.enabled,
     styles = {
       comments = { italic = true },
       keywords = { italic = true },
-      sidebars = "normal",
-      floats = core.config.ui.transparent.floats and "transparent" or "dark",
+      sidebars = "dark",
+      floats = core.config.ui.transparent.floats and "transparent" or "normal",
     },
     lualine_bold = true,
-    on_highlights = function(hl)
+    on_highlights = function(hl, c)
       hl.MiniIndentscopeSymbol = {
         fg = "#737AA2",
+      }
+      hl.CursorLineNr = {
+        fg = c.orange,
       }
     end,
   },
