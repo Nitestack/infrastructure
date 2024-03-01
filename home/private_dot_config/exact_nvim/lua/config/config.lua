@@ -9,7 +9,7 @@
 ---@field disabled_plugins string[]
 
 ---@class UserConfigUI
----@field theme "tokyonight"|"catppuccin"
+---@field theme "catppuccin"
 ---@field logo string Generate ANSI art with: https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow
 ---@field width number
 ---@field height number
