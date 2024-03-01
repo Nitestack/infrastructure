@@ -38,8 +38,8 @@ M.ui = {
 - Nitestack -
 ]],
   transparent = {
-    enabled = false,
-    floats = false,
+    enabled = true,
+    floats = true,
   },
   width = 0.8,
   height = 0.8,

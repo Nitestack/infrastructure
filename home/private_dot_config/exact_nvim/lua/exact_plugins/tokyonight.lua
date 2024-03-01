@@ -13,7 +13,7 @@ return {
     styles = {
       comments = { italic = true },
       keywords = { italic = true },
-      sidebars = "dark",
+      sidebars = core.config.ui.transparent.enabled and "transparent" or "normal",
       floats = core.config.ui.transparent.floats and "transparent" or "normal",
     },
     lualine_bold = true,
