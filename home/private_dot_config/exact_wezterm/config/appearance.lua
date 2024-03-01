@@ -5,9 +5,6 @@ local M = {}
 
 ---@param config Config
 function M.setup(config)
-  -- Colors
-  config.color_scheme = "Catppuccin Mocha"
-
   -- Font
   config.font = wezterm.font_with_fallback({
     "MonoLisa",
@@ -21,6 +18,14 @@ function M.setup(config)
   config.font_size = 18.0
   config.line_height = 1.2
 
+  -- Colors
+  config.color_scheme = "Catppuccin Mocha"
+  config.window_background_gradient = {
+    orientation = "Vertical",
+    colors = { "#1e1e2e", "#313244", "#11111b" },
+    interpolation = "Linear",
+  }
+
   -- Rendering
   config.animation_fps = 144
   config.max_fps = 144
@@ -30,7 +35,6 @@ function M.setup(config)
   config.underline_position = -6
 
   -- Cursor
-  config.default_cursor_style = "BlinkingBar"
   config.cursor_blink_ease_in = "Constant"
   config.cursor_blink_ease_out = "Constant"
   config.cursor_blink_rate = 700

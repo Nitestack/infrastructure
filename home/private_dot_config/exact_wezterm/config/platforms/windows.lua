@@ -32,10 +32,6 @@ function M.setup(config)
       args = { app_data_local .. "\\Microsoft\\WindowsApps\\bash.exe" },
     },
   }
-  config.window_background_image = home_dir .. "\\OneDrive\\Bilder\\PC\\Terminal-Wallpaper_2.png"
-  config.window_background_image_hsb = {
-    brightness = 0.3,
-  }
   -- Key bindings
   table.insert(config.keys, {
     key = "phys:2",
