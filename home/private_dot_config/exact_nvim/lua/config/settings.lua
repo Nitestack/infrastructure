@@ -91,6 +91,7 @@ M.globals = {
   mapleader = " ",
   maplocalleader = "\\",
   markdown_recommended_style = 0,
+  skip_ts_context_commentstring_module = true,
 }
 
 --------------------------------------------------------------------------------
