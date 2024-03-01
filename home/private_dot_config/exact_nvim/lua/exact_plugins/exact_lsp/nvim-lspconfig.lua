@@ -134,6 +134,7 @@ return {
                   mode[mapping] = nil
                 else
                   mapping_info.has = nil
+                  mapping_info[2] = "LSP: " .. mapping_info[2]
                 end
               end
             end
