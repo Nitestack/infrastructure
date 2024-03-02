@@ -19,9 +19,7 @@ function M.lsp_mappings()
   return {
     n = {
       ["gd"] = {
-        function()
-          require("telescope.builtin").lsp_definitions({ reuse_win = true })
-        end,
+        vim.lsp.buf.definition,
         "Goto Definition",
         has = "definition",
       },
