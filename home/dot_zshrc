@@ -113,6 +113,3 @@ source $ZSH/oh-my-zsh.sh
 
 # Load zoxide
 eval "$(zoxide init zsh)"
-
-# Run neofetch
-neofetch

@@ -202,7 +202,5 @@ $env:EDITOR = "{{- .editor -}}"
 # Initialize zoxide
 Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
 
-# Run winfetch
-winfetch
 # Initialize oh-my-posh
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\{{- .windows.oh_my_posh_theme_name -}}.omp.json" | Invoke-Expression

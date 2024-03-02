@@ -7,8 +7,8 @@ dependencies:
       - "ripgrep"
       - "unzip"
     pnpm:
-      - neovim
-      - tree-sitter-cli
+      - "neovim"
+      - "tree-sitter-cli"
       - "@nitestack/project-manager"
       - "@bitwarden/cli"
     custom:
@@ -22,7 +22,6 @@ dependencies:
     packages:
       - "curl"
       - "tmux"
-      - "neofetch"
     custom:
       - bashly:
           - "sudo gem install bashly"
