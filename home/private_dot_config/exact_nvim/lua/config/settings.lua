@@ -130,7 +130,7 @@ function M.run()
   -- TailwindCSS wraps
   vim.opt.breakat:remove({ ":", "/", "-" })
 
-  vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
+  vim.opt.shortmess:append({ a = true, W = true, I = true, c = true, C = true })
 
   -- Windows
   if core.is_win() then
