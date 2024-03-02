@@ -58,6 +58,17 @@ M.options = {
     diff = "╱",
     eob = " ",
   },
+  wildignore = {
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.next/**",
+    "**/.cache/**",
+    "**/coverage/**",
+    "**/target/**",
+    "**/dist/**",
+  },
 
   -- Number
   number = true,
