@@ -155,6 +155,13 @@ core.auto_cmds({
         require("lazy").load({ plugins = { "persistence.nvim" } })
         local persistence = require("persistence")
         if vim.fn.argc() == 0 and not vim.g.started_with_stdin then
+          -- Close all windows and reopen last session for neovim
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            local config = vim.api.nvim_win_get_config(win)
+            if config.relative ~= "" then
+              vim.api.nvim_win_close(win, false)
+            end
+          end
           persistence.load()
         else
           persistence.stop()
