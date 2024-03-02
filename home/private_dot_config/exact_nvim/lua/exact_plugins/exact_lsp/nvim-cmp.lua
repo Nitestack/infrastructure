@@ -106,7 +106,7 @@ return {
           { name = "path" },
           { name = "emoji" },
         }, {
-          { name = "buffer" },
+          { name = "buffer", keyword_length = 5 },
         }),
         mapping = mapping,
       }
