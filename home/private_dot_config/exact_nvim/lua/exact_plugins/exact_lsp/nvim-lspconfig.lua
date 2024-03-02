@@ -94,7 +94,13 @@ return {
     -- Setup language servers
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
     local capabilities =
-      vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), cmp_nvim_lsp.default_capabilities())
+      vim.tbl_deep_extend("force", vim.lsp.protocol.make_client_capabilities(), cmp_nvim_lsp.default_capabilities(), {
+        workspace = {
+          -- PERF: didChangeWatchedFiles is too slow.
+          -- TODO: Remove this when https://github.com/neovim/neovim/issues/23291#issuecomment-1686709265 is fixed.
+          didChangeWatchedFiles = { dynamicRegistration = false },
+        },
+      })
 
     -- Jump directly to the first available definition every time.
     vim.lsp.handlers["textDocument/definition"] = function(_, result)
