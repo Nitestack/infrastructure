@@ -98,7 +98,7 @@ function M.get_filename()
     if not M.str_is_empty(file_path) and file_path ~= "." then
       local file_paths = vim.split(file_path, package.config:sub(1, 1), { trimempty = true })
       return " %#BreadcrumbsPath#"
-        .. vim.fn.join(file_paths, " " .. core.icons.ui.ChevronShortRight .. " ")
+        .. table.concat(file_paths, " " .. core.icons.ui.ChevronShortRight .. " ")
         .. " "
         .. core.icons.ui.ChevronShortRight
         .. "%* "
