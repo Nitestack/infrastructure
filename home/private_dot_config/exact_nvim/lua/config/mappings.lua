@@ -171,7 +171,7 @@ M.mappings = {}
 M.mappings[{ "n", "v" }] = {
   ["<leader>d"] = {
     [["_d]],
-    "Delete into void register",
+    "Delete without copying into register",
   },
 }
 
@@ -259,27 +259,6 @@ M.mappings.n = {
     "<C-W>t <C-W>H",
     "Change two vertical windows to horizontal",
   },
-  -- Quotes
-  ["<leader>\""] = {
-    [[ciw"<c-r>""<esc>]],
-    "Surround with double quotes",
-  },
-  ["<leader>'"] = {
-    [[ciw'<c-r>"'<esc>]],
-    "Surround with single quotes",
-  },
-  ["<leader>`"] = {
-    [[ciw`<c-r>"`<esc>]],
-    "Surround with backticks",
-  },
-  ["<leader>)"] = {
-    [[ciw(<c-r>")<esc>]],
-    "Surround with parentheses",
-  },
-  ["<leader>}"] = {
-    [[ciw{<c-r>"}<esc>]],
-    "Surround with braces",
-  },
   -- Clear hlsearch with <ESC>
   ["<ESC>"] = {
     "<cmd>noh<cr><esc>",
@@ -306,7 +285,10 @@ M.mappings.n = {
     },
   },
   -- General
-  ["x"] = { "\"_x" },
+  ["x"] = {
+    "\"_x",
+    "Delete character without copying into register",
+  },
   ["<leader>l"] = {
     function()
       vim.cmd("Lazy")
@@ -326,11 +308,6 @@ if not core.is_win() then
 end
 
 M.mappings.v = {
-  -- Jump back
-  ["<BS>"] = {
-    "<C-o>",
-    "Jump back",
-  },
   -- Indent
   ["<Tab>"] = {
     ">gv",
@@ -339,27 +316,6 @@ M.mappings.v = {
   ["<S-Tab>"] = {
     "<gv",
     "Indent left",
-  },
-  -- Quotes
-  ["<leader>\""] = {
-    [[c"<c-r>""<esc>]],
-    "Surround selection with double quotes",
-  },
-  ["<leader>'"] = {
-    [[c'<c-r>"'<esc>]],
-    "Surround selection with single quotes",
-  },
-  ["<leader>`"] = {
-    [[c`<c-r>"`<esc>]],
-    "Surround selection with backticks",
-  },
-  ["<leader>)"] = {
-    [[c(<c-r>")<esc>]],
-    "Surround selection with parentheses",
-  },
-  ["<leader>}"] = {
-    [[c{<c-r>"}<esc>]],
-    "Surround selection with braces",
   },
   -- End of line
   ["$"] = {
@@ -382,14 +338,6 @@ M.mappings.x = {
     },
   },
 }
-
--- Save file
--- M.mappings[{ "i", "x", "n", "s" }] = {
---   ["<C-s>"] = {
---     "<cmd>w<cr><esc>",
---     "Save file",
---   },
--- }
 
 --------------------------------------------------------------------------------
 --  Unmappings
