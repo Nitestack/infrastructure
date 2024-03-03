@@ -195,6 +195,22 @@ M.mappings[{ "n", "x" }] = {
 
 M.mappings.n = {
   -- Windows
+  [{ "<leader>-", "<leader>w-" }] = {
+    "<C-W>s",
+    "Split window below",
+    opts = {
+      noremap = false,
+      remap = true,
+    },
+  },
+  [{ "<leader>|", "<leader>w|" }] = {
+    "<C-W>v",
+    "Split window right",
+    opts = {
+      noremap = false,
+      remap = true,
+    },
+  },
   ["<C-h>"] = {
     "<C-W>h",
     "Window left",
