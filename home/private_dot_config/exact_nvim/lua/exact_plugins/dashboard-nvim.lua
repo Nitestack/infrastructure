@@ -8,11 +8,22 @@ return {
     opts.config = opts.config or {}
     opts.config.header = vim.split(logo, "\n")
     opts.config.center = {
-      { action = "Telescope find_files", desc = " Find file", icon = " ", key = "f" },
       { action = "ene | startinsert", desc = " New file", icon = " ", key = "n" },
-      { action = "Telescope oldfiles", desc = " Recent files", icon = " ", key = "r" },
-      { action = "Telescope live_grep", desc = " Find text", icon = " ", key = "g" },
+      { action = "lua require('utils.telescope').project_files()", desc = " Find file", icon = " ", key = "f" },
+      {
+        action = "lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())",
+        desc = " Marked Files",
+        icon = " ",
+        key = "h",
+      },
+      {
+        action = "lua require('utils.telescope').builtin('live_grep')()",
+        desc = " Find text",
+        icon = " ",
+        key = "g",
+      },
       { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
+      { action = "Mason", desc = " Mason", icon = " ", key = "m" },
       { action = "qa", desc = " Quit", icon = " ", key = "q" },
     }
     opts.config.footer = function()
