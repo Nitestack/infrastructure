@@ -197,7 +197,7 @@ M.mappings.n = {
   -- Windows
   [{ "<leader>-", "<leader>w-" }] = {
     "<C-W>s",
-    "Split window below",
+    "Window: Split below",
     opts = {
       noremap = false,
       remap = true,
@@ -205,7 +205,7 @@ M.mappings.n = {
   },
   [{ "<leader>|", "<leader>w|" }] = {
     "<C-W>v",
-    "Split window right",
+    "Window: Split right",
     opts = {
       noremap = false,
       remap = true,
@@ -213,7 +213,7 @@ M.mappings.n = {
   },
   ["<C-h>"] = {
     "<C-W>h",
-    "Window left",
+    "Window: Select left",
     opts = {
       noremap = false,
       remap = true,
@@ -221,7 +221,7 @@ M.mappings.n = {
   },
   ["<C-j>"] = {
     "<C-W>j",
-    "Window down",
+    "Window: Select lower",
     opts = {
       noremap = false,
       remap = true,
@@ -229,7 +229,7 @@ M.mappings.n = {
   },
   ["<C-k>"] = {
     "<C-W>k",
-    "Window up",
+    "Window: Select upper",
     opts = {
       noremap = false,
       remap = true,
@@ -237,7 +237,7 @@ M.mappings.n = {
   },
   ["<C-l>"] = {
     "<C-W>l",
-    "Window right",
+    "Window: Select right",
     opts = {
       noremap = false,
       remap = true,
@@ -247,33 +247,33 @@ M.mappings.n = {
     function()
       vim.cmd("resize +2")
     end,
-    "Increase window height",
+    "Window: Increase height",
   },
   ["<C-Down>"] = {
     function()
       vim.cmd("resize -2")
     end,
-    "Decrease window height",
+    "Window: Decrease height",
   },
   ["<C-Left>"] = {
     function()
       vim.cmd("vertical resize -2")
     end,
-    "Decrease window width",
+    "Window: Decrease width",
   },
   ["<C-Right>"] = {
     function()
       vim.cmd("vertical resize +2")
     end,
-    "Increase window width",
+    "Window: Increase width",
   },
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
-    "Change two horizontal windows to vertical",
+    "Window: Change two horizontal to vertical",
   },
   ["<leader>wv"] = {
     "<C-W>t <C-W>H",
-    "Change two vertical windows to horizontal",
+    "Window: Change two vertical to horizontal",
   },
   -- Smarter search jumping
   ["n"] = {
