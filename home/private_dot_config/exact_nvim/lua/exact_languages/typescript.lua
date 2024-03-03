@@ -215,9 +215,7 @@ return core.load_language({
       "folke/which-key.nvim",
       opts = {
         defaults = {
-          ["<leader>n"] = {
-            name = "+node.js",
-          },
+          ["<leader>n"] = { name = "+node.js" },
         },
       },
     },
