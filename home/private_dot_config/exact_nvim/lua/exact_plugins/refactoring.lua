@@ -93,12 +93,8 @@ return {
     "folke/which-key.nvim",
     opts = {
       defaults = {
-        ["<leader>r"] = {
-          name = "+refactoring",
-        },
-        ["<leader>rd"] = {
-          name = "+debug operations",
-        },
+        ["<leader>r"] = { name = "+refactoring" },
+        ["<leader>rd"] = { name = "+debug operations" },
       },
     },
   },
