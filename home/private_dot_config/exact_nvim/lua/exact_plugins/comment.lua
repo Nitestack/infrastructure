@@ -28,12 +28,8 @@ return {
     "folke/which-key.nvim",
     opts = {
       defaults = {
-        ["gc"] = {
-          name = "+comment line",
-        },
-        ["gb"] = {
-          name = "+comment block",
-        },
+        ["gc"] = { name = "+comment line" },
+        ["gb"] = { name = "+comment block" },
       },
     },
   },
