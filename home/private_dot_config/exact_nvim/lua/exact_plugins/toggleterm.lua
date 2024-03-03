@@ -4,14 +4,10 @@ local mapping = "<C-\\>"
 return {
   "akinsho/toggleterm.nvim",
   version = "*",
-  keys = core.lazy_map({
-    [{ "n", "i", "t" }] = {
-      [mapping] = {},
-    },
-    n = {
-      ["<leader>gg"] = {},
-    },
-  }),
+  keys = {
+    { mapping, mode = { "n", "i", "t" }, desc = "Terminal: Toggle" },
+    { "<leader>gg", desc = "Git: LazyGit" },
+  },
   ---@param opts ToggleTermConfig
   opts = function(_, opts)
     ---@diagnostic disable-next-line: assign-type-mismatch
