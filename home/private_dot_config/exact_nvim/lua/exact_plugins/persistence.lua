@@ -11,19 +11,19 @@ return {
         function()
           require("persistence").load()
         end,
-        "Restore Session",
+        "Session: Restore",
       },
       ["<leader>ql"] = {
         function()
           require("persistence").load({ last = true })
         end,
-        "Restore Last Session",
+        "Session: Restore Last",
       },
       ["<leader>qd"] = {
         function()
           require("persistence").stop()
         end,
-        "Don't Save Current Session",
+        "Session: Don't save current",
       },
     },
   }),
