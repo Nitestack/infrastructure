@@ -1,25 +1,27 @@
+---@type LazySpec
 return {
-  "lewis6991/gitsigns.nvim",
-  event = "LazyFile",
-  opts = {
-    signs = {
-      add = { text = core.icons.ui.BoldLineLeft },
-      change = { text = core.icons.ui.BoldLineLeft },
-      delete = { text = core.icons.ui.Triangle },
-      topdelete = { text = core.icons.ui.Triangle },
-      changedelete = { text = core.icons.ui.BoldLineLeft },
-      untracked = { text = core.icons.ui.BoldLineLeft },
-    },
-    current_line_blame_formatter = "<author>, <author_time:-%d.%m.%Y> - <summary>",
-    preview_config = {
-      border = core.config.ui.transparent.floats and "rounded" or "none",
-    },
-    on_attach = function(buffer)
-      local gs = package.loaded.gitsigns
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "LazyFile",
+    opts = {
+      signs = {
+        add = { text = core.icons.ui.BoldLineLeft },
+        change = { text = core.icons.ui.BoldLineLeft },
+        delete = { text = core.icons.ui.Triangle },
+        topdelete = { text = core.icons.ui.Triangle },
+        changedelete = { text = core.icons.ui.BoldLineLeft },
+        untracked = { text = core.icons.ui.BoldLineLeft },
+      },
+      current_line_blame_formatter = "<author>, <author_time:-%d.%m.%Y> - <summary>",
+      preview_config = {
+        border = core.config.ui.transparent.floats and "rounded" or "none",
+      },
+      on_attach = function(buffer)
+        local gs = package.loaded.gitsigns
 
-      local function map(mode, l, r, desc)
-        vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-      end
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
 
       -- stylua: ignore start
       map("n", "]h", gs.next_hunk, "Next Hunk")
@@ -34,6 +36,15 @@ return {
       map("n", "<leader>ghd", gs.diffthis, "Diff This")
       map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
       map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-    end,
+      end,
+    },
+  },
+  {
+    "folke/which-key.nvim",
+    opts = {
+      defaults = {
+        ["<leader>gh"] = { name = "+hunks" },
+      },
+    },
   },
 }
