@@ -1,21 +1,4 @@
----@param builtin string
----@param opts? { show_untracked?: boolean }
-local function telescope(builtin, opts)
-  local params = { builtin = builtin, opts = opts }
-  return function()
-    builtin = params.builtin
-    opts = params.opts or {}
-    if builtin == "files" then
-      if vim.loop.fs_stat(vim.loop.cwd() .. "/.git") then
-        opts.show_untracked = true
-        builtin = "git_files"
-      else
-        builtin = "find_files"
-      end
-    end
-    require("telescope.builtin")[builtin](opts)
-  end
-end
+local telescope_utils = require("utils.telescope")
 
 ---@type LazyPluginSpec
 return {
@@ -34,32 +17,46 @@ return {
   keys = core.lazy_map({
     n = {
       [{ "<leader>ff", "<leader><Space>" }] = {
-        telescope("files"),
+        telescope_utils.project_files,
         "Telescope: Find Files",
       },
-      [{ "<leader>fw", "<leader>sg" }] = {
-        telescope("live_grep"),
+      [{ "<leader>sg", "<leader>/" }] = {
+        telescope_utils.builtin("live_grep"),
         "Telescope: Live Grep",
       },
+      ["<leader>sG"] = {
+        telescope_utils.builtin("live_grep", {
+          additional_args = { "-." },
+        }),
+        "Telescope: Live Grep (all)",
+      },
       ["<leader>fg"] = {
-        function()
-          require("telescope.builtin").git_files({ show_untracked = true })
-        end,
+        telescope_utils.builtin("git_files", { show_untracked = true }),
         "Telescope: Git Files",
       },
       ["<leader>sw"] = {
-        telescope("grep_string", { word_match = "-w" }),
+        telescope_utils.builtin("grep_string", { word_match = "-w" }),
         "Telescope: Word",
       },
-      ["<leader>uC"] = {
-        telescope("colorscheme", { enable_preview = true }),
-        "Telescope: Colorscheme (with Preview)",
+      ["<leader>sW"] = {
+        telescope_utils.builtin("grep_string", {
+          word_match = "-w",
+          additional_args = { "-." },
+        }),
+        "Telescope: Word (all)",
       },
     },
     v = {
       ["<leader>sw"] = {
-        telescope("grep_string"),
-        "Telescope: Selection",
+        telescope_utils.builtin("grep_string", { word_match = "-w" }),
+        "Telescope: Word Selection",
+      },
+      ["<leader>sW"] = {
+        telescope_utils.builtin("grep_string", {
+          word_match = "-w",
+          additional_args = { "-." },
+        }),
+        "Telescope: Word Selection (all)",
       },
     },
   }),
@@ -95,23 +92,33 @@ return {
           preview_cutoff = 120,
         },
         path_display = { "truncate" },
-        file_ignore_patterns = { "node_modules" },
+        file_ignore_patterns = { "node_modules", ".git", ".next", "dist", "build", "target" },
         mappings = {
           i = {
+            ["<ESC>"] = actions.close,
             ["<C-t>"] = function(...)
               return trouble_providers.open_with_trouble(...)
             end,
             ["<M-t>"] = function(...)
               return trouble_providers.open_selected_with_trouble(...)
             end,
-            ["<C-Down>"] = actions.cycle_history_next,
-            ["<C-Up>"] = actions.cycle_history_prev,
             ["<C-f>"] = actions.preview_scrolling_down,
             ["<C-b>"] = actions.preview_scrolling_up,
           },
           n = {
             ["q"] = actions.close,
           },
+        },
+        -- Include hidden files, excluding .git
+        vimgrep_arguments = {
+          "rg",
+          "-L",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
         },
       },
       pickers = {
