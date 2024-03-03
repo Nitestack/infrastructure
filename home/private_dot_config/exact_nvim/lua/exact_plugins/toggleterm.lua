@@ -33,7 +33,6 @@ return {
     opts.height = math.floor(core.config.ui.height * vim.fn.winheight(0))
 
     local lazygit = require("toggleterm.terminal").Terminal:new({
-      display_name = "LazyGit",
       cmd = "lazygit",
       dir = "git_dir",
       direction = "float",
