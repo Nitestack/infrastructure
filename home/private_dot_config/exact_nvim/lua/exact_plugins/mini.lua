@@ -11,7 +11,7 @@ return {
               MiniFiles.open(vim.api.nvim_buf_get_name(0), true)
             end
           end,
-          "Toggle File Explorer (directory of current file)",
+          "File Explorer: Toggle",
         },
       },
     }),
@@ -42,6 +42,15 @@ return {
               local win_id = args.data.win_id
 
               vim.api.nvim_win_set_config(win_id, { border = "rounded" })
+            end,
+          },
+        },
+        {
+          "User",
+          {
+            pattern = "MiniFilesActionRename",
+            callback = function(event)
+              require("utils.lsp").on_rename(event.data.from, event.data.to)
             end,
           },
         },
