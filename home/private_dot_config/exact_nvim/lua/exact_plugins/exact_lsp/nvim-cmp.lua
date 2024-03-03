@@ -26,8 +26,6 @@ return {
       local cmp = require("cmp")
       local luasnip = require("luasnip")
 
-      local max_menu_width = math.min(50, math.floor(vim.o.columns * 0.5))
-
       local duplicates = {
         nvim_lsp = 0,
         luasnip = 1,
@@ -87,7 +85,7 @@ return {
           fields = { "kind", "abbr", "menu" },
           format = require("lspkind").cmp_format({
             mode = "symbol",
-            maxwidth = max_menu_width,
+            maxwidth = math.min(50, math.floor(vim.o.columns * 0.5)),
             ellipsis_char = core.icons.ui.Ellipsis,
             preset = "codicons",
             before = function(entry, vim_item)
