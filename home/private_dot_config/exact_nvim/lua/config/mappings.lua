@@ -259,6 +259,21 @@ M.mappings.n = {
     "<C-W>t <C-W>H",
     "Change two vertical windows to horizontal",
   },
+  -- Smarter search jumping
+  ["n"] = {
+    "'Nn'[v:searchforward].'zv'",
+    "Next search match",
+    opts = {
+      expr = true,
+    },
+  },
+  ["N"] = {
+    "'nN'[v:searchforward].'zv'",
+    "Previous search match",
+    opts = {
+      expr = true,
+    },
+  },
   -- Clear hlsearch with <ESC>
   ["<ESC>"] = {
     "<cmd>noh<cr><esc>",
@@ -294,6 +309,24 @@ M.mappings.n = {
       vim.cmd("Lazy")
     end,
     "Lazy",
+  },
+}
+
+-- Smart search jumping
+M.mappings[{ "x", "o" }] = {
+  ["n"] = {
+    "'Nn'[v:searchforward]",
+    "Next search match",
+    opts = {
+      expr = true,
+    },
+  },
+  ["N"] = {
+    "'nN'[v:searchforward]",
+    "Previous search match",
+    opts = {
+      expr = true,
+    },
   },
 }
 
