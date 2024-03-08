@@ -83,6 +83,7 @@ return {
           "notify",
           "toggleterm",
           "lazyterm",
+          "noice",
         },
         callback = function()
           vim.b.miniindentscope_disable = true

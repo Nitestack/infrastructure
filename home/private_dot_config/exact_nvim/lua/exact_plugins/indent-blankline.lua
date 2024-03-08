@@ -24,6 +24,7 @@ return {
         "notify",
         "toggleterm",
         "lazyterm",
+        "noice",
       },
     },
   },
