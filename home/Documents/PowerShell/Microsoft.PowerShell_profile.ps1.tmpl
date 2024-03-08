@@ -8,6 +8,8 @@ Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 if (Get-Command "nvim.exe" -ErrorAction SilentlyContinue)
 {
   Set-Alias vim nvim.exe
+  Set-Alias vi nvim.exe
+  Set-Alias v nvim.exe
 }
 Set-Alias lvim "$env:USERPROFILE\.local\bin\lvim.ps1"
 
