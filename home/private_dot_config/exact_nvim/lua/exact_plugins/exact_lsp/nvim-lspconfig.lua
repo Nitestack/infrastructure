@@ -102,13 +102,47 @@ return {
         {
           group = "lspconfig",
           callback = function(args)
+            local buffer = args.buf
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+            if client then
+              -- inlay hints
+              local ih = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+              if ih then
+                if client.supports_method("textDocument/inlayHint") then
+                  if type(ih) == "function" then
+                    ih(buffer)
+                  elseif type(ih) == "table" and ih.enable then
+                    ih.enable(buffer)
+                  end
+                end
+              end
+
+              -- Code lens
+              if vim.lsp.codelens then
+                if client.supports_method("textDocument/codeLens") then
+                  vim.lsp.codelens.refresh()
+                  core.auto_cmds({
+                    {
+                      { "BufEnter", "CursorHold", "InsertLeave" },
+                      {
+                        buffer = buffer,
+                        callback = vim.lsp.codelens.refresh,
+                      },
+                    },
+                  })
+                end
+              end
+            end
+
+            -- Mappings
             ---@type Mappings
             local mappings = require("config.mappings").lsp_mappings(args)
 
-            lsp_utils.remove_unsupported_methods(args.buf, mappings)
+            lsp_utils.remove_unsupported_methods(buffer, mappings)
 
             core.map(mappings, {
-              buffer = args.buf,
+              buffer = buffer,
               silent = true,
             })
 
