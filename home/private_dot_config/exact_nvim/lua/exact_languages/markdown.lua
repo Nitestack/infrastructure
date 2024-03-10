@@ -52,6 +52,20 @@ return core.load_language({
     {
       "iamcco/markdown-preview.nvim",
       build = "cd app && yarn install",
+      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+      keys = core.lazy_map({
+        n = {
+          ["<leader>cp"] = {
+            function()
+              vim.cmd("MarkdownPreviewToggle")
+            end,
+            "Markdown: Toggle preview",
+            opts = {
+              ft = "markdown",
+            },
+          },
+        },
+      }),
       init = function()
         vim.g.mkdp_filetypes = { "markdown" }
       end,
