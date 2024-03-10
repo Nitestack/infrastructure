@@ -66,6 +66,7 @@ local M = {}
 ---@field replace_keycodes? boolean Only effective when `expr` is **true**, specify whether to replace keycodes in the resuling string
 ---@field callback? function Lua function to call when the mapping is executed
 ---@field buffer? integer|boolean|nil Specify the buffer that the keymap will be effective in. If 0 or true, the current buffer will be used
+---@field ft? (string|string[])? Specify the filetype that the keymap will be effective in
 
 ---Loads a single mapping (with `vim.keymap.set`)
 ---@param mode string|string[]
