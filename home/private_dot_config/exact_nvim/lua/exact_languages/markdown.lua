@@ -10,6 +10,11 @@ return core.load_language({
     "markdown",
     "markdown_inline",
   },
+  lsp = {
+    servers = {
+      marksman = {},
+    },
+  },
   formatter = {
     formatters_by_ft = {
       ["markdown"] = { "prettierd" },
