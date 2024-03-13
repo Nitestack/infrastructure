@@ -20,12 +20,23 @@ return {
         },
       },
       sections = {
-        lualine_a = { "mode" },
+        lualine_a = {
+          lualine_components.mode,
+        },
         lualine_b = {
           lualine_components.gitsigns,
+          lualine_components.diff,
         },
         lualine_c = {
-          lualine_components.diff,
+          {
+            "filetype",
+            icon_only = true,
+            padding = { left = 1, right = 0 },
+          },
+          {
+            "filename",
+            color = { gui = "bold" },
+          },
         },
 
         lualine_x = {
@@ -36,9 +47,10 @@ return {
           lualine_components.diagnostics,
           lualine_components.lsp_status,
           lualine_components.shift_width,
-          lualine_components.filetype,
         },
-        lualine_y = { "location" },
+        lualine_y = {
+          lualine_components.location,
+        },
         lualine_z = {
           lualine_components.progress,
         },
