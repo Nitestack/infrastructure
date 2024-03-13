@@ -23,7 +23,7 @@ return core.load_language({
               callSnippet = "Replace",
             },
             hint = {
-              enable = true,
+              enable = false,
               paramName = "All",
               paramType = true,
               arrayIndex = "Disable",
