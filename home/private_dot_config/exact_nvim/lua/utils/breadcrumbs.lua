@@ -53,7 +53,8 @@ function M.get_filename()
   local file_path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.:h")
 
   if not M.str_is_empty(filename) then
-    local file_icon, hl_group
+    local file_icon = ""
+    local hl_group = "WinBar"
     if M.get_buf_option_value("mod") then
       file_icon = core.icons.ui.Circle:gsub("%s+", "")
       hl_group = "BreadcrumbsModified"
@@ -65,9 +66,9 @@ function M.get_filename()
         if M.str_is_empty(file_icon) then
           file_icon = ""
         end
-      else
-        file_icon = ""
-        hl_group = "WinBar"
+        if M.str_is_empty(hl_group) then
+          hl_group = "DevIconDefault"
+        end
       end
 
       local buf_ft = vim.bo.filetype
@@ -104,9 +105,9 @@ function M.get_filename()
         .. "%* "
         .. value
         .. " "
+    else
+      return " " .. value
     end
-
-    return value
   end
 end
 
