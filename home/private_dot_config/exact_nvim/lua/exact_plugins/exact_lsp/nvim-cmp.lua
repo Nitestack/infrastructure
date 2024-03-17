@@ -20,6 +20,7 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-emoji",
       "hrsh7th/cmp-buffer",
+      "Saecki/crates.nvim",
     },
     event = "InsertEnter",
     opts = function()
@@ -101,6 +102,7 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
+          { name = "crates" },
           { name = "path" },
           { name = "emoji" },
         }, {
