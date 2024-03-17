@@ -80,7 +80,6 @@ function M.load_language(config)
   if config.lsp then
     table.insert(spec, {
       "neovim/nvim-lspconfig",
-      ---@type PluginLspOpts
       opts = {
         setup = config.lsp.setup or {},
         servers = config.lsp.servers or {},
