@@ -8,6 +8,7 @@ return core.load_language({
   mason = {
     "prettierd",
     "yamllint",
+    "yaml-language-server",
   },
   lsp = {
     servers = {

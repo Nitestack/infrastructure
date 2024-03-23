@@ -5,6 +5,7 @@ return core.load_language({
   mason = {
     "marksman",
     "markdownlint",
+    "prettierd",
   },
   treesitter = {
     "markdown",
