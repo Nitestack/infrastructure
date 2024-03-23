@@ -14,6 +14,7 @@ return {
     defaults = {
       mode = { "n", "v" },
       ["g"] = { name = "+goto" },
+      ["z"] = { name = "+fold" },
       ["]"] = { name = "+next" },
       ["["] = { name = "+previous" },
       ["<leader>c"] = { name = "+code" },
