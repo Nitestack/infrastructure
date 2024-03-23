@@ -4,10 +4,7 @@ return {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "L3MON4D3/LuaSnip",
-      {
-        "roobert/tailwindcss-colorizer-cmp.nvim",
-        opts = {},
-      },
+      "luckasRanarison/tailwind-tools.nvim",
       {
         "onsails/lspkind.nvim",
         config = function(_, opts)
@@ -90,7 +87,7 @@ return {
             ellipsis_char = core.icons.ui.Ellipsis,
             preset = "codicons",
             before = function(entry, vim_item)
-              vim_item = require("tailwindcss-colorizer-cmp").formatter(entry, vim_item)
+              vim_item = require("tailwind-tools.cmp").lspkind_format(entry, vim_item)
               if vim.tbl_contains({ "nvim_lsp" }, entry.source.name) then
                 vim_item.dup = duplicates[entry.source.name] or duplicates_default
               end

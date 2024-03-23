@@ -7,6 +7,7 @@ return core.load_language({
     "cssmodules-language-server",
     "stylelint",
     "prettierd",
+    "tailwindcss-language-server",
   },
   treesitter = {
     "css",
@@ -58,6 +59,16 @@ return core.load_language({
       ["css"] = { "prettierd" },
       ["scss"] = { "prettierd" },
       ["sass"] = { "prettierd" },
+    },
+  },
+  plugins = {
+    {
+      "luckasRanarison/tailwind-tools.nvim",
+      ft = function()
+        return require("lspconfig.server_configurations.tailwindcss").default_config.filetypes
+      end,
+      ---@type TailwindTools.Option
+      opts = {},
     },
   },
 })
