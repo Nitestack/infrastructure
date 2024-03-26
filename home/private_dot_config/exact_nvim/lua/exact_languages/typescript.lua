@@ -43,11 +43,13 @@ return core.load_language({
           javascript = tsserver_settings,
         },
       },
+      eslint = {},
     },
   },
   mason = {
     "vtsls",
-    "eslint_d",
+    -- "eslint_d",
+    "eslint-lsp",
     "prettierd",
   },
   treesitter = {
@@ -61,7 +63,7 @@ return core.load_language({
       prettierd = {
         env = {
           PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath("config") --[[@as string]]
-            .. "tools/formatters/.prettierrc.json",
+              .. "tools/formatters/.prettierrc.json",
         },
       },
     },
@@ -74,10 +76,14 @@ return core.load_language({
   },
   linter = {
     linters_by_ft = {
-      ["javascript"] = { "eslint_d" },
-      ["javascriptreact"] = { "eslint_d" },
-      ["typescript"] = { "eslint_d" },
-      ["typescriptreact"] = { "eslint_d" },
+      -- ["javascript"] = { "eslint_d" },
+      -- ["javascriptreact"] = { "eslint_d" },
+      -- ["typescript"] = { "eslint_d" },
+      -- ["typescriptreact"] = { "eslint_d" },
+      ["javascript"] = { "eslint" },
+      ["javascriptreact"] = { "eslint" },
+      ["typescript"] = { "eslint" },
+      ["typescriptreact"] = { "eslint" },
     },
   },
   plugins = {
