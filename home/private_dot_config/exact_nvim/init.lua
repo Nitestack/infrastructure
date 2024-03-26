@@ -108,6 +108,7 @@ require("lazy").setup({
       loaded = core.icons.ui.PackageInstalled,
       not_loaded = core.icons.ui.PackageUninstalled,
     },
+    backdrop = 100,
   },
   performance = {
     rtp = {
