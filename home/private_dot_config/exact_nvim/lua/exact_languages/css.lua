@@ -64,9 +64,15 @@ return core.load_language({
   plugins = {
     {
       "luckasRanarison/tailwind-tools.nvim",
-      ft = function()
-        return require("lspconfig.server_configurations.tailwindcss").default_config.filetypes
-      end,
+      ft = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "css",
+        "scss",
+        "html",
+      },
       ---@type TailwindTools.Option
       opts = {},
     },
