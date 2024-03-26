@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field
 --------------------------------------------------------------------------------
 --  LUALINE COMPONENTS
 --------------------------------------------------------------------------------
@@ -139,29 +140,17 @@ M.lsp_status = {
       return icons.ui.Lock .. " LSP Inactive"
     end
 
-    local buf_client_names = {}
-    local copilot_active = false
+    local copilot_active = vim.tbl_contains(buf_clients, function(val)
+      return val.name == "copilot"
+    end)
 
-    -- add client
-    for _, client in pairs(buf_clients) do
-      if client.name ~= "null-ls" and client.name ~= "copilot" then
-        table.insert(buf_client_names, client.name)
-      end
-
-      if client.name == "copilot" then
-        copilot_active = true
-      end
-    end
-
-    local unique_client_names = table.concat(buf_client_names, ", ")
-    local language_servers =
-      string.format(icons.ui.Gear .. " LSP " .. icons.ui.ChevronShortRight .. " %s", unique_client_names)
+    local lsp_status = icons.ui.Gear .. " LSP Active"
 
     if copilot_active then
-      language_servers = language_servers .. "%#SLCopilot#" .. " " .. icons.git.Octoface .. "%*"
+      lsp_status = lsp_status .. "%#SLCopilot#" .. " " .. icons.git.Octoface .. "%*"
     end
 
-    return language_servers
+    return lsp_status
   end,
   cond = hide_in_width,
 }
