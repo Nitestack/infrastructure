@@ -26,38 +26,45 @@ return {
     setup = {},
   },
   config = function(_, opts)
+    -- Icons
+    local diagnostic_icons = {
+      Error = core.icons.diagnostics.Error,
+      Warn = core.icons.diagnostics.Warning,
+      Hint = core.icons.diagnostics.Hint,
+      Info = core.icons.diagnostics.Information,
+    }
+
     -- Diagnostic config
     ---@type vim.diagnostic.Opts
     local diagnostic_opts = {
       underline = true,
-      update_in_insert = not core.config.performance_mode,
       virtual_text = {
         spacing = 4,
         source = "if_many",
-        prefix = "",
-        -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-        -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-        -- prefix = "icons",
+        -- this only works on a recent 0.10.0 build
+        prefix = function(diagnostic)
+          for name, icon in pairs(diagnostic_icons) do
+            if diagnostic.severity == vim.diagnostic.severity[name:upper()] then
+              return icon
+            end
+            ---@diagnostic disable-next-line: missing-return
+          end
+        end,
       },
-      severity_sort = true,
       signs = {
         text = {},
         texthl = {},
         numhl = {},
       },
+      update_in_insert = not core.config.performance_mode,
+      severity_sort = true,
     }
     -- Diagnostic signs
-    for name, icon in pairs({
-      Error = core.icons.diagnostics.Error,
-      Warn = core.icons.diagnostics.Warning,
-      Hint = core.icons.diagnostics.Hint,
-      Info = core.icons.diagnostics.Information,
-    }) do
+    for name, icon in pairs(diagnostic_icons) do
       local hl = "DiagnosticSign" .. name
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 
       diagnostic_opts.signs.text[vim.diagnostic.severity[name:upper()]] = icon
-      diagnostic_opts.signs.texthl[vim.diagnostic.severity[name:upper()]] = hl
       diagnostic_opts.signs.numhl[vim.diagnostic.severity[name:upper()]] = hl
     end
 
