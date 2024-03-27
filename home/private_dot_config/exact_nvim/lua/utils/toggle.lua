@@ -72,7 +72,6 @@ function M.inlay_hints(buf, value)
       value = not ih.is_enabled(buf)
     end
     ih.enable(buf, value)
-    require("lazy.core.util").info((value and "Enabled" or "Disabled") .. " inlay hints", { title = "Inlay Hints" })
   end
 end
 
