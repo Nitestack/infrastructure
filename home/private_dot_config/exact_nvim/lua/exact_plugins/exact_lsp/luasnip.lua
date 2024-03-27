@@ -9,9 +9,9 @@ return {
       end,
     },
   },
-  build = (not jit.os:find("Windows"))
+  build = (not core.is_win())
       and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-    or nil,
+      or nil,
   keys = core.lazy_map({
     [{ "i", "s" }] = {
       ["<C-l>"] = {
