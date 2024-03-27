@@ -91,6 +91,8 @@ Other than these conventions, the UNIX cli version of `dotfiles` is similar to t
 
 ## Credits
 
+- [Folke Lemaitre](https://github.com/folke) - his popular Neovim configuration [LazyVim](https://github.com/LazyVim/LazyVim)
+  - many of the plugins and their configurations are used
 - [Felipe Santos](https://github.com/felipecrs) - take a look at his [dotfiles](https://github.com/felipecrs/dotfiles)
   - parts of his README are used
   - the install scripts for Ubuntu are used, modified and extended
