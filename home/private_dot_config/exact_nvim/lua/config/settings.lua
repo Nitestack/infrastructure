@@ -135,11 +135,11 @@ function M.run()
   -- Windows
   if core.is_win() then
     -- Use PowerShell Core instead of Windows CMD
-    vim.o.shell = "pwsh"
+    vim.o.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
     vim.o.shellcmdflag =
-      "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
-    vim.o.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-    vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+    "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
+    vim.o.shellredir = '2>&1 | %{ "$_" } | Out-File %s; exit $LastExitCode'
+    vim.o.shellpipe = '2>&1 | %{ "$_" } | Tee-Object %s; exit $LastExitCode'
     vim.o.shellquote = ""
     vim.o.shellxquote = ""
   end
