@@ -63,6 +63,16 @@ return {
       [{ "n", "x" }] = {
         [{ "<M-j>", "<M-k>", "<M-h>", "<M-l>" }] = {},
       },
+      i = {
+        ["<M-j>"] = {
+          "<Esc><cmd>m .+1<cr>==gi",
+          "Move down",
+        },
+        ["<M-k>"] = {
+          "<Esc><cmd>m .-2<cr>==gi",
+          "Move up",
+        }
+      },
     }),
     opts = {},
   },
@@ -102,12 +112,12 @@ return {
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
       local mappings = {
-        { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
-        { opts.mappings.delete, desc = "Delete surrounding" },
-        { opts.mappings.find, desc = "Find right surrounding" },
-        { opts.mappings.find_left, desc = "Find left surrounding" },
-        { opts.mappings.highlight, desc = "Highlight surrounding" },
-        { opts.mappings.replace, desc = "Replace surrounding" },
+        { opts.mappings.add,            desc = "Add surrounding",                     mode = { "n", "v" } },
+        { opts.mappings.delete,         desc = "Delete surrounding" },
+        { opts.mappings.find,           desc = "Find right surrounding" },
+        { opts.mappings.find_left,      desc = "Find left surrounding" },
+        { opts.mappings.highlight,      desc = "Highlight surrounding" },
+        { opts.mappings.replace,        desc = "Replace surrounding" },
         { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
       }
       mappings = vim.tbl_filter(function(m)
@@ -117,12 +127,12 @@ return {
     end,
     opts = {
       mappings = {
-        add = "sa", -- Add surrounding in Normal and Visual modes
-        delete = "sd", -- Delete surrounding
-        find = "sf", -- Find surrounding (to the right)
-        find_left = "sF", -- Find surrounding (to the left)
-        highlight = "sh", -- Highlight surrounding
-        replace = "sr", -- Replace surrounding
+        add = "sa",            -- Add surrounding in Normal and Visual modes
+        delete = "sd",         -- Delete surrounding
+        find = "sf",           -- Find surrounding (to the right)
+        find_left = "sF",      -- Find surrounding (to the left)
+        highlight = "sh",      -- Highlight surrounding
+        replace = "sr",        -- Replace surrounding
         update_n_lines = "sn", -- Update `n_lines`
       },
     },
@@ -152,7 +162,7 @@ return {
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
           d = { "%f[%d]%d+" }, -- digits
-          e = { -- Word with case
+          e = {                -- Word with case
             {
               "%u[%l%d]+%f[^%l%d]",
               "%f[%S][%l%d]+%f[^%l%d]",
@@ -169,7 +179,7 @@ return {
             }
             return { from = from, to = to }
           end,
-          u = ai.gen_spec.function_call(), -- u for "Usage"
+          u = ai.gen_spec.function_call(),                           -- u for "Usage"
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
         },
       }
