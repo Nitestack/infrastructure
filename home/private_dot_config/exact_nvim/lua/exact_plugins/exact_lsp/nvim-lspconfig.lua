@@ -114,15 +114,8 @@ return {
 
             if client then
               -- inlay hints
-              local ih = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
-              if ih then
-                if client.supports_method("textDocument/inlayHint") then
-                  if type(ih) == "function" then
-                    ih(buffer)
-                  elseif type(ih) == "table" and ih.enable then
-                    ih.enable(buffer)
-                  end
-                end
+              if client.supports_method("textDocument/inlayHint") then
+                require("utils.toggle").inlay_hints(buffer, true)
               end
 
               -- Code lens

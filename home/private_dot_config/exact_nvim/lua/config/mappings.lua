@@ -9,6 +9,8 @@
 ---@field unmappings DisableMappings
 ---@field mapping_opts KeymapOpts
 
+local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
+
 ---@type MappingsConfig
 local M = {}
 
@@ -314,6 +316,37 @@ M.mappings.n = {
       expr = true,
       silent = true,
     },
+  },
+  -- Toggle UI
+  ["<leader>ud"] = {
+    function()
+      require("utils.toggle").diagnostics()
+    end,
+    "Diagnostics: Toggle",
+  },
+  ["<leader>uh"] = {
+    function()
+      require("utils.toggle").inlay_hints()
+    end,
+    "Inlay Hints: Toggle",
+  },
+  ["<leader>ut"] = {
+    function()
+      if vim.b.ts_highlight then vim.treesitter.stop() else vim.treesitter.start() end
+    end,
+    "Treesitter: Toggle",
+  },
+  ["<leader>uc"] = {
+    function()
+      require("utils.toggle").option("conceallevel", false, { 0, conceallevel })
+    end,
+    "Conceal: Toggle",
+  },
+  ["<leader>us"] = {
+    function()
+      require("utils.toggle").option("spell")
+    end,
+    "Spelling: Toggle",
   },
   -- General
   ["x"] = {
