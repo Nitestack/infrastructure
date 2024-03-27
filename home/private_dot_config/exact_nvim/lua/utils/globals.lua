@@ -133,21 +133,15 @@ function M.load_language(config)
 end
 
 function M.is_win()
-  return vim.loop.os_uname().sysname == "Windows_NT"
+  return vim.uv.os_uname().sysname:find("Windows") ~= nil
 end
 
 function M.is_linux()
-  return vim.loop.os_uname().sysname == "Linux"
+  return vim.uv.os_uname().sysname:find("Linux") ~= nil
 end
 
 function M.is_nightly()
-  local version = vim.version()
-
-  if version.prerelease then
-    return true
-  else
-    return false
-  end
+  return vim.version().prerelease ~= nil
 end
 
 function M.is_wsl()
@@ -155,7 +149,7 @@ function M.is_wsl()
 end
 
 function M.is_neovide()
-  return vim.g.neovide
+  return vim.g.neovide ~= nil
 end
 
 ---@param config { options?: vim.opt, config?: fun(), mappings?: Mappings, mapping_opts?: KeymapOpts }
