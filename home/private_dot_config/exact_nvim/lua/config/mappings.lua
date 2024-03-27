@@ -126,6 +126,16 @@ function M.lsp_mappings()
         "Code Action",
         has = "codeAction",
       },
+      ["<leader>cc"] = {
+        vim.lsp.codelens.run,
+        "Run Codelens",
+        has = "codeLens",
+      },
+      ["<leader>cC"] = {
+        vim.lsp.codelens.refresh,
+        "Refresh Codelens",
+        has = "codeLens",
+      }
     },
   }
 end
