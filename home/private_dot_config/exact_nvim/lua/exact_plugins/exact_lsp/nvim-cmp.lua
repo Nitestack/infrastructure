@@ -106,6 +106,9 @@ return {
           { name = "buffer", keyword_length = 5 },
         }),
         mapping = mapping,
+        experimental = {
+          ghost_text = false,
+        }
       }
     end,
   },
