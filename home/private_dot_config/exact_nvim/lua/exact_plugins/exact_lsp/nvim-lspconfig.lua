@@ -1,5 +1,3 @@
-local lsp_utils = require("utils.lsp")
-
 ---@type LazyPluginSpec
 return {
   "neovim/nvim-lspconfig",
@@ -26,6 +24,8 @@ return {
     setup = {},
   },
   config = function(_, opts)
+    local lsp_utils = require("utils.lsp")
+
     -- Icons
     local diagnostic_icons = {
       Error = core.icons.diagnostics.Error,
@@ -113,7 +113,7 @@ return {
             local client = vim.lsp.get_client_by_id(args.data.client_id)
 
             if client then
-              -- inlay hints
+              -- Inlay hints
               if client.supports_method("textDocument/inlayHint") then
                 require("utils.toggle").inlay_hints(buffer, true)
               end
