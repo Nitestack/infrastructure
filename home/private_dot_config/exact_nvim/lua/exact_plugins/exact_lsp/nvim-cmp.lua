@@ -15,7 +15,6 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "saadparwaiz1/cmp_luasnip",
       "hrsh7th/cmp-path",
-      "hrsh7th/cmp-emoji",
       "hrsh7th/cmp-buffer",
       "Saecki/crates.nvim",
     },
@@ -101,14 +100,10 @@ return {
           { name = "luasnip" },
           { name = "crates" },
           { name = "path" },
-          { name = "emoji" },
         }, {
           { name = "buffer", keyword_length = 5 },
         }),
         mapping = mapping,
-        experimental = {
-          ghost_text = false,
-        }
       }
     end,
   },
