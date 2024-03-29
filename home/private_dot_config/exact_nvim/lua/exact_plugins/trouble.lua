@@ -1,21 +1,26 @@
 ---@type LazyPluginSpec
 return {
   "folke/trouble.nvim",
+  branch = "dev",
   cmd = { "TroubleToggle", "Trouble" },
-  opts = { use_diagnostic_signs = true },
+  ---@type trouble.Config
+  opts = {
+    auto_close = true,
+    focus = true,
+  },
   keys = core.lazy_map({
     n = {
       ["<leader>xx"] = {
         function()
-          require("trouble").toggle({ mode = "document_diagnostics" })
+          require("trouble").toggle({ mode = "diagnostics" })
         end,
-        "Trouble: Document Diagnostics",
+        "Trouble: Workspace Diagnostics",
       },
       ["<leader>xX"] = {
         function()
-          require("trouble").toggle({ mode = "workspace_diagnostics" })
+          require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 } })
         end,
-        "Trouble: Workspace Diagnostics",
+        "Trouble: Buffer Diagnostics",
       },
       ["<leader>xL"] = {
         function()
@@ -28,32 +33,6 @@ return {
           require("trouble").toggle({ mode = "quickfix" })
         end,
         "Trouble: Quickfix List",
-      },
-      ["[q"] = {
-        function()
-          if require("trouble").is_open() then
-            require("trouble").previous({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cprev)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        "Previous trouble/quickfix item",
-      },
-      ["]q"] = {
-        function()
-          if require("trouble").is_open() then
-            require("trouble").next({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cnext)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        "Next trouble/quickfix item",
       },
     },
   }),
