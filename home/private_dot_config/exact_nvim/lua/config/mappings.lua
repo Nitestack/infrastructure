@@ -30,17 +30,22 @@ function M.lsp_mappings()
         "Goto Declaration",
       },
       ["gr"] = {
-        require("telescope.builtin").lsp_references,
+        function()
+          require("lazy").load({ plugins = { "telescope.nvim" } })
+          require("telescope.builtin").lsp_references()
+        end,
         "References",
       },
       ["gI"] = {
         function()
+          require("lazy").load({ plugins = { "telescope.nvim" } })
           require("telescope.builtin").lsp_implementations({ reuse_win = true })
         end,
         "Goto Implementation",
       },
       ["go"] = {
         function()
+          require("lazy").load({ plugins = { "telescope.nvim" } })
           require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
         end,
         "Goto Type Definition",
