@@ -54,6 +54,7 @@ return core.load_language({
   },
   treesitter = {
     "javascript",
+    "jsdoc",
     "typescript",
     "prisma",
     "tsx",
