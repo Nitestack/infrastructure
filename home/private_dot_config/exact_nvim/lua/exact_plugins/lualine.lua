@@ -60,6 +60,7 @@ return {
         -- lualine is loaded via the "VeryLazy" event and loading mason on startup is heavy
         "lazy",
         "man",
+        "mason",
         "quickfix",
         "toggleterm",
         "trouble",
