@@ -91,7 +91,7 @@ M.options = {
   showbreak = core.icons.ui.Tab .. " ",
 
   -- GUI settings
-  guifont = "MonoLisa,Symbols Nerd Font:h18", -- set font for graphical Neovim apps
+  guifont = "SF Mono,Symbols Nerd Font:h18", -- set font for graphical Neovim apps
   linespace = 6,
 }
 

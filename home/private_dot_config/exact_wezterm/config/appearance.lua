@@ -7,11 +7,6 @@ local M = {}
 function M.setup(config)
   -- Font
   config.font = wezterm.font_with_fallback({
-    "MonoLisa",
-    {
-      family = "MonoLisa",
-      weight = "Medium",
-    },
     "SF Mono",
     "Symbols Nerd Font",
   })
