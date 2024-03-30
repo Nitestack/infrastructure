@@ -9,7 +9,8 @@ return {
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = vim.fn.executable("make") == 1 and "make"
-        or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+          or
+          "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       enabled = function()
         return vim.fn.executable("make") == 1 or vim.fn.executable("cmake") == 1
       end,
@@ -63,7 +64,6 @@ return {
   }),
   opts = function()
     local actions = require("telescope.actions")
-    local trouble_providers = require("trouble.providers.telescope")
     return {
       defaults = {
         prompt_prefix = core.icons.ui.Telescope .. " ",
@@ -97,17 +97,13 @@ return {
         mappings = {
           i = {
             ["<ESC>"] = actions.close,
-            ["<C-t>"] = function(...)
-              return trouble_providers.open_with_trouble(...)
-            end,
-            ["<M-t>"] = function(...)
-              return trouble_providers.open_selected_with_trouble(...)
-            end,
+            ["<C-t>"] = require("trouble.sources.telescope").open,
             ["<C-f>"] = actions.preview_scrolling_down,
             ["<C-b>"] = actions.preview_scrolling_up,
           },
           n = {
             ["q"] = actions.close,
+            ["<C-t"] = require("trouble.sources.telescope").open,
           },
         },
         -- Include hidden files, excluding .git
