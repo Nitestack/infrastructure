@@ -44,7 +44,7 @@ M.mode = {
   separator = { right = "", left = "" },
 }
 
-M.gitsigns = {
+M.git_branch = {
   "b:gitsigns_head",
   icon = icons.git.Branch,
   color = { gui = "bold" },

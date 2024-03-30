@@ -24,7 +24,7 @@ return {
           lualine_components.mode,
         },
         lualine_b = {
-          lualine_components.gitsigns,
+          lualine_components.git_branch,
           lualine_components.diff,
         },
         lualine_c = {
