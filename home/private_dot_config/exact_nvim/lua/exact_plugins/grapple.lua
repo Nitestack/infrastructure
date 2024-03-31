@@ -18,18 +18,6 @@ return {
           end,
           "Jump: Toggle menu",
         },
-        ["<leader>jn"] = {
-          function()
-            require("grapple").cycle_forward()
-          end,
-          "Jump: Cycle forward",
-        },
-        ["<leader>jp"] = {
-          function()
-            require("grapple").cycle_backward()
-          end,
-          "Jump: Cycle backward",
-        },
         [{ "<M-1>", "<leader>j1" }] = {
           function()
             require("grapple").select({ index = 1 })
@@ -78,4 +66,23 @@ return {
       },
     },
   },
+  {
+    "WolfeCub/harpeek.nvim",
+    keys = core.lazy_map({
+      n = {
+        ["<leader>jp"] = {
+          function()
+            require("harpeek").toggle()
+          end,
+          "Jump: Toggle peek menu",
+        },
+      },
+    }),
+    ---@type harpeek.settings
+    opts = {
+      winopts = {
+        border = core.config.ui.transparent.floats and "rounded" or "none",
+      },
+    },
+  }
 }
