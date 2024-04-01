@@ -48,6 +48,8 @@ M.ui = {
 M.plugins = {
   mason = { "codespell", "emmet-language-server" },
   treesitter = {
+    "c",
+    "python",
     "diff",
     "query",
     "regex",
