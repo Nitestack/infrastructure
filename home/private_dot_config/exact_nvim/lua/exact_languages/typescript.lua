@@ -64,7 +64,7 @@ return core.load_language({
       prettierd = {
         env = {
           PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath("config") --[[@as string]]
-              .. "tools/formatters/.prettierrc.json",
+            .. "tools/formatters/.prettierrc.json",
         },
       },
     },

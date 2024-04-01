@@ -19,7 +19,6 @@ return core.load_language({
           },
         },
       },
-    }
-  }
+    },
+  },
 })
-

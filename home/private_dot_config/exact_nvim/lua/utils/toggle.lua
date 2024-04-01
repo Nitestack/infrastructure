@@ -16,7 +16,10 @@ function M.option(option, silent, values)
       ---@diagnostic disable-next-line: no-unknown
       vim.opt_local[option] = values[1]
     end
-    return require("lazy.core.util").info("Set " .. option .. " to " .. vim.opt_local[option]:get(), { title = "Option" })
+    return require("lazy.core.util").info(
+      "Set " .. option .. " to " .. vim.opt_local[option]:get(),
+      { title = "Option" }
+    )
   end
   ---@diagnostic disable-next-line: no-unknown
   vim.opt_local[option] = not vim.opt_local[option]:get()

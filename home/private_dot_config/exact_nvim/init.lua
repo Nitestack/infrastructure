@@ -172,7 +172,7 @@ core.auto_cmds({
 
         core.map(keymaps.mappings, keymaps.mapping_opts)
         core.disable_mapping(keymaps.unmappings)
-      end
+      end,
     },
   },
   -- Auto load session

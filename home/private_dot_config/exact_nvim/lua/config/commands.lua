@@ -163,7 +163,7 @@ M.auto_cmds = {
         local file = vim.uv.fs_realpath(event.match) or event.match
         vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
       end,
-    }
+    },
   },
   -- Remove any trailing whitespace on save
   {

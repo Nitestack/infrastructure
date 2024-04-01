@@ -140,7 +140,7 @@ function M.lsp_mappings()
         vim.lsp.codelens.refresh,
         "Refresh Codelens",
         has = "codeLens",
-      }
+      },
     },
   }
 end
@@ -347,7 +347,11 @@ M.mappings.n = {
   },
   ["<leader>ut"] = {
     function()
-      if vim.b.ts_highlight then vim.treesitter.stop() else vim.treesitter.start() end
+      if vim.b.ts_highlight then
+        vim.treesitter.stop()
+      else
+        vim.treesitter.start()
+      end
     end,
     "Treesitter: Toggle",
   },

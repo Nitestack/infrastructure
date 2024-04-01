@@ -15,56 +15,12 @@ local M = {}
 --  Options
 --------------------------------------------------------------------------------
 M.options = {
-  autowrite = true,                      -- Writes modified files on certain commands and navigation to other files
+  autowrite = true, -- Writes modified files on certain commands and navigation to other files
   completeopt = "menu,menuone,noselect", -- Set completion options for popup menu
-  conceallevel = 2,                      -- Hide * markup for bold and italic, but not markers with substitutions
-  confirm = true,                        -- Confirm to save changes before exiting modified buffer
-  cursorline = true,                     -- Enable highlighting of the current line
-  formatoptions = "jqlnt",               -- Formatting options
-  helplang = "de",                       -- Set the language for the help messages
-  inccommand = "nosplit",                -- Preview incremental substitute
-  laststatus = 3,                        -- Always show statusline
-  mouse = "a",                           -- Enable mouse usage
-  pumheight = 10,                        -- Maximum number of items in the popup menu
-  sessionoptions = {                     -- Save options for sessions
-    "buffers",                           --
-    "curdir",                            --
-    "tabpages",                          --
-    "winsize",                           --
-    "help",                              --
-    "globals",                           --
-    "skiprtp",                           --
-    "folds"                              --
-  },                                     --
-  showmode = false,                      -- Dont show mode since we have a statusline
-  signcolumn = "yes",                    -- Always draw the sign column, avoiding layout shifts
-  smoothscroll = true,                   -- Enables smooth scrolling with screen lines.
-  spelllang = { "en", "de" },            -- When the 'spell' option is on spellchecking will be done for these languages
-  termguicolors = true,                  -- Enable 24-bit RGB colors in the TUI
-  virtualedit = "block",                 -- Allow cursor to move where there is no text in visual block mode
-  winminwidth = 5,                       -- Minimum window width
-
-  -- Backup
-  backup = false,                            -- Disable backup files
-  swapfile = false,                          -- Disable swap file
-  undodir = vim.fn.expand("~/.vim/undodir"), -- Directory for undo files
-  undofile = true,                           -- Enable persistent undo
-  undolevels = 10000,                        -- Maximum number of changes that can be undone
-
-  -- GUI settings
-  guifont = "SF Mono,Symbols Nerd Font:h18", -- Set font for graphical Neovim apps
-  linespace = 6,                             -- Set a line height of `1.2`
-
-  -- Indentation
-  expandtab = true,   -- Use spaces instead of tabs
-  shiftround = true,  -- Round indent to multiple of 'shiftwidth'
-  shiftwidth = 2,     -- Number of spaces for each step of (auto)indent
-  smartindent = true, -- Do smart autoindenting when starting a new line
-  softtabstop = 2,    -- Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
-  tabstop = 2,        -- Number of spaces that a <Tab> in the file counts for
-
-  -- Fill Characters
-  fillchars = {
+  conceallevel = 2, -- Hide * markup for bold and italic, but not markers with substitutions
+  confirm = true, -- Confirm to save changes before exiting modified buffer
+  cursorline = true, -- Enable highlighting of the current line
+  fillchars = { -- Characters to fill the statuslines, vertical separators and special lines in the window
     foldopen = "",
     foldclose = "",
     fold = " ",
@@ -72,26 +28,68 @@ M.options = {
     diff = "╱",
     eob = " ",
   },
+  formatoptions = "jqlnt", -- Formatting options
+  helplang = "de", -- Set the language for the help messages
+  inccommand = "nosplit", -- Preview incremental substitute
+  laststatus = 3, -- Always show statusline
+  mouse = "a", -- Enable mouse usage
+  pumheight = 10, -- Maximum number of items in the popup menu
+  sessionoptions = { -- Save options for sessions
+    "buffers",
+    "curdir",
+    "tabpages",
+    "winsize",
+    "help",
+    "globals",
+    "skiprtp",
+    "folds",
+  },
+  showmode = false, -- Dont show mode since we have a statusline
+  signcolumn = "yes", -- Always draw the sign column, avoiding layout shifts
+  smoothscroll = true, -- Enables smooth scrolling with screen lines.
+  spelllang = { "en", "de" }, -- When the 'spell' option is on spellchecking will be done for these languages
+  termguicolors = true, -- Enable 24-bit RGB colors in the TUI
+  virtualedit = "block", -- Allow cursor to move where there is no text in visual block mode
+  winminwidth = 5, -- Minimum window width
+
+  -- Backup
+  backup = false, -- Disable backup files
+  swapfile = false, -- Disable swap file
+  undodir = vim.fn.expand("~/.vim/undodir"), -- Directory for undo files
+  undofile = true, -- Enable persistent undo
+  undolevels = 10000, -- Maximum number of changes that can be undone
+
+  -- GUI settings
+  guifont = "SF Mono,Symbols Nerd Font:h18", -- Set font for graphical Neovim apps
+  linespace = 6, -- Set a line height of `1.2`
+
+  -- Indentation
+  expandtab = true, -- Use spaces instead of tabs
+  shiftround = true, -- Round indent to multiple of 'shiftwidth'
+  shiftwidth = 2, -- Number of spaces for each step of (auto)indent
+  smartindent = true, -- Do smart autoindenting when starting a new line
+  softtabstop = 2, -- Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
+  tabstop = 2, -- Number of spaces that a <Tab> in the file counts for
 
   -- Format for grep
   grepformat = "%f:%l:%c:%m", -- Format for grep
-  grepprg = "rg --vimgrep",   -- Set the grep program for :grep
+  grepprg = "rg --vimgrep", -- Set the grep program for :grep
 
   -- Search
   ignorecase = true, -- Ignore case in search patterns
-  smartcase = true,  -- Override 'ignorecase' if the search pattern contains uppercase characters
+  smartcase = true, -- Override 'ignorecase' if the search pattern contains uppercase characters
 
   -- Line Numbers
-  number = true,         -- Show line numbers
+  number = true, -- Show line numbers
   relativenumber = true, -- Show line numbers relative to the current line
 
   -- Scroll off
-  scrolloff = 4,     -- Number of screen lines to keep above and below the cursor
+  scrolloff = 4, -- Number of screen lines to keep above and below the cursor
   sidescrolloff = 8, -- Number of screen columns to keep to the left and right of the cursor
 
   -- Split Windows
-  splitbelow = true,    -- Put new windows below current
-  splitright = true,    -- Put new windows right of the current one
+  splitbelow = true, -- Put new windows below current
+  splitright = true, -- Put new windows right of the current one
   splitkeep = "screen", -- Keep splits open even if they are empty
 
   -- Timing
@@ -112,10 +110,10 @@ M.options = {
   },
 
   -- Wrap
-  breakindent = true,                   -- Indent wrapped lines visually
-  linebreak = true,                     -- Break line at convenient point
+  breakindent = true, -- Indent wrapped lines visually
+  linebreak = true, -- Break line at convenient point
   showbreak = core.icons.ui.Tab .. " ", -- Character displayed for the break
-  wrap = true,                          -- Wrap lines
+  wrap = true, -- Wrap lines
 }
 
 --------------------------------------------------------------------------------
@@ -175,9 +173,9 @@ function M.run()
     -- Use PowerShell Core instead of Windows CMD
     vim.o.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
     vim.o.shellcmdflag =
-    "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
-    vim.o.shellredir = '2>&1 | %{ "$_" } | Out-File %s; exit $LastExitCode'
-    vim.o.shellpipe = '2>&1 | %{ "$_" } | Tee-Object %s; exit $LastExitCode'
+      "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
+    vim.o.shellredir = "2>&1 | %{ \"$_\" } | Out-File %s; exit $LastExitCode"
+    vim.o.shellpipe = "2>&1 | %{ \"$_\" } | Tee-Object %s; exit $LastExitCode"
     vim.o.shellquote = ""
     vim.o.shellxquote = ""
   end

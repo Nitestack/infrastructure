@@ -2,6 +2,7 @@
 return {
   "alker0/chezmoi.vim",
   lazy = false,
+  enabled = false,
   init = function()
     vim.g["chezmoi#source_dir_path"] = "{{ .chezmoi.sourceDir }}"
     vim.g["chezmoi#use_tmp_buffer"] = true

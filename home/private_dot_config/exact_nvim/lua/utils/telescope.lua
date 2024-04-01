@@ -14,9 +14,9 @@ function M.builtin(builtin, opts)
     opts = params.opts
     if builtin == "files" then
       if
-          vim.uv.fs_stat(vim.uv.cwd() .. "/.git")
-          and not vim.uv.fs_stat(vim.uv.cwd() .. "/.ignore")
-          and not vim.uv.fs_stat(vim.uv.cwd() .. "/.rgignore")
+        vim.uv.fs_stat(vim.uv.cwd() .. "/.git")
+        and not vim.uv.fs_stat(vim.uv.cwd() .. "/.ignore")
+        and not vim.uv.fs_stat(vim.uv.cwd() .. "/.rgignore")
       then
         if opts.show_untracked == nil then
           opts.show_untracked = true

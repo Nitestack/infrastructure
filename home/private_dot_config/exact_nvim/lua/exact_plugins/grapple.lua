@@ -84,5 +84,5 @@ return {
         border = core.config.ui.transparent.floats and "rounded" or "none",
       },
     },
-  }
+  },
 }
