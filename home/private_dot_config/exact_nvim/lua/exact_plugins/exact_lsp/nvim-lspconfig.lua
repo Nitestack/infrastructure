@@ -9,7 +9,6 @@ return {
       "folke/neoconf.nvim",
       dependencies = { "neovim/nvim-lspconfig" },
       cmd = "Neoconf",
-      opts = {},
     },
     {
       "folke/neodev.nvim",
@@ -25,6 +24,12 @@ return {
   },
   config = function(_, opts)
     local lsp_utils = require("utils.lsp")
+
+    -- Load `neoconf.nvim`. See https://github.com/LazyVim/LazyVim/issues/1070
+    if require("lazy.core.config").spec.plugins["neoconf.nvim"] ~= nil then
+      local plugin = require("lazy.core.config").spec.plugins["neoconf.nvim"]
+      require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))
+    end
 
     -- Icons
     local diagnostic_icons = {
@@ -122,19 +127,17 @@ return {
               end
 
               -- Code lens
-              if vim.lsp.codelens then
-                if client.supports_method("textDocument/codeLens") then
-                  vim.lsp.codelens.refresh()
-                  core.auto_cmds({
+              if vim.lsp.codelens and client.supports_method("textDocument/codeLens") then
+                vim.lsp.codelens.refresh()
+                core.auto_cmds({
+                  {
+                    { "BufEnter", "CursorHold", "InsertLeave" },
                     {
-                      { "BufEnter", "CursorHold", "InsertLeave" },
-                      {
-                        buffer = buffer,
-                        callback = vim.lsp.codelens.refresh,
-                      },
+                      buffer = buffer,
+                      callback = vim.lsp.codelens.refresh,
                     },
-                  })
-                end
+                  },
+                })
               end
             end
 
