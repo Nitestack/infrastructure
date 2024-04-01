@@ -1,7 +1,8 @@
 ---@type LazyPluginSpec
 return {
   "Exafunction/codeium.vim",
-  commit = "a1c3d6b369a18514d656dac149de807becacbdf7",
+  cond = false,
+  cmd = "Codeium",
   build = ":Codeium Auth",
   event = "InsertEnter",
   keys = core.lazy_map({
