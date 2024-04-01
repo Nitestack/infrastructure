@@ -34,7 +34,7 @@ return {
 
     local lazygit = require("toggleterm.terminal").Terminal:new({
       cmd = "lazygit",
-      dir = "git_dir",
+      dir = vim.uv.cwd(), -- `git_dir` is really slow
       direction = "float",
       hidden = true,
       float_opts = {
