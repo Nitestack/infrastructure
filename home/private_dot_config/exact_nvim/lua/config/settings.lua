@@ -41,6 +41,7 @@ M.options = {
   smoothscroll = true,                   -- Enables smooth scrolling with screen lines.
   spelllang = { "en", "de" },            -- When the 'spell' option is on spellchecking will be done for these languages
   termguicolors = true,                  -- Enable 24-bit RGB colors in the TUI
+  virtualedit = "block",                 -- Allow cursor to move where there is no text in visual block mode
   winminwidth = 5,                       -- Minimum window width
 
   -- Backup
