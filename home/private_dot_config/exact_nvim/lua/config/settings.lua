@@ -39,6 +39,7 @@ M.options = {
   showmode = false,                      -- Dont show mode since we have a statusline
   signcolumn = "yes",                    -- Always draw the sign column, avoiding layout shifts
   smoothscroll = true,                   -- Enables smooth scrolling with screen lines.
+  spelllang = { "en", "de" },            -- When the 'spell' option is on spellchecking will be done for these languages
   termguicolors = true,                  -- Enable 24-bit RGB colors in the TUI
   winminwidth = 5,                       -- Minimum window width
 
@@ -135,6 +136,9 @@ M.disabled_providers = { "perl", "ruby", "node", "python3" }
 --  Additional settings
 --------------------------------------------------------------------------------
 function M.run()
+  -- Set language
+  vim.cmd.language("en_US")
+
   -- Neovide settings
   if core.is_neovide() then
     vim.g.neovide_hide_mouse_when_typing = true
