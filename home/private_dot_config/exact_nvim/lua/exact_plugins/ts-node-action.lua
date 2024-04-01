@@ -1,9 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "ckolkey/ts-node-action",
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter",
-  },
+  dependencies = { "nvim-treesitter/nvim-treesitter" },
   keys = core.lazy_map({
     n = {
       ["J"] = {
