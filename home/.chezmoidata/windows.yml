@@ -9,6 +9,7 @@ dependencies:
       - "nodejs-lts"
       - "lazygit"
       - "bat"
+      - "make"
     winget:
       - "ajeetdsouza.zoxide"
     custom:
