@@ -35,6 +35,7 @@ return {
           },
           {
             "filename",
+            padding = { left = 0, right = 1 },
             color = { gui = "bold" },
           },
         },
