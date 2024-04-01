@@ -2,6 +2,7 @@
 return {
   {
     "hrsh7th/nvim-cmp",
+    version = false, -- last release was August 14, 2022 -> just use latest version
     dependencies = {
       "L3MON4D3/LuaSnip",
       "luckasRanarison/tailwind-tools.nvim",

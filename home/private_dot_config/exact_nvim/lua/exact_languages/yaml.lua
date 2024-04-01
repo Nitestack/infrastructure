@@ -26,7 +26,7 @@ return core.load_language({
         -- lazy-load schemastore when needed
         on_new_config = function(new_config)
           new_config.settings.yaml.schemas =
-            vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
+              vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
         end,
         settings = {
           redhat = { telemetry = { enabled = false } },
@@ -68,6 +68,9 @@ return core.load_language({
     },
   },
   plugins = {
-    { "b0o/SchemaStore.nvim" },
+    {
+      "b0o/SchemaStore.nvim",
+      version = false, -- last release was May 27, 2023 -> just use latest version
+    },
   },
 })

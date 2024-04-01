@@ -42,6 +42,9 @@ return core.load_language({
     },
   },
   plugins = {
-    { "b0o/SchemaStore.nvim" },
+    {
+      "b0o/SchemaStore.nvim",
+      version = false, -- last release was May 27, 2023 -> just use latest version
+    },
   },
 })
