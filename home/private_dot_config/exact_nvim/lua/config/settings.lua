@@ -58,7 +58,7 @@ M.options = {
   shiftround = true,  -- Round indent to multiple of 'shiftwidth'
   shiftwidth = 2,     -- Number of spaces for each step of (auto)indent
   smartindent = true, -- Do smart autoindenting when starting a new line
-  softtabstop = 2,    --  Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
+  softtabstop = 2,    -- Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
   tabstop = 2,        -- Number of spaces that a <Tab> in the file counts for
 
   -- Fill Characters
