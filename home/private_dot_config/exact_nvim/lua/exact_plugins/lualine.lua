@@ -1,10 +1,10 @@
-local lualine_components = require("utils.lualine")
-
 ---@type LazyPluginSpec
 return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
   opts = function()
+    local lualine_components = require("utils.lualine")
+
     -- PERF: we don't need this lualine require madness 🤷
     local lualine_require = require("lualine_require")
     lualine_require.require = require
