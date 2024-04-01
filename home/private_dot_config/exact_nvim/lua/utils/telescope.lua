@@ -3,27 +3,30 @@
 --------------------------------------------------------------------------------
 local M = {}
 
-local is_inside_work_tree = {}
-
+-- this will return a function that calls telescope.
+-- for `files`, git_files or find_files will be chosen depending on .git
 ---@param builtin string
----@param opts? table
+---@param opts? { show_untracked?: boolean }
 function M.builtin(builtin, opts)
+  local params = { builtin = builtin, opts = opts or {} }
   return function()
-    pcall(require("telescope.builtin")[builtin], opts)
-  end
-end
-
-function M.project_files()
-  local cwd = vim.fn.getcwd()
-  if is_inside_work_tree[cwd] == nil then
-    vim.fn.system("git rev-parse --is-inside-work-tree")
-    is_inside_work_tree[cwd] = vim.v.shell_error == 0
-  end
-
-  if is_inside_work_tree[cwd] then
-    M.builtin("git_files", { show_untracked = true })()
-  else
-    M.builtin("find_files")()
+    builtin = params.builtin
+    opts = params.opts
+    if builtin == "files" then
+      if
+          vim.uv.fs_stat(vim.uv.cwd() .. "/.git")
+          and not vim.uv.fs_stat(vim.uv.cwd() .. "/.ignore")
+          and not vim.uv.fs_stat(vim.uv.cwd() .. "/.rgignore")
+      then
+        if opts.show_untracked == nil then
+          opts.show_untracked = true
+        end
+        builtin = "git_files"
+      else
+        builtin = "find_files"
+      end
+    end
+    require("telescope.builtin")[builtin](opts)
   end
 end
 

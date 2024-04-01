@@ -15,7 +15,7 @@ return {
   keys = core.lazy_map({
     n = {
       [{ "<leader>ff", "<leader><Space>" }] = {
-        telescope_utils.project_files,
+        telescope_utils.builtin("files"),
         "Telescope: Find Files",
       },
       [{ "<leader>sg", "<leader>/" }] = {
