@@ -45,18 +45,18 @@ vim.filetype.add(require("config.filetypes"))
 --------------------------------------------------------------------------------
 --  Commands
 --------------------------------------------------------------------------------
-local commands = require("config.commands")
+local function load_commands()
+  local commands = require("config.commands")
 
-core.auto_cmds(commands.auto_cmds, commands.auto_cmd_opts, commands.au_group_opts)
-core.user_cmds(commands.user_cmds, commands.user_cmd_opts)
+  core.auto_cmds(commands.auto_cmds, commands.auto_cmd_opts, commands.au_group_opts)
+  core.user_cmds(commands.user_cmds, commands.user_cmd_opts)
+end
 
---------------------------------------------------------------------------------
---  Keymaps
---------------------------------------------------------------------------------
-local keymaps = require("config.mappings")
-
-core.map(keymaps.mappings, keymaps.mapping_opts)
-core.disable_mapping(keymaps.unmappings)
+-- Commands can be loaded lazily when not opening a file
+local lazy_autocmds = vim.fn.argc(-1) == 0
+if not lazy_autocmds then
+  load_commands()
+end
 
 --------------------------------------------------------------------------------
 --  Plugins
@@ -113,32 +113,41 @@ require("lazy").setup({
   performance = {
     rtp = {
       disabled_plugins = {
-        "2html_plugin",
-        "bugreport",
-        "compiler",
-        "ftplugin",
-        "getscript",
-        "getscriptPlugin",
+        -- "2html_plugin",
+        -- "bugreport",
+        -- "compiler",
+        -- "ftplugin",
+        -- "getscript",
+        -- "getscriptPlugin",
+        -- "gzip",
+        -- "logipat",
+        -- "matchit",
+        -- "netrw",
+        -- "netrwFileHandlers",
+        -- "netrwPlugin",
+        -- "netrwSettings",
+        -- "optwin",
+        -- "rplugin",
+        -- "rrhelper",
+        -- "spellfile_plugin",
+        -- "synmenu",
+        -- "syntax",
+        -- "tar",
+        -- "tarPlugin",
+        -- "tohtml",
+        -- "tutor",
+        -- "vimball",
+        -- "vimballPlugin",
+        -- "zip",
+        -- "zipPlugin",
         "gzip",
-        "logipat",
         "matchit",
-        "netrw",
-        "netrwFileHandlers",
+        "matchparen",
         "netrwPlugin",
-        "netrwSettings",
-        "optwin",
         "rplugin",
-        "rrhelper",
-        "spellfile_plugin",
-        "synmenu",
-        "syntax",
-        "tar",
         "tarPlugin",
         "tohtml",
         "tutor",
-        "vimball",
-        "vimballPlugin",
-        "zip",
         "zipPlugin",
       },
     },
@@ -146,6 +155,26 @@ require("lazy").setup({
 })
 
 core.auto_cmds({
+  -- Setup
+  {
+    "User",
+    {
+      group = "setup",
+      pattern = "VeryLazy",
+      callback = function()
+        -- Load commands (if not yet)
+        if lazy_autocmds then
+          load_commands()
+        end
+
+        -- Load keymaps
+        local keymaps = require("config.mappings")
+
+        core.map(keymaps.mappings, keymaps.mapping_opts)
+        core.disable_mapping(keymaps.unmappings)
+      end
+    },
+  },
   -- Auto load session
   {
     "User",
