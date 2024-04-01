@@ -11,6 +11,7 @@ return {
       build = "make",
     },
   },
+  cmd = "Telescope",
   keys = core.lazy_map({
     n = {
       [{ "<leader>ff", "<leader><Space>" }] = {
