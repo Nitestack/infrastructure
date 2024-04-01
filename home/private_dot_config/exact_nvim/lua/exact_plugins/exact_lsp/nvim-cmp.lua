@@ -71,6 +71,11 @@ return {
             luasnip.lsp_expand(args.body)
           end,
         },
+        view = {
+          entries = {
+            follow_cursor = true,
+          },
+        },
         window = {
           completion = cmp.config.window.bordered({
             scrollbar = false,
