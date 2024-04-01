@@ -34,6 +34,9 @@ return {
       Info = core.icons.diagnostics.Information,
     }
 
+    -- LSP info border
+    require("lspconfig.ui.windows").default_options.border = core.config.ui.transparent.floats and "rounded" or "none"
+
     -- Diagnostic config
     ---@type vim.diagnostic.Opts
     local diagnostic_opts = {
