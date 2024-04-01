@@ -4,9 +4,6 @@ return {
   name = "catppuccin",
   lazy = false,
   priority = 1000,
-  enabled = function()
-    return core.config.ui.theme == "catppuccin"
-  end,
   ---@type CatppuccinOptions
   opts = {
     transparent_background = core.config.ui.transparent.enabled,
