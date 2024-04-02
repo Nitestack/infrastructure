@@ -1,0 +1,10 @@
+---@type LazyPluginSpec
+return {
+  "glepnir/template.nvim",
+  cmd = "Template",
+  opts = function()
+    return {
+      temp_dir = vim.fn.expand("{{ .chezmoi.sourceDir }}/private_dot_config/exact_nvim/templates"), -- only works in this dotfiles repo
+    }
+  end,
+}
