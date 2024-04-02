@@ -50,7 +50,7 @@ function M.lsp_mappings()
         end,
         "Goto Type Definition",
       },
-      ["<leader>cd"] = {
+      ["<leader>xl"] = {
         vim.diagnostic.open_float,
         "Line Diagnostics",
       },
