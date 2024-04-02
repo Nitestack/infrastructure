@@ -25,3 +25,5 @@ Documents
 
 .hushlogin
 {{ end }}
+
+.config/nvim/templates
