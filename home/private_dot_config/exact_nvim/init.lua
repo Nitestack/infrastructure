@@ -96,7 +96,10 @@ require("lazy").setup({
   install = {
     colorscheme = { core.config.ui.theme, "habamax" },
   },
-  checker = { enabled = true },
+  checker = {
+    enabled = true,
+    notify = false,
+  },
   change_detection = {
     notify = false,
   },
