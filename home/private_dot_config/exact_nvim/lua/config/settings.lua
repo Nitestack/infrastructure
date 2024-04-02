@@ -136,7 +136,7 @@ M.disabled_providers = { "perl", "ruby", "node", "python3" }
 --------------------------------------------------------------------------------
 function M.run()
   -- Set language
-  vim.cmd.language("en_US")
+  vim.cmd.language("en_US.UTF-8")
 
   -- Neovide settings
   if core.is_neovide() then
