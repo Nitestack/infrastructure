@@ -60,14 +60,6 @@ return core.load_language({
     "tsx",
   },
   formatter = {
-    formatters = {
-      prettierd = {
-        env = {
-          PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath("config") --[[@as string]]
-            .. "tools/formatters/.prettierrc.json",
-        },
-      },
-    },
     formatters_by_ft = {
       ["javascript"] = { "prettierd" },
       ["javascriptreact"] = { "prettierd" },
