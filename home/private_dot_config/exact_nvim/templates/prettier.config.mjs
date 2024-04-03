@@ -14,7 +14,7 @@ const ALIASES = Object.keys(tsConfig.compilerOptions?.paths ?? {}).map((path) =>
   path.replace(/\*\//g, "")
 ); // Specify import aliases
 
-/** @type {import('prettier').Config} */
+/** @type {import("prettier").Config & import("@ianvs/prettier-plugin-sort-imports").PluginConfig} */
 export default {
   trailingComma: "es5",
   plugins: ["@ianvs/prettier-plugin-sort-imports"],
