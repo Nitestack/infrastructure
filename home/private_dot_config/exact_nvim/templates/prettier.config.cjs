@@ -1,4 +1,4 @@
-import tsConfig from "./tsconfig.json" with { type: "json" };
+const tsConfig = require("./tsconfig.json");
 
 const THIRD_PARTY_MODULES = "<THIRD_PARTY_MODULES>"; // Imports not matched by other special words or groups
 const BUILTIN_MODULES = "<BUILTIN_MODULES>"; // Node.js built-in modules
@@ -15,9 +15,11 @@ const ALIASES = Object.keys(tsConfig.compilerOptions?.paths ?? {}).map((path) =>
 ); // Specify import aliases
 
 /** @type {import("prettier").Config & import("@ianvs/prettier-plugin-sort-imports").PluginConfig} */
-export default {
+module.exports = {
   trailingComma: "es5",
-  plugins: ["@ianvs/prettier-plugin-sort-imports"],
+  plugins: [
+    "@ianvs/prettier-plugin-sort-imports",
+  ],
   // INFO: To group imports into "chunks" with blank lines between, add empty strings
   importOrder: [
     "",
