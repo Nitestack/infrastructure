@@ -123,21 +123,32 @@ return {
             if client then
               -- Inlay hints
               if client.supports_method("textDocument/inlayHint") then
-                require("utils.toggle").inlay_hints(buffer, true)
+                require("utils.toggle").inlay_hints(buffer, false) -- `false` - disabled by default
               end
 
               -- Code lens
               if vim.lsp.codelens and client.supports_method("textDocument/codeLens") then
-                vim.lsp.codelens.refresh()
+                vim.lsp.codelens.refresh({ bufnr = buffer })
                 core.auto_cmds({
                   {
                     { "BufEnter", "CursorHold", "InsertLeave" },
                     {
                       buffer = buffer,
-                      callback = vim.lsp.codelens.refresh,
+                      callback = function(a)
+                        vim.lsp.codelens.refresh({ bufnr = a.buf })
+                      end,
                     },
                   },
                 })
+              end
+
+              -- Semantic tokens
+              if
+                vim.lsp.semantic_tokens
+                and client.supports_method("textDocument/semanticTokens/full")
+                and vim.b[buffer].semantic_tokens == nil
+              then
+                vim.b[buffer].semantic_tokens = true
               end
             end
 
