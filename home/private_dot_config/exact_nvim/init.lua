@@ -6,6 +6,16 @@ if vim.loader then
   vim.loader.enable()
 end
 
+-- Ensure Neovim version is atleast 0.10
+if vim.fn.has("nvim-0.10") == 0 then
+  vim.api.nvim_echo({
+    { "Configuration requires Neovim >= 0.10.0\n", "ErrorMsg" },
+    { "Press any key to exit", "MoreMsg" },
+  }, true, {})
+  vim.fn.getchar()
+  vim.cmd.quit()
+end
+
 --------------------------------------------------------------------------------
 --  Globals
 --------------------------------------------------------------------------------
