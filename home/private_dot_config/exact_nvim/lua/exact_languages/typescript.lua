@@ -17,7 +17,6 @@ local tsserver_settings = {
   preferences = {
     quoteStyle = "double",
     importModuleSpecifier = "non-relative",
-    renameMatchingJsxTags = true,
   },
   suggest = {
     completeFunctionCalls = true,
@@ -44,6 +43,10 @@ return core.load_language({
         },
       },
       eslint = {},
+      ---@type lspconfig.options.tsserver
+      tsserver = {
+        autostart = false,
+      },
     },
   },
   mason = {
