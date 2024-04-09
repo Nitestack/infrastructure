@@ -28,7 +28,7 @@ return {
     },
     icons = {
       breadcrumb = core.icons.ui.DoubleChevronRight,
-      separator = core.icons.ui.BoldArrowRight,
+      separator = "",
     },
     window = {
       border = core.config.ui.transparent.floats and "rounded" or "none",
