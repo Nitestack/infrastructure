@@ -24,6 +24,26 @@ return {
           require("smart-splits").move_cursor_down()
         end,
       },
+      ["<C-Up>"] = {
+        function()
+          require("smart-splits").resize_up()
+        end,
+      },
+      ["<C-Down>"] = {
+        function()
+          require("smart-splits").resize_down()
+        end,
+      },
+      ["<C-Left>"] = {
+        function()
+          require("smart-splits").resize_left()
+        end,
+      },
+      ["<C-Right>"] = {
+        function()
+          require("smart-splits").resize_right()
+        end,
+      },
     },
   }),
   ---@type SmartSplitsConfig

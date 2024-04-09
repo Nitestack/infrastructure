@@ -260,30 +260,6 @@ M.mappings.n = {
       remap = true,
     },
   },
-  ["<C-Up>"] = {
-    function()
-      vim.cmd("resize +2")
-    end,
-    "Window: Increase height",
-  },
-  ["<C-Down>"] = {
-    function()
-      vim.cmd("resize -2")
-    end,
-    "Window: Decrease height",
-  },
-  ["<C-Left>"] = {
-    function()
-      vim.cmd("vertical resize -2")
-    end,
-    "Window: Decrease width",
-  },
-  ["<C-Right>"] = {
-    function()
-      vim.cmd("vertical resize +2")
-    end,
-    "Window: Increase width",
-  },
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
     "Window: Change two horizontal to vertical",
