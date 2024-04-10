@@ -20,9 +20,6 @@ return {
 
       ---@type { [string]: CtpHighlight}
       return {
-        MiniIndentscopeSymbol = {
-          fg = "#737aa2",
-        },
         TreesitterContext = {
           bg = treesitter_context_bg,
         },
@@ -36,21 +33,13 @@ return {
       }
     end,
     integrations = {
-      barbecue = {
-        dim_dirname = true,
-        bold_basename = true,
-        dim_context = true,
-        alt_background = false,
-      },
       dashboard = true,
-      flash = true,
       gitsigns = true,
-      harpoon = true,
       headlines = true,
       indent_blankline = { enabled = true },
       markdown = true,
       mason = true,
-      mini = { enabled = true },
+      mini = { enabled = true, indentscope_color = "overlay0" },
       neotree = true,
       noice = true,
       cmp = true,
@@ -70,13 +59,10 @@ return {
         },
         inlay_hints = { background = true },
       },
-      navic = {
-        enabled = true,
-      },
       notify = true,
+      semantic_tokens = true,
       treesitter_context = true,
       treesitter = true,
-      rainbow_delimiters = true,
       telescope = {
         enabled = true,
         style = "nvchad",
