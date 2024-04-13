@@ -120,7 +120,7 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
     },
-    event = "CmdlineEnter",
+    keys = { ":", "/", "?" },
     config = function()
       local cmp = require("cmp")
 
