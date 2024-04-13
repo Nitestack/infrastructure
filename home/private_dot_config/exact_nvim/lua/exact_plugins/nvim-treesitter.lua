@@ -30,6 +30,7 @@ return {
       },
       "andymass/vim-matchup",
       "windwp/nvim-ts-autotag",
+      "RRethy/nvim-treesitter-endwise",
     },
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
@@ -105,6 +106,10 @@ return {
         },
         -- configure nvim-ts-autotag
         autotag = {
+          enable = true,
+        },
+        -- configure nvim-treesitter-endwise
+        endwise = {
           enable = true,
         },
       }
