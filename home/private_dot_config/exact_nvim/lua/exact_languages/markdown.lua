@@ -6,6 +6,7 @@ return core.load_language({
     "marksman",
     "markdownlint",
     "prettierd",
+    "prettier",
   },
   treesitter = {
     "markdown",
@@ -18,8 +19,8 @@ return core.load_language({
   },
   formatter = {
     formatters_by_ft = {
-      ["markdown"] = { "prettierd" },
-      ["markdown.mdx"] = { "prettierd" },
+      ["markdown"] = { "prettierd", "prettier" },
+      ["markdown.mdx"] = { "prettierd", "prettier" },
     },
   },
   linter = {

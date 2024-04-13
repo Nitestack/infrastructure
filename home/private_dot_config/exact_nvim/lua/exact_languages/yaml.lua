@@ -7,6 +7,7 @@ return core.load_language({
   },
   mason = {
     "prettierd",
+    "prettier",
     "yamllint",
     "yaml-language-server",
   },
@@ -64,7 +65,7 @@ return core.load_language({
   },
   formatter = {
     formatters_by_ft = {
-      ["yaml"] = { "prettierd" },
+      ["yaml"] = { "prettierd", "prettier" },
     },
   },
   plugins = {

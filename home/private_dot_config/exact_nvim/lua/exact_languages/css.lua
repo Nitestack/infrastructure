@@ -7,6 +7,7 @@ return core.load_language({
     "cssmodules-language-server",
     "stylelint",
     "prettierd",
+    "prettier",
     "tailwindcss-language-server",
   },
   treesitter = {
@@ -56,9 +57,9 @@ return core.load_language({
   },
   formatter = {
     formatters_by_ft = {
-      ["css"] = { "prettierd" },
-      ["scss"] = { "prettierd" },
-      ["sass"] = { "prettierd" },
+      ["css"] = { "prettierd", "prettier" },
+      ["scss"] = { "prettierd", "prettier" },
+      ["sass"] = { "prettierd", "prettier" },
     },
   },
   plugins = {

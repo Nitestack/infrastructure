@@ -8,6 +8,7 @@ return core.load_language({
   mason = {
     "html-lsp",
     "prettierd",
+    "prettier",
   },
   lsp = {
     servers = {
@@ -16,7 +17,7 @@ return core.load_language({
   },
   formatter = {
     formatters_by_ft = {
-      ["html"] = { "prettierd" },
+      ["html"] = { "prettierd", "prettier" },
     },
   },
 })

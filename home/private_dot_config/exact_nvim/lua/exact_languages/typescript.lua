@@ -51,9 +51,10 @@ return core.load_language({
   },
   mason = {
     "vtsls",
-    -- "eslint_d",
+    "eslint_d",
     "eslint-lsp",
     "prettierd",
+    "prettier",
   },
   treesitter = {
     "javascript",
@@ -64,22 +65,18 @@ return core.load_language({
   },
   formatter = {
     formatters_by_ft = {
-      ["javascript"] = { "prettierd" },
-      ["javascriptreact"] = { "prettierd" },
-      ["typescript"] = { "prettierd" },
-      ["typescriptreact"] = { "prettierd" },
+      ["javascript"] = { "prettierd", "prettier" },
+      ["javascriptreact"] = { "prettierd", "prettier" },
+      ["typescript"] = { "prettierd", "prettier" },
+      ["typescriptreact"] = { "prettierd", "prettier" },
     },
   },
   linter = {
     linters_by_ft = {
-      -- ["javascript"] = { "eslint_d" },
-      -- ["javascriptreact"] = { "eslint_d" },
-      -- ["typescript"] = { "eslint_d" },
-      -- ["typescriptreact"] = { "eslint_d" },
-      ["javascript"] = { "eslint" },
-      ["javascriptreact"] = { "eslint" },
-      ["typescript"] = { "eslint" },
-      ["typescriptreact"] = { "eslint" },
+      ["javascript"] = { "eslint_d", "eslint" },
+      ["javascriptreact"] = { "eslint_d", "eslint" },
+      ["typescript"] = { "eslint_d", "eslint" },
+      ["typescriptreact"] = { "eslint_d", "eslint" },
     },
   },
   plugins = {

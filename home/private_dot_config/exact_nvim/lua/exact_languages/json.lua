@@ -9,6 +9,7 @@ return core.load_language({
   },
   mason = {
     "prettierd",
+    "prettier",
     "jsonlint",
     "json-lsp",
   },
@@ -37,8 +38,8 @@ return core.load_language({
   },
   formatter = {
     formatters_by_ft = {
-      ["json"] = { "prettierd" },
-      ["jsonc"] = { "prettierd" },
+      ["json"] = { "prettierd", "prettier" },
+      ["jsonc"] = { "prettierd", "prettier" },
     },
   },
   plugins = {
