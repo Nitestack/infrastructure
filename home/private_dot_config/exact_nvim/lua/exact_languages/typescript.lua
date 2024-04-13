@@ -47,6 +47,7 @@ return core.load_language({
       tsserver = {
         autostart = false,
       },
+      prismals = {},
     },
   },
   mason = {
@@ -55,6 +56,7 @@ return core.load_language({
     "eslint-lsp",
     "prettierd",
     "prettier",
+    "prisma-language-server",
   },
   treesitter = {
     "javascript",
