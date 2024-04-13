@@ -10,7 +10,7 @@ function M.setup(config)
     "SF Mono",
     "Symbols Nerd Font",
   })
-  config.font_size = 18.0
+  config.font_size = 14.0
   config.line_height = 1.2
 
   -- Colors
