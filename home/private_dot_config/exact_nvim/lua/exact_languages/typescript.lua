@@ -2,6 +2,8 @@
 --  TypeScript
 --------------------------------------------------------------------------------
 
+local filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+
 ---@type _.lspconfig.settings.vtsls.Typescript
 local tsserver_settings = {
   locale = "en",
@@ -84,7 +86,7 @@ return core.load_language({
   plugins = {
     {
       "pmizio/typescript-tools.nvim",
-      ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      ft = filetypes,
       dependencies = {
         "nvim-lua/plenary.nvim",
         "neovim/nvim-lspconfig",
@@ -131,11 +133,6 @@ return core.load_language({
       opts = function()
         require("lspconfig.configs").vtsls = require("vtsls").lspconfig
       end,
-    },
-    {
-      "dmmulroy/tsc.nvim",
-      cmd = "TSC",
-      opts = {},
     },
     {
       "vuki656/package-info.nvim",
@@ -201,7 +198,12 @@ return core.load_language({
     },
     {
       "axelvc/template-string.nvim",
-      ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      ft = filetypes,
+      opts = {},
+    },
+    {
+      "dmmulroy/ts-error-translator.nvim",
+      ft = filetypes,
       opts = {},
     },
     {
