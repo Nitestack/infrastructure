@@ -1,10 +1,9 @@
 ---@type LazyPluginSpec
 return {
   "Exafunction/codeium.vim",
-  cond = false,
   cmd = "Codeium",
   build = ":Codeium Auth",
-  event = "InsertEnter",
+  event = "BufEnter",
   keys = core.lazy_map({
     i = {
       ["<M-Enter>"] = {
