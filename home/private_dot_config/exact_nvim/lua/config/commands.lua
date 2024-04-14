@@ -238,7 +238,7 @@ M.user_cmds = {
     function()
       vim.cmd("TSUpdate")
       vim.cmd("MasonToolsUpdate")
-      vim.cmd("Lazy sync")
+      vim.cmd("Lazy! sync")
     end,
   },
 }
