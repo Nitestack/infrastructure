@@ -96,6 +96,7 @@ require("lazy").setup({
   spec = {
     { import = "languages" },
     { import = "plugins.lsp" },
+    { import = "plugins.dap" },
     { import = "plugins" },
     core.disabled_plugins(core.config.disabled_plugins),
   },

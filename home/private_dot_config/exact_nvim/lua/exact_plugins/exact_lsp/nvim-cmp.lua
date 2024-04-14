@@ -63,6 +63,21 @@ return {
 
       ---@type cmp.ConfigSchema
       return {
+        enabled = function()
+          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) ~= "prompt" then
+            return true
+          end
+
+          -- Check if in a DAP window (`require("cmp_dap").is_dap_buffer()` uses deprecated function, so using this)
+          local filetype = vim.bo[0].filetype
+          if vim.startswith(filetype, "dapui_") then
+            return true
+          end
+          if filetype == "dap-repl" then
+            return true
+          end
+          return false
+        end,
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
