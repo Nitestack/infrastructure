@@ -186,7 +186,7 @@ M.mappings = {}
 
 -- Delete into void register
 M.mappings[{ "n", "v" }] = {
-  ["<leader>d"] = {
+  ["D"] = {
     [["_d]],
     "Delete without copying into register",
   },
