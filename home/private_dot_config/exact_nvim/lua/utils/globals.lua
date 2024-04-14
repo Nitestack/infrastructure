@@ -75,6 +75,7 @@ end
 ---@field formatter? LanguageFormatterConfig
 ---@field linter? LanguageLinterConfig
 ---@field dap? LanguageDapConfig
+---@field test? LanguageTestConfig
 ---@field plugins? LazyPluginSpec[]
 
 ---@class LanguageLspConfig
@@ -96,6 +97,8 @@ end
 ---@class LanguageDapConfig
 ---@field adapters? table<string, Adapter|fun():Adapter>
 ---@field configurations? DapConfiguration[]
+
+---@alias LanguageTestConfig table<string, any>
 
 ---@param config LanguageConfig
 function M.load_language(config)
@@ -174,6 +177,15 @@ function M.load_language(config)
             end
           end
         end
+      end,
+    })
+  end
+
+  if config.test then
+    table.insert(spec, {
+      "nvim-neotest/neotest",
+      opts = function(_, opts)
+        opts.adapters = vim.tbl_extend("force", opts.adapters or {}, config.test)
       end,
     })
   end

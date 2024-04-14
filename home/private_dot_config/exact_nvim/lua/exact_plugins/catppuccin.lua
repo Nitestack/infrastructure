@@ -40,7 +40,7 @@ return {
       markdown = true,
       mason = true,
       mini = { enabled = true, indentscope_color = "overlay0" },
-      neotree = true,
+      neotest = true,
       noice = true,
       dap = true,
       dap_ui = true,
