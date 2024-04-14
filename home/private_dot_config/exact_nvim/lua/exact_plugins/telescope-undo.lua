@@ -1,12 +1,8 @@
 ---@type LazyPluginSpec
 return {
   "debugloop/telescope-undo.nvim",
-  dependencies = {
-    {
-      "nvim-telescope/telescope.nvim",
-      dependencies = { "nvim-lua/plenary.nvim" },
-    },
-  },
+  dependencies = "nvim-telescope/telescope.nvim",
+  cmd = "Telescope undo",
   keys = core.lazy_map({
     n = {
       ["<leader>U"] = {
