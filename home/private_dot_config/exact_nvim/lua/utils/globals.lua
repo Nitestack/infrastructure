@@ -41,6 +41,22 @@ function M.falsy(item)
   return item ~= nil
 end
 
+---Remove duplicates from a table
+---@param tbl string[]
+---@return string[]
+function M.remove_duplicates(tbl)
+  ---@type table<string, boolean>
+  local seen = {}
+  return vim.tbl_filter(function(item)
+    if not seen[item] then
+      seen[item] = true
+      return true
+    else
+      return false
+    end
+  end, tbl)
+end
+
 ---Convert a string or table to a table
 ---@param str_or_tbl string|table
 function M.str_to_tbl(str_or_tbl)
@@ -53,11 +69,12 @@ end
 ---@alias StringOrArray string|string[]
 
 ---@class LanguageConfig
----@field lsp? LanguageLspConfig
 ---@field mason? StringOrArray
 ---@field treesitter? StringOrArray
+---@field lsp? LanguageLspConfig
 ---@field formatter? LanguageFormatterConfig
 ---@field linter? LanguageLinterConfig
+---@field dap? LanguageDapConfig
 ---@field plugins? LazyPluginSpec[]
 
 ---@class LanguageLspConfig
@@ -72,20 +89,18 @@ end
 ---@field linters_by_ft? table<string, string[]>
 ---@field linters? table<string,table>
 
+---@class DapConfiguration
+---@field langs? string|string[]
+---@field [1] (Configuration|fun():Configuration)[]
+
+---@class LanguageDapConfig
+---@field adapters? table<string, Adapter|fun():Adapter>
+---@field configurations? DapConfiguration[]
+
 ---@param config LanguageConfig
 function M.load_language(config)
   ---@type LazyPluginSpec[]
   local spec = {}
-
-  if config.lsp then
-    table.insert(spec, {
-      "neovim/nvim-lspconfig",
-      opts = {
-        setup = config.lsp.setup or {},
-        servers = config.lsp.servers or {},
-      },
-    })
-  end
 
   if config.mason then
     table.insert(spec, {
@@ -102,6 +117,16 @@ function M.load_language(config)
       opts = function(_, opts)
         opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.treesitter))
       end,
+    })
+  end
+
+  if config.lsp then
+    table.insert(spec, {
+      "neovim/nvim-lspconfig",
+      opts = {
+        setup = config.lsp.setup or {},
+        servers = config.lsp.servers or {},
+      },
     })
   end
 
@@ -122,6 +147,34 @@ function M.load_language(config)
         linters_by_ft = config.linter.linters_by_ft or {},
         linters = config.linter.linters or {},
       },
+    })
+  end
+
+  if config.dap then
+    table.insert(spec, {
+      "mfussenegger/nvim-dap",
+      opts = function()
+        local dap = require("dap")
+
+        -- Setup adapters
+        for adapter_name, _ in pairs(config.dap.adapters or {}) do
+          if not dap.adapters[adapter_name] then
+            local adapter = config.dap.adapters[adapter_name]
+            require("dap").adapters[adapter_name] = type(adapter) == "function" and adapter() or adapter
+          end
+        end
+
+        -- Setup configurations
+        for _, configuration in ipairs(config.dap.configurations or {}) do
+          for _, lang in ipairs(core.str_to_tbl(configuration.langs or {})) do
+            if not dap.configurations[lang] then
+              require("dap").configurations[lang] = vim.tbl_map(function(c)
+                return type(c) == "function" and c() or c
+              end, configuration[1])
+            end
+          end
+        end
+      end,
     })
   end
 
