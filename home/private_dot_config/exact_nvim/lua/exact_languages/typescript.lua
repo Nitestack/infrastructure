@@ -52,6 +52,48 @@ return core.load_language({
       prismals = {},
     },
   },
+  dap = {
+    adapters = {
+      ["pwa-node"] = function()
+        return {
+          type = "server",
+          host = "localhost",
+          port = "${port}",
+          executable = {
+            command = "node",
+            args = {
+              require("mason-registry").get_package("js-debug-adapter"):get_install_path()
+                .. "/js-debug/src/dapDebugServer.js",
+              "${port}",
+            },
+          },
+        }
+      end,
+    },
+    configurations = {
+      {
+        {
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+          },
+          function()
+            return {
+              type = "pwa-node",
+              request = "attach",
+              name = "Attach",
+              processId = require("dap.utils").pick_process,
+              cwd = "${workspaceFolder}",
+            }
+          end,
+        },
+        langs = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+      },
+    },
+  },
   mason = {
     "vtsls",
     "eslint_d",
@@ -59,6 +101,7 @@ return core.load_language({
     "prettierd",
     "prettier",
     "prisma-language-server",
+    "js-debug-adapter",
   },
   treesitter = {
     "javascript",
