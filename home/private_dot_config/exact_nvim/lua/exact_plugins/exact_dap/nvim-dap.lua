@@ -30,7 +30,11 @@ return {
       {
         "theHamsta/nvim-dap-virtual-text",
         dependencies = "nvim-treesitter/nvim-treesitter",
-        opts = {},
+        cmd = { "DapVirtualTextEnable", "DapVirtualTextDisable", "DapVirtualTextToggle", "DapVirtualTextForceRefresh" },
+        ---@type nvim_dap_virtual_text_options
+        opts = {
+          commented = true,
+        },
       },
     },
     keys = core.lazy_map({
