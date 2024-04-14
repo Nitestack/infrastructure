@@ -42,6 +42,8 @@ return {
       mini = { enabled = true, indentscope_color = "overlay0" },
       neotree = true,
       noice = true,
+      dap = true,
+      dap_ui = true,
       cmp = true,
       native_lsp = {
         enabled = true,
