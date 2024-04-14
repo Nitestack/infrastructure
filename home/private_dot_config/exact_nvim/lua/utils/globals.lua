@@ -189,9 +189,9 @@ function M.load_language(config)
     table.insert(spec, {
       "nvim-neotest/neotest",
       dependencies = config.test.dependencies or {},
-      opts = function(_, opts)
-        opts.adapters = vim.tbl_extend("force", opts.adapters or {}, config.test.adapters or {})
-      end,
+      opts = {
+        adapters = config.test.adapters or {},
+      },
     })
   end
 
