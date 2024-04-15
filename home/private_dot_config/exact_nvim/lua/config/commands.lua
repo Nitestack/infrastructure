@@ -210,7 +210,7 @@ M.auto_cmds = {
 
         local status_ok, _ = pcall(vim.api.nvim_buf_get_var, 0, "lsp_floating_window")
         if not status_ok then
-          require("utils.breadcrumbs").get_winbar()
+          utils.breadcrumbs.get_winbar()
         end
       end,
     },

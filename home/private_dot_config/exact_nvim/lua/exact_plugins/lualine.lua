@@ -3,7 +3,7 @@ return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
   opts = function()
-    local lualine_components = require("utils.lualine")
+    local lualine_components = utils.lualine
 
     -- PERF: we don't need this lualine require madness 🤷
     local lualine_require = require("lualine_require")

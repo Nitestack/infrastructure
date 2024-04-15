@@ -9,7 +9,7 @@ return {
     opts.config.header = vim.split(logo, "\n")
     opts.config.center = {
       { action = "ene | startinsert", desc = " New file", icon = " ", key = "n" },
-      { action = "lua require('utils.telescope').builtin('files')", desc = " Find file", icon = " ", key = "f" },
+      { action = "lua utils.telescope('files')", desc = " Find file", icon = " ", key = "f" },
       {
         action = "lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())",
         desc = " Marked Files",
@@ -17,7 +17,7 @@ return {
         key = "h",
       },
       {
-        action = "lua require('utils.telescope').builtin('live_grep')()",
+        action = "lua utils.telescope('live_grep')()",
         desc = " Find text",
         icon = " ",
         key = "g",

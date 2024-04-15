@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UTILS
 --------------------------------------------------------------------------------
----@class utils: LazyUtilCore
+---@class utils
 ---@field breadcrumbs utils.breadcrumbs
 ---@field cmds utils.cmds
 ---@field globals utils.globals
@@ -16,13 +16,6 @@ local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    -- Use `lazy.nvim` utils
-    local LazyUtil = require("lazy.core.util")
-    if LazyUtil[k] then
-      return LazyUtil[k]
-    end
-
-    -- Use util modules
     t[k] = require("utils." .. k)
     return t[k]
   end,

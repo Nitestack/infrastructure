@@ -2,11 +2,18 @@
 --------------------------------------------------------------------------------
 --  TOGGLE UTILS
 --------------------------------------------------------------------------------
----@class utils.toggle
-local M = {}
+---@alias utils.toggle.values {[1]:any, [2]:any}
 
----@param silent boolean?
----@param values? { [1]:any, [2]:any }
+---@class utils.toggle
+---@overload fun(option:any, silent?:boolean, values?:utils.toggle.values)
+local M = setmetatable({}, {
+  __call = function(m, ...)
+    return m.option(...)
+  end,
+})
+
+---@param silent? boolean
+---@param values? utils.toggle.values
 function M.option(option, silent, values)
   if values then
     if vim.opt_local[option]:get() == values[1] then

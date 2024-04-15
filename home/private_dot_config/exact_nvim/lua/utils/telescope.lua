@@ -1,13 +1,21 @@
 --------------------------------------------------------------------------------
 --  TELESCOPE UTILS
 --------------------------------------------------------------------------------
+---@class utils.telescope.opts
+---@field show_untracked? boolean
+
 ---@class utils.telescope
-local M = {}
+---@overload fun(builtin:string, opts?:utils.telescope.opts): fun()
+local M = setmetatable({}, {
+  __call = function(m, ...)
+    return m.builtin(...)
+  end,
+})
 
 -- this will return a function that calls telescope.
 -- for `files`, git_files or find_files will be chosen depending on .git
 ---@param builtin string
----@param opts? { show_untracked?: boolean }
+---@param opts? utils.telescope.opts
 function M.builtin(builtin, opts)
   local params = { builtin = builtin, opts = opts or {} }
   return function()

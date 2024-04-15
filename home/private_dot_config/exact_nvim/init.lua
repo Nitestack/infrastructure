@@ -19,8 +19,8 @@ end
 --------------------------------------------------------------------------------
 --  Globals
 --------------------------------------------------------------------------------
-_G.core = require("utils.globals")
 _G.utils = require("utils")
+_G.core = utils.globals
 
 _G.core.config = require("config.config")
 _G.core.icons = require("config.icons")
@@ -90,7 +90,7 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 -- Setup LazyFile event
-require("utils.lazy-file").lazy_file()
+utils.lazyfile()
 
 -- Initialize lazy.nvim and load plugins
 require("lazy").setup({

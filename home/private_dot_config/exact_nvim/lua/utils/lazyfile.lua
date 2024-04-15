@@ -2,7 +2,12 @@
 --  LAZYFILE EVENT
 --------------------------------------------------------------------------------
 ---@class utils.lazyfile
-local M = {}
+---@overload fun()
+local M = setmetatable({}, {
+  __call = function(m)
+    m.lazy_file()
+  end,
+})
 
 M.use_lazy_file = true
 M.lazy_file_events = { "BufReadPost", "BufNewFile", "BufWritePre" }

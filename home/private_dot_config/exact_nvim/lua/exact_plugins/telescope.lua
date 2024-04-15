@@ -1,5 +1,3 @@
-local telescope_utils = require("utils.telescope")
-
 ---@type LazyPluginSpec
 return {
   "nvim-telescope/telescope.nvim",
@@ -15,29 +13,29 @@ return {
   keys = core.lazy_map({
     n = {
       [{ "<leader>ff", "<leader><Space>" }] = {
-        telescope_utils.builtin("files"),
+        utils.telescope("files"),
         "Telescope: Find Files",
       },
       [{ "<leader>sg", "<leader>/" }] = {
-        telescope_utils.builtin("live_grep"),
+        utils.telescope("live_grep"),
         "Telescope: Live Grep",
       },
       ["<leader>sG"] = {
-        telescope_utils.builtin("live_grep", {
+        utils.telescope("live_grep", {
           additional_args = { "-." },
         }),
         "Telescope: Live Grep (all)",
       },
       ["<leader>fg"] = {
-        telescope_utils.builtin("git_files", { show_untracked = true }),
+        utils.telescope("git_files", { show_untracked = true }),
         "Telescope: Git Files",
       },
       ["<leader>sw"] = {
-        telescope_utils.builtin("grep_string", { word_match = "-w" }),
+        utils.telescope("grep_string", { word_match = "-w" }),
         "Telescope: Word",
       },
       ["<leader>sW"] = {
-        telescope_utils.builtin("grep_string", {
+        utils.telescope("grep_string", {
           word_match = "-w",
           additional_args = { "-." },
         }),
@@ -46,11 +44,11 @@ return {
     },
     v = {
       ["<leader>sw"] = {
-        telescope_utils.builtin("grep_string", { word_match = "-w" }),
+        utils.telescope("grep_string", { word_match = "-w" }),
         "Telescope: Word Selection",
       },
       ["<leader>sW"] = {
-        telescope_utils.builtin("grep_string", {
+        utils.telescope("grep_string", {
           word_match = "-w",
           additional_args = { "-." },
         }),

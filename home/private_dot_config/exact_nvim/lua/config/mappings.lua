@@ -311,13 +311,13 @@ M.mappings.n = {
   -- Toggle UI
   ["<leader>ud"] = {
     function()
-      require("utils.toggle").diagnostics()
+      utils.toggle.diagnostics()
     end,
     "Diagnostics: Toggle",
   },
   ["<leader>uh"] = {
     function()
-      require("utils.toggle").inlay_hints()
+      utils.toggle.inlay_hints()
     end,
     "Inlay Hints: Toggle",
   },
@@ -333,13 +333,13 @@ M.mappings.n = {
   },
   ["<leader>uc"] = {
     function()
-      require("utils.toggle").option("conceallevel", false, { 0, conceallevel })
+      utils.toggle("conceallevel", false, { 0, conceallevel })
     end,
     "Conceal: Toggle",
   },
   ["<leader>us"] = {
     function()
-      require("utils.toggle").option("spell")
+      utils.toggle("spell")
     end,
     "Spelling: Toggle",
   },

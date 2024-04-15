@@ -23,8 +23,6 @@ return {
     setup = {},
   },
   config = function(_, opts)
-    local lsp_utils = require("utils.lsp")
-
     -- Load `neoconf.nvim`. See https://github.com/LazyVim/LazyVim/issues/1070
     if require("lazy.core.config").spec.plugins["neoconf.nvim"] ~= nil then
       local plugin = require("lazy.core.config").spec.plugins["neoconf.nvim"]
@@ -79,7 +77,7 @@ return {
     vim.diagnostic.config(diagnostic_opts)
 
     -- Setup language servers
-    local capabilities = lsp_utils.get_capabilities({
+    local capabilities = utils.lsp.get_capabilities({
       workspace = {
         -- PERF: didChangeWatchedFiles is too slow.
         -- TODO: Remove this when https://github.com/neovim/neovim/issues/23291#issuecomment-1686709265 is fixed.
@@ -87,7 +85,7 @@ return {
       },
     })
 
-    lsp_utils.set_handlers()
+    utils.lsp.set_handlers()
 
     require("mason-lspconfig").setup({
       handlers = {
@@ -123,7 +121,7 @@ return {
             if client then
               -- Inlay hints
               if client.supports_method("textDocument/inlayHint") then
-                require("utils.toggle").inlay_hints(buffer, false) -- `false` - disabled by default
+                utils.toggle.inlay_hints(buffer, false) -- `false` - disabled by default
               end
 
               -- Code lens
@@ -156,14 +154,14 @@ return {
             ---@type Mappings
             local mappings = require("config.mappings").lsp_mappings(args)
 
-            lsp_utils.remove_unsupported_methods(buffer, mappings)
+            utils.lsp.remove_unsupported_methods(buffer, mappings)
 
             core.map(mappings, {
               buffer = buffer,
               silent = true,
             })
 
-            lsp_utils.set_document_highlight(args)
+            utils.lsp.set_document_highlight(args)
           end,
         },
       },

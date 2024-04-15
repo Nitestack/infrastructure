@@ -50,7 +50,7 @@ return {
           {
             pattern = "MiniFilesActionRename",
             callback = function(event)
-              require("utils.lsp").on_rename(event.data.from, event.data.to)
+              utils.lsp.on_rename(event.data.from, event.data.to)
             end,
           },
         },
