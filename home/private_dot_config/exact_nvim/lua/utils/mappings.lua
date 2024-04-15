@@ -160,20 +160,4 @@ function M.lazy_map(mappings, mapping_opts)
   return lazy_mappings
 end
 
----Disables mappings (with `vim.keymap.del`)
----@param mappings DisableMappings
----@param mapping_opts? DisableKeymapOpts
-function M.disable_mapping(mappings, mapping_opts)
-  for mode, mode_mappings in pairs(mappings) do
-    for _, mapping_info in ipairs(mode_mappings) do
-      if type(mapping_info) == "string" then
-        vim.keymap.del(mode, mapping_info, mapping_opts or {})
-      else
-        local opts = vim.tbl_deep_extend("force", mapping_info.opts or {}, mapping_opts or {})
-        vim.keymap.del(mode, mapping_info[1], opts)
-      end
-    end
-  end
-end
-
 return M

@@ -1,12 +1,11 @@
 --------------------------------------------------------------------------------
---  MAPPINGS & UNMAPPINGS
+--  MAPPINGS
 --------------------------------------------------------------------------------
 
 ---@class MappingsConfig
 ---@field lsp_mappings fun(args):Mappings
 ---@field terminal_mappings KeymapConfig
 ---@field mappings Mappings
----@field unmappings DisableMappings
 ---@field mapping_opts KeymapOpts
 
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
@@ -415,11 +414,6 @@ M.mappings.x = {
     },
   },
 }
-
---------------------------------------------------------------------------------
---  Unmappings
---------------------------------------------------------------------------------
-M.unmappings = {}
 
 M.mapping_opts = {
   silent = true,

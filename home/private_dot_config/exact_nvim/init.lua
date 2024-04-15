@@ -186,7 +186,6 @@ core.auto_cmds({
         local keymaps = require("config.mappings")
 
         core.map(keymaps.mappings, keymaps.mapping_opts)
-        core.disable_mapping(keymaps.unmappings)
       end,
     },
   },
