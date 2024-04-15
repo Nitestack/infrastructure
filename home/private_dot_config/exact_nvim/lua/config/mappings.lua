@@ -4,7 +4,7 @@
 
 ---@class MappingsConfig
 ---@field lsp_mappings fun(args):utils.mappings.mappings_spec
----@field terminal_mappings KeymapConfig
+---@field terminal_mappings utils.mappings.mapping
 ---@field mappings utils.mappings.mappings_spec
 ---@field mapping_opts utils.mappings.mapping_opts
 
