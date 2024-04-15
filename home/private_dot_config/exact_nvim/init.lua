@@ -99,7 +99,7 @@ require("lazy").setup({
     { import = "plugins.lsp" },
     { import = "plugins.dap" },
     { import = "plugins" },
-    core.disabled_plugins(core.config.disabled_plugins),
+    utils.plugin.get_disabled_plugin_spec(core.config.disabled_plugins),
   },
   defaults = {
     lazy = true,

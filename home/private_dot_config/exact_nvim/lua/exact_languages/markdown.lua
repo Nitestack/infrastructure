@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  Markdown
 --------------------------------------------------------------------------------
-return core.load_language({
+return utils.plugin.get_language_spec({
   mason = {
     "marksman",
     "markdownlint",
