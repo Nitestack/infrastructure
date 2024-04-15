@@ -7,8 +7,8 @@ return {
       n = {
         ["<leader>e"] = {
           function()
-            if not MiniFiles.close() then
-              MiniFiles.open(vim.api.nvim_buf_get_name(0), true)
+            if not require("mini.files").close() then
+              require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
             end
           end,
           "File Explorer: Toggle",
@@ -21,7 +21,7 @@ return {
           if fs_entry.fs_type == "directory" then
             return core.icons.ui.Folder .. " ", "MiniFilesDirectory"
           end
-          return MiniFiles.default_prefix(fs_entry)
+          return require("mini.files").default_prefix(fs_entry)
         end,
       },
       windows = {
