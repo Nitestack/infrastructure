@@ -4,7 +4,6 @@
 ---@class utils
 ---@field breadcrumbs utils.breadcrumbs
 ---@field cmds utils.cmds
----@field globals utils.globals
 ---@field lazyfile utils.lazyfile
 ---@field lsp utils.lsp
 ---@field lualine utils.lualine
@@ -34,7 +33,7 @@ function M.ft_plugin(opts)
     opts.config()
   end
   if opts.mappings then
-    require("utils.mappings").map(opts.mappings, opts.mapping_opts)
+    utils.mappings.map(opts.mappings, opts.mapping_opts)
   end
 end
 

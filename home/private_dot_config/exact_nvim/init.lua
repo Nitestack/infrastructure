@@ -19,8 +19,16 @@ end
 --------------------------------------------------------------------------------
 --  Globals
 --------------------------------------------------------------------------------
+---@type utils
 _G.utils = require("utils")
-_G.core = utils.globals
+_G.core = {
+  map = utils.mappings.map,
+  single_map = utils.mappings.single_map,
+  lazy_map = utils.mappings.lazy_map,
+  single_lazy_map = utils.mappings.single_lazy_map,
+  auto_cmds = utils.cmds.auto_cmds,
+  user_cmds = utils.cmds.user_cmds,
+}
 
 _G.core.config = require("config.config")
 _G.core.icons = require("config.icons")
