@@ -151,7 +151,7 @@ return {
             end
 
             -- Mappings
-            ---@type Mappings
+            ---@type utils.mappings.mappings_spec
             local mappings = require("config.mappings").lsp_mappings(args)
 
             utils.lsp.remove_unsupported_methods(buffer, mappings)

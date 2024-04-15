@@ -43,7 +43,7 @@ return {
         height = math.floor(0.9 * vim.fn.winheight(0)),
       },
       on_open = function(term)
-        if not core.falsy(vim.fn.mapcheck("<Esc>", "t")) then
+        if vim.fn.mapcheck("<Esc>", "t") ~= "" then
           vim.keymap.del("t", "<Esc>", { buffer = term.bufnr })
         end
       end,

@@ -60,7 +60,7 @@ local function client_supports_method(method, buffer)
   return false
 end
 
----@params mappings Mappings
+---@param mappings utils.mappings.mappings_spec
 ---
 --- If client doesn't support method, remove it from mappings
 ---

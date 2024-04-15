@@ -115,7 +115,7 @@ return {
       }
     end,
     config = function(_, opts)
-      opts.ensure_installed = core.remove_duplicates(opts.ensure_installed or {})
+      opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
       require("nvim-treesitter.configs").setup(opts)
     end,
   },

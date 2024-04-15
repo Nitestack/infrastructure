@@ -9,7 +9,7 @@ return {
       end,
     },
   },
-  build = (not core.is_win())
+  build = (not utils.is_win())
       and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
     or nil,
   keys = core.lazy_map({

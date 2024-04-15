@@ -139,7 +139,7 @@ function M.run()
   vim.cmd.language("en_US.UTF-8")
 
   -- Neovide settings
-  if core.is_neovide() then
+  if utils.is_neovide() then
     vim.g.neovide_hide_mouse_when_typing = true
   end
 
@@ -154,7 +154,7 @@ function M.run()
   -- Go to previous/next line with h/l/left arrow/right arrow when cursor reaches end/beginning of line
   vim.opt.whichwrap:append("<>[]hl")
   -- Add binaries installed by `mason.nvim` to path
-  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (core.is_win() and ";" or ":") .. vim.env.PATH
+  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (utils.is_win() and ";" or ":") .. vim.env.PATH
 
   -- For Tailwind CSS wraps
   vim.opt.breakat:remove({ ":", "/", "-" })
@@ -169,7 +169,7 @@ function M.run()
   })
 
   -- Setup Windows shell
-  if core.is_win() then
+  if utils.is_win() then
     -- Use PowerShell Core instead of Windows CMD
     vim.o.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
     vim.o.shellcmdflag =
@@ -181,7 +181,7 @@ function M.run()
   end
 
   -- Setup WSL clipboard
-  if core.is_wsl() then
+  if utils.is_wsl() then
     -- Sync WSL clipboard with Windows clipboard
     vim.g.clipboard = {
       name = "WslClipboard",

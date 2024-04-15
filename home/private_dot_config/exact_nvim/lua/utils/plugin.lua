@@ -64,7 +64,7 @@ function M.get_language_spec(config)
     table.insert(spec, {
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.mason))
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, utils.str_to_tbl(config.mason))
       end,
     })
   end
@@ -73,7 +73,7 @@ function M.get_language_spec(config)
     table.insert(spec, {
       "nvim-treesitter/nvim-treesitter",
       opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.str_to_tbl(config.treesitter))
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, utils.str_to_tbl(config.treesitter))
       end,
     })
   end
@@ -124,7 +124,7 @@ function M.get_language_spec(config)
 
         -- Setup configurations
         for _, configuration in ipairs(config.dap.configurations or {}) do
-          for _, lang in ipairs(core.str_to_tbl(configuration.langs or {})) do
+          for _, lang in ipairs(utils.str_to_tbl(configuration.langs or {})) do
             if not dap.configurations[lang] then
               require("dap").configurations[lang] = vim.tbl_map(function(c)
                 return type(c) == "function" and c() or c

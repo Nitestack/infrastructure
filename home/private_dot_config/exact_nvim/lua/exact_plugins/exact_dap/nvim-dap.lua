@@ -12,7 +12,7 @@ return {
           handlers = {},
         },
         config = function(_, opts)
-          opts.ensure_installed = core.remove_duplicates(opts.ensure_installed or {})
+          opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
           require("mason-nvim-dap").setup(opts)
         end,
       },

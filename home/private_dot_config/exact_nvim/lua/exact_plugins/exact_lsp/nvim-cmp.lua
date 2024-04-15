@@ -55,7 +55,7 @@ return {
       })
 
       -- Only on Windows (excluding Neovide)
-      if core.is_win() and not core.is_neovide() then
+      if utils.is_win() and not utils.is_neovide() then
         mapping = vim.tbl_extend("force", mapping, {
           ["<C-x>"] = cmp.mapping.complete(),
         })

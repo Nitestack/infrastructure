@@ -33,8 +33,8 @@ return {
         {4}
           ]],
       {
-        f(require("utils.snippet").header_lines),
-        f(require("utils.snippet").header_title),
+        f(utils.snippet.header_lines),
+        f(utils.snippet.header_title),
         i(1, "HEADER"),
         i(0),
       }

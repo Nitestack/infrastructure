@@ -4,77 +4,53 @@
 ---@class utils.mappings
 local M = {}
 
----@class Mappings
----@field n?   table<string, KeymapConfig> Normal Mode keymaps
----@field x?   table<string, KeymapConfig> Visual Mode keymaps
----@field s?   table<string, KeymapConfig> Select Mode keymaps
----@field v?   table<string, KeymapConfig> Visual + Select Mode keymaps
----@field o?   table<string, KeymapConfig> Operator-Pending Mode keymaps
----@field i?   table<string, KeymapConfig> Insert Mode keymaps
----@field c?   table<string, KeymapConfig> Command-Line Mode keymaps
----@field l?   table<string, KeymapConfig> Insert + Command-Line + Lang-Arg Mode keymaps
----@field t?   table<string, KeymapConfig> Terminal Mode keymaps
----@field ['"!"']? table<string, KeymapConfig> Insert + Command-Line Mode keymaps
----@field ['""']? table<string, KeymapConfig> Normal, Visual and Operating-Pending Mode keymaps
-
----@class DisableMappings
----@field n? DisableKeymapConfig[] Normal Mode keymaps
----@field x? DisableKeymapConfig[] Visual Mode keymaps
----@field s? DisableKeymapConfig[] Select Mode keymaps
----@field v? DisableKeymapConfig[] Visual + Select Mode keymaps
----@field o? DisableKeymapConfig[] Operator-Pending Mode keymaps
----@field i? DisableKeymapConfig[] Insert Mode keymaps
----@field c? DisableKeymapConfig[] Command-Line Mode keymaps
----@field l? DisableKeymapConfig[] Insert + Command-Line + Lang-Arg Mode keymaps
----@field t? DisableKeymapConfig[] Terminal Mode keymaps
----@field ['"!"']? DisableKeymapConfig[] Insert + Command-Line Mode keymaps
----@field ['""']? DisableKeymapConfig[] Normal, Visual and Operating-Pending Mode keymaps
+---@class utils.mappings.mappings_spec
+---@field n?   table<string, utils.mappings.mapping> Normal Mode keymaps
+---@field x?   table<string, utils.mappings.mapping> Visual Mode keymaps
+---@field s?   table<string, utils.mappings.mapping> Select Mode keymaps
+---@field v?   table<string, utils.mappings.mapping> Visual + Select Mode keymaps
+---@field o?   table<string, utils.mappings.mapping> Operator-Pending Mode keymaps
+---@field i?   table<string, utils.mappings.mapping> Insert Mode keymaps
+---@field c?   table<string, utils.mappings.mapping> Command-Line Mode keymaps
+---@field l?   table<string, utils.mappings.mapping> Insert + Command-Line + Lang-Arg Mode keymaps
+---@field t?   table<string, utils.mappings.mapping> Terminal Mode keymaps
+---@field ['"!"']? table<string, utils.mappings.mapping> Insert + Command-Line Mode keymaps
+---@field ['""']? table<string, utils.mappings.mapping> Normal, Visual and Operating-Pending Mode keymaps
 ---@field prefix? string Prefix for all keymaps
 
----@class LazyMappings
----@field n?   table<string, LazyKeymapConfig> Normal Mode keymaps
----@field x?   table<string, LazyKeymapConfig> Visual Mode keymaps
----@field s?   table<string, LazyKeymapConfig> Select Mode keymaps
----@field v?   table<string, LazyKeymapConfig> Visual + Select Mode keymaps
----@field o?   table<string, LazyKeymapConfig> Operator-Pending Mode keymaps
----@field i?   table<string, LazyKeymapConfig> Insert Mode keymaps
----@field c?   table<string, LazyKeymapConfig> Command-Line Mode keymaps
----@field l?   table<string, LazyKeymapConfig> Insert + Command-Line + Lang-Arg Mode keymaps
----@field t?   table<string, LazyKeymapConfig> Terminal Mode keymaps
----@field ['"!"']? table<string, LazyKeymapConfig> Insert + Command-Line Mode keymaps
----@field ['""']? table<string, LazyKeymapConfig> Normal, Visual and Operating-Pending Mode keymaps
+---@class utils.mappings.lazy_mappings_spec
+---@field n?   table<string, utils.mappings.lazy_mapping> Normal Mode keymaps
+---@field x?   table<string, utils.mappings.lazy_mapping> Visual Mode keymaps
+---@field s?   table<string, utils.mappings.lazy_mapping> Select Mode keymaps
+---@field v?   table<string, utils.mappings.lazy_mapping> Visual + Select Mode keymaps
+---@field o?   table<string, utils.mappings.lazy_mapping> Operator-Pending Mode keymaps
+---@field i?   table<string, utils.mappings.lazy_mapping> Insert Mode keymaps
+---@field c?   table<string, utils.mappings.lazy_mapping> Command-Line Mode keymaps
+---@field l?   table<string, utils.mappings.lazy_mapping> Insert + Command-Line + Lang-Arg Mode keymaps
+---@field t?   table<string, utils.mappings.lazy_mapping> Terminal Mode keymaps
+---@field ['"!"']? table<string, utils.mappings.lazy_mapping> Insert + Command-Line Mode keymaps
+---@field ['""']? table<string, utils.mappings.lazy_mapping> Normal, Visual and Operating-Pending Mode keymaps
 ---@field prefix? string Prefix for all keymaps
 
----@class KeymapConfig
+---@class utils.mappings.mapping
 ---@field [1] string|fun()
 ---@field [2]? string
----@field opts? KeymapOpts
+---@field opts? utils.mappings.mapping_opts
 
----@class LazyKeymapConfig
----@field [1]? string|fun()|false
+---@class utils.mappings.lazy_mapping
+---@field [1] string|fun()|false
 ---@field [2]? string
----@field opts? KeymapOpts
+---@field opts? utils.mappings.mapping_opts
 
----@alias DisableKeymapOpts { buffer?: integer|boolean }
----@alias DisableKeymapConfig string|{ [1]: string, opts?: DisableKeymapOpts }
-
----@class KeymapOpts
----@field nowait? boolean If true, once the `lhs` is matched, the `rhs` will be executed
----@field expr? boolean Specify whether the `rhs` is an expression to be evaluated or not (default false)
----@field silent? boolean Specify whether `rhs` will be echoed on the command line
----@field unique? boolean Specify whether not to map if there exists a keymap with the same `lhs`
----@field script? boolean
----@field noremap? boolean Specify whether the `rhs` will execute user-defined keymaps if it matches some `lhs` or not
----@field remap? boolean inverse of `noremap`
----@field replace_keycodes? boolean Only effective when `expr` is **true**, specify whether to replace keycodes in the resuling string
----@field callback? function Lua function to call when the mapping is executed
+---@class utils.mappings.mapping_opts:vim.api.keyset.keymap
+---@field remap? boolean Inverse of `noremap`
 ---@field buffer? integer|boolean|nil Specify the buffer that the keymap will be effective in. If 0 or true, the current buffer will be used
 ---@field ft? (string|string[])? Specify the filetype that the keymap will be effective in
 
 ---Loads a single mapping (with `vim.keymap.set`)
 ---@param mode string|string[]
 ---@param lhs string
----@param mappings_spec KeymapConfig
+---@param mappings_spec utils.mappings.mapping
 function M.single_map(mode, lhs, mappings_spec)
   local opts = vim.tbl_deep_extend(
     "force",
@@ -87,7 +63,7 @@ end
 ---Loads a single mapping for `lazy.nvim` plugin spec
 ---@param mode string|string[]
 ---@param lhs string
----@param mappings_spec LazyKeymapConfig
+---@param mappings_spec utils.mappings.lazy_mapping
 function M.single_lazy_map(mode, lhs, mappings_spec)
   local opts = vim.tbl_deep_extend("force", { mode = mode, desc = mappings_spec[2] }, mappings_spec.opts or {})
   ---@type LazyKeysSpec[]
@@ -100,12 +76,12 @@ function M.single_lazy_map(mode, lhs, mappings_spec)
 end
 
 ---Loads mappings (with `vim.keymap.set`)
----@param mappings Mappings
----@param mapping_opts? KeymapOpts
+---@param mappings utils.mappings.mappings_spec
+---@param mapping_opts? utils.mappings.mapping_opts
 function M.map(mappings, mapping_opts)
-  if not mappings.prefix then
-    mappings.prefix = ""
-  end
+  local prefix = mappings.prefix or ""
+  mappings.prefix = nil
+
   for mode, mode_mappings in pairs(mappings) do
     local default_opts = vim.tbl_deep_extend("force", { mode = mode }, mapping_opts or {})
 
@@ -116,10 +92,10 @@ function M.map(mappings, mapping_opts)
       opts.desc = mapping_info[2]
 
       if type(mapping) == "string" then
-        vim.keymap.set(mode, mapping, mapping_info[1], opts)
+        vim.keymap.set(mode, prefix .. mapping, mapping_info[1], opts)
       else
         for _, keymap in ipairs(mapping) do
-          vim.keymap.set(mode, mappings.prefix .. keymap, mapping_info[1], opts)
+          vim.keymap.set(mode, prefix .. keymap, mapping_info[1], opts)
         end
       end
     end
@@ -127,15 +103,14 @@ function M.map(mappings, mapping_opts)
 end
 
 ---Loads mappings for `lazy.nvim` plugin spec
----@param mappings LazyMappings
----@param mapping_opts? KeymapOpts
+---@param mappings utils.mappings.lazy_mappings_spec
+---@param mapping_opts? utils.mappings.mapping_opts
 ---@return LazyKeysSpec[]
 function M.lazy_map(mappings, mapping_opts)
   local lazy_mappings = {}
 
-  if not mappings.prefix then
-    mappings.prefix = ""
-  end
+  local prefix = mappings.prefix or ""
+  mappings.prefix = nil
 
   for mode, mode_mappings in pairs(mappings) do
     for mapping, mapping_info in pairs(mode_mappings) do
@@ -148,7 +123,7 @@ function M.lazy_map(mappings, mapping_opts)
         table.insert(
           lazy_mappings,
           vim.tbl_extend("force", opts, {
-            mappings.prefix .. mapping,
+            prefix .. mapping,
             mapping_info[1],
           })
         )
@@ -157,7 +132,7 @@ function M.lazy_map(mappings, mapping_opts)
           table.insert(
             lazy_mappings,
             vim.tbl_extend("force", opts, {
-              mappings.prefix .. keymap,
+              prefix .. keymap,
               mapping_info[1],
             })
           )

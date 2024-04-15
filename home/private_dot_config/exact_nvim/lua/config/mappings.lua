@@ -3,10 +3,10 @@
 --------------------------------------------------------------------------------
 
 ---@class MappingsConfig
----@field lsp_mappings fun(args):Mappings
+---@field lsp_mappings fun(args):utils.mappings.mappings_spec
 ---@field terminal_mappings KeymapConfig
----@field mappings Mappings
----@field mapping_opts KeymapOpts
+---@field mappings utils.mappings.mappings_spec
+---@field mapping_opts utils.mappings.mapping_opts
 
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 
@@ -373,7 +373,7 @@ M.mappings[{ "x", "o" }] = {
   },
 }
 
-if not core.is_win() then
+if not utils.is_win() then
   -- Make file executable
   M.mappings.n["<leader>cx"] = {
     function()
