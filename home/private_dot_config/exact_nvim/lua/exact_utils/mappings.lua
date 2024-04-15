@@ -16,7 +16,6 @@ local M = {}
 ---@field t?   table<string, utils.mappings.mapping> Terminal Mode keymaps
 ---@field ['"!"']? table<string, utils.mappings.mapping> Insert + Command-Line Mode keymaps
 ---@field ['""']? table<string, utils.mappings.mapping> Normal, Visual and Operating-Pending Mode keymaps
----@field prefix? string Prefix for all keymaps
 
 ---@class utils.mappings.lazy_mappings_spec
 ---@field n?   table<string, utils.mappings.lazy_mapping> Normal Mode keymaps
@@ -30,7 +29,6 @@ local M = {}
 ---@field t?   table<string, utils.mappings.lazy_mapping> Terminal Mode keymaps
 ---@field ['"!"']? table<string, utils.mappings.lazy_mapping> Insert + Command-Line Mode keymaps
 ---@field ['""']? table<string, utils.mappings.lazy_mapping> Normal, Visual and Operating-Pending Mode keymaps
----@field prefix? string Prefix for all keymaps
 
 ---@class utils.mappings.mapping
 ---@field [1] string|fun()
@@ -77,10 +75,12 @@ end
 
 ---Loads mappings (with `vim.keymap.set`)
 ---@param mappings utils.mappings.mappings_spec
----@param mapping_opts? utils.mappings.mapping_opts
+---@param mapping_opts? utils.mappings.mapping_opts|{ prefix?: string }
 function M.map(mappings, mapping_opts)
-  local prefix = mappings.prefix or ""
-  mappings.prefix = nil
+  local prefix = ""
+  if mapping_opts ~= nil and mapping_opts.prefix ~= nil then
+    prefix = mapping_opts.prefix
+  end
 
   for mode, mode_mappings in pairs(mappings) do
     local default_opts = vim.tbl_deep_extend("force", { mode = mode }, mapping_opts or {})
@@ -104,13 +104,15 @@ end
 
 ---Loads mappings for `lazy.nvim` plugin spec
 ---@param mappings utils.mappings.lazy_mappings_spec
----@param mapping_opts? utils.mappings.mapping_opts
+---@param mapping_opts? utils.mappings.mapping_opts|{ prefix?: string }
 ---@return LazyKeysSpec[]
 function M.lazy_map(mappings, mapping_opts)
   local lazy_mappings = {}
 
-  local prefix = mappings.prefix or ""
-  mappings.prefix = nil
+  local prefix = ""
+  if mapping_opts ~= nil and mapping_opts.prefix ~= nil then
+    prefix = mapping_opts.prefix
+  end
 
   for mode, mode_mappings in pairs(mappings) do
     for mapping, mapping_info in pairs(mode_mappings) do
