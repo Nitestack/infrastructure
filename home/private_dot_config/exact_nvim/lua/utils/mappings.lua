@@ -29,6 +29,7 @@ local M = {}
 ---@field t? DisableKeymapConfig[] Terminal Mode keymaps
 ---@field ['"!"']? DisableKeymapConfig[] Insert + Command-Line Mode keymaps
 ---@field ['""']? DisableKeymapConfig[] Normal, Visual and Operating-Pending Mode keymaps
+---@field prefix? string Prefix for all keymaps
 
 ---@class LazyMappings
 ---@field n?   table<string, LazyKeymapConfig> Normal Mode keymaps
@@ -42,6 +43,7 @@ local M = {}
 ---@field t?   table<string, LazyKeymapConfig> Terminal Mode keymaps
 ---@field ['"!"']? table<string, LazyKeymapConfig> Insert + Command-Line Mode keymaps
 ---@field ['""']? table<string, LazyKeymapConfig> Normal, Visual and Operating-Pending Mode keymaps
+---@field prefix? string Prefix for all keymaps
 
 ---@class KeymapConfig
 ---@field [1] string|fun()
@@ -76,7 +78,7 @@ local M = {}
 function M.single_map(mode, lhs, mappings_spec)
   local opts = vim.tbl_deep_extend(
     "force",
-    core.falsy(mappings_spec[2]) and {} or { desc = mappings_spec[2] },
+    mappings_spec[2] ~= nil and { desc = mappings_spec[2] } or {},
     mappings_spec.opts or {}
   )
   vim.keymap.set(mode, lhs, mappings_spec[1], opts)
@@ -101,6 +103,9 @@ end
 ---@param mappings Mappings
 ---@param mapping_opts? KeymapOpts
 function M.map(mappings, mapping_opts)
+  if not mappings.prefix then
+    mappings.prefix = ""
+  end
   for mode, mode_mappings in pairs(mappings) do
     local default_opts = vim.tbl_deep_extend("force", { mode = mode }, mapping_opts or {})
 
@@ -114,7 +119,7 @@ function M.map(mappings, mapping_opts)
         vim.keymap.set(mode, mapping, mapping_info[1], opts)
       else
         for _, keymap in ipairs(mapping) do
-          vim.keymap.set(mode, keymap, mapping_info[1], opts)
+          vim.keymap.set(mode, mappings.prefix .. keymap, mapping_info[1], opts)
         end
       end
     end
@@ -128,6 +133,10 @@ end
 function M.lazy_map(mappings, mapping_opts)
   local lazy_mappings = {}
 
+  if not mappings.prefix then
+    mappings.prefix = ""
+  end
+
   for mode, mode_mappings in pairs(mappings) do
     for mapping, mapping_info in pairs(mode_mappings) do
       local opts = vim.tbl_deep_extend("force", mapping_opts or {}, mapping_info.opts or {})
@@ -139,7 +148,7 @@ function M.lazy_map(mappings, mapping_opts)
         table.insert(
           lazy_mappings,
           vim.tbl_extend("force", opts, {
-            mapping,
+            mappings.prefix .. mapping,
             mapping_info[1],
           })
         )
@@ -148,7 +157,7 @@ function M.lazy_map(mappings, mapping_opts)
           table.insert(
             lazy_mappings,
             vim.tbl_extend("force", opts, {
-              keymap,
+              mappings.prefix .. keymap,
               mapping_info[1],
             })
           )
