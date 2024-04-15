@@ -38,12 +38,18 @@ local tsserver_settings = {
 return core.load_language({
   lsp = {
     servers = {
+      ---@type lspconfig.options.vtsls
       vtsls = {
         settings = {
           typescript = tsserver_settings,
+          ---@diagnostic disable-next-line: assign-type-mismatch
           javascript = tsserver_settings,
+          vtsls = {
+            autoUseWorkspaceTsdk = true,
+          },
         },
       },
+      ---@type lspconfig.options.eslint
       eslint = {},
       ---@type lspconfig.options.tsserver
       tsserver = {
