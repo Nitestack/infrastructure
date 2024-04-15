@@ -3,42 +3,42 @@ base: lua51
 
 globals:
   s:
-    type: any
+    any: true
   ms:
-    type: any
+    any: true
   sn:
-    type: any
+    any: true
   isn:
-    type: any
+    any: true
   t:
-    type: any
+    any: true
   i:
-    type: any
+    any: true
   f:
-    type: any
+    any: true
   c:
-    type: any
+    any: true
   d:
-    type: any
+    any: true
   r:
-    type: any
+    any: true
   l:
-    type: any
+    any: true
   rep:
-    type: any
+    any: true
   p:
-    type: any
+    any: true
   m:
-    type: any
+    any: true
   n:
-    type: any
+    any: true
   dl:
-    type: any
+    any: true
   fmt:
-    type: any
+    any: true
   fmta:
-    type: any
+    any: true
   conds:
-    type: any
+    any: true
   postfix:
-    type: any
+    any: true
