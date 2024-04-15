@@ -20,6 +20,7 @@ end
 --  Globals
 --------------------------------------------------------------------------------
 _G.core = require("utils.globals")
+_G.utils = require("utils")
 
 _G.core.config = require("config.config")
 _G.core.icons = require("config.icons")

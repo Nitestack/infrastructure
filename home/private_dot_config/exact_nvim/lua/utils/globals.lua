@@ -1,6 +1,7 @@
 --------------------------------------------------------------------------------
 --  GlOBALS
 --------------------------------------------------------------------------------
+---@class utils.globals
 local M = {}
 
 ---@param plugins string[]
@@ -242,7 +243,7 @@ M.single_map = require("utils.mappings").single_map
 M.lazy_map = require("utils.mappings").lazy_map
 M.single_lazy_map = require("utils.mappings").single_lazy_map
 M.disable_mapping = require("utils.mappings").disable_mapping
-M.auto_cmds = require("utils.commands").auto_cmds
-M.user_cmds = require("utils.commands").user_cmds
+M.auto_cmds = require("utils.cmds").auto_cmds
+M.user_cmds = require("utils.cmds").user_cmds
 
 return M
