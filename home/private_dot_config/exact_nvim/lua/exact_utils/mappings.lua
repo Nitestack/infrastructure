@@ -80,6 +80,7 @@ function M.map(mappings, mapping_opts)
   local prefix = ""
   if mapping_opts ~= nil and mapping_opts.prefix ~= nil then
     prefix = mapping_opts.prefix
+    mapping_opts.prefix = nil
   end
 
   for mode, mode_mappings in pairs(mappings) do
@@ -112,6 +113,7 @@ function M.lazy_map(mappings, mapping_opts)
   local prefix = ""
   if mapping_opts ~= nil and mapping_opts.prefix ~= nil then
     prefix = mapping_opts.prefix
+    mapping_opts.prefix = nil
   end
 
   for mode, mode_mappings in pairs(mappings) do
