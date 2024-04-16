@@ -87,55 +87,57 @@ return {
     end,
     keys = core.lazy_map({
       n = {
-        ["<leader>tt"] = {
+        ["t"] = {
           function()
             require("neotest").run.run(vim.fn.expand("%"))
           end,
           "Run File",
         },
-        ["<leader>tT"] = {
+        ["T"] = {
           function()
             require("neotest").run.run(vim.uv.cwd())
           end,
           "Run All Test Files",
         },
-        ["<leader>tr"] = {
+        ["r"] = {
           function()
             require("neotest").run.run()
           end,
           "Run Nearest",
         },
-        ["<leader>tl"] = {
+        ["l"] = {
           function()
             require("neotest").run.run_last()
           end,
           "Run Last",
         },
-        ["<leader>ts"] = {
+        ["s"] = {
           function()
             require("neotest").summary.toggle()
           end,
           "Toggle Summary",
         },
-        ["<leader>to"] = {
+        ["o"] = {
           function()
             require("neotest").output.open({ enter = true, auto_close = true })
           end,
           "Show Output",
         },
-        ["<leader>tO"] = {
+        ["O"] = {
           function()
             require("neotest").output_panel.toggle()
           end,
           "Toggle Output Panel",
         },
-        ["<leader>tS"] = {
+        ["S"] = {
           function()
             require("neotest").run.stop()
           end,
           "Stop",
         },
       },
+    }, {
+      prefix = "<leader>t",
     }),
   },
   {

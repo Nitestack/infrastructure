@@ -4,25 +4,27 @@ return {
   dependencies = { "L3MON4D3/LuaSnip" },
   keys = core.lazy_map({
     n = {
-      ["<leader>cdf"] = {
+      ["f"] = {
         function()
           require("neogen").generate({ type = "func" })
         end,
         "Docs: Function annotation",
       },
-      ["<leader>cdc"] = {
+      ["c"] = {
         function()
           require("neogen").generate({ type = "class" })
         end,
         "Docs: Class annotations",
       },
-      ["<leader>cdt"] = {
+      ["t"] = {
         function()
           require("neogen").generate({ type = "type" })
         end,
         "Docs: Type annotations",
       },
     },
+  }, {
+    prefix = "<leader>cd",
   }),
   opts = {
     snippet_engine = "luasnip",

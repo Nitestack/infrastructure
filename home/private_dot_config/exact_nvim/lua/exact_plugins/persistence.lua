@@ -7,24 +7,26 @@ return {
   },
   keys = core.lazy_map({
     n = {
-      ["<leader>qs"] = {
+      ["s"] = {
         function()
           require("persistence").load()
         end,
         "Session: Restore",
       },
-      ["<leader>ql"] = {
+      ["l"] = {
         function()
           require("persistence").load({ last = true })
         end,
         "Session: Restore Last",
       },
-      ["<leader>qd"] = {
+      ["d"] = {
         function()
           require("persistence").stop()
         end,
         "Session: Don't save current",
       },
     },
+  }, {
+    prefix = "<leader>q",
   }),
 }

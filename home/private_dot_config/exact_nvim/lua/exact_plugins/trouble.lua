@@ -10,30 +10,32 @@ return {
   },
   keys = core.lazy_map({
     n = {
-      ["<leader>xx"] = {
+      ["x"] = {
         function()
           require("trouble").toggle({ mode = "diagnostics" })
         end,
         "Trouble: Workspace Diagnostics",
       },
-      ["<leader>xX"] = {
+      ["X"] = {
         function()
           require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 } })
         end,
         "Trouble: Buffer Diagnostics",
       },
-      ["<leader>xL"] = {
+      ["L"] = {
         function()
           require("trouble").toggle({ mode = "loclist" })
         end,
         "Trouble: Location List",
       },
-      ["<leader>xQ"] = {
+      ["Q"] = {
         function()
           require("trouble").toggle({ mode = "quickfix" })
         end,
         "Trouble: Quickfix List",
       },
     },
+  }, {
+    prefix = "<leader>x",
   }),
 }

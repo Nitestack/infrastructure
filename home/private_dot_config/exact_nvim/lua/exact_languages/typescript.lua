@@ -194,43 +194,43 @@ return utils.plugin.get_language_spec({
       },
       keys = core.lazy_map({
         n = {
-          ["<leader>ns"] = {
+          ["s"] = {
             function()
               require("package-info").show({ force = true })
             end,
             "Node.js: Show latest package version",
           },
-          ["<leader>nh"] = {
+          ["h"] = {
             function()
               require("package-info").hide()
             end,
             "Node.js: Hide package versions",
           },
-          ["<leader>nt"] = {
+          ["t"] = {
             function()
               require("package-info").toggle()
             end,
             "Node.js: Toggle package versions",
           },
-          ["<leader>nu"] = {
+          ["u"] = {
             function()
               require("package-info").update()
             end,
             "Node.js: Update dependency",
           },
-          ["<leader>nd"] = {
+          ["d"] = {
             function()
               require("package-info").delete()
             end,
             "Node.js: Delete dependency",
           },
-          ["<leader>ni"] = {
+          ["i"] = {
             function()
               require("package-info").install()
             end,
             "Node.js: Install dependency",
           },
-          ["<leader>nv"] = {
+          ["v"] = {
             function()
               require("package-info").change_version()
             end,
@@ -240,6 +240,7 @@ return utils.plugin.get_language_spec({
       }, {
         silent = true,
         noremap = true,
+        prefix = "<leader>n",
       }),
       opts = {
         package_manager = "pnpm",

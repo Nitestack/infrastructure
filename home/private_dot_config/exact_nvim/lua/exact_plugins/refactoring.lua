@@ -9,20 +9,20 @@ return {
     keys = core.lazy_map({
       x = {
         -- Extract function supports only visual mode
-        ["<leader>re"] = {
+        ["e"] = {
           function()
             require("refactoring").refactor("Extract Function")
           end,
           "Refactoring: Extract function",
         },
-        ["<leader>rf"] = {
+        ["f"] = {
           function()
             require("refactoring").refactor("Extract Function To File")
           end,
           "Refactoring: Extract function to file",
         },
         -- Extract variable supports only visual mode
-        ["<leader>rv"] = {
+        ["v"] = {
           function()
             require("refactoring").refactor("Extract Variable")
           end,
@@ -31,32 +31,32 @@ return {
       },
       n = {
         -- Inline func supports only normal
-        ["<leader>rI"] = {
+        ["I"] = {
           function()
             require("refactoring").refactor("Inline Function")
           end,
           "Refactoring: Inline function",
         },
         -- Extract block supports only normal mode
-        ["<leader>rb"] = {
+        ["b"] = {
           function()
             require("refactoring").refactor("Extract Block")
           end,
           "Refactoring: Extract block",
         },
-        ["<leader>rbf"] = {
+        ["bf"] = {
           function()
             require("refactoring").refactor("Extract Block To File")
           end,
           "Refactoring: Extract block to file",
         },
-        ["<leader>rdf"] = {
+        ["df"] = {
           function()
             require("refactoring").debug.printf({ below = false })
           end,
           "Refactoring: Debug printf",
         },
-        ["<leader>rdc"] = {
+        ["dc"] = {
           function()
             require("refactoring").debug.cleanup({})
           end,
@@ -65,26 +65,28 @@ return {
       },
       -- Inline var supports both normal and visual mode
       [{ "n", "x" }] = {
-        ["<leader>ri"] = {
+        ["i"] = {
           function()
             require("refactoring").refactor("Inline Variable")
           end,
           "Refactoring: Inline variable",
         },
-        ["<leader>rr"] = {
+        ["r"] = {
           function()
             require("telescope").extensions.refactoring.refactors()
           end,
           "Refactoring: Select refactoring",
         },
         -- Print var
-        ["<leader>rdv"] = {
+        ["dv"] = {
           function()
             require("refactoring").debug.print_var({})
           end,
           "Refactoring: Debug print variable",
         },
       },
+    }, {
+      prefix = "<leader>r",
     }),
     ---@type ConfigOpts
     opts = {},

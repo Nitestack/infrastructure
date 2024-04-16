@@ -9,19 +9,21 @@ return {
     event = "VeryLazy",
     keys = core.lazy_map({
       n = {
-        ["<leader>snd"] = {
+        ["d"] = {
           function()
             require("noice").cmd("dismiss")
           end,
           "Noice: Dismiss all",
         },
-        ["<leader>sne"] = {
+        ["e"] = {
           function()
             require("noice").cmd("error")
           end,
           "Noice: Next error",
         },
       },
+    }, {
+      prefix = "<leader>sn",
     }),
     ---@type NoiceConfig
     opts = {

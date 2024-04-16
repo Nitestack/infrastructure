@@ -4,13 +4,13 @@ return {
   dependencies = { "nvim-neotest/nvim-nio", "mfussenegger/nvim-dap" },
   keys = core.lazy_map({
     n = {
-      ["<leader>du"] = {
+      ["u"] = {
         function()
           require("dapui").toggle({})
         end,
         "Dap UI",
       },
-      ["<leader>de"] = {
+      ["e"] = {
         function()
           vim.ui.input({ prompt = "Expression: " }, function(expr)
             if expr then
@@ -22,13 +22,15 @@ return {
       },
     },
     v = {
-      ["<leader>de"] = {
+      ["e"] = {
         function()
           require("dapui").eval()
         end,
         "Eval",
       },
     },
+  }, {
+    prefix = "<leader>d",
   }),
   opts = {
     floating = {
