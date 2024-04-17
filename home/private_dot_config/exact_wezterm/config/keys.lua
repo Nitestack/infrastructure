@@ -49,7 +49,15 @@ local function add_tmux_bindings(config)
 end
 
 ---@param config Config
-function M.setup(config)
+function M.setup(config, smart_splits)
+  local function find_vim_pane(tab)
+    for _, pane in ipairs(tab:panes()) do
+      if smart_splits.is_vim(pane) then
+        return pane
+      end
+    end
+  end
+
   config.disable_default_key_bindings = true
 
   config.keys = {
@@ -86,6 +94,36 @@ function M.setup(config)
     },
     { key = "F11", mods = "NONE", action = act.ToggleFullScreen },
     { key = "F", mods = "CTRL|SHIFT", action = act.Search({ CaseInSensitiveString = "" }) },
+
+    -- Toggle terminal (only in Vim/Neovim)
+    {
+      key = ";",
+      mods = "CTRL",
+      action = wezterm.action_callback(function(window, pane)
+        local tab = window:active_tab()
+
+        -- Open pane below if current pane is vim
+        if smart_splits.is_vim(pane) then
+          if (#tab:panes()) == 1 then
+            -- Open pane below if when there is only one pane and it is vim
+            pane:split({ direction = "Bottom" })
+          else
+            -- Send `CTRL-; to vim`, navigate to bottom pane from vim
+            window:perform_action({
+              SendKey = { key = ";", mods = "CTRL" },
+            }, pane)
+          end
+          return
+        end
+
+        -- Zoom to vim pane if it exists
+        local vim_pane = find_vim_pane(tab)
+        if vim_pane then
+          vim_pane:activate()
+          tab:set_zoomed(true)
+        end
+      end),
+    },
   }
 
   for i = 1, 9, 1 do
