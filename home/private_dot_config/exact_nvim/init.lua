@@ -19,56 +19,51 @@ end
 --------------------------------------------------------------------------------
 --  Globals
 --------------------------------------------------------------------------------
----@type utils
+---@class utils
 _G.utils = require("utils")
-_G.core = {
-  map = utils.mappings.map,
-  single_map = utils.mappings.single_map,
-  lazy_map = utils.mappings.lazy_map,
-  single_lazy_map = utils.mappings.single_lazy_map,
-  auto_cmds = utils.cmds.auto_cmds,
-  user_cmds = utils.cmds.user_cmds,
-}
+---@class core
+_G.core = require("core")
 
-_G.core.config = require("config.config")
-_G.core.icons = require("config.icons")
+_G.core.map = utils.mappings.map
+_G.core.single_map = utils.mappings.single_map
+_G.core.lazy_map = utils.mappings.lazy_map
+_G.core.single_lazy_map = utils.mappings.single_lazy_map
+_G.core.auto_cmds = utils.cmds.auto_cmds
+_G.core.user_cmds = utils.cmds.user_cmds
 
 --------------------------------------------------------------------------------
 --  Settings
 --------------------------------------------------------------------------------
-local settings = require("config.settings")
 
 -- Options
-for option, val in pairs(settings.options) do
+for option, val in pairs(core.settings.options) do
   vim.opt[option] = val
 end
 
 -- Globals
-for global, val in pairs(settings.globals) do
+for global, val in pairs(core.settings.globals) do
   vim.g[global] = val
 end
 
 -- Providers
-for _, provider in ipairs(settings.disabled_providers) do
+for _, provider in ipairs(core.settings.disabled_providers) do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end
 
 -- Additional settings to run
-settings.run()
+core.settings.run()
 
 --------------------------------------------------------------------------------
 --  Filetypes
 --------------------------------------------------------------------------------
-vim.filetype.add(require("config.filetypes"))
+vim.filetype.add(core.filetypes)
 
 --------------------------------------------------------------------------------
 --  Commands
 --------------------------------------------------------------------------------
 local function load_commands()
-  local commands = require("config.commands")
-
-  core.auto_cmds(commands.auto_cmds, commands.auto_cmd_opts, commands.au_group_opts)
-  core.user_cmds(commands.user_cmds, commands.user_cmd_opts)
+  core.auto_cmds(core.cmds.auto_cmds, core.cmds.auto_cmd_opts, core.cmds.au_group_opts)
+  core.user_cmds(core.cmds.user_cmds, core.cmds.user_cmd_opts)
 end
 
 -- Commands can be loaded lazily when not opening a file
@@ -192,7 +187,7 @@ core.auto_cmds({
         end
 
         -- Load keymaps
-        local keymaps = require("config.mappings")
+        local keymaps = core.mappings
 
         core.map(keymaps.mappings, keymaps.mapping_opts)
       end,

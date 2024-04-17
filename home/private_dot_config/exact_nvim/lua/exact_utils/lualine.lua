@@ -5,7 +5,6 @@
 ---@class utils.lualine
 local M = {}
 
-local icons = require("config.icons")
 local window_width_limit = 100
 
 ---@param name string
@@ -47,7 +46,7 @@ M.mode = {
 
 M.git_branch = {
   "b:gitsigns_head",
-  icon = icons.git.Branch,
+  icon = core.icons.git.Branch,
   color = { gui = "bold" },
   padding = { left = 1, right = 0 },
   separator = { right = "", left = "" },
@@ -56,9 +55,9 @@ M.git_branch = {
 M.diff = {
   "diff",
   symbols = {
-    added = icons.git.LineAdded .. " ",
-    modified = icons.git.LineModified .. " ",
-    removed = icons.git.LineRemoved .. " ",
+    added = core.icons.git.LineAdded .. " ",
+    modified = core.icons.git.LineModified .. " ",
+    removed = core.icons.git.LineRemoved .. " ",
   },
   source = function()
     local gitsigns = vim.b.gitsigns_status_dict
@@ -121,10 +120,10 @@ M.diagnostics = {
   "diagnostics",
   sources = { "nvim_diagnostic" },
   symbols = {
-    error = icons.diagnostics.Error .. " ",
-    warn = icons.diagnostics.Warning .. " ",
-    info = icons.diagnostics.Information .. " ",
-    hint = icons.diagnostics.Hint .. " ",
+    error = core.icons.diagnostics.Error .. " ",
+    warn = core.icons.diagnostics.Warning .. " ",
+    info = core.icons.diagnostics.Information .. " ",
+    hint = core.icons.diagnostics.Hint .. " ",
   },
   update_in_insert = not core.config.performance_mode,
   padding = 0,
@@ -138,17 +137,17 @@ M.lsp_status = {
   function()
     local buf_clients = vim.lsp.get_clients({ bufnr = 0 })
     if #buf_clients == 0 then
-      return icons.ui.Lock .. " LSP Inactive"
+      return core.icons.ui.Lock .. " LSP Inactive"
     end
 
     local copilot_active = vim.tbl_contains(buf_clients, function(val)
       return val.name == "copilot"
     end)
 
-    local lsp_status = icons.ui.Gear .. " LSP Active"
+    local lsp_status = core.icons.ui.Gear .. " LSP Active"
 
     if copilot_active then
-      lsp_status = lsp_status .. "%#SLCopilot#" .. " " .. icons.git.Octoface .. "%*"
+      lsp_status = lsp_status .. "%#SLCopilot#" .. " " .. core.icons.git.Octoface .. "%*"
     end
 
     return lsp_status
@@ -159,7 +158,7 @@ M.lsp_status = {
 M.shift_width = {
   function()
     local shiftwidth = vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
-    return icons.ui.Tab .. " " .. shiftwidth
+    return core.icons.ui.Tab .. " " .. shiftwidth
   end,
   cond = min_width(60),
 }

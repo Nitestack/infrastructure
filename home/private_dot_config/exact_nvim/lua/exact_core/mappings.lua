@@ -1,148 +1,148 @@
 --------------------------------------------------------------------------------
 --  MAPPINGS
 --------------------------------------------------------------------------------
+---@alias core.mappings.terminal_mappings table<string, utils.mappings.mapping>
+---@alias core.mappings.lsp_mappings utils.mappings.mappings_spec
 
----@class MappingsConfig
----@field lsp_mappings fun(args):utils.mappings.mappings_spec
----@field terminal_mappings utils.mappings.mapping
+---@class core.mappings
 ---@field mappings utils.mappings.mappings_spec
 ---@field mapping_opts utils.mappings.mapping_opts
+---@field lsp_mappings core.mappings.lsp_mappings|fun(args):core.mappings.lsp_mappings
+---@field terminal_mappings core.mappings.terminal_mappings|fun(args):core.mappings.terminal_mappings
 
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 
----@type MappingsConfig
+---@type core.mappings
 local M = {}
 
 --------------------------------------------------------------------------------
 --  LSP mappings
 --------------------------------------------------------------------------------
-function M.lsp_mappings()
-  return {
-    n = {
-      ["gd"] = {
-        vim.lsp.buf.definition,
-        "Goto Definition",
-        has = "definition",
-      },
-      ["gD"] = {
-        vim.lsp.buf.declaration,
-        "Goto Declaration",
-      },
-      ["gr"] = {
-        function()
-          require("lazy").load({ plugins = { "telescope.nvim" } })
-          require("telescope.builtin").lsp_references()
-        end,
-        "References",
-      },
-      ["gI"] = {
-        function()
-          require("lazy").load({ plugins = { "telescope.nvim" } })
-          require("telescope.builtin").lsp_implementations({ reuse_win = true })
-        end,
-        "Goto Implementation",
-      },
-      ["go"] = {
-        function()
-          require("lazy").load({ plugins = { "telescope.nvim" } })
-          require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
-        end,
-        "Goto Type Definition",
-      },
-      ["<leader>xl"] = {
-        vim.diagnostic.open_float,
-        "Line Diagnostics",
-      },
-      ["K"] = {
-        vim.lsp.buf.hover,
-        "Hover",
-      },
-      ["]d"] = {
-        vim.diagnostic.goto_next,
-        "Next Diagnostic",
-      },
-      ["[d"] = {
-        vim.diagnostic.goto_prev,
-        "Prev Diagnostic",
-      },
-      ["]e"] = {
-        function()
-          vim.diagnostic.goto_next({
-            severity = vim.diagnostic.severity.ERROR,
-          })
-        end,
-        "Next Error",
-      },
-      ["[e"] = {
-        function()
-          vim.diagnostic.goto_prev({
-            severity = vim.diagnostic.severity.ERROR,
-          })
-        end,
-        "Prev Error",
-      },
-      ["]w"] = {
-        function()
-          vim.diagnostic.goto_next({
-            severity = vim.diagnostic.severity.WARN,
-          })
-        end,
-        "Next Warning",
-      },
-      ["[w"] = {
-        function()
-          vim.diagnostic.goto_prev({
-            severity = vim.diagnostic.severity.WARN,
-          })
-        end,
-        "Prev Warning",
-      },
-      ["<leader>cA"] = {
-        function()
-          vim.lsp.buf.code_action({
-            context = {
-              only = {
-                "source",
-              },
-              diagnostics = {},
+M.lsp_mappings = {
+  n = {
+    ["gd"] = {
+      vim.lsp.buf.definition,
+      "Goto Definition",
+      has = "definition",
+    },
+    ["gD"] = {
+      vim.lsp.buf.declaration,
+      "Goto Declaration",
+    },
+    ["gr"] = {
+      function()
+        require("lazy").load({ plugins = { "telescope.nvim" } })
+        require("telescope.builtin").lsp_references()
+      end,
+      "References",
+    },
+    ["gI"] = {
+      function()
+        require("lazy").load({ plugins = { "telescope.nvim" } })
+        require("telescope.builtin").lsp_implementations({ reuse_win = true })
+      end,
+      "Goto Implementation",
+    },
+    ["go"] = {
+      function()
+        require("lazy").load({ plugins = { "telescope.nvim" } })
+        require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+      end,
+      "Goto Type Definition",
+    },
+    ["<leader>xl"] = {
+      vim.diagnostic.open_float,
+      "Line Diagnostics",
+    },
+    ["K"] = {
+      vim.lsp.buf.hover,
+      "Hover",
+    },
+    ["]d"] = {
+      vim.diagnostic.goto_next,
+      "Next Diagnostic",
+    },
+    ["[d"] = {
+      vim.diagnostic.goto_prev,
+      "Prev Diagnostic",
+    },
+    ["]e"] = {
+      function()
+        vim.diagnostic.goto_next({
+          severity = vim.diagnostic.severity.ERROR,
+        })
+      end,
+      "Next Error",
+    },
+    ["[e"] = {
+      function()
+        vim.diagnostic.goto_prev({
+          severity = vim.diagnostic.severity.ERROR,
+        })
+      end,
+      "Prev Error",
+    },
+    ["]w"] = {
+      function()
+        vim.diagnostic.goto_next({
+          severity = vim.diagnostic.severity.WARN,
+        })
+      end,
+      "Next Warning",
+    },
+    ["[w"] = {
+      function()
+        vim.diagnostic.goto_prev({
+          severity = vim.diagnostic.severity.WARN,
+        })
+      end,
+      "Prev Warning",
+    },
+    ["<leader>cA"] = {
+      function()
+        vim.lsp.buf.code_action({
+          context = {
+            only = {
+              "source",
             },
-          })
-        end,
-        "Source Action",
-        has = "codeAction",
-      },
-      [{ "<leader>cr", "<F2>" }] = {
-        vim.lsp.buf.rename,
-        "Rename",
-        has = "rename",
-      },
+            diagnostics = {},
+          },
+        })
+      end,
+      "Source Action",
+      has = "codeAction",
     },
-    i = {
-      ["<C-k>"] = {
-        vim.lsp.buf.signature_help,
-        "Signature Help",
-        has = "signatureHelp",
-      },
+    [{ "<leader>cr", "<F2>" }] = {
+      vim.lsp.buf.rename,
+      "Rename",
+      has = "rename",
     },
-    [{ "n", "v" }] = {
-      ["<leader>ca"] = {
-        vim.lsp.buf.code_action,
-        "Code Action",
-        has = "codeAction",
-      },
-      ["<leader>cc"] = {
-        vim.lsp.codelens.run,
-        "Run Codelens",
-        has = "codeLens",
-      },
-      ["<leader>cC"] = {
-        vim.lsp.codelens.refresh,
-        "Refresh Codelens",
-        has = "codeLens",
-      },
+  },
+  i = {
+    ["<C-k>"] = {
+      vim.lsp.buf.signature_help,
+      "Signature Help",
+      has = "signatureHelp",
     },
-  }
-end
+  },
+  [{ "n", "v" }] = {
+    ["<leader>ca"] = {
+      vim.lsp.buf.code_action,
+      "Code Action",
+      has = "codeAction",
+    },
+    ["<leader>cc"] = {
+      vim.lsp.codelens.run,
+      "Run Codelens",
+      has = "codeLens",
+    },
+    ["<leader>cC"] = {
+      vim.lsp.codelens.refresh,
+      "Refresh Codelens",
+      has = "codeLens",
+    },
+  },
+}
 
 --------------------------------------------------------------------------------
 --  Terminal mappings

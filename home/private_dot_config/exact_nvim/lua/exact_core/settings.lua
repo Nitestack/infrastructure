@@ -2,13 +2,13 @@
 --  SETTINGS
 --------------------------------------------------------------------------------
 
----@class SettingsConfig
+---@class core.settings
 ---@field options vim.opt
 ---@field globals table
 ---@field disabled_providers string[]
 ---@field run fun()
 
----@type SettingsConfig
+---@type core.settings
 local M = {}
 
 --------------------------------------------------------------------------------

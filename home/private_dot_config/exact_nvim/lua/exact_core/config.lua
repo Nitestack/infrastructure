@@ -2,26 +2,26 @@
 --  USER CONFIGURATION
 --------------------------------------------------------------------------------
 
----@class UserConfig
+---@class core.config
 ---@field performance_mode boolean
----@field ui UserConfigUI
----@field plugins UserConfigPlugins
+---@field ui core.config.ui
+---@field plugins core.config.plugins
 ---@field disabled_plugins string[]
 
----@class UserConfigUI
+---@class core.config.ui
 ---@field theme "catppuccin"
 ---@field logo string Generate ANSI art with: https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow
 ---@field width number
 ---@field height number
 ---@field transparent { enabled: boolean, floats: boolean }
 
----@class UserConfigPlugins
+---@class core.config.plugins
 ---@field mason string[]
 ---@field treesitter string[]
 ---@field linting LanguageLinterConfig
 ---@field formatting LanguageFormatterConfig
 
----@type UserConfig
+---@type core.config
 local M = {
   performance_mode = true,
 }

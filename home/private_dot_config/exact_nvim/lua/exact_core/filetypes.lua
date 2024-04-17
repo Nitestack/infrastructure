@@ -1,8 +1,9 @@
 --------------------------------------------------------------------------------
 --  FILETYPES
 --------------------------------------------------------------------------------
+---@alias core.filetypes vim.filetype.add.filetypes
 
----@type vim.filetype.add.filetypes
+---@type core.filetypes
 local M = {}
 
 M.extension = {

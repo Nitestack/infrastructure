@@ -152,7 +152,8 @@ return {
 
             -- Mappings
             ---@type utils.mappings.mappings_spec
-            local mappings = require("config.mappings").lsp_mappings(args)
+            local mappings = type(core.mappings.lsp_mappings) == "function" and core.mappings.lsp_mappings(args)
+              or core.mappings.lsp_mappings --[[@as core.mappings.lsp_mappings]]
 
             utils.lsp.remove_unsupported_methods(buffer, mappings)
 

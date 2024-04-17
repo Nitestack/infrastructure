@@ -2,14 +2,14 @@
 --  COMMANDS
 --------------------------------------------------------------------------------
 
----@class CommandConfiguration
+---@class core.cmds
 ---@field auto_cmds AutoCommand[]
 ---@field auto_cmd_opts vim.api.keyset.create_autocmd
 ---@field user_cmds UserCommand[]
 ---@field user_cmd_opts vim.api.keyset.user_command
 ---@field au_group_opts vim.api.keyset.create_augroup
 
----@type CommandConfiguration
+---@type core.cmds
 local M = {}
 
 --------------------------------------------------------------------------------
@@ -24,7 +24,8 @@ M.auto_cmds = {
       callback = function(args)
         if vim.bo.filetype == "" or vim.bo.filetype == "toggleterm" then
           core.map({
-            t = require("config.mappings").terminal_mappings,
+            t = type(core.mappings.terminal_mappings) == "function" and core.mappings.terminal_mappings(args)
+              or core.mappings.terminal_mappings --[[@as core.mappings.terminal_mappings]],
           }, { silent = false, buffer = args.buf })
         end
       end,
