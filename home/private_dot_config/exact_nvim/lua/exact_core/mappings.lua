@@ -227,38 +227,6 @@ M.mappings.n = {
       remap = true,
     },
   },
-  ["<C-h>"] = {
-    "<C-W>h",
-    "Window: Select left",
-    opts = {
-      noremap = false,
-      remap = true,
-    },
-  },
-  ["<C-j>"] = {
-    "<C-W>j",
-    "Window: Select lower",
-    opts = {
-      noremap = false,
-      remap = true,
-    },
-  },
-  ["<C-k>"] = {
-    "<C-W>k",
-    "Window: Select upper",
-    opts = {
-      noremap = false,
-      remap = true,
-    },
-  },
-  ["<C-l>"] = {
-    "<C-W>l",
-    "Window: Select right",
-    opts = {
-      noremap = false,
-      remap = true,
-    },
-  },
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
     "Window: Change two horizontal to vertical",
