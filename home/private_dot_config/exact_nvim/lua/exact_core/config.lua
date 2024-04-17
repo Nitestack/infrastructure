@@ -18,8 +18,8 @@
 ---@class core.config.plugins
 ---@field mason string[]
 ---@field treesitter string[]
----@field linting LanguageLinterConfig
----@field formatting LanguageFormatterConfig
+---@field linting utils.plugin.language_config.linter
+---@field formatting utils.plugin.language_config.formatter
 
 ---@type core.config
 local M = {

@@ -16,11 +16,11 @@ local function ensure_au_group_defined(opts, au_group_opts)
   end
 end
 
----@class AutoCommand
+---@class utils.cmds.auto_cmd
 ---@field [1] string|string[]
 ---@field [2]? vim.api.keyset.create_autocmd
 
----@param auto_cmds AutoCommand[]
+---@param auto_cmds utils.cmds.auto_cmd[]
 ---@param auto_cmd_opts? vim.api.keyset.create_autocmd
 ---@param au_group_opts? vim.api.keyset.create_augroup
 function M.auto_cmds(auto_cmds, auto_cmd_opts, au_group_opts)
@@ -32,12 +32,12 @@ function M.auto_cmds(auto_cmds, auto_cmd_opts, au_group_opts)
   end
 end
 
----@class UserCommand
+---@class utils.cmds.user_cmd
 ---@field [1] string
 ---@field [2] any
 ---@field [3]? vim.api.keyset.user_command
 
----@param user_cmds UserCommand[]
+---@param user_cmds utils.cmds.user_cmd[]
 ---@param user_cmd_opts? vim.api.keyset.user_command
 function M.user_cmds(user_cmds, user_cmd_opts)
   for _, user_cmd in ipairs(user_cmds) do

@@ -3,9 +3,9 @@
 --------------------------------------------------------------------------------
 
 ---@class core.cmds
----@field auto_cmds AutoCommand[]
+---@field auto_cmds utils.cmds.auto_cmd[]
 ---@field auto_cmd_opts vim.api.keyset.create_autocmd
----@field user_cmds UserCommand[]
+---@field user_cmds utils.cmds.user_cmd[]
 ---@field user_cmd_opts vim.api.keyset.user_command
 ---@field au_group_opts vim.api.keyset.create_augroup
 

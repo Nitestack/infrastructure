@@ -16,46 +16,40 @@ function M.get_disabled_plugin_spec(plugins)
   end, plugins)
 end
 
----@alias StringOrArray string|string[]
-
----@class LanguageConfig
----@field mason? StringOrArray
----@field treesitter? StringOrArray
----@field lsp? LanguageLspConfig
----@field formatter? LanguageFormatterConfig
----@field linter? LanguageLinterConfig
----@field dap? LanguageDapConfig
----@field test? LanguageTestConfig
+---@class utils.plugin.language_config
+---@field mason? string|string[]
+---@field treesitter? string|string[]
+---@field lsp? utils.plugin.language_config.lsp
+---@field formatter? utils.plugin.language_config.formatter
+---@field linter? utils.plugin.language_config.linter
+---@field dap? utils.plugin.language_config.dap
+---@field test? utils.plugin.language_config.test
 ---@field plugins? LazyPluginSpec[]
 
----@class LanguageLspConfig
+---@class utils.plugin.language_config.lsp
 ---@field servers? table<string, table>
 ---@field setup? table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
 
----@class LanguageFormatterConfig
+---@class utils.plugin.language_config.formatter
 ---@field formatters_by_ft? table<string, conform.FormatterUnit[]>
 ---@field formatters? table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
 
----@class LanguageLinterConfig
+---@class utils.plugin.language_config.linter
 ---@field linters_by_ft? table<string, string[]>
 ---@field linters? table<string,table>
 
----@class DapConfiguration
----@field langs? string|string[]
----@field [1] (Configuration|fun():Configuration)[]
-
----@class LanguageDapConfig
+---@class utils.plugin.language_config.dap
 ---@field adapters? table<string, Adapter|fun():Adapter>
----@field configurations? DapConfiguration[]
+---@field configurations? { [1]:(Configuration|fun():Configuration)[], langs?:string|string[] }[]
 
----@alias NeotestAdapters table<string, any>
+---@alias utils.plugin.language_config.test.adapters table<string, any>
 
----@class LanguageTestConfig
+---@class utils.plugin.language_config.test
 ---@field dependencies? string|string[]|LazyPluginSpec[]
----@field adapters? NeotestAdapters
+---@field adapters? utils.plugin.language_config.test.adapters
 
 ---A helper function to get a plugin spec configuring a language
----@param config LanguageConfig
+---@param config utils.plugin.language_config
 function M.get_language_spec(config)
   ---@type LazyPluginSpec[]
   local spec = {}
