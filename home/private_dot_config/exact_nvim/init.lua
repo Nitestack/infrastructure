@@ -95,6 +95,7 @@ if not vim.uv.fs_stat(lazypath) then
 end
 
 -- Add lazy.nvim to runtimepath
+---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 -- Setup LazyFile event
