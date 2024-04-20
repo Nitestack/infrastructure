@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "folke/todo-comments.nvim",
-  cmd = { "TodoTrouble", "TodoTelescope" },
+  cmd = { "TodoTrouble", "TodoTelescope", "TodoLocList", "TodoQuickFix" },
   event = "LazyFile",
   keys = core.lazy_map({
     n = {
