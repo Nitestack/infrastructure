@@ -5,11 +5,11 @@ return {
   cmd = "Telescope undo",
   keys = core.lazy_map({
     n = {
-      ["<leader>U"] = {
+      ["<leader>fu"] = {
         function()
           require("telescope").extensions.undo.undo()
         end,
-        "Undo history",
+        "Telescope: Undo history",
       },
     },
   }),
