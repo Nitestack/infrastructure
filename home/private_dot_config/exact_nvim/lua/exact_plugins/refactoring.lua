@@ -8,7 +8,6 @@ return {
     },
     keys = core.lazy_map({
       x = {
-        -- Extract function supports only visual mode
         ["e"] = {
           function()
             require("refactoring").refactor("Extract Function")
@@ -21,7 +20,6 @@ return {
           end,
           "Refactoring: Extract function to file",
         },
-        -- Extract variable supports only visual mode
         ["v"] = {
           function()
             require("refactoring").refactor("Extract Variable")
@@ -30,40 +28,37 @@ return {
         },
       },
       n = {
-        -- Inline func supports only normal
         ["I"] = {
           function()
             require("refactoring").refactor("Inline Function")
           end,
           "Refactoring: Inline function",
         },
-        -- Extract block supports only normal mode
         ["b"] = {
           function()
             require("refactoring").refactor("Extract Block")
           end,
           "Refactoring: Extract block",
         },
-        ["bf"] = {
+        ["B"] = {
           function()
             require("refactoring").refactor("Extract Block To File")
           end,
           "Refactoring: Extract block to file",
         },
-        ["df"] = {
+        ["D"] = {
           function()
             require("refactoring").debug.printf({ below = false })
           end,
-          "Refactoring: Debug printf",
+          "Debug: Print function",
         },
-        ["dc"] = {
+        ["c"] = {
           function()
             require("refactoring").debug.cleanup({})
           end,
-          "Refactoring: Cleanup debug operation",
+          "Debug: Cleanup operation",
         },
       },
-      -- Inline var supports both normal and visual mode
       [{ "n", "x" }] = {
         ["i"] = {
           function()
@@ -77,12 +72,11 @@ return {
           end,
           "Refactoring: Select refactoring",
         },
-        -- Print var
-        ["dv"] = {
+        ["d"] = {
           function()
             require("refactoring").debug.print_var({})
           end,
-          "Refactoring: Debug print variable",
+          "Debug: Print variable",
         },
       },
     }, {
@@ -96,7 +90,6 @@ return {
     opts = {
       defaults = {
         ["<leader>r"] = { name = "+refactoring" },
-        ["<leader>rd"] = { name = "+debug operations" },
       },
     },
   },
