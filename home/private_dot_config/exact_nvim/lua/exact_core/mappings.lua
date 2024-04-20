@@ -22,49 +22,49 @@ M.lsp_mappings = {
   n = {
     ["gd"] = {
       vim.lsp.buf.definition,
-      "Goto Definition",
+      "LSP: Goto Definition",
       has = "definition",
     },
     ["gD"] = {
       vim.lsp.buf.declaration,
-      "Goto Declaration",
+      "LSP: Goto Declaration",
     },
     ["gr"] = {
       function()
         require("lazy").load({ plugins = { "telescope.nvim" } })
         require("telescope.builtin").lsp_references()
       end,
-      "References",
+      "LSP: References",
     },
     ["gI"] = {
       function()
         require("lazy").load({ plugins = { "telescope.nvim" } })
         require("telescope.builtin").lsp_implementations({ reuse_win = true })
       end,
-      "Goto Implementation",
+      "LSP: Goto Implementation",
     },
     ["go"] = {
       function()
         require("lazy").load({ plugins = { "telescope.nvim" } })
         require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
       end,
-      "Goto Type Definition",
+      "LSP: Goto Type Definition",
     },
     ["<leader>xl"] = {
       vim.diagnostic.open_float,
-      "Line Diagnostics",
+      "LSP: Line Diagnostics",
     },
     ["K"] = {
       vim.lsp.buf.hover,
-      "Hover",
+      "LSP: Hover",
     },
     ["]d"] = {
       vim.diagnostic.goto_next,
-      "Next Diagnostic",
+      "LSP: Next Diagnostic",
     },
     ["[d"] = {
       vim.diagnostic.goto_prev,
-      "Prev Diagnostic",
+      "LSP: Prev Diagnostic",
     },
     ["]e"] = {
       function()
@@ -72,7 +72,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.ERROR,
         })
       end,
-      "Next Error",
+      "LSP: Next Error",
     },
     ["[e"] = {
       function()
@@ -80,7 +80,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.ERROR,
         })
       end,
-      "Prev Error",
+      "LSP: Prev Error",
     },
     ["]w"] = {
       function()
@@ -88,7 +88,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.WARN,
         })
       end,
-      "Next Warning",
+      "LSP: Next Warning",
     },
     ["[w"] = {
       function()
@@ -96,7 +96,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.WARN,
         })
       end,
-      "Prev Warning",
+      "LSP: Prev Warning",
     },
     ["<leader>cA"] = {
       function()
@@ -109,36 +109,36 @@ M.lsp_mappings = {
           },
         })
       end,
-      "Source Action",
+      "LSP: Source Action",
       has = "codeAction",
     },
     [{ "<leader>cr", "<F2>" }] = {
       vim.lsp.buf.rename,
-      "Rename",
+      "LSP: Rename",
       has = "rename",
     },
   },
   i = {
     ["<C-k>"] = {
       vim.lsp.buf.signature_help,
-      "Signature Help",
+      "LSP: Signature Help",
       has = "signatureHelp",
     },
   },
   [{ "n", "v" }] = {
     ["<leader>ca"] = {
       vim.lsp.buf.code_action,
-      "Code Action",
+      "LSP: Code Action",
       has = "codeAction",
     },
     ["<leader>cc"] = {
       vim.lsp.codelens.run,
-      "Run Codelens",
+      "LSP: Run Codelens",
       has = "codeLens",
     },
     ["<leader>cC"] = {
       vim.lsp.codelens.refresh,
-      "Refresh Codelens",
+      "LSP: Refresh Codelens",
       has = "codeLens",
     },
   },
