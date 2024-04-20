@@ -49,15 +49,8 @@ return {
       end,
     })
 
-    core.single_map("n", "<leader>gg", {
-      function()
-        lazygit:toggle()
-      end,
-      "Git: Lazygit",
-      opts = {
-        silent = true,
-        noremap = true,
-      },
-    })
+    vim.keymap.set("n", "<leader>gg", function()
+      lazygit:toggle()
+    end, { desc = "Git: Lazygit", noremap = true, silent = true })
   end,
 }

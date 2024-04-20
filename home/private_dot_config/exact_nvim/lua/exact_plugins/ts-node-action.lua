@@ -8,7 +8,7 @@ return {
         function()
           require("ts-node-action").node_action()
         end,
-        "Trigger Node action",
+        desc = "Trigger Node action",
       },
     },
   }),

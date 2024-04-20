@@ -14,25 +14,25 @@ return {
         function()
           require("trouble").toggle({ mode = "diagnostics" })
         end,
-        "Trouble: Workspace Diagnostics",
+        desc = "Trouble: Workspace Diagnostics",
       },
       ["X"] = {
         function()
           require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 } })
         end,
-        "Trouble: Buffer Diagnostics",
+        desc = "Trouble: Buffer Diagnostics",
       },
       ["L"] = {
         function()
           require("trouble").toggle({ mode = "loclist" })
         end,
-        "Trouble: Location List",
+        desc = "Trouble: Location List",
       },
       ["Q"] = {
         function()
           require("trouble").toggle({ mode = "quickfix" })
         end,
-        "Trouble: Quickfix List",
+        desc = "Trouble: Quickfix List",
       },
     },
   }, {

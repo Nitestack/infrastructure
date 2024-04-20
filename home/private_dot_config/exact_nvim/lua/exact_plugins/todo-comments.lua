@@ -9,25 +9,25 @@ return {
         function()
           vim.cmd("TodoTrouble")
         end,
-        "TODO: Trouble",
+        desc = "TODO: Trouble",
       },
       ["<leader>xT"] = {
         function()
           vim.cmd("TodoTrouble keywords=TODO,FIX,FIXME")
         end,
-        "TODO/FIX/FIXME: Trouble",
+        desc = "TODO/FIX/FIXME: Trouble",
       },
       ["[t"] = {
         function()
           require("todo-comments").jump_prev()
         end,
-        "TODO: Previous comment",
+        desc = "TODO: Previous comment",
       },
       ["]t"] = {
         function()
           require("todo-comments").jump_next()
         end,
-        "TODO: Next comment",
+        desc = "TODO: Next comment",
       },
     },
   }),

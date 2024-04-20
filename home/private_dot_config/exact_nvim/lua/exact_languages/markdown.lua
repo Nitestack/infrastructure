@@ -66,10 +66,8 @@ return utils.plugin.get_language_spec({
             function()
               vim.cmd("MarkdownPreviewToggle")
             end,
-            "Markdown: Toggle preview",
-            opts = {
-              ft = "markdown",
-            },
+            desc = "Markdown: Toggle preview",
+            ft = "markdown",
           },
         },
       }),

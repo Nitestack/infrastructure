@@ -10,25 +10,25 @@ return {
           function()
             require("neogen").generate({ type = "func" })
           end,
-          "Annotation: Function",
+          desc = "Annotation: Function",
         },
         ["F"] = {
           function()
             require("neogen").generate({ type = "file" })
           end,
-          "Annotation: File",
+          desc = "Annotation: File",
         },
         ["c"] = {
           function()
             require("neogen").generate({ type = "class" })
           end,
-          "Annotation: Class",
+          desc = "Annotation: Class",
         },
         ["t"] = {
           function()
             require("neogen").generate({ type = "type" })
           end,
-          "Annotation: Type",
+          desc = "Annotation: Type",
         },
       },
     }, {

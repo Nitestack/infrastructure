@@ -8,15 +8,33 @@ return {
         opts = { enable_autocmd = false },
       },
     },
-    keys = {
-      { "gcc", desc = "Comment: Toggle Line" },
-      { "gbc", desc = "Comment: Toggle Block" },
-      { "gc", mode = { "n", "x" } },
-      { "gb", mode = { "n", "x" } },
-      { "gcO", desc = "Comment: Insert line above" },
-      { "gco", desc = "Comment: Insert line below" },
-      { "gcA", desc = "Comment: Insert line end" },
-    },
+    keys = core.lazy_map({
+      n = {
+        ["gcc"] = {
+          desc = "Comment: Toggle line",
+        },
+        ["gbc"] = {
+          desc = "Comment: Toggle block",
+        },
+        ["gcO"] = {
+          desc = "Comment: Insert line above",
+        },
+        ["gco"] = {
+          desc = "Comment: Insert line below",
+        },
+        ["gcA"] = {
+          desc = "Comment: Insert line end",
+        },
+      },
+      [{ "n", "x" }] = {
+        ["gc"] = {
+          desc = "Comment: Toggle line",
+        },
+        ["gb"] = {
+          desc = "Comment: Toggle block",
+        },
+      },
+    }),
     opts = function()
       ---@type CommentConfig
       return {

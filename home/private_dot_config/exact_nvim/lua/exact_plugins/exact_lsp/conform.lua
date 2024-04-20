@@ -12,7 +12,7 @@ return {
         function()
           require("conform").format({ async = true, lsp_fallback = true })
         end,
-        "Format",
+        desc = "Format",
       },
     },
   }),

@@ -40,15 +40,15 @@ return utils.plugin.get_language_spec({
                   function()
                     vim.cmd.RustLsp("codeAction")
                   end,
-                  "Code Action",
-                  opts = { buffer = bufnr },
+                  desc = "Code Action",
+                  buffer = bufnr,
                 },
                 ["<leader>dr"] = {
                   function()
                     vim.cmd.RustLsp("debuggables")
                   end,
-                  "Rust debuggables",
-                  opts = { buffer = bufnr },
+                  desc = "Rust debuggables",
+                  buffer = bufnr,
                 },
               },
             })

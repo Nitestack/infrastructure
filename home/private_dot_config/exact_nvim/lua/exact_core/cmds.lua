@@ -109,14 +109,7 @@ M.auto_cmds = {
       },
       callback = function(event)
         vim.bo[event.buf].buflisted = false
-        core.single_map("n", "q", {
-          vim.cmd.close,
-          "Close",
-          opts = {
-            buffer = event.buf,
-            silent = true,
-          },
-        })
+        vim.keymap.set("n", "q", vim.cmd.close, { desc = "Close", buffer = event.buf, silent = true })
       end,
     },
   },
@@ -128,14 +121,7 @@ M.auto_cmds = {
       callback = function(event)
         if vim.bo[event.buf].buftype == "nofile" then
           vim.bo[event.buf].buflisted = false
-          core.single_map("n", "q", {
-            vim.cmd.close,
-            "Close",
-            opts = {
-              buffer = event.buf,
-              silent = true,
-            },
-          })
+          vim.keymap.set("n", "q", vim.cmd.close, { desc = "Close", buffer = event.buf, silent = true })
         end
       end,
     },

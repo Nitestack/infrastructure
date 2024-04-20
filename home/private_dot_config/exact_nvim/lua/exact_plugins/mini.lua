@@ -11,7 +11,7 @@ return {
               require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
             end
           end,
-          "File Explorer: Toggle",
+          desc = "File Explorer: Toggle",
         },
       },
     }),
@@ -61,16 +61,27 @@ return {
     "echasnovski/mini.move",
     keys = core.lazy_map({
       [{ "n", "x" }] = {
-        [{ "<M-j>", "<M-k>", "<M-h>", "<M-l>" }] = {},
+        ["<M-j>"] = {
+          desc = "Move down",
+        },
+        ["<M-k>"] = {
+          desc = "Move up",
+        },
+        ["<M-h>"] = {
+          desc = "Move left",
+        },
+        ["<M-l>"] = {
+          desc = "Move right",
+        },
       },
       i = {
         ["<M-j>"] = {
           "<Esc><cmd>m .+1<cr>==gi",
-          "Move down",
+          desc = "Move down",
         },
         ["<M-k>"] = {
           "<Esc><cmd>m .-2<cr>==gi",
-          "Move up",
+          desc = "Move up",
         },
       },
     }),

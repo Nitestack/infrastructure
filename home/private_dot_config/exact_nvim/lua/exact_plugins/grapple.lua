@@ -10,43 +10,43 @@ return {
           function()
             require("grapple").toggle()
           end,
-          "Jump: Toggle file",
+          desc = "Jump: Toggle file",
         },
         [{ "L", "<leader>jt" }] = {
           function()
             require("grapple").toggle_tags()
           end,
-          "Jump: Toggle menu",
+          desc = "Jump: Toggle menu",
         },
         [{ "<M-1>", "<leader>j1" }] = {
           function()
             require("grapple").select({ index = 1 })
           end,
-          "Jump: File 1",
+          desc = "Jump: File 1",
         },
         [{ "<M-2>", "<leader>j2" }] = {
           function()
             require("grapple").select({ index = 2 })
           end,
-          "Jump: File 2",
+          desc = "Jump: File 2",
         },
         [{ "<M-3>", "<leader>j3" }] = {
           function()
             require("grapple").select({ index = 3 })
           end,
-          "Jump: File 3",
+          desc = "Jump: File 3",
         },
         [{ "<M-4>", "<leader>j4" }] = {
           function()
             require("grapple").select({ index = 4 })
           end,
-          "Jump: File 4",
+          desc = "Jump: File 4",
         },
         [{ "<M-5>", "<leader>j5" }] = {
           function()
             require("grapple").select({ index = 5 })
           end,
-          "Jump: File 5",
+          desc = "Jump: File 5",
         },
       },
     }),
@@ -74,7 +74,7 @@ return {
           function()
             require("harpeek").toggle()
           end,
-          "Jump: Toggle peek menu",
+          desc = "Jump: Toggle peek menu",
         },
       },
     }),

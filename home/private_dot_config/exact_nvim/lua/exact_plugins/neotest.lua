@@ -91,49 +91,49 @@ return {
           function()
             require("neotest").run.run(vim.fn.expand("%"))
           end,
-          "Run File",
+          desc = "Run File",
         },
         ["T"] = {
           function()
             require("neotest").run.run(vim.uv.cwd())
           end,
-          "Run All Test Files",
+          desc = "Run All Test Files",
         },
         ["r"] = {
           function()
             require("neotest").run.run()
           end,
-          "Run Nearest",
+          desc = "Run Nearest",
         },
         ["l"] = {
           function()
             require("neotest").run.run_last()
           end,
-          "Run Last",
+          desc = "Run Last",
         },
         ["s"] = {
           function()
             require("neotest").summary.toggle()
           end,
-          "Toggle Summary",
+          desc = "Toggle Summary",
         },
         ["o"] = {
           function()
             require("neotest").output.open({ enter = true, auto_close = true })
           end,
-          "Show Output",
+          desc = "Show Output",
         },
         ["O"] = {
           function()
             require("neotest").output_panel.toggle()
           end,
-          "Toggle Output Panel",
+          desc = "Toggle Output Panel",
         },
         ["S"] = {
           function()
             require("neotest").run.stop()
           end,
-          "Stop",
+          desc = "Stop",
         },
       },
     }, {
@@ -148,7 +148,7 @@ return {
           function()
             require("neotest").run.run({ strategy = "dap" })
           end,
-          "Debug Nearest",
+          desc = "Debug Nearest",
         },
       },
     }),

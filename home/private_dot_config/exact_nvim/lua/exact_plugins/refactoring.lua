@@ -12,19 +12,19 @@ return {
           function()
             require("refactoring").refactor("Extract Function")
           end,
-          "Refactoring: Extract function",
+          desc = "Refactoring: Extract function",
         },
         ["f"] = {
           function()
             require("refactoring").refactor("Extract Function To File")
           end,
-          "Refactoring: Extract function to file",
+          desc = "Refactoring: Extract function to file",
         },
         ["v"] = {
           function()
             require("refactoring").refactor("Extract Variable")
           end,
-          "Refactoring: Extract variable",
+          desc = "Refactoring: Extract variable",
         },
       },
       n = {
@@ -32,31 +32,31 @@ return {
           function()
             require("refactoring").refactor("Inline Function")
           end,
-          "Refactoring: Inline function",
+          desc = "Refactoring: Inline function",
         },
         ["b"] = {
           function()
             require("refactoring").refactor("Extract Block")
           end,
-          "Refactoring: Extract block",
+          desc = "Refactoring: Extract block",
         },
         ["B"] = {
           function()
             require("refactoring").refactor("Extract Block To File")
           end,
-          "Refactoring: Extract block to file",
+          desc = "Refactoring: Extract block to file",
         },
         ["D"] = {
           function()
             require("refactoring").debug.printf({ below = false })
           end,
-          "Debug: Print function",
+          desc = "Debug: Print function",
         },
         ["c"] = {
           function()
             require("refactoring").debug.cleanup({})
           end,
-          "Debug: Cleanup operation",
+          desc = "Debug: Cleanup operation",
         },
       },
       [{ "n", "x" }] = {
@@ -64,19 +64,19 @@ return {
           function()
             require("refactoring").refactor("Inline Variable")
           end,
-          "Refactoring: Inline variable",
+          desc = "Refactoring: Inline variable",
         },
         ["r"] = {
           function()
             require("telescope").extensions.refactoring.refactors()
           end,
-          "Refactoring: Select refactoring",
+          desc = "Refactoring: Select refactoring",
         },
         ["d"] = {
           function()
             require("refactoring").debug.print_var({})
           end,
-          "Debug: Print variable",
+          desc = "Debug: Print variable",
         },
       },
     }, {

@@ -14,45 +14,45 @@ return {
     n = {
       [{ "<leader>ff", "<leader><Space>" }] = {
         utils.telescope("files"),
-        "Telescope: Find Files",
+        desc = "Telescope: Find Files",
       },
       [{ "<leader>sg", "<leader>/" }] = {
         utils.telescope("live_grep"),
-        "Telescope: Live Grep",
+        desc = "Telescope: Live Grep",
       },
       ["<leader>sG"] = {
         utils.telescope("live_grep", {
           additional_args = { "-." },
         }),
-        "Telescope: Live Grep (all)",
+        desc = "Telescope: Live Grep (all)",
       },
       ["<leader>fg"] = {
         utils.telescope("git_files", { show_untracked = true }),
-        "Telescope: Git Files",
+        desc = "Telescope: Git Files",
       },
       ["<leader>sw"] = {
         utils.telescope("grep_string", { word_match = "-w" }),
-        "Telescope: Word",
+        desc = "Telescope: Word",
       },
       ["<leader>sW"] = {
         utils.telescope("grep_string", {
           word_match = "-w",
           additional_args = { "-." },
         }),
-        "Telescope: Word (all)",
+        desc = "Telescope: Word (all)",
       },
     },
     v = {
       ["<leader>sw"] = {
         utils.telescope("grep_string", { word_match = "-w" }),
-        "Telescope: Word Selection",
+        desc = "Telescope: Word Selection",
       },
       ["<leader>sW"] = {
         utils.telescope("grep_string", {
           word_match = "-w",
           additional_args = { "-." },
         }),
-        "Telescope: Word Selection (all)",
+        desc = "Telescope: Word Selection (all)",
       },
     },
   }),
@@ -86,7 +86,7 @@ return {
           height = core.config.ui.height,
           preview_cutoff = 120,
         },
-        path_display = { "truncate" },
+        path_display = { "truncate", "filename_first" },
         file_ignore_patterns = { "node_modules", ".git", ".next", "dist", "build", "target" },
         mappings = {
           i = {

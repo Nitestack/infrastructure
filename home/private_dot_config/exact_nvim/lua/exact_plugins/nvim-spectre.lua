@@ -8,7 +8,13 @@ return {
         function()
           require("spectre").open()
         end,
-        "Spectre: Global Replace",
+        desc = "Spectre: Global Replace",
+      },
+      ["<leader>sf"] = {
+        function()
+          require("spectre").open_file_search()
+        end,
+        desc = "Spectre (current file)",
       },
     },
   }),

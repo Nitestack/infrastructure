@@ -8,7 +8,7 @@ return {
         function()
           require("dapui").toggle({})
         end,
-        "Dap UI",
+        desc = "Dap UI",
       },
       ["e"] = {
         function()
@@ -18,7 +18,7 @@ return {
             end
           end)
         end,
-        "Evaluate Input",
+        desc = "Evaluate Input",
       },
     },
     v = {
@@ -26,7 +26,7 @@ return {
         function()
           require("dapui").eval()
         end,
-        "Eval",
+        desc = "Eval",
       },
     },
   }, {

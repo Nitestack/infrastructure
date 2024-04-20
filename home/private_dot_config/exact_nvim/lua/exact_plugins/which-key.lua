@@ -3,7 +3,6 @@ return {
   "folke/which-key.nvim",
   keys = core.lazy_map({
     n = {
-      [{ "<leader>\"", "<leader>'", "<leader>`" }] = { false },
       [{ "<leader>", "<C-r>", "<C-w>", "\"", "'", "`", "c", "v", "g" }] = {},
     },
   }),

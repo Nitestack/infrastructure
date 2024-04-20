@@ -45,10 +45,18 @@ return {
       require("lazy.core.loader").add_to_rtp(plugin)
       require("nvim-treesitter.query_predicates")
     end,
-    keys = {
-      { "<C-Space>", desc = "Increment selection" },
-      { "<BS>", desc = "Decrement selection", mode = "x" },
-    },
+    keys = core.lazy_map({
+      n = {
+        ["<C-Space>"] = {
+          desc = "Increment selection",
+        },
+      },
+      x = {
+        ["<BS>"] = {
+          desc = "Decrement selection",
+        },
+      },
+    }),
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
       local ensure_installed = vim.list_extend(opts.ensure_installed, core.config.plugins.treesitter)

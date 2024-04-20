@@ -11,19 +11,19 @@ return {
         function()
           require("persistence").load()
         end,
-        "Session: Restore",
+        desc = "Session: Restore",
       },
       ["l"] = {
         function()
           require("persistence").load({ last = true })
         end,
-        "Session: Restore Last",
+        desc = "Session: Restore Last",
       },
       ["d"] = {
         function()
           require("persistence").stop()
         end,
-        "Session: Don't save current",
+        desc = "Session: Don't save current",
       },
     },
   }, {

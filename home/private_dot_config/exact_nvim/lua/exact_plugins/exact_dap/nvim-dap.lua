@@ -43,25 +43,25 @@ return {
           function()
             require("dap").continue()
           end,
-          "Continue",
+          desc = "Continue",
         },
         [{ "<leader>dt", "<F17>" }] = { -- <F17> translates to Shift+F5
           function()
             require("dap").terminate()
           end,
-          "Terminate",
+          desc = "Terminate",
         },
         [{ "<leader>dr", "<F29>" }] = { -- <F29> translates to Ctrl+F5
           function()
             require("dap").restart_frame()
           end,
-          "Restart",
+          desc = "Restart",
         },
         [{ "<leader>dp", "<F6>" }] = {
           function()
             require("dap").pause()
           end,
-          "Pause",
+          desc = "Pause",
         },
         ["<leader>da"] = {
           function()
@@ -78,73 +78,73 @@ return {
               end,
             })
           end,
-          "Run with Args",
+          desc = "Run with Args",
         },
         [{ "<leader>dO", "<F10>" }] = {
           function()
             require("dap").step_over()
           end,
-          "Step Over",
+          desc = "Step Over",
         },
         [{ "<leader>di", "<F11>" }] = {
           function()
             require("dap").step_into()
           end,
-          "Step Into",
+          desc = "Step Into",
         },
         [{ "<leader>do", "<F23>" }] = { -- <F23> translates to Shift+F11
           function()
             require("dap").step_out()
           end,
-          "Step Out",
+          desc = "Step Out",
         },
         ["<leader>dq"] = {
           function()
             require("dap").close()
           end,
-          "Close",
+          desc = "Close",
         },
         ["<leader>ds"] = {
           function()
             require("dap").run_to_cursor()
           end,
-          "Run to Cursor",
+          desc = "Run to Cursor",
         },
         ["<leader>dg"] = {
           function()
             require("dap").goto_()
           end,
-          "Go to Line (No Execute)",
+          desc = "Go to Line (No Execute)",
         },
         ["<leader>dj"] = {
           function()
             require("dap").down()
           end,
-          "Down",
+          desc = "Down",
         },
         ["<leader>dk"] = {
           function()
             require("dap").up()
           end,
-          "Up",
+          desc = "Up",
         },
         ["<leader>dl"] = {
           function()
             require("dap").run_last()
           end,
-          "Run Last",
+          desc = "Run Last",
         },
         ["<leader>dR"] = {
           function()
             require("dap").repl.toggle()
           end,
-          "Toggle REPL",
+          desc = "Toggle REPL",
         },
         ["<leader>dw"] = {
           function()
             require("dap.ui.widgets").hover()
           end,
-          "Widgets",
+          desc = "Widgets",
         },
       },
     }),

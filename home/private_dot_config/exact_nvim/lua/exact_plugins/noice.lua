@@ -13,13 +13,13 @@ return {
           function()
             require("noice").cmd("dismiss")
           end,
-          "Noice: Dismiss all",
+          desc = "Noice: Dismiss all",
         },
         ["e"] = {
           function()
             require("noice").cmd("error")
           end,
-          "Noice: Next error",
+          desc = "Noice: Next error",
         },
       },
     }, {

@@ -28,25 +28,25 @@ return {
         function()
           require("smart-splits").move_cursor_left()
         end,
-        "Window: Select left",
+        desc = "Window: Select left",
       },
       ["<C-l>"] = {
         function()
           require("smart-splits").move_cursor_right()
         end,
-        "Window: Select right",
+        desc = "Window: Select right",
       },
       ["<C-k>"] = {
         function()
           require("smart-splits").move_cursor_up()
         end,
-        "Window: Select upper",
+        desc = "Window: Select upper",
       },
       ["<C-j>"] = {
         function()
           require("smart-splits").move_cursor_down()
         end,
-        "Window: Select lower",
+        desc = "Window: Select lower",
       },
       ["<C-;>"] = {
         function()
@@ -61,31 +61,31 @@ return {
             vim.cmd.wincmd("j")
           end
         end,
-        "WezTerm: Toggle terminal",
+        desc = "WezTerm: Toggle terminal",
       },
       ["<C-Up>"] = {
         function()
           require("smart-splits").resize_up()
         end,
-        "Window: Resize up",
+        desc = "Window: Resize up",
       },
       ["<C-Down>"] = {
         function()
           require("smart-splits").resize_down()
         end,
-        "Window: Resize down",
+        desc = "Window: Resize down",
       },
       ["<C-Left>"] = {
         function()
           require("smart-splits").resize_left()
         end,
-        "Window: Resize left",
+        desc = "Window: Resize left",
       },
       ["<C-Right>"] = {
         function()
           require("smart-splits").resize_right()
         end,
-        "Window: Resize right",
+        desc = "Window: Resize right",
       },
     },
   }),

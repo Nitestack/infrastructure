@@ -198,43 +198,43 @@ return utils.plugin.get_language_spec({
             function()
               require("package-info").show({ force = true })
             end,
-            "Node.js: Show latest package version",
+            desc = "Node.js: Show latest package version",
           },
           ["h"] = {
             function()
               require("package-info").hide()
             end,
-            "Node.js: Hide package versions",
+            desc = "Node.js: Hide package versions",
           },
           ["t"] = {
             function()
               require("package-info").toggle()
             end,
-            "Node.js: Toggle package versions",
+            desc = "Node.js: Toggle package versions",
           },
           ["u"] = {
             function()
               require("package-info").update()
             end,
-            "Node.js: Update dependency",
+            desc = "Node.js: Update dependency",
           },
           ["d"] = {
             function()
               require("package-info").delete()
             end,
-            "Node.js: Delete dependency",
+            desc = "Node.js: Delete dependency",
           },
           ["i"] = {
             function()
               require("package-info").install()
             end,
-            "Node.js: Install dependency",
+            desc = "Node.js: Install dependency",
           },
           ["v"] = {
             function()
               require("package-info").change_version()
             end,
-            "Node.js: Change dependency version",
+            desc = "Node.js: Change dependency version",
           },
         },
       }, {

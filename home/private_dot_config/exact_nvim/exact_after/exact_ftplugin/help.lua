@@ -14,20 +14,14 @@ utils.ft_plugin({
         n = {
           ["<CR>"] = {
             "<C-]>",
-            "Jump to topic under the cursor",
+            desc = "Jump to topic under the cursor",
           },
           ["<BS>"] = {
             "<C-T>",
-            "Jump back to where you came from",
+            desc = "Jump back to where you came from",
           },
         },
       }, opts)
-    else
-      core.single_map("n", "<leader>ml", {
-        "maGovim:tw=78:ts=8:noet:ft=help:norl:<esc>`a",
-        "Set help window width to 80",
-        opts = opts,
-      })
     end
   end,
 })

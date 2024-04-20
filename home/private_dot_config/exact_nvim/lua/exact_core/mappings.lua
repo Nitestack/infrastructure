@@ -22,49 +22,49 @@ M.lsp_mappings = {
   n = {
     ["gd"] = {
       vim.lsp.buf.definition,
-      "LSP: Goto Definition",
+      desc = "LSP: Goto Definition",
       has = "definition",
     },
     ["gD"] = {
       vim.lsp.buf.declaration,
-      "LSP: Goto Declaration",
+      desc = "LSP: Goto Declaration",
     },
     ["gr"] = {
       function()
         require("lazy").load({ plugins = { "telescope.nvim" } })
         require("telescope.builtin").lsp_references()
       end,
-      "LSP: References",
+      desc = "LSP: References",
     },
     ["gI"] = {
       function()
         require("lazy").load({ plugins = { "telescope.nvim" } })
         require("telescope.builtin").lsp_implementations({ reuse_win = true })
       end,
-      "LSP: Goto Implementation",
+      desc = "LSP: Goto Implementation",
     },
     ["go"] = {
       function()
         require("lazy").load({ plugins = { "telescope.nvim" } })
         require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
       end,
-      "LSP: Goto Type Definition",
+      desc = "LSP: Goto Type Definition",
     },
     ["<leader>xl"] = {
       vim.diagnostic.open_float,
-      "LSP: Line Diagnostics",
+      desc = "LSP: Line Diagnostics",
     },
     ["K"] = {
       vim.lsp.buf.hover,
-      "LSP: Hover",
+      desc = "LSP: Hover",
     },
     ["]d"] = {
       vim.diagnostic.goto_next,
-      "LSP: Next Diagnostic",
+      desc = "LSP: Next Diagnostic",
     },
     ["[d"] = {
       vim.diagnostic.goto_prev,
-      "LSP: Prev Diagnostic",
+      desc = "LSP: Prev Diagnostic",
     },
     ["]e"] = {
       function()
@@ -72,7 +72,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.ERROR,
         })
       end,
-      "LSP: Next Error",
+      desc = "LSP: Next Error",
     },
     ["[e"] = {
       function()
@@ -80,7 +80,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.ERROR,
         })
       end,
-      "LSP: Prev Error",
+      desc = "LSP: Prev Error",
     },
     ["]w"] = {
       function()
@@ -88,7 +88,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.WARN,
         })
       end,
-      "LSP: Next Warning",
+      desc = "LSP: Next Warning",
     },
     ["[w"] = {
       function()
@@ -96,7 +96,7 @@ M.lsp_mappings = {
           severity = vim.diagnostic.severity.WARN,
         })
       end,
-      "LSP: Prev Warning",
+      desc = "LSP: Prev Warning",
     },
     ["<leader>cA"] = {
       function()
@@ -109,36 +109,36 @@ M.lsp_mappings = {
           },
         })
       end,
-      "LSP: Source Action",
+      desc = "LSP: Source Action",
       has = "codeAction",
     },
     [{ "<leader>cr", "<F2>" }] = {
       vim.lsp.buf.rename,
-      "LSP: Rename",
+      desc = "LSP: Rename",
       has = "rename",
     },
   },
   i = {
     ["<C-k>"] = {
       vim.lsp.buf.signature_help,
-      "LSP: Signature Help",
+      desc = "LSP: Signature Help",
       has = "signatureHelp",
     },
   },
   [{ "n", "v" }] = {
     ["<leader>ca"] = {
       vim.lsp.buf.code_action,
-      "LSP: Code Action",
+      desc = "LSP: Code Action",
       has = "codeAction",
     },
     ["<leader>cc"] = {
       vim.lsp.codelens.run,
-      "LSP: Run Codelens",
+      desc = "LSP: Run Codelens",
       has = "codeLens",
     },
     ["<leader>cC"] = {
       vim.lsp.codelens.refresh,
-      "LSP: Refresh Codelens",
+      desc = "LSP: Refresh Codelens",
       has = "codeLens",
     },
   },
@@ -150,31 +150,31 @@ M.lsp_mappings = {
 M.terminal_mappings = {
   ["<Esc>"] = {
     "<C-\\><C-n>",
-    "Enter Normal Mode",
+    desc = "Enter Normal Mode",
   },
   ["<C-h>"] = {
     function()
       vim.cmd.wincmd("h")
     end,
-    "Window left",
+    desc = "Window left",
   },
   ["<C-j>"] = {
     function()
       vim.cmd.wincmd("j")
     end,
-    "Window down",
+    desc = "Window down",
   },
   ["<C-k>"] = {
     function()
       vim.cmd.wincmd("k")
     end,
-    "Window up",
+    desc = "Window up",
   },
   ["<C-l>"] = {
     function()
       vim.cmd.wincmd("l")
     end,
-    "Window right",
+    desc = "Window right",
   },
 }
 
@@ -187,7 +187,7 @@ M.mappings = {}
 M.mappings[{ "n", "v" }] = {
   ["D"] = {
     [["_d]],
-    "Delete without copying into register",
+    desc = "Delete without copying into register",
   },
 }
 
@@ -195,17 +195,13 @@ M.mappings[{ "n", "v" }] = {
 M.mappings[{ "n", "x" }] = {
   [{ "j", "<Down>" }] = {
     "v:count == 0 ? 'gj' : 'j'",
-    "Move down",
-    opts = {
-      expr = true,
-    },
+    desc = "Move down",
+    expr = true,
   },
   [{ "k", "<Up>" }] = {
     "v:count == 0 ? 'gk' : 'k'",
-    "Move up",
-    opts = {
-      expr = true,
-    },
+    desc = "Move up",
+    expr = true,
   },
 }
 
@@ -213,52 +209,44 @@ M.mappings.n = {
   -- Windows
   [{ "<leader>-", "<leader>w-" }] = {
     "<C-W>s",
-    "Window: Split below",
-    opts = {
-      noremap = false,
-      remap = true,
-    },
+    desc = "Window: Split below",
+    noremap = false,
+    remap = true,
   },
   [{ "<leader>|", "<leader>w|" }] = {
     "<C-W>v",
-    "Window: Split right",
-    opts = {
-      noremap = false,
-      remap = true,
-    },
+    desc = "Window: Split right",
+    noremap = false,
+    remap = true,
   },
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
-    "Window: Change two horizontal to vertical",
+    desc = "Window: Change two horizontal to vertical",
   },
   ["<leader>wv"] = {
     "<C-W>t <C-W>H",
-    "Window: Change two vertical to horizontal",
+    desc = "Window: Change two vertical to horizontal",
   },
   -- Smarter search jumping
   ["n"] = {
     "'Nn'[v:searchforward].'zv'",
-    "Next search match",
-    opts = {
-      expr = true,
-    },
+    desc = "Next search match",
+    expr = true,
   },
   ["N"] = {
     "'nN'[v:searchforward].'zv'",
-    "Previous search match",
-    opts = {
-      expr = true,
-    },
+    desc = "Previous search match",
+    expr = true,
   },
   -- Clear hlsearch with <ESC>
   ["<ESC>"] = {
     "<cmd>noh<cr><esc>",
-    "Escape and clear hlsearch",
+    desc = "Escape and clear hlsearch",
   },
   -- Quit
   ["<leader>qq"] = {
     vim.cmd.qa,
-    "Quit all",
+    desc = "Quit all",
   },
   -- Smart delete line
   ["dd"] = {
@@ -269,24 +257,22 @@ M.mappings.n = {
         return "dd"
       end
     end,
-    "Delete line",
-    opts = {
-      expr = true,
-      silent = true,
-    },
+    desc = "Delete line",
+    expr = true,
+    silent = true,
   },
   -- Toggle UI
   ["<leader>ud"] = {
     function()
       utils.toggle.diagnostics()
     end,
-    "Diagnostics: Toggle",
+    desc = "Diagnostics: Toggle",
   },
   ["<leader>uh"] = {
     function()
       utils.toggle.inlay_hints()
     end,
-    "Inlay Hints: Toggle",
+    desc = "Inlay Hints: Toggle",
   },
   ["<leader>ut"] = {
     function()
@@ -296,30 +282,30 @@ M.mappings.n = {
         vim.treesitter.start()
       end
     end,
-    "Treesitter: Toggle",
+    desc = "Treesitter: Toggle",
   },
   ["<leader>uc"] = {
     function()
       utils.toggle("conceallevel", false, { 0, conceallevel })
     end,
-    "Conceal: Toggle",
+    desc = "Conceal: Toggle",
   },
   ["<leader>us"] = {
     function()
       utils.toggle("spell")
     end,
-    "Spelling: Toggle",
+    desc = "Spelling: Toggle",
   },
   -- General
   ["x"] = {
     "\"_x",
-    "Delete character without copying into register",
+    desc = "Delete character without copying into register",
   },
   ["<leader>l"] = {
     function()
       vim.cmd("Lazy")
     end,
-    "Lazy",
+    desc = "Lazy",
   },
 }
 
@@ -327,17 +313,13 @@ M.mappings.n = {
 M.mappings[{ "x", "o" }] = {
   ["n"] = {
     "'Nn'[v:searchforward]",
-    "Next search match",
-    opts = {
-      expr = true,
-    },
+    desc = "Next search match",
+    expr = true,
   },
   ["N"] = {
     "'nN'[v:searchforward]",
-    "Previous search match",
-    opts = {
-      expr = true,
-    },
+    desc = "Previous search match",
+    expr = true,
   },
 }
 
@@ -347,7 +329,7 @@ if not utils.is_win() then
     function()
       vim.cmd("!chmod +x %")
     end,
-    "Make file executable",
+    desc = "Make file executable",
   }
 end
 
@@ -355,16 +337,16 @@ M.mappings.v = {
   -- Indent
   ["<Tab>"] = {
     ">gv",
-    "Indent right",
+    desc = "Indent right",
   },
   ["<S-Tab>"] = {
     "<gv",
-    "Indent left",
+    desc = "Indent left",
   },
   -- End of line
   ["$"] = {
     "g_",
-    "End of line (ignore whitespace)",
+    desc = "End of line (ignore whitespace)",
   },
 }
 
@@ -376,10 +358,8 @@ M.mappings.x = {
         vim.cmd("'<,'>normal @" .. reg)
       end)
     end,
-    "Execute macro over visual range",
-    opts = {
-      silent = false,
-    },
+    desc = "Execute macro over visual range",
+    silent = false,
   },
 }
 

@@ -25,9 +25,7 @@ _G.utils = require("utils")
 _G.core = require("core")
 
 _G.core.map = utils.mappings.map
-_G.core.single_map = utils.mappings.single_map
 _G.core.lazy_map = utils.mappings.lazy_map
-_G.core.single_lazy_map = utils.mappings.single_lazy_map
 _G.core.auto_cmds = utils.cmds.auto_cmds
 _G.core.user_cmds = utils.cmds.user_cmds
 

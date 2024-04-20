@@ -21,10 +21,10 @@ return {
             ls.change_choice(1)
           end
         end,
+        desc = "Luasnip: Change choice",
+        silent = true,
       },
     },
-  }, {
-    silent = true,
   }),
   opts = function(_, opts)
     local ls = require("luasnip")

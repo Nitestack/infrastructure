@@ -8,7 +8,7 @@ return {
         function()
           require("lint").try_lint()
         end,
-        "Lint",
+        desc = "Lint",
       },
     },
   }),
