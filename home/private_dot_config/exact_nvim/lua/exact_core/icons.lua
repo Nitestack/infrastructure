@@ -138,8 +138,8 @@ M.ui = {
 
 M.diagnostics = {
   Error = "",
-  Warning = "",
-  Information = "",
+  Warn = "",
+  Info = "",
   Hint = "",
 }
 
