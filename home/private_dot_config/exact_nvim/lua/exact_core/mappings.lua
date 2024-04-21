@@ -21,12 +21,16 @@ local M = {}
 M.lsp_mappings = {
   n = {
     ["gd"] = {
-      vim.lsp.buf.definition,
+      function()
+        vim.lsp.buf.definition()
+      end,
       desc = "LSP: Goto Definition",
       has = "definition",
     },
     ["gD"] = {
-      vim.lsp.buf.declaration,
+      function()
+        vim.lsp.buf.declaration()
+      end,
       desc = "LSP: Goto Declaration",
     },
     ["gr"] = {
@@ -51,19 +55,27 @@ M.lsp_mappings = {
       desc = "LSP: Goto Type Definition",
     },
     ["<leader>xl"] = {
-      vim.diagnostic.open_float,
+      function()
+        vim.diagnostic.open_float()
+      end,
       desc = "LSP: Line Diagnostics",
     },
     ["K"] = {
-      vim.lsp.buf.hover,
+      function()
+        vim.lsp.buf.hover()
+      end,
       desc = "LSP: Hover",
     },
     ["]d"] = {
-      vim.diagnostic.goto_next,
+      function()
+        vim.diagnostic.goto_next()
+      end,
       desc = "LSP: Next Diagnostic",
     },
     ["[d"] = {
-      vim.diagnostic.goto_prev,
+      function()
+        vim.diagnostic.goto_prev()
+      end,
       desc = "LSP: Prev Diagnostic",
     },
     ["]e"] = {
@@ -113,31 +125,41 @@ M.lsp_mappings = {
       has = "codeAction",
     },
     [{ "<leader>cr", "<F2>" }] = {
-      vim.lsp.buf.rename,
+      function()
+        vim.lsp.buf.rename()
+      end,
       desc = "LSP: Rename",
       has = "rename",
     },
   },
   i = {
     ["<C-k>"] = {
-      vim.lsp.buf.signature_help,
+      function()
+        vim.lsp.buf.signature_help()
+      end,
       desc = "LSP: Signature Help",
       has = "signatureHelp",
     },
   },
   [{ "n", "v" }] = {
     ["<leader>ca"] = {
-      vim.lsp.buf.code_action,
+      function()
+        vim.lsp.buf.code_action()
+      end,
       desc = "LSP: Code Action",
       has = "codeAction",
     },
     ["<leader>cc"] = {
-      vim.lsp.codelens.run,
+      function()
+        vim.lsp.codelens.run()
+      end,
       desc = "LSP: Run Codelens",
       has = "codeLens",
     },
     ["<leader>cC"] = {
-      vim.lsp.codelens.refresh,
+      function()
+        vim.lsp.codelens.refresh()
+      end,
       desc = "LSP: Refresh Codelens",
       has = "codeLens",
     },
