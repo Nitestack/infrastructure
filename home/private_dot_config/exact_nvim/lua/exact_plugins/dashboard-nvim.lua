@@ -8,28 +8,28 @@ return {
     opts.config = opts.config or {}
     opts.config.header = vim.split(logo, "\n")
     opts.config.center = {
-      { action = "ene | startinsert", desc = " New file", icon = " ", key = "n" },
-      { action = "lua utils.telescope('files')", desc = " Find file", icon = " ", key = "f" },
+      { action = "ene | startinsert", desc = " New file", icon = core.icons.ui.File .. " ", key = "n" },
+      { action = "lua utils.telescope('files')", desc = " Find file", icon = core.icons.ui.Search .. " ", key = "f" },
       {
-        action = "lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())",
+        action = "lua require('grapple').toggle_tags()",
         desc = " Marked Files",
-        icon = " ",
+        icon = core.icons.ui.BookMark .. " ",
         key = "h",
       },
       {
         action = "lua utils.telescope('live_grep')()",
         desc = " Find text",
-        icon = " ",
+        icon = core.icons.ui.Text .. " ",
         key = "g",
       },
       { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
-      { action = "Mason", desc = " Mason", icon = " ", key = "m" },
-      { action = "qa", desc = " Quit", icon = " ", key = "q" },
+      { action = "Mason", desc = " Mason", icon = core.icons.ui.Package .. " ", key = "m" },
+      { action = "qa", desc = " Quit", icon = core.icons.ui.SignOut .. " ", key = "q" },
     }
     opts.config.footer = function()
       local stats = require("lazy").stats()
       local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-      return { "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
+      return { "⚡ Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms" }
     end
 
     for _, button in ipairs(opts.config.center) do

@@ -25,6 +25,5 @@ return {
       vim.api.nvim_win_set_config(win, { zindex = 100 })
     end,
     fps = not core.config.performance_mode and 144 or 30,
-    icons = core.icons.diagnostics,
   },
 }
