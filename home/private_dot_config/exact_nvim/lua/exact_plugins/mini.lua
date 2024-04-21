@@ -19,7 +19,7 @@ return {
       content = {
         prefix = function(fs_entry)
           if fs_entry.fs_type == "directory" then
-            return core.icons.ui.Folder .. " ", "MiniFilesDirectory"
+            return core.icons.ui.FolderClosed .. " ", "MiniFilesDirectory"
           end
           return require("mini.files").default_prefix(fs_entry)
         end,

@@ -152,31 +152,31 @@ return {
       ---@type table<string, vim.fn.sign_define.dict>
       local dap_signs = {
         DapBreakpoint = {
-          text = core.icons.ui.Circle,
+          text = core.icons.dap.Breakpoint,
           texthl = "DapBreakpoint",
           linehl = "",
           numhl = "",
         },
         DapBreakpointCondition = {
-          text = core.icons.diagnostics.Question,
+          text = core.icons.dap.BreakpointCondition,
           texthl = "DapBreakpointCondition",
           linehl = "",
           numhl = "",
         },
         DapBreakpointRejected = {
-          text = core.icons.diagnostics.Error,
+          text = core.icons.dap.BreakpointRejected,
           texthl = "DapBreakpointRejected",
           linehl = "",
           numhl = "",
         },
         DapLogPoint = {
-          text = "◆",
+          text = core.icons.dap.LogPoint,
           texthl = "DapLogPoint",
           linehl = "",
           numhl = "",
         },
         DapStopped = {
-          text = core.icons.ui.BoldArrowRight,
+          text = core.icons.dap.Stopped,
           texthl = "DapStopped",
           linehl = "Visual",
           numhl = "",

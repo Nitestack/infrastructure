@@ -16,7 +16,7 @@ M.kind = {
   Event = "",
   Field = "",
   File = "",
-  Folder = "󰉋",
+  Folder = "",
   Function = "",
   Interface = "",
   Key = "",
@@ -46,12 +46,12 @@ M.git = {
   LineModified = "",
   LineRemoved = "",
   FileDeleted = "",
-  FileIgnored = "◌",
+  FileIgnored = "",
   FileRenamed = "",
-  FileStaged = "S",
+  FileStaged = "",
   FileUnmerged = "",
-  FileUnstaged = "",
-  FileUntracked = "U",
+  FileUnstaged = "",
+  FileUntracked = "",
   Diff = "",
   Repo = "",
   Octoface = "",
@@ -99,8 +99,9 @@ M.ui = {
   FindFile = "󰈞",
   FindText = "󰊄",
   Fire = "",
-  Folder = "󰉋",
-  FolderOpen = "",
+  FolderClosed = "",
+  FolderEmpty = "",
+  FolderOpen = "",
   FolderSymlink = "",
   Forward = "",
   Gear = "",
@@ -136,13 +137,18 @@ M.ui = {
 }
 
 M.diagnostics = {
-  Error = "󰅙",
-  Warning = "",
-  Information = "󰋼",
-  Question = "",
-  Hint = "󰌵",
-  Debug = "",
-  Trace = "✎",
+  Error = "",
+  Warning = "",
+  Information = "",
+  Hint = "",
+}
+
+M.dap = {
+  Breakpoint = "",
+  BreakpointCondition = "",
+  BreakpointRejected = "",
+  LogPoint = "",
+  Stopped = "",
 }
 
 M.misc = {
