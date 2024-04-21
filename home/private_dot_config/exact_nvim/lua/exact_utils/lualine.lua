@@ -144,7 +144,7 @@ M.lsp_status = {
       return val.name == "copilot"
     end)
 
-    local lsp_status = core.icons.ui.Gear .. " LSP Active"
+    local lsp_status = core.icons.ui.ActiveLSP .. " LSP Active"
 
     if copilot_active then
       lsp_status = lsp_status .. "%#SLCopilot#" .. " " .. core.icons.git.Octoface .. "%*"
