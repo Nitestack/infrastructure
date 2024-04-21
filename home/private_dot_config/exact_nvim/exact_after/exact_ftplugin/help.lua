@@ -3,8 +3,6 @@
 --------------------------------------------------------------------------------
 utils.ft_plugin({
   config = function()
-    local opts = { buffer = 0 }
-
     -- if this a vim help file create mappings to make navigation easier otherwise enable preferred editing settings
     if
       vim.startswith(vim.fn.expand("%") --[[@as string]], vim.env.VIMRUNTIME) or vim.bo.readonly
@@ -21,7 +19,7 @@ utils.ft_plugin({
             desc = "Jump back to where you came from",
           },
         },
-      }, opts)
+      }, { buffer = 0 })
     end
   end,
 })

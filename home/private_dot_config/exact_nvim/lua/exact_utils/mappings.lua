@@ -56,10 +56,10 @@ function M.map(mappings, mapping_opts)
     mapping_opts.prefix = nil
   end
 
-  for mode, mode_mappings in pairs(mappings) do
-    for mapping, mapping_info in
-      pairs(mode_mappings --[[@as utils.mappings.mappings_spec.mappings]])
-    do
+  for mode, mode_mappings in
+    pairs(mappings --[[@as table<string|string[], utils.mappings.mappings_spec.mappings>]])
+  do
+    for mapping, mapping_info in pairs(mode_mappings) do
       local rhs = vim.deepcopy(mapping_info)[1]
       mapping_info[1] = nil
 
@@ -89,10 +89,10 @@ function M.lazy_map(mappings, mapping_opts)
     mapping_opts.prefix = nil
   end
 
-  for mode, mode_mappings in pairs(mappings) do
-    for mapping, mapping_info in
-      pairs(mode_mappings --[[@as utils.mappings.lazy_mappings_spec.mappings]])
-    do
+  for mode, mode_mappings in
+    pairs(mappings --[[@as table<string|string[], utils.mappings.lazy_mappings_spec.mappings>]])
+  do
+    for mapping, mapping_info in pairs(mode_mappings) do
       local rhs = vim.deepcopy(mapping_info)[1]
       mapping_info[1] = nil
       local opts = vim.tbl_deep_extend("force", mapping_opts or {}, mapping_info)
