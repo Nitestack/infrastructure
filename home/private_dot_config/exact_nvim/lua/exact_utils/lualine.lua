@@ -121,8 +121,8 @@ M.diagnostics = {
   sources = { "nvim_diagnostic" },
   symbols = {
     error = core.icons.diagnostics.Error .. " ",
-    warn = core.icons.diagnostics.Warning .. " ",
-    info = core.icons.diagnostics.Information .. " ",
+    warn = core.icons.diagnostics.Warn .. " ",
+    info = core.icons.diagnostics.Info .. " ",
     hint = core.icons.diagnostics.Hint .. " ",
   },
   update_in_insert = not core.config.performance_mode,

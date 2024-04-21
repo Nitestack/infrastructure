@@ -29,14 +29,6 @@ return {
       require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))
     end
 
-    -- Icons
-    local diagnostic_icons = {
-      Error = core.icons.diagnostics.Error,
-      Warn = core.icons.diagnostics.Warning,
-      Hint = core.icons.diagnostics.Hint,
-      Info = core.icons.diagnostics.Information,
-    }
-
     -- LSP info border
     require("lspconfig.ui.windows").default_options.border = core.config.ui.transparent.floats and "rounded" or "none"
 
@@ -49,7 +41,7 @@ return {
         source = "if_many",
         -- this only works on a recent 0.10.0 build
         prefix = function(diagnostic)
-          for name, icon in pairs(diagnostic_icons) do
+          for name, icon in pairs(core.icons.diagnostics) do
             if diagnostic.severity == vim.diagnostic.severity[name:upper()] then
               return icon
             end
@@ -66,7 +58,7 @@ return {
       severity_sort = true,
     }
     -- Diagnostic signs
-    for name, icon in pairs(diagnostic_icons) do
+    for name, icon in pairs(core.icons.diagnostics) do
       local hl = "DiagnosticSign" .. name
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 
