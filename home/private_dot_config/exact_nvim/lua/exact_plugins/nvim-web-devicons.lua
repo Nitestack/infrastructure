@@ -8,17 +8,8 @@ return {
         color = "#FF7E33",
         name = "astro",
       },
-      toml = {
-        icon = "",
-        color = "#6e8086",
-      },
     },
     override_by_filename = {
-      [".npmignore"] = {
-        icon = "",
-        color = "#c63c42",
-        name = ".npmignore",
-      },
       ["tsconfig.tsbuildinfo"] = {
         icon = "",
         color = "#cbcb41",
