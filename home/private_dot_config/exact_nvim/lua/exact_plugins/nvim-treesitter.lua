@@ -34,7 +34,7 @@ return {
     },
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
-    event = { "LazyFile", "VeryLazy" },
+    event = "LazyFile",
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     init = function(plugin)
       -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
