@@ -8,9 +8,6 @@ return {
         "jay-babu/mason-nvim-dap.nvim",
         dependencies = "williamboman/mason.nvim",
         cmd = { "DapInstall", "DapUninstall" },
-        opts = {
-          handlers = {},
-        },
         config = function(_, opts)
           opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
           require("mason-nvim-dap").setup(opts)
