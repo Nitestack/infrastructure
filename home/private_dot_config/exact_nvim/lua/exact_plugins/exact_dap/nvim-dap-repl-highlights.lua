@@ -3,7 +3,7 @@ return {
   "nvim-treesitter/nvim-treesitter",
   dependencies = {
     "LiadOz/nvim-dap-repl-highlights",
-    dependencies = { "mfussenegger/nvim-dap" },
+    ft = "dap-repl",
     opts = {},
   },
   opts = function(_, opts)

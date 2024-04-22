@@ -1,7 +1,10 @@
+local filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
+
 ---@type LazySpec
 return {
   {
     "mfussenegger/nvim-dap",
+    ft = filetypes,
     dependencies = {
       "williamboman/mason.nvim",
       {
@@ -17,7 +20,7 @@ return {
         "rcarriga/cmp-dap",
         dependencies = "hrsh7th/nvim-cmp",
         config = function()
-          require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+          require("cmp").setup.filetype(filetypes, {
             sources = {
               { name = "dap" },
             },
