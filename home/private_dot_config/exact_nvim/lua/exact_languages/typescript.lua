@@ -58,48 +58,42 @@ return utils.plugin.get_language_spec({
       prismals = {},
     },
   },
-  dap = {
-    adapters = {
-      ["pwa-node"] = function()
-        return {
-          type = "server",
-          host = "localhost",
-          port = "${port}",
-          executable = {
-            command = "node",
-            args = {
-              require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-                .. "/js-debug/src/dapDebugServer.js",
-              "${port}",
-            },
-          },
-        }
-      end,
-    },
-    configurations = {
-      {
-        {
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
-          },
-          function()
-            return {
-              type = "pwa-node",
-              request = "attach",
-              name = "Attach",
-              processId = require("dap.utils").pick_process,
-              cwd = "${workspaceFolder}",
-            }
-          end,
+  dap = function(add_dap_adapter, add_dap_configuration)
+    add_dap_adapter("pwa-node", {
+      type = "server",
+      host = "localhost",
+      port = "${port}",
+      executable = {
+        command = "node",
+        args = {
+          require("mason-registry").get_package("js-debug-adapter"):get_install_path()
+            .. "/js-debug/src/dapDebugServer.js",
+          "${port}",
         },
-        langs = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
       },
-    },
-  },
+    })
+    add_dap_configuration({
+      {
+        type = "pwa-node",
+        request = "launch",
+        name = "Launch file",
+        program = "${file}",
+        cwd = "${workspaceFolder}",
+      },
+      {
+        type = "pwa-node",
+        request = "attach",
+        name = "Attach",
+        processId = require("dap.utils").pick_process,
+        cwd = "${workspaceFolder}",
+      },
+    }, {
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+    })
+  end,
   mason = {
     "vtsls",
     "eslint_d",

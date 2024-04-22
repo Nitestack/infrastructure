@@ -22,7 +22,7 @@ end
 ---@field lsp? utils.plugin.language_config.lsp
 ---@field formatter? utils.plugin.language_config.formatter
 ---@field linter? utils.plugin.language_config.linter
----@field dap? utils.plugin.language_config.dap
+---@field dap? fun(add_dap_adapter:fun(name:string, adapter:Adapter), add_dap_configuration:fun(configurations:Configuration[], filetypes:string|string[]))
 ---@field test? utils.plugin.language_config.test
 ---@field plugins? LazyPluginSpec[]
 
@@ -38,15 +38,30 @@ end
 ---@field linters_by_ft? table<string, string[]>
 ---@field linters? table<string,table>
 
----@class utils.plugin.language_config.dap
----@field adapters? table<string, Adapter|fun():Adapter>
----@field configurations? { [1]:(Configuration|fun():Configuration)[], langs?:string|string[] }[]
-
 ---@alias utils.plugin.language_config.test.adapters table<string, any>
 
 ---@class utils.plugin.language_config.test
 ---@field dependencies? string|string[]|LazyPluginSpec[]
 ---@field adapters? utils.plugin.language_config.test.adapters
+
+---@param name string
+---@param adapter Adapter
+local function add_dap_adapter(name, adapter)
+  local dap = require("dap")
+  if not dap.adapters[name] then
+    dap.adapters[name] = adapter
+  end
+end
+---@param configurations Configuration[]
+---@param filetypes string|string[]
+local function add_dap_configuration(configurations, filetypes)
+  local dap = require("dap")
+  for _, lang in ipairs(utils.str_to_tbl(filetypes or {})) do
+    if not dap.configurations[lang] then
+      dap.configurations[lang] = configurations
+    end
+  end
+end
 
 ---A helper function to get a plugin spec configuring a language
 ---@param config utils.plugin.language_config
@@ -106,26 +121,7 @@ function M.get_language_spec(config)
     table.insert(spec, {
       "mfussenegger/nvim-dap",
       opts = function()
-        local dap = require("dap")
-
-        -- Setup adapters
-        for adapter_name, _ in pairs(config.dap.adapters or {}) do
-          if not dap.adapters[adapter_name] then
-            local adapter = config.dap.adapters[adapter_name]
-            require("dap").adapters[adapter_name] = type(adapter) == "function" and adapter() or adapter
-          end
-        end
-
-        -- Setup configurations
-        for _, configuration in ipairs(config.dap.configurations or {}) do
-          for _, lang in ipairs(utils.str_to_tbl(configuration.langs or {})) do
-            if not dap.configurations[lang] then
-              require("dap").configurations[lang] = vim.tbl_map(function(c)
-                return type(c) == "function" and c() or c
-              end, configuration[1])
-            end
-          end
-        end
+        config.dap(add_dap_adapter, add_dap_configuration)
       end,
     })
   end
