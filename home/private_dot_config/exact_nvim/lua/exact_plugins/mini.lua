@@ -239,6 +239,6 @@ return utils.plugin.with_extensions({
   },
 }, {
   which_key = {
-    ["s"] = "surround",
+    ["s"] = "Surround",
   },
 })
