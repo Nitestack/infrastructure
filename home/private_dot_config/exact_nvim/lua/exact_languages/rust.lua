@@ -84,4 +84,9 @@ return utils.plugin.get_language_spec({
       end,
     },
   },
+  test = {
+    adapters = {
+      ["rustaceanvim.neotest"] = {},
+    },
+  },
 })
