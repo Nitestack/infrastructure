@@ -10,9 +10,7 @@ return {
     },
     ---@type neotest.Config
     opts = {
-      -- Can be a list of adapters like what neotest expects,
-      -- or a list of adapter names,
-      -- or a table of adapter names, mapped to adapter configs.
+      -- Can be a table of adapter names, mapped to adapter configs.
       -- The adapter will then be automatically loaded with the config.
       ---@type utils.plugin.language_config.test.adapters
       adapters = {},
@@ -24,6 +22,7 @@ return {
         end,
       },
     },
+    ---@param opts { adapters:utils.plugin.language_config.test.adapters }
     config = function(_, opts)
       vim.diagnostic.config({
         virtual_text = {
@@ -68,6 +67,7 @@ return {
       for name, config in pairs(opts.adapters) do
         if config ~= false then
           local adapter = require(name)
+          -- Call the adapter's setup function
           if type(config) == "table" and not vim.tbl_isempty(config) then
             local meta = getmetatable(adapter)
             if adapter.setup then
