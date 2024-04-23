@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "lewis6991/gitsigns.nvim",
     event = "LazyFile",
@@ -42,12 +41,8 @@ return {
       end,
     },
   },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>gh"] = { name = "+hunks" },
-      },
-    },
+}, {
+  which_key = {
+    ["<leader>gh"] = "hunks",
   },
-}
+})

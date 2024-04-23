@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "nvim-neotest/neotest",
     dependencies = {
@@ -153,13 +152,8 @@ return {
       },
     }),
   },
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      defaults = {
-        ["<leader>t"] = { name = "+test" },
-      },
-    },
+}, {
+  which_key = {
+    ["<leader>t"] = "test",
   },
-}
+})

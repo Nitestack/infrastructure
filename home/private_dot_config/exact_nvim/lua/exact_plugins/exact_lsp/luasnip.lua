@@ -2,12 +2,10 @@
 return {
   "L3MON4D3/LuaSnip",
   dependencies = {
-    {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
-    },
+    "rafamadriz/friendly-snippets",
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
   },
   build = (not utils.is_win())
       and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
@@ -29,6 +27,7 @@ return {
   opts = function(_, opts)
     local ls = require("luasnip")
     local extras = require("luasnip.extras")
+    local fmt = require("luasnip.extras.fmt")
 
     opts.history = true
     opts.delete_check_events = "TextChanged"
@@ -51,8 +50,8 @@ return {
       m = extras.match,
       n = extras.nonempty,
       dl = extras.dynamic_lambda,
-      fmt = require("luasnip.extras.fmt").fmt,
-      fmta = require("luasnip.extras.fmt").fmta,
+      fmt = fmt.fmt,
+      fmta = fmt.fmta,
       conds = require("luasnip.extras.expand_conditions"),
       postfix = require("luasnip.extras.postfix").postfix,
     }

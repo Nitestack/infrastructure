@@ -1,7 +1,10 @@
 ---@type LazyPluginSpec
 return {
   "rcarriga/nvim-dap-ui",
-  dependencies = { "nvim-neotest/nvim-nio", "mfussenegger/nvim-dap" },
+  dependencies = {
+    "nvim-neotest/nvim-nio",
+    "mfussenegger/nvim-dap",
+  },
   keys = core.lazy_map({
     n = {
       ["u"] = {

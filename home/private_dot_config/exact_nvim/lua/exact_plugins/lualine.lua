@@ -57,8 +57,6 @@ return {
         },
       },
       extensions = {
-        -- don't include mason in lualine
-        -- lualine is loaded via the "VeryLazy" event and loading mason on startup is heavy
         "lazy",
         "man",
         "mason",

@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "folke/noice.nvim",
     dependencies = {
@@ -114,12 +113,8 @@ return {
       },
     },
   },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>sn"] = { name = "+noice" },
-      },
-    },
+}, {
+  which_key = {
+    ["<leader>sn"] = "noice",
   },
-}
+})

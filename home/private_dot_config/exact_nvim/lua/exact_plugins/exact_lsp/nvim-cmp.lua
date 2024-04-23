@@ -64,7 +64,7 @@ return {
       ---@type cmp.ConfigSchema
       return {
         enabled = function()
-          if vim.api.nvim_get_option_value("buftype", { buf = 0 }) ~= "prompt" then
+          if vim.bo[0].buftype ~= "prompt" then
             return true
           end
 

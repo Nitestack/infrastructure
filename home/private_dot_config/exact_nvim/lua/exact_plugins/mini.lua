@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "echasnovski/mini.files",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -149,14 +148,6 @@ return {
     },
   },
   {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["s"] = { name = "+surround" },
-      },
-    },
-  },
-  {
     "echasnovski/mini.ai",
     dependencies = { "folke/which-key.nvim" },
     event = "LazyFile",
@@ -246,4 +237,8 @@ return {
       })
     end,
   },
-}
+}, {
+  which_key = {
+    ["s"] = "surround",
+  },
+})

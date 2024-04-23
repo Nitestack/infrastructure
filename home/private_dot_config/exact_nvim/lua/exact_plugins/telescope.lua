@@ -122,15 +122,14 @@ return {
           previewer = false,
         },
       },
-      load_extensions = {
-        ["fzf"] = {},
-      },
+      extensions_list = { "fzf" },
     }
   end,
+  ---@param opts { extensions_list: string[] }
   config = function(_, opts)
     require("telescope").setup(opts)
 
-    for extension, _ in pairs(opts.load_extensions) do
+    for _, extension in ipairs(utils.remove_duplicates(opts.extensions_list)) do
       pcall(require("telescope").load_extension, extension)
     end
   end,

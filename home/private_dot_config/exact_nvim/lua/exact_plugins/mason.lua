@@ -2,23 +2,21 @@
 return {
   "williamboman/mason.nvim",
   dependencies = {
-    {
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-      cmd = {
-        "MasonToolsInstall",
-        "MasonToolsInstallSync",
-        "MasonToolsUpdate",
-        "MasonToolsUpdateSync",
-        "MasonToolsClean",
-      },
-      opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.config.plugins.mason)
-      end,
-      config = function(_, opts)
-        opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
-        require("mason-tool-installer").setup(opts)
-      end,
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    cmd = {
+      "MasonToolsInstall",
+      "MasonToolsInstallSync",
+      "MasonToolsUpdate",
+      "MasonToolsUpdateSync",
+      "MasonToolsClean",
     },
+    opts = function(_, opts)
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.config.plugins.mason)
+    end,
+    config = function(_, opts)
+      opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
+      require("mason-tool-installer").setup(opts)
+    end,
   },
   build = ":MasonUpdate",
   cmd = { "Mason", "MasonLog" },

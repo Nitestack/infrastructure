@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "ThePrimeagen/refactoring.nvim",
     dependencies = {
@@ -85,20 +84,11 @@ return {
     ---@type ConfigOpts
     opts = {},
   },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>r"] = { name = "+refactoring" },
-      },
-    },
+}, {
+  which_key = {
+    ["<leader>r"] = "refactoring",
   },
-  {
-    "nvim-telescope/telescope.nvim",
-    opts = {
-      load_extensions = {
-        ["refactoring"] = true,
-      },
-    },
+  telescope = {
+    extensions = "refactoring",
   },
-}
+})

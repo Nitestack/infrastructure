@@ -1,12 +1,9 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "numToStr/Comment.nvim",
     dependencies = {
-      {
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        opts = { enable_autocmd = false },
-      },
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      opts = { enable_autocmd = false },
     },
     keys = core.lazy_map({
       n = {
@@ -42,13 +39,9 @@ return {
       }
     end,
   },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["gc"] = { name = "+comment line" },
-        ["gb"] = { name = "+comment block" },
-      },
-    },
+}, {
+  which_key = {
+    ["gc"] = "Comment line",
+    ["gb"] = "Comment block",
   },
-}
+})

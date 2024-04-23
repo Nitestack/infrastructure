@@ -143,4 +143,49 @@ function M.get_language_spec(config)
   return spec
 end
 
+---@class utils.plugin.extension_config
+---@field telescope? utils.plugin.extension_config.telescope
+---@field which_key? utils.plugin.extension_config.which_key
+
+---@class utils.plugin.extension_config.telescope
+---@field extensions? string|string[]
+---@field opts? table
+
+---@alias utils.plugin.extension_config.which_key table<string, string>
+
+---@param plugins LazyPluginSpec[]
+---@param extensions utils.plugin.extension_config
+---@return LazyPluginSpec[]
+function M.with_extensions(plugins, extensions)
+  if extensions.telescope then
+    table.insert(plugins, {
+      "nvim-telescope/telescope.nvim",
+      opts = function(_, opts)
+        if extensions.telescope.opts then
+          opts.extensions = extensions.telescope.opts
+        end
+
+        if extensions.telescope.extensions then
+          utils.on_load("telescope.nvim", function()
+            for _, ext in ipairs(utils.str_to_tbl(extensions.telescope.extensions)) do
+              require("telescope").load_extension(ext)
+            end
+          end)
+        end
+      end,
+    })
+  end
+
+  if extensions.which_key and not vim.tbl_isempty(extensions.which_key) then
+    table.insert(plugins, {
+      "folke/which-key.nvim",
+      opts = {
+        defaults = extensions.which_key,
+      },
+    })
+  end
+
+  return plugins
+end
+
 return M

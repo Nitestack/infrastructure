@@ -1,8 +1,7 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "cbochs/grapple.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = "nvim-tree/nvim-web-devicons",
     cmd = "Grapple",
     keys = core.lazy_map({
       n = {
@@ -59,14 +58,6 @@ return {
     },
   },
   {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>j"] = { name = "+jump" },
-      },
-    },
-  },
-  {
     "WolfeCub/harpeek.nvim",
     keys = core.lazy_map({
       n = {
@@ -86,4 +77,8 @@ return {
       hide_on_empty = true,
     },
   },
-}
+}, {
+  which_key = {
+    ["<leader>j"] = "jump",
+  },
+})

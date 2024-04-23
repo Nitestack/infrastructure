@@ -1,10 +1,10 @@
 ---@type LazyPluginSpec
 return {
   "stevearc/conform.nvim",
-  event = { "BufWritePre" },
+  event = "BufWritePre",
   cmd = { "ConformInfo", "Format", "FormatEnable", "FormatDisable" },
   init = function()
-    vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    vim.o.formatexpr = "v:lua.require('conform').formatexpr()"
   end,
   keys = core.lazy_map({
     [""] = {

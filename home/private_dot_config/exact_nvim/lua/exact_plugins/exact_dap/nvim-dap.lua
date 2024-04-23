@@ -1,7 +1,6 @@
 local filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
 
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "mfussenegger/nvim-dap",
     ft = filetypes,
@@ -30,7 +29,12 @@ return {
       {
         "theHamsta/nvim-dap-virtual-text",
         dependencies = "nvim-treesitter/nvim-treesitter",
-        cmd = { "DapVirtualTextEnable", "DapVirtualTextDisable", "DapVirtualTextToggle", "DapVirtualTextForceRefresh" },
+        cmd = {
+          "DapVirtualTextEnable",
+          "DapVirtualTextDisable",
+          "DapVirtualTextToggle",
+          "DapVirtualTextForceRefresh",
+        },
         ---@type nvim_dap_virtual_text_options
         opts = {
           commented = true,
@@ -187,13 +191,8 @@ return {
       end
     end,
   },
-  {
-    "folke/which-key.nvim",
-    optional = true,
-    opts = {
-      defaults = {
-        ["<leader>d"] = { name = "Debugging" },
-      },
-    },
+}, {
+  which_key = {
+    ["<leader>d"] = "Debugging",
   },
-}
+})

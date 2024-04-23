@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "danymat/neogen",
     dependencies = "L3MON4D3/LuaSnip",
@@ -38,12 +37,8 @@ return {
       snippet_engine = "luasnip",
     },
   },
-  {
-    "folke/which-key.nvim",
-    opts = {
-      defaults = {
-        ["<leader>a"] = { name = "+annotations" },
-      },
-    },
+}, {
+  which_key = {
+    ["<leader>a"] = "annotations",
   },
-}
+})
