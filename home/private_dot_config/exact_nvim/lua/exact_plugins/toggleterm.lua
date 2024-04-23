@@ -4,6 +4,16 @@ local mapping = "<C-\\>"
 return {
   "akinsho/toggleterm.nvim",
   version = "*",
+  cmd = {
+    "TermSelect",
+    "TermExec",
+    "ToggleTerm",
+    "ToggleTermToggleAll",
+    "ToggleTermSendVisualLines",
+    "ToggleTermSendVisualSelection",
+    "ToggleTermSendCurrentLine",
+    "ToggleTermSetName",
+  },
   keys = core.lazy_map({
     [{ "n", "i", "t" }] = {
       [mapping] = {

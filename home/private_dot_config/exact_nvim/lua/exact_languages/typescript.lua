@@ -126,7 +126,7 @@ return utils.plugin.get_language_spec({
       ["typescriptreact"] = { "eslint_d", "eslint" },
     },
   },
-  plugins = {
+  plugins = utils.plugin.with_extensions({
     {
       "pmizio/typescript-tools.nvim",
       ft = filetypes,
@@ -250,21 +250,12 @@ return utils.plugin.get_language_spec({
       ft = filetypes,
       opts = {},
     },
-    {
-      "nvim-telescope/telescope.nvim",
-      opts = {
-        load_extensions = {
-          ["package_info"] = true,
-        },
-      },
+  }, {
+    which_key = {
+      ["<leader>n"] = "Node.js",
     },
-    {
-      "folke/which-key.nvim",
-      opts = {
-        defaults = {
-          ["<leader>n"] = { name = "+node.js" },
-        },
-      },
+    telescope = {
+      extensions = "package_info",
     },
-  },
+  }),
 })

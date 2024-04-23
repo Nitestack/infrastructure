@@ -115,6 +115,6 @@ return utils.plugin.with_extensions({
   },
 }, {
   which_key = {
-    ["<leader>sn"] = "noice",
+    ["<leader>sn"] = "Noice",
   },
 })

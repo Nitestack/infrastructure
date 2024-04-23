@@ -79,6 +79,6 @@ return utils.plugin.with_extensions({
   },
 }, {
   which_key = {
-    ["<leader>j"] = "jump",
+    ["<leader>j"] = "Jump",
   },
 })

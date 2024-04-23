@@ -154,6 +154,6 @@ return utils.plugin.with_extensions({
   },
 }, {
   which_key = {
-    ["<leader>t"] = "test",
+    ["<leader>t"] = "Test",
   },
 })

@@ -86,7 +86,7 @@ return utils.plugin.with_extensions({
   },
 }, {
   which_key = {
-    ["<leader>r"] = "refactoring",
+    ["<leader>r"] = "Refactoring",
   },
   telescope = {
     extensions = "refactoring",
