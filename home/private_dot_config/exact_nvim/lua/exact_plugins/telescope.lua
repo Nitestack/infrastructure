@@ -1,136 +1,133 @@
----@type LazyPluginSpec
-return {
-  "nvim-telescope/telescope.nvim",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "nvim-tree/nvim-web-devicons",
-    {
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "make",
-    },
-  },
-  cmd = "Telescope",
-  keys = core.lazy_map({
-    n = {
-      [{ "<leader>ff", "<leader><Space>" }] = {
-        utils.telescope("files"),
-        desc = "Telescope: Find Files",
-      },
-      [{ "<leader>sg", "<leader>/" }] = {
-        utils.telescope("live_grep"),
-        desc = "Telescope: Live Grep",
-      },
-      ["<leader>sG"] = {
-        utils.telescope("live_grep", {
-          additional_args = { "-." },
-        }),
-        desc = "Telescope: Live Grep (all)",
-      },
-      ["<leader>fg"] = {
-        utils.telescope("git_files", { show_untracked = true }),
-        desc = "Telescope: Git Files",
-      },
-      ["<leader>sw"] = {
-        utils.telescope("grep_string", { word_match = "-w" }),
-        desc = "Telescope: Word",
-      },
-      ["<leader>sW"] = {
-        utils.telescope("grep_string", {
-          word_match = "-w",
-          additional_args = { "-." },
-        }),
-        desc = "Telescope: Word (all)",
+return utils.plugin.with_extensions({
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
       },
     },
-    v = {
-      ["<leader>sw"] = {
-        utils.telescope("grep_string", { word_match = "-w" }),
-        desc = "Telescope: Word Selection",
+    cmd = "Telescope",
+    keys = core.lazy_map({
+      n = {
+        [{ "<leader>ff", "<leader><Space>" }] = {
+          utils.telescope("files"),
+          desc = "Telescope: Find Files",
+        },
+        [{ "<leader>sg", "<leader>/" }] = {
+          utils.telescope("live_grep"),
+          desc = "Telescope: Live Grep",
+        },
+        ["<leader>sG"] = {
+          utils.telescope("live_grep", {
+            additional_args = { "-." },
+          }),
+          desc = "Telescope: Live Grep (all)",
+        },
+        ["<leader>fg"] = {
+          utils.telescope("git_files", { show_untracked = true }),
+          desc = "Telescope: Git Files",
+        },
+        ["<leader>sw"] = {
+          utils.telescope("grep_string", { word_match = "-w" }),
+          desc = "Telescope: Word",
+        },
+        ["<leader>sW"] = {
+          utils.telescope("grep_string", {
+            word_match = "-w",
+            additional_args = { "-." },
+          }),
+          desc = "Telescope: Word (all)",
+        },
       },
-      ["<leader>sW"] = {
-        utils.telescope("grep_string", {
-          word_match = "-w",
-          additional_args = { "-." },
-        }),
-        desc = "Telescope: Word Selection (all)",
+      v = {
+        ["<leader>sw"] = {
+          utils.telescope("grep_string", { word_match = "-w" }),
+          desc = "Telescope: Word Selection",
+        },
+        ["<leader>sW"] = {
+          utils.telescope("grep_string", {
+            word_match = "-w",
+            additional_args = { "-." },
+          }),
+          desc = "Telescope: Word Selection (all)",
+        },
       },
-    },
-  }),
-  opts = function()
-    local actions = require("telescope.actions")
-    return {
-      defaults = {
-        prompt_prefix = core.icons.ui.Telescope .. " ",
-        selection_caret = core.icons.ui.ChevronShortRight .. " ",
-        sorting_strategy = "ascending",
-        get_selection_window = function()
-          local wins = vim.api.nvim_list_wins()
-          table.insert(wins, 1, vim.api.nvim_get_current_win())
-          for _, win in ipairs(wins) do
-            local buf = vim.api.nvim_win_get_buf(win)
-            if vim.bo[buf].buftype == "" then
-              return win
+    }),
+    opts = function()
+      local actions = require("telescope.actions")
+      return {
+        defaults = {
+          prompt_prefix = core.icons.ui.Telescope .. " ",
+          selection_caret = core.icons.ui.ChevronShortRight .. " ",
+          sorting_strategy = "ascending",
+          get_selection_window = function()
+            local wins = vim.api.nvim_list_wins()
+            table.insert(wins, 1, vim.api.nvim_get_current_win())
+            for _, win in ipairs(wins) do
+              local buf = vim.api.nvim_win_get_buf(win)
+              if vim.bo[buf].buftype == "" then
+                return win
+              end
             end
-          end
-          return 0
-        end,
-        layout_config = {
-          horizontal = {
-            prompt_position = "top",
-            preview_width = 0.5,
+            return 0
+          end,
+          layout_config = {
+            horizontal = {
+              prompt_position = "top",
+              preview_width = 0.5,
+            },
+            vertical = {
+              mirror = false,
+            },
+            width = core.config.ui.width,
+            height = core.config.ui.height,
+            preview_cutoff = 120,
           },
-          vertical = {
-            mirror = false,
+          path_display = { "truncate", "filename_first" },
+          file_ignore_patterns = { "node_modules", ".git", ".next", "dist", "build", "target" },
+          mappings = {
+            i = {
+              ["<ESC>"] = actions.close,
+              ["<C-t>"] = require("trouble.sources.telescope").open,
+              ["<M-t>"] = require("trouble.sources.telescope").open,
+              ["<C-f>"] = actions.preview_scrolling_down,
+              ["<C-b>"] = actions.preview_scrolling_up,
+            },
+            n = {
+              ["q"] = actions.close,
+              ["<C-t"] = require("trouble.sources.telescope").open,
+            },
           },
-          width = core.config.ui.width,
-          height = core.config.ui.height,
-          preview_cutoff = 120,
-        },
-        path_display = { "truncate", "filename_first" },
-        file_ignore_patterns = { "node_modules", ".git", ".next", "dist", "build", "target" },
-        mappings = {
-          i = {
-            ["<ESC>"] = actions.close,
-            ["<C-t>"] = require("trouble.sources.telescope").open,
-            ["<C-f>"] = actions.preview_scrolling_down,
-            ["<C-b>"] = actions.preview_scrolling_up,
-          },
-          n = {
-            ["q"] = actions.close,
-            ["<C-t"] = require("trouble.sources.telescope").open,
+          -- Include hidden files, excluding .git
+          vimgrep_arguments = {
+            "rg",
+            "-L",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
           },
         },
-        -- Include hidden files, excluding .git
-        vimgrep_arguments = {
-          "rg",
-          "-L",
-          "--color=never",
-          "--no-heading",
-          "--with-filename",
-          "--line-number",
-          "--column",
-          "--smart-case",
+        pickers = {
+          find_files = {
+            theme = "dropdown",
+            previewer = false,
+          },
+          git_files = {
+            theme = "dropdown",
+            previewer = false,
+          },
         },
-      },
-      pickers = {
-        find_files = {
-          theme = "dropdown",
-          previewer = false,
-        },
-        git_files = {
-          theme = "dropdown",
-          previewer = false,
-        },
-      },
-      extensions_list = { "fzf" },
-    }
-  end,
-  ---@param opts { extensions_list: string[] }
-  config = function(_, opts)
-    require("telescope").setup(opts)
-
-    for _, extension in ipairs(utils.remove_duplicates(opts.extensions_list)) do
-      pcall(require("telescope").load_extension, extension)
-    end
-  end,
-}
+      }
+    end,
+  },
+}, {
+  telescope = {
+    extensions = "fzf",
+  },
+})
