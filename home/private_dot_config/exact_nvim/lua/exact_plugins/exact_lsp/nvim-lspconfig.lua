@@ -7,11 +7,15 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     {
       "folke/neoconf.nvim",
-      dependencies = { "neovim/nvim-lspconfig" },
+      dependencies = "neovim/nvim-lspconfig",
       cmd = "Neoconf",
     },
     {
       "folke/neodev.nvim",
+      opts = {},
+    },
+    {
+      "artemave/workspace-diagnostics.nvim",
       opts = {},
     },
   },
@@ -82,6 +86,7 @@ return {
     require("mason-lspconfig").setup({
       handlers = {
         function(server)
+          ---@type _.lspconfig.options
           local server_opts = vim.tbl_deep_extend("force", {
             capabilities = vim.deepcopy(capabilities),
           }, opts.servers[server] or {})
@@ -95,6 +100,19 @@ return {
               return
             end
           end
+
+          local on_attach = server_opts.on_attach
+
+          server_opts.on_attach = function(client, bufnr)
+            -- Workspace diagnostics
+            require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+
+            -- If there is an existing `on_attach` function, call it
+            if on_attach then
+              on_attach(client, bufnr)
+            end
+          end
+
           require("lspconfig")[server].setup(server_opts)
         end,
       },
