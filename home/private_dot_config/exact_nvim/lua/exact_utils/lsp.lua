@@ -49,7 +49,7 @@ end
 --- NOTE: This mutates mappings!
 function M.remove_unsupported_methods(bufnr, mappings)
   for _, mode_mappings in
-    pairs(mappings --[[@as table<string|string[], table<string|string, utils.mappings.mapping>>>>]])
+    pairs(mappings --[[@as table<string|string[], table<string|string[], utils.mappings.mapping>>>>]])
   do
     for mapping, mapping_info in pairs(mode_mappings) do
       if mapping_info.has and not client_supports_method(mapping_info.has, bufnr) then

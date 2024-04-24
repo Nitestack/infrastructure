@@ -4,7 +4,7 @@
 
 ---@class core.settings
 ---@field options vim.opt
----@field globals table
+---@field globals table<string, any>|vim.var_accessor
 ---@field disabled_providers string[]
 ---@field run fun()
 

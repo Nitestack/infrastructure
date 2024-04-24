@@ -41,7 +41,7 @@ function M.on_load(name, fn)
 end
 
 ---Load options, mappings, plugins for a filetype
----@param opts { options?: vim.opt, config?: fun(), mappings?: utils.mappings.mappings_spec, mapping_opts?: utils.mappings.mapping_opts }
+---@param opts { options?: vim.wo, config?: fun(), mappings?: utils.mappings.mappings_spec, mapping_opts?: utils.mappings.mapping_opts }
 function M.ft_plugin(opts)
   if opts.options then
     for k, v in pairs(opts.options) do
