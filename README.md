@@ -4,6 +4,24 @@ This repo contains my dotfiles. To manage my dotfiles across different devices a
 
 > It is currently aimed for Windows, Ubuntu and Arch Linux, as they are the most common platforms I use.
 
+## Features
+
+The major features of this repository are:
+
+- CLI tailored to this dotfiles repository (cross-platform)
+- Neovim Configuration (cross-platform)
+- WezTerm Configuration (cross-platform)
+- VSCode Configuration (cross-platform)
+- Scripts for additional features run on a freshly installed system (cross-platform)
+
+Some of the additional features are:
+
+- tmux Configuration (UNIX)
+- Git Configuration (cross-platform)
+- Lazygit Configuration (cross-platform)
+- PowerShell Profile (Windows) and Bash/ZSH Profile (UNIX)
+- WSL Configuration (Windows)
+
 ## Getting started
 
 First you need to install the `dotfiles` CLI. Simply run the following command in your terminal:
@@ -71,6 +89,8 @@ Now you can run `dotfiles download` and `dotfiles install` to download and insta
 > :bulb: **The -h flag works on Windows and UNIX!**
 
 ## Documentation
+
+### CLI
 
 The UNIX CLI version of `dotfiles` was created with [`Bashly`](https://bashly.dannyb.co).
 The Windows CLI version of `dotfiles` was created with pure PowerShell.
