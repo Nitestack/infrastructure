@@ -177,7 +177,7 @@ M.auto_cmds = {
       group = "disable_diagnostics",
       pattern = "*/node_modules/*",
       callback = function()
-        vim.diagnostic.disable(0)
+        vim.diagnostic.enable(false, { bufnr = 0 })
       end,
     },
   },

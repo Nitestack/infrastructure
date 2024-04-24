@@ -221,6 +221,7 @@ return utils.plugin.with_extensions({
       }
       local a = vim.deepcopy(i)
       for k, v in pairs(a) do
+        ---@diagnostic disable-next-line: param-type-mismatch
         a[k] = v:gsub(" including.*", "")
       end
 

@@ -5,7 +5,7 @@ return utils.plugin.get_language_spec({
   plugins = {
     {
       "neovim/nvim-lspconfig",
-      ---@param opts PluginLspOpts
+      ---@param opts utils.plugin.language_config.lsp
       opts = function(_, opts)
         opts.servers = opts.servers or {}
 

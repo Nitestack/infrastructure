@@ -58,7 +58,9 @@ return utils.plugin.with_extensions({
               end
             end
           end)
+          ---@diagnostic disable-next-line: redundant-return-value
           return {}
+          ---@diagnostic disable-next-line: missing-return
         end
       end
 
