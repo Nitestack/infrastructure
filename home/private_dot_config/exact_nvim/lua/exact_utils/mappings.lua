@@ -57,7 +57,7 @@ function M.map(mappings, mapping_opts)
   end
 
   for mode, mode_mappings in
-    pairs(mappings --[[@as table<string|string[], utils.mappings.mappings_spec.mappings>]])
+    pairs(vim.deepcopy(mappings --[[@as table<string|string[], utils.mappings.mappings_spec.mappings>]]))
   do
     for mapping, mapping_info in pairs(mode_mappings) do
       local rhs = vim.deepcopy(mapping_info)[1]

@@ -163,7 +163,7 @@ return {
             -- Mappings
             ---@type utils.mappings.mappings_spec
             local mappings = type(core.mappings.lsp_mappings) == "function" and core.mappings.lsp_mappings(args)
-              or vim.deepcopy(core.mappings.lsp_mappings --[[@as core.mappings.lsp_mappings]])
+              or core.mappings.lsp_mappings --[[@as core.mappings.lsp_mappings]]
 
             utils.lsp.remove_unsupported_methods(buffer, mappings)
 
