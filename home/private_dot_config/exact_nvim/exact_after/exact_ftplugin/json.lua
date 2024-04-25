@@ -2,9 +2,6 @@
 --  JSON
 --------------------------------------------------------------------------------
 utils.ft_plugin({
-  options = {
-    spell = false,
-  },
   mappings = {
     n = {
       -- Insert comma at end of line, if it doesn't exist
