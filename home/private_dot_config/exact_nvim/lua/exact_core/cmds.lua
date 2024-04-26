@@ -23,10 +23,7 @@ M.auto_cmds = {
       pattern = "term://*",
       callback = function(args)
         if vim.bo.filetype == "" or vim.bo.filetype == "toggleterm" then
-          core.map({
-            t = type(core.mappings.terminal_mappings) == "function" and core.mappings.terminal_mappings(args)
-              or core.mappings.terminal_mappings --[[@as core.mappings.terminal_mappings]],
-          }, { silent = false, buffer = args.buf })
+          core.map({ t = core.mappings.terminal_mappings }, { silent = false, buffer = args.buf })
         end
       end,
     },

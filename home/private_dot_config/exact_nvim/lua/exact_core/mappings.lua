@@ -7,8 +7,8 @@
 ---@class core.mappings
 ---@field mappings utils.mappings.mappings_spec
 ---@field mapping_opts utils.mappings.mapping_opts
----@field lsp_mappings core.mappings.lsp_mappings|fun(args):core.mappings.lsp_mappings
----@field terminal_mappings core.mappings.terminal_mappings|fun(args):core.mappings.terminal_mappings
+---@field lsp_mappings core.mappings.lsp_mappings
+---@field terminal_mappings core.mappings.terminal_mappings
 
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 
