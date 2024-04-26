@@ -72,7 +72,7 @@ return {
 
     vim.diagnostic.config(diagnostic_opts)
 
-    -- Setup language servers
+    -- Setup capabilities
     local capabilities = utils.lsp.get_capabilities({
       workspace = {
         -- PERF: didChangeWatchedFiles is too slow.
@@ -81,6 +81,7 @@ return {
       },
     })
 
+    -- Setup additional settings for handlers
     utils.lsp.set_handlers()
 
     require("mason-lspconfig").setup({
@@ -125,54 +126,18 @@ return {
         {
           group = "lspconfig",
           callback = function(args)
-            local buffer = args.buf
+            local buffer = args.buf --[[@as integer]]
             local client = vim.lsp.get_client_by_id(args.data.client_id)
 
             if client then
-              -- Inlay hints
               if client.supports_method("textDocument/inlayHint") then
                 utils.toggle.inlay_hints(buffer, false) -- `false` - disabled by default
               end
-
-              -- Code lens
-              if vim.lsp.codelens and client.supports_method("textDocument/codeLens") then
-                vim.lsp.codelens.refresh({ bufnr = buffer })
-                core.auto_cmds({
-                  {
-                    { "BufEnter", "CursorHold", "InsertLeave" },
-                    {
-                      buffer = buffer,
-                      callback = function(a)
-                        vim.lsp.codelens.refresh({ bufnr = a.buf })
-                      end,
-                    },
-                  },
-                })
-              end
-
-              -- Semantic tokens
-              if
-                vim.lsp.semantic_tokens
-                and client.supports_method("textDocument/semanticTokens/full")
-                and vim.b[buffer].semantic_tokens == nil
-              then
-                vim.b[buffer].semantic_tokens = true
-              end
+              utils.lsp.set_code_lens(client, buffer)
+              utils.lsp.set_semantic_tokens(client, buffer)
+              utils.lsp.set_document_highlight(client, buffer)
             end
-
-            -- Mappings
-            ---@type utils.mappings.mappings_spec
-            local mappings = type(core.mappings.lsp_mappings) == "function" and core.mappings.lsp_mappings(args)
-              or core.mappings.lsp_mappings --[[@as core.mappings.lsp_mappings]]
-
-            utils.lsp.remove_unsupported_methods(buffer, mappings)
-
-            core.map(mappings, {
-              buffer = buffer,
-              silent = true,
-            })
-
-            utils.lsp.set_document_highlight(args)
+            utils.lsp.attach_mappings(core.mappings.lsp_mappings, buffer)
           end,
         },
       },

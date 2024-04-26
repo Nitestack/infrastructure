@@ -4,6 +4,18 @@
 ---@class utils.lsp
 local M = {}
 
+---@param method string
+local function client_supports_method(method, buffer)
+  method = method:find("/") and method or "textDocument/" .. method
+  local clients = vim.lsp.get_clients({ bufnr = buffer })
+  for _, client in ipairs(clients) do
+    if client.supports_method(method) then
+      return true
+    end
+  end
+  return false
+end
+
 ---@param capabilities? table
 function M.get_capabilities(capabilities)
   local cmp_nvim_lsp_exists, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
@@ -30,51 +42,50 @@ function M.set_handlers()
   end
 end
 
----@param method string
-local function client_supports_method(method, buffer)
-  method = method:find("/") and method or "textDocument/" .. method
-  local clients = vim.lsp.get_clients({ bufnr = buffer })
-  for _, client in ipairs(clients) do
-    if client.supports_method(method) then
-      return true
-    end
-  end
-  return false
-end
-
----@param mappings utils.mappings.mappings_spec
----
---- If client doesn't support method, remove it from mappings
----
---- NOTE: This mutates mappings!
-function M.remove_unsupported_methods(bufnr, mappings)
-  for _, mode_mappings in
-    pairs(mappings --[[@as table<string|string[], table<string|string[], utils.mappings.mapping>>>>]])
-  do
-    for mapping, mapping_info in pairs(mode_mappings) do
-      if mapping_info.has and not client_supports_method(mapping_info.has, bufnr) then
-        mode_mappings[mapping] = nil
-      else
-        mapping_info.has = nil
-      end
-    end
+---@param client vim.lsp.Client
+---@param buffer integer
+function M.set_code_lens(client, buffer)
+  if vim.lsp.codelens and client.supports_method("textDocument/codeLens") then
+    vim.lsp.codelens.refresh({ bufnr = buffer })
+    core.auto_cmds({
+      {
+        { "BufEnter", "CursorHold", "InsertLeave" },
+        {
+          buffer = buffer,
+          callback = function(a)
+            vim.lsp.codelens.refresh({ bufnr = a.buf })
+          end,
+        },
+      },
+    })
   end
 end
 
----@param args { data: { client_id: integer }, buf: integer }
----
+---@param client vim.lsp.Client
+---@param buffer integer
+function M.set_semantic_tokens(client, buffer)
+  if
+    vim.lsp.semantic_tokens
+    and client.supports_method("textDocument/semanticTokens/full")
+    and vim.b[buffer].semantic_tokens == nil
+  then
+    vim.b[buffer].semantic_tokens = true
+  end
+end
+
+---@param client vim.lsp.Client
+---@param buffer integer
 --- The following two autocommands are used to highlight references of the
 --- word under your cursor when your cursor rests there for a little while.
 --- When you move your cursor, the highlights will be cleared (the second autocommand).
-function M.set_document_highlight(args)
-  local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if client and client.server_capabilities.documentHighlightProvider then
+function M.set_document_highlight(client, buffer)
+  if client.server_capabilities.documentHighlightProvider then
     core.auto_cmds({
       {
         { "CursorHold", "CursorHoldI" },
         {
           group = "lsp_document_highlight",
-          buffer = args.buf,
+          buffer = buffer,
           callback = vim.lsp.buf.document_highlight,
         },
       },
@@ -82,12 +93,30 @@ function M.set_document_highlight(args)
         { "CursorMoved", "CursorMovedI" },
         {
           group = "lsp_document_highlight",
-          buffer = args.buf,
+          buffer = buffer,
           callback = vim.lsp.buf.clear_references,
         },
       },
     })
   end
+end
+
+---@param mappings core.mappings.lsp_mappings
+---@param buffer integer
+function M.attach_mappings(mappings, buffer)
+  for _, mode_mappings in
+    pairs(mappings --[[@as table<string|string[], table<string|string[], utils.mappings.mapping>>>>]])
+  do
+    for mapping, mapping_info in pairs(mode_mappings) do
+      if mapping_info.has and not client_supports_method(mapping_info.has, buffer) then
+        mode_mappings[mapping] = nil
+      else
+        mapping_info.has = nil
+      end
+    end
+  end
+
+  utils.mappings.map(mappings, { buffer = buffer, silent = true })
 end
 
 ---@param from string
