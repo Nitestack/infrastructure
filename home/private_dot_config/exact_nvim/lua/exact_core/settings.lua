@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 
 ---@class core.settings
----@field options vim.opt
+---@field options vim.wo
 ---@field globals table<string, any>|vim.var_accessor
 ---@field disabled_providers string[]
 ---@field run fun()
@@ -60,7 +60,7 @@ M.options = {
   undolevels = 10000, -- Maximum number of changes that can be undone
 
   -- GUI settings
-  guifont = "SF Mono,Symbols Nerd Font:h18", -- Set font for graphical Neovim apps
+  guifont = "SF Mono,Symbols Nerd Font:h14", -- Set font for graphical Neovim apps
   linespace = 6, -- Set a line height of `1.2`
 
   -- Indentation
@@ -98,15 +98,15 @@ M.options = {
 
   -- File Management
   wildignore = { -- Patterns to ignore during file navigation
-    "**/node_modules/**",
-    "**/.git/**",
-    "**/dist/**",
-    "**/build/**",
-    "**/.next/**",
-    "**/.cache/**",
-    "**/coverage/**",
-    "**/target/**",
-    "**/dist/**",
+    -- "**/node_modules/**",
+    -- "**/.git/**",
+    -- "**/dist/**",
+    -- "**/build/**",
+    -- "**/.next/**",
+    -- "**/.cache/**",
+    -- "**/coverage/**",
+    -- "**/target/**",
+    -- "**/dist/**",
   },
 
   -- Wrap

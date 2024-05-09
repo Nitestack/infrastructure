@@ -125,19 +125,20 @@ return {
         "LspAttach",
         {
           group = "lspconfig",
+          ---@param args { buf: integer, data: { client_id: integer } }
           callback = function(args)
-            local buffer = args.buf --[[@as integer]]
             local client = vim.lsp.get_client_by_id(args.data.client_id)
 
             if client then
               if client.supports_method("textDocument/inlayHint") then
-                utils.toggle.inlay_hints(buffer, false) -- `false` - disabled by default
+                utils.toggle.inlay_hints(args.buf, false) -- `false` - disabled by default
               end
-              utils.lsp.set_code_lens(client, buffer)
-              utils.lsp.set_semantic_tokens(client, buffer)
-              utils.lsp.set_document_highlight(client, buffer)
+              utils.lsp.set_code_lens(client, args.buf)
+              utils.lsp.set_semantic_tokens(client, args.buf)
+              utils.lsp.set_document_highlight(client, args.buf)
             end
-            utils.lsp.attach_mappings(core.mappings.lsp_mappings, buffer)
+
+            utils.lsp.attach_mappings(core.mappings.lsp_mappings, args.buf)
           end,
         },
       },
