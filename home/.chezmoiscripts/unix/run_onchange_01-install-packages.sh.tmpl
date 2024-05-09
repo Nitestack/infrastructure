@@ -19,6 +19,13 @@ sudo apt update -y && sudo apt upgrade -y
 apt_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
+# {{ else if eq .chezmoi.os "darwin" }}
+brew update && brew upgrade
+
+# {{ range $_, $package_name := concat .dependencies.macos.brew .dependencies.unix.packages .dependencies.all.packages }}
+brew_ensure_installed "{{- $package_name -}}"
+# {{ end }}
+
 # {{ end }}
 
 # NVM
@@ -46,6 +53,20 @@ fi
 
 # {{ else if eq .osid "linux-ubuntu" }}
 # {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.unix.custom .dependencies.all.custom }}
+# {{ range $cmd_name, $to_install := $pkg }}
+if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
+	log_info "{{- $cmd_name | squote }} is already installed. Skipping."
+else
+	log_task "Installing {{ $cmd_name | squote -}}"
+	# {{ range $_, $line := $to_install }}
+	# {{ "\n" }} command_exec {{ $line }}
+	# {{ end }}
+fi
+# {{ end }}
+# {{ end }}
+
+# {{ else if eq .chezmoi.os "darwin" }}
+# {{ range $_, $pkg := concat .dependencies.macos.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
 	log_info "{{- $cmd_name | squote }} is already installed. Skipping."

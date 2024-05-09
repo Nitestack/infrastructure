@@ -78,3 +78,16 @@ function pacman_ensure_installed() {
 	log_task "pacman: Installing package '${package_name}'"
 	command_exec sudo pacman -S --needed --noconfirm "${package_name}"
 }
+
+function brew_ensure_installed() {
+	local package_name="$1"
+	shift
+
+	if brew list "${package_name}" &>/dev/null; then
+		log_info "brew: Package '${package_name}' is already installed. Skipping."
+		return
+	fi
+
+	log_task "brew: Installing package '${package_name}'"
+	command_exec brew install "${package_name}"
+}

@@ -1,0 +1,17 @@
+---
+dependencies:
+  macos:
+    brew:
+      - "fzf"
+      - "jesseduffield/lazygit/lazygit"
+      - "ruby"
+      - "bat"
+      - "fd"
+      - "zoxide"
+    custom:
+      - rustup:
+          - "brew install rustup-init"
+          - "rustup update"
+          - "rustup default stable"
+      - bob:
+          - "cargo install bob-nvim"

@@ -2,7 +2,7 @@
 
 This repo contains my dotfiles. To manage my dotfiles across different devices and operating systems, I use [`chezmoi`](https://chezmoi.io/).
 
-> It is currently aimed for Windows, Ubuntu and Arch Linux, as they are the most common platforms I use.
+> It is currently aimed for Windows, Ubuntu, Arch Linux (partial support for macOS) as they are the most common platforms I use.
 
 ## Features
 

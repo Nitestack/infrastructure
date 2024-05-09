@@ -22,6 +22,13 @@ Documents
 .hushlogin
 {{ end }}
 
+# macOS
+{{ if ne .chezmoi.os "darwin" }}
+.chezmoiscripts/mac/**
+
+Library
+{{ end }}
+
 # Unix
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/unix/**
