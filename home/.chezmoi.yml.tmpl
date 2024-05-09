@@ -9,7 +9,7 @@
 {{- end -}}
 {{- if eq $hosttype "personal" -}}
   {{- if eq .chezmoi.os "windows" -}}
-    {{- $project_base_path = "Documents/Programmierung/projects" -}}
+    {{- $project_base_path = "Programmierung/projects" -}}
   {{- else if eq .chezmoi.os "linux" -}}
     {{- $project_base_path = "projects" -}}
   {{- end -}}
@@ -36,7 +36,7 @@ data:
 {{- end }}
 sourceDir: {{ .chezmoi.workingTree | quote }}
 diff:
-  exclude: 
+  exclude:
     - "scripts"
     - "externals"
 merge:
