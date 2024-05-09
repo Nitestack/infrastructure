@@ -1,3 +1,4 @@
+# Windows
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
 
@@ -5,25 +6,35 @@ AppData
 Documents
 
 .wslconfig
-{{ else }}
-.chezmoiscripts/unix/**
+{{ end }}
+
+# Linux
+{{ if ne .chezmoi.os "linux" }}
+.chezmoiscripts/linux/**
 
 .config/Code
 .config/lazygit
 .config/project-manager
+
+.bash_profile
+.bashrc
+
+.hushlogin
+{{ end }}
+
+# Unix
+{{ if eq .chezmoi.os "windows" }}
+.chezmoiscripts/unix/**
+
 .config/spaceship.zsh
 .config/tmux
 
 .oh-my-zsh
 
-.bash_profile
-.bashrc
 .bash_aliases
 
 .zshrc
 .zprofile
-
-.hushlogin
 {{ end }}
 
 .config/nvim/templates
