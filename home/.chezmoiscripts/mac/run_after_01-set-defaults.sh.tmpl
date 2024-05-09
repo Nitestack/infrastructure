@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+log_task "Setting preferences"
+
+# https://macos-defaults.com
+
+defaults write com.apple.dock "autohide" -bool "true"     # Auto-hide the dock
+defaults write com.apple.dock "autohide-delay" -float "0" # Change dock opening delay
+killall Dock                                              # Refresh the dock
+
+defaults write com.apple.screencapture "location" -string "~/Pictures/Screenshots" && killall SystemUIServer # Set default screenshot location
+
+defaults write NSGlobalDomain "AppleShowAllExtensions" -bool "true" # Show all file extensions in the Finder
+defaults write com.apple.finder "AppleShowAllFiles" -bool "true"    # Show hidden files in the Finder
+defaults write com.apple.finder "ShowPathbar" -bool "true"          # Show path bar in the bottom of the Finder windows
+defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"  # Keep folders on top when sorting by name
+killall Finder                                                      # Refresh the Finder
+
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true # Change behavior of function keys
+
+log_success "Preferences set"
