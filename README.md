@@ -1,4 +1,4 @@
-# Nitestack/dotfiles
+# dotfiles
 
 This repo contains my dotfiles. To manage my dotfiles across different devices and operating systems, I use [`chezmoi`](https://chezmoi.io/).
 
