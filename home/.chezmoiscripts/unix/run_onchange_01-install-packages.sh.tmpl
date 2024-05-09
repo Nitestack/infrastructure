@@ -22,8 +22,12 @@ apt_ensure_installed "{{- $package_name -}}"
 # {{ else if eq .chezmoi.os "darwin" }}
 brew update && brew upgrade
 
-# {{ range $_, $package_name := concat .dependencies.macos.brew .dependencies.unix.packages .dependencies.all.packages }}
-brew_ensure_installed "{{- $package_name -}}"
+# {{ range $_, $formula := concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages }}
+brew_ensure_formula_installed "{{- $formula -}}"
+# {{ end }}
+
+# {{ range $_, $cask := concat .dependencies.macos.brew.casks }}
+brew_ensure_cask_installed "{{- $cask -}}"
 # {{ end }}
 
 # {{ end }}

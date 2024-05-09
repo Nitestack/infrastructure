@@ -79,15 +79,28 @@ function pacman_ensure_installed() {
 	command_exec sudo pacman -S --needed --noconfirm "${package_name}"
 }
 
-function brew_ensure_installed() {
-	local package_name="$1"
+function brew_ensure_formula_installed() {
+	local formula="$1"
 	shift
 
-	if brew list "${package_name}" &>/dev/null; then
-		log_info "brew: Package '${package_name}' is already installed. Skipping."
+	if brew list "${formula}" &>/dev/null; then
+		log_info "brew: Formula '${formula}' is already installed. Skipping."
 		return
 	fi
 
-	log_task "brew: Installing package '${package_name}'"
-	command_exec brew install "${package_name}"
+	log_task "brew: Installing formula '${formula}'"
+	command_exec brew install "${formula}"
+}
+
+function brew_ensure_cask_installed() {
+	local cask="$1"
+	shift
+
+	if brew list --cask "${cask}" &>/dev/null; then
+		log_info "brew: Cask '${cask}' is already installed. Skipping."
+		return
+	fi
+
+	log_task "brew: Installing cask '${cask}'"
+	command_exec brew install --cask "${cask}"
 }

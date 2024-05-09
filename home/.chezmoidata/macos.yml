@@ -2,12 +2,14 @@
 dependencies:
   macos:
     brew:
-      - "fzf"
-      - "jesseduffield/lazygit/lazygit"
-      - "ruby"
-      - "bat"
-      - "fd"
-      - "zoxide"
+      formulae:
+        - "fzf"
+        - "jesseduffield/lazygit/lazygit"
+        - "ruby"
+        - "bat"
+        - "fd"
+        - "zoxide"
+      casks: []
     custom:
       - rustup:
           - "brew install rustup-init"
