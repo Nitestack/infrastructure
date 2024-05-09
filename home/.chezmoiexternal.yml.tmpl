@@ -1,4 +1,4 @@
-{{ if ne .chezmoi.os "windows" -}}
+# {{ if ne .chezmoi.os "windows" -}}
 ".oh-my-zsh":
   type: archive
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -40,4 +40,4 @@
   stripComponents: 1
   exact: true
   refreshPeriod: "168h"
-{{ end }}
+# {{ end }}
