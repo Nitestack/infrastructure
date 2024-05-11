@@ -22,6 +22,7 @@ dependencies:
     packages:
       - "curl"
       - "tmux"
+      - "exa"
     custom:
       - bashly:
           - "sudo gem install bashly"
