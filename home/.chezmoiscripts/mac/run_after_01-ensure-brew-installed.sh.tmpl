@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+log_task "Checking if brew is installed"
+
+if command -v brew &> /dev/null then
+  log_info "brew is already installed"
+fi
+
+log_task "Installing brew"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+log_success "brew is installed"
