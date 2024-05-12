@@ -40,3 +40,4 @@ dependencies:
           - "rustup default stable"
     manual:
       - "Dropover"
+      - "TinkerTool"

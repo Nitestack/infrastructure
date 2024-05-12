@@ -21,8 +21,7 @@ dependencies:
           - "bob use nightly"
       - pnpm:
           - "npm install -g pnpm"
-    manual:
-      - "PDFgear"
+    manual: []
   unix:
     packages:
       - "curl"
