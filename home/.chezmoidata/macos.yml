@@ -21,6 +21,7 @@ dependencies:
         - "command-x"
         - "discord"
         - "figma"
+        - "iina"
         - "latest"
         - "maccy"
         - "mission-control-plus"
