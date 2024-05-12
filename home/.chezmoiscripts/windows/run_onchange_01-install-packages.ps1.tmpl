@@ -48,3 +48,16 @@ if ($pnpmList -match "{{- $package_name -}}")
   Invoke-CommandExpression 'pnpm add -g "{{- $package_name -}}"'
 }
 # {{ end }}
+
+# Global cargo crates
+$cargoList = cargo install --list
+# {{ range $_, $package_name := .dependencies.all.cargo }}
+if ($cargoList -match "{{- $package_name -}}")
+{
+  Write-LogInfo "cargo: crate {{ $package_name | squote }} is already installed. Skipping."
+} else
+{
+  Write-LogTask "Installing crate {{ $package_name | squote }} via cargo"
+  Invoke-CommandExpression 'cargo install "{{- $package_name -}}"'
+}
+# {{ end }}
