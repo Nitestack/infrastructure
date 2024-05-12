@@ -12,9 +12,25 @@ dependencies:
       - "make"
     winget:
       - "ajeetdsouza.zoxide"
+
+      - "Google.AndroidStudio"
+      - "TheBrowserCompany.Arc"
+      - "Bitwarden.Bitwarden"
+      - "Discord.Discord"
+      - "File-New-Project.EarTrumpet"
+      - "Figma.Figma"
+      - "Notion.Notion"
+      - "PDFgear.PDFgear"
+      - "Microsoft.PowerToys"
+      - "Spotify.Spotify"
+      - "Microsoft.VisualStudioCode"
+      - "wez.wezterm"
+      - "WhatsApp.WhatsApp"
     custom:
       - rustup:
           - "choco install -y rustup.install"
           - "rustup update"
           - "rustup default stable"
-    manual: []
+    manual:
+      - "AnkerWork"
+      - "Notion Calendar"
