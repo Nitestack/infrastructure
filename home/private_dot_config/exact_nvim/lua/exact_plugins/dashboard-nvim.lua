@@ -1,7 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "nvimdev/dashboard-nvim",
-  event = "VimEnter",
+  lazy = false,
   opts = function(_, opts)
     local logo = string.rep("\n", 8) .. core.config.ui.logo .. "\n\n"
     opts.theme = "doom"
