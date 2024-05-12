@@ -1,0 +1,7 @@
+# {{ template "pwsh-library.ps1" . }}
+
+Write-Task "You have to manually install the following packages:"
+
+# {{ range $_, $package_name := concat .dependencies.windows.manual .dependencies.all.manual }}
+Write-Output "{{- $package_name -}}"
+# {{ end }}

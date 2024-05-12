@@ -18,6 +18,8 @@ dependencies:
           - "bob use nightly"
       - pnpm:
           - "npm install -g pnpm"
+    manual:
+      - "PDFgear"
   unix:
     packages:
       - "curl"
@@ -28,3 +30,4 @@ dependencies:
           - "sudo gem install bashly"
       - node:
           - "nvm install --lts"
+    manual: []

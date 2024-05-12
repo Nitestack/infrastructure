@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+log_task "You have to manually install the following packages:"
+
+# {{ if eq .chezmoi.os "darwin" }}
+# {{ range $_, $package_name := concat .dependencies.macos.manual .dependencies.unix.manual .dependencies.all.manual }}
+echo "{{- $package_name -}}"
+# {{ end }}
+# {{ end }}

@@ -19,3 +19,4 @@ dependencies:
           - "rustup default stable"
       - bob:
           - "cargo install bob-nvim"
+    manual: []
