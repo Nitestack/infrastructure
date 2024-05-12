@@ -31,5 +31,3 @@ dependencies:
           - '[ -L "$HOME/.local/bin/fd" ] && log_info "Symbolic link for fd already exists. Skipping." || ln -s $(which fdfind) ~/.local/bin/fd'
       - zoxide:
           - "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
-      - bob:
-          - "cargo install bob-nvim"

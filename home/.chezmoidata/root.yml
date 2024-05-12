@@ -11,6 +11,9 @@ dependencies:
       - "tree-sitter-cli"
       - "@nitestack/project-manager"
       - "@bitwarden/cli"
+    cargo:
+      - "bob-nvim"
+      - "nvim-switcher"
     custom:
       - nvim:
           - "bob install stable"

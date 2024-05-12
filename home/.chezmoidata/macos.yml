@@ -38,7 +38,5 @@ dependencies:
           - "brew install rustup-init"
           - "rustup update"
           - "rustup default stable"
-      - bob:
-          - "cargo install bob-nvim"
     manual:
       - "Dropover"
