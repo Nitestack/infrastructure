@@ -58,38 +58,16 @@ else
 fi
 
 # Custom installation
+# {{ $dependencies := concat .dependencies.unix.custom .dependencies.all.custom }}
 # {{ if eq .osid "linux-arch" }}
-# {{ range $_, $pkg := concat .dependencies.arch.custom .dependencies.unix.custom .dependencies.all.custom }}
-# {{ range $cmd_name, $to_install := $pkg }}
-start_loading "{{- $cmd_name -}}"
-if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	stop_loading "{{- $cmd_name -}}"
-else
-	# {{ range $_, $line := $to_install }}
-	# {{ "\n" }} command_exec {{ $line }}
-	# {{ end }}
-	stop_loading "{{- $cmd_name -}}" --is-success
-fi
-# {{ end }}
-# {{ end }}
-
+# {{ $dependencies = concat .dependencies.arch.custom $dependencies }}
 # {{ else if eq .osid "linux-ubuntu" }}
-# {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.unix.custom .dependencies.all.custom }}
-# {{ range $cmd_name, $to_install := $pkg }}
-start_loading "{{- $cmd_name -}}"
-if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	stop_loading "{{- $cmd_name -}}"
-else
-	# {{ range $_, $line := $to_install }}
-	# {{ "\n" }} command_exec {{ $line }}
-	# {{ end }}
-	stop_loading "{{- $cmd_name -}}" --is-success
-fi
-# {{ end }}
-# {{ end }}
-
+# {{ $dependencies = concat .dependencies.ubuntu.custom $dependencies }}
 # {{ else if eq .chezmoi.os "darwin" }}
-# {{ range $_, $pkg := concat .dependencies.macos.custom .dependencies.unix.custom .dependencies.all.custom }}
+# {{ $dependencies = concat .dependencies.macos.custom $dependencies }}
+# {{ end }}
+
+# {{ range $_, $pkg := $dependencies }}
 # {{ range $cmd_name, $to_install := $pkg }}
 start_loading "{{- $cmd_name -}}"
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
@@ -101,8 +79,6 @@ else
 	stop_loading "{{- $cmd_name -}}" --is-success
 fi
 # {{ end }}
-# {{ end }}
-
 # {{ end }}
 
 # Global npm packages
