@@ -21,30 +21,52 @@ function log_yellow() {
 	log_color "1;33" "$@"
 }
 
+function start_loading() {
+	local message="$1"
+	shift
+
+	printf "\033[1;33m%s\033[0m\r" "󰇘${message}" >&2
+}
+
+function stop_loading() {
+	local message="$1"
+	shift
+
+	local is_success="${2:-""}"
+
+	if [[ "${is_success}" == "--is-success" ]]; then
+		emoji=""
+	else
+		emoji=""
+	fi
+
+	echo -en "\033[0K"
+	log_green "${emoji} ${message}"
+}
+
 function log_task() {
-	log_blue " TASK:" "$@"
+	log_blue "" "$@"
 }
 function log_manual_action() {
-	log_red " MANUAL ACTION REQUIRED:" "$@"
+	log_red "" "$@"
 }
 function log_error() {
-	log_red " ERROR:" "$@"
+	log_red "" "$@"
 }
 function log_info() {
-	log_blue " INFO:" "$@"
+	log_blue "" "$@"
 }
 function log_success() {
-	log_green " SUCCESS:" "$@"
+	log_green "" "$@"
 }
 function log_warning() {
-	log_yellow " WARNING:" "$@"
+	log_yellow "" "$@"
 }
 
 function log_command() {
-	log_yellow " COMMAND:" "$@"
+	log_yellow "" "$@"
 }
 function command_exec() {
-	log_command "$@"
 	"$@" || log_error "Command failed: $*"
 }
 
@@ -57,50 +79,59 @@ function apt_ensure_installed() {
 	local package_name="$1"
 	shift
 
+	start_loading "${package_name}"
+
 	if dpkg-query -W "${package_name}" &>/dev/null; then
-		log_info "apt: Package '${package_name}' is already installed. Skipping."
+		stop_loading "${package_name}"
 		return
 	fi
 
-	log_task "apt: Installing package '${package_name}'"
 	command_exec sudo apt install -y "${package_name}"
+	stop_loading "${package_name}" --is-success
 }
 
 function pacman_ensure_installed() {
 	local package_name="$1"
 	shift
 
+	start_loading "${package_name}"
+
 	if pacman -Qi "${package_name}" &>/dev/null; then
-		log_info "pacman: Package '${package_name}' is already installed. Skipping."
+		stop_loading "${package_name}"
 		return
 	fi
 
-	log_task "pacman: Installing package '${package_name}'"
 	command_exec sudo pacman -S --needed --noconfirm "${package_name}"
+	stop_loading "${package_name}" --is-success
 }
 
 function brew_ensure_formula_installed() {
 	local formula="$1"
 	shift
 
+	start_loading "${formula}"
+
 	if brew list "${formula}" &>/dev/null; then
-		log_info "brew: Formula '${formula}' is already installed. Skipping."
+		stop_loading "${formula}"
 		return
 	fi
 
 	log_task "brew: Installing formula '${formula}'"
 	command_exec brew install "${formula}"
+	stop_loading "${formula}" --is-success
 }
 
 function brew_ensure_cask_installed() {
 	local cask="$1"
 	shift
 
+	start_loading "${cask}"
+
 	if brew list --cask "${cask}" &>/dev/null; then
-		log_info "brew: Cask '${cask}' is already installed. Skipping."
+		stop_loading "${cask}"
 		return
 	fi
 
-	log_task "brew: Installing cask '${cask}'"
 	command_exec brew install --cask "${cask}"
+	stop_loading "${cask}" --is-success
 }

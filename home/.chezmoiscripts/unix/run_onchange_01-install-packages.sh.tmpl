@@ -31,40 +31,44 @@ echo
 brew update && brew upgrade
 
 echo
-log_tasks "brew (formulae):"
+log_task "brew (formulae):"
 # {{ range $_, $formula := concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages }}
 brew_ensure_formula_installed "{{- $formula -}}"
 # {{ end }}
 
 echo
-log_tasks "brew (casks):"
+log_task "brew (casks):"
 # {{ range $_, $cask := concat .dependencies.macos.brew.casks }}
 brew_ensure_cask_installed "{{- $cask -}}"
 # {{ end }}
 
 # {{ end }}
 
-# NVM
 echo
-log_task "Custom installation:"
+log_task "Custom installation"
+
+# NVM
+start_loading "nvm"
 if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
-	log_info "'nvm' is already installed. Skipping."
+	stop_loading "nvm"
 else
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+	stop_loading "nvm" --is-success
 fi
 
 # Custom installation
 # {{ if eq .osid "linux-arch" }}
 # {{ range $_, $pkg := concat .dependencies.arch.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
+start_loading "{{- $cmd_name -}}"
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	log_info "{{- $cmd_name | squote }} is already installed. Skipping."
+	stop_loading "{{- $cmd_name -}}"
 else
-	log_task "Installing {{ $cmd_name | squote -}}"
 	# {{ range $_, $line := $to_install }}
 	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
+	stop_loading "{{- $cmd_name -}}" --is-success
 fi
 # {{ end }}
 # {{ end }}
@@ -72,13 +76,14 @@ fi
 # {{ else if eq .osid "linux-ubuntu" }}
 # {{ range $_, $pkg := concat .dependencies.ubuntu.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
+start_loading "{{- $cmd_name -}}"
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	log_info "{{- $cmd_name | squote }} is already installed. Skipping."
+	stop_loading "{{- $cmd_name -}}"
 else
-	log_task "Installing {{ $cmd_name | squote -}}"
 	# {{ range $_, $line := $to_install }}
 	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
+	stop_loading "{{- $cmd_name -}}" --is-success
 fi
 # {{ end }}
 # {{ end }}
@@ -86,13 +91,14 @@ fi
 # {{ else if eq .chezmoi.os "darwin" }}
 # {{ range $_, $pkg := concat .dependencies.macos.custom .dependencies.unix.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
+start_loading "{{- $cmd_name -}}"
 if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	log_info "{{- $cmd_name | squote }} is already installed. Skipping."
+	stop_loading "{{- $cmd_name -}}"
 else
-	log_task "Installing {{ $cmd_name | squote -}}"
 	# {{ range $_, $line := $to_install }}
 	# {{ "\n" }} command_exec {{ $line }}
 	# {{ end }}
+	stop_loading "{{- $cmd_name -}}" --is-success
 fi
 # {{ end }}
 # {{ end }}
@@ -103,11 +109,12 @@ fi
 echo
 log_task "npm:"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
+start_loading "{{- $package_name -}}"
 if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
-	log_info "pnpm: package {{ $package_name | squote }} is already installed. Skipping."
+	stop_loading "{{- $package_name -}}"
 else
-	log_task "Installing package {{ $package_name | squote }} via pnpm"
 	command_exec pnpm add -g "{{- $package_name -}}"
+	stop_loading "{{- $package_name -}}" --is-success
 fi
 # {{ end }}
 
@@ -115,10 +122,12 @@ fi
 echo
 log_task "cargo:"
 # {{ range $_, $package_name := .dependencies.all.cargo }}
+start_loading "{{- $package_name -}}"
 if cargo install --list | grep -q "{{- $package_name -}}"; then
-	log_info "cargo: crate {{ $package_name | squote }} is already installed. Skipping."
+	stop_loading "{{- $package_name -}}"
 else
-	log_task "Installing crate {{ $package_name | squote }} via cargo"
 	command_exec cargo install "{{- $package_name -}}"
+	stop_loading "{{- $package_name -}}" --is-success
 fi
 # {{ end }}
+echo

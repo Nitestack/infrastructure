@@ -2,22 +2,13 @@
 
 function Start-Loading
 {
-  param([string]$message, [string]$colorCode)
-  if ([string]::IsNullOrEmpty($colorCode))
-  {
-    $colorCode = "Yellow"
-  }
-
-  Write-Host -NoNewline -ForegroundColor $colorCode "󰇘$message"
+  param([string]$message)
+  Write-Host -NoNewline -ForegroundColor "Yellow" "󰇘$message"
 }
 
 function Stop-Loading
 {
-  param([string]$message, [string]$colorCode, [switch]$isSuccess)
-  if ([string]::IsNullOrEmpty($colorCode))
-  {
-    $colorCode = "Green"
-  }
+  param([string]$message, [switch]$isSuccess)
 
   if ($isSuccess)
   {
@@ -30,7 +21,7 @@ function Stop-Loading
 
   $padding = " " * [Console]::WindowWidth
   Write-Host -NoNewline "`r$padding"
-  Write-Host -ForegroundColor $colorCode "`r$emoji $message"
+  Write-Host -ForegroundColor "Green" "`r$emoji $message"
 }
 
 function Write-LogColor
