@@ -11,6 +11,9 @@ dependencies:
       - "tree-sitter-cli"
       - "@nitestack/project-manager"
       - "@bitwarden/cli"
+      - "npkill"
+      - "turbo"
+      - "vercel"
     cargo:
       - "bob-nvim"
       - "nvim-switcher"
