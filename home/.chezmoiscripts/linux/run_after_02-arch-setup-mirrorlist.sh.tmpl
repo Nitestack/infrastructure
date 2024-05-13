@@ -4,15 +4,17 @@
 
 # {{ if eq .osid "linux-arch" }}
 
-log_task "Arch Linux: Setting up mirrorlist..."
+start_loading "Arch Linux: Setting up mirrorlist"
 
 if [[ -f "/etc/pacman.d/mirrorlist.bak" ]]; then
-	log_info "Mirrorlist backup already exists. Skipping."
+	stop_loading "Arch Linux: Found mirrorlist backup"
 	exit 0
 fi
 
 pacman_ensure_installed reflector
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak || error "Failed to backup mirrorlist."
 sudo reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist || error "Failed to update mirrorlist."
+
+stop_loading "Arch Linux: Mirrorlist backup updated" --is-success
 
 # {{ end }}

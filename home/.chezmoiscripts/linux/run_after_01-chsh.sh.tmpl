@@ -2,11 +2,11 @@
 
 # {{ template "bash-library.sh" . }}
 
-log_task "Linux: Setting zsh as default shell"
+start_loading "Linux: Setting default shell to Zsh"
 
 # Check if the current shell is zsh already
 if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
-	log_info "Shell is already zsh. Skipping."
+	stop_loading "Linux: Default shell is Zsh"
 	exit 0
 fi
 
@@ -18,4 +18,4 @@ apt_ensure_installed zsh
 # {{ end }}
 
 chsh -s "/usr/bin/zsh"
-log_success "Shell changed to zsh"
+stop_loading "Linux: Default shell changed to Zsh" --is-success
