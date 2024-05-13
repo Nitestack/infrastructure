@@ -61,38 +61,37 @@ function Write-LogYellow
 function Write-LogTask
 {
   param([string]$message)
-  Write-LogBlue -message " TASK: $message"
+  Write-LogBlue -message " $message"
 }
 function Write-ManualAction
 {
   param([string]$message)
-  Write-LogRed -message " MANUAL ACTION: $message"
+  Write-LogRed -message " $message"
 }
 function Write-LogError
 {
   param([string]$message)
-  Write-LogRed -message " ERROR: $message"
+  Write-LogRed -message " $message"
 }
 function Write-LogInfo
 {
   param([string]$message)
-  Write-LogBlue -message " INFO: $message"
+  Write-LogBlue -message " $message"
 }
 function Write-LogSuccess
 {
   param([string]$message)
-  Write-LogGreen -message " SUCCESS: $message"
+  Write-LogGreen -message " $message"
 }
 
 function Write-LogCommand
 {
   param([string]$message)
-  Write-LogYellow -message " COMMAND: $message"
+  Write-LogYellow -message " $message"
 }
 function Invoke-CommandExpression
 {
   param([string]$message)
-  Write-LogCommand -message $message
   try
   {
     Invoke-Expression $message
