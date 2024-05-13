@@ -10,54 +10,69 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 }
 
+Write-LogTask "Windows: Installing packages"
+
 # Install winget packages
+Write-Host
+Write-LogTask "winget:"
 # {{ range $_, $package_name := concat .dependencies.windows.winget }}
 Invoke-WingetEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
 
 # Install choco packages
+Write-Host
+Write-LogTask "Chocolatey:"
 # {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
 Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
 # {{ end }}
 
 # Custom installation
+Write-Host
+Write-LogTask "Custom installation:"
 # {{ range $_, $pkg := concat .dependencies.windows.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
+Start-Loading '{{- $cmd_name | quote -}}'
 if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
 {
-  Write-LogInfo "{{- $cmd_name | squote }} is already installed. Skipping."
+  Stop-Loading "{{- $cmd_name -}}"
 } else
 {
-  Write-LogTask "Installing {{ $cmd_name | squote -}}"
   # {{ range $_, $line := $to_install }}
   # {{ "\n" }} Invoke-CommandExpression {{ $line | quote }}
   # {{ end }}
+  Stop-Loading "{{- $cmd_name -}}" -isSuccess
 }
 # {{ end }}
 # {{ end }}
 
 # Global npm dependencies
+Write-Host
+Write-LogTask "npm:"
 $pnpmList = pnpm list -g --depth 0
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
+Start-Loading "{{- $package_name -}}"
 if ($pnpmList -match "{{- $package_name -}}")
 {
-  Write-LogInfo "pnpm: package {{ $package_name | squote }} is already installed. Skipping."
+  Stop-Loading "{{- $package_name -}}"
 } else
 {
-  Write-LogTask "Installing package {{ $package_name | squote }} via pnpm"
-  Invoke-CommandExpression 'pnpm add -g "{{- $package_name -}}"'
+  Invoke-CommandExpression "pnpm add -g {{ $package_name -}}"
+  Stop-Loading "{{- $package_name -}}" -isSuccess
 }
 # {{ end }}
 
 # Global cargo crates
+Write-Host
+Write-LogTask "cargo:"
 $cargoList = cargo install --list
 # {{ range $_, $package_name := .dependencies.all.cargo }}
+Start-Loading "{{- $package_name -}}"
 if ($cargoList -match "{{- $package_name -}}")
 {
-  Write-LogInfo "cargo: crate {{ $package_name | squote }} is already installed. Skipping."
+  Stop-Loading "{{- $package_name -}}"
 } else
 {
-  Write-LogTask "Installing crate {{ $package_name | squote }} via cargo"
-  Invoke-CommandExpression 'cargo install "{{- $package_name -}}"'
+  Invoke-CommandExpression "cargo install {{ $package_name -}}"
+  Stop-Loading "{{- $package_name -}}" -isSuccess
 }
 # {{ end }}
