@@ -2,7 +2,7 @@
 
 # {{ template "bash-library.sh" . }}
 
-log_task "Zsh: Setting up Spaceship theme..."
+start_loading "Zsh: Setting up Spaceship theme"
 
 ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
 target_path="${ZSH_CUSTOM}/themes/spaceship.zsh-theme"
@@ -16,11 +16,10 @@ fi
 
 # Check if the symbolic link already exists
 if [[ -L "${target_path}" ]]; then
-	log_info "Symbolic link for Spaceship theme already exists. Skipping."
+	stop_loading "Zsh: Spaceship theme set"
 	exit 0
 fi
 
 ln -s "${symlink_path}" "${target_path}"
 
-log_success "Symbolic link for Spaceship theme created."
-log_green "${target_path} -> ${symlink_path}"
+stop_loading "Zsh: Spaceship theme set" --is-success

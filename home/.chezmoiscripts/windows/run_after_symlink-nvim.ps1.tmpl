@@ -1,6 +1,6 @@
 # {{ template "pwsh-library.ps1" . }}
 
-Write-LogTask "Windows: Setting up Neovim configuration..."
+Start-Loading "Windows: Setting up Neovim configuration"
 
 $target_path = "$env:LOCALAPPDATA\nvim"
 $symlink_path = "$env:USERPROFILE\.config\nvim"
@@ -15,11 +15,9 @@ if (!(Test-Path("$symlink_path")))
 # Check if the symbolic link already exists
 if (Test-Path("$target_path"))
 {
-  Write-LogInfo "Symbolic link for Neovim configuration already exists. Skipping."
+  Stop-Loading "Windows: Neovim configuration set"
   return
 }
 
 New-Item -Path "$target_path" -ItemType SymbolicLink -Value "$symlink_path"
-
-Write-LogSuccess "Symbolic link for Neovim configuration created."
-Write-LogGreen "$target_path -> $symlink_path"
+Stop-Loading "Windows: Neovim configuration set" -isSuccess

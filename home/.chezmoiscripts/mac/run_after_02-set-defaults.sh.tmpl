@@ -2,7 +2,7 @@
 
 # {{ template "bash-library.sh" . }}
 
-log_task "macOS: Setting preferences"
+start_loading "macOS: Setting preferences"
 
 # https://macos-defaults.com
 
@@ -20,4 +20,4 @@ killall Finder                                                      # Refresh th
 
 defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true # Change behavior of function keys
 
-log_success "Preferences set"
+stop_loading "macOS: Preferences set"
