@@ -2,7 +2,7 @@
 
 # {{ template "bash-library.sh" . }}
 
-log_task "Checking if brew is installed"
+log_task "macOS: Checking if brew is installed"
 
 if command -v brew &> /dev/null then
   log_info "brew is already installed"

@@ -2,30 +2,42 @@
 
 # {{ template "bash-library.sh" . }}
 
-log_task "Installing packages"
-
 # Install packages
 # {{ if eq .osid "linux-arch" }}
+log_task "Arch Linux: Installing packages"
+echo
 sudo pacman -Syu
 
+echo
+log_task "pacman:"
 # {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages }}
 pacman_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
 # {{ else if eq .osid "linux-ubuntu" }}
+log_task "Ubuntu: Installing packages"
+echo
 sudo apt update -y && sudo apt upgrade -y
 
+echo
+log_task "apt:"
 # {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.unix.packages .dependencies.all.packages }}
 apt_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
 # {{ else if eq .chezmoi.os "darwin" }}
+log_task "macOS: Installing formulae and casks"
+echo
 brew update && brew upgrade
 
+echo
+log_tasks "brew (formulae):"
 # {{ range $_, $formula := concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages }}
 brew_ensure_formula_installed "{{- $formula -}}"
 # {{ end }}
 
+echo
+log_tasks "brew (casks):"
 # {{ range $_, $cask := concat .dependencies.macos.brew.casks }}
 brew_ensure_cask_installed "{{- $cask -}}"
 # {{ end }}
@@ -33,6 +45,8 @@ brew_ensure_cask_installed "{{- $cask -}}"
 # {{ end }}
 
 # NVM
+echo
+log_task "Custom installation:"
 if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
 	log_info "'nvm' is already installed. Skipping."
 else
@@ -86,6 +100,8 @@ fi
 # {{ end }}
 
 # Global npm packages
+echo
+log_task "npm:"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
 	log_info "pnpm: package {{ $package_name | squote }} is already installed. Skipping."
@@ -96,6 +112,8 @@ fi
 # {{ end }}
 
 # Global cargo crates
+echo
+log_task "cargo:"
 # {{ range $_, $package_name := .dependencies.all.cargo }}
 if cargo install --list | grep -q "{{- $package_name -}}"; then
 	log_info "cargo: crate {{ $package_name | squote }} is already installed. Skipping."

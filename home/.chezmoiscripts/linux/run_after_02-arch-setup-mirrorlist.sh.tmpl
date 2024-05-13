@@ -4,7 +4,7 @@
 
 # {{ if eq .osid "linux-arch" }}
 
-log_task "arch: Setting up mirrorlist..."
+log_task "Arch Linux: Setting up mirrorlist..."
 
 if [[ -f "/etc/pacman.d/mirrorlist.bak" ]]; then
 	log_info "Mirrorlist backup already exists. Skipping."
