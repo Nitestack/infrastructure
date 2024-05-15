@@ -10,10 +10,8 @@ utils.ft_plugin({
           local line = vim.api.nvim_get_current_line()
           return line:find("[^,{[]$") and "A,<cr>" or "o"
         end,
-        opts = {
-          buffer = 0,
-          expr = true,
-        },
+        buffer = 0,
+        expr = true,
       },
     },
   },
