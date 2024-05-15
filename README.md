@@ -1,30 +1,71 @@
-# dotfiles
+<h1 align="center">
+  <a name="top" title="dotfiles">~/.dotfiles&nbsp;📂</a>
+  <br/>
+  Cross-Platform & Cross-Shell Dotfiles
+  <br/> 
+  <sup>
+    <sub>Powered by a cross-platform CLI and chezmoi
+    </sub>
+  </sup>
+</h1>
 
-This repo contains my dotfiles. To manage my dotfiles across different devices and operating systems, I use [`chezmoi`](https://chezmoi.io/).
+[![Codacy rating][badge-codacy]][link-codacy]
+[![CodeFactor rating][badge-codefactor]][link-codefactor]
+[![License][badge-license]][link-license]
+[![Repo analytics][badge-analytics]][link-analytics]
 
-> It is currently aimed for Windows, Ubuntu, Arch Linux (partial support for macOS) as they are the most common platforms I use.
+_Universal command set and vibrant shell configurations for [Bash](https://gnu.org/software/bash), [Zsh](https://zsh.org), and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and (partially) Linux, these configurations are effortlessly managed using a [cross-platform CLI](scripts/) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
+
+<div align="center">
+  <p>
+    <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
+  </p>
+</div>
 
 ## Features
 
 The major features of this repository are:
 
-- CLI tailored to this dotfiles repository (cross-platform)
-- Neovim Configuration (cross-platform)
-- WezTerm Configuration (cross-platform)
-- VSCode Configuration (cross-platform)
-- Scripts for additional features run on a freshly installed system (cross-platform)
+- [**CLI**](scripts/) tailored to this repository with a native [PowerShell](scripts/windows/dotfiles.ps1) and [Bash](scripts/unix/dotfiles) version (cross-platform)
+- [**Neovim**](home/private_dot_config/exact_nvim/) Configuration (cross-platform)
+- [**WezTerm**](home/private_dot_config/exact_wezterm/) Configuration (cross-platform)
+- [**Visual Studio Code**](home/.chezmoitemplates/Code/User/) Configuration (cross-platform)
+- [**Scripts**](home/.chezmoiscripts/):
+  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata/), supporting various package managers across different operating systems: [Chocolatey](https://community.chocolatey.org) and [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io).
+  - Sets up the Spaceship theme (UNIX).
+  - Configures the default shell to be Zsh (Linux).
+  - Sets up Mirrorlist backup (Arch Linux).
+  - Ensures installation of brew (macOS).
+  - Sets system preferences using `defaults` (macOS).
 
 Some of the additional features are:
 
-- tmux Configuration (UNIX)
-- Git Configuration (cross-platform)
-- Lazygit Configuration (cross-platform)
-- PowerShell Profile (Windows) and Bash/ZSH Profile (UNIX)
-- WSL Configuration (Windows)
+- [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration (UNIX)
+- [**Git**](home/dot_gitconfig.tmpl) Configuration (cross-platform)
+- [**ShellCheck**](home/dot_shellcheckrc) Configuration
+- [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
+- [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile (Windows)
+- [**Bash**](home/dot_bashrc.tmpl)/[**ZSH**](home/dot_zshrc) Profile (UNIX)
+- [**WSL**](home/dot_wslconfig) Configuration (Windows)
+
+## Requirements
+
+- **Operating System:**
+  - [Windows](https://microsoft.com/windows)
+  - [macOS](https://apple.com/macos)
+  - **Linux:**
+    - [Ubuntu](https://ubuntu.com)
+    - [Arch Linux](https://archlinux.org)
+- **Font:** a [Nerd font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
+- **Commands:**
+  - [git](https://git-scm.com/downloads)
+  - [chezmoi](https://chezmoi.io/install)
+  - **UNIX only:** [wget](https://gnu.org/software/wget) or [curl](https://curl.se/download.html) installed
+  - **Windows only:** [pwsh](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
 
 ## Getting started
 
-First you need to install the `dotfiles` CLI. Simply run the following command in your terminal:
+First you need to install the [`dotfiles`](scripts/) CLI. Simply run the following command in your terminal:
 
 #### Bash
 
@@ -93,9 +134,9 @@ Now you can run `dotfiles download` and `dotfiles install` to download and insta
 ### CLI
 
 The UNIX CLI version of `dotfiles` was created with [`Bashly`](https://bashly.dannyb.co).
-The Windows CLI version of `dotfiles` was created with pure PowerShell.
+The Windows CLI version of `dotfiles` was created with native [PowerShell](https://learn.microsoft.com/powershell).
 
-Because PowerShell and Bash/zsh are different from each other, the flags are not the same.
+Because PowerShell and Bash/Zsh are so different from each other, the command flags will have minor differences.
 
 The convention for UNIX-style CLI's is to use `-` for short flags and `--` for long flags. It uses the `kebab-case` if it is a long flag.
 For example, `dotfiles -h` and `dotfiles --help` are the same command.
@@ -107,7 +148,7 @@ For example, `dotfiles -h` and `dotfiles -Help` or even `Get-Help dotfiles` are 
 
 > :bulb: **The short flags (if any) also work on both Windows and UNIX!**
 
-Other than these conventions, the UNIX cli version of `dotfiles` is similar to the Windows version. They use the same commands with the same flags.
+Other than these conventions, the Bash version of `dotfiles` is equal to the Windows version. They come with the same commands and flags.
 
 ## Credits
 
@@ -116,3 +157,5 @@ Other than these conventions, the UNIX cli version of `dotfiles` is similar to t
 - [Felipe Santos](https://github.com/felipecrs) - take a look at his [dotfiles](https://github.com/felipecrs/dotfiles)
   - parts of his README are used
   - the install scripts for Ubuntu are used, modified and extended
+- [René-Marc Simard](https://github.com/renemarc) - take a look at his [dotfiles](https://github.com/renemarc/dotfiles)
+  - the top section of his README is used
