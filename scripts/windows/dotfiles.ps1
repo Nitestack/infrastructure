@@ -19,11 +19,11 @@ COMMANDS:
 https://github.com/Nitestack/dotfiles
 #>
 param(
-  [Parameter(Position=0)]
+  [Parameter(Position = 0)]
   [ValidateSet("download", "install", "update", "edit", "-h", "-Help", "-v", "-Version")]
   [string]$Command,
 
-  [Parameter(Position=1, ValueFromRemainingArguments=$true)]
+  [Parameter(Position = 1, ValueFromRemainingArguments = $true)]
   $Rest,
 
   [Alias("h")]
@@ -32,76 +32,62 @@ param(
 
 # PowerShell Core library
 
-function Write-LogColor
-{
+function Write-LogColor {
   param([string]$colorCode, [string]$message)
   Write-Host -Object "$message" -ForegroundColor $colorCode
 }
-function Write-LogRed
-{
+function Write-LogRed {
   param([string]$message)
   Write-LogColor -colorCode "Red" -message $message
 }
-function Write-LogBlue
-{
+function Write-LogBlue {
   param([string]$message)
   Write-LogColor -colorCode "Blue" -message $message
 }
-function Write-LogGreen
-{
+function Write-LogGreen {
   param([string]$message)
   Write-LogColor -colorCode "Green" -message $message
 }
-function Write-LogYellow
-{
+function Write-LogYellow {
   param([string]$message)
   Write-LogColor -colorCode "Yellow" -message $message
 }
 
-function Write-LogTask
-{
+function Write-LogTask {
   param([string]$message)
   Write-LogBlue -message " $message"
 }
-function Write-ManualAction
-{
+function Write-ManualAction {
   param([string]$message)
   Write-LogRed -message " $message"
 }
-function Write-LogError
-{
+function Write-LogError {
   param([string]$message)
   Write-LogRed -message " $message"
 }
-function Write-LogInfo
-{
+function Write-LogInfo {
   param([string]$message)
   Write-LogBlue -message " $message"
 }
-function Write-LogSuccess
-{
+function Write-LogSuccess {
   param([string]$message)
   Write-LogGreen -message " $message"
 }
 
-function Write-LogCommand
-{
+function Write-LogCommand {
   param([string]$message)
   Write-LogYellow -message " $message"
 }
-function Invoke-CommandExpression
-{
+function Invoke-CommandExpression {
   param([string]$message)
-  try
-  {
+  try {
     Invoke-Expression $message
-  } catch
-  {
+  }
+  catch {
     Write-LogError -message "Command failed: $_"
   }
 }
-function Invoke-Error
-{
+function Invoke-Error {
   param([string]$message)
   Write-LogError -message $message
   exit 1
@@ -109,33 +95,26 @@ function Invoke-Error
 function Invoke-EnsureInstalled(
   [string]$command,
   [string]$message
-)
-{
-  if (!(Get-Command $command -ErrorAction SilentlyContinue))
-  {
+) {
+  if (!(Get-Command $command -ErrorAction SilentlyContinue)) {
     Write-LogError "Missing dependency: '$command'"
     Invoke-Error "$message"
   }
 }
-function Invoke-EnsureGitInstalled()
-{
+function Invoke-EnsureGitInstalled() {
   Invoke-EnsureInstalled -command "git" -message "Visit 'https://git-scm.com/downloads' to install git"
 }
-function Invoke-EnsureChezmoiInstalled()
-{
+function Invoke-EnsureChezmoiInstalled() {
   Invoke-EnsureInstalled -command "chezmoi" -message "Visit 'https://www.chezmoi.io/install' to install chezmoi"
 }
-function Invoke-EnsureNeovimInstalled()
-{
+function Invoke-EnsureNeovimInstalled() {
   Invoke-EnsureInstalled -command "nvim" -message "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires `bob` to be installed)"
 }
-function Invoke-EnsureBobInstalled()
-{
+function Invoke-EnsureBobInstalled() {
   Invoke-EnsureInstalled -command "bob" -message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
 }
 
-function Invoke-Download
-{
+function Invoke-Download {
   <#
 .SYNOPSIS
 Download dotfiles from a GitHub repository
@@ -145,14 +124,13 @@ USAGE:
     dotfiles download [TARGET] [OPTIONS]
 #>
   param(
-    [Parameter(Position=0)]
+    [Parameter(Position = 0)]
     [Alias("t")]
     [ValidateScript({
-        if (Test-Path $_ -IsValid)
-        {
+        if (Test-Path $_ -IsValid) {
           $true
-        } else
-        {
+        }
+        else {
           throw "Invalid path. Please provide a valid path to a directory."
         }
       })]
@@ -169,27 +147,24 @@ USAGE:
   Write-LogTask "Downloading dotfiles"
 
   # Set remote depending on the ssh flag
-  if ($SSH)
-  {
+  if ($SSH) {
     $Remote = "ssh://github.com/$Repo.git"
-  } else
-  {
+  }
+  else {
     $Remote = "https://github.com/$Repo.git"
   }
 
   # Check if dotfiles are already downloaded
-  if (Test-Path "$Target")
-  {
+  if (Test-Path "$Target") {
     $Path = Resolve-Path "$Target"
 
     Write-LogTask "Cleaning '$Path' with '$Remote' at branch '$Branch'"
-    $Git="git -C $Path"
+    $Git = "git -C $Path"
     # Ensure that the remote is set to the correct URL
-    if (Invoke-Expression "$Git remote | Select-String `"^origin$`" -Quiet")
-    {
+    if (Invoke-Expression "$Git remote | Select-String `"^origin$`" -Quiet") {
       Invoke-Expression "$Git remote set-url origin $Remote"
-    } else
-    {
+    }
+    else {
       Invoke-Expression "$Git remote add origin $Remote"
     }
     Invoke-Expression "$Git checkout -B $Branch"
@@ -197,8 +172,8 @@ USAGE:
     Invoke-Expression "$Git reset --hard FETCH_HEAD"
     Invoke-Expression "$Git clean -fdx"
     Remove-Variable Path, Remote, Branch, Git
-  } else
-  {
+  }
+  else {
     Write-LogTask "Cloning '$Repo' at branch '$Branch' to '$Target'"
     Invoke-CommandExpression "git clone -b '$Branch' '$Remote' '$Target'"
   }
@@ -207,8 +182,7 @@ USAGE:
 }
 
 
-function Invoke-Install
-{
+function Invoke-Install {
   <#
 .SYNOPSIS
 Install dotfiles with chezmoi
@@ -218,14 +192,13 @@ USAGE:
     dotfiles install [SOURCEDIR] [OPTIONS]
 #>
   param(
-    [Parameter(Position=0)]
+    [Parameter(Position = 0)]
     [Alias("s")]
     [ValidateScript({
-        if (Test-Path $_ -IsValid -and (Get-Item $_).PSIsContainer)
-        {
+        if (Test-Path $_ -IsValid -and (Get-Item $_).PSIsContainer) {
           $true
-        } else
-        {
+        }
+        else {
           throw "Invalid path. Please provide a valid path to an existing directory."
         }
       })]
@@ -238,11 +211,10 @@ USAGE:
   # Set arguments
   $arguments = @("--source='$SourceDir'", "--verbose=false")
 
-  if ($OneShot)
-  {
+  if ($OneShot) {
     $arguments += "--one-shot"
-  } else
-  {
+  }
+  else {
     $arguments += "--apply"
   }
 
@@ -251,8 +223,7 @@ USAGE:
   Write-LogSuccess "Installed dotfiles"
 }
 
-function Invoke-Update
-{
+function Invoke-Update {
   <#
 .SYNOPSIS
 Update dotfiles with chezmoi
@@ -278,16 +249,14 @@ USAGE:
   Write-LogTask "Updating dotfiles"
   # Check for local/global updates
   $arguments = @()
-  if ($Local)
-  {
+  if ($Local) {
     $arguments += "apply"
-  } else
-  {
+  }
+  else {
     $arguments += "update"
   }
 
-  if (![string]::IsNullOrEmpty($RefreshExternals))
-  {
+  if (![string]::IsNullOrEmpty($RefreshExternals)) {
     $arguments += "--refresh-externals='$RefreshExternals'"
   }
 
@@ -295,22 +264,18 @@ USAGE:
   Write-LogSuccess "Updated dotfiles"
 
   # Update the CLI
-  if ($CLI)
-  {
+  if ($CLI) {
     $ScriptDir = Resolve-Path "$PSScriptRoot\dotfiles.ps1"
-    if (!(Test-Path "$ScriptDir"))
-    {
+    if (!(Test-Path "$ScriptDir")) {
       Invoke-Error "Could not find '$ScriptDir'"
     }
     $UpdatedScriptDir = Resolve-Path "$(chezmoi source-path)\..\scripts\windows\dotfiles.ps1"
-    if (!(Test-Path "$UpdatedScriptDir"))
-    {
+    if (!(Test-Path "$UpdatedScriptDir")) {
       Invoke-Error "Could not find '$UpdatedScriptDir'"
     }
 
     # Check if the CLI is already up to date
-    if ("$ScriptDir" -eq "$UpdatedScriptDir")
-    {
+    if ("$ScriptDir" -eq "$UpdatedScriptDir") {
       Write-LogInfo "The CLI is already up to date"
       exit
     }
@@ -321,8 +286,7 @@ USAGE:
   }
 
   # Update Neovim related files
-  if ($Neovim)
-  {
+  if ($Neovim) {
     # Update Neovim
     Write-LogTask "Updating Neovim"
     bob update --all || Invoke-Error "Failed to update Neovim"
@@ -341,14 +305,12 @@ USAGE:
     Write-LogTask "Syncing 'lazy-lock.json' file"
     $SourcePath = chezmoi source-path
     $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
-    if ([string]::IsNullOrEmpty($LazyLockPath))
-    {
+    if ([string]::IsNullOrEmpty($LazyLockPath)) {
       Write-LogError "Could not find 'lazy-lock.json' file in '$SourcePath'"
     }
-    $ConfigPath="$env:LOCALAPPDATA\nvim"
+    $ConfigPath = "$env:LOCALAPPDATA\nvim"
     $UpdatedLazyLockPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazy-lock.json" -File | Select-Object -First 1).FullName
-    if ([string]::IsNullOrEmpty($UpdatedLazyLockPath))
-    {
+    if ([string]::IsNullOrEmpty($UpdatedLazyLockPath)) {
       Write-LogError "Could not find 'lazy-lock.json' file in '$ConfigPath'"
     }
     Copy-Item -Path "$UpdatedLazyLockPath" -Destination "$LazyLockPath" -Force || Invoke-Error "Failed to sync 'lazy-lock.json' file"
@@ -358,8 +320,7 @@ USAGE:
     Write-LogTask "Committing 'lazy-lock.json' file"
     # Check if there are any changes
     Invoke-Expression "git diff --quiet -- $LazyLockPath"
-    if ($LASTEXITCODE -eq 0)
-    {
+    if ($LASTEXITCODE -eq 0) {
       Write-LogInfo "No changes in 'lazy-lock.json' file. Skip committing."
       exit
     }
@@ -372,8 +333,7 @@ USAGE:
   }
 }
 
-function Invoke-Edit
-{
+function Invoke-Edit {
   <#
 .SYNOPSIS
 Edit dotfiles
@@ -383,14 +343,13 @@ USAGE:
     dotfiles edit [TARGET] [OPTIONS]
 #>
   param(
-    [Parameter(Position=0)]
+    [Parameter(Position = 0)]
     [Alias("t")]
     [ValidateScript({
-        if ((Test-Path $_ -IsValid) -and ((Get-Item $_).PSIsContainer -eq $false))
-        {
+        if ((Test-Path $_ -IsValid) -and ((Get-Item $_).PSIsContainer -eq $false)) {
           $true
-        } else
-        {
+        }
+        else {
           throw "Invalid path. Please provide a valid path to an existing file."
         }
       })]
@@ -407,30 +366,25 @@ USAGE:
     [Alias("w")]
     [Switch]$Watch
   )
-  if ([string]::IsNullOrEmpty($Target))
-  {
+  if ([string]::IsNullOrEmpty($Target)) {
     Set-Location $(Resolve-Path "$(chezmoi source-path)/..")
-    if ($Neovide -and (Get-Command neovide -ErrorAction SilentlyContinue))
-    {
+    if ($Neovide -and (Get-Command neovide -ErrorAction SilentlyContinue)) {
       neovide
-    } elseif (Get-Command nvim -ErrorAction SilentlyContinue)
-    {
+    }
+    elseif (Get-Command nvim -ErrorAction SilentlyContinue) {
       nvim
     }
-  } else
-  {
+  }
+  else {
     $arguments = @($Target)
 
-    if ($Apply)
-    {
+    if ($Apply) {
       $arguments += "--apply"
     }
-    if ($HardLink)
-    {
+    if ($HardLink) {
       $arguments += "--hardlink=$HardLink"
     }
-    if ($Watch)
-    {
+    if ($Watch) {
       $arguments += "--watch"
     }
 
@@ -439,13 +393,11 @@ USAGE:
 }
 
 # Handling help and version
-if ($Command -eq "-h" -or $Command -eq "-Help")
-{
+if ($Command -eq "-h" -or $Command -eq "-Help") {
   Get-Help $MyInvocation.MyCommand.Definition
   exit
 }
-if ($Command -eq "-v" -or $Command -eq "-Version")
-{
+if ($Command -eq "-v" -or $Command -eq "-Version") {
   Write-Host "0.1.0"
   exit
 }
@@ -455,48 +407,38 @@ Invoke-EnsureGitInstalled
 Invoke-EnsureChezmoiInstalled
 
 # Handling commands
-switch ($Command)
-{
-  "download"
-  {
-    if ($Help)
-    {
+switch ($Command) {
+  "download" {
+    if ($Help) {
       Get-Help Invoke-Download -Full
       exit
     }
     Invoke-Expression "Invoke-Download $Rest"
   }
-  "install"
-  {
-    if ($Help)
-    {
+  "install" {
+    if ($Help) {
       Get-Help Invoke-Install -Full
       exit
     }
     Invoke-Expression "Invoke-Install $Rest"
   }
-  "update"
-  {
+  "update" {
     Invoke-EnsureNeovimInstalled
     Invoke-EnsureBobInstalled
-    if ($Help)
-    {
+    if ($Help) {
       Get-Help Invoke-Update -Full
       exit
     }
     Invoke-Expression "Invoke-Update $Rest"
   }
-  "edit"
-  {
-    if ($Help)
-    {
+  "edit" {
+    if ($Help) {
       Get-Help Invoke-Edit -Full
       exit
     }
     Invoke-Expression "Invoke-Edit $Rest"
   }
-  default
-  {
+  default {
     Get-Help $MyInvocation.MyCommand.Definition
   }
 }
