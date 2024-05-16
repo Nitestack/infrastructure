@@ -2,6 +2,9 @@
 
 # {{ template "bash-library.sh" . }}
 
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
 start_loading "Zsh: Setting up Spaceship theme"
 
 ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
