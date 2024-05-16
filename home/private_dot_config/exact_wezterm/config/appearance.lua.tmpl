@@ -7,8 +7,8 @@ local M = {}
 function M.setup(config)
   -- Font
   config.font = wezterm.font_with_fallback({
-    "SF Mono",
-    "Symbols Nerd Font",
+    "{{ .fonts.mono }}",
+    "{{ .fonts.icons }}",
   })
   config.font_size = 14.0
   config.line_height = 1.2
@@ -51,10 +51,10 @@ function M.setup(config)
   config.window_frame = {
     font = wezterm.font_with_fallback({
       {
-        family = "Geist",
+        family = "{{ .fonts.display }}",
         weight = "Bold",
       },
-      "Symbols Nerd Font",
+      "{{ .fonts.icons }}",
     }),
   }
 end

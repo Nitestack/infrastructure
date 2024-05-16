@@ -1,4 +1,8 @@
 ---
+fonts:
+  display: "Geist"
+  mono: "SF Mono"
+  icons: "Symbols Nerd Font"
 dependencies:
   all:
     packages:

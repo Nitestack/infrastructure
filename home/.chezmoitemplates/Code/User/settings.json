@@ -3,7 +3,7 @@
   "diffEditor.codeLens": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.fontFamily": "SF Mono, Symbols Nerd Font, Consolas, 'Courier New', monospace",
+  "editor.fontFamily": "{{ .fonts.mono }}, {{ .fonts.icons }}, Consolas, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 16,
   "editor.lineNumbers": "relative",

@@ -60,7 +60,7 @@ M.options = {
   undolevels = 10000, -- Maximum number of changes that can be undone
 
   -- GUI settings
-  guifont = "SF Mono,Symbols Nerd Font:h14", -- Set font for graphical Neovim apps
+  guifont = "{{ .fonts.mono }},{{ .fonts.icons }}:h14", -- Set font for graphical Neovim apps
   linespace = 6, -- Set a line height of `1.2`
 
   -- Indentation
