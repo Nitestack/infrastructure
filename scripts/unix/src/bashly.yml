@@ -8,6 +8,8 @@ dependencies:
   git: Visit 'https://git-scm.com/downloads' to install git
 
 commands:
+  - name: completion
+    help: Shell to generate completion
   - name: download
     help: Download dotfiles from the internet
     args:
