@@ -26,6 +26,3 @@ if [[ -n "${SSH_CONNECTION:-""}" ]]; then
 else
   export EDITOR="{{- .editor -}}"
 fi
-
-# Load fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
