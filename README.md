@@ -1,5 +1,6 @@
-<h1 align="center">
-  <a name="top" title="dotfiles">~/.dotfiles&nbsp;📂</a>
+<div align="center">
+<h1>
+  ~/.dotfiles&nbsp;📂
   <br/>
   Cross-Platform & Cross-Shell Dotfiles
   <br/> 
@@ -9,29 +10,29 @@
   </sup>
 </h1>
 
-[![Codacy rating][badge-codacy]][link-codacy]
-[![CodeFactor rating][badge-codefactor]][link-codefactor]
-[![License][badge-license]][link-license]
-[![Repo analytics][badge-analytics]][link-analytics]
+![Latest commit](https://img.shields.io/github/last-commit/Nitestack/dotfiles?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
+![Github Created At](https://img.shields.io/github/created-at/Nitestack/dotfiles?style=for-the-badge)
 
-_Universal command set and vibrant shell configurations for [Bash](https://gnu.org/software/bash), [Zsh](https://zsh.org), and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and (partially) Linux, these configurations are effortlessly managed using a [cross-platform CLI](scripts/) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
+[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Credits](#-credits) • [License](#-license)
 
-<div align="center">
-  <p>
-    <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
-  </p>
+_Universal command set and vibrant shell configurations for [Bash](https://gnu.org/software/bash), [Zsh](https://zsh.org), and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and (partially) Linux, these configurations are effortlessly managed using a [cross-platform CLI](scripts) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
+
+<p>
+  <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
+</p>
 </div>
 
-## Features
+## 🚀 Features
 
 The major features of this repository are:
 
-- [**CLI**](scripts/) tailored to this repository with a native [PowerShell](scripts/windows/dotfiles.ps1) and [Bash](scripts/unix/dotfiles) version (cross-platform)
-- [**Neovim**](home/private_dot_config/exact_nvim/) Configuration (cross-platform)
-- [**WezTerm**](home/private_dot_config/exact_wezterm/) Configuration (cross-platform)
-- [**Visual Studio Code**](home/.chezmoitemplates/Code/User/) Configuration (cross-platform)
-- [**Scripts**](home/.chezmoiscripts/):
-  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata/), supporting various package managers across different operating systems: [Chocolatey](https://community.chocolatey.org) and [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io).
+- [**CLI**](scripts) tailored to this repository with a native [PowerShell](scripts/windows/dotfiles.ps1) and [Bash](scripts/unix/dotfiles) version (cross-platform)
+- [**Neovim**](home/private_dot_config/exact_nvim) Configuration (cross-platform)
+- [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration (cross-platform)
+- [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
+- [**Scripts**](home/.chezmoiscripts):
+  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [Chocolatey](https://community.chocolatey.org) and [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io).
   - Sets up the Spaceship theme (UNIX).
   - Configures the default shell to be Zsh (Linux).
   - Sets up Mirrorlist backup (Arch Linux).
@@ -48,7 +49,7 @@ Some of the additional features are:
 - [**Bash**](home/dot_bashrc.tmpl)/[**ZSH**](home/dot_zshrc) Profile (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
 
-## Requirements
+## ⚙️ Requirements
 
 - **Operating System:**
   - [Windows](https://microsoft.com/windows)
@@ -56,16 +57,16 @@ Some of the additional features are:
   - **Linux:**
     - [Ubuntu](https://ubuntu.com)
     - [Arch Linux](https://archlinux.org)
-- **Font:** a [Nerd font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
+- **Font:** a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
 - **Commands:**
   - [git](https://git-scm.com/downloads)
   - [chezmoi](https://chezmoi.io/install)
   - **UNIX only:** [wget](https://gnu.org/software/wget) or [curl](https://curl.se/download.html) installed
   - **Windows only:** [pwsh](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
 
-## Getting started
+## 🏁 Getting Started
 
-First you need to install the [`dotfiles`](scripts/) CLI. Simply run the following command in your terminal:
+First you need to install the [`dotfiles`](scripts) CLI. Simply run the following command in your terminal:
 
 #### Bash
 
@@ -129,7 +130,7 @@ Now you can run `dotfiles download` and `dotfiles install` to download and insta
 
 > :bulb: **The -h flag works on Windows and UNIX!**
 
-## Documentation
+## 📚 Documentation
 
 ### CLI
 
@@ -150,7 +151,7 @@ For example, `dotfiles -h` and `dotfiles -Help` or even `Get-Help dotfiles` are 
 
 Other than these conventions, the Bash version of `dotfiles` is equal to the Windows version. They come with the same commands and flags.
 
-## Credits
+## 🙌 Credits
 
 - [Folke Lemaitre](https://github.com/folke) - his popular Neovim configuration [LazyVim](https://github.com/LazyVim/LazyVim)
   - many of the plugins and their configurations are used
@@ -159,3 +160,7 @@ Other than these conventions, the Bash version of `dotfiles` is equal to the Win
   - the install scripts for Ubuntu are used, modified and extended
 - [René-Marc Simard](https://github.com/renemarc) - take a look at his [dotfiles](https://github.com/renemarc/dotfiles)
   - the top section of his README is used
+
+## 📝 License
+
+This project is licensed under the Apache-2.0 license.
