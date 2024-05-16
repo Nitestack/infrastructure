@@ -84,6 +84,12 @@ zstyle ":completion:*" menu no
 zstyle ":fzf-tab:complete:cd:*" fzf-preview 'ls --color $realpath'
 zstyle ":fzf-tab:complete:__zoxide_z:*" fzf-preview 'ls --color $realpath'
 
+# Keybindings
+bindkey -e
+bindkey "^p" history-search-backward
+bindkey "^n" history-search-forward
+bindkey "^[w" kill-region
+
 # Aliases
 alias vim="nvim"
 alias vi="nvim"
