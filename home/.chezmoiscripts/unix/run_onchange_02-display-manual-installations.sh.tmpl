@@ -2,6 +2,9 @@
 
 # {{ template "bash-library.sh" . }}
 
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
 # {{ if eq .chezmoi.os "darwin" }}
 log_task "macOS: You have to manually install the following packages:"
 # {{ range $_, $package_name := concat .dependencies.macos.manual .dependencies.unix.manual .dependencies.all.manual }}

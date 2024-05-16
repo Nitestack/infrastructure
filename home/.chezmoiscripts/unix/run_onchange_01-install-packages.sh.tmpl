@@ -2,6 +2,9 @@
 
 # {{ template "bash-library.sh" . }}
 
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
 # Install packages
 # {{ if eq .osid "linux-arch" }}
 log_task "Arch Linux: Installing packages"
