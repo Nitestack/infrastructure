@@ -418,7 +418,7 @@ validate_not_empty() {
 }
 
 dotfiles_completion_command() {
-  send_completions()
+  send_completions
 
 }
 
