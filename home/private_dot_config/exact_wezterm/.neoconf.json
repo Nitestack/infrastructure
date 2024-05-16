@@ -3,7 +3,9 @@
     "lua_ls": {
       "Lua.workspace.library": [
         "C:\\Users\\hydra\\AppData\\Local\\nvim-data\\lazy\\wezterm-types\\types",
-        "C:\\Users\\hydra\\AppData\\Local\\nvim-data\\lazy\\smart-splits.nvim"
+        "C:\\Users\\hydra\\AppData\\Local\\nvim-data\\lazy\\smart-splits.nvim",
+        "/home/nitestack/.local/share/nvim/lazy/wezterm-types/types",
+        "/home/nitestack/.local/share/nvim/lazy/smart-splits.nvim"
       ],
       "Lua.diagnostics.disable": [
         "assign-type-mismatch",
