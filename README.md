@@ -3,7 +3,7 @@
   ~/.dotfiles&nbsp;📂
   <br/>
   Cross-Platform & Cross-Shell Dotfiles
-  <br/> 
+  <br/>
   <sup>
     <sub>Powered by a cross-platform CLI and chezmoi
     </sub>
@@ -16,7 +16,7 @@
 
 [Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Credits](#-credits) • [License](#-license)
 
-_Universal command set and vibrant shell configurations for [Bash](https://gnu.org/software/bash), [Zsh](https://zsh.org), and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and (partially) Linux, these configurations are effortlessly managed using a [cross-platform CLI](scripts) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
+_Universal command set and vibrant shell configurations for [Zsh](https://zsh.org) and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and (partially) Linux, these configurations are effortlessly managed using a [cross-platform CLI](scripts) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -46,7 +46,7 @@ Some of the additional features are:
 - [**ShellCheck**](home/dot_shellcheckrc) Configuration
 - [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile (Windows)
-- [**Bash**](home/dot_bashrc.tmpl)/[**ZSH**](home/dot_zshrc) Profile (UNIX)
+- [**Zsh**](home/dot_zshrc) Profile (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
 
 ## ⚙️ Requirements
@@ -87,13 +87,13 @@ chmod +x ~/.local/bin/dotfiles
 ```
 
 > :warning: **Make sure to add the `~/.local/bin` directory to your `$PATH` variable or use another location.**
-> Use the following command to append `~/.local/bin` to your `$PATH` variable in your Bash/zsh config (`~/.bashrc` or `~/.zshrc`).
+> Use the following command to append `~/.local/bin` to your `$PATH` variable in your Bash/Zsh config (`~/.bashrc` or `~/.zshrc`).
 
 > ```sh
-> echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
+> echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.zshrc
 > ```
 >
-> Or manually add the following line to your Bash/zsh config:
+> Or manually add the following line to your Bash/Zsh config:
 >
 > ```bash
 > export PATH="$PATH:$HOME/.local/bin"
@@ -137,7 +137,7 @@ Now you can run `dotfiles download` and `dotfiles install` to download and insta
 The UNIX CLI version of `dotfiles` was created with [`Bashly`](https://bashly.dannyb.co).
 The Windows CLI version of `dotfiles` was created with native [PowerShell](https://learn.microsoft.com/powershell).
 
-Because PowerShell and Bash/Zsh are so different from each other, the command flags will have minor differences.
+Because PowerShell and Bash are so different from each other, the command flags will have minor differences.
 
 The convention for UNIX-style CLI's is to use `-` for short flags and `--` for long flags. It uses the `kebab-case` if it is a long flag.
 For example, `dotfiles -h` and `dotfiles --help` are the same command.

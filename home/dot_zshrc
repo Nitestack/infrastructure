@@ -109,9 +109,10 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
-if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
-fi
+# Aliases
+alias vim="nvim"
+alias vi="nvim"
+alias v="nvim"
 
 # Load zoxide
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
