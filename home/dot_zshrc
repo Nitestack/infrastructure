@@ -116,3 +116,6 @@ alias v="nvim"
 
 # Load zoxide
 eval "$(zoxide init --cmd cd zsh)"
+
+# Load fzf (must stay on the end)
+source <(fzf --zsh)
