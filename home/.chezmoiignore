@@ -16,9 +16,6 @@ Documents
 .config/lazygit
 .config/project-manager
 
-.bash_profile
-.bashrc
-
 .hushlogin
 {{ end }}
 
@@ -37,8 +34,6 @@ Library
 .config/tmux
 
 .oh-my-zsh
-
-.bash_aliases
 
 .zshrc
 .zprofile
