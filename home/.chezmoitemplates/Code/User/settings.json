@@ -210,5 +210,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnSave": true,
-  "terminal.integrated.smoothScrolling": true
+  "terminal.integrated.smoothScrolling": true,
+  "codeium.enableConfig": {
+    "*": true,
+    "markdown": true
+  },
+  "security.workspace.trust.untrustedFiles": "open",
+  "security.allowedUNCHosts": ["wsl.localhost"]
 }
