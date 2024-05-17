@@ -25,7 +25,7 @@ dependencies:
       - nvim:
           - "bob install stable"
           - "bob install nightly"
-          - "bob use nightly"
+          - "bob use stable"
       - pnpm:
           - "npm install -g pnpm"
     manual: []
