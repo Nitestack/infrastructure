@@ -1,0 +1,4 @@
+{{- $bin := lookPath "turbo" -}}
+{{- if $bin -}}
+{{- output $bin "completion" "zsh" -}}
+{{- end -}}

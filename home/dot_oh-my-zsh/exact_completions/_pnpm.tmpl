@@ -1,0 +1,4 @@
+{{- $bin := lookPath "pnpm" -}}
+{{- if $bin -}}
+{{- output $bin "completion" "zsh" -}}
+{{- end -}}

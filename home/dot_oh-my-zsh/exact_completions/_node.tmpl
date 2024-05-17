@@ -1,0 +1,4 @@
+{{- $bin := lookPath "node" -}}
+{{- if $bin -}}
+{{- output $bin "--completion-bash" -}}
+{{- end -}}
