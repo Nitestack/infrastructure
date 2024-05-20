@@ -13,7 +13,6 @@ Write-StartTask "Windows: Installing packages"
 # Install winget packages
 Write-Host "`nwinget:"
 # {{ range $_, $package_name := concat .dependencies.windows.winget }}
-Invoke-WingetEnsureInstalled "{{- $package_name -}}"
 Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
   if (winget list --id "{{- $package_name -}}") {
     return ":{{- $package_name -}}"
