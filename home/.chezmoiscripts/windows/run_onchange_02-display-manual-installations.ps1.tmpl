@@ -1,7 +1,7 @@
 # {{ template "pwsh-library.ps1" . }}
 
-Write-LogTask "Windows: You have to manually install the following packages:"
+Write-LogInfo "Windows: You have to manually install the following packages:"
 
 # {{ range $_, $package_name := concat .dependencies.windows.manual .dependencies.all.manual }}
-Write-Output "- {{ $package_name -}}"
+Write-Host "- {{ $package_name -}}"
 # {{ end }}

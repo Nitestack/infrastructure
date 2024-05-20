@@ -8,66 +8,102 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   }
 }
 
-Write-LogTask "Windows: Installing packages"
+Write-StartTask "Windows: Installing packages"
 
 # Install winget packages
-Write-Host
-Write-LogTask "winget:"
+Write-Host "`nwinget:"
 # {{ range $_, $package_name := concat .dependencies.windows.winget }}
 Invoke-WingetEnsureInstalled "{{- $package_name -}}"
+Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+  if (winget list --id "{{- $package_name -}}") {
+    return ":{{- $package_name -}}"
+  }
+
+  try {
+    Invoke-Expression "winget install -e --accept-package-agreements --accept-source-agreements --id {{ $package_name -}}"
+  }
+  catch {
+    throw "Command failed: $_"
+  }
+}
 # {{ end }}
 
 # Install choco packages
-Write-Host
-Write-LogTask "Chocolatey:"
+Write-Host "`nChocolatey:"
 # {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
-Invoke-ChocoEnsureInstalled "{{- $package_name -}}"
+Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+  if (choco list --lo -r -e "{{- $package_name -}}") {
+    return ":{{- $package_name -}}"
+  }
+
+  try {
+    Invoke-Expression "choco install -y {{ $package_name -}}"
+  }
+  catch {
+    throw "Command failed: $_"
+  }
+}
 # {{ end }}
 
 # Custom installation
-Write-Host
-Write-LogTask "Custom installation:"
+Write-Host "`nCustom installation:"
 # {{ range $_, $pkg := concat .dependencies.windows.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
-Start-Loading '{{- $cmd_name | quote -}}'
-if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
-  Stop-Loading "{{- $cmd_name -}}"
-}
-else {
-  # {{ range $_, $line := $to_install }}
-  # {{ "\n" }} Invoke-CommandExpression {{ $line | quote }}
-  # {{ end }}
-  Stop-Loading "{{- $cmd_name -}}" -isSuccess
+Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name -}}" -ScriptBlock {
+  if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
+    return ":{{- $cmd_name -}}"
+  }
+  else {
+    # {{ range $_, $line := $to_install }}
+    try {
+      # {{ "\n" }} Invoke-Expression {{ $line | quote }}
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+    # {{ end }}
+  }
 }
 # {{ end }}
 # {{ end }}
 
 # Global npm dependencies
-Write-Host
-Write-LogTask "npm:"
-$pnpmList = pnpm list -g --depth 0
+Write-Host "`nnpm:"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
-Start-Loading "{{- $package_name -}}"
-if ($pnpmList -match "{{- $package_name -}}") {
-  Stop-Loading "{{- $package_name -}}"
-}
-else {
-  Invoke-CommandExpression "pnpm add -g {{ $package_name -}}"
-  Stop-Loading "{{- $package_name -}}" -isSuccess
+Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+  $pnpmList = pnpm list -g --depth 0
+  if ($pnpmList -match "{{- $package_name -}}") {
+    return ":{{- $package_name -}}"
+  }
+  else {
+    try {
+      Invoke-Expression "pnpm add -g {{ $package_name -}}"
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+  }
 }
 # {{ end }}
 
 # Global cargo crates
-Write-Host
-Write-LogTask "cargo:"
-$cargoList = cargo install --list
+Write-Host "`ncargo:"
 # {{ range $_, $package_name := .dependencies.all.cargo }}
-Start-Loading "{{- $package_name -}}"
-if ($cargoList -match "{{- $package_name -}}") {
-  Stop-Loading "{{- $package_name -}}"
-}
-else {
-  Invoke-CommandExpression "cargo install {{ $package_name -}}"
-  Stop-Loading "{{- $package_name -}}" -isSuccess
+Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+  $cargoList = cargo install --list
+  if ($cargoList -match "{{- $package_name -}}") {
+    return ":{{- $package_name -}}"
+  }
+  else {
+    try {
+      Invoke-Expression "cargo install {{ $package_name -}}"
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+  }
 }
 # {{ end }}
+
+Write-Host
+Write-CompleteTask "Windows: Installed packages"

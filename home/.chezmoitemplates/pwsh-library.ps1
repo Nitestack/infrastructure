@@ -1,153 +1,115 @@
 # PowerShell Core library
 
-function Start-Loading
-{
-  param([string]$message)
-  Write-Host -NoNewline -ForegroundColor "Yellow" "󰇘$message"
+function Write-LogError {
+  param([String]$Message)
+  Write-Host -Object " $Message" -ForegroundColor "Red"
 }
-
-function Stop-Loading
-{
-  param([string]$message, [switch]$isSuccess)
-
-  if ($isSuccess)
-  {
-    $emoji = ""
+function Write-StartTask {
+  param([String]$Message)
+  Write-Host -Object "󰪥 $Message" -ForegroundColor "Yellow"
+}
+function Write-CompleteTask {
+  param([String]$Message)
+  Write-Host -Object "󰗠 $Message" -ForegroundColor "Green"
+}
+function Write-LogInfo {
+  param([String]$Message)
+  Write-Host -Object " $Message"
+}
+function Invoke-CommandExpression {
+  param([String]$Message)
+  try {
+    Invoke-Expression $Message
   }
-  else
-  {
-    $emoji = ""
-  }
-
-  $padding = " " * [Console]::WindowWidth
-  Write-Host -NoNewline "`r$padding"
-  Write-Host -ForegroundColor "Green" "`r$emoji $message"
-}
-
-function Write-LogColor
-{
-  param([string]$colorCode, [string]$message)
-  Write-Host -Object "$message" -ForegroundColor $colorCode
-}
-function Write-LogRed
-{
-  param([string]$message)
-  Write-LogColor -colorCode "Red" -message $message
-}
-function Write-LogBlue
-{
-  param([string]$message)
-  Write-LogColor -colorCode "Blue" -message $message
-}
-function Write-LogGreen
-{
-  param([string]$message)
-  Write-LogColor -colorCode "Green" -message $message
-}
-function Write-LogYellow
-{
-  param([string]$message)
-  Write-LogColor -colorCode "Yellow" -message $message
-}
-
-function Write-LogTask
-{
-  param([string]$message)
-  Write-LogBlue -message " $message"
-}
-function Write-ManualAction
-{
-  param([string]$message)
-  Write-LogRed -message " $message"
-}
-function Write-LogError
-{
-  param([string]$message)
-  Write-LogRed -message " $message"
-}
-function Write-LogInfo
-{
-  param([string]$message)
-  Write-LogBlue -message " $message"
-}
-function Write-LogSuccess
-{
-  param([string]$message)
-  Write-LogGreen -message " $message"
-}
-function Write-LogWarning
-{
-  param([string]$message)
-  Write-LogYellow -message " $message"
-}
-
-function Write-LogCommand
-{
-  param([string]$message)
-  Write-LogYellow -message " $message"
-}
-function Invoke-CommandExpression
-{
-  param([string]$cmd)
-  try
-  {
-    Invoke-Expression $cmd
-  } catch
-  {
-    Write-LogError -message "Command failed: $_"
+  catch {
+    throw "Command failed: $_"
   }
 }
 
-function Invoke-Error
-{
-  param([string]$message)
-  Write-LogError -message $message
-  exit 1
-}
+function Show-Spinner {
+  param (
+    [String]$ScriptBlock,
+    [String]$StartMessage,
+    [String]$CompletionMessage,
+    [String]$StartForegroundColor = "Yellow",
+    [String]$CompletionForegroundColor = "Green",
+    [String[]]$SpinnerFrames = @("󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥"),
+    [String]$CompletionIcon = "󰗠",
+    [String]$ErrorIcon = "",
+    [String]$ExitIcon = "",
+    [Int32]$IntervalMilliseconds = 100,
+    [Switch]$ShowLogs,
+    [String]$Prefix = ":"
+  )
 
-function Invoke-EnsureInstalled
-{
-  param([string]$cmd_name, [string]$command)
-  Start-Loading $cmd_name
+  $outputFile = [System.IO.Path]::GetTempFileName()
 
-  if (Get-Command $cmd_name -ErrorAction SilentlyContinue)
-  {
-    Stop-Loading $cmd_name
-    return
+  $Job = Start-Job -ScriptBlock {
+    param([String]$ScriptBlock, [String]$OutputFile)
+    try {
+      & ([ScriptBlock]::Create($ScriptBlock)) *>&1 | Out-File -FilePath $OutputFile -Append
+    }
+    catch {
+      $_ | Out-String | Out-File -FilePath $OutputFile -Append
+      throw
+    }
+  } -ArgumentList $ScriptBlock, $outputFile
+
+  $i = 0
+
+  while ($Job.State -eq "Running") {
+    Write-Host -NoNewline -ForegroundColor $StartForegroundColor "`r$($SpinnerFrames[$i]) $StartMessage"
+    $i = ($i + 1) % $SpinnerFrames.Count
+    Start-Sleep -Milliseconds $IntervalMilliseconds
   }
 
-  Invoke-CommandExpression $command
-  Stop-Loading $cmd_name
-}
+  # Display last spinner frame
+  Write-Host -NoNewline -ForegroundColor $StartForegroundColor "`r$($SpinnerFrames[-1]) $StartMessage"
 
-function Invoke-ChocoEnsureInstalled
-{
-  param([string]$package_name)
-  Start-Loading $package_name
+  # Read job output from the file
+  $JobOutput = Get-Content -Path $outputFile
 
-  if (choco list --lo -r -e $package_name)
-  {
-    Stop-Loading $package_name
-    return
+  # Display logs or errors
+  $HasError = $Job.ChildJobs[0].JobStateInfo.State -eq "Failed"
+  if ($ShowLogs -or $HasError) {
+    Write-Host
+    $IsError = $false
+    foreach ($line in $JobOutput) {
+      if ($line -match "Exception:") {
+        $IsError = $true
+      }
+      if ($IsError) {
+        Write-Host -ForegroundColor Red -Object $line
+      }
+      else {
+        Write-Host -Object $line
+      }
+    }
   }
 
-  Invoke-CommandExpression "choco install -y $package_name"
-  Stop-Loading $package_name -isSuccess
-}
-
-function Invoke-WingetEnsureInstalled
-{
-  param([string]$package_id)
-  $package_name = ($package_id -split "\.")[-1]
-
-  Start-Loading $package_name
-
-  if (winget list --id $package_id)
-  {
-    Stop-Loading $package_name
-    return
+  # Check for controlled exit
+  $HasControlledExit = $false
+  $ControlledExitMessage = $null
+  foreach ($line in $JobOutput) {
+    if ($line -is [string] -and $line.StartsWith($Prefix)) {
+      $HasControlledExit = $true
+      $ControlledExitMessage = $line.Substring($Prefix.Length).Trim()
+      break
+    }
   }
 
-  Invoke-CommandExpression "winget install -e --accept-package-agreements --accept-source-agreements --id $package_id"
-  Stop-Loading $package_name -isSuccess
+  $Padding = " " * [Console]::WindowWidth
+  Write-Host -NoNewline "`r$Padding"
+  if ($HasError) {
+    Write-Host -ForegroundColor Red -Object "`r$ErrorIcon An unexpected error occurred"
+  }
+  elseif ($HasControlledExit) {
+    Write-Host -ForegroundColor Yellow -Object "`r$ExitIcon $ControlledExitMessage"
+  }
+  else {
+    Write-Host -ForegroundColor $CompletionForegroundColor -Object "`r$CompletionIcon $CompletionMessage"
+  }
+
+  $Job | Remove-Job -Force
+  Remove-Item -Path $outputFile -Force
 }

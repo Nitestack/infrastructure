@@ -1,21 +1,18 @@
 # {{ template "pwsh-library.ps1" . }}
 
-Start-Loading "Windows: Setting up Neovim configuration"
+Show-Spinner -StartMessage "Windows: Setting up Neovim configuration" -CompletionMessage "Windows: Neovim configuration set" -ScriptBlock {
+  $target_path = "$env:LOCALAPPDATA\nvim"
+  $symlink_path = "$env:USERPROFILE\.config\nvim"
 
-$target_path = "$env:LOCALAPPDATA\nvim"
-$symlink_path = "$env:USERPROFILE\.config\nvim"
+  # Check if the path exists
+  if (!(Test-Path("$symlink_path"))) {
+    throw "Neovim configuration not found. Skipping."
+  }
 
-# Check if the path exists
-if (!(Test-Path("$symlink_path"))) {
-  Write-LogWarning "Neovim configuration not found. Skipping."
-  return
+  # Check if the symbolic link already exists
+  if (Test-Path("$target_path")) {
+    return ":Windows: Neovim configuration set"
+  }
+
+  New-Item -Path "$target_path" -ItemType SymbolicLink -Value "$symlink_path"
 }
-
-# Check if the symbolic link already exists
-if (Test-Path("$target_path")) {
-  Stop-Loading "Windows: Neovim configuration set"
-  return
-}
-
-New-Item -Path "$target_path" -ItemType SymbolicLink -Value "$symlink_path"
-Stop-Loading "Windows: Neovim configuration set" -isSuccess
