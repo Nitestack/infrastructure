@@ -29,8 +29,17 @@ return {
         end,
       },
       "andymass/vim-matchup",
-      "windwp/nvim-ts-autotag",
       "RRethy/nvim-treesitter-endwise",
+      {
+        "windwp/nvim-ts-autotag",
+        opts = {
+          opts = {
+            enable_close = true,
+            enable_rename = true,
+            enable_close_on_slash = false,
+          },
+        },
+      },
     },
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
@@ -111,10 +120,6 @@ return {
         matchup = {
           enable = true,
           disable_virtual_text = true,
-        },
-        -- configure nvim-ts-autotag
-        autotag = {
-          enable = true,
         },
         -- configure nvim-treesitter-endwise
         endwise = {
