@@ -27,91 +27,140 @@ param(
   $Rest,
 
   [Alias("h")]
-  [switch]$Help
+  [Switch]$Help
 )
 
 # PowerShell Core library
 
-function Write-LogColor {
-  param([string]$colorCode, [string]$message)
-  Write-Host -Object "$message" -ForegroundColor $colorCode
-}
-function Write-LogRed {
-  param([string]$message)
-  Write-LogColor -colorCode "Red" -message $message
-}
-function Write-LogBlue {
-  param([string]$message)
-  Write-LogColor -colorCode "Blue" -message $message
-}
-function Write-LogGreen {
-  param([string]$message)
-  Write-LogColor -colorCode "Green" -message $message
-}
-function Write-LogYellow {
-  param([string]$message)
-  Write-LogColor -colorCode "Yellow" -message $message
-}
-
-function Write-LogTask {
-  param([string]$message)
-  Write-LogBlue -message " $message"
-}
-function Write-ManualAction {
-  param([string]$message)
-  Write-LogRed -message " $message"
-}
 function Write-LogError {
-  param([string]$message)
-  Write-LogRed -message " $message"
+  param([String]$Message)
+  Write-Host -Object " $Message" -ForegroundColor "Red"
 }
-function Write-LogInfo {
-  param([string]$message)
-  Write-LogBlue -message " $message"
+function Write-StartTask {
+  param([String]$Message)
+  Write-Host -Object "󰪥 $Message" -ForegroundColor "Yellow"
 }
-function Write-LogSuccess {
-  param([string]$message)
-  Write-LogGreen -message " $message"
-}
-
-function Write-LogCommand {
-  param([string]$message)
-  Write-LogYellow -message " $message"
+function Write-CompleteTask {
+  param([String]$Message)
+  Write-Host -Object "󰗠 $Message" -ForegroundColor "Green"
 }
 function Invoke-CommandExpression {
-  param([string]$message)
+  param([String]$Message)
   try {
-    Invoke-Expression $message
+    Invoke-Expression $Message
   }
   catch {
-    Write-LogError -message "Command failed: $_"
+    throw "Command failed: $_"
   }
 }
-function Invoke-Error {
-  param([string]$message)
-  Write-LogError -message $message
-  exit 1
+
+function Show-Spinner {
+  param (
+    [String]$ScriptBlock,
+    [String]$StartMessage,
+    [String]$CompletionMessage,
+    [String]$StartForegroundColor = "Yellow",
+    [String]$CompletionForegroundColor = "Green",
+    [String[]]$SpinnerFrames = @("󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥"),
+    [String]$CompletionIcon = "󰗠",
+    [String]$ErrorIcon = "",
+    [String]$ExitIcon = "",
+    [Int32]$IntervalMilliseconds = 100,
+    [Switch]$ShowLogs,
+    [String]$Prefix = ":"
+  )
+
+  $outputFile = [System.IO.Path]::GetTempFileName()
+
+  $Job = Start-Job -ScriptBlock {
+    param([String]$ScriptBlock, [String]$OutputFile)
+    try {
+      & ([ScriptBlock]::Create($ScriptBlock)) *>&1 | Out-File -FilePath $OutputFile -Append
+    }
+    catch {
+      $_ | Out-String | Out-File -FilePath $OutputFile -Append
+      throw
+    }
+  } -ArgumentList $ScriptBlock, $outputFile
+
+  $i = 0
+
+  while ($Job.State -eq "Running") {
+    Write-Host -NoNewline -ForegroundColor $StartForegroundColor "`r$($SpinnerFrames[$i]) $StartMessage"
+    $i = ($i + 1) % $SpinnerFrames.Count
+    Start-Sleep -Milliseconds $IntervalMilliseconds
+  }
+
+  # Display last spinner frame
+  Write-Host -NoNewline -ForegroundColor $StartForegroundColor "`r$($SpinnerFrames[-1]) $StartMessage"
+
+  # Read job output from the file
+  $JobOutput = Get-Content -Path $outputFile
+
+  # Display logs or errors
+  $HasError = $Job.ChildJobs[0].JobStateInfo.State -eq "Failed"
+  if ($ShowLogs -or $HasError) {
+    Write-Host
+    $IsError = $false
+    foreach ($line in $JobOutput) {
+      if ($line -match "Exception:") {
+        $IsError = $true
+      }
+      if ($IsError) {
+        Write-Host -ForegroundColor Red -Object $line
+      }
+      else {
+        Write-Host -Object $line
+      }
+    }
+  }
+
+  # Check for controlled exit
+  $HasControlledExit = $false
+  $ControlledExitMessage = $null
+  foreach ($line in $JobOutput) {
+    if ($line -is [string] -and $line.StartsWith($Prefix)) {
+      $HasControlledExit = $true
+      $ControlledExitMessage = $line.Substring($Prefix.Length).Trim()
+      break
+    }
+  }
+
+  $Padding = " " * [Console]::WindowWidth
+  Write-Host -NoNewline "`r$Padding"
+  if ($HasError) {
+    Write-Host -ForegroundColor Red -Object "`r$ErrorIcon An unexpected error occurred"
+  }
+  elseif ($HasControlledExit) {
+    Write-Host -ForegroundColor Yellow -Object "`r$ExitIcon $ControlledExitMessage"
+  }
+  else {
+    Write-Host -ForegroundColor $CompletionForegroundColor -Object "`r$CompletionIcon $CompletionMessage"
+  }
+
+  $Job | Remove-Job -Force
+  Remove-Item -Path $outputFile -Force
 }
-function Invoke-EnsureInstalled(
-  [string]$command,
-  [string]$message
-) {
-  if (!(Get-Command $command -ErrorAction SilentlyContinue)) {
-    Write-LogError "Missing dependency: '$command'"
-    Invoke-Error "$message"
+
+function Invoke-EnsureInstalled {
+  param([String]$Command, [String]$Message)
+  if (!(Get-Command $Command -ErrorAction SilentlyContinue)) {
+    Write-LogError -Message "Missing dependency: '$Command'"
+    Write-LogError -Message $Message
+    exit 1
   }
 }
 function Invoke-EnsureGitInstalled() {
-  Invoke-EnsureInstalled -command "git" -message "Visit 'https://git-scm.com/downloads' to install git"
+  Invoke-EnsureInstalled -Command "git" -Message "Visit 'https://git-scm.com/downloads' to install git"
 }
 function Invoke-EnsureChezmoiInstalled() {
-  Invoke-EnsureInstalled -command "chezmoi" -message "Visit 'https://www.chezmoi.io/install' to install chezmoi"
+  Invoke-EnsureInstalled -Command "chezmoi" -Message "Visit 'https://www.chezmoi.io/install' to install chezmoi"
 }
 function Invoke-EnsureNeovimInstalled() {
-  Invoke-EnsureInstalled -command "nvim" -message "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires `bob` to be installed)"
+  Invoke-EnsureInstalled -Command "nvim" -Message "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires `bob` to be installed)"
 }
 function Invoke-EnsureBobInstalled() {
-  Invoke-EnsureInstalled -command "bob" -message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
+  Invoke-EnsureInstalled -Command "bob" -Message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
 }
 
 function Invoke-Download {
@@ -144,7 +193,6 @@ USAGE:
 
     [Switch]$SSH
   )
-  Write-LogTask "Downloading dotfiles"
 
   # Set remote depending on the ssh flag
   if ($SSH) {
@@ -156,31 +204,29 @@ USAGE:
 
   # Check if dotfiles are already downloaded
   if (Test-Path "$Target") {
+    Write-StartTask "Cleaning '$Path' with '$Remote' at branch '$Branch'"
     $Path = Resolve-Path "$Target"
-
-    Write-LogTask "Cleaning '$Path' with '$Remote' at branch '$Branch'"
     $Git = "git -C $Path"
     # Ensure that the remote is set to the correct URL
-    if (Invoke-Expression "$Git remote | Select-String `"^origin$`" -Quiet") {
-      Invoke-Expression "$Git remote set-url origin $Remote"
+    if (Invoke-CommandExpression "$Git remote | Select-String `"^origin$`" -Quiet") {
+      Invoke-CommandExpression "$Git remote set-url origin $Remote"
     }
     else {
-      Invoke-Expression "$Git remote add origin $Remote"
+      Invoke-CommandExpression "$Git remote add origin $Remote"
     }
-    Invoke-Expression "$Git checkout -B $Branch"
-    Invoke-Expression "$Git fetch origin $Branch"
-    Invoke-Expression "$Git reset --hard FETCH_HEAD"
-    Invoke-Expression "$Git clean -fdx"
+    Invoke-CommandExpression "$Git checkout -B $Branch"
+    Invoke-CommandExpression "$Git fetch origin $Branch"
+    Invoke-CommandExpression "$Git reset --hard FETCH_HEAD"
+    Invoke-CommandExpression "$Git clean -fdx"
     Remove-Variable Path, Remote, Branch, Git
+    Write-CompleteTask "Cleaned existing dotfiles"
   }
   else {
-    Write-LogTask "Cloning '$Repo' at branch '$Branch' to '$Target'"
+    Write-StartTask "Downloading '$Repo' at '$Branch' to '$Target'"
     Invoke-CommandExpression "git clone -b '$Branch' '$Remote' '$Target'"
+    Write-CompleteTask "Downloaded dotfiles"
   }
-
-  Write-LogSuccess "Dotfiles downloaded to '$Target'"
 }
-
 
 function Invoke-Install {
   <#
@@ -202,25 +248,22 @@ USAGE:
           throw "Invalid path. Please provide a valid path to an existing directory."
         }
       })]
-    [string]$SourceDir = "$env:USERPROFILE\.dotfiles",
+    [String]$SourceDir = "$env:USERPROFILE\.dotfiles",
 
     [Switch]$OneShot
   )
-  Write-LogTask "Installing dotfiles"
 
+  Write-StartTask "Installing dotfiles"
   # Set arguments
   $arguments = @("--source='$SourceDir'", "--verbose=false")
-
   if ($OneShot) {
     $arguments += "--one-shot"
   }
   else {
     $arguments += "--apply"
   }
-
-  Invoke-CommandExpression "chezmoi init $arguments"
-
-  Write-LogSuccess "Installed dotfiles"
+  Invoke-Expression "chezmoi init $arguments" || throw "Failed to install dotfiles"
+  Write-CompleteTask "Installed dotfiles"
 }
 
 function Invoke-Update {
@@ -246,7 +289,8 @@ USAGE:
     [Alias("nvim")]
     [Switch]$Neovim
   )
-  Write-LogTask "Updating dotfiles"
+
+  Write-StartTask "Updating dotfiles"
   # Check for local/global updates
   $arguments = @()
   if ($Local) {
@@ -255,81 +299,80 @@ USAGE:
   else {
     $arguments += "update"
   }
-
   if (![string]::IsNullOrEmpty($RefreshExternals)) {
     $arguments += "--refresh-externals='$RefreshExternals'"
   }
-
-  chezmoi $arguments || Invoke-Error "Failed to update dotfiles"
-  Write-LogSuccess "Updated dotfiles"
+  chezmoi $arguments || throw "Failed to update dotfiles"
+  Write-CompleteTask "Updated dotfiles"
 
   # Update the CLI
   if ($CLI) {
-    $ScriptDir = Resolve-Path "$PSScriptRoot\dotfiles.ps1"
-    if (!(Test-Path "$ScriptDir")) {
-      Invoke-Error "Could not find '$ScriptDir'"
-    }
-    $UpdatedScriptDir = Resolve-Path "$(chezmoi source-path)\..\scripts\windows\dotfiles.ps1"
-    if (!(Test-Path "$UpdatedScriptDir")) {
-      Invoke-Error "Could not find '$UpdatedScriptDir'"
-    }
+    Show-Spinner -StartMessage "Updating CLI" -CompletionMessage "Updated CLI to the latest version" -ScriptBlock {
+      $ScriptDir = Resolve-Path "$env:USERPROFILE\.local\bin\dotfiles.ps1"
+      Write-Host "Script dir: $ScriptDir"
+      if (!(Test-Path "$ScriptDir")) {
+        throw "Could not find '$ScriptDir'"
+      }
+      $UpdatedScriptDir = Resolve-Path "$(chezmoi source-path)\..\scripts\windows\dotfiles.ps1"
+      if (!(Test-Path "$UpdatedScriptDir")) {
+        throw "Could not find '$UpdatedScriptDir'"
+      }
 
-    # Check if the CLI is already up to date
-    if ("$ScriptDir" -eq "$UpdatedScriptDir") {
-      Write-LogInfo "The CLI is already up to date"
-      exit
-    }
+      # Check if the CLI is already up to date
+      if ("$ScriptDir" -eq "$UpdatedScriptDir") {
+        return ":The CLI is already up to date"
+      }
 
-    Write-LogTask "Updating CLI"
-    Copy-Item -Path "$UpdatedScriptDir" -Destination "$ScriptDir" -Force || Invoke-Error "Failed to sync 'dotfiles.ps1' file"
-    Write-LogSuccess "Updated CLI to the latest version"
+      Copy-Item -Path "$UpdatedScriptDir" -Destination "$ScriptDir" -Force || throw "Failed to sync 'dotfiles.ps1' file"
+    }
   }
 
   # Update Neovim related files
   if ($Neovim) {
     # Update Neovim
-    Write-LogTask "Updating Neovim"
-    bob update --all || Invoke-Error "Failed to update Neovim"
-    Write-LogSuccess "Updated Neovim to the latest version"
+    Show-Spinner -StartMessage "Updating Neovim" -CompletionMessage "Updated Neovim to the latest version" -ScriptBlock {
+      bob update --all || throw "Failed to update Neovim"
+    }
 
     # Update Lazy plugins and Mason packages
-    Write-LogTask "Updating Neovim plugins"
-    nvim --headless -c "Lazy! sync" +qa || Invoke-Error "Failed to update Neovim plugins"
-    Write-LogSuccess "Updated Neovim plugins"
+    Show-Spinner -StartMessage "Updating Neovim plugins" -CompletionMessage "Updated Neovim plugins" -ScriptBlock {
+      nvim --headless -c "Lazy! sync" +qa || throw "Failed to update Neovim plugins"
+    }
 
-    Write-LogTask "Updating Mason packages"
-    nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)" || Invoke-Error "Failed to update Mason packages"
-    Write-LogSuccess "Updated Mason packages"
+    Show-Spinner -StartMessage "Updating Mason packages" -CompletionMessage "Updated Mason packages" -ScriptBlock {
+      nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)" || throw "Failed to update Mason packages"
+    }
 
     # Sync lazy-lock.json file
-    Write-LogTask "Syncing 'lazy-lock.json' file"
-    $SourcePath = chezmoi source-path
-    $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
-    if ([string]::IsNullOrEmpty($LazyLockPath)) {
-      Write-LogError "Could not find 'lazy-lock.json' file in '$SourcePath'"
+    Show-Spinner -StartMessage "Syncing 'lazy-lock.json' file" -CompletionMessage "Synced 'lazy-lock.json' file" -ScriptBlock {
+      $SourcePath = chezmoi source-path
+      $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
+      if ([string]::IsNullOrEmpty($LazyLockPath)) {
+        throw "Could not find 'lazy-lock.json' file in '$SourcePath'"
+      }
+      $ConfigPath = "$env:LOCALAPPDATA\nvim"
+      $UpdatedLazyLockPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazy-lock.json" -File | Select-Object -First 1).FullName
+      if ([string]::IsNullOrEmpty($UpdatedLazyLockPath)) {
+        throw "Could not find 'lazy-lock.json' file in '$ConfigPath'"
+      }
+      Copy-Item -Path "$UpdatedLazyLockPath" -Destination "$LazyLockPath" -Force || throw "Failed to sync 'lazy-lock.json' file"
     }
-    $ConfigPath = "$env:LOCALAPPDATA\nvim"
-    $UpdatedLazyLockPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazy-lock.json" -File | Select-Object -First 1).FullName
-    if ([string]::IsNullOrEmpty($UpdatedLazyLockPath)) {
-      Write-LogError "Could not find 'lazy-lock.json' file in '$ConfigPath'"
-    }
-    Copy-Item -Path "$UpdatedLazyLockPath" -Destination "$LazyLockPath" -Force || Invoke-Error "Failed to sync 'lazy-lock.json' file"
-    Write-LogSuccess "Synced 'lazy-lock.json' file"
 
     # Commit the updated 'lazy-lock.json' file
-    Write-LogTask "Committing 'lazy-lock.json' file"
-    # Check if there are any changes
-    Invoke-Expression "git diff --quiet -- $LazyLockPath"
-    if ($LASTEXITCODE -eq 0) {
-      Write-LogInfo "No changes in 'lazy-lock.json' file. Skip committing."
-      exit
+    Show-Spinner -StartMessage "Committing 'lazy-lock.json' file" -CompletionMessage "Committed 'lazy-lock.json' file" -ScriptBlock {
+      $SourcePath = chezmoi source-path
+      $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
+      # Check if there are any changes
+      Invoke-Expression "git diff --quiet -- $LazyLockPath"
+      if ($LASTEXITCODE -eq 0) {
+        return ":No changes in 'lazy-lock.json' file"
+      }
+      $CurrentPath = Get-Location
+      Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || throw "Failed to set current path to '$(chezmoi source-path)/..'"
+      git add "$LazyLockPath" || throw "Failed to add 'lazy-lock.json' file to git"
+      git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json" || throw "Failed to commit 'lazy-lock.json' file"
+      Set-Location "$CurrentPath" || throw "Failed to set current path to '$CurrentPath'"
     }
-    $CurrentPath = Get-Location
-    Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || Invoke-Error "Failed to set current path to '$(chezmoi source-path)/..'"
-    git add "$LazyLockPath" || Invoke-Error "Failed to add 'lazy-lock.json' file to git"
-    git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json" || Invoke-Error "Failed to commit 'lazy-lock.json' file"
-    Write-LogSuccess "Committed 'lazy-lock.json' file"
-    Set-Location "$CurrentPath" || Invoke-Error "Failed to set current path to '$CurrentPath'"
   }
 }
 
@@ -388,7 +431,7 @@ USAGE:
       $arguments += "--watch"
     }
 
-    Invoke-CommandExpression "chezmoi edit $arguments"
+    Invoke-Expression "chezmoi edit $arguments"
   }
 }
 
