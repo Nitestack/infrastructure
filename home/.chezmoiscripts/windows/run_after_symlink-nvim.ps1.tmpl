@@ -6,15 +6,13 @@ $target_path = "$env:LOCALAPPDATA\nvim"
 $symlink_path = "$env:USERPROFILE\.config\nvim"
 
 # Check if the path exists
-if (!(Test-Path("$symlink_path")))
-{
+if (!(Test-Path("$symlink_path"))) {
   Write-LogWarning "Neovim configuration not found. Skipping."
   return
 }
 
 # Check if the symbolic link already exists
-if (Test-Path("$target_path"))
-{
+if (Test-Path("$target_path")) {
   Stop-Loading "Windows: Neovim configuration set"
   return
 }

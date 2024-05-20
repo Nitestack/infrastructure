@@ -1,9 +1,7 @@
 # {{ template "pwsh-library.ps1" . }}
 
-if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator'))
-{
-  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000)
-  {
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
     $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
     Start-Process -Wait -FilePath pwsh -Verb Runas -ArgumentList $CommandLine
     Exit
@@ -32,11 +30,10 @@ Write-LogTask "Custom installation:"
 # {{ range $_, $pkg := concat .dependencies.windows.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $to_install := $pkg }}
 Start-Loading '{{- $cmd_name | quote -}}'
-if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue)
-{
+if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
   Stop-Loading "{{- $cmd_name -}}"
-} else
-{
+}
+else {
   # {{ range $_, $line := $to_install }}
   # {{ "\n" }} Invoke-CommandExpression {{ $line | quote }}
   # {{ end }}
@@ -51,11 +48,10 @@ Write-LogTask "npm:"
 $pnpmList = pnpm list -g --depth 0
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 Start-Loading "{{- $package_name -}}"
-if ($pnpmList -match "{{- $package_name -}}")
-{
+if ($pnpmList -match "{{- $package_name -}}") {
   Stop-Loading "{{- $package_name -}}"
-} else
-{
+}
+else {
   Invoke-CommandExpression "pnpm add -g {{ $package_name -}}"
   Stop-Loading "{{- $package_name -}}" -isSuccess
 }
@@ -67,11 +63,10 @@ Write-LogTask "cargo:"
 $cargoList = cargo install --list
 # {{ range $_, $package_name := .dependencies.all.cargo }}
 Start-Loading "{{- $package_name -}}"
-if ($cargoList -match "{{- $package_name -}}")
-{
+if ($cargoList -match "{{- $package_name -}}") {
   Stop-Loading "{{- $package_name -}}"
-} else
-{
+}
+else {
   Invoke-CommandExpression "cargo install {{ $package_name -}}"
   Stop-Loading "{{- $package_name -}}" -isSuccess
 }
