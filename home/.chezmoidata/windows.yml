@@ -13,17 +13,22 @@ dependencies:
     winget:
       - "ajeetdsouza.zoxide"
 
+      - "Guru3D.Afterburner"
       - "Google.AndroidStudio"
       - "TheBrowserCompany.Arc"
       - "Bitwarden.Bitwarden"
+      - "Kitware.CMake"
       - "Discord.Discord"
-      - "File-New-Project.EarTrumpet"
+      - "Microsoft.DotNet.SDK.8"
       - "Figma.Figma"
+      - "MicaForEveryone.MicaForEveryone"
       - "Notion.Notion"
       - "PDFgear.PDFgear"
       - "Microsoft.PowerToys"
+      - "nilesoft.shell"
       - "Spotify.Spotify"
       - "Microsoft.VisualStudioCode"
+      - "Microsoft.VisualStudio.2022.Community"
       - "wez.wezterm"
       - "WhatsApp.WhatsApp"
     custom:
@@ -34,3 +39,4 @@ dependencies:
     manual:
       - "AnkerWork"
       - "Notion Calendar"
+      - "Wintoys"
