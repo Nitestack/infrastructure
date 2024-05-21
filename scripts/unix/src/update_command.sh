@@ -80,13 +80,13 @@ if [[ -n "${args["--nvim"]}" ]]; then
 
 	## Commit the updated 'lazy-lock.json' file
 	commit_lazy_lock() {
+		current_path=$(pwd)
+		cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
 		# Check if there are any changes
 		if git diff --quiet "${lazy_lock_path}"; then
 			echo "No changes in 'lazy-lock.json' file"
 			exit 2
 		fi
-		current_path=$(pwd)
-		cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
 		git add "${lazy_lock_path}"
 		git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
 		cd "${current_path}" || exit 1

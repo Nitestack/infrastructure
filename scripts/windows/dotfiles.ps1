@@ -356,13 +356,13 @@ USAGE:
     Show-Spinner -StartMessage "Committing 'lazy-lock.json' file" -CompletionMessage "Committed 'lazy-lock.json' file" -ScriptBlock {
       $SourcePath = chezmoi source-path
       $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
+      $CurrentPath = Get-Location
+      Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || throw "Failed to set current path to '$(chezmoi source-path)/..'"
       # Check if there are any changes
       Invoke-Expression "git diff --quiet -- $LazyLockPath"
       if ($LASTEXITCODE -eq 0) {
         return ":No changes in 'lazy-lock.json' file"
       }
-      $CurrentPath = Get-Location
-      Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || throw "Failed to set current path to '$(chezmoi source-path)/..'"
       git add "$LazyLockPath" || throw "Failed to add 'lazy-lock.json' file to git"
       git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json" || throw "Failed to commit 'lazy-lock.json' file"
       Set-Location "$CurrentPath" || throw "Failed to set current path to '$CurrentPath'"
