@@ -283,48 +283,22 @@ expand_tilde() {
 }
 
 log_color() {
-	color_code="$1"
+	local color_code="$1"
 	shift
 
 	printf "\033[${color_code}m%s\033[0m\n" "$*" >&2
 }
-log_red() {
-	log_color "0;31" "$@"
-}
-log_blue() {
-	log_color "0;34" "$@"
+log_green() {
+	log_color "0;32" "$@"
 }
 log_yellow() {
 	log_color "0;33" "$@"
 }
-log_green() {
-	log_color "0;32" "$@"
+start_task() {
+	log_yellow "󰪥" "$@"
 }
-
-log_task() {
-	log_blue "" "$@"
-}
-log_manual_action() {
-	log_red "" "$@"
-}
-log_error() {
-	log_red "" "$@"
-}
-log_info() {
-	log_blue "" "$@"
-}
-log_success() {
+complete_task() {
 	log_green "" "$@"
-}
-log_command() {
-	log_yellow "" "$@"
-}
-command_exec() {
-	"$@" || log_error "Command failed: $*"
-}
-error() {
-	log_error "$@"
-	exit 1
 }
 
 send_completions() {
@@ -401,6 +375,79 @@ send_completions() {
   echo $'# ex: filetype=sh'
 }
 
+show_spinner() {
+	local task="$1"
+	local start_message="$2"
+	local completion_message="$3"
+	local error_message="${4:-An unexpected error occurred}"
+
+	local spinner_frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
+
+	display_spinner() {
+		local pid=$!
+		local i=0
+		tput civis # Hide cursor
+
+		while kill -0 "${pid}" 2>/dev/null; do
+			printf "\r\e[33m%s %s\e[0m" "${spinner_frames[i]}" "${start_message}" # Yellow color
+			i=$(((i + 1) % ${#spinner_frames[@]}))
+			sleep 0.1
+		done
+
+		tput cnorm # Show cursor
+	}
+
+	# Run the task in the background, redirect stdout and stderr to separate temporary files
+	local temp_out_log=$(mktemp)
+	local temp_err_log=$(mktemp)
+	(${task} >"${temp_out_log}" 2>"${temp_err_log}") &
+
+	display_spinner "${start_message}"
+
+	# Wait for the task to complete
+	wait $!
+	local exit_code=$?
+
+	# Print last frame of the spinner
+	last_index=$((${#spinner_frames[@]} - 1))
+	printf "\r\e[33m%s %s\e[0m" "${spinner_frames[${last_index}]}" "${start_message}" # Yellow color
+
+	# Get the last echo message from the output log file
+	local last_echo=$(tail -n 1 "${temp_out_log}")
+
+	# Remove the last line of the output log file, if the exit code is greater than 1
+	if [[ ${exit_code} -gt 1 ]]; then
+		sed -i '$ d' "${temp_out_log}"
+	fi
+
+	# Display stdout logs if they are not empty
+	if [[ -s "${temp_out_log}" ]]; then
+		echo
+		cat "${temp_out_log}"
+	fi
+
+	# Display stderr logs if they are not empty
+	if [[ -s "${temp_err_log}" ]]; then
+		echo
+		cat "${temp_err_log}" | while IFS= read -r line; do echo -e "\033[31m${line}\033[0m"; done
+	fi
+
+	# Clear the line before displaying the final message
+	printf "\r\033[K"
+
+	# Display completion or error message based on exit code
+	if [[ ${exit_code} -eq 0 ]]; then
+		printf "\r\e[32m%s %s\e[0m\n" "󰗠" "${completion_message}" # Green color
+	elif [[ ${exit_code} -eq 1 ]]; then
+		printf "\r\e[31m%s %s\e[0m\n" "" "${error_message}" # Red color
+	else
+		printf "\r%s %s\n" "" "${last_echo}"
+	fi
+
+	# Clean up
+	rm "${temp_out_log}" "${temp_err_log}"
+}
+
 validate_dir_exists() {
   [[ -d "$1" ]] || echo "must be an existing directory"
 }
@@ -423,8 +470,6 @@ dotfiles_completion_command() {
 }
 
 dotfiles_download_command() {
-  log_task "Downloading dotfiles"
-
   dotfiles_dir=$(expand_tilde "${args[target]}")
   repo=${args[--repo]}
   branch=${args[--branch]}
@@ -439,29 +484,32 @@ dotfiles_download_command() {
   if [[ -d "${dotfiles_dir}" ]]; then
   	path=$(realpath "${dotfiles_dir}")
 
-  	log_task "Cleaning '${path}' with '${remote}' at branch '${branch}'"
-  	git="git -C ${path}"
-  	if ${git} remote | grep -q "^origin$"; then
-  		${git} remote set-url origin "${remote}"
-  	else
-  		${git} remote add origin "${remote}"
-  	fi
-  	${git} checkout -B "${branch}"
-  	${git} fetch origin "${branch}"
-  	${git} reset --hard FETCH_HEAD
-  	${git} clean -fdx
-  	unset path remote branch git
-  else
-  	log_task "Cloning '${repo}' at branch '${branch}' to '${dotfiles_dir}'"
-  	command_exec git clone -b "${branch}" "${remote}" "${dotfiles_dir}"
-  fi
+  	clean_dotfiles() {
+  		git="git -C ${path}"
+  		if ${git} remote | grep -q "^origin$"; then
+  			${git} remote set-url origin "${remote}"
+  		else
+  			${git} remote add origin "${remote}"
+  		fi
+  		${git} checkout -B "${branch}"
+  		${git} fetch origin "${branch}"
+  		${git} reset --hard FETCH_HEAD
+  		${git} clean -fdx
+  		unset path remote branch git
+  	}
 
-  log_success "Dotfiles downloaded to '${dotfiles_dir}'"
+  	show_spinner "clean_dotfiles" "Cleaning '${path}' with '${remote}' at branch '${branch}'" "Dotfiles cleaned from '${path}'"
+  else
+  	clone_dotfiles() {
+  		git clone -b "${branch}" "${remote}" "${dotfiles_dir}"
+  	}
+  	show_spinner "clone_dotfiles" "Cloning '${repo}' at branch '${branch}' to '${dotfiles_dir}'" "Dotfiles downloaded to '${dotfiles_dir}'"
+  fi
 
 }
 
 dotfiles_install_command() {
-  log_task "Installing dotfiles"
+  start_task "Installing dotfiles"
 
   sourceDir=$(expand_tilde "${args[sourceDir]}")
 
@@ -473,14 +521,14 @@ dotfiles_install_command() {
   	set -- "$@" --apply
   fi
 
-  command_exec chezmoi init "$@"
+  chezmoi init "$@"
 
-  log_success "Installed dotfiles"
+  complete_task "Installed dotfiles"
 
 }
 
 dotfiles_update_command() {
-  log_task "Updating dotfiles"
+  start_task "Updating dotfiles"
 
   if [[ -n "${args[--local]}" ]]; then
   	set -- apply
@@ -492,75 +540,85 @@ dotfiles_update_command() {
   	set -- "$@" --refresh-externals="${args["--refresh-externals"]}"
   fi
 
-  chezmoi "$@" || error "Failed to update dotfiles"
-  log_success "Updated dotfiles"
+  chezmoi "$@"
+  complete_task "Updated dotfiles"
 
   if [[ -n "${args["--cli"]}" ]]; then
-  	script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)/dotfiles"
-  	if [[ ! -f "${script_dir}" ]]; then
-  		error "Could not find '${script_dir}'"
-  	fi
+  	update_cli() {
+  		script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)/dotfiles"
+  		if [[ ! -f "${script_dir}" ]]; then
+  			echo "Could not find '${script_dir}'"
+  			exit 1
+  		fi
 
-  	updated_script_dir=$(realpath "$(chezmoi source-path)/../scripts/unix/dotfiles")
-  	if [[ ! -f "${updated_script_dir}" ]]; then
-  		error "Could not find '${updated_script_dir}'"
-  	fi
+  		updated_script_dir=$(realpath "$(chezmoi source-path)/../scripts/unix/dotfiles")
+  		if [[ ! -f "${updated_script_dir}" ]]; then
+  			echo "Could not find '${updated_script_dir}'"
+  			exit 1
+  		fi
 
-  	if [[ "${script_dir}" == "${updated_script_dir}" ]]; then
-  		log_success "The CLI is already up to date"
-  		exit 0
-  	fi
+  		if [[ "${script_dir}" == "${updated_script_dir}" ]]; then
+  			echo "The CLI is already up to date"
+  			exit 2
+  		fi
 
-  	log_task "Updating CLI"
-  	cp -f "${updated_script_dir}" "${script_dir}" || error "Failed to sync 'dotfiles'"
-  	log_success "Updated the CLI to the latest version"
+  		cp -f "${updated_script_dir}" "${script_dir}"
+  	}
+
+  	show_spinner "update_cli" "Updating CLI" "Updated CLI"
   fi
 
   if [[ -n "${args["--nvim"]}" ]]; then
-  	log_task "Updating Neovim"
-  	bob update --all || error "Failed to update Neovim"
-  	log_success "Updated Neovim to the latest version"
+  	update_neovim() {
+  		bob update --all
+  	}
+  	show_spinner "update_neovim" "Updating Neovim" "Updated Neovim"
 
-  	log_task "Updating Neovim plugins"
-  	nvim --headless -c "Lazy! sync" +qa || error "Failed to update Neovim plugins"
-  	log_success "Updated Neovim plugins"
+  	update_neovim_plugins() {
+  		nvim --headless -c "Lazy! sync" +qa
+  	}
+  	show_spinner "update_neovim_plugins" "Updating Neovim plugins" "Updated Neovim plugins"
 
-  	log_task "Updating Mason packages"
-  	nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)" || error "Failed to update Mason packages"
-  	log_success "Updated Mason packages"
+  	update_mason_packages() {
+  		nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)"
+  	}
+  	show_spinner "update_mason_packages" "Updating Mason packages" "Updated Mason packages"
 
-  	log_task "Syncing 'lazy.lock.json' file"
   	source_path=$(chezmoi source-path)
   	lazy_lock_path=$(find "${source_path}" -type f -name "*lazy-lock.json" -print -quit)
-  	if [[ ! -f "${lazy_lock_path}" ]]; then
-  		error "Could not find 'lazy-lock.json' file in '${source_path}'"
-  	fi
-  	config_path="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
-  	updated_lazy_lock_path=$(find "${config_path}" -type f -name "*lazy-lock.json" -print -quit)
-  	if [[ ! -f "${updated_lazy_lock_path}" ]]; then
-  		error "Could not find 'lazy-lock.json' file in '${config_path}'"
-  	fi
-  	cp -f "${updated_lazy_lock_path}" "${lazy_lock_path}" || error "Failed to sync 'lazy-lock.json' file"
-  	log_success "Synced 'lazy-lock.json' file"
+  	sync_lazy_lock() {
+  		if [[ ! -f "${lazy_lock_path}" ]]; then
+  			echo "Could not find 'lazy-lock.json' file in '${source_path}'"
+  			exit 1
+  		fi
+  		config_path="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
+  		updated_lazy_lock_path=$(find "${config_path}" -type f -name "*lazy-lock.json" -print -quit)
+  		if [[ ! -f "${updated_lazy_lock_path}" ]]; then
+  			echo "Could not find 'lazy-lock.json' file in '${config_path}'"
+  			exit 1
+  		fi
+  		cp -f "${updated_lazy_lock_path}" "${lazy_lock_path}"
+  	}
+  	show_spinner "sync_lazy_lock" "Syncing 'lazy-lock.json' file" "Synced 'lazy-lock.json' file"
 
-  	log_task "Committing 'lazy-lock.json' file"
-  	if git diff --quiet --exit-code -- "${lazy_lock_path}"; then
-  		log_info "No changes in 'lazy-lock.json' file. Skip committing."
-  		exit 0
-  	fi
-  	current_path=$(pwd)
-  	cd "$(realpath "$(chezmoi source-path)/..")" || error "Failed to set current path to '$(chezmoi source-path)/..'"
-  	git add "${lazy_lock_path}" || error "Failed to add 'lazy-lock.json' file to git"
-  	git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json" || error "Failed to commit 'lazy-lock.json' file"
-  	log_success "Committed 'lazy-lock.json' file"
-  	cd "${current_path}" || error "Failed to set current path to '${current_path}'"
+  	commit_lazy_lock() {
+  		# Check if there are any changes
+  		if git diff --quiet "${lazy_lock_path}"; then
+  			echo "No changes in 'lazy-lock.json' file"
+  			exit 2
+  		fi
+  		current_path=$(pwd)
+  		cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
+  		git add "${lazy_lock_path}"
+  		git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
+  		cd "${current_path}" || exit 1
+  	}
+  	show_spinner "commit_lazy_lock" "Committing 'lazy-lock.json' file" "Committed 'lazy-lock.json' file"
   fi
 
 }
 
 dotfiles_edit_command() {
-  #!/usr/bin/env bash
-
   if [[ "${#args[@]}" -eq 0 ]]; then
   	cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
 
@@ -1053,7 +1111,7 @@ dotfiles_edit_parse_requirements() {
 initialize() {
   version="0.1.0"
   long_usage=''
-  set -e
+  set -uo pipefail
 
 }
 

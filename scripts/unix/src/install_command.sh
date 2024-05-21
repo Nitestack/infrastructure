@@ -1,4 +1,4 @@
-log_task "Installing dotfiles"
+start_task "Installing dotfiles"
 
 ## Set arguments
 sourceDir=$(expand_tilde "${args[sourceDir]}")
@@ -11,6 +11,6 @@ else
 	set -- "$@" --apply
 fi
 
-command_exec chezmoi init "$@"
+chezmoi init "$@"
 
-log_success "Installed dotfiles"
+complete_task "Installed dotfiles"

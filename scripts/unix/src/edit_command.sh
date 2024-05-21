@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 if [[ "${#args[@]}" -eq 0 ]]; then
 	cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
 
