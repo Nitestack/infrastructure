@@ -5,24 +5,24 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-start_loading "Zsh: Setting up Spaceship theme"
+symlink_spaceship_theme() {
+	ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
+	target_path="${ZSH_CUSTOM}/themes/spaceship.zsh-theme"
+	symlink_path="${ZSH_CUSTOM}/themes/spaceship-prompt/spaceship.zsh-theme"
 
-ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom"
-target_path="${ZSH_CUSTOM}/themes/spaceship.zsh-theme"
-symlink_path="${ZSH_CUSTOM}/themes/spaceship-prompt/spaceship.zsh-theme"
+	# Check if the path exists
+	if [[ ! -e "${symlink_path}" ]]; then
+		echo "Spaceship theme not found. Skipping."
+		exit 1
+	fi
 
-# Check if the path exists
-if [[ ! -e "${symlink_path}" ]]; then
-	log_warning "Spaceship theme not found. Skipping."
-	exit 0
-fi
+	# Check if the symbolic link already exists
+	if [[ -L "${target_path}" ]]; then
+		echo "Zsh: Spaceship theme set"
+		exit 2
+	fi
 
-# Check if the symbolic link already exists
-if [[ -L "${target_path}" ]]; then
-	stop_loading "Zsh: Spaceship theme set"
-	exit 0
-fi
+	ln -s "${symlink_path}" "${target_path}"
+}
 
-ln -s "${symlink_path}" "${target_path}"
-
-stop_loading "Zsh: Spaceship theme set" --is-success
+show_spinner "symlink_spaceship_theme" "Zsh: Setting up Spaceship theme" "Zsh: Spaceship theme set"

@@ -5,42 +5,44 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
+start_task "Installing packages"
+
 # Install packages
 # {{ if eq .osid "linux-arch" }}
-log_task "Arch Linux: Installing packages"
+echo "Arch Linux: Installing packages"
 echo
 sudo pacman -Syu
 
 echo
-log_task "pacman:"
+echo "pacman:"
 # {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages }}
 pacman_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
 # {{ else if eq .osid "linux-ubuntu" }}
-log_task "Ubuntu: Installing packages"
+echo "Ubuntu: Installing packages"
 echo
 sudo apt update -y && sudo apt upgrade -y
 
 echo
-log_task "apt:"
+echo "apt:"
 # {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.unix.packages .dependencies.all.packages }}
 apt_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
 # {{ else if eq .chezmoi.os "darwin" }}
-log_task "macOS: Installing formulae and casks"
+echo "macOS: Installing formulae and casks"
 echo
 brew update && brew upgrade
 
 echo
-log_task "brew (formulae):"
+echo "brew (formulae):"
 # {{ range $_, $formula := concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages }}
 brew_ensure_formula_installed "{{- $formula -}}"
 # {{ end }}
 
 echo
-log_task "brew (casks):"
+echo "brew (casks):"
 # {{ range $_, $cask := concat .dependencies.macos.brew.casks }}
 brew_ensure_cask_installed "{{- $cask -}}"
 # {{ end }}
@@ -48,17 +50,19 @@ brew_ensure_cask_installed "{{- $cask -}}"
 # {{ end }}
 
 echo
-log_task "Custom installation"
+echo "Custom installation:"
 
 # NVM
-start_loading "nvm"
-if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
-	stop_loading "nvm"
-else
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-	stop_loading "nvm" --is-success
-fi
+install_nvm() {
+	if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
+		echo "nvm"
+		exit 2
+	else
+		curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+	fi
+}
+show_spinner "install_nvm" "nvm" "nvm"
 
 # Custom installation
 # {{ $dependencies := concat .dependencies.unix.custom .dependencies.all.custom }}
@@ -72,41 +76,49 @@ fi
 
 # {{ range $_, $pkg := $dependencies }}
 # {{ range $cmd_name, $to_install := $pkg }}
-start_loading "{{- $cmd_name -}}"
-if command -v "{{- $cmd_name -}}" >/dev/null 2>&1; then
-	stop_loading "{{- $cmd_name -}}"
-else
-	# {{ range $_, $line := $to_install }}
-	# {{ "\n" }} command_exec {{ $line }}
-	# {{ end }}
-	stop_loading "{{- $cmd_name -}}" --is-success
-fi
+install_custom_cmd() {
+	if command -v "{{- $cmd_name -}}" &>/dev/null; then
+		echo "{{- $cmd_name -}}"
+		exit 2
+	else
+		# {{ range $_, $line := $to_install }}
+		# {{ "\n" }} {{ $line }}
+		# {{ end }}
+	fi
+}
+show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # {{ end }}
 # {{ end }}
 
 # Global npm packages
 echo
-log_task "npm:"
+echo "npm:"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
-start_loading "{{- $package_name -}}"
-if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
-	stop_loading "{{- $package_name -}}"
-else
-	command_exec pnpm add -g "{{- $package_name -}}"
-	stop_loading "{{- $package_name -}}" --is-success
-fi
+install_with_pnpm() {
+	if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
+		echo "{{- $package_name -}}"
+		exit 2
+	else
+		pnpm add -g "{{- $package_name -}}"
+	fi
+}
+show_spinner "install_with_pnpm" "{{- $package_name -}}" "{{- $package_name -}}"
 # {{ end }}
 
 # Global cargo crates
 echo
-log_task "cargo:"
+echo "cargo:"
 # {{ range $_, $package_name := .dependencies.all.cargo }}
-start_loading "{{- $package_name -}}"
-if cargo install --list | grep -q "{{- $package_name -}}"; then
-	stop_loading "{{- $package_name -}}"
-else
-	command_exec cargo install "{{- $package_name -}}"
-	stop_loading "{{- $package_name -}}" --is-success
-fi
+install_with_cargo() {
+	if cargo install --list | grep -q "{{- $package_name -}}"; then
+		echo "{{- $package_name -}}"
+		exit 2
+	else
+		cargo install "{{- $package_name -}}"
+	fi
+}
+show_spinner "install_with_cargo" "{{- $package_name -}}" "{{- $package_name -}}"
 # {{ end }}
 echo
+
+complete_task "Installed packages"

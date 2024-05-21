@@ -25,9 +25,9 @@ dependencies:
       - bat:
           - "sudo apt install -y bat"
           - "mkdir -p ~/.local/bin"
-          - '[ -L "$HOME/.local/bin/bat" ] && log_info "Symbolic link for bat already exists. Skipping." || ln -s $(which batcat) ~/.local/bin/bat'
+          - '[ -L "$HOME/.local/bin/bat" ] || ln -s $(which batcat) ~/.local/bin/bat'
       - fd:
           - "sudo apt install -y fd-find"
-          - '[ -L "$HOME/.local/bin/fd" ] && log_info "Symbolic link for fd already exists. Skipping." || ln -s $(which fdfind) ~/.local/bin/fd'
+          - '[ -L "$HOME/.local/bin/fd" ] || ln -s $(which fdfind) ~/.local/bin/fd'
       - zoxide:
           - "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"

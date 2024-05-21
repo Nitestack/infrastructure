@@ -5,20 +5,21 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-start_loading "Linux: Setting default shell to Zsh"
+set_zsh_as_default_shell() {
+	# Check if the current shell is zsh already
+	if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
+		echo "Linux: Default shell is Zsh"
+		exit 2
+	fi
 
-# Check if the current shell is zsh already
-if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
-	stop_loading "Linux: Default shell is Zsh"
-	exit 0
-fi
+	# Check if zsh is installed
+	# {{ if eq .osid "linux-arch" }}
+	pacman_ensure_installed zsh
+	# {{ else if eq .osid "linux-ubuntu" }}
+	apt_ensure_installed zsh
+	# {{ end }}
 
-# Check if zsh is installed
-# {{ if eq .osid "linux-arch" }}
-pacman_ensure_installed zsh
-# {{ else if eq .osid "linux-ubuntu" }}
-apt_ensure_installed zsh
-# {{ end }}
+	chsh -s "/usr/bin/zsh"
+}
 
-chsh -s "/usr/bin/zsh"
-stop_loading "Linux: Default shell changed to Zsh" --is-success
+show_spinner "set_zsh_as_default_shell" "Linux: Setting default shell to Zsh" "Linux: Changed default shell to Zsh"

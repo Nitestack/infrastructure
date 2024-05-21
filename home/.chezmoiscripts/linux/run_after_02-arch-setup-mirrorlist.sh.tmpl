@@ -7,17 +7,17 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 # {{ if eq .osid "linux-arch" }}
 
-start_loading "Arch Linux: Setting up mirrorlist"
+setup_mirrorlist() {
+	if [[ -f "/etc/pacman.d/mirrorlist.bak" ]]; then
+		echo "Arch Linux: Mirrorlist backup found"
+		exit 2
+	fi
 
-if [[ -f "/etc/pacman.d/mirrorlist.bak" ]]; then
-	stop_loading "Arch Linux: Mirrorlist backup found"
-	exit 0
-fi
+	pacman_ensure_installed reflector
+	sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+	sudo reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+}
 
-pacman_ensure_installed reflector
-sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak || error "Failed to backup mirrorlist."
-sudo reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist || error "Failed to update mirrorlist."
-
-stop_loading "Arch Linux: Mirrorlist backup updated" --is-success
+show_spinner "setup_mirrorlist" "Arch Linux: Setting up mirrorlist" "Arch Linux: Mirrorlist backup updated"
 
 # {{ end }}

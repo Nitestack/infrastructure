@@ -1,137 +1,168 @@
 # shellcheck shell=bash
 
-set -euo pipefail
+set -uo pipefail
 
-function log_color() {
+log_color() {
 	local color_code="$1"
 	shift
 
 	printf "\033[${color_code}m%s\033[0m\n" "$*" >&2
 }
-function log_red() {
+log_red() {
 	log_color "0;31" "$@"
 }
-function log_blue() {
+log_blue() {
 	log_color "0;34" "$@"
 }
-function log_green() {
-	log_color "1;32" "$@"
+log_green() {
+	log_color "0;32" "$@"
 }
-function log_yellow() {
-	log_color "1;33" "$@"
+log_yellow() {
+	log_color "0;33" "$@"
 }
-
-function start_loading() {
-	local message="$1"
-	shift
-
-	printf "\033[1;33m%s\033[0m\r" "󰇘${message}" >&2
+log_info() {
+	echo "" "$@"
 }
-
-function stop_loading() {
-	local message="$1"
-	shift
-
-	local is_success="${2:-""}"
-
-	if [[ "${is_success}" == "--is-success" ]]; then
-		emoji=""
-	else
-		emoji=""
-	fi
-
-	echo -en "\033[0K"
-	log_green "${emoji} ${message}"
+start_task() {
+	log_yellow "󰪥" "$@"
 }
-
-function log_task() {
-	log_blue "" "$@"
-}
-function log_manual_action() {
-	log_red "" "$@"
-}
-function log_error() {
-	log_red "" "$@"
-}
-function log_info() {
-	log_blue "" "$@"
-}
-function log_success() {
+complete_task() {
 	log_green "" "$@"
 }
-function log_warning() {
-	log_yellow "" "$@"
+
+show_spinner() {
+	local task="$1"
+	local start_message="$2"
+	local completion_message="$3"
+	local error_message="${4:-An unexpected error occurred}"
+
+	local spinner_frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
+
+	display_spinner() {
+		local pid=$!
+		local i=0
+		tput civis # Hide cursor
+
+		while kill -0 "${pid}" 2>/dev/null; do
+			printf "\r\e[33m%s %s\e[0m" "${spinner_frames[i]}" "${start_message}" # Yellow color
+			i=$(((i + 1) % ${#spinner_frames[@]}))
+			sleep 0.1
+		done
+
+		tput cnorm # Show cursor
+	}
+
+	# Run the task in the background, redirect stdout and stderr to separate temporary files
+	local temp_out_log=$(mktemp)
+	local temp_err_log=$(mktemp)
+	(${task} >"${temp_out_log}" 2>"${temp_err_log}") &
+
+	display_spinner "${start_message}"
+
+	# Wait for the task to complete
+	wait $!
+	local exit_code=$?
+
+	# Print last frame of the spinner
+	last_index=$((${#spinner_frames[@]} - 1))
+	printf "\r\e[33m%s %s\e[0m" "${spinner_frames[${last_index}]}" "${start_message}" # Yellow color
+
+	# Get the last echo message from the output log file
+	local last_echo=$(tail -n 1 "${temp_out_log}")
+
+	# Remove the last line of the output log file, if the exit code is greater than 1
+	if [[ ${exit_code} -gt 1 ]]; then
+		sed -i '$ d' "${temp_out_log}"
+	fi
+
+	# Display stdout logs if they are not empty
+	if [[ -s "${temp_out_log}" ]]; then
+		echo
+		cat "${temp_out_log}"
+	fi
+
+	# Display stderr logs if they are not empty
+	if [[ -s "${temp_err_log}" ]]; then
+		echo
+		cat "${temp_err_log}" | while IFS= read -r line; do echo -e "\033[31m${line}\033[0m"; done
+	fi
+
+	# Clear the line before displaying the final message
+	printf "\r\033[K"
+
+	# Display completion or error message based on exit code
+	if [[ ${exit_code} -eq 0 ]]; then
+		printf "\r\e[32m%s %s\e[0m\n" "󰗠" "${completion_message}" # Green color
+	elif [[ ${exit_code} -eq 1 ]]; then
+		printf "\r\e[31m%s %s\e[0m\n" "" "${error_message}" # Red color
+	else
+		printf "\r\e[33m%s %s\e[0m\n" "" "${last_echo}"
+	fi
+
+	# Clean up
+	rm "${temp_out_log}" "${temp_err_log}"
 }
 
-function log_command() {
-	log_yellow "" "$@"
-}
-function command_exec() {
-	"$@" || log_error "Command failed: $*"
-}
-
-function error() {
-	log_error "$@"
-	exit 1
-}
-
-function apt_ensure_installed() {
+apt_ensure_installed() {
 	local package_name="$1"
 	shift
 
-	start_loading "${package_name}"
+	install_with_apt() {
+		if dpkg-query -W "${package_name}" &>/dev/null; then
+			echo "${package_name}"
+			exit 2
+		fi
 
-	if dpkg-query -W "${package_name}" &>/dev/null; then
-		stop_loading "${package_name}"
-		return
-	fi
+		sudo apt install -y "${package_name}"
+	}
 
-	command_exec sudo apt install -y "${package_name}"
-	stop_loading "${package_name}" --is-success
+	show_spinner "install_with_apt" "${package_name}" "${package_name}"
 }
 
-function pacman_ensure_installed() {
+pacman_ensure_installed() {
 	local package_name="$1"
 	shift
 
-	start_loading "${package_name}"
+	install_with_pacman() {
+		if pacman -Qi "${package_name}" &>/dev/null; then
+			echo "${package_name}"
+			exit 2
+		fi
 
-	if pacman -Qi "${package_name}" &>/dev/null; then
-		stop_loading "${package_name}"
-		return
-	fi
+		sudo pacman -S --needed --noconfirm "${package_name}"
+	}
 
-	command_exec sudo pacman -S --needed --noconfirm "${package_name}"
-	stop_loading "${package_name}" --is-success
+	show_spinner "install_with_pacman" "${package_name}" "${package_name}"
 }
 
-function brew_ensure_formula_installed() {
+brew_ensure_formula_installed() {
 	local formula="$1"
 	shift
 
-	start_loading "${formula}"
+	install_formula_with_brew() {
+		if brew list "${formula}" &>/dev/null; then
+			echo "${formula}"
+			exit 2
+		fi
 
-	if brew list "${formula}" &>/dev/null; then
-		stop_loading "${formula}"
-		return
-	fi
+		brew install "${formula}"
+	}
 
-	log_task "brew: Installing formula '${formula}'"
-	command_exec brew install "${formula}"
-	stop_loading "${formula}" --is-success
+	show_spinner "install_formula_with_brew" "${formula}" "${formula}"
 }
 
-function brew_ensure_cask_installed() {
+brew_ensure_cask_installed() {
 	local cask="$1"
 	shift
 
-	start_loading "${cask}"
+	install_cask_with_brew() {
+		if brew list --cask "${cask}" &>/dev/null; then
+			echo "${cask}"
+			exit 2
+		fi
 
-	if brew list --cask "${cask}" &>/dev/null; then
-		stop_loading "${cask}"
-		return
-	fi
+		brew install --cask "${cask}"
+	}
 
-	command_exec brew install --cask "${cask}"
-	stop_loading "${cask}" --is-success
+	show_spinner "install_cask_with_brew" "${cask}" "${cask}"
 }
