@@ -59,16 +59,10 @@ function Show-Spinner {
     [String]$ScriptBlock,
     [String]$StartMessage,
     [String]$CompletionMessage,
-    [String]$StartForegroundColor = "Yellow",
-    [String]$CompletionForegroundColor = "Green",
-    [String[]]$SpinnerFrames = @("󰪞", "󰪟", "󰪠", "󰪡", "󰪢", "󰪣", "󰪤", "󰪥"),
-    [String]$CompletionIcon = "󰗠",
-    [String]$ErrorIcon = "",
-    [String]$ExitIcon = "",
-    [Int32]$IntervalMilliseconds = 100,
     [Switch]$ShowLogs,
     [String]$Prefix = ":"
   )
+  [String[]]$SpinnerFrames = @("⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏")
 
   $outputFile = [System.IO.Path]::GetTempFileName()
 
@@ -86,13 +80,13 @@ function Show-Spinner {
   $i = 0
 
   while ($Job.State -eq "Running") {
-    Write-Host -NoNewline -ForegroundColor $StartForegroundColor "`r$($SpinnerFrames[$i]) $StartMessage"
+    Write-Host -NoNewline -ForegroundColor "Yellow" "`r$($SpinnerFrames[$i]) $StartMessage"
     $i = ($i + 1) % $SpinnerFrames.Count
-    Start-Sleep -Milliseconds $IntervalMilliseconds
+    Start-Sleep -Milliseconds 100
   }
 
   # Display last spinner frame
-  Write-Host -NoNewline -ForegroundColor $StartForegroundColor "`r$($SpinnerFrames[-1]) $StartMessage"
+  Write-Host -NoNewline -ForegroundColor "Yellow" "`r$($SpinnerFrames[-1]) $StartMessage"
 
   # Read job output from the file
   $JobOutput = Get-Content -Path $outputFile
@@ -129,13 +123,13 @@ function Show-Spinner {
   $Padding = " " * [Console]::WindowWidth
   Write-Host -NoNewline "`r$Padding"
   if ($HasError) {
-    Write-Host -ForegroundColor Red -Object "`r$ErrorIcon An unexpected error occurred"
+    Write-Host -ForegroundColor Red -Object "`r An unexpected error occurred"
   }
   elseif ($HasControlledExit) {
-    Write-Host -ForegroundColor Yellow -Object "`r$ExitIcon $ControlledExitMessage"
+    Write-Host -ForegroundColor Yellow -Object "`r $ControlledExitMessage"
   }
   else {
-    Write-Host -ForegroundColor $CompletionForegroundColor -Object "`r$CompletionIcon $CompletionMessage"
+    Write-Host -ForegroundColor "Green" -Object "`r󰗠 $CompletionMessage"
   }
 
   $Job | Remove-Job -Force
@@ -307,7 +301,7 @@ USAGE:
 
   # Update the CLI
   if ($CLI) {
-    Show-Spinner -StartMessage "Updating CLI" -CompletionMessage "Updated CLI to the latest version" -ScriptBlock {
+    Show-Spinner -StartMessage "Updating CLI" -CompletionMessage "Updated CLI" -ScriptBlock {
       $ScriptDir = Resolve-Path "$env:USERPROFILE\.local\bin\dotfiles.ps1"
       Write-Host "Script dir: $ScriptDir"
       if (!(Test-Path "$ScriptDir")) {
@@ -330,7 +324,7 @@ USAGE:
   # Update Neovim related files
   if ($Neovim) {
     # Update Neovim
-    Show-Spinner -StartMessage "Updating Neovim" -CompletionMessage "Updated Neovim to the latest version" -ScriptBlock {
+    Show-Spinner -StartMessage "Updating Neovim" -CompletionMessage "Updated Neovim" -ScriptBlock {
       bob update --all || throw "Failed to update Neovim"
     }
 
