@@ -46,7 +46,7 @@ Some of the additional features are:
 - [**ShellCheck**](home/dot_shellcheckrc) Configuration
 - [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile (Windows)
-- [**Zsh**](home/dot_zshrc) Profile (UNIX)
+- [**Zsh**](home/dot_zshrc.tmpl) Profile (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
 
 ## ⚙️ Requirements
