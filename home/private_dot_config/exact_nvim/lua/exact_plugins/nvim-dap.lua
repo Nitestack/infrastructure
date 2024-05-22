@@ -1,5 +1,4 @@
 local filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
-local load_breakpoints_event = { "BufReadPost" }
 
 return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.dap.core" },
@@ -62,6 +61,24 @@ return utils.plugin.with_extensions({
           end,
           desc = "Run with Args",
         },
+        [{ "<leader>db", "<F9>" }] = {
+          function()
+            require("dap").toggle_breakpoint()
+          end,
+          desc = "Toggle Breakpoint",
+        },
+        ["<leader>dB"] = {
+          function()
+            require("dap").clear_breakpoints()
+          end,
+          desc = "Clear Breakpoints",
+        },
+        [{ "<leader>dC", "<F21>" }] = { -- <F21> translates to Shift+F9
+          function()
+            require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+          end,
+          desc = "Set Breakpoint Condition",
+        },
         [{ "<leader>dO", "<F10>" }] = {
           function()
             require("dap").step_over()
@@ -100,43 +117,6 @@ return utils.plugin.with_extensions({
         },
       },
     }),
-  },
-  {
-    "Weissle/persistent-breakpoints.nvim",
-    event = load_breakpoints_event,
-    cmd = {
-      "PBToggleBreakpoint",
-      "PBSetConditionalBreakpoint",
-      "PBClearAllBreakpoints",
-      "PBReload",
-      "PBStore",
-      "PBLoad",
-    },
-    keys = core.lazy_map({
-      n = {
-        [{ "<leader>db", "<F9>" }] = {
-          function()
-            require("persistent-breakpoints.api").toggle_breakpoint()
-          end,
-          desc = "Toggle Breakpoint",
-        },
-        ["<leader>dB"] = {
-          function()
-            require("persistent-breakpoints.api").clear_all_breakpoints()
-          end,
-          desc = "Clear Breakpoints",
-        },
-        [{ "<leader>dC", "<F21>" }] = { -- <F21> translates to Shift+F9
-          function()
-            require("persistent-breakpoints.api").set_conditional_breakpoint()
-          end,
-          desc = "Set Breakpoint Condition",
-        },
-      },
-    }),
-    opts = {
-      load_breakpoints_event = load_breakpoints_event,
-    },
   },
   {
     "nvim-treesitter/nvim-treesitter",
