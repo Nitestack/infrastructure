@@ -2,36 +2,11 @@
 --  JSON
 --------------------------------------------------------------------------------
 return utils.plugin.get_language_spec({
-  treesitter = {
-    "json",
-    "json5",
-    "jsonc",
-  },
   mason = {
     "prettierd",
     "prettier",
     "jsonlint",
     "json-lsp",
-  },
-  lsp = {
-    servers = {
-      ---@type lspconfig.options.jsonls
-      jsonls = {
-        -- lazy-load schemastore when needed
-        ---@param new_config lspconfig.options.jsonls
-        on_new_config = function(new_config)
-          new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-          vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
-        end,
-        settings = {
-          json = {
-            validate = {
-              enable = true,
-            },
-          },
-        },
-      },
-    },
   },
   linter = {
     linters_by_ft = {
@@ -46,9 +21,6 @@ return utils.plugin.get_language_spec({
     },
   },
   plugins = {
-    {
-      "b0o/SchemaStore.nvim",
-      version = false, -- last release was May 27, 2023 -> just use latest version
-    },
+    { import = "lazyvim.plugins.extras.lang.json" },
   },
 })

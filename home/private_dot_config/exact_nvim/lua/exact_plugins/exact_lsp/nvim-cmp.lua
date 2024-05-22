@@ -10,8 +10,6 @@ return {
           require("lspkind").init(opts)
         end,
       },
-      -- Sources
-      "Saecki/crates.nvim",
     },
     opts = function(_, opts)
       local cmp = require("cmp")
@@ -80,12 +78,6 @@ return {
           show_labelDetails = true,
         }),
       }
-
-      -- Sources
-      opts.sources = opts.sources or {}
-      vim.list_extend(opts.sources, {
-        { name = "crates" },
-      })
     end,
   },
   {
