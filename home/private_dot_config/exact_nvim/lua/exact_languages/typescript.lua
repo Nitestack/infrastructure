@@ -49,66 +49,25 @@ return utils.plugin.get_language_spec({
           },
         },
       },
-      ---@type lspconfig.options.eslint
-      eslint = {},
       ---@type lspconfig.options.tsserver
       tsserver = {
         autostart = false,
+        mason = false,
       },
       prismals = {},
     },
   },
-  dap = function(add_dap_adapter, add_dap_configuration)
-    add_dap_adapter("pwa-node", {
-      type = "server",
-      host = "localhost",
-      port = "${port}",
-      executable = {
-        command = "node",
-        args = {
-          require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-            .. "/js-debug/src/dapDebugServer.js",
-          "${port}",
-        },
-      },
-    })
-    add_dap_configuration({
-      {
-        type = "pwa-node",
-        request = "launch",
-        name = "Launch file",
-        program = "${file}",
-        cwd = "${workspaceFolder}",
-      },
-      {
-        type = "pwa-node",
-        request = "attach",
-        name = "Attach",
-        processId = require("dap.utils").pick_process,
-        cwd = "${workspaceFolder}",
-      },
-    }, {
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact",
-    })
-  end,
   mason = {
     "vtsls",
     "eslint_d",
-    "eslint-lsp",
     "prettierd",
     "prettier",
     "prisma-language-server",
-    "js-debug-adapter",
   },
   treesitter = {
     "javascript",
     "jsdoc",
-    "typescript",
     "prisma",
-    "tsx",
   },
   formatter = {
     formatters_by_ft = {
@@ -127,6 +86,8 @@ return utils.plugin.get_language_spec({
     },
   },
   plugins = utils.plugin.with_extensions({
+    { import = "lazyvim.plugins.extras.linting.eslint" }, -- Use this as long as eslint_d doesn't work for eslint v9
+    { import = "lazyvim.plugins.extras.lang.typescript" },
     {
       "pmizio/typescript-tools.nvim",
       ft = filetypes,

@@ -2,62 +2,10 @@
 --  YAML
 --------------------------------------------------------------------------------
 return utils.plugin.get_language_spec({
-  treesitter = {
-    "yaml",
-  },
   mason = {
     "prettierd",
     "prettier",
     "yamllint",
-    "yaml-language-server",
-  },
-  lsp = {
-    servers = {
-      ---@type lspconfig.options.yamlls
-      yamlls = {
-        -- Have to add this for yamlls to understand that we support line folding
-        capabilities = {
-          textDocument = {
-            foldingRange = {
-              dynamicRegistration = false,
-              lineFoldingOnly = true,
-            },
-          },
-        },
-        -- lazy-load schemastore when needed
-        ---@param new_config lspconfig.options.yamlls
-        on_new_config = function(new_config)
-          new_config.settings.yaml.schemas =
-            vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
-        end,
-        settings = {
-          redhat = { telemetry = { enabled = false } },
-          yaml = {
-            keyOrdering = false,
-            validate = true,
-            schemaStore = {
-              -- Must disable built-in schemaStore support to use
-              -- schemas from SchemaStore.nvim plugin
-              enable = false,
-              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-              url = "",
-            },
-          },
-        },
-      },
-    },
-    setup = {
-      yamlls = function()
-        -- Neovim < 0.10 does not have dynamic registration for formatting
-        if vim.fn.has("nvim-0.10") == 0 then
-          require("lazyvim.util").lsp.on_attach(function(client, _)
-            if client.name == "yamlls" then
-              client.server_capabilities.documentFormattingProvider = true
-            end
-          end)
-        end
-      end,
-    },
   },
   linter = {
     linters_by_ft = {
@@ -70,9 +18,6 @@ return utils.plugin.get_language_spec({
     },
   },
   plugins = {
-    {
-      "b0o/SchemaStore.nvim",
-      version = false, -- last release was May 27, 2023 -> just use latest version
-    },
+    { import = "lazyvim.plugins.extras.lang.yaml" },
   },
 })
