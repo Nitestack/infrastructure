@@ -10,8 +10,6 @@
 ---@field lsp_mappings core.mappings.lsp_mappings
 ---@field terminal_mappings core.mappings.terminal_mappings
 
-local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-
 ---@type core.mappings
 local M = {}
 
