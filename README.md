@@ -41,12 +41,12 @@ The major features of this repository are:
 
 Some of the additional features are:
 
-- [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration (UNIX)
+- [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration with [Session Management](https://github.com/omerxx/tmux-sessionx) (UNIX)
 - [**Git**](home/dot_gitconfig.tmpl) Configuration (cross-platform)
 - [**ShellCheck**](home/dot_shellcheckrc) Configuration
 - [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile (Windows)
-- [**Zsh**](home/dot_zshrc.tmpl) Profile (UNIX)
+- [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
 
 ## ⚙️ Requirements
