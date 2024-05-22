@@ -4,18 +4,6 @@
 ---@class utils.plugin
 local M = {}
 
----Returns a spec of disabled plugins
----@param plugins string[]
----@return LazyPluginSpec[]
-function M.get_disabled_plugin_spec(plugins)
-  return vim.tbl_map(function(plugin_name)
-    return {
-      plugin_name,
-      enabled = false,
-    }
-  end, plugins)
-end
-
 ---@class utils.plugin.language_config
 ---@field mason? string|string[]
 ---@field treesitter? string|string[]
