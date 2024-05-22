@@ -1,0 +1,116 @@
+--------------------------------------------------------------------------------
+--  SETTINGS
+--------------------------------------------------------------------------------
+
+---@class core.settings
+---@field options vim.wo
+---@field globals table<string, any>|vim.var_accessor
+---@field disabled_providers string[]
+---@field run fun()
+
+---@type core.settings
+local M = {}
+
+--------------------------------------------------------------------------------
+--  Options
+--------------------------------------------------------------------------------
+M.options = {
+  formatoptions = "jqlnt", -- Formatting options
+  helplang = "de", -- Set the language for the help messages
+  pumblend = 0,
+
+  -- Backup
+  backup = false, -- Disable backup files
+  swapfile = false, -- Disable swap file
+  undodir = vim.fn.expand("~/.vim/undodir"), -- Directory for undo files
+
+  -- GUI settings
+  guifont = "{{ .fonts.mono }},{{ .fonts.icons }}:h14", -- Set font for graphical Neovim apps
+  linespace = 6, -- Set a line height of `1.2`
+
+  -- Indentation
+  softtabstop = 2, -- Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
+
+  -- File Management
+  wildignore = { -- Patterns to ignore during file navigation
+    -- "**/node_modules/**",
+    -- "**/.git/**",
+    -- "**/dist/**",
+    -- "**/build/**",
+    -- "**/.next/**",
+    -- "**/.cache/**",
+    -- "**/coverage/**",
+    -- "**/target/**",
+    -- "**/dist/**",
+  },
+
+  -- Wrap
+  breakindent = true, -- Indent wrapped lines visually
+  linebreak = true, -- Break line at convenient point
+  showbreak = core.icons.ui.Tab .. " ", -- Character displayed for the break
+  wrap = true, -- Wrap lines
+}
+
+--------------------------------------------------------------------------------
+--  Globals
+--------------------------------------------------------------------------------
+M.globals = {}
+
+--------------------------------------------------------------------------------
+--  Disabled providers
+--------------------------------------------------------------------------------
+M.disabled_providers = { "perl", "ruby", "node", "python3" }
+
+--------------------------------------------------------------------------------
+--  Additional settings
+--------------------------------------------------------------------------------
+function M.run()
+  -- Set language
+  vim.cmd.language("en_US.UTF-8")
+
+  -- Neovide settings
+  if utils.is_neovide() then
+    vim.g.neovide_hide_mouse_when_typing = true
+  end
+
+  -- Enable undercurl
+  vim.cmd([[let &t_Cs = "\e[4:3m"]])
+  vim.cmd([[let &t_Ce = "\e[4:0m"]])
+  -- Go to previous/next line with h/l/left arrow/right arrow when cursor reaches end/beginning of line
+  vim.opt.whichwrap:append("<>[]hl")
+  -- Add binaries installed by `mason.nvim` to path
+  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (utils.is_win() and ";" or ":") .. vim.env.PATH
+
+  -- For Tailwind CSS wraps
+  vim.opt.breakat:remove({ ":", "/", "-" })
+
+  -- Modify shortmess
+  vim.opt.shortmess:append({
+    a = true, -- append `l`, `m`, `r`, `w` abbreviations
+    A = true, -- don't give the "ATTENTION" message when an existing swap file is found
+  })
+
+  -- Setup Windows shell
+  if utils.is_win() then
+    LazyVim.terminal.setup("pwsh")
+  end
+
+  -- Setup WSL clipboard
+  if utils.is_wsl() then
+    -- Sync WSL clipboard with Windows clipboard
+    vim.g.clipboard = {
+      name = "WslClipboard",
+      copy = {
+        ["+"] = "clip.exe",
+        ["*"] = "clip.exe",
+      },
+      paste = {
+        ["+"] = "powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace(\"`r\", \"\"))",
+        ["*"] = "powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace(\"`r\", \"\"))",
+      },
+      cache_enabled = 0,
+    }
+  end
+end
+
+return M
