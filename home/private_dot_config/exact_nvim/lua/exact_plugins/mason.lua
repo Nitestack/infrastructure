@@ -34,8 +34,4 @@ return {
       upgrade_pip = true,
     },
   },
-  -- Add config option to remove boilerplate from LazyVim
-  config = function(_, opts)
-    require("mason").setup(opts)
-  end,
 }
