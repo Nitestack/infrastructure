@@ -8,4 +8,7 @@ end, {
   "akinsho/bufferline.nvim",
   "folke/flash.nvim",
   "nvim-neo-tree/neo-tree.nvim",
+  "pmizio/typescript-tools.nvim",
+  "folke/tokyonight.nvim",
+  "roobert/tailwindcss-colorizer-cmp.nvim",
 })
