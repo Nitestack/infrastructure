@@ -1,7 +1,6 @@
 --------------------------------------------------------------------------------
 --  NEOVIM CONFIGURATION
 --------------------------------------------------------------------------------
-
 if vim.loader then
   vim.loader.enable()
 end
@@ -29,27 +28,13 @@ _G.core.lazy_map = utils.mappings.lazy_map
 _G.core.auto_cmds = utils.cmds.auto_cmds
 _G.core.user_cmds = utils.cmds.user_cmds
 
---------------------------------------------------------------------------------
---  Settings
---------------------------------------------------------------------------------
-
--- Options
-for option, val in pairs(core.settings.options) do
-  vim.opt[option] = val
-end
-
--- Globals
 for global, val in pairs(core.settings.globals) do
   vim.g[global] = val
 end
 
--- Providers
 for _, provider in ipairs(core.settings.disabled_providers) do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end
-
--- Additional settings to run
-core.settings.run()
 
 --------------------------------------------------------------------------------
 --  Filetypes
@@ -57,25 +42,10 @@ core.settings.run()
 vim.filetype.add(core.filetypes)
 
 --------------------------------------------------------------------------------
---  Commands
---------------------------------------------------------------------------------
-local function load_commands()
-  core.auto_cmds(core.cmds.auto_cmds, core.cmds.auto_cmd_opts, core.cmds.au_group_opts)
-  core.user_cmds(core.cmds.user_cmds, core.cmds.user_cmd_opts)
-end
-
--- Commands can be loaded lazily when not opening a file
-local lazy_autocmds = vim.fn.argc(-1) == 0
-if not lazy_autocmds then
-  load_commands()
-end
-
---------------------------------------------------------------------------------
 --  Plugins
 --------------------------------------------------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Bootstrap lazy.nvim if it isn't installed
 if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -86,26 +56,24 @@ if not vim.uv.fs_stat(lazypath) then
     lazypath,
   })
 end
-
--- Add lazy.nvim to runtimepath
----@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
--- Setup LazyFile event
-utils.lazyfile()
-
--- Initialize lazy.nvim and load plugins
 require("lazy").setup({
   spec = {
+    {
+      "LazyVim/LazyVim",
+      import = "lazyvim.plugins",
+      opts = core.config.lazyvim,
+    },
     { import = "languages" },
     { import = "plugins.lsp" },
-    { import = "plugins.dap" },
     { import = "plugins" },
-    utils.plugin.get_disabled_plugin_spec(core.config.disabled_plugins),
   },
   defaults = {
     lazy = true,
-    version = false,
+    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
+    -- have outdated releases, which may break your Neovim install
+    version = false, -- always use the latest git commit
   },
   install = {
     colorscheme = { core.config.ui.theme, "habamax" },
@@ -130,38 +98,10 @@ require("lazy").setup({
   performance = {
     rtp = {
       disabled_plugins = {
-        -- "2html_plugin",
-        -- "bugreport",
-        -- "compiler",
-        -- "ftplugin",
-        -- "getscript",
-        -- "getscriptPlugin",
-        -- "gzip",
-        -- "logipat",
-        -- "matchit",
-        -- "netrw",
-        -- "netrwFileHandlers",
-        -- "netrwPlugin",
-        -- "netrwSettings",
-        -- "optwin",
-        -- "rplugin",
-        -- "rrhelper",
-        -- "spellfile_plugin",
-        -- "synmenu",
-        -- "syntax",
-        -- "tar",
-        -- "tarPlugin",
-        -- "tohtml",
-        -- "tutor",
-        -- "vimball",
-        -- "vimballPlugin",
-        -- "zip",
-        -- "zipPlugin",
         "gzip",
         "matchit",
         "matchparen",
         "netrwPlugin",
-        "rplugin",
         "tarPlugin",
         "tohtml",
         "tutor",
@@ -172,25 +112,6 @@ require("lazy").setup({
 })
 
 core.auto_cmds({
-  -- Setup
-  {
-    "User",
-    {
-      group = "setup",
-      pattern = "VeryLazy",
-      callback = function()
-        -- Load commands (if not yet)
-        if lazy_autocmds then
-          load_commands()
-        end
-
-        -- Load keymaps
-        local keymaps = core.mappings
-
-        core.map(keymaps.mappings, keymaps.mapping_opts)
-      end,
-    },
-  },
   -- Auto load session
   {
     "User",

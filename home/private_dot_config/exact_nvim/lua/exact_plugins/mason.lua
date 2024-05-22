@@ -18,8 +18,6 @@ return {
       require("mason-tool-installer").setup(opts)
     end,
   },
-  build = ":MasonUpdate",
-  cmd = { "Mason", "MasonLog" },
   ---@type MasonSettings
   opts = {
     ui = {
@@ -36,4 +34,8 @@ return {
       upgrade_pip = true,
     },
   },
+  -- Add config option to remove boilerplate from LazyVim
+  config = function(_, opts)
+    require("mason").setup(opts)
+  end,
 }

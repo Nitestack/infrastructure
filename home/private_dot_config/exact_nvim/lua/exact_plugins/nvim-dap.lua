@@ -1,20 +1,12 @@
 local filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
+local load_breakpoints_event = { "BufReadPost" }
 
 return utils.plugin.with_extensions({
+  { import = "lazyvim.plugins.extras.dap.core" },
   {
     "mfussenegger/nvim-dap",
     ft = filetypes,
     dependencies = {
-      "williamboman/mason.nvim",
-      {
-        "jay-babu/mason-nvim-dap.nvim",
-        dependencies = "williamboman/mason.nvim",
-        cmd = { "DapInstall", "DapUninstall" },
-        config = function(_, opts)
-          opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
-          require("mason-nvim-dap").setup(opts)
-        end,
-      },
       {
         "rcarriga/cmp-dap",
         dependencies = "hrsh7th/nvim-cmp",
@@ -25,20 +17,6 @@ return utils.plugin.with_extensions({
             },
           })
         end,
-      },
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        dependencies = "nvim-treesitter/nvim-treesitter",
-        cmd = {
-          "DapVirtualTextEnable",
-          "DapVirtualTextDisable",
-          "DapVirtualTextToggle",
-          "DapVirtualTextForceRefresh",
-        },
-        ---@type nvim_dap_virtual_text_options
-        opts = {
-          commented = true,
-        },
       },
     },
     keys = core.lazy_map({
@@ -114,82 +92,83 @@ return utils.plugin.with_extensions({
           end,
           desc = "Run to Cursor",
         },
-        ["<leader>dg"] = {
-          function()
-            require("dap").goto_()
-          end,
-          desc = "Go to Line (No Execute)",
-        },
-        ["<leader>dj"] = {
-          function()
-            require("dap").down()
-          end,
-          desc = "Down",
-        },
-        ["<leader>dk"] = {
-          function()
-            require("dap").up()
-          end,
-          desc = "Up",
-        },
-        ["<leader>dl"] = {
-          function()
-            require("dap").run_last()
-          end,
-          desc = "Run Last",
-        },
         ["<leader>dR"] = {
           function()
             require("dap").repl.toggle()
           end,
           desc = "Toggle REPL",
         },
-        ["<leader>dw"] = {
+      },
+    }),
+  },
+  {
+    "Weissle/persistent-breakpoints.nvim",
+    event = load_breakpoints_event,
+    cmd = {
+      "PBToggleBreakpoint",
+      "PBSetConditionalBreakpoint",
+      "PBClearAllBreakpoints",
+      "PBReload",
+      "PBStore",
+      "PBLoad",
+    },
+    keys = core.lazy_map({
+      n = {
+        [{ "<leader>db", "<F9>" }] = {
           function()
-            require("dap.ui.widgets").hover()
+            require("persistent-breakpoints.api").toggle_breakpoint()
           end,
-          desc = "Widgets",
+          desc = "Toggle Breakpoint",
+        },
+        ["<leader>dB"] = {
+          function()
+            require("persistent-breakpoints.api").clear_all_breakpoints()
+          end,
+          desc = "Clear Breakpoints",
+        },
+        [{ "<leader>dC", "<F21>" }] = { -- <F21> translates to Shift+F9
+          function()
+            require("persistent-breakpoints.api").set_conditional_breakpoint()
+          end,
+          desc = "Set Breakpoint Condition",
         },
       },
     }),
-    config = function()
-      ---@type table<string, vim.fn.sign_define.dict>
-      local dap_signs = {
-        DapBreakpoint = {
-          text = core.icons.dap.Breakpoint,
-          texthl = "DapBreakpoint",
-          linehl = "",
-          numhl = "",
-        },
-        DapBreakpointCondition = {
-          text = core.icons.dap.BreakpointCondition,
-          texthl = "DapBreakpointCondition",
-          linehl = "",
-          numhl = "",
-        },
-        DapBreakpointRejected = {
-          text = core.icons.dap.BreakpointRejected,
-          texthl = "DapBreakpointRejected",
-          linehl = "",
-          numhl = "",
-        },
-        DapLogPoint = {
-          text = core.icons.dap.LogPoint,
-          texthl = "DapLogPoint",
-          linehl = "",
-          numhl = "",
-        },
-        DapStopped = {
-          text = core.icons.dap.Stopped,
-          texthl = "DapStopped",
-          linehl = "Visual",
-          numhl = "",
-        },
-      }
-      for name, dict in pairs(dap_signs) do
-        vim.fn.sign_define(name, dict)
-      end
+    opts = {
+      load_breakpoints_event = load_breakpoints_event,
+    },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "LiadOz/nvim-dap-repl-highlights",
+      ft = "dap-repl",
+      opts = {},
+    },
+    opts = function(_, opts)
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed, { "dap_repl" })
     end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    opts = {
+      floating = {
+        border = core.config.ui.transparent.floats and "rounded" or "none",
+      },
+    },
+  },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    cmd = {
+      "DapVirtualTextEnable",
+      "DapVirtualTextDisable",
+      "DapVirtualTextToggle",
+      "DapVirtualTextForceRefresh",
+    },
+    ---@type nvim_dap_virtual_text_options
+    opts = {
+      commented = true,
+    },
   },
 }, {
   which_key = {

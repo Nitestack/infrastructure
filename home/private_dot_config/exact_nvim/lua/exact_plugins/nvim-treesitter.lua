@@ -3,78 +3,19 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        config = function()
-          -- When in diff mode, we want to use the default
-          -- vim text objects c & C instead of the treesitter ones.
-          local move = require("nvim-treesitter.textobjects.move") ---@type table<string,fun(...)>
-          local configs = require("nvim-treesitter.configs")
-          for name, fn in pairs(move) do
-            if name:find("goto") == 1 then
-              move[name] = function(q, ...)
-                if vim.wo.diff then
-                  local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
-                  for key, query in pairs(config or {}) do
-                    if q == query and key:find("[%]%[][cC]") then
-                      vim.cmd("normal! " .. key)
-                      return
-                    end
-                  end
-                end
-                return fn(q, ...)
-              end
-            end
-          end
-        end,
-      },
       "andymass/vim-matchup",
       "RRethy/nvim-treesitter-endwise",
-      {
-        "windwp/nvim-ts-autotag",
-        opts = {
-          opts = {
-            enable_close = true,
-            enable_rename = true,
-            enable_close_on_slash = false,
-          },
-        },
-      },
     },
-    version = false, -- last release is way too old and doesn't work on Windows
-    build = ":TSUpdate",
-    event = "LazyFile",
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    init = function(plugin)
-      -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
-      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
-      -- no longer trigger the **nvim-treeitter** module to be loaded in time.
-      -- Luckily, the only things that those plugins need are the custom queries, which we make available
-      -- during startup.
-      require("lazy.core.loader").add_to_rtp(plugin)
-      require("nvim-treesitter.query_predicates")
+    event = function()
+      return { "LazyFile" }
     end,
-    keys = core.lazy_map({
-      n = {
-        ["<C-Space>"] = {
-          desc = "Increment selection",
-        },
-      },
-      x = {
-        ["<BS>"] = {
-          desc = "Decrement selection",
-        },
-      },
-    }),
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      local ensure_installed = vim.list_extend(opts.ensure_installed, core.config.plugins.treesitter)
+      vim.list_extend(opts.ensure_installed, core.config.plugins.treesitter)
 
       ---@type TSConfig
       return {
-        ensure_installed = ensure_installed,
         highlight = {
-          enable = true,
           -- disable highlighting in chezmoi templates
           disable = function(_lang, buf)
             -- check if 'filetype' option includes 'chezmoitmpl'
@@ -94,27 +35,8 @@ return {
         -- Auto-install missing parsers on startup
         auto_install = true,
         indent = {
-          enable = true,
           -- Disable indent on certain file types
           disable = { "yaml" },
-        },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-Space>",
-            node_incremental = "<C-Space>",
-            scope_incremental = false,
-            node_decremental = "<BS>",
-          },
-        },
-        textobjects = {
-          move = {
-            enable = true,
-            goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-            goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-            goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-            goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
-          },
         },
         -- configure vim-matchup
         matchup = {
@@ -127,20 +49,6 @@ return {
         },
       }
     end,
-    config = function(_, opts)
-      opts.ensure_installed = utils.remove_duplicates(opts.ensure_installed or {})
-      require("nvim-treesitter.configs").setup(opts)
-    end,
   },
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    cmd = { "TSContextEnable", "TSContextDisable", "TSContextToggle" },
-    event = "LazyFile",
-    opts = {
-      mode = "cursor",
-      max_lines = 3,
-      multiline_threshold = 4,
-    },
-  },
+  { import = "lazyvim.plugins.extras.ui.treesitter-context" },
 }

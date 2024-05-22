@@ -213,34 +213,8 @@ M.mappings[{ "n", "v" }] = {
   },
 }
 
--- Move around wrapped lines
-M.mappings[{ "n", "x" }] = {
-  [{ "j", "<Down>" }] = {
-    "v:count == 0 ? 'gj' : 'j'",
-    desc = "Move down",
-    expr = true,
-  },
-  [{ "k", "<Up>" }] = {
-    "v:count == 0 ? 'gk' : 'k'",
-    desc = "Move up",
-    expr = true,
-  },
-}
-
 M.mappings.n = {
   -- Windows
-  [{ "<leader>-", "<leader>w-" }] = {
-    "<C-W>s",
-    desc = "Window: Split below",
-    noremap = false,
-    remap = true,
-  },
-  [{ "<leader>|", "<leader>w|" }] = {
-    "<C-W>v",
-    desc = "Window: Split right",
-    noremap = false,
-    remap = true,
-  },
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
     desc = "Window: Change two horizontal to vertical",
@@ -248,27 +222,6 @@ M.mappings.n = {
   ["<leader>wv"] = {
     "<C-W>t <C-W>H",
     desc = "Window: Change two vertical to horizontal",
-  },
-  -- Smarter search jumping
-  ["n"] = {
-    "'Nn'[v:searchforward].'zv'",
-    desc = "Next search match",
-    expr = true,
-  },
-  ["N"] = {
-    "'nN'[v:searchforward].'zv'",
-    desc = "Previous search match",
-    expr = true,
-  },
-  -- Clear hlsearch with <ESC>
-  ["<ESC>"] = {
-    "<cmd>noh<cr><esc>",
-    desc = "Escape and clear hlsearch",
-  },
-  -- Quit
-  ["<leader>qq"] = {
-    vim.cmd.qa,
-    desc = "Quit all",
   },
   -- Smart delete line
   ["dd"] = {
@@ -283,65 +236,10 @@ M.mappings.n = {
     expr = true,
     silent = true,
   },
-  -- Toggle UI
-  ["<leader>ud"] = {
-    function()
-      utils.toggle.diagnostics()
-    end,
-    desc = "Diagnostics: Toggle",
-  },
-  ["<leader>uh"] = {
-    function()
-      utils.toggle.inlay_hints()
-    end,
-    desc = "Inlay Hints: Toggle",
-  },
-  ["<leader>ut"] = {
-    function()
-      if vim.b.ts_highlight then
-        vim.treesitter.stop()
-      else
-        vim.treesitter.start()
-      end
-    end,
-    desc = "Treesitter: Toggle",
-  },
-  ["<leader>uc"] = {
-    function()
-      utils.toggle("conceallevel", false, { 0, conceallevel })
-    end,
-    desc = "Conceal: Toggle",
-  },
-  ["<leader>us"] = {
-    function()
-      utils.toggle("spell")
-    end,
-    desc = "Spelling: Toggle",
-  },
   -- General
   ["x"] = {
     "\"_x",
     desc = "Delete character without copying into register",
-  },
-  ["<leader>l"] = {
-    function()
-      vim.cmd("Lazy")
-    end,
-    desc = "Lazy",
-  },
-}
-
--- Smart search jumping
-M.mappings[{ "x", "o" }] = {
-  ["n"] = {
-    "'Nn'[v:searchforward]",
-    desc = "Next search match",
-    expr = true,
-  },
-  ["N"] = {
-    "'nN'[v:searchforward]",
-    desc = "Previous search match",
-    expr = true,
   },
 }
 

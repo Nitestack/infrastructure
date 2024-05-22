@@ -1,23 +1,13 @@
 ---@type LazyPluginSpec
 return {
   "nvim-lualine/lualine.nvim",
-  event = "VeryLazy",
   opts = function()
     local lualine_components = utils.lualine
-
-    -- PERF: we don't need this lualine require madness 🤷
-    local lualine_require = require("lualine_require")
-    lualine_require.require = require
-
     return {
       options = {
         theme = core.config.ui.theme,
-        globalstatus = true,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
-        disabled_filetypes = {
-          statusline = { "dashboard" },
-        },
       },
       sections = {
         lualine_a = {

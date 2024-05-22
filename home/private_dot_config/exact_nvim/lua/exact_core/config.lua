@@ -7,6 +7,7 @@
 ---@field ui core.config.ui
 ---@field plugins core.config.plugins
 ---@field disabled_plugins string[]
+---@field lazyvim LazyVimOptions
 
 ---@class core.config.ui
 ---@field theme "catppuccin"
@@ -19,7 +20,7 @@
 ---@field mason string[]
 ---@field treesitter string[]
 ---@field linting utils.plugin.language_config.linter
----@field formatting utils.plugin.language_config.formatter
+---@field formatting utils.plugin.language_config.formatter|ConformOpts
 
 ---@type core.config
 local M = {
@@ -43,6 +44,50 @@ M.ui = {
   },
   width = 0.8,
   height = 0.8,
+}
+
+M.lazyvim = {
+  colorscheme = M.ui.theme,
+  news = {
+    lazyvim = true,
+    neovim = true,
+  },
+  icons = {
+    diagnostics = vim.tbl_map(function(icon)
+      return icon .. " "
+    end, core.icons.diagnostics),
+    dap = {
+      Stopped = {
+        core.icons.dap.Stopped .. " ",
+        "DapStopped",
+        "Visual",
+      },
+      Breakpoint = {
+        core.icons.dap.Breakpoint .. " ",
+        "DapBreakpoint",
+      },
+      BreakpointCondition = {
+        core.icons.dap.BreakpointCondition .. " ",
+        "DapBreakpointCondition",
+      },
+      BreakpointRejected = {
+        core.icons.dap.BreakpointRejected .. " ",
+        "DapBreakpointRejected",
+      },
+      LogPoint = {
+        core.icons.dap.LogPoint .. " ",
+        "DapLogPoint",
+      },
+    },
+    git = {
+      added = core.icons.git.LineAdded .. " ",
+      modified = core.icons.git.LineModified .. " ",
+      removed = core.icons.git.LineRemoved .. " ",
+    },
+    kinds = vim.tbl_map(function(icon)
+      return icon .. " "
+    end, core.icons.kind),
+  },
 }
 
 M.plugins = {

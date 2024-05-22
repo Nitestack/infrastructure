@@ -28,7 +28,7 @@ _Universal command set and vibrant shell configurations for [Zsh](https://zsh.or
 The major features of this repository are:
 
 - [**CLI**](scripts) tailored to this repository with a native [PowerShell](scripts/windows/dotfiles.ps1) and [Bash](scripts/unix/dotfiles) version (cross-platform)
-- [**Neovim**](home/private_dot_config/exact_nvim) Configuration (cross-platform)
+- [**Neovim**](home/private_dot_config/exact_nvim) Configuration powered by [LazyVim](https://lazyvim.org) (cross-platform)
 - [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration (cross-platform)
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
 - [**Scripts**](home/.chezmoiscripts):

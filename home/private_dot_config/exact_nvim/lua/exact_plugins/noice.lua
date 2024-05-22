@@ -1,67 +1,29 @@
 return utils.plugin.with_extensions({
   {
     "folke/noice.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
-    },
-    event = "VeryLazy",
-    keys = core.lazy_map({
-      n = {
-        ["d"] = {
-          function()
-            require("noice").cmd("dismiss")
-          end,
-          desc = "Noice: Dismiss all",
-        },
-        ["e"] = {
-          function()
-            require("noice").cmd("error")
-          end,
-          desc = "Noice: Next error",
-        },
-      },
-    }, {
-      prefix = "<leader>sn",
-    }),
-    ---@type NoiceConfig
-    opts = {
+    ---@param opts NoiceConfig
+    opts = function(_, opts)
       -- Disable cmdline
-      cmdline = {
-        view = "cmdline",
-      },
+      opts.cmdline = opts.cmdline or {}
+      opts.cmdline.view = "cmdline"
+
       -- Disable notify
-      -- messages = {
-      --   enabled = true,
-      --   view = "mini",
-      --   view_error = "mini",
-      --   view_warn = "mini",
-      -- },
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-        message = {
-          view = "mini",
-        },
-        hover = {
-          silent = true,
-        },
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = {
-              { find = "%d+L, %d+B" },
-              { find = "; after #%d+" },
-              { find = "; before #%d+" },
-            },
-          },
-          view = "mini",
-        },
+      opts.messages = opts.messages or {}
+      opts.messages.enabled = true
+      opts.messages.view = "mini"
+      opts.messages.view_error = "mini"
+      opts.messages.view_warn = "mini"
+
+      -- LSP
+      opts.lsp = opts.lsp or {}
+      opts.lsp.message = opts.lsp.message or {}
+      opts.lsp.message.view = "mini"
+      opts.lsp.hover = opts.lsp.hover or {}
+      opts.lsp.hover.silent = true
+
+      -- Routes
+      opts.routes = opts.routes or {}
+      vim.list_extend(opts.routes, {
         -- Show @recording messages
         {
           view = "notify",
@@ -82,42 +44,38 @@ return utils.plugin.with_extensions({
             },
           },
         },
-      },
-      views = {
-        cmdline_popup = {
-          border = core.config.ui.transparent.floats and {
-            style = "rounded",
-          } or {
-            style = "none",
-            padding = { 1, 2 },
-          },
-          win_options = {
-            winhighlight = {
-              Normal = "NormalFloat",
-            },
+      })
+
+      -- Views
+      opts.views = opts.views or {}
+      opts.views.cmdline_popup = {
+        border = core.config.ui.transparent.floats and {
+          style = "rounded",
+        } or {
+          style = "none",
+          padding = { 1, 2 },
+        },
+        win_options = {
+          winhighlight = {
+            Normal = "NormalFloat",
           },
         },
-        mini = {
-          position = {
-            -- auto-adjust height based on cmdheight (so it doesn't overlap with the statusline)
-            row = -1 - vim.o.cmdheight,
-          },
+      }
+      opts.views.mini = {
+        position = {
+          -- auto-adjust height based on cmdheight (so it doesn't overlap with the statusline)
+          row = -1 - vim.o.cmdheight,
         },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = core.config.ui.transparent.floats and true or false,
-      },
-    },
+      }
+
+      -- Presets
+      opts.presets = opts.presets or {}
+      opts.presets.inc_rename = false
+      opts.presets.lsp_doc_border = core.config.ui.transparent.floats and true or false
+    end,
   },
 }, {
   which_key = {
     ["<leader>sn"] = "Noice",
-  },
-  telescope = {
-    extensions = "noice",
   },
 })

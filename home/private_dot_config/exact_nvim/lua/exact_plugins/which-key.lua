@@ -1,6 +1,9 @@
 ---@type LazyPluginSpec
 return {
   "folke/which-key.nvim",
+  event = function()
+    return {}
+  end,
   keys = core.lazy_map({
     n = {
       [{ "<leader>", "<C-r>", "<C-w>", "\"", "'", "`", "c", "v", "g" }] = {},
@@ -8,9 +11,6 @@ return {
   }),
   ---@type Options
   opts = {
-    plugins = {
-      spelling = true,
-    },
     defaults = {
       mode = { "n", "v" },
       ["g"] = { name = "Goto" },
@@ -35,10 +35,4 @@ return {
       border = core.config.ui.transparent.floats and "rounded" or "none",
     },
   },
-  config = function(_, opts)
-    local wk = require("which-key")
-
-    wk.setup(opts)
-    wk.register(opts.defaults)
-  end,
 }
