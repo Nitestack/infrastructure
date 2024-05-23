@@ -1,15 +1,5 @@
 # {{ template "pwsh-library.ps1" . }}
 
-# {{ if ne (len (concat .dependencies.windows.choco .dependencies.all.packages)) 0 }}
-if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
-    Start-Process -Wait -FilePath pwsh -Verb Runas -ArgumentList $CommandLine
-    Exit
-  }
-}
-# {{ end }}
-
 Write-StartTask "Windows: Installing packages"
 
 # Install winget packages
@@ -27,25 +17,6 @@ Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $pack
     throw "Command failed: $_"
   }
 }
-# {{ end }}
-
-# {{ if ne (len (concat .dependencies.windows.choco .dependencies.all.packages)) 0 }}
-# Install choco packages
-Write-Host "`nChocolatey:"
-# {{ range $_, $package_name := concat .dependencies.windows.choco .dependencies.all.packages }}
-Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
-  if (choco list --lo -r -e "{{- $package_name -}}") {
-    return ":{{- $package_name -}}"
-  }
-
-  try {
-    Invoke-Expression "choco install -y {{ $package_name -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
-# {{ end }}
 # {{ end }}
 
 # Custom installation

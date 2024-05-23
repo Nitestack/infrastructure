@@ -32,7 +32,7 @@ The major features of this repository are:
 - [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration (cross-platform)
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
 - [**Scripts**](home/.chezmoiscripts):
-  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [Chocolatey](https://community.chocolatey.org) and [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io).
+  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io).
   - Sets up the Spaceship theme (UNIX).
   - Configures the default shell to be Zsh (Linux).
   - Sets up Mirrorlist backup (Arch Linux).

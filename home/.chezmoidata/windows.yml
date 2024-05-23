@@ -1,7 +1,6 @@
 ---
 dependencies:
   windows:
-    choco: []
     winget:
       - "sharkdp.bat"
       - "Kitware.CMake"
