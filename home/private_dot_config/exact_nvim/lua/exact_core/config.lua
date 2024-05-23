@@ -48,10 +48,6 @@ M.ui = {
 
 M.lazyvim = {
   colorscheme = M.ui.theme,
-  news = {
-    lazyvim = true,
-    neovim = true,
-  },
   icons = {
     diagnostics = vim.tbl_map(function(icon)
       return icon .. " "
