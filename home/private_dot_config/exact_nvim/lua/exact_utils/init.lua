@@ -4,7 +4,6 @@
 ---@class utils
 ---@field breadcrumbs utils.breadcrumbs
 ---@field cmds utils.cmds
----@field lazyfile utils.lazyfile
 ---@field lualine utils.lualine
 ---@field mappings utils.mappings
 ---@field plugin utils.plugin
