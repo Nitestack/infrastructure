@@ -9,7 +9,6 @@ dependencies:
       - "junegunn.fzf"
       - "Git.Git"
       - "JesseDuffield.lazygit"
-      - "GnuWin32.Make"
       - "Python.Python.3.12"
       - "BurntSushi.ripgrep.MSVC"
       - "Microsoft.VCRedist.2015+.x64"
@@ -35,6 +34,9 @@ dependencies:
       - "WhatsApp.WhatsApp"
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     custom:
+      - pipx:
+          - "python -m pip install --user pipx"
+          - "$env:APPDATA\\Python\\Python312\\Scripts\\pipx.exe ensurepath"
       - rustup:
           - "winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup"
           - "rustup update"

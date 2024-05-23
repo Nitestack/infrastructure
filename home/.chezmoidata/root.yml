@@ -39,6 +39,9 @@ dependencies:
       - "tmux"
       - "vim"
     custom:
+      - pipx:
+          - "python3 -m pip install --user pipx"
+          - "sudo pipx ensurepath --global"
       - bashly:
           - "sudo gem install bashly"
       - volta:
