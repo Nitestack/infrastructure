@@ -6,12 +6,12 @@ dependencies:
       - "python3"
       - "python3-virtualenv"
       - "fd"
-      - "nodejs-lts"
       - "lazygit"
       - "bat"
       - "make"
     winget:
       - "ajeetdsouza.zoxide"
+      - "Volta.Volta"
 
       - "Guru3D.Afterburner"
       - "Google.AndroidStudio"

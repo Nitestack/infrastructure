@@ -1,23 +1,19 @@
-# cargo
-export PATH="$PATH:$HOME/.cargo/bin"
-
 # bob
 export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
+
+# cargo
+export PATH="$PATH:$HOME/.cargo/bin"
 
 # gem
 export PATH="$PATH:$(gem env path | sed 's#[^:]\+#&/bin#g')"
 
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-*":$PNPM_HOME:"*) ;;
-*) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+export PATH="$PNPM_HOME:$PATH"
+
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 
 # Editor
 # Preferred editor for local and remote sessions
