@@ -33,6 +33,7 @@ dependencies:
       - "Microsoft.VisualStudio.2022.Community"
       - "wez.wezterm"
       - "WhatsApp.WhatsApp"
+      - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     custom:
       - rustup:
           - "winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup"
@@ -41,4 +42,3 @@ dependencies:
     manual:
       - "AnkerWork"
       - "Notion Calendar"
-      - "Wintoys"
