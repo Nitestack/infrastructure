@@ -49,22 +49,9 @@ brew_ensure_cask_installed "{{- $cask -}}"
 
 # {{ end }}
 
+# Custom installation
 echo
 echo "Custom installation:"
-
-# NVM
-install_nvm() {
-	if [[ -d "${NVM_DIR:-"~/.nvm"}/.git" ]]; then
-		echo "nvm"
-		exit 2
-	else
-		curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-	fi
-}
-show_spinner "install_nvm" "nvm" "nvm"
-
-# Custom installation
 # {{ $dependencies := concat .dependencies.unix.custom .dependencies.all.custom }}
 # {{ if eq .osid "linux-arch" }}
 # {{ $dependencies = concat .dependencies.arch.custom $dependencies }}
@@ -122,3 +109,4 @@ show_spinner "install_with_cargo" "{{- $package_name -}}" "{{- $package_name -}}
 echo
 
 complete_task "Installed packages"
+
