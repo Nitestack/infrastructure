@@ -32,7 +32,7 @@ commands_dir: ~
 # strict: false      Only exit on errors (set -e)
 # strict: ''         Do not add any 'set' directive
 # strict: <string>   Add any other custom 'set' directive
-strict: "set -uo pipefail"
+strict: ""
 
 # When true, the generated script will use tab indentation instead of spaces
 # (every 2 leading spaces will be converted to a tab character)

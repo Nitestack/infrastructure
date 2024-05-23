@@ -1141,7 +1141,6 @@ dotfiles_edit_parse_requirements() {
 initialize() {
   version="0.1.0"
   long_usage=''
-  set -uo pipefail
 
 }
 
