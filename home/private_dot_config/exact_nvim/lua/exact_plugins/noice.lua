@@ -8,11 +8,11 @@ return utils.plugin.with_extensions({
       opts.cmdline.view = "cmdline"
 
       -- Disable notify
-      opts.messages = opts.messages or {}
-      opts.messages.enabled = true
-      opts.messages.view = "mini"
-      opts.messages.view_error = "mini"
-      opts.messages.view_warn = "mini"
+      -- opts.messages = opts.messages or {}
+      -- opts.messages.enabled = true
+      -- opts.messages.view = "mini"
+      -- opts.messages.view_error = "mini"
+      -- opts.messages.view_warn = "mini"
 
       -- LSP
       opts.lsp = opts.lsp or {}
