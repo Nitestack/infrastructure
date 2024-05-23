@@ -3,7 +3,7 @@ return {
   "Exafunction/codeium.vim",
   cmd = "Codeium",
   build = ":Codeium Auth",
-  event = "BufEnter",
+  event = "InsertEnter",
   keys = core.lazy_map({
     i = {
       ["<M-Enter>"] = {
