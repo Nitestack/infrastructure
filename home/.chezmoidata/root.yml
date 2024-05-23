@@ -30,6 +30,8 @@ dependencies:
           - "bob use stable"
       - pnpm:
           - "npm install -g pnpm"
+      - virtualenv:
+          - "pipx install virtualenv"
     manual: []
   unix:
     packages:
