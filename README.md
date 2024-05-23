@@ -51,7 +51,7 @@ Some of the additional features are:
 
 ## ⚙️ Requirements
 
-- **Operating System:**
+- **Operating System (latest stable):**
   - [Windows](https://microsoft.com/windows)
   - [macOS](https://apple.com/macos)
   - **Linux:**
