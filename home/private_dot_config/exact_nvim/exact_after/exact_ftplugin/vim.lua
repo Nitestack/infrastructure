@@ -9,7 +9,7 @@ utils.ft_plugin({
           vim.cmd.source("%")
           vim.notify("Sourced " .. vim.fn.expand("%"))
         end,
-        "Source Vimscript file",
+        desc = "Source Vimscript file",
       },
     },
   },
