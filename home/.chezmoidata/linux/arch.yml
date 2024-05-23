@@ -2,17 +2,17 @@
 dependencies:
   arch:
     pacman:
-      - "openssh"
-      - "reflector"
       - "base-devel"
-      - "python"
-      - "fzf"
-      - "lazygit"
       - "bat"
       - "fd"
-      - "zoxide"
-      - "ruby"
+      - "fzf"
+      - "lazygit"
       - "man-db"
+      - "openssh"
+      - "python"
+      - "reflector"
+      - "ruby"
+      - "zoxide"
     custom:
       - rustup:
           - "sudo pacman -S --needed --noconfirm rustup"

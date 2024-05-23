@@ -3,11 +3,11 @@ dependencies:
   macos:
     brew:
       formulae:
+        - "bat"
+        - "fd"
         - "fzf"
         - "jesseduffield/lazygit/lazygit"
         - "ruby"
-        - "bat"
-        - "fd"
         - "zoxide"
       casks:
         - "alt-tab"
