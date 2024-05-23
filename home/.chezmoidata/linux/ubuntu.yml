@@ -5,6 +5,7 @@ dependencies:
       - "build-essential"
       - "libyaml-dev"
       - "python3"
+      - "python3-pip"
       - "ruby-dev"
     custom:
       - bat:
@@ -23,6 +24,9 @@ dependencies:
           - "tar xf lazygit.tar.gz lazygit"
           - "sudo install lazygit /usr/local/bin"
           - "rm lazygit.tar.gz lazygit"
+        - pipx:
+          - "sudo apt install -y pipx"
+          - "sudo pipx ensurepath --global"
       - rustup:
           - "sudo apt install -y rustup"
           - "rustup update"

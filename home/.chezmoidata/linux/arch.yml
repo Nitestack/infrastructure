@@ -10,10 +10,14 @@ dependencies:
       - "man-db"
       - "openssh"
       - "python"
+      - "python-pip"
       - "reflector"
       - "ruby"
       - "zoxide"
     custom:
+      - pipx:
+          - "sudo pacman -S --needed --noconfirm python-pipx"
+          - "sudo pipx ensurepath --global"
       - rustup:
           - "sudo pacman -S --needed --noconfirm rustup"
           - "rustup update"
