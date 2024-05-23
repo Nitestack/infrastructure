@@ -5,11 +5,11 @@ Write-StartTask "Windows: Installing packages"
 # Install winget packages
 Write-Host "`nwinget:"
 # {{ range $_, $package_id := concat .dependencies.windows.winget }}
-$PackageName = (winget search --id "{{- $package_id -}}" | Select-Object -Last 1).Split("{{- $package_id -}}")[0].Trim()
+$PackageName = (winget search -e "{{- $package_id -}}" | Select-Object -Last 1).Split("{{- $package_id -}}")[0].Trim()
 Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -ScriptBlock {
   winget list -e "{{- $package_id -}}" | Out-Null
   if ($?) {
-    $PackageName = (winget search --id "{{- $package_id -}}" | Select-Object -Last 1).Split("{{- $package_id -}}")[0].Trim()
+    $PackageName = (winget search -e "{{- $package_id -}}" | Select-Object -Last 1).Split("{{- $package_id -}}")[0].Trim()
     return ":$PackageName"
   }
 
