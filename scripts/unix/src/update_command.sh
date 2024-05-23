@@ -60,8 +60,8 @@ if [[ -n "${args["--nvim"]}" ]]; then
 	}
 	show_spinner "update_mason_packages" "Updating Mason packages" "Updated Mason packages"
 
-	## Sync lazy-lock.json file
 	source_path=$(chezmoi source-path)
+	## Sync lazy-lock.json file
 	lazy_lock_path=$(find "${source_path}" -type f -name "*lazy-lock.json" -print -quit)
 	sync_lazy_lock() {
 		if [[ ! -f "${lazy_lock_path}" ]]; then
@@ -92,4 +92,36 @@ if [[ -n "${args["--nvim"]}" ]]; then
 		cd "${current_path}" || exit 1
 	}
 	show_spinner "commit_lazy_lock" "Committing 'lazy-lock.json' file" "Committed 'lazy-lock.json' file"
+
+	## Sync lazyvim.json file
+	lazyvim_path=$(find "${source_path}" -type f -name "*lazyvim.json" -print -quit)
+	sync_lazyvim() {
+		if [[ ! -f "${lazyvim_path}" ]]; then
+			echo "Could not find 'lazyvim.json' file in '${source_path}'"
+			exit 1
+		fi
+		config_path="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
+		updated_lazyvim_path=$(find "${config_path}" -type f -name "*lazyvim.json" -print -quit)
+		if [[ ! -f "${updated_lazyvim_path}" ]]; then
+			echo "Could not find 'lazyvim.json' file in '${config_path}'"
+			exit 1
+		fi
+		cp -f "${updated_lazyvim_path}" "${lazyvim_path}"
+	}
+	show_spinner "sync_lazyvim" "Syncing 'lazyvim.json' file" "Synced 'lazyvim.json' file"
+
+	## Commit the updated 'lazyvim.json' file
+	commit_lazyvim() {
+		current_path=$(pwd)
+		cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
+		# Check if there are any changes
+		if git diff --quiet "${lazyvim_path}"; then
+			echo "No changes in 'lazyvim.json' file"
+			exit 2
+		fi
+		git add "${lazyvim_path}"
+		git commit "${lazyvim_path}" -m "chore(nvim): update lazyvim.json"
+		cd "${current_path}" || exit 1
+	}
+	show_spinner "commit_lazyvim" "Committing 'lazyvim.json' file" "Committed 'lazyvim.json' file"
 fi

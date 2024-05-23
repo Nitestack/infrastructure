@@ -367,6 +367,37 @@ USAGE:
       git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json" || throw "Failed to commit 'lazy-lock.json' file"
       Set-Location "$CurrentPath" || throw "Failed to set current path to '$CurrentPath'"
     }
+
+    # Sync lazyvim.json file
+    Show-Spinner -StartMessage "Syncing 'lazyvim.json' file" -CompletionMessage "Synced 'lazyvim.json' file" -ScriptBlock {
+      $SourcePath = chezmoi source-path
+      $LazyvimPath = (Get-ChildItem -Path $SourcePath -Filter "*lazyvim.json" -File -Recurse | Select-Object -First 1).FullName
+      if ([string]::IsNullOrEmpty($LazyvimPath)) {
+        throw "Could not find 'lazyvim.json' file in '$SourcePath'"
+      }
+      $ConfigPath = "$env:LOCALAPPDATA\nvim"
+      $UpdatedLazyvimPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazyvim.json" -File | Select-Object -First 1).FullName
+      if ([string]::IsNullOrEmpty($UpdatedLazyvimPath)) {
+        throw "Could not find 'lazyvim.json' file in '$ConfigPath'"
+      }
+      Copy-Item -Path "$UpdatedLazyvimPath" -Destination "$LazyvimPath" -Force || throw "Failed to sync 'lazyvim.json' file"
+    }
+
+    # Commit the updated 'lazyvim.json' file
+    Show-Spinner -StartMessage "Committing 'lazyvim.json' file" -CompletionMessage "Committed 'lazyvim.json' file" -ScriptBlock {
+      $SourcePath = chezmoi source-path
+      $LazyvimPath = (Get-ChildItem -Path $SourcePath -Filter "*lazyvim.json" -File -Recurse | Select-Object -First 1).FullName
+      $CurrentPath = Get-Location
+      Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || throw "Failed to set current path to '$(chezmoi source-path)/..'"
+      # Check if there are any changes
+      Invoke-Expression "git diff --quiet -- $LazyvimPath"
+      if ($LASTEXITCODE -eq 0) {
+        return ":No changes in 'lazyvim.json' file"
+      }
+      git add "$LazyvimPath" || throw "Failed to add 'lazyvim.json' file to git"
+      git commit "$LazyvimPath" -m "chore(nvim): update lazyvim.json" || throw "Failed to commit 'lazyvim.json' file"
+      Set-Location "$CurrentPath" || throw "Failed to set current path to '$CurrentPath'"
+    }
   }
 }
 
