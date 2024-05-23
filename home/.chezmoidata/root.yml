@@ -25,9 +25,11 @@ dependencies:
           - "bob install nightly"
           - "bob use stable"
       - pnpm:
-          - "npm install -g pnpm"
+          - "volta install pnpm"
       - virtualenv:
           - "pipx install virtualenv"
+      - yarn:
+          - "volta install yarn"
     manual: []
   unix:
     packages:
