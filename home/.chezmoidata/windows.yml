@@ -1,24 +1,28 @@
 ---
 dependencies:
   windows:
-    choco:
-      - "fzf"
-      - "fd"
-      - "lazygit"
-      - "bat"
-      - "make"
+    choco: []
     winget:
+      - "sharkdp.bat"
+      - "Kitware.CMake"
+      - "Microsoft.DotNet.SDK.8"
+      - "sharkdp.fd"
+      - "junegunn.fzf"
+      - "Git.Git"
+      - "JesseDuffield.lazygit"
+      - "GnuWin32.Make"
       - "Python.Python.3.12"
-      - "ajeetdsouza.zoxide"
+      - "BurntSushi.ripgrep.MSVC"
+      - "Microsoft.VCRedist.2015+.x64"
+      - "vim.vim"
       - "Volta.Volta"
+      - "ajeetdsouza.zoxide"
 
       - "Guru3D.Afterburner"
       - "Google.AndroidStudio"
       - "TheBrowserCompany.Arc"
       - "Bitwarden.Bitwarden"
-      - "Kitware.CMake"
       - "Discord.Discord"
-      - "Microsoft.DotNet.SDK.8"
       - "Figma.Figma"
       - "MicaForEveryone.MicaForEveryone"
       - "Notion.Notion"
