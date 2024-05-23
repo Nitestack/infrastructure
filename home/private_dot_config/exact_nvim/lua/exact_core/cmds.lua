@@ -16,18 +16,6 @@ local M = {}
 --  Autocommands
 --------------------------------------------------------------------------------
 M.auto_cmds = {
-  -- Setup terminal mappings
-  {
-    "TermOpen",
-    {
-      pattern = "term://*",
-      callback = function(args)
-        if vim.bo.filetype == "" or vim.bo.filetype == "toggleterm" then
-          core.map({ t = core.mappings.terminal_mappings }, { silent = false, buffer = args.buf })
-        end
-      end,
-    },
-  },
   -- Close some filetypes with <q>
   {
     "FileType",

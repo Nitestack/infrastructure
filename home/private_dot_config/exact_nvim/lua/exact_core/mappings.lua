@@ -8,7 +8,7 @@
 ---@field mappings utils.mappings.mappings_spec
 ---@field mapping_opts utils.mappings.mapping_opts
 ---@field lsp_mappings core.mappings.lsp_mappings
----@field terminal_mappings core.mappings.terminal_mappings
+---@field disabled_mappings table<string|string[], string[]>
 
 ---@type core.mappings
 local M = {}
@@ -165,40 +165,6 @@ M.lsp_mappings = {
 }
 
 --------------------------------------------------------------------------------
---  Terminal mappings
---------------------------------------------------------------------------------
-M.terminal_mappings = {
-  ["<Esc>"] = {
-    "<C-\\><C-n>",
-    desc = "Enter Normal Mode",
-  },
-  ["<C-h>"] = {
-    function()
-      vim.cmd.wincmd("h")
-    end,
-    desc = "Window left",
-  },
-  ["<C-j>"] = {
-    function()
-      vim.cmd.wincmd("j")
-    end,
-    desc = "Window down",
-  },
-  ["<C-k>"] = {
-    function()
-      vim.cmd.wincmd("k")
-    end,
-    desc = "Window up",
-  },
-  ["<C-l>"] = {
-    function()
-      vim.cmd.wincmd("l")
-    end,
-    desc = "Window right",
-  },
-}
-
---------------------------------------------------------------------------------
 --  Mappings
 --------------------------------------------------------------------------------
 M.mappings = {}
@@ -281,9 +247,58 @@ M.mappings.x = {
   },
 }
 
+M.mappings.t = {
+  ["<Esc>"] = {
+    "<C-\\><C-n>",
+    desc = "Enter Normal Mode",
+  },
+}
+
 M.mapping_opts = {
   silent = true,
   noremap = true,
+}
+
+M.disabled_mappings = {
+  n = {
+    -- Buffers
+    "<S-h>",
+    "<S-l>",
+    "[b",
+    "]b",
+    "<leader>bb",
+    "<leader>`",
+    "<leader>bd",
+    "<leader>bD",
+    "<leader>fn",
+    -- Terminal
+    "<leader>ft",
+    "<leader>fT",
+    "<C-/>",
+    "<C-_>",
+    -- Tabs
+    "<leader><tab>l",
+    "<leader><tab>f",
+    "<leader><tab><tab>",
+    "<leader><tab>]",
+    "<leader><tab>d",
+    "<leader><tab>[",
+  },
+  t = {
+    -- Terminal
+    "<Esc><Esc>",
+    "<C-/>",
+    "<C-_>",
+  },
+  v = {
+    -- Indenting
+    "<",
+    ">",
+  },
+  [{ "i", "x", "n", "s" }] = {
+    -- Save
+    "<C-s>",
+  },
 }
 
 return M
