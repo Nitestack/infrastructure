@@ -27,7 +27,7 @@ dependencies:
       - "Notion.Notion"
       - "PDFgear.PDFgear"
       - "Microsoft.PowerToys"
-      - "nilesoft.shell"
+      - "Nilesoft.Shell"
       - "Spotify.Spotify"
       - "Microsoft.VisualStudioCode"
       - "Microsoft.VisualStudio.2022.Community"
