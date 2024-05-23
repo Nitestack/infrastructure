@@ -43,7 +43,7 @@ return {
 
     -- Code lens
     opts.codelens = opts.codelens or {}
-    opts.codelens.enabled = true
+    opts.codelens.enabled = false
 
     -- Semantic tokens
     LazyVim.lsp.on_attach(function(client, buffer)
