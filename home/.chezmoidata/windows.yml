@@ -36,7 +36,7 @@ dependencies:
       - "WhatsApp.WhatsApp"
     custom:
       - rustup:
-          - "choco install -y rustup.install"
+          - "winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup"
           - "rustup update"
           - "rustup default stable"
     manual:
