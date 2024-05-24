@@ -6,7 +6,6 @@
 ---@field performance_mode boolean
 ---@field ui core.config.ui
 ---@field plugins core.config.plugins
----@field disabled_plugins string[]
 ---@field lazyvim LazyVimOptions
 
 ---@class core.config.ui
@@ -117,10 +116,6 @@ M.plugins = {
     formatters_by_ft = {},
     formatters = {},
   },
-}
-
-M.disabled_plugins = {
-  "pmizio/typescript-tools.nvim",
 }
 
 return M

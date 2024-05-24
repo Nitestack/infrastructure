@@ -33,6 +33,7 @@ local tsserver_settings = {
     propertyDeclarationTypes = { enabled = true },
     enumMemberValues = { enabled = true },
   },
+  updateImportsOnFileMove = { enabled = "always" },
 }
 
 return utils.plugin.get_language_spec({
@@ -46,6 +47,7 @@ return utils.plugin.get_language_spec({
           javascript = tsserver_settings,
           vtsls = {
             autoUseWorkspaceTsdk = true,
+            enableMoveToFileCodeAction = true,
           },
         },
       },
@@ -88,42 +90,6 @@ return utils.plugin.get_language_spec({
   plugins = utils.plugin.with_extensions({
     { import = "lazyvim.plugins.extras.linting.eslint" }, -- Use this as long as eslint_d doesn't work for eslint v9
     { import = "lazyvim.plugins.extras.lang.typescript" },
-    {
-      "pmizio/typescript-tools.nvim",
-      ft = filetypes,
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "neovim/nvim-lspconfig",
-      },
-      opts = {
-        settings = {
-          tsserver_local = "en",
-          complete_function_calls = true,
-          include_completions_with_insert_text = true,
-          tsserver_max_memory = 3072,
-          tsserver_format_options = {
-            insertSpaceAfterFunctionKeywordForAnonymousFunctions = false,
-            insertSpaceAfterTypeAssertion = true,
-            semicolons = "insert",
-
-            indentSize = vim.opt.shiftwidth,
-            convertTabsToSpaces = vim.opt.expandtab,
-            tabSize = vim.opt.tabstop,
-          },
-          tsserver_file_preferences = {
-            quotePreference = "double",
-            importModuleSpecifierPreference = "non-relative",
-            generateReturnInDocTemplate = false,
-            --
-            includeInlayParameterNameHints = "literals",
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
-          },
-        },
-      },
-    },
     {
       "neovim/nvim-lspconfig",
       dependencies = {
