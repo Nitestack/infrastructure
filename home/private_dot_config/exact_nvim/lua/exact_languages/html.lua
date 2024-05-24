@@ -7,12 +7,14 @@ return utils.plugin.get_language_spec({
   },
   mason = {
     "html-lsp",
+    "emmet-language-server",
     "prettierd",
     "prettier",
   },
   lsp = {
     servers = {
       html = {},
+      emmet_language_server = {},
     },
   },
   formatter = {

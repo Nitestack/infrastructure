@@ -15,8 +15,6 @@ return {
   end,
   ---@param opts PluginLspOpts
   opts = function(_, opts)
-    opts.servers.emmet_language_server = {}
-
     -- Capabilities
     opts.capabilities = {
       workspace = {

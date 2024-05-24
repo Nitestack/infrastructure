@@ -87,7 +87,7 @@ M.lazyvim = {
 }
 
 M.plugins = {
-  mason = { "codespell", "emmet-language-server" },
+  mason = { "codespell" },
   treesitter = {
     "c",
     "python",
