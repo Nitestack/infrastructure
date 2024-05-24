@@ -6,7 +6,6 @@ return {
     cmd = { "TroubleToggle", "Trouble" },
     ---@type trouble.Config
     opts = {
-      auto_close = true,
       focus = true,
       icons = {
         kinds = vim.tbl_map(function(icon)
