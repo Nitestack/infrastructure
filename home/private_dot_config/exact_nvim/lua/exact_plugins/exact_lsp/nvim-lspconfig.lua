@@ -7,6 +7,12 @@ return {
       opts = {},
     },
   },
+  -- Modify LSP mappings
+  init = function()
+    local keys = require("lazyvim.plugins.lsp.keymaps").get()
+    -- add `F2` to rename and simply remap it to `<leader>cr`
+    keys[#keys + 1] = { "<F2>", "<leader>cr", desc = "Rename", has = "rename", remap = true }
+  end,
   ---@param opts PluginLspOpts
   opts = function(_, opts)
     opts.servers.emmet_language_server = {}
