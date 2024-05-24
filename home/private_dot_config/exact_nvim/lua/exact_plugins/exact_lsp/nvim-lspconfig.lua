@@ -61,20 +61,10 @@ return {
         vim.b[buffer].semantic_tokens = true
       end
     end)
+
+    -- Workspace diagnostics
+    LazyVim.lsp.on_attach(function(client, buffer)
+      require("workspace-diagnostics").populate_workspace_diagnostics(client, buffer)
+    end)
   end,
-  -- config = function(_, opts)
-  --   local function test(server_opts)
-  --     local on_attach = server_opts.on_attach
-  --
-  --     server_opts.on_attach = function(client, bufnr)
-  --       -- Workspace diagnostics
-  --       require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
-  --
-  --       -- If there is an existing `on_attach` function, call it
-  --       if on_attach then
-  --         on_attach(client, bufnr)
-  --       end
-  --     end
-  --   end
-  -- end,
 }
