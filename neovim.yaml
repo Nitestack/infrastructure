@@ -8,3 +8,5 @@ globals:
     any: true
   utils:
     any: true
+  LazyVim:
+    any: true
