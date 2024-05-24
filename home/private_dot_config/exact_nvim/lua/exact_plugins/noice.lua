@@ -1,3 +1,4 @@
+---@diagnostic disable: assign-type-mismatch
 return utils.plugin.with_extensions({
   {
     "folke/noice.nvim",
