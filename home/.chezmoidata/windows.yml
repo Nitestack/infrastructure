@@ -9,6 +9,7 @@ dependencies:
       - "junegunn.fzf"
       - "Git.Git"
       - "JesseDuffield.lazygit"
+      - "LLVM.LLVM"
       - "Python.Python.3.12"
       - "BurntSushi.ripgrep.MSVC"
       - "Microsoft.VCRedist.2015+.x64"
