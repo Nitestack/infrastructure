@@ -4,6 +4,11 @@ return {
   {
     "folke/trouble.nvim",
     cmd = { "TroubleToggle", "Trouble" },
+    keys = core.lazy_map({
+      n = {
+        [{ "<leader>cs", "<leader>cS" }] = { false },
+      },
+    }),
     ---@type trouble.Config
     opts = {
       focus = true,
