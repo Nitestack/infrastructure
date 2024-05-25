@@ -26,11 +26,11 @@ M.mappings.n = {
   -- Windows
   ["<leader>wh"] = {
     "<C-W>t <C-W>K",
-    desc = "Window: Change two horizontal to vertical",
+    desc = "Horizontal to Vertical",
   },
   ["<leader>wv"] = {
     "<C-W>t <C-W>H",
-    desc = "Window: Change two vertical to horizontal",
+    desc = "Vertical to Horizontal",
   },
   -- Smart delete line
   ["dd"] = {

@@ -12,7 +12,7 @@ return {
               ls.change_choice(1)
             end
           end,
-          desc = "Luasnip: Change choice",
+          desc = "Change choice",
           silent = true,
         },
       },
@@ -48,22 +48,6 @@ return {
         conds = require("luasnip.extras.expand_conditions"),
         postfix = require("luasnip.extras.postfix").postfix,
       }
-    end,
-    config = function(_, opts)
-      local ls = require("luasnip")
-      ls.setup(opts)
-
-      core.user_cmds({
-        {
-          "LuaSnipEdit",
-          function()
-            require("luasnip.loaders").edit_snippet_files()
-          end,
-        },
-      })
-
-      -- Load snippets from <nvim_config_dir>/luasnippets
-      require("luasnip.loaders.from_lua").lazy_load()
     end,
   },
 }

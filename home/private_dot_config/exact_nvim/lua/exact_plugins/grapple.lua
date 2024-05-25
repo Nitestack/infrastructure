@@ -9,43 +9,43 @@ return utils.plugin.with_extensions({
           function()
             require("grapple").toggle()
           end,
-          desc = "Jump: Toggle file",
+          desc = "Toggle file",
         },
         [{ "L", "<leader>jt" }] = {
           function()
             require("grapple").toggle_tags()
           end,
-          desc = "Jump: Toggle menu",
+          desc = "Toggle menu",
         },
         [{ "<M-1>", "<leader>j1" }] = {
           function()
             require("grapple").select({ index = 1 })
           end,
-          desc = "Jump: File 1",
+          desc = "File 1",
         },
         [{ "<M-2>", "<leader>j2" }] = {
           function()
             require("grapple").select({ index = 2 })
           end,
-          desc = "Jump: File 2",
+          desc = "File 2",
         },
         [{ "<M-3>", "<leader>j3" }] = {
           function()
             require("grapple").select({ index = 3 })
           end,
-          desc = "Jump: File 3",
+          desc = "File 3",
         },
         [{ "<M-4>", "<leader>j4" }] = {
           function()
             require("grapple").select({ index = 4 })
           end,
-          desc = "Jump: File 4",
+          desc = "File 4",
         },
         [{ "<M-5>", "<leader>j5" }] = {
           function()
             require("grapple").select({ index = 5 })
           end,
-          desc = "Jump: File 5",
+          desc = "File 5",
         },
       },
     }),
@@ -65,7 +65,7 @@ return utils.plugin.with_extensions({
           function()
             require("harpeek").toggle()
           end,
-          desc = "Jump: Toggle peek menu",
+          desc = "Toggle peek menu",
         },
       },
     }),

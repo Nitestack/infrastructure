@@ -17,26 +17,22 @@ return utils.plugin.with_extensions({
               require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
             end
           end,
-          desc = "File Explorer: Toggle",
+          desc = "Open File Explorer (current dir)",
+        },
+        ["<leader>E"] = {
+          function()
+            if not require("mini.files").close() then
+              require("mini.files").open(vim.uv.cwd(), true)
+            end
+          end,
+          desc = "Open File Explorer (cwd)",
         },
         [{ "<leader>fm", "<leader>fM" }] = {
           false,
         },
       },
     }),
-    opts = {
-      content = {
-        prefix = function(fs_entry)
-          if fs_entry.fs_type == "directory" then
-            return core.icons.ui.FolderClosed .. " ", "MiniFilesDirectory"
-          end
-          return require("mini.files").default_prefix(fs_entry)
-        end,
-      },
-    },
-    config = function(_, opts)
-      require("mini.files").setup(opts)
-
+    opts = function(_, opts)
       core.auto_cmds({
         {
           "User",
@@ -49,16 +45,15 @@ return utils.plugin.with_extensions({
             end,
           },
         },
-        {
-          "User",
-          {
-            pattern = "MiniFilesActionRename",
-            callback = function(event)
-              LazyVim.lsp.on_rename(event.data.from, event.data.to)
-            end,
-          },
-        },
       })
+
+      opts.content = opts.content or {}
+      opts.content.prefix = function(fs_entry)
+        if fs_entry.fs_type == "directory" then
+          return core.icons.ui.FolderClosed .. " ", "MiniFilesDirectory"
+        end
+        return require("mini.files").default_prefix(fs_entry)
+      end
     end,
   },
   { import = "lazyvim.plugins.extras.editor.mini-move" },

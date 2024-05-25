@@ -17,7 +17,7 @@ return {
   keys = core.lazy_map({
     [{ "n", "i", "t" }] = {
       [mapping] = {
-        desc = "Terminal: Toggle",
+        desc = "Toggle Terminal",
       },
     },
   }),

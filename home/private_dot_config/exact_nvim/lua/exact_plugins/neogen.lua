@@ -9,25 +9,25 @@ return utils.plugin.with_extensions({
           function()
             require("neogen").generate({ type = "func" })
           end,
-          desc = "Annotation: Function",
+          desc = "Function",
         },
         ["F"] = {
           function()
             require("neogen").generate({ type = "file" })
           end,
-          desc = "Annotation: File",
+          desc = "File",
         },
         ["c"] = {
           function()
             require("neogen").generate({ type = "class" })
           end,
-          desc = "Annotation: Class",
+          desc = "Class",
         },
         ["t"] = {
           function()
             require("neogen").generate({ type = "type" })
           end,
-          desc = "Annotation: Type",
+          desc = "Type",
         },
       },
     }, {

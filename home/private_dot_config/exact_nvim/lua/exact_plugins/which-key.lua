@@ -17,9 +17,12 @@ return {
       ["z"] = { name = "Fold" },
       ["]"] = { name = "Next" },
       ["["] = { name = "Previous" },
+      ["<C-w>"] = { name = "Window" },
+      ["<leader>"] = { name = "Leader" },
       ["<leader>c"] = { name = "Code" },
       ["<leader>f"] = { name = "File/Find" },
       ["<leader>g"] = { name = "Git" },
+      ["<leader>gh"] = { name = "Hunks" },
       ["<leader>q"] = { name = "Quit/Session" },
       ["<leader>s"] = { name = "Search" },
       ["<leader>u"] = { name = "UI" },
@@ -28,7 +31,7 @@ return {
     },
     icons = {
       breadcrumb = core.icons.ui.DoubleChevronRight,
-      separator = "-",
+      separator = "",
       group = "",
     },
     window = {

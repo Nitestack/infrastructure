@@ -9,7 +9,7 @@ return utils.plugin.with_extensions({
           function()
             require("telescope").extensions.undo.undo()
           end,
-          desc = "Telescope: Undo history",
+          desc = "Undo History",
         },
       },
     }),
