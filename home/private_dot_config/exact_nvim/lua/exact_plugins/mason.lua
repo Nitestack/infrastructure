@@ -18,6 +18,11 @@ return {
       require("mason-tool-installer").setup(opts)
     end,
   },
+  keys = core.lazy_map({
+    n = {
+      ["<leader>cm"] = { false },
+    },
+  }),
   ---@type MasonSettings
   opts = {
     ui = {

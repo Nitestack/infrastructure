@@ -2,6 +2,34 @@ return utils.plugin.with_extensions({
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
+    keys = core.lazy_map({
+      n = {
+        [{
+          "<leader>,",
+          "<leader><Space>",
+          "<leader>fb",
+          "<leader>fc",
+          "<leader>fr",
+          "<leader>fR",
+          "<leader>gc",
+          "<leader>gs",
+
+          "<leader>sd",
+          "<leader>sD",
+          "<leader>sH",
+          "<leader>sj",
+          "<leader>sk",
+          "<leader>sl",
+          "<leader>sm",
+          "<leader>so",
+          "<leader>sR",
+          "<leader>sq",
+          "<leader>uC",
+          "<leader>ss",
+          "<leader>sS",
+        }] = { false },
+      },
+    }),
     opts = function(_, opts)
       local actions = require("telescope.actions")
 
