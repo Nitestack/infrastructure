@@ -31,6 +31,7 @@ dependencies:
       - "Spotify.Spotify"
       - "Microsoft.VisualStudioCode"
       - "Microsoft.VisualStudio.2022.Community"
+      - "Microsoft.VisualStudio.2022.BuildTools"
       - "wez.wezterm"
       - "WhatsApp.WhatsApp"
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
