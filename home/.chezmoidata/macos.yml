@@ -29,6 +29,7 @@ dependencies:
         - "notion"
         - "notion-calendar"
         - "raycast"
+        - "readdle-spark"
         - "rectangle"
         - "spotify"
         - "visual-studio-code"

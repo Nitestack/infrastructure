@@ -29,6 +29,7 @@ dependencies:
       - "PDFgear.PDFgear"
       - "Microsoft.PowerToys"
       - "Nilesoft.Shell"
+      - "Readdle.Spark"
       - "Spotify.Spotify"
       - "Microsoft.VisualStudioCode"
       - "Microsoft.VisualStudio.2022.Community"
