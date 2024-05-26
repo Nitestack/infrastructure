@@ -4,12 +4,21 @@
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
   stripComponents: 1
   refreshPeriod: "168h"
+  exclude:
+    - "*/.*"
+    - "*/templates"
+    - "*/themes"
 ".oh-my-zsh/custom/themes/spaceship-prompt":
   type: "archive"
   url: "https://github.com/spaceship-prompt/spaceship-prompt/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
+  exclude:
+    - "*/.*"
+    - "*/docs"
+    - "scripts"
+    - "tests"
 ".oh-my-zsh/custom/plugins/spaceship-vi-mode":
   type: archive
   url: "https://github.com/spaceship-prompt/spaceship-vi-mode/archive/master.tar.gz"
