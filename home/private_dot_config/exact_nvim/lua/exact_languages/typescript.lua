@@ -51,16 +51,10 @@ return utils.plugin.get_language_spec({
           },
         },
       },
-      ---@type lspconfig.options.tsserver
-      tsserver = {
-        autostart = false,
-        mason = false,
-      },
       prismals = {},
     },
   },
   mason = {
-    "vtsls",
     "eslint_d",
     "prettierd",
     "prettier",
@@ -90,20 +84,6 @@ return utils.plugin.get_language_spec({
   plugins = utils.plugin.with_extensions({
     { import = "lazyvim.plugins.extras.linting.eslint" }, -- Use this as long as eslint_d doesn't work for eslint v9
     { import = "lazyvim.plugins.extras.lang.typescript" },
-    {
-      "neovim/nvim-lspconfig",
-      dependencies = {
-        {
-          "yioneko/nvim-vtsls",
-          config = function()
-            require("vtsls").config({})
-          end,
-        },
-      },
-      opts = function()
-        require("lspconfig.configs").vtsls = require("vtsls").lspconfig
-      end,
-    },
     {
       "vuki656/package-info.nvim",
       dependencies = {
@@ -169,11 +149,6 @@ return utils.plugin.get_language_spec({
     },
     {
       "axelvc/template-string.nvim",
-      ft = filetypes,
-      opts = {},
-    },
-    {
-      "dmmulroy/ts-error-translator.nvim",
       ft = filetypes,
       opts = {},
     },
