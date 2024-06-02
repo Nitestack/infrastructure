@@ -33,3 +33,5 @@ dependencies:
           - "rustup default stable"
       - zoxide:
           - "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+    manual:
+      - "Monaspice Nerd Font"

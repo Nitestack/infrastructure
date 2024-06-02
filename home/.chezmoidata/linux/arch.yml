@@ -9,6 +9,7 @@ dependencies:
       - "lazygit"
       - "man-db"
       - "openssh"
+      - "otf-monaspace-nerd"
       - "python"
       - "python-pip"
       - "reflector"
