@@ -16,6 +16,8 @@ dependencies:
       - "ruby"
       - "zoxide"
     custom:
+      - paru:
+          - "git clone https://aur.archlinux.org/paru.git && cd paru && sudo makepkg -si --noconfirm && cd .. && rm -rf paru"
       - pipx:
           - "sudo pacman -S --needed --noconfirm python-pipx"
           - "sudo pipx ensurepath --global"
