@@ -19,7 +19,7 @@ local M = {}
 ---@field setup? table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
 
 ---@class utils.plugin.language_config.formatter
----@field formatters_by_ft? table<string, conform.FormatterUnit[]>
+---@field formatters_by_ft? table<string, conform.FiletypeFormatter>
 ---@field formatters? table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
 
 ---@class utils.plugin.language_config.linter

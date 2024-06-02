@@ -10,9 +10,54 @@
 ---@field disabled_mappings table<string|string[], string[]>
 
 ---@type core.mappings
-local M = {}
-
-M.mappings = {}
+local M = {
+  mappings = {},
+  mapping_opts = {
+    silent = true,
+    noremap = true,
+  },
+  disabled_mappings = {
+    n = {
+      -- Buffers
+      "<S-h>",
+      "<S-l>",
+      "[b",
+      "]b",
+      "<leader>bb",
+      "<leader>`",
+      "<leader>bd",
+      "<leader>bD",
+      "<leader>fn",
+      -- Terminal
+      "<leader>ft",
+      "<leader>fT",
+      "<C-/>",
+      "<C-_>",
+      -- Tabs
+      "<leader><tab>l",
+      "<leader><tab>f",
+      "<leader><tab><tab>",
+      "<leader><tab>]",
+      "<leader><tab>d",
+      "<leader><tab>[",
+    },
+    t = {
+      -- Terminal
+      "<Esc><Esc>",
+      "<C-/>",
+      "<C-_>",
+    },
+    v = {
+      -- Indenting
+      "<",
+      ">",
+    },
+    [{ "i", "x", "n", "s" }] = {
+      -- Save
+      "<C-s>",
+    },
+  },
+}
 
 -- Delete into void register
 M.mappings[{ "n", "v" }] = {
@@ -96,53 +141,6 @@ M.mappings.t = {
   ["<Esc>"] = {
     "<C-\\><C-n>",
     desc = "Enter Normal Mode",
-  },
-}
-
-M.mapping_opts = {
-  silent = true,
-  noremap = true,
-}
-
-M.disabled_mappings = {
-  n = {
-    -- Buffers
-    "<S-h>",
-    "<S-l>",
-    "[b",
-    "]b",
-    "<leader>bb",
-    "<leader>`",
-    "<leader>bd",
-    "<leader>bD",
-    "<leader>fn",
-    -- Terminal
-    "<leader>ft",
-    "<leader>fT",
-    "<C-/>",
-    "<C-_>",
-    -- Tabs
-    "<leader><tab>l",
-    "<leader><tab>f",
-    "<leader><tab><tab>",
-    "<leader><tab>]",
-    "<leader><tab>d",
-    "<leader><tab>[",
-  },
-  t = {
-    -- Terminal
-    "<Esc><Esc>",
-    "<C-/>",
-    "<C-_>",
-  },
-  v = {
-    -- Indenting
-    "<",
-    ">",
-  },
-  [{ "i", "x", "n", "s" }] = {
-    -- Save
-    "<C-s>",
   },
 }
 

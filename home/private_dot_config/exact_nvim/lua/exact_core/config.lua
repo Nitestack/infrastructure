@@ -19,7 +19,7 @@
 ---@field mason string[]
 ---@field treesitter string[]
 ---@field linting utils.plugin.language_config.linter
----@field formatting utils.plugin.language_config.formatter|ConformOpts
+---@field formatting conform.setupOpts
 
 ---@type core.config
 local M = {

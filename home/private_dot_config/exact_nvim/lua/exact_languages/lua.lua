@@ -16,14 +16,11 @@ return utils.plugin.get_language_spec({
             telemetry = {
               enable = false,
             },
-            workspace = {
-              checkThirdParty = false,
-            },
-            completion = {
-              callSnippet = "Replace",
+            hover = { expandAlias = false },
+            type = {
+              castNumberToInteger = true,
             },
             hint = {
-              enable = false,
               paramName = "All",
               paramType = true,
               arrayIndex = "Disable",
@@ -31,6 +28,10 @@ return utils.plugin.get_language_spec({
             },
             diagnostics = {
               unusedLocalExclude = { "_*" },
+              disable = {
+                "inject-field",
+                "missing-fields",
+              },
             },
           },
         },
@@ -50,6 +51,13 @@ return utils.plugin.get_language_spec({
   linter = {
     linters_by_ft = {
       ["lua"] = { "selene" },
+    },
+  },
+  plugins = {
+    {
+      "folke/lazydev.nvim",
+      ---@type lazydev.Config
+      opts = {},
     },
   },
 })
