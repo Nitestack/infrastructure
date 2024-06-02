@@ -9,12 +9,14 @@ dependencies:
       - "lazygit"
       - "man-db"
       - "openssh"
-      - "otf-monaspace-nerd"
       - "python"
       - "python-pip"
       - "reflector"
       - "ruby"
       - "zoxide"
+
+      - "otf-monaspace-nerd"
+      - "wezterm"
     custom:
       - paru:
           - "git clone https://aur.archlinux.org/paru.git && cd paru && sudo makepkg -si --noconfirm && cd .. && rm -rf paru"
