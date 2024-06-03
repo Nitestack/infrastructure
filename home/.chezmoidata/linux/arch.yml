@@ -28,3 +28,9 @@ dependencies:
           - "sudo pacman -S --needed --noconfirm rustup"
           - "rustup update"
           - "rustup default stable"
+      - warp-terminal:
+          - |
+            sudo sh -c "echo -e '\n[warpdotdev]\nServer = https://releases.warp.dev/linux/pacman/\$repo/\$arch' >> /etc/pacman.conf"
+            sudo pacman-key -r "linux-maintainers@warp.dev"
+            sudo pacman-key --lsign-key "linux-maintainers@warp.dev"
+            sudo pacman -Sy warp-terminal

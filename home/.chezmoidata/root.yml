@@ -36,6 +36,7 @@ dependencies:
       - "ripgrep"
       - "tmux"
       - "vim"
+      - "wget"
     custom:
       - bashly:
           - "sudo gem install bashly"
