@@ -35,3 +35,4 @@ dependencies:
           - "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
     manual:
       - "Monaspice Nerd Font"
+      - "Symbols Nerd Font"

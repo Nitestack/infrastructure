@@ -16,6 +16,7 @@ dependencies:
       - "zoxide"
 
       - "otf-monaspace-nerd"
+      - "ttf-nerd-fonts-symbols"
       - "wezterm"
     custom:
       - paru:
