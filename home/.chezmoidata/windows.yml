@@ -40,7 +40,7 @@ dependencies:
     custom:
       - pipx: |
           python -m pip install --user pipx
-          $env:APPDATA\Python\Python312\Scripts\pipx.exe ensurepath
+          "$env:APPDATA\Python\Python312\Scripts\pipx.exe" ensurepath
       - rustup: |
           winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup
           rustup update
