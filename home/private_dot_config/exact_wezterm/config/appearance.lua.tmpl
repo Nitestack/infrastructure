@@ -11,6 +11,7 @@ function M.setup(config)
       family = "{{ .fonts.mono }}",
       weight = "{{ .fonts.mono_weight }}",
     },
+    "{{ .fonts.icons }}",
   })
   config.font_size = 14.0
   config.line_height = 1.2
@@ -56,6 +57,7 @@ function M.setup(config)
         family = "{{ .fonts.display }}",
         weight = "Bold",
       },
+      "{{ .fonts.icons }}",
     }),
   }
 end
