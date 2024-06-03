@@ -10,17 +10,17 @@ USAGE:
     dotfiles -v | -Version
 
 COMMANDS:
-    download    Download dotfiles from the internet
-    install     Install dotfiles
-    update      Update dotfiles and the CLI
-    edit        Edit dotfiles
-
+    clear-script-state    Clears the chezmoi persistent script state
+    download              Download dotfiles from the internet
+    install               Install dotfiles with chezmoi
+    update                Update dotfiles with chezmoi
+    edit                  Edit dotfiles
 .LINK
 https://github.com/Nitestack/dotfiles
 #>
 param(
   [Parameter(Position = 0)]
-  [ValidateSet("download", "install", "update", "edit", "-h", "-Help", "-v", "-Version")]
+  [ValidateSet("clear-script-state", "download", "install", "update", "edit", "-h", "-Help", "-v", "-Version")]
   [string]$Command,
 
   [Parameter(Position = 1, ValueFromRemainingArguments = $true)]
@@ -155,6 +155,21 @@ function Invoke-EnsureNeovimInstalled() {
 }
 function Invoke-EnsureBobInstalled() {
   Invoke-EnsureInstalled -Command "bob" -Message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
+}
+
+function Invoke-ClearScriptState() {
+  <#
+.SYNOPSIS
+Clears the chezmoi persistent script state
+
+.DESCRIPTION
+USAGE:
+    dotfiles clear-script-state
+#>
+  Show-Spinner -StartMessage "Deleting chezmoi persistent script state" -CompletionMessage "Deleted chezmoi persistent script state" -ScriptBlock {
+    chezmoi state delete-bucket --bucket=entryState
+    chezmoi state delete-bucket --bucket=scriptState
+  }
 }
 
 function Invoke-Download {
@@ -476,6 +491,13 @@ Invoke-EnsureChezmoiInstalled
 
 # Handling commands
 switch ($Command) {
+  "clear-script-state" {
+    if ($Help) {
+      Get-Help Invoke-ClearScriptState -Full
+      exit
+    }
+    Invoke-Expression "Invoke-ClearScriptState $Rest"
+  }
   "download" {
     if ($Help) {
       Get-Help Invoke-Download -Full

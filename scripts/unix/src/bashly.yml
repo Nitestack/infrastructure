@@ -10,6 +10,8 @@ dependencies:
 commands:
   - name: completion
     help: Shell to generate completion
+  - name: clear-script-state
+    help: Clears the chezmoi persistent script state
   - name: download
     help: Download dotfiles from the internet
     args:

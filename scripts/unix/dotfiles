@@ -29,11 +29,12 @@ dotfiles_usage() {
   echo
 
   printf "%s\n" "Commands:"
-  printf "  %s   Shell to generate completion\n" "completion"
-  printf "  %s   Download dotfiles from the internet\n" "download  "
-  printf "  %s   Install dotfiles with chezmoi\n" "install   "
-  printf "  %s   Update dotfiles with chezmoi\n" "update    "
-  printf "  %s   Edit dotfiles\n" "edit      "
+  printf "  %s   Shell to generate completion\n" "completion        "
+  printf "  %s   Clears the chezmoi persistent script state\n" "clear-script-state"
+  printf "  %s   Download dotfiles from the internet\n" "download          "
+  printf "  %s   Install dotfiles with chezmoi\n" "install           "
+  printf "  %s   Update dotfiles with chezmoi\n" "update            "
+  printf "  %s   Edit dotfiles\n" "edit              "
   echo
 
   if [[ -n $long_usage ]]; then
@@ -63,6 +64,32 @@ dotfiles_completion_usage() {
   printf "%s\n" "Usage:"
   printf "  dotfiles completion\n"
   printf "  dotfiles completion --help | -h\n"
+  echo
+
+  if [[ -n $long_usage ]]; then
+    printf "%s\n" "Options:"
+
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+dotfiles_clear_script_state_usage() {
+  if [[ -n $long_usage ]]; then
+    printf "dotfiles clear-script-state - Clears the chezmoi persistent script state\n"
+    echo
+
+  else
+    printf "dotfiles clear-script-state - Clears the chezmoi persistent script state\n"
+    echo
+
+  fi
+
+  printf "%s\n" "Usage:"
+  printf "  dotfiles clear-script-state\n"
+  printf "  dotfiles clear-script-state --help | -h\n"
   echo
 
   if [[ -n $long_usage ]]; then
@@ -336,6 +363,10 @@ send_completions() {
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "always auto never")" -- "$cur" )'
   echo $'      ;;'
   echo $''
+  echo $'    \'clear-script-state\'*)'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "--help -h")" -- "$cur" )'
+  echo $'      ;;'
+  echo $''
   echo $'    \'edit\'*\'--hardlink\')'
   echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "true false")" -- "$cur" )'
   echo $'      ;;'
@@ -365,7 +396,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    *)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "--help --version -h -v completion download edit install update")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "--help --version -h -v clear-script-state completion download edit install update")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'  esac'
@@ -466,6 +497,16 @@ validate_not_empty() {
 
 dotfiles_completion_command() {
   send_completions
+
+}
+
+dotfiles_clear_script_state_command() {
+  clear_script_state() {
+  	chezmoi state delete-bucket --bucket=entryState
+  	chezmoi state delete-bucket --bucket=scriptState
+  }
+
+  show_spinner "clear_script_state" "Clearing script state" "Cleared script state"
 
 }
 
@@ -725,6 +766,13 @@ parse_requirements() {
       shift $#
       ;;
 
+    clear-script-state)
+      action="clear-script-state"
+      shift
+      dotfiles_clear_script_state_parse_requirements "$@"
+      shift $#
+      ;;
+
     download)
       action="download"
       shift
@@ -804,6 +852,46 @@ dotfiles_completion_parse_requirements() {
   done
 
   action="completion"
+
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
+dotfiles_clear_script_state_parse_requirements() {
+
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --help | -h)
+        long_usage=yes
+        dotfiles_clear_script_state_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  action="clear-script-state"
 
   while [[ $# -gt 0 ]]; do
     key="$1"
@@ -1155,6 +1243,7 @@ run() {
 
   case "$action" in
     "completion") dotfiles_completion_command ;;
+    "clear-script-state") dotfiles_clear_script_state_command ;;
     "download") dotfiles_download_command ;;
     "install") dotfiles_install_command ;;
     "update") dotfiles_update_command ;;
