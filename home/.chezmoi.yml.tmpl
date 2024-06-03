@@ -2,6 +2,7 @@
 {{- $email := promptStringOnce . "email" "Email Address" -}}
 {{- $font_display := promptStringOnce . "font-display" "Font Display" -}}
 {{- $font_mono := promptStringOnce . "font-mono" "Font Mono" -}}
+{{- $font_mono_weight := promptStringOnce . "font-mono-weight" "Font Mono Weight" -}}
 {{- $hosttype_choices := list "personal" "work" -}}
 {{- $hosttype := promptChoiceOnce . "hosttype" "What type of host are you on" $hosttype_choices -}}
 {{- $project_base_path := "" -}}
@@ -23,6 +24,7 @@ data:
   fonts:
     display: {{ $font_display | quote }}
     mono: {{ $font_mono | quote }}
+    mono_weight: {{ $font_mono_weight | quote }}
     icons: "Symbols Nerd Font"
   hosttype: {{ $hosttype | quote }}
   osid: {{ $osID | quote }}

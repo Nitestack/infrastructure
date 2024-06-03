@@ -7,8 +7,10 @@ local M = {}
 function M.setup(config)
   -- Font
   config.font = wezterm.font_with_fallback({
-    "{{ .fonts.mono }}",
-    "{{ .fonts.icons }}",
+    {
+      family = "{{ .fonts.mono }}",
+      weight = "{{ .fonts.mono_weight }}",
+    },
   })
   config.font_size = 14.0
   config.line_height = 1.2
@@ -54,7 +56,6 @@ function M.setup(config)
         family = "{{ .fonts.display }}",
         weight = "Bold",
       },
-      "{{ .fonts.icons }}",
     }),
   }
 end
