@@ -22,7 +22,7 @@ dependencies:
         - "discord"
         - "docker"
         - "figma"
-        - "font-monaspace-nerd-font"
+        - "font-monaspace"
         - "font-symbols-only-nerd-font"
         - "iina"
         - "latest"

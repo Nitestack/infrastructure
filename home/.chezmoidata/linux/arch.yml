@@ -15,7 +15,7 @@ dependencies:
       - "ruby"
       - "zoxide"
 
-      - "otf-monaspace-nerd"
+      - "otf-monaspace"
       - "ttf-nerd-fonts-symbols"
       - "wezterm"
     custom:
