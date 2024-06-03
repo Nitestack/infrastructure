@@ -4,12 +4,15 @@ local act = wezterm.action
 local utils = require("utils")
 local mod = {}
 
-if utils.is_mac() then
-  mod.SUPER = "SUPER"
-  mod.SUPER_REV = "SUPER|CTRL"
-elseif utils.is_win() then
+if utils.is_win() then
   mod.SUPER = "ALT" -- to not conflict with Windows key shortcuts
   mod.SUPER_REV = "ALT|CTRL"
+elseif utils.is_linux() then
+  mod.SUPER = "SUPER"
+  mod.SUPER_REV = "ALT|CTRL"
+else
+  mod.SUPER = "SUPER"
+  mod.SUPER_REV = "SUPER|CTRL"
 end
 
 local M = {}
