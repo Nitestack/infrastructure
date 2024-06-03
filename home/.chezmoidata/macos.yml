@@ -35,7 +35,6 @@ dependencies:
         - "rectangle"
         - "spotify"
         - "visual-studio-code"
-        - "warp"
         - "wezterm"
         - "whatsapp"
     custom:

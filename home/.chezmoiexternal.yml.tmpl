@@ -55,14 +55,4 @@
   stripComponents: 1
   exact: true
   refreshPeriod: "168h"
-{{ if lookPath "warp" }}
-{{ if .chezmoi.os "linux" }}
-".local/share/warp-terminal/themes/catppuccin_mocha.yml":
-{{ else if .chezmoi.os "darwin" }}
-".warp/themes/catppuccin_mocha.yml":
-{{ end }}
-  type: file
-  url: "https://github.com/catppuccin/warp/raw/main/themes/catppuccin_mocha.yml"
-  refreshPeriod: "168h"
-{{ end }}
 {{ end }}
