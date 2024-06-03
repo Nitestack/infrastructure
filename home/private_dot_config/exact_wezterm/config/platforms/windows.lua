@@ -9,6 +9,8 @@ local app_data_local = os.getenv("LOCALAPPDATA")
 
 ---@param config Config
 function M.setup(config)
+  config.integrated_title_button_style = "Windows"
+
   config.default_prog = { app_data_local .. "\\Microsoft\\WindowsApps\\pwsh.exe", "-NoLogo" }
   config.launch_menu = {
     {
