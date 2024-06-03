@@ -30,12 +30,12 @@ dependencies:
       - "Microsoft.PowerToys"
       - "Nilesoft.Shell"
       - "Readdle.Spark"
-      - "Spotify.Spotify"
+      - "9NCBCSZSJRSB" # Spotify Music (installed from Microsoft Store)
       - "Microsoft.VisualStudioCode"
       - "Microsoft.VisualStudio.2022.Community"
       - "Microsoft.VisualStudio.2022.BuildTools"
       - "wez.wezterm"
-      - "WhatsApp.WhatsApp"
+      - "9NKSQGP7F2NH" # WhatsApp (installed from Microsoft Store)
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     custom:
       - pipx: |
