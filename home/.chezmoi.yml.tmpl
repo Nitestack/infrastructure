@@ -17,6 +17,18 @@
     {{- $project_base_path = "projects" -}}
   {{- end -}}
 {{- end -}}
+{{- $chassisType := "desktop" }}
+{{- if eq .chezmoi.os "darwin" }}
+{{-   if contains "MacBook" (output "sysctl" "-n" "hw.model") }}
+{{-     $chassisType = "laptop" }}
+{{-   else }}
+{{-     $chassisType = "desktop" }}
+{{-   end }}
+{{- else if eq .chezmoi.os "linux" }}
+{{-   $chassisType = (output "hostnamectl" "--json=short" | mustFromJson).Chassis }}
+{{- else if eq .chezmoi.os "windows" }}
+{{-   $chassisType = (output "powershell.exe" "-NoProfile" "-NonInteractive" "-Command" "if ((Get-CimInstance -Class Win32_Battery | Measure-Object).Count -gt 0) { Write-Output 'laptop' } else { Write-Output 'desktop' }") | trim }}
+{{- end }}
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
@@ -27,6 +39,7 @@ data:
     mono_weight: {{ $font_mono_weight | quote }}
     icons: "Symbols Nerd Font"
   hosttype: {{ $hosttype | quote }}
+  device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}
   project_base_path: {{ $project_base_path | quote }}
 {{- if eq .chezmoi.os "windows" }}

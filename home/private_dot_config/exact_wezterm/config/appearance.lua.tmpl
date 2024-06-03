@@ -33,9 +33,11 @@ function M.setup(config)
   config.underline_position = -6
 
   -- Cursor
+  -- {{- if eq .device_type "desktop"  }}
   config.cursor_blink_ease_in = "Constant"
   config.cursor_blink_ease_out = "Constant"
   config.cursor_blink_rate = 700
+  -- {{- end }}
   config.scrollback_lines = 10000
 
   -- Window
