@@ -8,39 +8,38 @@ dependencies:
       - "python3-pip"
       - "ruby-dev"
     custom:
-      - bat:
-          - "sudo apt install -y bat"
-          - "mkdir -p ~/.local/bin"
-          - '[ -L "$HOME/.local/bin/bat" ] || ln -s $(which batcat) ~/.local/bin/bat'
-      - fd:
-          - "sudo apt install -y fd-find"
-          - '[ -L "$HOME/.local/bin/fd" ] || ln -s $(which fdfind) ~/.local/bin/fd'
-      - fzf:
-          - "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf"
-          - "~/.fzf/install"
-      - lazygit:
-          - "LAZYGIT_VERSION=$(curl -s \"https://api.github.com/repos/jesseduffield/lazygit/releases/latest\" | grep -Po '\"tag_name\": \"v\\K[^\"]*')"
-          - 'curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"'
-          - "tar xf lazygit.tar.gz lazygit"
-          - "sudo install lazygit /usr/local/bin"
-          - "rm lazygit.tar.gz lazygit"
-      - pipx:
-          - "sudo apt install -y pipx"
-          - "sudo pipx ensurepath --global"
-      - rustup:
-          - "sudo apt install -y rustup"
-          - "rustup update"
-          - "rustup default stable"
-      - warp-terminal:
-          - |
-            sudo apt install wget gpg
-            wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
-            sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
-            sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/warpdotdev.gpg] https://releases.warp.dev/linux/deb stable main" > /etc/apt/sources.list.d/warpdotdev.list'
-            rm warpdotdev.gpg
-            sudo apt update && sudo apt install warp-terminal
-      - zoxide:
-          - "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+      - bat: |
+          sudo apt install -y bat
+          mkdir -p ~/.local/bin
+          [ -L "$HOME/.local/bin/bat" ] || ln -s $(which batcat) ~/.local/bin/bat
+      - fd: |
+          sudo apt install -y fd-find
+          mkdir -p ~/.local/bin
+          [ -L "$HOME/.local/bin/fd" ] || ln -s $(which fdfind) ~/.local/bin/fd
+      - fzf: |
+          git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+          ~/.fzf/install
+      - lazygit: |
+          LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+          curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+          tar xf lazygit.tar.gz lazygit
+          sudo install lazygit /usr/local/bin
+          rm lazygit.tar.gz lazygit
+      - pipx: |
+          sudo apt install -y pipx
+          sudo pipx ensurepath --global
+      - rustup: |
+          sudo apt install -y rustup
+          rustup update
+          rustup default stable
+      - warp-terminal: |
+          sudo apt install gpg
+          wget -qO- https://releases.warp.dev/linux/keys/warp.asc | gpg --dearmor > warpdotdev.gpg
+          sudo install -D -o root -g root -m 644 warpdotdev.gpg /etc/apt/keyrings/warpdotdev.gpg
+          sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/warpdotdev.gpg] https://releases.warp.dev/linux/deb stable main" > /etc/apt/sources.list.d/warpdotdev.list'
+          rm warpdotdev.gpg
+          sudo apt install warp-terminal
+      - zoxide: "curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
     manual:
       - "Monaspace Neon"
       - "Symbols Nerd Font"

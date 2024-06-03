@@ -38,13 +38,13 @@ dependencies:
       - "WhatsApp.WhatsApp"
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     custom:
-      - pipx:
-          - "python -m pip install --user pipx"
-          - "$env:APPDATA\\Python\\Python312\\Scripts\\pipx.exe ensurepath"
-      - rustup:
-          - "winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup"
-          - "rustup update"
-          - "rustup default stable"
+      - pipx: |
+          python -m pip install --user pipx
+          $env:APPDATA\Python\Python312\Scripts\pipx.exe ensurepath
+      - rustup: |
+          winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup
+          rustup update
+          rustup default stable
     manual:
       - "AnkerWork"
       - "Notion Calendar"

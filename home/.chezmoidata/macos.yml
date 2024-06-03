@@ -39,13 +39,13 @@ dependencies:
         - "wezterm"
         - "whatsapp"
     custom:
-      - pipx:
-          - "brew install pipx"
-          - "sudo pipx ensurepath --global"
-      - rustup:
-          - "brew install rustup-init"
-          - "rustup update"
-          - "rustup default stable"
+      - pipx: |
+          brew install pipx
+          sudo pipx ensurepath --global
+      - rustup: |
+          brew install rustup-init
+          rustup update
+          rustup default stable
     manual:
       - "Dropover"
       - "PDFgear"

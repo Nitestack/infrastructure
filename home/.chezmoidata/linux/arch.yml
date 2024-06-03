@@ -19,18 +19,21 @@ dependencies:
       - "ttf-nerd-fonts-symbols"
       - "wezterm"
     custom:
-      - paru:
-          - "git clone https://aur.archlinux.org/paru.git && cd paru && sudo makepkg -si --noconfirm && cd .. && rm -rf paru"
-      - pipx:
-          - "sudo pacman -S --needed --noconfirm python-pipx"
-          - "sudo pipx ensurepath --global"
-      - rustup:
-          - "sudo pacman -S --needed --noconfirm rustup"
-          - "rustup update"
-          - "rustup default stable"
-      - warp-terminal:
-          - |
-            sudo sh -c "echo -e '\n[warpdotdev]\nServer = https://releases.warp.dev/linux/pacman/\$repo/\$arch' >> /etc/pacman.conf"
-            sudo pacman-key -r "linux-maintainers@warp.dev"
-            sudo pacman-key --lsign-key "linux-maintainers@warp.dev"
-            sudo pacman -Sy warp-terminal
+      - paru: |
+          git clone https://aur.archlinux.org/paru.git
+          cd paru
+          sudo makepkg -si --noconfirm
+          cd ..
+          rm -rf paru
+      - pipx: |
+          sudo pacman -S --needed --noconfirm python-pipx
+          sudo pipx ensurepath --global
+      - rustup: |
+          sudo pacman -S --needed --noconfirm rustup
+          rustup update
+          rustup default stable
+      - warp-terminal: |
+          sudo sh -c "echo -e '\n[warpdotdev]\nServer = https://releases.warp.dev/linux/pacman/\$repo/\$arch' >> /etc/pacman.conf"
+          sudo pacman-key -r "linux-maintainers@warp.dev"
+          sudo pacman-key --lsign-key "linux-maintainers@warp.dev"
+          sudo pacman -Sy warp-terminal
