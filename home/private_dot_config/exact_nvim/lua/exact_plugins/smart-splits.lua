@@ -90,9 +90,5 @@ return {
       },
     },
   }),
-  ---@module "smart-splits"
-  ---@type SmartSplitsConfig
-  opts = {
-    multiplexer_integration = "wezterm",
-  },
+  opts = {},
 }
