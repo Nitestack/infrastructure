@@ -1,10 +1,11 @@
-{{- $name := promptStringOnce . "name" "Name" -}}
+{{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
 {{- $email := promptStringOnce . "email" "Email Address" -}}
-{{- $font_display := promptStringOnce . "font-display" "Font Display" -}}
-{{- $font_mono := promptStringOnce . "font-mono" "Font Mono" -}}
-{{- $font_mono_weight := promptStringOnce . "font-mono-weight" "Font Mono Weight" -}}
-{{- $hosttype_choices := list "personal" "work" -}}
-{{- $hosttype := promptChoiceOnce . "hosttype" "What type of host are you on" $hosttype_choices -}}
+{{- $font_display := promptStringOnce . "sans-font" "Sans Font" -}}
+{{- $font_mono := promptStringOnce . "mono-font" "Monospace Font" -}}
+{{- $font_mono_weight := promptStringOnce . "mono-font-weight" "Monospace Font Weight" -}}
+{{- $font_nerd := promptStringOnce . "nerd-font" "Nerd Font" -}}
+{{- $font_size := promptStringOnce . "font-size" "Font Size" "14" -}}
+{{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") -}}
 {{- $project_base_path := "" -}}
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
@@ -28,16 +29,22 @@
 {{-   $chassisType = (output "hostnamectl" "--json=short" | mustFromJson).Chassis }}
 {{- else if eq .chezmoi.os "windows" }}
 {{-   $chassisType = (output "powershell.exe" "-NoProfile" "-NonInteractive" "-Command" "if ((Get-CimInstance -Class Win32_Battery | Measure-Object).Count -gt 0) { Write-Output 'laptop' } else { Write-Output 'desktop' }") | trim }}
-{{- end }}
+{{- end -}}
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
   editor: "nvim"
-  fonts:
-    display: {{ $font_display | quote }}
-    mono: {{ $font_mono | quote }}
-    mono_weight: {{ $font_mono_weight | quote }}
-    icons: "Symbols Nerd Font"
+  font:
+    sans:
+      family: {{ $font_display | quote }}
+    icon:
+      family: "Symbols Nerd Font"
+    mono:
+      family: {{ $font_mono | quote }}
+      weight: {{ $font_mono_weight | quote }}
+    nerd:
+      family: {{ $font_nerd | quote }}
+    size: {{ $font_size | quote }}
   hosttype: {{ $hosttype | quote }}
   device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}

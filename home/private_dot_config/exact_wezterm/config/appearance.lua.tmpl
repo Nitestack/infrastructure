@@ -34,16 +34,18 @@ local M = {}
 
 ---@param config Config
 function M.setup(config)
+  local font_size = tonumber("{{- .font.size -}}")
+
   -- Font
   config.font = wezterm.font_with_fallback({
     {
-      family = "{{ .fonts.mono }}",
-      weight = "{{ .fonts.mono_weight }}",
+      family = "{{ .font.mono.family }}",
+      weight = "{{ .font.mono.weight }}",
     },
-    "{{ .fonts.icons }}",
+    "{{ .font.icon.family }}",
   })
-  config.font_size = 14.0
-  config.command_palette_font_size = 14.0
+  config.font_size = font_size
+  config.command_palette_font_size = font_size
   config.line_height = 1.2
 
   -- Colors
@@ -65,7 +67,7 @@ function M.setup(config)
   config.underline_position = -6
 
   -- Cursor
-  -- {{- if eq .device_type "desktop"  }}
+  -- {{- if eq .device_type "desktop" }}
   config.cursor_blink_ease_in = "Constant"
   config.cursor_blink_ease_out = "Constant"
   config.cursor_blink_rate = 700
@@ -88,10 +90,10 @@ function M.setup(config)
   config.window_frame = {
     font = wezterm.font_with_fallback({
       {
-        family = "{{ .fonts.display }}",
+        family = "{{ .font.sans.family }}",
         weight = "Bold",
       },
-      "{{ .fonts.icons }}",
+      "{{ .font.icon.family }}",
     }),
     active_titlebar_bg = colors.base,
     inactive_titlebar_bg = colors.base,

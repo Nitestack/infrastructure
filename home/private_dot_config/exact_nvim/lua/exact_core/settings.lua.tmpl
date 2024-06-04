@@ -20,7 +20,7 @@ M.options = {
   undodir = vim.fn.expand("~/.vim/undodir"), -- Directory for undo files
 
   -- GUI settings
-  guifont = "{{ .fonts.mono }},{{ .fonts.icons }}:h14", -- Set font for graphical Neovim apps
+  guifont = "{{ .font.mono.family }},{{ .font.icon.family }}:h{{ .font.size }}", -- Set font for graphical Neovim apps
   linespace = 6, -- Set a line height of `1.2`
 
   -- Indentation
