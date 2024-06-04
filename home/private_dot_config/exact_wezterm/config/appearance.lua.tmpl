@@ -14,15 +14,18 @@ function M.setup(config)
     "{{ .fonts.icons }}",
   })
   config.font_size = 14.0
+  config.command_palette_font_size = 14.0
   config.line_height = 1.2
 
   -- Colors
   config.color_scheme = "Catppuccin Mocha"
   config.window_background_gradient = {
     orientation = "Vertical",
-    colors = { "#1e1e2e", "#313244", "#11111b" },
+    colors = { "#1E1E2E", "#313244", "#11111B" },
     interpolation = "Linear",
   }
+  config.command_palette_bg_color = "#313244"
+  config.command_palette_fg_color = "#CDD6F4"
 
   -- Rendering
   config.animation_fps = 144
