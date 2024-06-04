@@ -52,6 +52,7 @@ function M.setup(config)
       format = "https://www.github.com/$1/$3",
     },
   }
+  config.warn_about_missing_glyphs = false
 end
 
 return M
