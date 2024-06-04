@@ -1,5 +1,6 @@
 local mapping = "<C-\\>"
 
+---@module "lazy"
 ---@type LazyPluginSpec
 return {
   "akinsho/toggleterm.nvim",

@@ -2,6 +2,7 @@
 return utils.plugin.with_extensions({
   {
     "folke/noice.nvim",
+    ---@module "noice"
     ---@param opts NoiceConfig
     opts = function(_, opts)
       -- Disable cmdline

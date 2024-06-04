@@ -1,7 +1,9 @@
+---@module "lazy"
 ---@type LazyPluginSpec
 return {
   "catppuccin/nvim",
   name = "catppuccin",
+  ---@module "catppuccin"
   ---@type CatppuccinOptions
   opts = {
     transparent_background = core.config.ui.transparent.enabled,

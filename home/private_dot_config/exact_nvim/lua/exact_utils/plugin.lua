@@ -4,6 +4,7 @@
 ---@class utils.plugin
 local M = {}
 
+---@module "lazy"
 ---@module "dap"
 
 ---@class utils.plugin.language_config
@@ -19,6 +20,8 @@ local M = {}
 ---@class utils.plugin.language_config.lsp
 ---@field servers? table<string, table>
 ---@field setup? table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+
+---@module "conform"
 
 ---@class utils.plugin.language_config.formatter
 ---@field formatters_by_ft? table<string, conform.FiletypeFormatter>

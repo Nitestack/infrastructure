@@ -1,3 +1,4 @@
+---@module "lazy"
 ---@type LazySpec
 return {
   {
@@ -11,6 +12,8 @@ return {
         end,
       },
     },
+    ---@module "cmp"
+    ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       local cmp = require("cmp")
 

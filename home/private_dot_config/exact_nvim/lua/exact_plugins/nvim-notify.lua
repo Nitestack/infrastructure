@@ -1,3 +1,4 @@
+---@module "lazy"
 ---@type LazyPluginSpec
 return {
   "rcarriga/nvim-notify",

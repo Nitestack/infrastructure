@@ -131,6 +131,8 @@ return utils.plugin.with_extensions({
   },
   {
     "rcarriga/nvim-dap-ui",
+    ---@module "dapui"
+    ---@type dapui.Config
     opts = {
       floating = {
         border = core.config.ui.transparent.floats and "rounded" or "none",
