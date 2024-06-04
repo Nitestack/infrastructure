@@ -29,9 +29,14 @@ if [[ "${DESKTOP_SESSION}" == "gnome" ]]; then
 		# Setup VS Code as default text editor on GNOME
 		xdg-mime default code.desktop text/plain
 
-		# Configure File Chooser
-		gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
-		gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-type-column true
+		# Configure Calculator
+		gsettings_ensure org.gnome.calculator show-thousands true
+
+		# Configure Console
+		gsettings_ensure org.gnome.Console custom-font "{{- .font.nerd.family }} {{ .font.size -}}"
+
+		# Configure Contacts
+		gsettings_ensure org.gnome.Contacts sort-on-surname true
 
 		# Configure Text Editor
 		gsettings_ensure org.gnome.TextEditor custom-font "{{- .font.nerd.family }} {{ .font.size -}}"
@@ -41,8 +46,9 @@ if [[ "${DESKTOP_SESSION}" == "gnome" ]]; then
 		gsettings_ensure org.gnome.TextEditor keybindings "vim"
 		gsettings_ensure org.gnome.TextEditor show-line-numbers true
 
-		# Configure Calculator
-		gsettings_ensure org.gnome.calculator show-thousands true
+		# Configure File Chooser
+		gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
+		gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-type-column true
 	}
 
 	show_spinner "configure_gnome" "Linux: Configuring GNOME" "Linux: GNOME configured"
