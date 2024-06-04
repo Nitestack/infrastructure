@@ -31,11 +31,15 @@ if [[ "${DESKTOP_SESSION}" == "gnome" ]]; then
 
 		# Configure File Chooser
 		gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
-		gsettings_ensure org.gtk.gtk4.Settings.FileChooser time-format "24h"
+		gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-type-column true
 
 		# Configure Text Editor
+		gsettings_ensure org.gnome.TextEditor custom-font "{{- .font.nerd.family }} {{ .font.size -}}"
 		gsettings_ensure org.gnome.TextEditor highlight-current-line true
-
+		gsettings_ensure org.gnome.TextEditor indent-style "space"
+		gsettings_ensure org.gnome.TextEditor indent-width "2"
+		gsettings_ensure org.gnome.TextEditor keybindings "vim"
+		gsettings_ensure org.gnome.TextEditor show-line-numbers true
 	}
 
 	show_spinner "configure_gnome" "Linux: Configuring GNOME" "Linux: GNOME configured"
