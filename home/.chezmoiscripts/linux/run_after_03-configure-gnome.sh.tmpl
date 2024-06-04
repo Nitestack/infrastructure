@@ -13,7 +13,7 @@ function gsettings_ensure() {
 
 	local first_args=()
 	if [[ -n "${extension}" ]]; then
-		first_args+=(--schemadir "${HOME}/.local/share/gnome-shell/extensions/${extension}/schemas")
+		first_args+=(--schemadir "${XDG_DATA_HOME:-${HOME}/.local/share}/gnome-shell/extensions/${extension}/schemas")
 	fi
 
 	local current_value
@@ -40,6 +40,9 @@ if [[ "${DESKTOP_SESSION}" == "gnome" ]]; then
 		gsettings_ensure org.gnome.TextEditor indent-width "2"
 		gsettings_ensure org.gnome.TextEditor keybindings "vim"
 		gsettings_ensure org.gnome.TextEditor show-line-numbers true
+
+		# Configure Calculator
+		gsettings_ensure org.gnome.calculator show-thousands true
 	}
 
 	show_spinner "configure_gnome" "Linux: Configuring GNOME" "Linux: GNOME configured"
