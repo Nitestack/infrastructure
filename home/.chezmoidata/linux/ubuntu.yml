@@ -3,6 +3,7 @@ dependencies:
   ubuntu:
     apt:
       - "build-essential"
+      - "dconf-editor"
       - "libyaml-dev"
       - "python3"
       - "python3-pip"

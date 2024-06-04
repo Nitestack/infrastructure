@@ -4,6 +4,7 @@ dependencies:
     pacman:
       - "base-devel"
       - "bat"
+      - "dconf-editor"
       - "fd"
       - "fzf"
       - "lazygit"
