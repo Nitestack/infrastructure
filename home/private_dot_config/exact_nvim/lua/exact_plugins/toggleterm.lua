@@ -21,6 +21,7 @@ return {
       },
     },
   }),
+  ---@module "toggleterm"
   ---@param opts ToggleTermConfig
   opts = function(_, opts)
     ---@diagnostic disable-next-line: assign-type-mismatch

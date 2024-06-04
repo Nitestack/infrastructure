@@ -75,6 +75,7 @@ return utils.plugin.get_language_spec({
         "scss",
         "html",
       },
+      ---@module "tailwind-tools"
       ---@type TailwindTools.Option
       opts = {},
     },

@@ -15,6 +15,8 @@
 ---@field height number
 ---@field transparent { enabled: boolean, floats: boolean }
 
+---@module "conform"
+
 ---@class core.config.plugins
 ---@field mason string[]
 ---@field treesitter string[]

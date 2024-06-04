@@ -49,6 +49,7 @@ return utils.plugin.with_extensions({
         },
       },
     }),
+    ---@module "grapple"
     ---@type grapple.settings
     opts = {
       scope = "git_branch",
@@ -69,6 +70,7 @@ return utils.plugin.with_extensions({
         },
       },
     }),
+    ---@module "harpeek"
     ---@type harpeek.settings
     opts = {
       winopts = {

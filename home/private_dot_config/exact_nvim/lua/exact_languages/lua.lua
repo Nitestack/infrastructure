@@ -56,8 +56,15 @@ return utils.plugin.get_language_spec({
   plugins = {
     {
       "folke/lazydev.nvim",
-      ---@type lazydev.Config
-      opts = {},
+      ---@module "lazydev"
+      ---@param opts lazydev.Config
+      opts = function(opts)
+        opts.library = opts.library or {} --[[=@as lazydev.Library.spec[]=]]
+
+        vim.list_extend(opts.library, {
+          { path = "wezterm-types", mods = { "wezterm" } },
+        })
+      end,
     },
   },
 })

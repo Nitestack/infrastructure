@@ -23,6 +23,7 @@ return {
       ["<leader>cm"] = { false },
     },
   }),
+  ---@module "mason"
   ---@type MasonSettings
   opts = {
     ui = {

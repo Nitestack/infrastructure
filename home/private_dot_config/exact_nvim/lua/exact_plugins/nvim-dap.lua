@@ -145,6 +145,7 @@ return utils.plugin.with_extensions({
       "DapVirtualTextToggle",
       "DapVirtualTextForceRefresh",
     },
+    ---@module "nvim-dap-virtual-text"
     ---@type nvim_dap_virtual_text_options
     opts = {
       commented = true,

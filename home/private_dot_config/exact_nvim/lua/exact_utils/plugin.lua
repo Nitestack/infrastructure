@@ -4,13 +4,15 @@
 ---@class utils.plugin
 local M = {}
 
+---@module "dap"
+
 ---@class utils.plugin.language_config
 ---@field mason? string|string[]
 ---@field treesitter? string|string[]
 ---@field lsp? utils.plugin.language_config.lsp
 ---@field formatter? utils.plugin.language_config.formatter
 ---@field linter? utils.plugin.language_config.linter
----@field dap? fun(add_dap_adapter:fun(name:string, adapter:Adapter), add_dap_configuration:fun(configurations:Configuration[], filetypes:string|string[]))
+---@field dap? fun(add_dap_adapter:fun(name:string, adapter:dap.Adapter), add_dap_configuration:fun(configurations:dap.Configuration[], filetypes:string|string[]))
 ---@field test? utils.plugin.language_config.test
 ---@field plugins? LazyPluginSpec[]
 
@@ -33,14 +35,14 @@ local M = {}
 ---@field adapters? utils.plugin.language_config.test.adapters
 
 ---@param name string
----@param adapter Adapter
+---@param adapter dap.Adapter
 local function add_dap_adapter(name, adapter)
   local dap = require("dap")
   if not dap.adapters[name] then
     dap.adapters[name] = adapter
   end
 end
----@param configurations Configuration[]
+---@param configurations dap.Configuration[]
 ---@param filetypes string|string[]
 local function add_dap_configuration(configurations, filetypes)
   local dap = require("dap")

@@ -9,6 +9,7 @@ return {
       [{ "<leader>", "<C-r>", "<C-w>", "\"", "'", "`", "c", "v", "g" }] = {},
     },
   }),
+  ---@module "which-key"
   ---@type Options
   opts = {
     defaults = {

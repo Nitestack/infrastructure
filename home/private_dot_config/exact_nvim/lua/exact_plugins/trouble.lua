@@ -6,6 +6,7 @@ return {
       [{ "<leader>cs", "<leader>cS" }] = { false },
     },
   }),
+  ---@module "trouble"
   ---@type trouble.Config
   opts = {
     focus = true,

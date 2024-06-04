@@ -5,6 +5,7 @@ return utils.plugin.with_extensions({
     event = function()
       return {}
     end,
+    ---@module "refactoring"
     ---@type ConfigOpts
     opts = {},
   },
