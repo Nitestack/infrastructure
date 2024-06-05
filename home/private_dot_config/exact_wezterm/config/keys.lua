@@ -1,4 +1,5 @@
 ---@type Wezterm
+---@diagnostic disable: assign-type-mismatch
 local wezterm = require("wezterm")
 local act = wezterm.action
 local utils = require("utils")
@@ -102,6 +103,7 @@ function M.setup(config, smart_splits)
     {
       key = ";",
       mods = "CTRL",
+      ---@diagnostic disable-next-line: param-type-mismatch, missing-parameter
       action = wezterm.action_callback(function(window, pane)
         local tab = window:active_tab()
 

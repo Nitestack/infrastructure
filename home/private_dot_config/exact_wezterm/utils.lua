@@ -1,3 +1,5 @@
+---@type Wezterm
+---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")
 
 local function str_includes(str, pattern)
