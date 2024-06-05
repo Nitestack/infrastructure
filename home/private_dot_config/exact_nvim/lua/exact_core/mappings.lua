@@ -35,6 +35,7 @@ local M = {
       "<C-_>",
       -- Tabs
       "<leader><tab>l",
+      "<leader><tab>o",
       "<leader><tab>f",
       "<leader><tab><tab>",
       "<leader><tab>]",
