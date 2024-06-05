@@ -2,6 +2,7 @@ local utils = require("utils")
 
 local M = {}
 
+---@module "wezterm"
 ---@param config Config
 function M.setup(config)
   -- UNIX
