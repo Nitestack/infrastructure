@@ -1,6 +1,7 @@
 {{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
 {{- $email := promptStringOnce . "email" "Email Address" -}}
 {{- $font_display := promptStringOnce . "sans-font" "Sans Font" -}}
+{{- $font_display_weight := promptStringOnce . "sans-font-weight" "Sans Font Weight" -}}
 {{- $font_mono := promptStringOnce . "mono-font" "Monospace Font" -}}
 {{- $font_mono_weight := promptStringOnce . "mono-font-weight" "Monospace Font Weight" -}}
 {{- $font_nerd := promptStringOnce . "nerd-font" "Nerd Font" -}}
@@ -37,6 +38,7 @@ data:
   font:
     sans:
       family: {{ $font_display | quote }}
+      weight: {{ $font_display_weight | quote }}
     icon:
       family: "Symbols Nerd Font"
     mono:

@@ -1,6 +1,7 @@
 ---@type Wezterm
 local wezterm = require("wezterm")
 local act = wezterm.action
+local colors = require("colors")
 
 local M = {}
 
@@ -9,23 +10,48 @@ local app_data_local = os.getenv("LOCALAPPDATA")
 
 ---@param config Config
 function M.setup(config)
+  -- Settings
   config.integrated_title_button_style = "Windows"
   config.bypass_mouse_reporting_modifiers = "CTRL"
   config.quote_dropped_files = "Windows"
 
-  config.default_prog = { app_data_local .. "\\Microsoft\\WindowsApps\\pwsh.exe", "-NoLogo" }
+  -- Colors
+  config.window_frame = {
+    font = wezterm.font_with_fallback({
+      {
+        family = "{{ .font.sans.family }}",
+        weight = "{{ .font.sans.weight }}",
+      },
+      "{{ .font.icon.family }}",
+    }),
+  }
+  config.colors = {
+    tab_bar = {
+      active_tab = {
+        bg_color = colors.base,
+        fg_color = colors.text,
+      },
+      inactive_tab_hover = {
+        bg_color = colors.crust,
+        fg_color = colors.text,
+      },
+    },
+  }
+
+  -- Shell
+  config.default_prog = { app_data_local .. [[\Microsoft\WindowsApps\pwsh.exe]], "-NoLogo" }
   config.launch_menu = {
     {
       label = "PowerShell Core",
-      args = { app_data_local .. "\\Microsoft\\WindowsApps\\pwsh.exe", "-NoLogo" },
+      args = { app_data_local .. [[\Microsoft\WindowsApps\pwsh.exe]], "-NoLogo" },
     },
     {
       label = "WSL: Arch",
-      args = { home_dir .. "\\Arch\\Arch.exe" },
+      args = { home_dir .. [[\Arch\Arch.exe]] },
     },
     {
       label = "WSL: Ubuntu",
-      args = { app_data_local .. "\\Microsoft\\WindowsApps\\ubuntu.exe" },
+      args = { app_data_local .. [[\Microsoft\WindowsApps\ubuntu.exe]] },
     },
     {
       label = "Command Prompt",
@@ -33,7 +59,7 @@ function M.setup(config)
     },
     {
       label = "Git Bash",
-      args = { app_data_local .. "\\Microsoft\\WindowsApps\\bash.exe" },
+      args = { app_data_local .. [[\Microsoft\WindowsApps\bash.exe]] },
     },
   }
   -- Key bindings

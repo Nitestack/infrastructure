@@ -60,17 +60,6 @@ function M.setup(config)
   -- Tab Bar
   config.show_tab_index_in_tab_bar = false
   config.switch_to_last_active_tab_when_closing_tab = true
-  config.window_frame = {
-    font = wezterm.font_with_fallback({
-      {
-        family = "{{ .font.sans.family }}",
-        weight = "Bold",
-      },
-      "{{ .font.icon.family }}",
-    }),
-    active_titlebar_bg = colors.base,
-    inactive_titlebar_bg = colors.base,
-  }
 end
 
 return M
