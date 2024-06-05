@@ -28,14 +28,6 @@ _G.core.lazy_map = utils.mappings.lazy_map
 _G.core.auto_cmds = utils.cmds.auto_cmds
 _G.core.user_cmds = utils.cmds.user_cmds
 
-for global, val in pairs(core.settings.globals) do
-  vim.g[global] = val
-end
-
-for _, provider in ipairs(core.settings.disabled_providers) do
-  vim.g["loaded_" .. provider .. "_provider"] = 0
-end
-
 --------------------------------------------------------------------------------
 --  Filetypes
 --------------------------------------------------------------------------------
