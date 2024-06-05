@@ -1,4 +1,5 @@
 ---@type Wezterm
+---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")
 local act = wezterm.action
 local colors = require("colors")
@@ -13,6 +14,7 @@ function M.setup(config)
   -- Settings
   config.integrated_title_button_style = "Windows"
   config.bypass_mouse_reporting_modifiers = "CTRL"
+  ---@diagnostic disable-next-line: assign-type-mismatch
   config.quote_dropped_files = "Windows"
 
   -- Tabs

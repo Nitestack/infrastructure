@@ -61,6 +61,7 @@ return utils.plugin.get_language_spec({
       opts = function(_, opts)
         opts.library = vim.list_extend(opts.library or {}, {
           { path = "wezterm-types", mods = { "wezterm" } },
+          { path = "smart-splits.nvim/plugin", words = { "SmartSplitsWeztermConfig" } },
         })
       end,
     },

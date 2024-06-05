@@ -5,6 +5,7 @@ local M = {}
 ---@param config Config
 function M.setup(config)
   -- Settings
+  ---@diagnostic disable-next-line: assign-type-mismatch
   config.quote_dropped_files = "Posix"
 
   -- Disable tab bar because tmux is used in UNIX-based systems
