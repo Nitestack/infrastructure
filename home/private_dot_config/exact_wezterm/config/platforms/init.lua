@@ -5,7 +5,7 @@ local M = {}
 ---@param config Config
 function M.setup(config)
   -- UNIX
-  if utils.is_mac() and utils.is_linux() then
+  if utils.is_mac() or utils.is_linux() then
     require("config.platforms.unix").setup(config)
   end
   -- macOS
