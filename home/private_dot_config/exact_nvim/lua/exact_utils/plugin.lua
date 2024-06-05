@@ -4,7 +4,6 @@
 ---@class utils.plugin
 local M = {}
 
----@module "lazy"
 ---@module "dap"
 
 ---@class utils.plugin.language_config

@@ -1,4 +1,3 @@
----@module "lazy"
 ---@type LazyPluginSpec
 return {
   "lukas-reineke/indent-blankline.nvim",

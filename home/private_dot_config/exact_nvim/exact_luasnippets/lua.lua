@@ -7,7 +7,6 @@ return {
     { trig = "lps", name = "Neovim: Lazy plugin spec", desc = "Generates a Neovim Lazy plugin spec template" },
     fmt(
       [[
-        ---@module "lazy"
         ---@type LazyPluginSpec
         return {{
           "{}",

@@ -1,4 +1,3 @@
----@module "lazy"
 ---@type LazyPluginSpec
 return {
   "nvimdev/dashboard-nvim",

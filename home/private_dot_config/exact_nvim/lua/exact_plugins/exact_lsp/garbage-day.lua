@@ -1,4 +1,3 @@
----@module "lazy"
 ---@type LazyPluginSpec
 return {
   "zeioth/garbage-day.nvim",

@@ -1,5 +1,4 @@
 return vim.tbl_map(function(plugin_name)
-  ---@module "lazy"
   ---@type LazyPluginSpec
   return {
     plugin_name,
