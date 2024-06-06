@@ -96,15 +96,36 @@ M.mappings.n = {
     "\"_x",
     desc = "Delete character without copying into register",
   },
+  -- Run buffer executable
+  ["<leader>br"] = {
+    function()
+      local filetype = vim.api.nvim_get_option_value("filetype", { scope = "local" })
+
+      if filetype == "sh" and vim.fn.executable("sh") == 0 then
+        vim.notify("'.sh' files can only be executed on UNIX-based operating systems", vim.log.levels.ERROR)
+        return
+      end
+
+      if filetype == "ps1" and vim.fn.executable("pwsh") == 0 then
+        vim.notify("'.ps1' files can only be executed on Windows", vim.log.levels.ERROR)
+        return
+      end
+
+      require("toggleterm").exec(vim.fn.expand("%:p"), nil, nil, nil, "float")
+    end,
+    desc = "Run script",
+    ft = { "sh", "ps1" },
+  },
 }
 
-if not utils.is_win() then
+if utils.is_unix() then
   -- Make file executable
-  M.mappings.n["<leader>cx"] = {
+  M.mappings.n["<leader>bx"] = {
     function()
       vim.cmd("!chmod +x %")
     end,
-    desc = "Make file executable",
+    desc = "Make script executable",
+    ft = "sh",
   }
 end
 

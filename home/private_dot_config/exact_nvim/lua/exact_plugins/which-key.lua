@@ -20,6 +20,7 @@ return {
       ["["] = { name = "Previous" },
       ["<C-w>"] = { name = "Window" },
       ["<leader>"] = { name = "Leader" },
+      ["<leader>b"] = { name = "Buffer" },
       ["<leader>c"] = { name = "Code" },
       ["<leader>f"] = { name = "File/Find" },
       ["<leader>g"] = { name = "Git" },
