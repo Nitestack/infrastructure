@@ -126,7 +126,7 @@ M.mappings.n = {
     function()
       local filetype = vim.api.nvim_get_option_value("filetype", { scope = "local" })
 
-      local current_line = vim.api.nvim_get_current_line():gsub("%s+", "")
+      local current_line = vim.api.nvim_get_current_line():gsub("^%s+", ""):gsub("%s+$", "")
 
       if filetype == "lua" then
         vim.cmd(".lua")
