@@ -1,6 +1,7 @@
 local filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
 
-return utils.plugin.with_extensions({
+---@type LazySpec
+return {
   { import = "lazyvim.plugins.extras.dap.core" },
   {
     "mfussenegger/nvim-dap",
@@ -20,6 +21,7 @@ return utils.plugin.with_extensions({
     },
     keys = core.lazy_map({
       n = {
+        ["<leader>d"] = "Debug",
         [{ "<leader>dc", "<F5>" }] = {
           function()
             require("dap").continue()
@@ -153,8 +155,4 @@ return utils.plugin.with_extensions({
       commented = true,
     },
   },
-}, {
-  which_key = {
-    ["<leader>d"] = "Debugging",
-  },
-})
+}

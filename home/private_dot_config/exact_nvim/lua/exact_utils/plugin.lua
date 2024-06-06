@@ -137,13 +137,10 @@ end
 
 ---@class utils.plugin.extension_config
 ---@field telescope? utils.plugin.extension_config.telescope
----@field which_key? utils.plugin.extension_config.which_key
 
 ---@class utils.plugin.extension_config.telescope
 ---@field extensions? string|string[]
 ---@field opts? table
-
----@alias utils.plugin.extension_config.which_key table<string, string>
 
 ---@param plugins LazyPluginSpec[]
 ---@param extensions utils.plugin.extension_config
@@ -167,16 +164,6 @@ function M.with_extensions(plugins, extensions)
       end,
     })
   end
-
-  if extensions.which_key and not vim.tbl_isempty(extensions.which_key) then
-    table.insert(plugins, {
-      "folke/which-key.nvim",
-      opts = {
-        defaults = extensions.which_key,
-      },
-    })
-  end
-
   return plugins
 end
 

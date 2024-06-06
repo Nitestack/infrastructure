@@ -1,4 +1,5 @@
-return utils.plugin.with_extensions({
+---@type LazySpec
+return {
   { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
   {
     "echasnovski/mini.indentscope",
@@ -92,6 +93,11 @@ return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.coding.mini-surround" },
   {
     "echasnovski/mini.surround",
+    keys = core.lazy_map({
+      n = {
+        ["s"] = "Surround",
+      },
+    }),
     opts = {
       mappings = {
         add = "sa", -- Add surrounding in Normal and Visual modes
@@ -116,8 +122,4 @@ return utils.plugin.with_extensions({
       return { "LazyFile" }
     end,
   },
-}, {
-  which_key = {
-    ["s"] = "Surround",
-  },
-})
+}

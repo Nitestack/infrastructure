@@ -4,8 +4,8 @@
 ---@class utils.mappings
 local M = {}
 
----@alias utils.mappings.mappings_spec.mappings table<string|string[], utils.mappings.mapping>
----@alias utils.mappings.lazy_mappings_spec.mappings table<string|string[], utils.mappings.lazy_mapping>
+---@alias utils.mappings.mappings_spec.mappings table<string|string[], utils.mappings.mapping|string>
+---@alias utils.mappings.lazy_mappings_spec.mappings table<string|string[], utils.mappings.lazy_mapping|string>
 
 ---@class utils.mappings.mappings_spec
 ---@field n? utils.mappings.mappings_spec.mappings Normal Mode keymaps
@@ -108,31 +108,30 @@ function M.lazy_map(mappings, mapping_opts)
   end
 
   for mode, mode_mappings in
-    pairs(mappings --[[@as table<string|string[], utils.mappings.lazy_mappings_spec.mappings>]])
+    pairs(mappings --[[@as table<string|string[], utils.mappings.lazy_mappings_spec.mappings|string>]])
   do
     for mapping, mapping_info in pairs(mode_mappings) do
-      local rhs = vim.deepcopy(mapping_info)[1]
-      mapping_info[1] = nil
-      local opts = vim.tbl_deep_extend("force", mapping_opts or {}, mapping_info)
-      opts.mode = mode
-
-      if type(mapping) == "string" then
-        table.insert(
-          lazy_mappings,
-          vim.tbl_extend("force", opts, {
-            prefix .. mapping,
-            rhs,
-          })
-        )
+      -- Native which-key group keymaps
+      if type(mapping_info) == "string" then
+        if type(mapping) == "string" then
+          table.insert(lazy_mappings, { mode = mode, prefix .. mapping, "", desc = mapping_info })
+        else
+          for _, keymap in ipairs(mapping) do
+            table.insert(lazy_mappings, { mode = mode, prefix .. keymap, "", desc = mapping_info })
+          end
+        end
       else
-        for _, keymap in ipairs(mapping) do
-          table.insert(
-            lazy_mappings,
-            vim.tbl_extend("force", opts, {
-              prefix .. keymap,
-              rhs,
-            })
-          )
+        local rhs = vim.deepcopy(mapping_info)[1]
+        mapping_info[1] = nil
+        local opts = vim.tbl_deep_extend("force", mapping_opts or {}, mapping_info)
+        opts.mode = mode
+
+        if type(mapping) == "string" then
+          table.insert(lazy_mappings, vim.tbl_extend("force", opts, { prefix .. mapping, rhs }))
+        else
+          for _, keymap in ipairs(mapping) do
+            table.insert(lazy_mappings, vim.tbl_extend("force", opts, { prefix .. keymap, rhs }))
+          end
         end
       end
     end

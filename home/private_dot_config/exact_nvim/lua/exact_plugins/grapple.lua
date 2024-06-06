@@ -1,10 +1,12 @@
-return utils.plugin.with_extensions({
+---@type LazySpec
+return {
   {
     "cbochs/grapple.nvim",
     dependencies = "nvim-tree/nvim-web-devicons",
     cmd = "Grapple",
     keys = core.lazy_map({
       n = {
+        ["<leader>j"] = "Jump",
         [{ "M", "<leader>jm" }] = {
           function()
             require("grapple").toggle()
@@ -79,8 +81,4 @@ return utils.plugin.with_extensions({
       hide_on_empty = true,
     },
   },
-}, {
-  which_key = {
-    ["<leader>j"] = "Jump",
-  },
-})
+}

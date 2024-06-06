@@ -1,7 +1,12 @@
-return utils.plugin.with_extensions({
+---@type LazySpec
+return {
   { import = "lazyvim.plugins.extras.test.core" },
-}, {
-  which_key = {
-    ["<leader>t"] = "Test",
+  {
+    "nvim-neotest/neotest",
+    keys = core.lazy_map({
+      n = {
+        ["<leader>t"] = "Test",
+      },
+    }),
   },
-})
+}
