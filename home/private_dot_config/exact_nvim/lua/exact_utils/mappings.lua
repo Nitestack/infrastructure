@@ -36,14 +36,12 @@ local M = {}
 ---@class utils.mappings.mapping:utils.mappings.mapping_opts
 ---@field [1] string|fun()
 
----@class utils.mappings.lazy_mapping:utils.mappings.lazy_mapping_opts
+---@class utils.mappings.lazy_mapping:utils.mappings.mapping_opts
 ---@field [1] string|fun()|false
 
 ---@class utils.mappings.mapping_opts:vim.api.keyset.keymap
 ---@field remap? boolean Make the mapping recursive. Inverse of {noremap}.
 ---@field buffer? integer|boolean Specify the buffer that the keymap will be effective in. If `0` or `true`, the current buffer will be used
-
----@class utils.mappings.lazy_mapping_opts:utils.mappings.mapping_opts
 ---@field ft? string|string[] Specify the filetype that the keymap will be effective in
 
 ---Loads mappings (with `vim.keymap.set`)
@@ -60,25 +58,45 @@ function M.map(mappings, mapping_opts)
     pairs(vim.deepcopy(mappings --[[@as table<string|string[], utils.mappings.mappings_spec.mappings>]]))
   do
     for mapping, mapping_info in pairs(mode_mappings) do
-      local rhs = vim.deepcopy(mapping_info)[1]
+      local _mapping_info = vim.deepcopy(mapping_info)
+      local rhs = _mapping_info[1]
+      local ft = _mapping_info.ft
       mapping_info[1] = nil
+      mapping_info.ft = nil
 
-      local opts = vim.tbl_deep_extend("force", mapping_opts or {}, mapping_info) --[[@as vim.keymap.set.Opts]]
+      local function create_mapping(buf)
+        local opts = vim.tbl_deep_extend("force", mapping_opts or {}, buf and { buffer = buf } or {}, mapping_info) --[[@as vim.keymap.set.Opts]]
 
-      if type(mapping) == "string" then
-        vim.keymap.set(mode, prefix .. mapping, rhs, opts)
-      else
-        for _, keymap in ipairs(mapping) do
-          vim.keymap.set(mode, prefix .. keymap, rhs, opts)
+        if type(mapping) == "string" then
+          vim.keymap.set(mode, prefix .. mapping, rhs, opts)
+        else
+          for _, keymap in ipairs(mapping) do
+            vim.keymap.set(mode, prefix .. keymap, rhs, opts)
+          end
         end
+      end
+
+      if ft ~= nil then
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = ft,
+          callback = function(event)
+            vim.schedule(function()
+              create_mapping(event.buf)
+            end)
+          end,
+        })
+      else
+        create_mapping()
       end
     end
   end
 end
 
+---@module "lazy"
+
 ---Loads mappings for `lazy.nvim` plugin spec
 ---@param mappings utils.mappings.lazy_mappings_spec
----@param mapping_opts? utils.mappings.lazy_mapping_opts|{ prefix?: string }
+---@param mapping_opts? utils.mappings.mapping_opts|{ prefix?: string }
 ---@return LazyKeysSpec[]
 function M.lazy_map(mappings, mapping_opts)
   local lazy_mappings = {}
