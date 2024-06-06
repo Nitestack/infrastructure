@@ -94,7 +94,7 @@ return {
   {
     "echasnovski/mini.surround",
     keys = core.lazy_map({
-      n = {
+      [{ "n", "x" }] = {
         ["s"] = "Surround",
       },
     }),

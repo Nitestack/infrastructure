@@ -7,7 +7,7 @@ return {
       return {}
     end,
     keys = core.lazy_map({
-      n = {
+      [{ "n", "v" }] = {
         ["<leader>r"] = "Refactoring",
       },
     }),
