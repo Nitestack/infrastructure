@@ -158,7 +158,7 @@ function M.with_extensions(plugins, extensions)
         end
 
         if extensions.telescope.extensions then
-          utils.on_load("telescope.nvim", function()
+          LazyVim.on_load("telescope.nvim", function()
             for _, ext in ipairs(utils.str_to_tbl(extensions.telescope.extensions)) do
               require("telescope").load_extension(ext)
             end
