@@ -20,8 +20,10 @@ return {
       },
     },
     keys = core.lazy_map({
-      n = {
+      [{ "n", "v" }] = {
         ["<leader>d"] = "Debug",
+      },
+      n = {
         [{ "<leader>dc", "<F5>" }] = {
           function()
             require("dap").continue()
