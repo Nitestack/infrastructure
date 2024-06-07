@@ -7,6 +7,9 @@ return utils.plugin.with_extensions({
       },
     }),
     opts = function(_, opts)
+      opts.hide_root_node = true
+      opts.retain_hidden_root_indent = true
+
       -- Window
       opts.window = opts.window or {}
       opts.window.position = "float"
@@ -24,9 +27,13 @@ return utils.plugin.with_extensions({
       -- Show hidden files
       opts.filesystem = opts.filesystem or {}
       opts.filesystem.filtered_items = opts.filesystem.filtered_items or {}
+      opts.filesystem.filtered_items.show_hidden_count = false
       opts.filesystem.filtered_items.hide_dotfiles = false
       opts.filesystem.filtered_items.hide_gitignored = false
       opts.filesystem.filtered_items.hide_hidden = false
+      opts.filesystem.filtered_items.never_show = {
+        ".DS_Store",
+      }
 
       -- Default component configs
       opts.default_component_configs = opts.default_component_configs or {}
