@@ -1,6 +1,7 @@
 ---@type LazyPluginSpec
 return {
   "nvim-lualine/lualine.nvim",
+  opts_extend = { "extensions" },
   opts = function()
     local lualine_components = utils.lualine
     return {
@@ -52,5 +53,9 @@ return {
         "quickfix",
       },
     }
+  end,
+  config = function(_, opts)
+    opts.extensions = LazyVim.dedup(opts.extensions)
+    require("lualine").setup(opts)
   end,
 }

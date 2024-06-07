@@ -64,18 +64,18 @@ function M.get_language_spec(config)
   if config.mason then
     table.insert(spec, {
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-      opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, utils.str_to_tbl(config.mason))
-      end,
+      opts = {
+        ensure_installed = utils.str_to_tbl(config.mason),
+      },
     })
   end
 
   if config.treesitter then
     table.insert(spec, {
       "nvim-treesitter/nvim-treesitter",
-      opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, utils.str_to_tbl(config.treesitter))
-      end,
+      opts = {
+        ensure_installed = utils.str_to_tbl(config.treesitter),
+      },
     })
   end
 
@@ -168,9 +168,9 @@ function M.with_extensions(plugins, extensions)
   if extensions.lualine then
     table.insert(plugins, {
       "nvim-lualine/lualine.nvim",
-      opts = function(_, opts)
-        opts.extensions = LazyVim.dedup(vim.list_extend(opts.extensions or {}, utils.str_to_tbl(extensions.lualine)))
-      end,
+      opts = {
+        extensions = utils.str_to_tbl(extensions.lualine),
+      },
     })
   end
   return plugins

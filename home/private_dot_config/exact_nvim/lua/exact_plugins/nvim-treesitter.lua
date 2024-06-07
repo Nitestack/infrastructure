@@ -10,8 +10,7 @@ return {
       return { "LazyFile" }
     end,
     opts = function(_, opts)
-      opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, core.config.plugins.treesitter)
+      opts.ensure_installed = core.config.plugins.treesitter
 
       opts.highlight = opts.highlight or {}
       -- disable highlighting in chezmoi templates

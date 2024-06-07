@@ -10,9 +10,10 @@ return utils.plugin.with_extensions({
         "MasonToolsUpdateSync",
         "MasonToolsClean",
       },
-      opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, core.config.plugins.mason)
-      end,
+      opts_extend = { "ensure_installed" },
+      opts = {
+        ensure_installed = core.config.plugins.mason,
+      },
       config = function(_, opts)
         opts.ensure_installed = LazyVim.dedup(opts.ensure_installed or {})
         require("mason-tool-installer").setup(opts)
