@@ -1,7 +1,6 @@
 local filetypes = { "dap-repl", "dapui_watches", "dapui_hover" }
 
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.dap.core" },
   {
     "mfussenegger/nvim-dap",
@@ -157,4 +156,6 @@ return {
       commented = true,
     },
   },
-}
+}, {
+  lualine = "nvim-dap-ui",
+})

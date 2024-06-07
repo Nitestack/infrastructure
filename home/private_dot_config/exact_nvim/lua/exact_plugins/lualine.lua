@@ -49,10 +49,7 @@ return {
       extensions = {
         "lazy",
         "man",
-        "mason",
         "quickfix",
-        "toggleterm",
-        "trouble",
       },
     }
   end,

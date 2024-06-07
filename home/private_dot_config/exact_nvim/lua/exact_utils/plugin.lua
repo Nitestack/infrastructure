@@ -137,6 +137,7 @@ end
 
 ---@class utils.plugin.extension_config
 ---@field telescope? utils.plugin.extension_config.telescope
+---@field lualine? string|string[]
 
 ---@class utils.plugin.extension_config.telescope
 ---@field extensions? string|string[]
@@ -161,6 +162,15 @@ function M.with_extensions(plugins, extensions)
             end
           end)
         end
+      end,
+    })
+  end
+  if extensions.lualine then
+    table.insert(plugins, {
+      "nvim-lualine/lualine.nvim",
+      opts = function(_, opts)
+        opts.extensions =
+          utils.remove_duplicates(vim.list_extend(opts.extensions or {}, utils.str_to_tbl(extensions.lualine)))
       end,
     })
   end
