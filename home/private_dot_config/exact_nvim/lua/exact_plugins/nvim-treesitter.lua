@@ -49,5 +49,17 @@ return {
       }
     end,
   },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    event = function()
+      return { "LazyFile" }
+    end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    event = function()
+      return { "InsertEnter" }
+    end,
+  },
   { import = "lazyvim.plugins.extras.ui.treesitter-context" },
 }
