@@ -29,7 +29,7 @@ The major features of this repository are:
 
 - [**CLI**](scripts) tailored to this repository with a native [PowerShell](scripts/windows/dotfiles.ps1) and [Bash](scripts/unix/dotfiles) version (cross-platform)
 - [**Neovim**](home/private_dot_config/exact_nvim) Configuration powered by [LazyVim](https://lazyvim.org) (cross-platform)
-- [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration (cross-platform)
+- [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration with Neovim workflow integration (cross-platform)
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
 - [**Scripts**](home/.chezmoiscripts):
   - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io)
@@ -42,13 +42,15 @@ The major features of this repository are:
 
 Some of the additional features are:
 
-- [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration with [Session Management](https://github.com/omerxx/tmux-sessionx) (UNIX)
+- [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration with Session Management and Neovim workflow integration (UNIX)
 - [**Git**](home/dot_gitconfig.tmpl) Configuration (cross-platform)
-- [**ShellCheck**](home/dot_shellcheckrc) Configuration
+- [**ShellCheck**](home/dot_shellcheckrc) Configuration (cross-platform)
 - [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
-- [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile (Windows)
-- [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) (UNIX)
+- [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile with extended Linux capabilities (Windows)
+- [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) including auto completions, fzf integration, syntax highlighting and more (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
+- **Font Management** to ensure Neovim, Neovide, WezTerm and VSCode have the same font settings (cross-platform)
+- **Performance** always in mind (cross-platform)
 
 ## ⚙️ Requirements
 
