@@ -33,22 +33,6 @@ function M.ft_plugin(opts)
   end
 end
 
----Remove duplicates from a table
----@param tbl string[]
----@return string[]
-function M.remove_duplicates(tbl)
-  ---@type table<string, boolean>
-  local seen = {}
-  return vim.tbl_filter(function(item)
-    if not seen[item] then
-      seen[item] = true
-      return true
-    else
-      return false
-    end
-  end, tbl)
-end
-
 ---Convert a string or table to a table
 ---@param str_or_tbl string|string[]
 ---@return string[]

@@ -169,8 +169,7 @@ function M.with_extensions(plugins, extensions)
     table.insert(plugins, {
       "nvim-lualine/lualine.nvim",
       opts = function(_, opts)
-        opts.extensions =
-          utils.remove_duplicates(vim.list_extend(opts.extensions or {}, utils.str_to_tbl(extensions.lualine)))
+        opts.extensions = LazyVim.dedup(vim.list_extend(opts.extensions or {}, utils.str_to_tbl(extensions.lualine)))
       end,
     })
   end
