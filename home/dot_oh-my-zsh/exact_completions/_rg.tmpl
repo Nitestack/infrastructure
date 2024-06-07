@@ -1,0 +1,4 @@
+{{- $bin := lookPath "rg" -}}
+{{- if $bin -}}
+{{- output $bin "--generate" "complete-zsh" -}}
+{{- end -}}
