@@ -12,6 +12,7 @@ dependencies:
       - "vercel"
     cargo:
       - "bob-nvim"
+      - "eza"
       - "nvim-switcher"
     custom:
       - node: "volta install node"
@@ -27,7 +28,6 @@ dependencies:
     packages:
       - "cmake"
       - "curl"
-      - "exa"
       - "git"
       - "ripgrep"
       - "tmux"
