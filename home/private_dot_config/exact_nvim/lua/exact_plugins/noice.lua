@@ -3,7 +3,7 @@
 return {
   "folke/noice.nvim",
   keys = core.lazy_map({
-    [{ "c", "i", "n", "s" }] = {
+    [{ "c", "n", "s" }] = {
       ["<leader>sn"] = "Noice",
     },
   }),
