@@ -33,7 +33,6 @@ The major features of this repository are:
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
 - [**Scripts**](home/.chezmoiscripts):
   - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io)
-  - Sets up the Spaceship theme (UNIX)
   - Configures the default shell to be Zsh (Linux)
   - Sets up Mirrorlist backup (Arch Linux)
   - Configures GNOME (Linux)
@@ -44,11 +43,12 @@ Some of the additional features are:
 
 - [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration with Session Management and Neovim workflow integration (UNIX)
 - [**Git**](home/dot_gitconfig.tmpl) Configuration (cross-platform)
-- [**ShellCheck**](home/dot_shellcheckrc) Configuration (cross-platform)
 - [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
+- [**Oh My Posh**](home/,chezmoitemplates/oh-my-posh/theme.omp.yml) Configuration (cross-platform)
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile with extended Linux capabilities (Windows)
 - [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) including auto completions, fzf integration, syntax highlighting and more (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
+- [**ShellCheck**](home/dot_shellcheckrc) Configuration (cross-platform)
 - **Font Management** to ensure Neovim, Neovide, WezTerm and VSCode have the same font settings (cross-platform)
 - **Performance** always in mind (cross-platform)
 

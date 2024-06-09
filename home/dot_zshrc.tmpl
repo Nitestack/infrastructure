@@ -42,8 +42,6 @@ setopt hist_find_no_dups
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="spaceship"
-
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Add wisely, as too many plugins slow down shell startup.
@@ -59,7 +57,6 @@ plugins=(
   nvm
   python
   pip
-  spaceship-vi-mode
   tmux
   tmuxinator
   vi-mode
@@ -75,6 +72,11 @@ source $ZSH/oh-my-zsh.sh
 #-------------------------------------------------------------------------------
 #  USER CONFIGURATION
 #-------------------------------------------------------------------------------
+
+# Setup Oh My Posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config "${XDG_CONFIG_HOME:-${HOME}/.config}/oh-my-posh/theme.omp.yml")"
+fi
 
 # Completion styling
 zstyle ":completion:*" matcher-list 'm:{a-z}={A-Za-z}'

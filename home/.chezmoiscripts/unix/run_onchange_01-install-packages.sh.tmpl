@@ -15,7 +15,7 @@ sudo pacman -Syu
 
 echo
 echo "pacman:"
-# {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages }}
+# {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.linux.packages .dependencies.unix.packages .dependencies.all.packages }}
 pacman_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
@@ -26,7 +26,7 @@ sudo apt update -y && sudo apt upgrade -y
 
 echo
 echo "apt:"
-# {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.unix.packages .dependencies.all.packages }}
+# {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.linux.packages .dependencies.unix.packages .dependencies.all.packages }}
 apt_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
@@ -53,6 +53,9 @@ brew_ensure_cask_installed "{{- $cask -}}"
 echo
 echo "Custom installation:"
 # {{ $dependencies := concat .dependencies.unix.custom .dependencies.all.custom }}
+# {{ if eq .chezmoi.os "linux" }}
+# {{ $dependencies = concat .dependencies.linux.custom $dependencies }}
+# {{ end }}
 # {{ if eq .osid "linux-arch" }}
 # {{ $dependencies = concat .dependencies.arch.custom $dependencies }}
 # {{ else if eq .osid "linux-ubuntu" }}

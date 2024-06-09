@@ -6,6 +6,7 @@ dependencies:
         - "bat"
         - "fd"
         - "fzf"
+        - "jandedobbeleer/oh-my-posh/oh-my-posh"
         - "jesseduffield/lazygit/lazygit"
         - "ruby"
         - "zoxide"

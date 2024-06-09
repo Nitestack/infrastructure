@@ -30,7 +30,7 @@ Library
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/unix/**
 
-.config/spaceship.zsh
+.config/oh-my-posh
 .config/tmux
 
 .oh-my-zsh

@@ -192,7 +192,7 @@ function pgrep($name)
 $env:EDITOR = "{{- .editor -}}"
 
 # Initialize oh-my-posh
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\{{- .windows.oh_my_posh_theme_name -}}.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "$env:APPDATA\oh-my-posh\theme.omp.yml" | Invoke-Expression
 
 # Initialize zoxide (must stay at the end)
 Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
