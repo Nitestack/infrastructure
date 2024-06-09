@@ -12,10 +12,11 @@ blocks:
       - type: os
         style: plain
         foreground_templates:
-          - "{{ if eq .OS 'windows' }}#00ACEE{{ end }}"
-          - "{{ if eq .OS 'arch' }}#1894D4{{ end }}"
-          - "{{ if eq .OS 'ubuntu' }}#F47421{{ end }}"
-        template: "{{ .Icon }}  "
+          - '{{ if eq .OS "windows" }}#00ACEE{{ end }}'
+          - '{{ if eq .OS "arch" }}#1894D4{{ end }}'
+          - '{{ if eq .OS "ubuntu" }}#F47421{{ end }}'
+        background: transparent
+        template: "{{ .Icon }} "
       - type: path
         style: plain
         background: transparent
@@ -33,7 +34,6 @@ blocks:
           }} <cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end
           }}</>"
         properties:
-          branch_icon: ""
           commit_icon: "@"
           fetch_status: true
   - type: rprompt
@@ -53,14 +53,14 @@ blocks:
       - type: text
         style: plain
         foreground_templates:
-          - "{{if gt .Code 0}}red{{end}}"
-          - "{{if eq .Code 0}}magenta{{end}}"
+          - "{{ if gt .Code 0 }}red{{ end }}"
+          - "{{ if eq .Code 0 }}magenta{{ end }}"
         background: transparent
         template: ❯
 transient_prompt:
   foreground_templates:
-    - "{{if gt .Code 0}}red{{end}}"
-    - "{{if eq .Code 0}}magenta{{end}}"
+    - "{{ if gt .Code 0 }}red{{ end }}"
+    - "{{ if eq .Code 0 }}magenta{{ end }}"
   background: transparent
   template: "❯ "
 secondary_prompt:
