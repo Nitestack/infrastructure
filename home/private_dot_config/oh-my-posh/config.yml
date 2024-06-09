@@ -8,6 +8,13 @@ blocks:
     alignment: left
     newline: true
     segments:
+      - type: os
+        style: plain
+        foreground_templates:
+          - "{{ if eq .OS 'windows' }}#00ACEE{{ end }}"
+          - "{{ if eq .OS 'arch' }}#1894D4{{ end }}"
+          - "{{ if eq .OS 'ubuntu' }}#F47421{{ end }}"
+        template: "{{ .Icon }}  "
       - type: path
         style: plain
         background: transparent
