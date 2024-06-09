@@ -44,7 +44,7 @@ Some of the additional features are:
 - [**tmux**](home/private_dot_config/tmux/tmux.conf) Configuration with Session Management and Neovim workflow integration (UNIX)
 - [**Git**](home/dot_gitconfig.tmpl) Configuration (cross-platform)
 - [**Lazygit**](home/.chezmoitemplates/lazygit/config.yml) Configuration (cross-platform)
-- [**Oh My Posh**](home/,chezmoitemplates/oh-my-posh/theme.omp.yml) Configuration (cross-platform)
+- [**Oh My Posh**](home/.chezmoitemplates/oh-my-posh/theme.omp.yml) Configuration (cross-platform)
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile with extended Linux capabilities (Windows)
 - [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) including auto completions, fzf integration, syntax highlighting and more (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
