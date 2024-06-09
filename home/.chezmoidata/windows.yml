@@ -8,6 +8,7 @@ dependencies:
       - "sharkdp.fd"
       - "junegunn.fzf"
       - "Git.Git"
+      - "GoLang.Go"
       - "JesseDuffield.lazygit"
       - "LLVM.LLVM"
       - "JanDeDobbeleer.OhMyPosh"
