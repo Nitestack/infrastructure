@@ -1,0 +1,4 @@
+{{- $bin := lookPath "oh-my-posh" -}}
+{{- if $bin -}}
+{{- output $bin "completion" "zsh" -}}
+{{- end -}}
