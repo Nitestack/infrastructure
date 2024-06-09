@@ -2,6 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
 final_space: true
 version: 2
+console_title_template: "{{ if .WSL }}WSL: {{ end }}{{ .Shell }} in {{ .Folder }}"
 
 blocks:
   - type: prompt
