@@ -27,15 +27,16 @@ blocks:
           style: full
       - type: git
         style: plain
-        foreground: p:grey
+        foreground: "#F3C267"
+        foreground_templates:
+          - "{{ if or (.Working.Changed) (.Staging.Changed) }}#FF9248{{ end }}"
+          - "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ff4500{{ end }}"
+          - "{{ if gt .Ahead 0 }}#B388FF{{ end }}"
+          - "{{ if gt .Behind 0 }}#B388FF{{ end }}"
         background: transparent
-        template:
-          " {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end
-          }} <cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end
-          }}</>"
         properties:
-          commit_icon: "@"
           fetch_status: true
+          fetch_upstream_icon: true
   - type: rprompt
     overflow: hidden
     segments:
