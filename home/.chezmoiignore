@@ -19,6 +19,8 @@ Documents
 .config/project-manager
 
 .hushlogin
+
+.zlogin
 {{ end }}
 
 # macOS
