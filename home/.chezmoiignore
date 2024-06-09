@@ -12,6 +12,7 @@ Documents
 {{ if ne .chezmoi.os "linux" }}
 .chezmoiscripts/linux/**
 
+.config/ags
 .config/Code
 .config/lazygit
 .config/project-manager

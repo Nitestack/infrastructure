@@ -19,6 +19,8 @@ dependencies:
       - "ttf-monaspace-variable"
       - "ttf-nerd-fonts-symbols"
       - "wezterm"
+    paru:
+      - "aylurs-gtk-shell"
     custom:
       - paru: |
           git clone https://aur.archlinux.org/paru.git
