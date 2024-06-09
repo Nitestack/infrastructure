@@ -4,6 +4,7 @@ dependencies:
     apt:
       - "build-essential"
       - "dconf-editor"
+      - "golang-go"
       - "libyaml-dev"
       - "python3"
       - "python3-pip"
