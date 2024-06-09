@@ -14,6 +14,7 @@ blocks:
         foreground: blue
         template: "{{ .Path }}"
         properties:
+          folder_separator_icon: "/"
           style: full
       - type: git
         style: plain
