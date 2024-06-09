@@ -42,9 +42,10 @@ blocks:
     segments:
       - type: executiontime
         style: plain
-        foreground: yellow
+        foreground: green
+        foreground_templates:
+          - "{{ if gt .Code 0 }}red{{ end }}"
         background: transparent
-        template: "{{ .FormattedMs }}"
         properties:
           threshold: 5000
   - type: prompt
