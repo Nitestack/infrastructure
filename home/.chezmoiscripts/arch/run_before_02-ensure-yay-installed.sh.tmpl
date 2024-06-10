@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+ensure_yay_installed() {
+	if command -v yay &>/dev/null; then
+		echo "Arch Linux: yay installed"
+		exit 2
+	fi
+
+	git clone https://aur.archlinux.org/yay.git ~/yay-git
+	cd ~/yay-git
+	makepkg -si --noconfirm
+	cd ..
+	rm -rf ~/yay-git
+}
+
+show_spinner "ensure_yay_installed" "Arch Linux: Checking if yay is installed" "Arch Linux: Installed yay"
