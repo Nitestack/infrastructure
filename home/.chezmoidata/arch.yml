@@ -17,12 +17,14 @@ dependencies:
       - "ruby"
       - "zoxide"
 
+      - "firefox"
       - "ttf-monaspace-variable"
       - "ttf-nerd-fonts-symbols"
       - "wezterm"
     paru:
       - "aylurs-gtk-shell"
     custom:
+      - oh-my-posh: "curl -s https://ohmyposh.dev/install.sh | bash -s --  -d ~/.local/bin"
       - paru: |
           git clone https://aur.archlinux.org/paru.git
           cd paru

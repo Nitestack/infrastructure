@@ -8,9 +8,9 @@ Documents
 .wslconfig
 {{ end }}
 
-# Linux
-{{ if ne .chezmoi.os "linux" }}
-.chezmoiscripts/linux/**
+# Arch Linux
+{{ if ne .osid "linux-arch" }}
+.chezmoiscripts/arch/**
 
 .config/ags
 .config/Code

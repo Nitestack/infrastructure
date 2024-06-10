@@ -16,7 +16,7 @@
 
 [Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Credits](#-credits) • [License](#-license)
 
-_Universal command set and vibrant shell configurations for [Zsh](https://zsh.org) and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and (partially) Linux, these configurations are effortlessly managed using a [cross-platform CLI](scripts) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
+_Universal command set and vibrant shell configurations for [Zsh](https://zsh.org) and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos), and [Arch Linux](https://archlinux.org), these configurations are effortlessly managed using a [cross-platform CLI](scripts) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -33,9 +33,8 @@ The major features of this repository are:
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
 - [**Scripts**](home/.chezmoiscripts):
   - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io)
-  - Configures the default shell to be Zsh (Linux)
+  - Configures the default shell to be Zsh (Arch Linux)
   - Sets up Mirrorlist backup (Arch Linux)
-  - Configures GNOME (Linux)
   - Ensures installation of brew (macOS)
   - Sets system preferences using `defaults` (macOS)
 
@@ -54,11 +53,10 @@ Some of the additional features are:
 
 ## ⚙️ Requirements
 
-- **Operating System (latest stable):**
+- **Operating System (download latest stable version):**
   - [Windows](https://microsoft.com/windows)
   - [macOS](https://apple.com/macos)
-  - **Linux:**
-    - [Arch Linux](https://archlinux.org)
+  - [Arch Linux](https://archlinux.org)
 - **Font:** a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
 - **Commands:**
   - [git](https://git-scm.com/downloads)
@@ -76,7 +74,7 @@ First you need to install the [`dotfiles`](scripts) CLI. Simply run the followin
 wget -O ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/unix/dotfiles
 ```
 
-> We use `wget` here because it comes preinstalled with most Linux distros. But you can also use `curl`:
+> We use `wget` here because it comes preinstalled with most UNIX operating systems. But you can also use `curl`:
 >
 > ```sh
 > curl -o ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/unix/dotfiles

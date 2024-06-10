@@ -8,7 +8,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 set_zsh_as_default_shell() {
 	# Check if the current shell is zsh already
 	if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
-		echo "Linux: Default shell is Zsh"
+		echo "Arch Linux: Default shell is Zsh"
 		exit 2
 	fi
 
@@ -18,4 +18,4 @@ set_zsh_as_default_shell() {
 	chsh -s "/usr/bin/zsh"
 }
 
-show_spinner "set_zsh_as_default_shell" "Linux: Setting default shell to Zsh" "Linux: Changed default shell to Zsh"
+show_spinner "set_zsh_as_default_shell" "Arch Linux: Setting default shell to Zsh" "Arch Linux: Changed default shell to Zsh"
