@@ -19,6 +19,12 @@ echo "pacman:"
 pacman_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
+echo
+echo "yay:"
+# {{ range $_, $package_name := .dependencies.arch.yay }}
+yay_ensure_installed "{{- $package_name -}}"
+# {{ end }}
+
 # {{ else if eq .chezmoi.os "darwin" }}
 echo "macOS: Installing formulae and casks"
 echo

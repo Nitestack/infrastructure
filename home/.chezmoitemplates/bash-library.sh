@@ -135,6 +135,22 @@ pacman_ensure_installed() {
 	show_spinner "install_with_pacman" "${package_name}" "${package_name}"
 }
 
+yay_ensure_installed() {
+	local package_name="$1"
+	shift
+
+	install_with_yay() {
+		if yay -Qi "${package_name}" &>/dev/null; then
+			echo "${package_name}"
+			exit 2
+		fi
+
+		sudo yay -S --needed --noconfirm "${package_name}"
+	}
+
+	show_spinner "install_with_yay" "${package_name}" "${package_name}"
+}
+
 brew_ensure_formula_installed() {
 	local formula="$1"
 	shift
