@@ -6,11 +6,13 @@
 true || source "../../.chezmoitemplates/bash-library.sh"
 
 ensure_yay_installed() {
+	# Check if yay is already installed
 	if command -v yay &>/dev/null; then
 		echo "Arch Linux: yay installed"
 		exit 2
 	fi
 
+	# Install yay
 	git clone https://aur.archlinux.org/yay.git ~/yay-git
 	cd ~/yay-git
 	makepkg -si --noconfirm
