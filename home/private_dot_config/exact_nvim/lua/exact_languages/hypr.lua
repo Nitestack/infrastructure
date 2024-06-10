@@ -1,8 +1,10 @@
 --------------------------------------------------------------------------------
---  Docker
+--  Hyprlang
 --------------------------------------------------------------------------------
 return utils.plugin.get_language_spec({
-  plugins = {
-    { import = "lazyvim.plugins.extras.lang.docker" },
+  mason = "hyprls",
+  treesitter = "hyprlang",
+  lsp = {
+    hyprls = {},
   },
 })
