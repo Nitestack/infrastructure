@@ -17,7 +17,7 @@ dependencies:
       - "ruby"
       - "zoxide"
 
-      - "firefox"
+      - "firefox-developer-edition"
       - "ttf-monaspace-variable"
       - "ttf-nerd-fonts-symbols"
       - "wezterm"
