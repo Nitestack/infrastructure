@@ -24,11 +24,6 @@ dependencies:
       - virtualenv: "pipx install virtualenv"
       - yarn: "volta install yarn"
     manual: []
-  linux:
-    packages: []
-    custom:
-      - oh-my-posh: "curl -s https://ohmyposh.dev/install.sh | bash -s --  -d ~/.local/bin"
-    manual: []
   unix:
     packages:
       - "cmake"
