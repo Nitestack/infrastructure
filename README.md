@@ -31,6 +31,8 @@ The major features of this repository are:
 - [**Neovim**](home/private_dot_config/exact_nvim) Configuration powered by [LazyVim](https://lazyvim.org) (cross-platform)
 - [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration with Neovim workflow integration (cross-platform)
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
+- [**Hyprland**](https://hyprland.org) Configuration (Arch Linux)
+- [**ags**](https://aylur.github.io/ags-docs) Configuration (Arch Linux)
 - [**Scripts**](home/.chezmoiscripts):
   - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io)
   - Configures the default shell to be Zsh (Arch Linux)
@@ -47,6 +49,7 @@ Some of the additional features are:
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile with extended Linux capabilities (Windows)
 - [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) including auto completions, fzf integration, syntax highlighting and more (UNIX)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
+- [**SSH**](home/private_dot_ssh) Configuration (cross-platform)
 - [**ShellCheck**](home/dot_shellcheckrc) Configuration (cross-platform)
 - **Font Management** to ensure Neovim, Neovide, WezTerm and VSCode have the same font settings (cross-platform)
 - **Performance** always in mind (cross-platform)
