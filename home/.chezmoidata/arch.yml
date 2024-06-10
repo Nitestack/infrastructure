@@ -3,19 +3,12 @@ dependencies:
   arch:
     pacman:
       - "base-devel"
-      - "bat"
       - "dconf-editor"
-      - "fd"
-      - "fzf"
-      - "go"
       - "lazygit"
       - "man-db"
-      - "openssh"
       - "python"
       - "python-pip"
       - "reflector"
-      - "ruby"
-      - "zoxide"
 
       - "firefox-developer-edition"
       - "ttf-monaspace-variable"

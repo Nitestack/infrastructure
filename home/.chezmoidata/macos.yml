@@ -3,14 +3,8 @@ dependencies:
   macos:
     brew:
       formulae:
-        - "bat"
-        - "fd"
-        - "fzf"
-        - "go"
         - "jandedobbeleer/oh-my-posh/oh-my-posh"
         - "jesseduffield/lazygit/lazygit"
-        - "ruby"
-        - "zoxide"
       casks:
         - "alt-tab"
         - "aldente"
