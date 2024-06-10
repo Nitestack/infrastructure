@@ -14,7 +14,6 @@ blocks:
         foreground_templates:
           - '{{ if eq .OS "windows" }}#00ACEE{{ end }}'
           - '{{ if eq .OS "arch" }}#1894D4{{ end }}'
-          - '{{ if eq .OS "ubuntu" }}#F47421{{ end }}'
         background: transparent
         template: "{{ .Icon }} "
       - type: path

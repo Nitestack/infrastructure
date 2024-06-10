@@ -13,11 +13,7 @@ set_zsh_as_default_shell() {
 	fi
 
 	# Check if zsh is installed
-	# {{ if eq .osid "linux-arch" }}
 	pacman_ensure_installed zsh
-	# {{ else if eq .osid "linux-ubuntu" }}
-	apt_ensure_installed zsh
-	# {{ end }}
 
 	chsh -s "/usr/bin/zsh"
 }

@@ -19,17 +19,6 @@ echo "pacman:"
 pacman_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
-# {{ else if eq .osid "linux-ubuntu" }}
-echo "Ubuntu: Installing packages"
-echo
-sudo apt update -y && sudo apt upgrade -y
-
-echo
-echo "apt:"
-# {{ range $_, $package_name := concat .dependencies.ubuntu.apt .dependencies.linux.packages .dependencies.unix.packages .dependencies.all.packages }}
-apt_ensure_installed "{{- $package_name -}}"
-# {{ end }}
-
 # {{ else if eq .chezmoi.os "darwin" }}
 echo "macOS: Installing formulae and casks"
 echo
@@ -58,8 +47,6 @@ echo "Custom installation:"
 # {{ end }}
 # {{ if eq .osid "linux-arch" }}
 # {{ $dependencies = concat .dependencies.arch.custom $dependencies }}
-# {{ else if eq .osid "linux-ubuntu" }}
-# {{ $dependencies = concat .dependencies.ubuntu.custom $dependencies }}
 # {{ else if eq .chezmoi.os "darwin" }}
 # {{ $dependencies = concat .dependencies.macos.custom $dependencies }}
 # {{ end }}
@@ -67,12 +54,12 @@ echo "Custom installation:"
 # {{ range $_, $pkg := $dependencies }}
 # {{ range $cmd_name, $lines := $pkg }}
 install_custom_cmd() {
-	if command -v "{{- $cmd_name -}}" &>/dev/null; then
-		echo "{{- $cmd_name -}}"
-		exit 2
-	else
-		# {{ "\n" }} {{ $lines }}
-	fi
+  if command -v "{{- $cmd_name -}}" &>/dev/null; then
+    echo "{{- $cmd_name -}}"
+    exit 2
+  else
+    # {{ "\n" }} {{ $lines }}
+  fi
 }
 show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # {{ end }}
@@ -83,12 +70,12 @@ echo
 echo "npm:"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 install_with_pnpm() {
-	if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
-		echo "{{- $package_name -}}"
-		exit 2
-	else
-		pnpm add -g "{{- $package_name -}}"
-	fi
+  if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
+    echo "{{- $package_name -}}"
+    exit 2
+  else
+    pnpm add -g "{{- $package_name -}}"
+  fi
 }
 show_spinner "install_with_pnpm" "{{- $package_name -}}" "{{- $package_name -}}"
 # {{ end }}
@@ -98,12 +85,12 @@ echo
 echo "cargo:"
 # {{ range $_, $package_name := .dependencies.all.cargo }}
 install_with_cargo() {
-	if cargo install --list | grep -q "{{- $package_name -}}"; then
-		echo "{{- $package_name -}}"
-		exit 2
-	else
-		cargo install "{{- $package_name -}}"
-	fi
+  if cargo install --list | grep -q "{{- $package_name -}}"; then
+    echo "{{- $package_name -}}"
+    exit 2
+  else
+    cargo install "{{- $package_name -}}"
+  fi
 }
 show_spinner "install_with_cargo" "{{- $package_name -}}" "{{- $package_name -}}"
 # {{ end }}

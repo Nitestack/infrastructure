@@ -32,7 +32,7 @@ The major features of this repository are:
 - [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration with Neovim workflow integration (cross-platform)
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
 - [**Scripts**](home/.chezmoiscripts):
-  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS, [apt](https://ubuntu.com/server/docs/package-management) for Ubuntu, and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io)
+  - Ensures installation of all dependencies listed in [`home/.chezmoidata`](home/.chezmoidata), supporting various package managers across different operating systems: [winget](https://learn.microsoft.com/windows/package-manager/winget) for Windows, [brew](https://brew.sh) for macOS and [pacman](https://wiki.archlinux.org/title/pacman) for Arch Linux. Additionally, supports language-specific package managers such as [npm](https://npmjs.com) and [cargo](https://crates.io)
   - Configures the default shell to be Zsh (Linux)
   - Sets up Mirrorlist backup (Arch Linux)
   - Configures GNOME (Linux)
@@ -58,7 +58,6 @@ Some of the additional features are:
   - [Windows](https://microsoft.com/windows)
   - [macOS](https://apple.com/macos)
   - **Linux:**
-    - [Ubuntu](https://ubuntu.com)
     - [Arch Linux](https://archlinux.org)
 - **Font:** a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
 - **Commands:**
@@ -160,7 +159,6 @@ Other than these conventions, the Bash version of `dotfiles` is equal to the Win
   - many of the plugins and their configurations are used
 - [Felipe Santos](https://github.com/felipecrs) - take a look at his [dotfiles](https://github.com/felipecrs/dotfiles)
   - parts of his README are used
-  - the install scripts for Ubuntu are used, modified and extended
 - [René-Marc Simard](https://github.com/renemarc) - take a look at his [dotfiles](https://github.com/renemarc/dotfiles)
   - the top section of his README is used
 
