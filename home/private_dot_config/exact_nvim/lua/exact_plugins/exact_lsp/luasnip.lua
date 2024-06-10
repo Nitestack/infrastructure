@@ -48,6 +48,8 @@ return {
         conds = require("luasnip.extras.expand_conditions"),
         postfix = require("luasnip.extras.postfix").postfix,
       }
+
+      require("luasnip.loaders.from_lua").load()
     end,
   },
 }
