@@ -9,6 +9,7 @@ dependencies:
       - "python"
       - "python-pip"
       - "reflector"
+      - "unzip"
 
       - "firefox-developer-edition"
       - "ttf-monaspace-variable"
