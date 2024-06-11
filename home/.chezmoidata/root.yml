@@ -15,9 +15,9 @@ dependencies:
       - "eza"
       - "nvim-switcher"
     volta:
+      - "node"
       - "pnpm"
       - "yarn"
-      - "node"
     custom:
       - nvim: |
           bob install stable
