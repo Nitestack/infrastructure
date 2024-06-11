@@ -10,9 +10,7 @@ LOCALES=("en_US.UTF-8 UTF-8" "de_DE.UTF-8 UTF-8")
 # Check if the locales are already generated
 locale_already_set() {
 	for locale in "${LOCALES[@]}"; do
-		# Extract the locale code without encoding
-		locale_code=$(echo "${locale}" | cut -d' ' -f1)
-		if ! locale -a | grep -q "^${locale_code}"; then
+		if ! grep -q "^${locale} UTF-8" /etc/locale.gen; then
 			return 1
 		fi
 	done
