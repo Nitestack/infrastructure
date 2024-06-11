@@ -103,22 +103,6 @@ show_spinner() {
 	rm "${temp_out_log}" "${temp_err_log}"
 }
 
-apt_ensure_installed() {
-	local package_name="$1"
-	shift
-
-	install_with_apt() {
-		if dpkg-query -W "${package_name}" &>/dev/null; then
-			echo "${package_name}"
-			exit 2
-		fi
-
-		sudo apt install -y "${package_name}"
-	}
-
-	show_spinner "install_with_apt" "${package_name}" "${package_name}"
-}
-
 pacman_ensure_installed() {
 	local package_name="$1"
 	shift
