@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+# Path to the pacman configuration file
+PACMAN_CONF="/etc/pacman.conf"
+
+enable_option() {
+	local option=$1
+	local value=$2
+	local file=$3
+
+	if grep -q "^#\?\s*${option}" "${file}"; then
+		# Uncomment an option
+		sudo sed -i "s/^#\?\s*\(${option}\s*=\).*/\1 ${value}/" "${file}"
+	else
+		# Append option to the end of the file
+		echo "${option} = ${value}" | sudo tee -a "${file}"
+	fi
+}
+
+enable_flag() {
+	local flag=$1
+	local file=$2
+
+	if ! grep -q "^${flag}" "${file}"; then
+		# Uncomment a flag
+		echo "${flag}" | sudo tee -a "${file}"
+	else
+		# Append flag to the end of the file
+		sudo sed -i "s/^#\?\s*\(${flag}\)/\1/" "${file}"
+	fi
+}
+
+configure_pacman() {
+	# Enable ParallelDownloads = 5
+	enable_option "ParallelDownloads" "5" "${PACMAN_CONF}"
+
+	# Enable Colors
+	enable_flag "Color" "${PACMAN_CONF}"
+
+	# Enable ILoveCandy (easter egg)
+	enable_flag "ILoveCandy" "${PACMAN_CONF}"
+}
+
+show_spinner "configure_pacman" "Arch Linux: Configuring pacman" "Arch Linux: Configured pacman"
