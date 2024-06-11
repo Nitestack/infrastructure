@@ -5,35 +5,48 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-LOCALES=("en_US.UTF-8 UTF-8" "de_DE.UTF-8 UTF-8")
+SYSTEM_LOCALE="en_US"
+REGIONAL_LOCALE="de_DE"
 
-# Check if the locales are already generated
-locale_already_set() {
-	for locale in "${LOCALES[@]}"; do
-		if ! grep -q "^${locale} UTF-8" /etc/locale.gen; then
-			return 1
-		fi
-	done
-	return 0
+locale_is_set() {
+	local locale=$1
+	localectl list-locales | grep -q "^${locale}.UTF-8$"
 }
 
 configure_locales() {
-	# Generate locales if they are not already set
-	if locale_already_set; then
-		echo "Locales are already generated and set"
+	# Check if both locales are already set
+	if locale_is_set "${SYSTEM_LOCALE}" && locale_is_set "${REGIONAL_LOCALE}"; then
+		echo "Locales generated and set"
 		exit 2
 	else
-		# Uncomment the desired locales in /etc/locale.gen
-		for locale in "${LOCALES[@]}"; do
-			sudo sed -i "s/#${locale}/${locale}/" /etc/locale.gen
-		done
+		# Uncomment the locales in /etc/locale.gen
+		if ! locale_is_set "${SYSTEM_LOCALE}"; then
+			sudo sed -i "s/^#${SYSTEM_LOCALE}.UTF-8 UTF-8/${SYSTEM_LOCALE}.UTF-8 UTF-8/" /etc/locale.gen
+		fi
+		if ! locale_is_set "${REGIONAL_LOCALE}"; then
+			sudo sed -i "s/^#${REGIONAL_LOCALE}.UTF-8 UTF-8/${REGIONAL_LOCALE}.UTF-8 UTF-8/" /etc/locale.gen
+		fi
 
 		# Generate the locales
 		sudo locale-gen
 
-		# Set the system locale to the first in the list
-		echo "LANG=$(echo "${LOCALES[0]}" | cut -d' ' -f1)" | sudo tee /etc/locale.conf >/dev/null
+		# Set the system locale
+		if ! locale_is_set "${SYSTEM_LOCALE}"; then
+			sudo localectl set-locale LANG="${SYSTEM_LOCALE}.UTF-8"
+		fi
+		# Set regional settings
+		if ! locale_is_set "${REGIONAL_LOCALE}"; then
+			sudo localectl set-locale LC_ADDRESS="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_CTYPE="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_MEASUREMENT="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_MONETARY="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_NAME="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_NUMERIC="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_PAPER="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_TELEPHONE="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_TIME="${REGIONAL_LOCALE}"
+		fi
 	fi
 }
 
-show_spinner "configure_locales" "Arch Linux: Check if locales were generated and set" "Arch Linux: Generated locales and set system locale to '${LOCALES[0]}'"
+show_spinner "configure_locales" "Arch Linux: Check if locales were generated and set" "Arch Linux: Generated and set locales"
