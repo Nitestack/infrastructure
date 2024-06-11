@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+add_ags_types() {
+	ags_config_path="${HOME}/.dotfiles/home/private_dot_config/ags"
+
+	if [[ -d "${ags_config_path}/types" ]]; then
+		echo "Arch Linux: ags types added"
+		exit 2
+	fi
+
+	ags --init --config "${ags_config_path}/config.js"
+
+	rm -f "${ags_config_path}/README.md"
+}
+
+show_spinner "add_ags_types" "Arch Linux: Check if ags types exist" "Arch Linux: Added ags types"
