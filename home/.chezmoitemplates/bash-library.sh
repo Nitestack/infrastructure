@@ -129,7 +129,7 @@ yay_ensure_installed() {
 			exit 2
 		fi
 
-		sudo yay -S --needed --noconfirm "${package_name}"
+		yay -S --needed --noconfirm "${package_name}"
 	}
 
 	show_spinner "install_with_yay" "${package_name}" "${package_name}"
