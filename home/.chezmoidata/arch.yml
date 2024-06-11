@@ -6,6 +6,7 @@ dependencies:
       - "dconf-editor"
       - "lazygit"
       - "man-db"
+      - "man-pages-de"
       - "python"
       - "python-pip"
       - "reflector"
