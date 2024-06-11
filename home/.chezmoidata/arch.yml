@@ -9,7 +9,6 @@ dependencies:
       - "man-pages-de"
       - "python"
       - "python-pip"
-      - "reflector"
       - "unzip"
 
       - "firefox-developer-edition"

@@ -11,6 +11,11 @@ setup_reflector_automation() {
 		echo "Arch Linux: Reflector automation is already set up"
 		exit 2
 	else
+		# Ensure reflector is installed
+		if ! pacman -Qi reflector &>/dev/null; then
+			sudo pacman -S --needed --noconfirm "reflector"
+		fi
+
 		# Create or overwrite the reflector configuration file
 		cat <<EOF >/etc/xdg/reflector/reflector.conf
 --save /etc/pacman.d/mirrorlist
