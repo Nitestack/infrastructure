@@ -17,14 +17,11 @@ log_blue() {
 log_green() {
 	log_color "0;32" "$@"
 }
-log_yellow() {
-	log_color "0;33" "$@"
-}
 log_info() {
 	echo "" "$@"
 }
 start_task() {
-	log_yellow "󰪥" "$@"
+	echo "󰪥" "$@"
 }
 complete_task() {
 	log_green "" "$@"
@@ -44,7 +41,7 @@ show_spinner() {
 		tput civis # Hide cursor
 
 		while kill -0 "${pid}" 2>/dev/null; do
-			printf "\r\e[33m%s %s\e[0m" "${spinner_frames[i]}" "${start_message}" # Yellow color
+			printf "\r%s %s" "${spinner_frames[i]}" "${start_message}"
 			i=$(((i + 1) % ${#spinner_frames[@]}))
 			sleep 0.1
 		done
@@ -65,7 +62,7 @@ show_spinner() {
 
 	# Print last frame of the spinner
 	last_index=$((${#spinner_frames[@]} - 1))
-	printf "\r\e[33m%s %s\e[0m" "${spinner_frames[${last_index}]}" "${start_message}" # Yellow color
+	printf "\r%s %s" "${spinner_frames[${last_index}]}" "${start_message}"
 
 	# Get the last echo message from the output log file
 	local last_echo=$(tail -n 1 "${temp_out_log}")
@@ -96,7 +93,7 @@ show_spinner() {
 	elif [[ ${exit_code} -eq 1 ]]; then
 		printf "\r\e[31m%s %s\e[0m\n" "" "${error_message}" # Red color
 	else
-		printf "\r\e[33m%s %s\e[0m\n" "" "${last_echo}"
+		printf "\r%s %s\n" "" "${last_echo}"
 	fi
 
 	# Clean up

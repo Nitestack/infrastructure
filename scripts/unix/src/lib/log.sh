@@ -7,11 +7,8 @@ log_color() {
 log_green() {
 	log_color "0;32" "$@"
 }
-log_yellow() {
-	log_color "0;33" "$@"
-}
 start_task() {
-	log_yellow "󰪥" "$@"
+	echo "󰪥" "$@"
 }
 complete_task() {
 	log_green "" "$@"
