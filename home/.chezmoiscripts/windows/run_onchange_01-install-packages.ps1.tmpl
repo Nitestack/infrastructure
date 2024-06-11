@@ -42,6 +42,25 @@ Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name
 # {{ end }}
 # {{ end }}
 
+# Volta tools
+Write-Host "`nvolta:"
+# {{ range $_, $package_name := .dependencies.all.volta }}
+Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+  volta which "{{- $package_name -}}"
+  if ($LASTEXITCODE -eq 0) {
+    return ":{{- $package_name -}}"
+  }
+  else {
+    try {
+      Invoke-Expression "volta install {{ $package_name -}}"
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+  }
+}
+# {{ end }}
+
 # Global npm dependencies
 Write-Host "`nnpm:"
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
