@@ -46,8 +46,8 @@ Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name
 Write-Host "`nvolta:"
 # {{ range $_, $package_name := .dependencies.all.volta }}
 Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
-  volta which "{{- $package_name -}}"
-  if ($LASTEXITCODE -eq 0) {
+  $voltaList = volta list --format plain
+  if ($voltaList -match "{{- $package_name -}}") {
     return ":{{- $package_name -}}"
   }
   else {

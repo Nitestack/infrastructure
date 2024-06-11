@@ -71,9 +71,10 @@ show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # Volta tools
 echo
 echo "volta:"
+volta_list=$(volta list --format plain)
 # {{ range $_, $package_name := .dependencies.all.volta }}
 install_with_volta() {
-	if volta which "{{- $package_name -}}" &>/dev/null; then
+	if echo "${volta_list}" | grep -q "{{- $package_name -}}"; then
 		echo "{{- $package_name -}}"
 		exit 2
 	else
@@ -86,9 +87,10 @@ show_spinner "install_with_volta" "{{- $package_name -}}" "{{- $package_name -}}
 # Global npm packages
 echo
 echo "npm:"
+pnpm_list=$(pnpm list -g --depth 0)
 # {{ range $_, $package_name := .dependencies.all.pnpm }}
 install_with_pnpm() {
-	if pnpm list -g --depth 0 | grep -q "{{- $package_name -}}"; then
+	if echo "${pnpm_list}" | grep -q "{{- $package_name -}}"; then
 		echo "{{- $package_name -}}"
 		exit 2
 	else
@@ -101,9 +103,10 @@ show_spinner "install_with_pnpm" "{{- $package_name -}}" "{{- $package_name -}}"
 # Global cargo crates
 echo
 echo "cargo:"
+cargo_list=$(cargo install --list)
 # {{ range $_, $package_name := .dependencies.all.cargo }}
 install_with_cargo() {
-	if cargo install --list | grep -q "{{- $package_name -}}"; then
+	if echo "${cargo_list}" | grep -q "{{- $package_name -}}"; then
 		echo "{{- $package_name -}}"
 		exit 2
 	else
