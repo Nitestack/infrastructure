@@ -8,42 +8,38 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # Path to the pacman configuration file
 PACMAN_CONF="/etc/pacman.conf"
 
-enable_option() {
+# Function to uncomment an option or flag if commented
+uncomment_option_or_flag() {
 	local option=$1
-	local value=$2
-	local file=$3
 
-	if grep -q "^#\?\s*${option}" "${file}"; then
-		# Uncomment an option
-		sudo sed -i "s/^#\?\s*\(${option}\s*=\).*/\1 ${value}/" "${file}"
-	else
-		# Append option to the end of the file
-		echo "${option} = ${value}" | sudo tee -a "${file}"
+	# Uncomment if commented
+	if grep -q "^#\?\s*${option}" "${PACMAN_CONF}"; then
+		sudo sed -i "s/^#\?\s*\(${option}\)/\1/" "${PACMAN_CONF}"
 	fi
 }
 
-enable_flag() {
-	local flag=$1
-	local file=$2
+# Function to add a line under a specified line
+add_line_after() {
+	local line_to_add="$1"
+	local line_to_search="$2"
 
-	if ! grep -q "^${flag}" "${file}"; then
-		# Uncomment a flag
-		echo "${flag}" | sudo tee -a "${file}"
-	else
-		# Append flag to the end of the file
-		sudo sed -i "s/^#\?\s*\(${flag}\)/\1/" "${file}"
+	if ! grep -q "${line_to_add}" "${PACMAN_CONF}"; then
+		sudo sed -i "/${line_to_search}/a ${line_to_add}" "${PACMAN_CONF}"
 	fi
 }
 
 configure_pacman() {
-	# Enable ParallelDownloads = 5
-	enable_option "ParallelDownloads" "5" "${PACMAN_CONF}"
+	# Enable UseSyslog
+	uncomment_option_or_flag "UseSyslog"
 
-	# Enable Colors
-	enable_flag "Color" "${PACMAN_CONF}"
+	# Enable ParallelDownloads
+	uncomment_option_or_flag "ParallelDownloads"
 
-	# Enable ILoveCandy (easter egg)
-	enable_flag "ILoveCandy" "${PACMAN_CONF}"
+	# Enable Color
+	uncomment_option_or_flag "Color"
+
+	# Add ILoveCandy under ParallelDownloads if not already there
+	add_line_after "ILoveCandy" "ParallelDownloads"
 }
 
 show_spinner "configure_pacman" "Arch Linux: Configuring pacman" "Arch Linux: Configured pacman"
