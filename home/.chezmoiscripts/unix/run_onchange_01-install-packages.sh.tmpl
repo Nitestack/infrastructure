@@ -68,6 +68,21 @@ show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # {{ end }}
 # {{ end }}
 
+# Volta tools
+echo
+echo "volta:"
+# {{ range $_, $package_name := .dependencies.all.volta }}
+install_with_volta() {
+	if volta which "{{- $package_name -}}" &>/dev/null; then
+		echo "{{- $package_name -}}"
+		exit 2
+	else
+		volta install "{{- $package_name -}}"
+	fi
+}
+show_spinner "install_with_volta" "{{- $package_name -}}" "{{- $package_name -}}"
+# {{ end }}
+
 # Global npm packages
 echo
 echo "npm:"
