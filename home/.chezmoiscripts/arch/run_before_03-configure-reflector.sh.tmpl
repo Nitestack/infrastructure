@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+setup_reflector_automation() {
+	# Check if reflector automation for Germany has not been set up yet
+	if systemctl is-active --quiet reflector.service; then
+		echo "Arch Linux: Reflector automation is already set up"
+		exit 2
+	else
+		# Create or overwrite the reflector configuration file
+		cat <<EOF >/etc/xdg/reflector/reflector.conf
+--save /etc/pacman.d/mirrorlist
+--country Germany
+--protocol https
+--latest 5
+EOF
+
+		# Run on boot
+		systemctl enable reflector.service
+
+		# Start immediately
+		systemctl start reflector.service
+	fi
+}
+
+show_spinner "setup_mirrorlist" "Arch Linux: Checking if reflector automation is set up" "Arch Linux: Set up reflector automation"
