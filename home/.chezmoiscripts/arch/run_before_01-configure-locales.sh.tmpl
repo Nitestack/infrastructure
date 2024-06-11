@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+LOCALES=("en_US.UTF-8 UTF-8" "de_DE.UTF-8 UTF-8")
+
+# Check if the locales are already generated
+locale_already_set() {
+	for locale in "${LOCALES[@]}"; do
+		# Extract the locale code without encoding
+		locale_code=$(echo "${locale}" | cut -d' ' -f1)
+		if ! locale -a | grep -q "^${locale_code}"; then
+			return 1
+		fi
+	done
+	return 0
+}
+
+configure_locales() {
+	# Generate locales if they are not already set
+	if locale_already_set; then
+		echo "Locales already set and generated."
+		exit 2
+	else
+		echo "Generating locales..."
+
+		# Uncomment the desired locales in /etc/locale.gen
+		for locale in "${LOCALES[@]}"; do
+			sudo sed -i "s/#${locale}/${locale}/" /etc/locale.gen
+		done
+
+		# Generate the locales
+		sudo locale-gen
+
+		# Set the system locale to the first in the list
+		echo "LANG=$(echo "${LOCALES[0]}" | cut -d' ' -f1)" | sudo tee /etc/locale.conf >/dev/null
+
+		echo "Locales generated and set."
+	fi
+}
+
+show_spinner "configure_locales" "Arch Linux: Check if locales were generated and set" "Arch Linux: Locales generated and set"
