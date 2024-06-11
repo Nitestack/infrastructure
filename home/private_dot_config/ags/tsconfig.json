@@ -1,15 +1,21 @@
 {
   "compilerOptions": {
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "target": "ES2022",
-    "module": "ES2022",
-    "lib": ["ES2022"],
     "allowJs": true,
-    "checkJs": true,
+    "moduleDetection": "force",
+
+    /* Strictness */
     "strict": true,
-    "noImplicitAny": false,
-    "baseUrl": ".",
-    "typeRoots": ["./types"],
-    "skipLibCheck": true
+    "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+
+    /* Bundled projects */
+    "lib": ["ES2022"],
+    "module": "ES2022",
+
+    "typeRoots": ["./types", "./node_modules/@girs"]
   }
 }
-
