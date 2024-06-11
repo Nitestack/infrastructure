@@ -15,8 +15,8 @@ uncomment_option_or_flag() {
 	local option=$1
 
 	# Uncomment if commented
-	if grep -q "^#\?\s*${option}" "${PACMAN_CONF}"; then
-		sudo sed -i "s/^#\?\s*\(${option}\)/\1/" "${PACMAN_CONF}"
+	if grep -q "^#\s*${option}" "${PACMAN_CONF}"; then
+		sudo sed -i "s/^#\s*\($option\)/\1/" "${PACMAN_CONF}"
 		((i++))
 	fi
 }
