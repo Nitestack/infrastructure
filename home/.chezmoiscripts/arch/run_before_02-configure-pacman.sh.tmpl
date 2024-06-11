@@ -10,7 +10,7 @@ PACMAN_CONF="/etc/pacman.conf"
 
 i=0
 
-# Function to uncomment an option or flag if commented
+# Uncomment an option or flag if commented
 uncomment_option_or_flag() {
 	local option=$1
 
@@ -21,7 +21,22 @@ uncomment_option_or_flag() {
 	fi
 }
 
-# Function to add a line under a specified line
+# Uncomment the next line if it is commented
+uncomment_next_line_if_commented() {
+	local option=$1
+	local line_number
+
+	line_number=$(grep -n "^${option}" "${PACMAN_CONF}" | cut -d: -f1)
+	if [[ -n "${line_number}" ]]; then
+		local next_line_number=$((line_number + 1))
+		if sed "${next_line_number}q;d" "${PACMAN_CONF}" | grep -q "^#"; then
+			sudo sed -i "${next_line_number}s/^#//" "${PACMAN_CONF}"
+			((i++))
+		fi
+	fi
+}
+
+# Add a line under a specified line
 add_line_after() {
 	local line_to_add="$1"
 	local line_to_search="$2"
@@ -44,6 +59,10 @@ configure_pacman() {
 
 	# Add ILoveCandy under ParallelDownloads if not already there
 	add_line_after "ILoveCandy" "ParallelDownloads"
+
+	# Uncomment multilib repository (for 32-bit support)
+	uncomment_option_or_flag "\[multilib\]"
+	uncomment_next_line_if_commented "\[multilib\]"
 
 	if [[ "${i}" -eq 0 ]]; then
 		echo "Arch Linux: pacman configured"
