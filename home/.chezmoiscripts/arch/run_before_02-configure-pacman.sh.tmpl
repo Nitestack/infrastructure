@@ -8,6 +8,8 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # Path to the pacman configuration file
 PACMAN_CONF="/etc/pacman.conf"
 
+i=0
+
 # Function to uncomment an option or flag if commented
 uncomment_option_or_flag() {
 	local option=$1
@@ -15,6 +17,7 @@ uncomment_option_or_flag() {
 	# Uncomment if commented
 	if grep -q "^#\?\s*${option}" "${PACMAN_CONF}"; then
 		sudo sed -i "s/^#\?\s*\(${option}\)/\1/" "${PACMAN_CONF}"
+		((i++))
 	fi
 }
 
@@ -25,6 +28,7 @@ add_line_after() {
 
 	if ! grep -q "${line_to_add}" "${PACMAN_CONF}"; then
 		sudo sed -i "/${line_to_search}/a ${line_to_add}" "${PACMAN_CONF}"
+		((i++))
 	fi
 }
 
@@ -40,6 +44,11 @@ configure_pacman() {
 
 	# Add ILoveCandy under ParallelDownloads if not already there
 	add_line_after "ILoveCandy" "ParallelDownloads"
+
+	if [[ "${i}" -eq 0 ]]; then
+		echo "Arch Linux: pacman configured"
+		exit 2
+	fi
 }
 
 show_spinner "configure_pacman" "Arch Linux: Configuring pacman" "Arch Linux: Configured pacman"
