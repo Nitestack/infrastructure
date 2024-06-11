@@ -8,7 +8,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 setup_mirrorlist() {
 	# Check if mirrorlist was already updated
 	if [[ -f "/etc/pacman.d/mirrorlist.bak" ]]; then
-		echo "Arch Linux: Mirrorlist updated"
+		echo "Arch Linux: Mirrorlist is already up to date"
 		exit 2
 	fi
 
@@ -18,4 +18,4 @@ setup_mirrorlist() {
 	sudo reflector --verbose --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 }
 
-show_spinner "setup_mirrorlist" "Arch Linux: Setting up mirrorlist" "Arch Linux: Updated mirrorlist"
+show_spinner "setup_mirrorlist" "Arch Linux: Checking if mirrorlist is up to date" "Arch Linux: Updated mirrorlist"

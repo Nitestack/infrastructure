@@ -10,7 +10,7 @@ add_ags_types() {
 
 	# Check if the types already exist
 	if [[ -d "${ags_config_path}/types" ]]; then
-		echo "Arch Linux: ags types added"
+		echo "Arch Linux: ags types are already added"
 		exit 2
 	fi
 
@@ -20,4 +20,4 @@ add_ags_types() {
 	rm -f "${ags_config_path}/README.md"
 }
 
-show_spinner "add_ags_types" "Arch Linux: Check if ags types exist" "Arch Linux: Added ags types"
+show_spinner "add_ags_types" "Arch Linux: Checking if ags types are added" "Arch Linux: Added ags types"

@@ -65,9 +65,9 @@ configure_pacman() {
 	uncomment_next_line_if_commented "\[multilib\]"
 
 	if [[ "${i}" -eq 0 ]]; then
-		echo "Arch Linux: pacman configured"
+		echo "Arch Linux: pacman was already configured"
 		exit 2
 	fi
 }
 
-show_spinner "configure_pacman" "Arch Linux: Configuring pacman" "Arch Linux: Configured pacman"
+show_spinner "configure_pacman" "Arch Linux: Checking if pacman is configured" "Arch Linux: Configured pacman"

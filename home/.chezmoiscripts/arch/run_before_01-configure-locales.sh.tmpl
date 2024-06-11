@@ -22,11 +22,9 @@ locale_already_set() {
 configure_locales() {
 	# Generate locales if they are not already set
 	if locale_already_set; then
-		echo "Locales already set and generated."
+		echo "Locales are already generated and set"
 		exit 2
 	else
-		echo "Generating locales..."
-
 		# Uncomment the desired locales in /etc/locale.gen
 		for locale in "${LOCALES[@]}"; do
 			sudo sed -i "s/#${locale}/${locale}/" /etc/locale.gen
@@ -37,9 +35,7 @@ configure_locales() {
 
 		# Set the system locale to the first in the list
 		echo "LANG=$(echo "${LOCALES[0]}" | cut -d' ' -f1)" | sudo tee /etc/locale.conf >/dev/null
-
-		echo "Locales generated and set."
 	fi
 }
 
-show_spinner "configure_locales" "Arch Linux: Check if locales were generated and set" "Arch Linux: Locales generated and set"
+show_spinner "configure_locales" "Arch Linux: Check if locales were generated and set" "Arch Linux: Generated locales and set system locale to '${LOCALES[0]}'"
