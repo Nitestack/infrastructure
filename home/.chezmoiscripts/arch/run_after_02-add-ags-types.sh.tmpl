@@ -8,11 +8,13 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 add_ags_types() {
 	ags_config_path="${HOME}/.dotfiles/home/private_dot_config/ags"
 
+	# Check if the types already exist
 	if [[ -d "${ags_config_path}/types" ]]; then
 		echo "Arch Linux: ags types added"
 		exit 2
 	fi
 
+	# Init config in ags-dotfiles
 	ags --init --config "${ags_config_path}/config.js"
 
 	rm -f "${ags_config_path}/README.md"
