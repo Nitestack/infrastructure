@@ -52,13 +52,13 @@ function Show-Spinner {
   $i = 0
 
   while ($Job.State -eq "Running") {
-    Write-Host -NoNewline -ForegroundColor "`r$($SpinnerFrames[$i]) $StartMessage"
+    Write-Host -NoNewline "`r$($SpinnerFrames[$i]) $StartMessage"
     $i = ($i + 1) % $SpinnerFrames.Count
     Start-Sleep -Milliseconds 100
   }
 
   # Display last spinner frame
-  Write-Host -NoNewline -ForegroundColor "`r$($SpinnerFrames[-1]) $StartMessage"
+  Write-Host -NoNewline "`r$($SpinnerFrames[-1]) $StartMessage"
 
   # Read job output from the file
   $JobOutput = Get-Content -Path $outputFile
