@@ -17,18 +17,18 @@ setup_reflector_automation() {
 		fi
 
 		# Create or overwrite the reflector configuration file
-		cat <<EOF >/etc/xdg/reflector/reflector.conf
+		sudo bash -c 'cat <<EOF >/etc/xdg/reflector/reflector.conf
 --save /etc/pacman.d/mirrorlist
 --country Germany
 --protocol https
 --latest 5
-EOF
+EOF'
 
 		# Run on boot
-		systemctl enable reflector.service
+		sudo systemctl enable reflector.service
 
 		# Start immediately
-		systemctl start reflector.service
+		sudo systemctl start reflector.service
 	fi
 }
 
