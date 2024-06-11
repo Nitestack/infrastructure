@@ -12,7 +12,7 @@ show_spinner() {
 		tput civis # Hide cursor
 
 		while kill -0 "${pid}" 2>/dev/null; do
-			printf "\r\e[33m%s %s\e[0m" "${spinner_frames[i]}" "${start_message}" # Yellow color
+			printf "\r%s %s" "${spinner_frames[i]}" "${start_message}"
 			i=$(((i + 1) % ${#spinner_frames[@]}))
 			sleep 0.1
 		done
@@ -33,7 +33,7 @@ show_spinner() {
 
 	# Print last frame of the spinner
 	last_index=$((${#spinner_frames[@]} - 1))
-	printf "\r\e[33m%s %s\e[0m" "${spinner_frames[${last_index}]}" "${start_message}" # Yellow color
+	printf "\r%s %s" "${spinner_frames[${last_index}]}" "${start_message}"
 
 	# Get the last echo message from the output log file
 	local last_echo=$(tail -n 1 "${temp_out_log}")

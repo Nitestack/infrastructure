@@ -6,7 +6,7 @@ function Write-LogError {
 }
 function Write-StartTask {
   param([String]$Message)
-  Write-Host -Object "󰪥 $Message" -ForegroundColor "Yellow"
+  Write-Host -Object "󰪥 $Message"
 }
 function Write-CompleteTask {
   param([String]$Message)
@@ -52,13 +52,13 @@ function Show-Spinner {
   $i = 0
 
   while ($Job.State -eq "Running") {
-    Write-Host -NoNewline -ForegroundColor "Yellow" "`r$($SpinnerFrames[$i]) $StartMessage"
+    Write-Host -NoNewline -ForegroundColor "`r$($SpinnerFrames[$i]) $StartMessage"
     $i = ($i + 1) % $SpinnerFrames.Count
     Start-Sleep -Milliseconds 100
   }
 
   # Display last spinner frame
-  Write-Host -NoNewline -ForegroundColor "Yellow" "`r$($SpinnerFrames[-1]) $StartMessage"
+  Write-Host -NoNewline -ForegroundColor "`r$($SpinnerFrames[-1]) $StartMessage"
 
   # Read job output from the file
   $JobOutput = Get-Content -Path $outputFile
@@ -98,7 +98,7 @@ function Show-Spinner {
     Write-Host -ForegroundColor Red -Object "`r An unexpected error occurred"
   }
   elseif ($HasControlledExit) {
-    Write-Host -ForegroundColor Yellow -Object "`r $ControlledExitMessage"
+    Write-Host -Object "`r $ControlledExitMessage"
   }
   else {
     Write-Host -ForegroundColor "Green" -Object "`r󰗠 $CompletionMessage"
