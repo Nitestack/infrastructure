@@ -48,6 +48,7 @@ Some of the additional features are:
 - [**Oh My Posh**](home/private_dot_config/oh-my-posh/config.yml) Configuration (cross-platform)
 - [**PowerShell**](home/Documents/PowerShell/Microsoft.PowerShell_profile.ps1.tmpl) Profile with extended Linux capabilities (Windows)
 - [**Zsh**](home/dot_zshrc.tmpl) Profile powered by [Oh My Zsh](https://ohmyz.sh) including auto completions, fzf integration, syntax highlighting and more (UNIX)
+- [**bat**](home/.chezmoitemplates/bat/config) Configuration (cross-platform)
 - [**WSL**](home/dot_wslconfig) Configuration (Windows)
 - [**SSH**](home/private_dot_ssh) Configuration (cross-platform)
 - [**ShellCheck**](home/dot_shellcheckrc) Configuration (cross-platform)
