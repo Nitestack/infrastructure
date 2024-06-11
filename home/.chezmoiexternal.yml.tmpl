@@ -1,3 +1,18 @@
+# bat
+{{ if eq .chezmoi.os "windows" -}}
+"AppData/Roaming/bat":
+{{- else if eq .chezmoi.os "darwin" }}
+"Library/Application Support":
+{{- else }}
+".config/bat":
+{{- end }}
+  type: archive
+  url: "https://github.com/catppuccin/bat/archive/master.tar.gz"
+  stripComponents: 1
+  refreshPeriod: "168h"
+  include: ["*/themes/**"]
+
+# Oh My Zsh
 {{ if ne .chezmoi.os "windows" -}}
 ".oh-my-zsh":
   type: archive

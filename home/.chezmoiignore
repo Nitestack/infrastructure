@@ -13,6 +13,7 @@ Documents
 .chezmoiscripts/arch/**
 
 .config/ags
+.config/bat
 .config/Code
 .config/hypr
 .config/lazygit
