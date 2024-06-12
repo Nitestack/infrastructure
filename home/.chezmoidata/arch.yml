@@ -4,6 +4,7 @@ dependencies:
     pacman:
       - "base-devel"
       - "dconf-editor"
+      - "gnome-terminal"
       - "lazygit"
       - "man-db"
       - "man-pages-de"
@@ -11,11 +12,17 @@ dependencies:
       - "python-pip"
       - "unzip"
 
+      - "bitwarden"
+      - "code"
+      - "discord"
+      - "docker"
       - "firefox-developer-edition"
+      - "spotifyd"
       - "ttf-monaspace-variable"
       - "ttf-nerd-fonts-symbols"
       - "wezterm"
     yay:
+      - "android-studio"
       - "aylurs-gtk-shell"
     custom:
       - bun: "curl -fsSL https://bun.sh/install | bash"
