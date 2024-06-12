@@ -28,6 +28,7 @@ yay_ensure_installed "{{- $package_name -}}"
 # {{ else if eq .chezmoi.os "darwin" }}
 echo "macOS: Installing formulae and casks"
 echo
+sudo softwareupdate --agree-to-license --install-rosetta
 brew update && brew upgrade
 
 echo
