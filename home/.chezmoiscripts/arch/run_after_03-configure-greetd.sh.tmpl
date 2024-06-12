@@ -7,11 +7,11 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 configure_greetd() {
 	# Ensure greetd is installed
-	if ! pacman -Qi reflector &>/dev/null; then
+	if ! pacman -Qi "greetd" &>/dev/null; then
 		sudo pacman -S --needed --noconfirm "greetd"
 	fi
 	# Ensure qtgreet is installed
-	if ! pacman -Qi qtgreet &>/dev/null; then
+	if ! pacman -Qi "qtgreet" &>/dev/null; then
 		sudo pacman -S --needed --noconfirm "qtgreet"
 	fi
 

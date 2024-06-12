@@ -12,7 +12,7 @@ setup_reflector_automation() {
 		exit 2
 	else
 		# Ensure reflector is installed
-		if ! pacman -Qi reflector &>/dev/null; then
+		if ! pacman -Qi "reflector" &>/dev/null; then
 			sudo pacman -S --needed --noconfirm "reflector"
 		fi
 
