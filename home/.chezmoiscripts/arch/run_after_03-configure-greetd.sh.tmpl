@@ -37,6 +37,8 @@ EOF'
 
 	# Create /etc/greetd/hyprland.conf
 	sudo bash -c 'cat <<EOF >/etc/greetd/hyprland.conf
+{{ template "hyprland/env.conf" . }}
+
 exec-once = qtgreet; hyprctl dispatch exit
 EOF'
 }
