@@ -36,15 +36,15 @@ configure_locales() {
 		fi
 		# Set regional settings
 		if ! locale_is_set "${REGIONAL_LOCALE}"; then
-			sudo localectl set-locale LC_ADDRESS="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_CTYPE="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_MEASUREMENT="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_MONETARY="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_NAME="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_NUMERIC="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_PAPER="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_TELEPHONE="${REGIONAL_LOCALE}"
-			sudo localectl set-locale LC_TIME="${REGIONAL_LOCALE}"
+			sudo localectl set-locale LC_ADDRESS="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_CTYPE="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_MEASUREMENT="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_MONETARY="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_NAME="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_NUMERIC="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_PAPER="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_TELEPHONE="${REGIONAL_LOCALE}.UTF-8"
+			sudo localectl set-locale LC_TIME="${REGIONAL_LOCALE}.UTF-8"
 		fi
 	fi
 }
