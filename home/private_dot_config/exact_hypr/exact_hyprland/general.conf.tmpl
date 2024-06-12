@@ -1,57 +1,63 @@
 #-------------------------------------------------------------------------------
 #  MONITORS
 #-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Monitors
 {{ if eq .device_type "vm" -}}
-monitor=Virtual-1,1600x900@60,0x0,1
+monitor=Virtual-1, 1600x900@60, 0x0, 1
 {{- else -}}
-monitor=,preferred,auto,auto
+monitor=DP-1, 1920x1080@144, 0x0, 1
+# monitor=DP-2, 1920x1080@144, 1920x0, 1
 {{- end }}
 
 #-------------------------------------------------------------------------------
-#  LOOK AND FEEL
+#  GENERAL
 #-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#general
 general {
-    gaps_in = 5
-    gaps_out = 20
+    gaps_in = 10 # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+    gaps_out = 10 # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
 
-    border_size = 2
+    border_size = 3 # size of the border around windows
 
-    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
-    col.inactive_border = rgba(595959aa)
+    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg # border color for the active window
+    col.inactive_border = rgba(595959aa) # border color for inactive windows
 
-    # Set to true enable resizing windows by clicking and dragging on borders and gaps
-    resize_on_border = false
+    resize_on_border = true # enables resizing windows by clicking and dragging on borders and gaps
 
-    # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
-    allow_tearing = false
-
-    layout = dwindle
+    allow_tearing = true # master switch for allowing tearing to occur
 }
 
+#-------------------------------------------------------------------------------
+#  DECORATION
+#-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#decoration
 decoration {
-    rounding = 10
+    rounding = 10 # rounded corners’ radius (in layout px)
 
-    # Change transparency of focused and unfocused windows
-    active_opacity = 1.0
-    inactive_opacity = 1.0
+    drop_shadow = true # enable drop shadows on windows
+    shadow_ignore_window = true # if true, the shadow will not be rendered behind the window itself, only around it
+    shadow_offset = 2 2 # shadow’s rendering offset
+    shadow_range = 8 # Shadow range (“size”) in layout px
+    shadow_render_power = 2 # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
+    col.shadow = 0x66000000 # shadow’s color. Alpha dictates shadow’s opacity
 
-    drop_shadow = true
-    shadow_range = 4
-    shadow_render_power = 3
-    col.shadow = rgba(1a1a1aee)
-
+    # Blur
+    # https://wiki.hyprland.org/Configuring/Variables/#blur
     blur {
-        enabled = true
-        size = 3
-        passes = 1
-
-        vibrancy = 0.1696
+        enabled = {{ ne .device_type "vm" }} # enable kawase window background blur
+        size = 3 # blur size (distance)
+        passes = 2 # the amount of passes to perform
     }
 }
 
+#-------------------------------------------------------------------------------
+#  ANIMATIONS
+#-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#animations
 animations {
-    enabled = {{ ne .device_type "vm" }}
+    enabled = {{ ne .device_type "vm" }} # enable animations
 
+    # https://wiki.hyprland.org/Configuring/Animations
     bezier = myBezier, 0.05, 0.9, 0.1, 1.05
 
     animation = windows, 1, 7, myBezier
@@ -62,45 +68,56 @@ animations {
     animation = workspaces, 1, 6, default
 }
 
-dwindle {
-    pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-    preserve_split = true
-}
-
-master {
-    new_is_master = true
-}
-
-misc {
-    force_default_wallpaper = -1 # Set to 0 or 1 to disable the anime mascot wallpapers
-    disable_hyprland_logo = false # If true disables the random hyprland logo / anime girl background. :(
-}
-
 #-------------------------------------------------------------------------------
 #  INPUT
 #-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#input
 input {
-    kb_layout = us
-    kb_variant =
+    # Toggle between US QWERTY and US Intl QWERTY layout on `Win + Space`
+    # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
+    kb_layout = us, us
+    kb_variant = basic, intl
     kb_model =
-    kb_options =
+    kb_options = grp:win_space_toggle
     kb_rules =
 
-    follow_mouse = 1
+    # Specify if and how cursor movement should affect window focus.
+    # https://wiki.hyprland.org/Configuring/Variables/#follow-mouse-cursor
+    follow_mouse = 2
 
-    sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-
+    # Touchpad
+    # https://wiki.hyprland.org/Configuring/Variables/#touchpad
     touchpad {
-        natural_scroll = false
+        natural_scroll = true # Inverts scrolling direction. When enabled, scrolling moves content directly, rather than manipulating a scrollbar
     }
 }
 
+#-------------------------------------------------------------------------------
+#  GESTURES
+#-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#gestures
 gestures {
-    workspace_swipe = true
-    workspace_swipe_fingers = 3
+    workspace_swipe = true # enable workspace swipe gesture on touchpad
 }
 
-device {
-    name = epic-mouse-v1
-    sensitivity = -0.5
+#-------------------------------------------------------------------------------
+#  MISCELLANEOUS
+#-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#misc
+misc {
+    disable_hyprland_logo = true # disables the random Hyprland logo / anime girl background
+    disable_splash_rendering = true # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
+    force_default_wallpaper = 0 # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
+    vrr = 2 # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
+    animate_manual_resizes = {{ ne .device_type "vm" }} # If true, will animate manual window resizes/moves
+    enable_swallow = true # Enable window swallowing
+}
+
+#-------------------------------------------------------------------------------
+#  DWINDLE
+#-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Dwindle-Layout
+dwindle {
+    pseudotile = true # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+    preserve_split = true
 }
