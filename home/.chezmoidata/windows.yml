@@ -39,6 +39,8 @@ dependencies:
       - "wez.wezterm"
       - "9NKSQGP7F2NH" # WhatsApp (installed from Microsoft Store)
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
+    modules:
+      - "PSFzf"
     custom:
       - pipx: |
           python -m pip install --user pipx
