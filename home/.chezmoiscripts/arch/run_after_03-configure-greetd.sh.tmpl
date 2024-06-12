@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+configure_greetd() {
+	# Ensure greetd is installed
+	pacman_ensure_installed "greetd"
+
+	# Ensure the greetd will run on boot
+	if ! systemctl is-active --quiet reflector.service; then
+		sudo systemctl enable greetd.service
+	fi
+
+	# Create /etc/greetd/config.toml
+	sudo bash -c 'cat <<EOF >/etc/greetd/config.toml
+[terminal]
+vt = 1
+
+[default_session]
+command = "Hyprland --config /etc/greetd/hyprland.conf"
+EOF'
+
+	# Create /etc/greetd/environments
+	sudo bash -c 'cat <<EOF >/etc/greetd/environments
+Hyprland
+zsh
+EOF'
+
+	# Create /etc/greetd/hyprland.conf
+	sudo bash -c 'cat <<EOF >/etc/greetd/hyprland.conf
+exec-once = ags --config /etc/greetd/greeter.js
+EOF'
+
+	# Create /etc/greetd/greeter.js
+	sudo bash -c 'cat <<EOF >/etc/greetd/greeter.js
+const greetd = await Service.import("greetd");
+
+const name = Widget.Entry({
+  placeholder_text: "Username",
+  on_accept: () => password.grab_focus(),
+});
+
+const password = Widget.Entry({
+  placeholder_text: "Password",
+  visibility: false,
+  on_accept: () => {
+    greetd
+      .login(name.text || "", password.text || "", "Hyprland")
+      .catch((err) => (response.label = JSON.stringify(err)));
+  },
+});
+
+const response = Widget.Label();
+
+const win = Widget.Window({
+  css: "background-color: transparent;",
+  anchor: ["top", "left", "right", "bottom"],
+  child: Widget.Box({
+    vertical: true,
+    hpack: "center",
+    vpack: "center",
+    hexpand: true,
+    vexpand: true,
+    children: [name, password, response],
+  }),
+});
+
+App.config({ windows: [win] });
+EOF'
+}
+
+show_spinner "configure_greetd" "Arch Linux: Setting up greetd" "Arch Linux: greetd is set up"
