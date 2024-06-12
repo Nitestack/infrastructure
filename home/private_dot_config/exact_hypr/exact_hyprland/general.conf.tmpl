@@ -34,7 +34,7 @@ general {
 decoration {
     rounding = 10 # rounded corners’ radius (in layout px)
 
-    drop_shadow = true # enable drop shadows on windows
+    drop_shadow = {{ ne .device_type "vm" }} # enable drop shadows on windows
     shadow_ignore_window = true # if true, the shadow will not be rendered behind the window itself, only around it
     shadow_offset = 2 2 # shadow’s rendering offset
     shadow_range = 8 # Shadow range (“size”) in layout px
