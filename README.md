@@ -157,12 +157,16 @@ Other than these conventions, the Bash version of `dotfiles` is equal to the Win
 
 ## 🙌 Credits
 
-- [Folke Lemaitre](https://github.com/folke) - his popular Neovim configuration [LazyVim](https://github.com/LazyVim/LazyVim)
-  - many of the plugins and their configurations are used
-- [Felipe Santos](https://github.com/felipecrs) - take a look at his [dotfiles](https://github.com/felipecrs/dotfiles)
+- [Tom Payne](https://github.com/twpayne)
+  - creator of chezmoi
+  - parts of his dotfiles are used
+- [Folke Lemaitre](https://github.com/folke)
+  - creator of [LazyVim](https://github.com/LazyVim/LazyVim)
+  - parts of his dotfiles are used
+- [Felipe Santos](https://github.com/felipecrs)
   - parts of his README are used
-- [René-Marc Simard](https://github.com/renemarc) - take a look at his [dotfiles](https://github.com/renemarc/dotfiles)
-  - the top section of his README is used
+- [René-Marc Simard](https://github.com/renemarc)
+  - the header section of his README is used
 
 ## 📝 License
 
