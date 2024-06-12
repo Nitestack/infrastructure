@@ -5,6 +5,7 @@ dependencies:
       formulae:
         - "jandedobbeleer/oh-my-posh/oh-my-posh"
         - "jesseduffield/lazygit/lazygit"
+        - "oven-sh/bun/bun"
       casks:
         - "alt-tab"
         - "aldente"

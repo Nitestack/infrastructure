@@ -18,6 +18,7 @@ dependencies:
     yay:
       - "aylurs-gtk-shell"
     custom:
+      - bun: "curl -fsSL https://bun.sh/install | bash"
       - oh-my-posh: "curl -s https://ohmyposh.dev/install.sh | bash -s --  -d ~/.local/bin"
       - pipx: |
           sudo pacman -S --needed --noconfirm python-pipx

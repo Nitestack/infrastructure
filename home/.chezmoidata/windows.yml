@@ -3,6 +3,7 @@ dependencies:
   windows:
     winget:
       - "sharkdp.bat"
+      - "Oven-sh.Bun"
       - "Kitware.CMake"
       - "Microsoft.DotNet.SDK.8"
       - "sharkdp.fd"
@@ -39,7 +40,6 @@ dependencies:
       - "9NKSQGP7F2NH" # WhatsApp (installed from Microsoft Store)
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     custom:
-      - bun: "irm bun.sh/install.ps1 | iex"
       - pipx: |
           python -m pip install --user pipx
           Invoke-Expression "$env:APPDATA\Python\Python312\Scripts\pipx.exe ensurepath"
