@@ -2,8 +2,38 @@
 #  ZSH CONFIGURATION
 #-------------------------------------------------------------------------------
 
-# Path
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+#-------------------------------------------------------------------------------
+#  ENVIRONMENT VARIABLES
+#-------------------------------------------------------------------------------
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export PATH="$PATH:$(gem env path | sed 's#[^:]\+#&/bin#g')"
+
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+{{ $paths := list }}
+{{- $homeDir := .chezmoi.homeDir }}
+{{- range $_, $relPath := list "bin" ".local/bin" ".local/share/bob/nvim-bin" ".cargo/bin" -}}
+{{-   $path := joinPath $homeDir $relPath -}}
+{{-   if stat $path -}}
+{{-     $paths = mustAppend $paths $path -}}
+{{-   end -}}
+{{- end -}}
+{{ if $paths }}
+export PATH={{ toStrings $paths | join ":" }}:$PATH
+{{- end }}
+export PATH=/usr/local/bin:$PATH
+
+# Preferred editor for local and remote sessions
+if [[ -n "${SSH_CONNECTION:-""}" ]]; then
+  export EDITOR="vim"
+else
+  export EDITOR="{{- .editor -}}"
+fi
 
 {{- if eq .chezmoi.os "darwin" }}
 
