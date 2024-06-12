@@ -11,7 +11,7 @@ configure_greetd() {
 		sudo pacman -S --needed --noconfirm "greetd"
 	fi
 	# Ensure qtgreet is installed
-	if ! yay -Qi "qtgreet" &>/dev/null; then
+	if ! yay -Qi "greetd-qtgreet" &>/dev/null; then
 		yay -S --needed --noconfirm "greetd-qtgreet"
 	fi
 
