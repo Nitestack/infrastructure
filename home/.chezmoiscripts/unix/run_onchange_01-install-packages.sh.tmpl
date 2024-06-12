@@ -26,22 +26,20 @@ yay_ensure_installed "{{- $package_name -}}"
 # {{ end }}
 
 # {{ else if eq .chezmoi.os "darwin" }}
-echo "macOS: Installing formulae and casks"
-echo
-sudo softwareupdate --agree-to-license --install-rosetta
-brew update && brew upgrade
+update_mac() {
+	sudo softwareupdate --agree-to-license --install-rosetta
+	brew update && brew upgrade
 
-echo
-echo "brew (formulae):"
-# {{ range $_, $formula := concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages }}
-brew_ensure_formula_installed "{{- $formula -}}"
-# {{ end }}
-
-echo
-echo "brew (casks):"
-# {{ range $_, $cask := concat .dependencies.macos.brew.casks }}
-brew_ensure_cask_installed "{{- $cask -}}"
-# {{ end }}
+	brew bundle --no-lock --file=/dev/stdin <<EOF
+{{ range (concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages | sortAlpha | uniq) }}
+brew "{{- . -}}"
+{{ end -}}
+{{ range (.dependencies.macos.brew.casks | sortAlpha | uniq) }}
+cask "{{- . -}}"
+{{ end }}
+EOF
+}
+show_spinner "macOS: Creating brew bundle for formulae and casks" "macOS: Created brew bundle for formulae and casks"
 
 # {{ end }}
 

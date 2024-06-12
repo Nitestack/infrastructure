@@ -131,35 +131,3 @@ yay_ensure_installed() {
 
 	show_spinner "install_with_yay" "${package_name}" "${package_name}"
 }
-
-brew_ensure_formula_installed() {
-	local formula="$1"
-	shift
-
-	install_formula_with_brew() {
-		if brew list "${formula}" &>/dev/null; then
-			echo "${formula}"
-			exit 2
-		fi
-
-		brew install "${formula}"
-	}
-
-	show_spinner "install_formula_with_brew" "${formula}" "${formula}"
-}
-
-brew_ensure_cask_installed() {
-	local cask="$1"
-	shift
-
-	install_cask_with_brew() {
-		if brew list --cask "${cask}" &>/dev/null; then
-			echo "${cask}"
-			exit 2
-		fi
-
-		brew install --cask "${cask}"
-	}
-
-	show_spinner "install_cask_with_brew" "${cask}" "${cask}"
-}
