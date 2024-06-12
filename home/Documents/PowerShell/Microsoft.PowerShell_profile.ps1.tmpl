@@ -1,198 +1,87 @@
-Import-Module Terminal-Icons
+#-------------------------------------------------------------------------------
+#  POWERSHELL PROFILE
+#-------------------------------------------------------------------------------
 
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+# PSReadline + PSFzf options
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin -EditMode Vi
+Set-PSReadlineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
+Set-PSReadlineKeyHandler -Key Ctrl+n -Function HistorySearchForward
+Set-PsFzfOption -PSReadLineChordProvider "Ctrl+f" -PSReadLineChordReverseHistory "Ctrl+r"
+Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 
 # Aliases
-if (Get-Command "nvim.exe" -ErrorAction SilentlyContinue)
-{
-  Set-Alias vim nvim.exe
-  Set-Alias vi nvim.exe
-  Set-Alias v nvim.exe
-  Set-Alias c Clear-Host
-}
+Set-Alias vim nvim
+Set-Alias vi nvim
+Set-Alias v nvim
+Set-Alias c Clear-Host
 Set-Alias lvim "$env:USERPROFILE\.local\bin\lvim.ps1"
-
-# Find out if the current user identity is elevated (has admin rights)
-$identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-$principal = New-Object Security.Principal.WindowsPrincipal $identity
-$isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
-# If so and the current host is a command line, then change to red color
-# as warning to user that they are operating in an elevated context
-# Useful shortcuts for traversing directories
-function cd...
-{
-  Set-Location ..\..
+Remove-Alias ls
+Remove-Alias cat
+Set-Alias cat bat
+Set-Alias ls eza
+function la {
+  Invoke-Expression "eza -al $($Args -join ' ')"
 }
-function cd....
-{
-  Set-Location ..\..\..
-}
-
-function which($command)
-{
-  Get-Command -Name $command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
-}
-
-function n()
-{
-  notepad $args
-}
-
-# Set up command prompt and window title. Use UNIX-style convention for identifying
-# whether user is elevated (root) or not. Window title shows current version of PowerShell
-# and appends [ADMIN] if appropriate for easy taskbar identification
-function prompt
-{
-  if ($isAdmin)
-  {
-    "[" + (Get-Location) + "] # "
-  } else
-  {
-    "[" + (Get-Location) + "] $ "
-  }
-}
-
-$Host.UI.RawUI.WindowTitle = "PowerShell {0}" -f $PSVersionTable.PSVersion.ToString()
-if ($isAdmin)
-{
-  $Host.UI.RawUI.WindowTitle += " [ADMIN]"
-}
-
-# Does the the rough equivalent of dir /s /b. For example, dirs *.png is dir /s /b *.png
-function dirs
-{
-  if ($args.Count -gt 0)
-  {
-    Get-ChildItem -Recurse -Include "$args" | Foreach-Object FullName
-  } else
-  {
-    Get-ChildItem -Recurse | Foreach-Object FullName
-  }
-}
-
-# Simple function to start a new elevated process. If arguments are supplied then
-# a single command is started with admin rights; if not then a new admin instance
-# of PowerShell is started.
-function admin
-{
-  if ($args.Count -gt 0)
-  {
-    $argList = "& '" + $args + "'"
+function admin {
+  if ($Args.Count -gt 0) {
+    $argList = "& '" + $Args + "'"
     Start-Process "$PSHome\pwsh.exe" -Verb runAs -ArgumentList $argList
-  } else
-  {
+  }
+  else {
     Start-Process "$PSHome\pwsh.exe" -Verb runAs
   }
 }
-# Set UNIX-like aliases for the admin command, so sudo <command> will run the command
-# with elevated rights.
-Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 
-# Open PowerShell config with Neovim
-function Open-PowerShellConfig()
-{
-  nvim.exe $env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
-}
-Set-Alias psc Open-PowerShellConfig
-
-Remove-Variable identity, principal
-
-Function Test-CommandExists
-{
-  Param ($command)
-  $oldPreference = $ErrorActionPreference
-  $ErrorActionPreference = 'SilentlyContinue'
-  try
-  {
-    if (Get-Command $command)
-    {
-      return $true
-    }
-  } Catch
-  {
-    Write-Host "$command does not exist"; return $false
-  } Finally
-  {
-    $ErrorActionPreference = $oldPreference
-  }
-}
-
 # Linux utils
-function ll()
-{
-  Get-ChildItem -Path $pwd -File
+function which($Command) {
+  Get-Command -Name $Command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
-function la()
-{
-  Get-ChildItem -Force
+function reload-profile {
+  & $PROFILE
 }
-function l()
-{
-  Get-ChildItem | Format-Wide -Column 4
-}
-function reload-profile
-{
-  & $profile
-}
-function find-file($name)
-{
-  Get-ChildItem -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | ForEach-Object {
-    $place_path = $_.directory
-    Write-Output "${place_path}\${_}"
+function find-file($Name) {
+  Get-ChildItem -recurse -filter "*${Name}*" -ErrorAction SilentlyContinue | ForEach-Object {
+    $PlacePath = $_.directory
+    Write-Output "${PlacePath}\${_}"
   }
 }
-function unzip($file)
-{
-  Write-Output("Extracting", $file, "to", $pwd)
-  $fullFile = Get-ChildItem -Path $pwd -Filter .\cove.zip | ForEach-Object { $_.FullName }
-  Expand-Archive -Path $fullFile -DestinationPath $pwd
+function unzip($File) {
+  Write-Output("Extracting", $File, "to", $PWD)
+  $FullFile = Get-ChildItem -Path $PWD -Filter .\cove.zip | ForEach-Object { $_.FullName }
+  Expand-Archive -Path $FullFile -DestinationPath $PWD
 }
-function ix($file)
-{
-  curl.exe -F "f:1=@$file" ix.io
-}
-function grep($regex, $dir)
-{
-  if ($dir)
-  {
-    Get-ChildItem $dir | select-string $regex
+function grep($Regex, $Dir) {
+  if ($Dir) {
+    Get-ChildItem $Dir | Select-String $Regex
     return
   }
-  $input | select-string $regex
+  $input | Select-String $Regex
 }
-function touch($file)
-{
-  "" | Out-File $file -Encoding ASCII
+function touch($File) {
+  "" | Out-File $File -Encoding ASCII
 }
-function df
-{
-  get-volume
+function df {
+  Get-Volume
 }
-function sed($file, $find, $replace)
-{
-    (Get-Content $file).replace("$find", $replace) | Set-Content $file
+function sed($File, $Find, $Replace) {
+    (Get-Content $File).replace("$Find", $Replace) | Set-Content $File
 }
-function export($name, $value)
-{
-  set-item -force -path "env:$name" -value $value;
+function export($Name, $Value) {
+  Set-Item -Force -Path "env:$Name" -Value $Value;
 }
-function pkill($name)
-{
-  Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
+function pkill($Name) {
+  Get-Process $Name -ErrorAction SilentlyContinue | Stop-Process
 }
-function pgrep($name)
-{
-  Get-Process $name
+function pgrep($Name) {
+  Get-Process $Name
 }
 
-$env:EDITOR = "{{- .editor -}}"
+# Environment Variables
+export "EDITOR" "{{- .editor -}}"
 
-# Initialize oh-my-posh
+# Load oh-my-posh
 oh-my-posh init pwsh --config "$env:USERPROFILE\.config\oh-my-posh\config.yml" | Invoke-Expression
 
-# Initialize zoxide (must stay at the end)
+# Load zoxide (must stay at the end)
 Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
