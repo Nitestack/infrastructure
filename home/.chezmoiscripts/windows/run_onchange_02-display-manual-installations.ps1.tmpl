@@ -2,6 +2,6 @@
 
 Write-LogInfo "Windows: You have to manually install the following packages:"
 
-# {{ range $_, $package_name := concat .dependencies.windows.manual .dependencies.all.manual }}
-Write-Host "- {{ $package_name -}}"
+# {{ range (concat .dependencies.windows.manual .dependencies.all.manual | sortAlpha | uniq) }}
+Write-Host "- {{ . -}}"
 # {{ end }}

@@ -15,14 +15,14 @@ sudo pacman -Syu
 
 echo
 echo "pacman:"
-# {{ range $_, $package_name := concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages }}
-pacman_ensure_installed "{{- $package_name -}}"
+# {{ range (concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages | sortAlpha | uniq) }}
+pacman_ensure_installed "{{- . -}}"
 # {{ end }}
 
 echo
 echo "yay:"
-# {{ range $_, $package_name := .dependencies.arch.yay }}
-yay_ensure_installed "{{- $package_name -}}"
+# {{ range (.dependencies.arch.yay | sortAlpha | uniq) }}
+yay_ensure_installed "{{- . -}}"
 # {{ end }}
 
 # {{ else if eq .chezmoi.os "darwin" }}
@@ -71,48 +71,48 @@ show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 echo
 echo "volta:"
 volta_list=$(volta list --format plain)
-# {{ range $_, $package_name := .dependencies.all.volta }}
+# {{ range (.dependencies.all.volta | uniq) }}
 install_with_volta() {
-	if echo "${volta_list}" | grep -q "{{- $package_name -}}"; then
-		echo "{{- $package_name -}}"
+	if echo "${volta_list}" | grep -q "{{- . -}}"; then
+		echo "{{- . -}}"
 		exit 2
 	else
-		volta install "{{- $package_name -}}"
+		volta install "{{- . -}}"
 	fi
 }
-show_spinner "install_with_volta" "{{- $package_name -}}" "{{- $package_name -}}"
+show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
 # Global npm packages
 echo
 echo "npm:"
 pnpm_list=$(pnpm list -g --depth 0)
-# {{ range $_, $package_name := .dependencies.all.pnpm }}
+# {{ range (.dependencies.all.pnpm | sortAlpha | uniq) }}
 install_with_pnpm() {
-	if echo "${pnpm_list}" | grep -q "{{- $package_name -}}"; then
-		echo "{{- $package_name -}}"
+	if echo "${pnpm_list}" | grep -q "{{- . -}}"; then
+		echo "{{- . -}}"
 		exit 2
 	else
-		pnpm add -g "{{- $package_name -}}"
+		pnpm add -g "{{- . -}}"
 	fi
 }
-show_spinner "install_with_pnpm" "{{- $package_name -}}" "{{- $package_name -}}"
+show_spinner "install_with_pnpm" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
 # Global cargo crates
 echo
 echo "cargo:"
 cargo_list=$(cargo install --list)
-# {{ range $_, $package_name := .dependencies.all.cargo }}
+# {{ range (.dependencies.all.cargo | sortAlpha | uniq) }}
 install_with_cargo() {
-	if echo "${cargo_list}" | grep -q "{{- $package_name -}}"; then
-		echo "{{- $package_name -}}"
+	if echo "${cargo_list}" | grep -q "{{- . -}}"; then
+		echo "{{- . -}}"
 		exit 2
 	else
-		cargo install "{{- $package_name -}}"
+		cargo install "{{- . -}}"
 	fi
 }
-show_spinner "install_with_cargo" "{{- $package_name -}}" "{{- $package_name -}}"
+show_spinner "install_with_cargo" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 echo
 

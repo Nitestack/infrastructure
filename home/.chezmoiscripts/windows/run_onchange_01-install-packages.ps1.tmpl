@@ -4,17 +4,17 @@ Write-StartTask "Windows: Installing packages"
 
 # Install winget packages
 Write-Host "`nwinget:"
-# {{ range $_, $package_id := concat .dependencies.windows.winget }}
-$PackageName = (winget search -e "{{- $package_id -}}" | Select-Object -Last 1).Split("{{- $package_id -}}")[0].Trim()
+# {{ range (.dependencies.windows.winget | uniq) }}
+$PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
 Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -ScriptBlock {
-  winget list -e "{{- $package_id -}}" | Out-Null
+  winget list -e "{{- . -}}" | Out-Null
   if ($?) {
-    $PackageName = (winget search -e "{{- $package_id -}}" | Select-Object -Last 1).Split("{{- $package_id -}}")[0].Trim()
+    $PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
     return ":$PackageName"
   }
 
   try {
-    Invoke-Expression "winget install -e --accept-package-agreements --accept-source-agreements --id {{ $package_id -}}"
+    Invoke-Expression "winget install -e --accept-package-agreements --accept-source-agreements --id {{ . -}}"
   }
   catch {
     throw "Command failed: $_"
@@ -24,14 +24,14 @@ Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -Scr
 
 # Install PowerShell Gallery modules
 Write-Host "`nPowerShell Gallery:"
-# {{ range $_, $module_name := concat .dependencies.windows.modules }}
-Show-Spinner -StartMessage "{{- $module_name -}}" -CompletionMessage "{{- $module_name -}}" -ScriptBlock {
-  if (Get-Module -ListAvailable -Name "{{- $module_name -}}" -ErrorAction "SilentlyContinue") {
-    return ":{{- $module_name -}}"
+# {{ range (.dependencies.windows.modules | sortAlpha | uniq) }}
+Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
+  if (Get-Module -ListAvailable -Name "{{- . -}}" -ErrorAction "SilentlyContinue") {
+    return ":{{- . -}}"
   }
 
   try {
-    Invoke-Expression "Install-Module -AcceptLicense -Name {{ $module_name -}}"
+    Invoke-Expression "Install-Module -AcceptLicense -Name {{ . -}}"
   }
   catch {
     throw "Command failed: $_"
@@ -61,15 +61,15 @@ Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name
 
 # Volta tools
 Write-Host "`nvolta:"
-# {{ range $_, $package_name := .dependencies.all.volta }}
-Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+# {{ range (.dependencies.all.volta | uniq) }}
+Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
   $voltaList = volta list --format plain
-  if ($voltaList -match "{{- $package_name -}}") {
-    return ":{{- $package_name -}}"
+  if ($voltaList -match "{{- . -}}") {
+    return ":{{- . -}}"
   }
   else {
     try {
-      Invoke-Expression "volta install {{ $package_name -}}"
+      Invoke-Expression "volta install {{ . -}}"
     }
     catch {
       throw "Command failed: $_"
@@ -80,15 +80,15 @@ Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $pack
 
 # Global npm dependencies
 Write-Host "`nnpm:"
-# {{ range $_, $package_name := .dependencies.all.pnpm }}
-Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+# {{ range (.dependencies.all.pnpm | sortAlpha | uniq) }}
+Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
   $pnpmList = pnpm list -g --depth 0
-  if ($pnpmList -match "{{- $package_name -}}") {
-    return ":{{- $package_name -}}"
+  if ($pnpmList -match "{{- . -}}") {
+    return ":{{- . -}}"
   }
   else {
     try {
-      Invoke-Expression "pnpm add -g {{ $package_name -}}"
+      Invoke-Expression "pnpm add -g {{ . -}}"
     }
     catch {
       throw "Command failed: $_"
@@ -99,15 +99,15 @@ Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $pack
 
 # Global cargo crates
 Write-Host "`ncargo:"
-# {{ range $_, $package_name := .dependencies.all.cargo }}
-Show-Spinner -StartMessage "{{- $package_name -}}" -CompletionMessage "{{- $package_name -}}" -ScriptBlock {
+# {{ range (.dependencies.all.cargo | sortAlpha | uniq) }}
+Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
   $cargoList = cargo install --list
-  if ($cargoList -match "{{- $package_name -}}") {
-    return ":{{- $package_name -}}"
+  if ($cargoList -match "{{- . -}}") {
+    return ":{{- . -}}"
   }
   else {
     try {
-      Invoke-Expression "cargo install {{ $package_name -}}"
+      Invoke-Expression "cargo install {{ . -}}"
     }
     catch {
       throw "Command failed: $_"
