@@ -112,6 +112,13 @@ misc {
     animate_manual_resizes = {{ ne .device_type "vm" }} # If true, will animate manual window resizes/moves
     enable_swallow = true # Enable window swallowing
 }
+#-------------------------------------------------------------------------------
+#  XWAYLAND
+#-------------------------------------------------------------------------------
+# https://wiki.hyprland.org/Configuring/Variables/#xwayland
+xwayland {
+  force_zero_scaling = true # forces a scale of 1 on xwayland windows on scaled displays
+}
 
 #-------------------------------------------------------------------------------
 #  DWINDLE
