@@ -2,7 +2,7 @@
 
 Write-StartTask "Windows: Installing packages"
 
-# Install winget packages
+# ── Install winget packages ───────────────────────────────────────────
 Write-Host "`nwinget:"
 # {{ range (.dependencies.windows.winget | uniq) }}
 $PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
@@ -22,7 +22,7 @@ Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -Scr
 }
 # {{ end }}
 
-# Install PowerShell Gallery modules
+# ── Install PowerShell Gallery modules ────────────────────────────────
 Write-Host "`nPowerShell Gallery:"
 # {{ range (.dependencies.windows.modules | sortAlpha | uniq) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
@@ -39,7 +39,7 @@ Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlo
 }
 # {{ end }}
 
-# Custom installation
+# ── Custom installation ───────────────────────────────────────────────
 Write-Host "`nCustom installation:"
 # {{ range $_, $pkg := concat .dependencies.windows.custom .dependencies.all.custom }}
 # {{ range $cmd_name, $lines := $pkg }}
@@ -59,7 +59,7 @@ Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name
 # {{ end }}
 # {{ end }}
 
-# Volta tools
+# ── Volta tools ───────────────────────────────────────────────────────
 Write-Host "`nvolta:"
 # {{ range (.dependencies.all.volta | uniq) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
@@ -78,7 +78,7 @@ Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlo
 }
 # {{ end }}
 
-# Global npm dependencies
+# ── Global npm dependencies ───────────────────────────────────────────
 Write-Host "`nnpm:"
 # {{ range (.dependencies.all.pnpm | sortAlpha | uniq) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
@@ -97,7 +97,7 @@ Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlo
 }
 # {{ end }}
 
-# Global cargo crates
+# ── Global cargo crates ───────────────────────────────────────────────
 Write-Host "`ncargo:"
 # {{ range (.dependencies.all.cargo | sortAlpha | uniq) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {

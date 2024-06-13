@@ -1,5 +1,10 @@
-# Catpuccin Mocha Blue
+# ╭──────────────────────────────────────────────────────────╮
+# │ LAZYGIT CONFIG                                           │
+# ╰──────────────────────────────────────────────────────────╯
+
+---
 gui:
+  # Catpuccin Mocha Blue
   theme:
     activeBorderColor:
       - "#89b4fa"

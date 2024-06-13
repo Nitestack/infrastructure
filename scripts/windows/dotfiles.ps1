@@ -30,7 +30,7 @@ param(
   [Switch]$Help
 )
 
-# PowerShell Core library
+# ── PowerShell Core library ───────────────────────────────────────────
 
 function Write-LogError {
   param([String]$Message)
@@ -156,6 +156,8 @@ function Invoke-EnsureNeovimInstalled() {
 function Invoke-EnsureBobInstalled() {
   Invoke-EnsureInstalled -Command "bob" -Message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
 }
+
+# ── Commands ──────────────────────────────────────────────────────────
 
 function Invoke-ClearScriptState() {
   <#
@@ -474,6 +476,8 @@ USAGE:
     Invoke-Expression "chezmoi edit $arguments"
   }
 }
+
+# ── CLI handler ───────────────────────────────────────────────────────
 
 # Handling help and version
 if ($Command -eq "-h" -or $Command -eq "-Help") {

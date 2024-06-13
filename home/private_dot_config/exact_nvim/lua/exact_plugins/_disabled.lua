@@ -1,3 +1,7 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ DISABLED PLUGINS                                        │
+-- ╰─────────────────────────────────────────────────────────╯
+
 return vim.tbl_map(function(plugin_name)
   ---@type LazyPluginSpec
   return {

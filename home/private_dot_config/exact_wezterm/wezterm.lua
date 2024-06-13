@@ -1,3 +1,7 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ WEZTERM CONFIG                                          │
+-- ╰─────────────────────────────────────────────────────────╯
+
 ---@type Wezterm
 ---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")

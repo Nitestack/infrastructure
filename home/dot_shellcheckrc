@@ -1,3 +1,7 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ SHELLCHECK CONFIG                                        │
+# ╰──────────────────────────────────────────────────────────╯
+
 external-sources=true
 # To list all: shellcheck --list-optional
 enable=add-default-case

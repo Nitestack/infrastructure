@@ -1,3 +1,7 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ APPEARANCE CONFIG                                       │
+-- ╰─────────────────────────────────────────────────────────╯
+
 ---@type Wezterm
 ---@diagnostic disable: assign-type-mismatch
 local wezterm = require("wezterm")
@@ -10,7 +14,7 @@ local M = {}
 function M.setup(config)
   local font_size = tonumber("{{- .font.size -}}")
 
-  -- Font
+  -- ── Font ────────────────────────────────────────────────────────────
   config.font = wezterm.font_with_fallback({
     {
       family = "{{ .font.mono.family }}",
@@ -22,7 +26,7 @@ function M.setup(config)
   config.command_palette_font_size = font_size
   config.line_height = 1.2
 
-  -- Colors
+  -- ── Colors ──────────────────────────────────────────────────────────
   config.color_scheme = "Catppuccin Mocha"
   config.window_background_gradient = {
     orientation = "Vertical",
@@ -32,7 +36,7 @@ function M.setup(config)
   config.command_palette_bg_color = colors.surface0
   config.command_palette_fg_color = colors.text
 
-  -- Rendering
+  -- ── Rendering ───────────────────────────────────────────────────────
   config.animation_fps = 144
   config.max_fps = 144
 
@@ -40,7 +44,7 @@ function M.setup(config)
   config.cursor_thickness = 4
   config.underline_position = -6
 
-  -- Cursor
+  -- ── Cursor ──────────────────────────────────────────────────────────
   -- {{- if eq .device_type "desktop" }}
   config.cursor_blink_ease_in = "Constant"
   config.cursor_blink_ease_out = "Constant"
@@ -48,7 +52,7 @@ function M.setup(config)
   -- {{- end }}
   config.scrollback_lines = 10000
 
-  -- Window
+  -- ── Window ──────────────────────────────────────────────────────────
   config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
   config.window_padding = {
     top = 0,

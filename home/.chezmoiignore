@@ -1,3 +1,7 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ CHEZMOI IGNORE CONFIG                                    │
+# ╰──────────────────────────────────────────────────────────╯
+
 # Windows
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
