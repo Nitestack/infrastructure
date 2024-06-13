@@ -23,21 +23,4 @@ return {
       i(0),
     })
   ),
-  s(
-    { trig = "hr", name = "Header" },
-    fmt(
-      [[
-        {1}
-        {2} {3}
-        {1}
-        {4}
-          ]],
-      {
-        f(utils.snippet.header_lines),
-        f(utils.snippet.header_title),
-        i(1, "HEADER"),
-        i(0),
-      }
-    )
-  ),
 }

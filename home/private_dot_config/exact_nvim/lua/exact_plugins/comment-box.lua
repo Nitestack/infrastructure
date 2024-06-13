@@ -1,7 +1,8 @@
 ---@diagnostic disable: missing-parameter
 ---@type LazyPluginSpec
 return {
-  "LudoPinelli/comment-box.nvim",
+  "Nitestack/comment-box.nvim",
+  dependencies = "folke/ts-comments.nvim",
   keys = core.lazy_map({
     [{ "n", "v" }] = {
       [""] = "Headers",
