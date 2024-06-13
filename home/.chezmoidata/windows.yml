@@ -14,6 +14,7 @@ dependencies:
       - "LLVM.LLVM"
       - "JanDeDobbeleer.OhMyPosh"
       - "Python.Python.3.12"
+      - "mbuilov.sed"
       - "BurntSushi.ripgrep.MSVC"
       - "Microsoft.VCRedist.2015+.x64"
       - "vim.vim"
