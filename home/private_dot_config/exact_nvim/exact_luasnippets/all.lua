@@ -40,17 +40,4 @@ return {
       }
     )
   ),
-  -- Create a new snippet, that provides a modeline comment for a filetype
-  s(
-    { trig = "ft", name = "Vi modeline: set filetype" },
-    fmt([[{}: set ft={} {}]], {
-      f(function()
-        return with_cmt("vim")
-      end),
-      d(1, function()
-        return sn("", { i(1, vim.fn.fnamemodify(vim.fn.expand("%"), ":e")) })
-      end),
-      i(0),
-    })
-  ),
 }
