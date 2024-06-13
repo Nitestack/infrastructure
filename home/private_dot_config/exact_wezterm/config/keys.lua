@@ -1,3 +1,7 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ KEYBINDINGS                                             │
+-- ╰─────────────────────────────────────────────────────────╯
+
 ---@type Wezterm
 ---@diagnostic disable: assign-type-mismatch
 local wezterm = require("wezterm")
@@ -18,6 +22,7 @@ end
 
 local M = {}
 
+-- ── Tmux bindings ───────────────────────────────────────────────────
 ---@param config Config
 local function add_tmux_bindings(config)
   ---@type Key[]
@@ -52,6 +57,7 @@ local function add_tmux_bindings(config)
   config.leader = { key = "a", mods = "CTRL" }
 end
 
+-- ── Regular bindings ────────────────────────────────────────────────
 ---@param config Config
 function M.setup(config, smart_splits)
   local function find_vim_pane(tab)

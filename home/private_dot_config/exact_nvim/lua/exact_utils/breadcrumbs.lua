@@ -1,6 +1,8 @@
---------------------------------------------------------------------------------
---  BREADCRUMBS (credits to `LunarVim/breadcrumbs.nvim` and `utilyre/barbecue.nvim`)
---------------------------------------------------------------------------------
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ BREADCRUMBS (credits to `LunarVim/breadcrumbs.nvim`     │
+-- │ and `utilyre/barbecue.nvim`)                            │
+-- ╰─────────────────────────────────────────────────────────╯
+
 ---@class utils.breadcrumbs
 local M = {}
 

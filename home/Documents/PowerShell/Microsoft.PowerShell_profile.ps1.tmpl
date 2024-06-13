@@ -1,15 +1,15 @@
-#-------------------------------------------------------------------------------
-#  POWERSHELL PROFILE
-#-------------------------------------------------------------------------------
+# ╭──────────────────────────────────────────────────────────╮
+# │ POWERSHELL PROFILE                                       │
+# ╰──────────────────────────────────────────────────────────╯
 
-# PSReadline + PSFzf options
+# ── PSReadline + PSFzf options ────────────────────────────────────────
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin -EditMode Vi
 Set-PSReadlineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key Ctrl+n -Function HistorySearchForward
 Set-PsFzfOption -PSReadLineChordProvider "Ctrl+f" -PSReadLineChordReverseHistory "Ctrl+r"
 Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 
-# Aliases
+# ── Aliases ───────────────────────────────────────────────────────────
 Set-Alias vim nvim
 Set-Alias vi nvim
 Set-Alias v nvim
@@ -33,7 +33,7 @@ function admin {
 }
 Set-Alias -Name sudo -Value admin
 
-# Linux utils
+# ── Linux utils ───────────────────────────────────────────────────────
 function which($Command) {
   Get-Command -Name $Command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
@@ -77,8 +77,10 @@ function pgrep($Name) {
   Get-Process $Name
 }
 
-# Environment Variables
+# ── Environment Variables ─────────────────────────────────────────────
 export "EDITOR" "{{- .editor -}}"
+
+# ── User config ───────────────────────────────────────────────────────
 
 # Load oh-my-posh
 oh-my-posh init pwsh --config "$env:USERPROFILE\.config\oh-my-posh\config.yml" | Invoke-Expression

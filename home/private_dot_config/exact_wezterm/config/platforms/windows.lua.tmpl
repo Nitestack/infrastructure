@@ -1,3 +1,7 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ WINDOWS CONFIG                                          │
+-- ╰─────────────────────────────────────────────────────────╯
+
 ---@type Wezterm
 ---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm")
@@ -11,13 +15,13 @@ local app_data_local = os.getenv("LOCALAPPDATA")
 
 ---@param config Config
 function M.setup(config)
-  -- Settings
+  -- ── Settings ────────────────────────────────────────────────────────
   config.integrated_title_button_style = "Windows"
   config.bypass_mouse_reporting_modifiers = "CTRL"
   ---@diagnostic disable-next-line: assign-type-mismatch
   config.quote_dropped_files = "Windows"
 
-  -- Tabs
+  -- ── Tabs ────────────────────────────────────────────────────────────
   config.show_tab_index_in_tab_bar = false
   config.switch_to_last_active_tab_when_closing_tab = true
   config.window_frame = {
@@ -42,7 +46,7 @@ function M.setup(config)
     },
   }
 
-  -- Shell
+  -- ── Shell ───────────────────────────────────────────────────────────
   config.default_prog = { app_data_local .. [[\Microsoft\WindowsApps\pwsh.exe]], "-NoLogo" }
   config.launch_menu = {
     {

@@ -7,7 +7,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 start_task "Installing packages"
 
-# Install packages
+# ── Install packages ──────────────────────────────────────────────────
 # {{ if eq .osid "linux-arch" }}
 echo "Arch Linux: Installing packages"
 echo
@@ -43,7 +43,7 @@ show_spinner "macOS: Creating brew bundle for formulae and casks" "macOS: Create
 
 # {{ end }}
 
-# Custom installation
+# ── Custom installation ───────────────────────────────────────────────
 echo
 echo "Custom installation:"
 # {{ $dependencies := concat .dependencies.unix.custom .dependencies.all.custom }}
@@ -67,7 +67,7 @@ show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # {{ end }}
 # {{ end }}
 
-# Volta tools
+# ── Volta tools ───────────────────────────────────────────────────────
 echo
 echo "volta:"
 volta_list=$(volta list --format plain)
@@ -83,7 +83,7 @@ install_with_volta() {
 show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
-# Global npm packages
+# ── Global npm packages ───────────────────────────────────────────────
 echo
 echo "npm:"
 pnpm_list=$(pnpm list -g --depth 0)
@@ -99,7 +99,7 @@ install_with_pnpm() {
 show_spinner "install_with_pnpm" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
-# Global cargo crates
+# ── Global cargo crates ───────────────────────────────────────────────
 echo
 echo "cargo:"
 cargo_list=$(cargo install --list)

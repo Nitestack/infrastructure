@@ -31,6 +31,10 @@
 {{- else if eq .chezmoi.os "windows" }}
 {{-   $chassisType = (output "powershell.exe" "-NoProfile" "-NonInteractive" "-Command" "if ((Get-CimInstance -Class Win32_Battery | Measure-Object).Count -gt 0) { Write-Output 'laptop' } else { Write-Output 'desktop' }") | trim }}
 {{- end -}}
+# ╭──────────────────────────────────────────────────────────╮
+# │ CHEZMOI CONFIG                                           │
+# ╰──────────────────────────────────────────────────────────╯
+
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}

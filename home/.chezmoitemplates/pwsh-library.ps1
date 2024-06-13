@@ -1,4 +1,6 @@
-# PowerShell Core library
+# ╭──────────────────────────────────────────────────────────╮
+# │ POWERSHELL LIBRARY                                       │
+# ╰──────────────────────────────────────────────────────────╯
 
 function Write-LogError {
   param([String]$Message)
