@@ -26,4 +26,3 @@ apps:
       - "wezterm"
     yay:
       - "android-studio"
-    manual: []
