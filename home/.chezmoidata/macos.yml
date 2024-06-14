@@ -3,50 +3,43 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 ---
-dependencies:
-  macos:
-    brew:
-      formulae:
-        - "jandedobbeleer/oh-my-posh/oh-my-posh"
-        - "jesseduffield/lazygit/lazygit"
-        - "oven-sh/bun/bun"
-      casks:
-        - "alt-tab"
-        - "aldente"
-        - "android-studio"
-        - "ankerwork"
-        - "appcleaner"
-        - "arc"
-        - "betterdisplay"
-        - "bitwarden"
-        - "command-x"
-        - "discord"
-        - "docker"
-        - "figma"
-        - "font-monaspace"
-        - "font-symbols-only-nerd-font"
-        - "iina"
-        - "latest"
-        - "maccy"
-        - "mission-control-plus"
-        - "notion"
-        - "notion-calendar"
-        - "raycast"
-        - "readdle-spark"
-        - "rectangle"
-        - "spotify"
-        - "visual-studio-code"
-        - "wezterm"
-        - "whatsapp"
-    custom:
-      - pipx: |
-          brew install pipx
-          sudo pipx ensurepath --global
-      - rustup: |
-          brew install rustup-init
-          rustup update
-          rustup default stable
+packages:
+  mac:
+    formulae: []
+apps:
+  mac:
+    casks:
+      - "alt-tab"
+      - "aldente"
+      - "android-studio"
+      - "ankerwork"
+      - "appcleaner"
+      - "arc"
+      - "betterdisplay"
+      - "bitwarden"
+      - "command-x"
+      - "discord"
+      - "docker"
+      - "figma"
+      - "font-monaspace"
+      - "font-symbols-only-nerd-font"
+      - "iina"
+      - "latest"
+      - "maccy"
+      - "mission-control-plus"
+      - "notion"
+      - "notion-calendar"
+      - "raycast"
+      - "readdle-spark"
+      - "rectangle"
+      - "spotify"
+      - "visual-studio-code"
+      - "wezterm"
+      - "whatsapp"
+    mas:
+      - name: "Dropover"
+        id: "1355679052"
+      - name: "PDFgear"
+        id: "6469021132"
     manual:
-      - "Dropover"
-      - "PDFgear"
       - "TinkerTool"

@@ -1,10 +1,28 @@
 # {{ template "pwsh-library.ps1" . }}
 
-Write-StartTask "Windows: Installing packages"
+# ╭──────────────────────────────────────────────────────────╮
+# │ Install essentials                                       │
+# ╰──────────────────────────────────────────────────────────╯
+Write-StartTask "Windows: Installing essential packages"
 
-# ── Install winget packages ───────────────────────────────────────────
+# {{ $os := .chezmoi.os }}
+# {{ $essentialPackages := list }}
+# {{ $essentialCustomPackages := list }}
+# {{ range .packages.essentials }}
+#   {{ if and (eq $os "windows") (hasKey . "win") }}
+#     {{ if eq "string" (printf "%T" .win) }}
+#       {{ $essentialPackages = mustAppend $essentialPackages .win }}
+#     {{ else if .win.custom }}
+#       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .win.custom) }}
+#     {{ end }}
+#   {{ else if hasKey . "custom" }}
+#     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
+#   {{ end }}
+# {{ end }}
+
+# ── winget ────────────────────────────────────────────────────────────
 Write-Host "`nwinget:"
-# {{ range (.dependencies.windows.winget | uniq) }}
+# {{ range ($essentialPackages | uniq) }}
 $PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
 Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -ScriptBlock {
   winget list -e "{{- . -}}" | Out-Null
@@ -22,46 +40,9 @@ Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -Scr
 }
 # {{ end }}
 
-# ── Install PowerShell Gallery modules ────────────────────────────────
-Write-Host "`nPowerShell Gallery:"
-# {{ range (.dependencies.windows.modules | sortAlpha | uniq) }}
-Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
-  if (Get-Module -ListAvailable -Name "{{- . -}}" -ErrorAction "SilentlyContinue") {
-    return ":{{- . -}}"
-  }
-
-  try {
-    Invoke-Expression "Install-Module -AcceptLicense -Name {{ . -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
-# {{ end }}
-
-# ── Custom installation ───────────────────────────────────────────────
-Write-Host "`nCustom installation:"
-# {{ range $_, $pkg := concat .dependencies.windows.custom .dependencies.all.custom }}
-# {{ range $cmd_name, $lines := $pkg }}
-Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name -}}" -ScriptBlock {
-  if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
-    return ":{{- $cmd_name -}}"
-  }
-  else {
-    try {
-      # {{ "\n" }} {{ $lines }}
-    }
-    catch {
-      throw "Command failed: $_"
-    }
-  }
-}
-# {{ end }}
-# {{ end }}
-
-# ── Volta tools ───────────────────────────────────────────────────────
+# ── volta ─────────────────────────────────────────────────────────────
 Write-Host "`nvolta:"
-# {{ range (.dependencies.all.volta | uniq) }}
+# {{ range (.packages.volta | uniq) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
   $voltaList = volta list --format plain
   if ($voltaList -match "{{- . -}}") {
@@ -78,9 +59,107 @@ Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlo
 }
 # {{ end }}
 
+# ── custom ────────────────────────────────────────────────────────────
+Write-Host "`ncustom:"
+# {{ range $essentialCustomPackages }}
+# {{ range $cmd_name, $lines := . }}
+Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name -}}" -ScriptBlock {
+  if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
+    return ":{{- $cmd_name -}}"
+  }
+  else {
+    try {
+      # {{ "\n" }}{{ $lines }}
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+  }
+}
+# {{ end }}
+# {{ end }}
+
+Write-CompleteTask "Windows: Installed essential packages"
+
+# ╭──────────────────────────────────────────────────────────╮
+# │ Install packages                                         │
+# ╰──────────────────────────────────────────────────────────╯
+Write-StartTask "Windows: Installing packages"
+
+# {{ $packages := list }}
+# {{ $customPackages := list }}
+# {{ range .packages.common }}
+#   {{ if and (eq $os "win") (hasKey . "win") }}
+#     {{ if eq "string" (printf "%T" .win) }}
+#       {{ $packages = mustAppend $packages .win }}
+#     {{ else if .win.custom }}
+#       {{ $customPackages = mustAppend $customPackages (dict .name .win.custom) }}
+#     {{ end }}
+#   {{ else if hasKey . "custom" }}
+#     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
+#   {{ end }}
+# {{ end }}
+
+# ── winget ────────────────────────────────────────────────────────────
+Write-Host "`nwinget:"
+# {{ range (concat $packages .packages.win.winget | uniq) }}
+$PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
+Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -ScriptBlock {
+  winget list -e "{{- . -}}" | Out-Null
+  if ($?) {
+    $PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
+    return ":$PackageName"
+  }
+
+  try {
+    Invoke-Expression "winget install -e --accept-package-agreements --accept-source-agreements --id {{ . -}}"
+  }
+  catch {
+    throw "Command failed: $_"
+  }
+}
+# {{ end }}
+
+# ── PowerShell Gallery ────────────────────────────────────────────────
+Write-Host "`nPowerShell Gallery:"
+# {{ range (.packages.win.modules | uniq | sortAlpha) }}
+Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
+  if (Get-Module -ListAvailable -Name "{{- . -}}" -ErrorAction "SilentlyContinue") {
+    return ":{{- . -}}"
+  }
+
+  try {
+    Invoke-Expression "Install-Module -AcceptLicense -Name {{ . -}}"
+  }
+  catch {
+    throw "Command failed: $_"
+  }
+}
+# {{ end }}
+
+# ── custom ────────────────────────────────────────────────────────────
+Write-Host "`ncustom:"
+# {{ range $_, $pkg := $customPackages }}
+# {{ range $cmd_name, $lines := . }}
+Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name -}}" -ScriptBlock {
+  if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
+    return ":{{- $cmd_name -}}"
+  }
+  else {
+    try {
+      # {{ "\n" }}{{ $lines }}
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+  }
+}
+# {{ end }}
+# {{ end }}
+
 # ── Global npm dependencies ───────────────────────────────────────────
 Write-Host "`nnpm:"
-# {{ range (.dependencies.all.pnpm | sortAlpha | uniq) }}
+# {{ range (.packages.npm | uniq | sortAlpha) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
   $pnpmList = pnpm list -g --depth 0
   if ($pnpmList -match "{{- . -}}") {
@@ -99,7 +178,7 @@ Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlo
 
 # ── Global cargo crates ───────────────────────────────────────────────
 Write-Host "`ncargo:"
-# {{ range (.dependencies.all.cargo | sortAlpha | uniq) }}
+# {{ range (.packages.cargo | uniq | sortAlpha) }}
 Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
   $cargoList = cargo install --list
   if ($cargoList -match "{{- . -}}") {

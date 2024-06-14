@@ -3,28 +3,18 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 ---
-dependencies:
-  windows:
+packages:
+  win:
     winget:
-      - "sharkdp.bat"
-      - "Oven-sh.Bun"
-      - "Kitware.CMake"
       - "Microsoft.DotNet.SDK.8"
-      - "sharkdp.fd"
-      - "junegunn.fzf"
-      - "Git.Git"
-      - "GoLang.Go"
-      - "JesseDuffield.lazygit"
       - "LLVM.LLVM"
-      - "JanDeDobbeleer.OhMyPosh"
-      - "Python.Python.3.12"
       - "mbuilov.sed"
-      - "BurntSushi.ripgrep.MSVC"
       - "Microsoft.VCRedist.2015+.x64"
-      - "vim.vim"
-      - "Volta.Volta"
-      - "ajeetdsouza.zoxide"
-
+    modules:
+      - "PSFzf"
+apps:
+  win:
+    winget:
       - "Guru3D.Afterburner"
       - "Google.AndroidStudio"
       - "TheBrowserCompany.Arc"
@@ -44,16 +34,6 @@ dependencies:
       - "wez.wezterm"
       - "9NKSQGP7F2NH" # WhatsApp (installed from Microsoft Store)
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
-    modules:
-      - "PSFzf"
-    custom:
-      - pipx: |
-          python -m pip install --user pipx
-          Invoke-Expression "$env:APPDATA\Python\Python312\Scripts\pipx.exe ensurepath"
-      - rustup: |
-          winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup
-          rustup update
-          rustup default stable
     manual:
       - "AnkerWork"
       - "Notion Calendar"

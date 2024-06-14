@@ -5,56 +5,63 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-start_task "Installing packages"
+# ╭──────────────────────────────────────────────────────────╮
+# │ Note: Any brew related packages for macOS are handled    │
+# │ already, check the custom mac scripts                    │
+# ╰──────────────────────────────────────────────────────────╯
 
-# ── Install packages ──────────────────────────────────────────────────
-# {{ if eq .osid "linux-arch" }}
-echo "Arch Linux: Installing packages"
-echo
-sudo pacman -Syu
+# ╭──────────────────────────────────────────────────────────╮
+# │ Install essentials                                       │
+# ╰──────────────────────────────────────────────────────────╯
+start_task "Installing essential packages"
 
+# {{ $osid := .osid }}
+# {{ $os := .chezmoi.os }}
+# {{ $essentialPackages := list }}
+# {{ $essentialCustomPackages := list }}
+# {{ range .packages.essentials }}
+#   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
+#     {{ if eq "string" (printf "%T" .arch) }}
+#       {{ $essentialPackages = mustAppend $essentialPackages .arch }}
+#     {{ else if .arch.custom }}
+#       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .arch.custom) }}
+#     {{ end }}
+#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") .mac.custom) }}
+#     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .mac.custom) }}
+#   {{ else if hasKey . "custom" }}
+#     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
+#   {{ end }}
+# {{ end }}
+
+# {{ if eq $osid "linux-arch"}}
+# ── pacman ────────────────────────────────────────────────────────────
 echo
 echo "pacman:"
-# {{ range (concat .dependencies.arch.pacman .dependencies.unix.packages .dependencies.all.packages | sortAlpha | uniq) }}
-pacman_ensure_installed "{{- . -}}"
+sudo pacman -Syu
+sudo pacman -S --needed --noconfirm "{{- $essentialPackages | join "\" \""  -}}"
 # {{ end }}
 
+# ── volta ─────────────────────────────────────────────────────────────
 echo
-echo "yay:"
-# {{ range (.dependencies.arch.yay | sortAlpha | uniq) }}
-yay_ensure_installed "{{- . -}}"
-# {{ end }}
-
-# {{ else if eq .chezmoi.os "darwin" }}
-update_mac() {
-	sudo softwareupdate --agree-to-license --install-rosetta
-	brew update && brew upgrade
-
-	brew bundle --no-lock --file=/dev/stdin <<EOF
-{{ range (concat .dependencies.macos.brew.formulae .dependencies.unix.packages .dependencies.all.packages | sortAlpha | uniq) }}
-brew "{{- . -}}"
-{{ end -}}
-{{ range (.dependencies.macos.brew.casks | sortAlpha | uniq) }}
-cask "{{- . -}}"
-{{ end }}
-EOF
+echo "volta:"
+volta_list=$(volta list --format plain)
+# {{ range (.packages.volta | uniq) }}
+install_with_volta() {
+	if echo "${volta_list}" | grep -q "{{- . -}}"; then
+		echo "{{- . -}}"
+		exit 2
+	else
+		volta install "{{- . -}}"
+	fi
 }
-show_spinner "macOS: Creating brew bundle for formulae and casks" "macOS: Created brew bundle for formulae and casks"
-
+show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
-# ── Custom installation ───────────────────────────────────────────────
+# ── custom ────────────────────────────────────────────────────────────
 echo
-echo "Custom installation:"
-# {{ $dependencies := concat .dependencies.unix.custom .dependencies.all.custom }}
-# {{ if eq .osid "linux-arch" }}
-# {{ $dependencies = concat .dependencies.arch.custom $dependencies }}
-# {{ else if eq .chezmoi.os "darwin" }}
-# {{ $dependencies = concat .dependencies.macos.custom $dependencies }}
-# {{ end }}
-
-# {{ range $_, $pkg := $dependencies }}
-# {{ range $cmd_name, $lines := $pkg }}
+echo "custom:"
+# {{ range $essentialCustomPackages }}
+# {{ range $cmd_name, $lines := . }}
 install_custom_cmd() {
 	if command -v "{{- $cmd_name -}}" &>/dev/null; then
 		echo "{{- $cmd_name -}}"
@@ -67,27 +74,63 @@ show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # {{ end }}
 # {{ end }}
 
-# ── Volta tools ───────────────────────────────────────────────────────
-echo
-echo "volta:"
-volta_list=$(volta list --format plain)
-# {{ range (.dependencies.all.volta | uniq) }}
-install_with_volta() {
-	if echo "${volta_list}" | grep -q "{{- . -}}"; then
-		echo "{{- . -}}"
-		exit 2
-	else
-		volta install "{{- . -}}"
-	fi
-}
-show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
+complete_task "Installed essential packages"
+
+# ╭──────────────────────────────────────────────────────────╮
+# │ Install packages                                         │
+# ╰──────────────────────────────────────────────────────────╯
+start_task "Installing packages"
+
+# {{ $packages := list }}
+# {{ $customPackages := list }}
+# {{ range .packages.common }}
+#   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
+#     {{ if eq "string" (printf "%T" .arch) }}
+#       {{ $packages = mustAppend $packages .arch }}
+#     {{ else if .arch.custom }}
+#       {{ $customPackages = mustAppend $customPackages (dict .name .arch.custom) }}
+#     {{ end }}
+#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") .mac.custom) }}
+#     {{ $customPackages = mustAppend $customPackages (dict .name .mac.custom) }}
+#   {{ else if hasKey . "custom" }}
+#     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
+#   {{ end }}
 # {{ end }}
 
-# ── Global npm packages ───────────────────────────────────────────────
+# {{ if eq $osid "linux-arch" }}
+# ── pacman ────────────────────────────────────────────────────────────
+echo
+echo "pacman:"
+sudo pacman -S --needed --noconfirm "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
+
+# ── yay ───────────────────────────────────────────────────────────────
+echo
+echo "yay:"
+yay -S --needed --noconfirm "{{- .packages.arch.yay | uniq | sortAlpha | join "\" \""  -}}"
+# {{ end }}
+
+# ── custom ────────────────────────────────────────────────────────────
+echo
+echo "custom:"
+# {{ range $customPackages }}
+# {{ range $cmd_name, $lines := . }}
+install_custom_cmd() {
+	if command -v "{{- $cmd_name -}}" &>/dev/null; then
+		echo "{{- $cmd_name -}}"
+		exit 2
+	else
+		# {{ "\n" }}{{ $lines }}
+	fi
+}
+show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
+# {{ end }}
+# {{ end }}
+
+# ── pnpm ──────────────────────────────────────────────────────────────
 echo
 echo "npm:"
 pnpm_list=$(pnpm list -g --depth 0)
-# {{ range (.dependencies.all.pnpm | sortAlpha | uniq) }}
+# {{ range (.packages.npm | uniq | sortAlpha) }}
 install_with_pnpm() {
 	if echo "${pnpm_list}" | grep -q "{{- . -}}"; then
 		echo "{{- . -}}"
@@ -99,11 +142,11 @@ install_with_pnpm() {
 show_spinner "install_with_pnpm" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
-# ── Global cargo crates ───────────────────────────────────────────────
+# ── cargo ─────────────────────────────────────────────────────────────
 echo
 echo "cargo:"
 cargo_list=$(cargo install --list)
-# {{ range (.dependencies.all.cargo | sortAlpha | uniq) }}
+# {{ range (.packages.cargo | uniq | sortAlpha) }}
 install_with_cargo() {
 	if echo "${cargo_list}" | grep -q "{{- . -}}"; then
 		echo "{{- . -}}"

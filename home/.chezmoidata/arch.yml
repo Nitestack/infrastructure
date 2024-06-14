@@ -3,19 +3,18 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 ---
-dependencies:
+packages:
   arch:
     pacman:
-      - "base-devel"
       - "dconf-editor"
       - "gnome-terminal"
-      - "lazygit"
       - "man-db"
       - "man-pages-de"
-      - "python"
-      - "python-pip"
-      - "unzip"
-
+    yay:
+      - "aylurs-gtk-shell"
+apps:
+  arch:
+    pacman:
       - "bitwarden"
       - "code"
       - "discord"
@@ -27,14 +26,4 @@ dependencies:
       - "wezterm"
     yay:
       - "android-studio"
-      - "aylurs-gtk-shell"
-    custom:
-      - bun: "curl -fsSL https://bun.sh/install | bash"
-      - oh-my-posh: "curl -s https://ohmyposh.dev/install.sh | bash -s --  -d ~/.local/bin"
-      - pipx: |
-          sudo pacman -S --needed --noconfirm python-pipx
-          sudo pipx ensurepath --global
-      - rustup: |
-          sudo pacman -S --needed --noconfirm rustup
-          rustup update
-          rustup default stable
+    manual: []

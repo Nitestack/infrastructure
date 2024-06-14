@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+# ── Essential formulae ────────────────────────────────────────────────
+# {{ $essentialFormulae := list }}
+# {{ range .packages.essentials }}
+#   {{ if and (hasKey . "mac") (eq "string" (printf "%T" .mac)) }}
+#     {{ $essentialFormulae = mustAppend $essentialFormulae .mac }}
+#   {{ end }}
+# {{ end }}
+# ── Formulae ──────────────────────────────────────────────────────────
+# {{ $formulae := list }}
+# {{ range .packages.common }}
+#   {{ if and (hasKey . "mac") (eq "string" (printf "%T" .mac)) }}
+#     {{ $formulae = mustAppend $formulae .mac }}
+#   {{ end }}
+# {{ end }}
+# Only sort the regular formulae, not the essentials
+# {{ $formulae = concat $essentialFormulae (concat $formulae .packages.mac.formulae | sortAlpha) }}
+
+update_mac() {
+	brew update
+	brew upgrade
+	if brew tap | grep -q "buo/cask-upgrade"; then
+		brew cu
+	fi
+	if brew list "mas" &>/dev/null; then
+		mas upgrade
+	fi
+	sudo softwareupdate --agree-to-license --install-rosetta
+
+	brew bundle --no-lock --file=/dev/stdin <<EOF
+tap "homebrew/core"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "buo/cask-upgrade"
+tap "homebrew/cask-fonts"
+tap "homebrew/command-not-found"
+tap "homebrew/services"
+
+brew "mas"
+{{ range ($formulae | uniq) -}}
+brew "{{- . -}}"
+{{ end -}}
+
+{{ range (.apps.mac.casks | uniq | sortAlpha) -}}
+cask "{{- . -}}"
+{{ end -}}
+
+{{ range (.apps.mac.mas | uniq) }}
+mas "{{- .name -}}", id: {{ .id -}}
+{{ end }}
+EOF
+}
+show_spinner "macOS: Installing formulae, casks and Mac App Store apps" "macOS: Installed formulae, casks and Mac App Store apps"
