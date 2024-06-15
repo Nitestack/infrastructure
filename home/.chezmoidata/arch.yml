@@ -10,6 +10,7 @@ packages:
       - "dconf-editor"
       - "man-db"
       - "man-pages-de"
+      - "pacman-contrib"
       - "papirus-icon-theme" # Icon theme
       - "playerctl" # Media control
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
