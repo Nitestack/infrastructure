@@ -6,10 +6,12 @@
 packages:
   arch:
     pacman:
+      - "arc-gtk-theme"
       - "dconf-editor"
       - "gnome-terminal"
       - "man-db"
       - "man-pages-de"
+      - "papirus-icon-theme"
     yay:
       - "aylurs-gtk-shell"
 apps:
