@@ -12,6 +12,8 @@ packages:
       - "man-db"
       - "man-pages-de"
       - "papirus-icon-theme"
+      - "ttf-monaspace-variable"
+      - "ttf-nerd-fonts-symbols"
       - "wireplumber"
     yay:
       - "aylurs-gtk-shell"
@@ -24,8 +26,6 @@ apps:
       - "docker"
       - "firefox-developer-edition"
       - "spotifyd"
-      - "ttf-monaspace-variable"
-      - "ttf-nerd-fonts-symbols"
       - "wezterm"
     yay:
       - "android-studio"
