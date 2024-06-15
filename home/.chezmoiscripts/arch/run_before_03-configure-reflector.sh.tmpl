@@ -7,7 +7,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 setup_reflector_automation() {
 	# Check if reflector automation has not been set up yet
-	if systemctl is-active --quiet reflector.timer; then
+	if systemctl is-enabled --quiet reflector.timer; then
 		echo "Arch Linux: Reflector automation is already set up"
 		exit 2
 	else
