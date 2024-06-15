@@ -12,6 +12,7 @@ packages:
       - "man-db"
       - "man-pages-de"
       - "papirus-icon-theme"
+      - "wireplumber"
     yay:
       - "aylurs-gtk-shell"
 apps:
