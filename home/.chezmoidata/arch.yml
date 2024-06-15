@@ -8,7 +8,6 @@ packages:
     pacman:
       - "arc-gtk-theme"
       - "dconf-editor"
-      - "gnome-terminal"
       - "man-db"
       - "man-pages-de"
       - "papirus-icon-theme"
@@ -25,6 +24,7 @@ apps:
       - "discord"
       - "docker"
       - "firefox-developer-edition"
+      - "gnome-terminal"
       - "spotifyd"
       - "wezterm"
     yay:
