@@ -40,25 +40,6 @@ Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -Scr
 }
 # {{ end }}
 
-# ── volta ─────────────────────────────────────────────────────────────
-Write-Host "`nvolta:"
-# {{ range (.packages.volta | uniq) }}
-Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
-  $voltaList = volta list --format plain
-  if ($voltaList -match "{{- . -}}") {
-    return ":{{- . -}}"
-  }
-  else {
-    try {
-      Invoke-Expression "volta install {{ . -}}"
-    }
-    catch {
-      throw "Command failed: $_"
-    }
-  }
-}
-# {{ end }}
-
 # ── custom ────────────────────────────────────────────────────────────
 Write-Host "`ncustom:"
 # {{ range $essentialCustomPackages }}
@@ -77,6 +58,25 @@ Show-Spinner -StartMessage "{{- $cmd_name -}}" -CompletionMessage "{{- $cmd_name
   }
 }
 # {{ end }}
+# {{ end }}
+
+# ── volta ─────────────────────────────────────────────────────────────
+Write-Host "`nvolta:"
+# {{ range (.packages.volta | uniq) }}
+Show-Spinner -StartMessage "{{- . -}}" -CompletionMessage "{{- . -}}" -ScriptBlock {
+  $voltaList = volta list --format plain
+  if ($voltaList -match "{{- . -}}") {
+    return ":{{- . -}}"
+  }
+  else {
+    try {
+      Invoke-Expression "volta install {{ . -}}"
+    }
+    catch {
+      throw "Command failed: $_"
+    }
+  }
+}
 # {{ end }}
 
 Write-CompleteTask "Windows: Installed essential packages"

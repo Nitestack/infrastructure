@@ -41,22 +41,6 @@ sudo pacman -Syu
 sudo pacman -S --needed --noconfirm "{{- $essentialPackages | join "\" \""  -}}"
 # {{ end }}
 
-# ── volta ─────────────────────────────────────────────────────────────
-echo
-echo "volta:"
-volta_list=$(volta list --format plain)
-# {{ range (.packages.volta | uniq) }}
-install_with_volta() {
-	if echo "${volta_list}" | grep -q "{{- . -}}"; then
-		echo "{{- . -}}"
-		exit 2
-	else
-		volta install "{{- . -}}"
-	fi
-}
-show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
-# {{ end }}
-
 # ── custom ────────────────────────────────────────────────────────────
 echo
 echo "custom:"
@@ -72,6 +56,22 @@ install_custom_cmd() {
 }
 show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
 # {{ end }}
+# {{ end }}
+
+# ── volta ─────────────────────────────────────────────────────────────
+echo
+echo "volta:"
+volta_list=$(volta list --format plain)
+# {{ range (.packages.volta | uniq) }}
+install_with_volta() {
+	if echo "${volta_list}" | grep -q "{{- . -}}"; then
+		echo "{{- . -}}"
+		exit 2
+	else
+		volta install "{{- . -}}"
+	fi
+}
+show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
 # {{ end }}
 
 complete_task "Installed essential packages"

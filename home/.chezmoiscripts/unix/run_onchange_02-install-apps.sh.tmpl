@@ -10,7 +10,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # │ already, check the custom mac scripts                    │
 # ╰──────────────────────────────────────────────────────────╯
 
-# {{ if eq $osid "linux-arch"}}
+# {{ if eq .osid "linux-arch"}}
 start_task "Arch Linux: Installing apps"
 
 # ── pacman ────────────────────────────────────────────────────────────
