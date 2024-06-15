@@ -11,11 +11,13 @@ packages:
       - "man-db"
       - "man-pages-de"
       - "papirus-icon-theme"
+      - "playerctl"
       - "ttf-monaspace-variable"
       - "ttf-nerd-fonts-symbols"
       - "wireplumber"
     yay:
       - "aylurs-gtk-shell"
+      - "playerctld-systemd-unit"
 apps:
   arch:
     pacman:
