@@ -23,7 +23,11 @@ apps:
       - "code"
       - "docker"
       - "firefox-developer-edition"
+      - "gnome-calculator"
+      - "gnome-disk-utility"
+      - "gnome-screenshot"
       - "gnome-terminal"
+      - "nautilus"
       - "spotifyd"
       - "wezterm"
     yay:
