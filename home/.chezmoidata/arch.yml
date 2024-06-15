@@ -21,7 +21,6 @@ apps:
     pacman:
       - "bitwarden"
       - "code"
-      - "discord"
       - "docker"
       - "firefox-developer-edition"
       - "gnome-terminal"
@@ -29,3 +28,4 @@ apps:
       - "wezterm"
     yay:
       - "android-studio"
+      - "webcord"
