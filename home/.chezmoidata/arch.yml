@@ -6,32 +6,32 @@
 packages:
   arch:
     pacman:
-      - "arc-gtk-theme"
+      - "arc-gtk-theme" # System theme
       - "dconf-editor"
       - "man-db"
       - "man-pages-de"
-      - "papirus-icon-theme"
-      - "playerctl"
-      - "ttf-monaspace-variable"
-      - "ttf-nerd-fonts-symbols"
-      - "wireplumber"
+      - "papirus-icon-theme" # Icon theme
+      - "playerctl" # Media control
+      - "ttf-monaspace-variable" # Font: Monaspace Neon Var
+      - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
+      - "wireplumber" # Volume control
     yay:
-      - "aylurs-gtk-shell"
-      - "playerctld-systemd-unit"
+      - "aylurs-gtk-shell" # ags
+      - "playerctld-systemd-unit" # playerctld automation
 apps:
   arch:
     pacman:
       - "bitwarden"
-      - "code"
+      - "code" # Visual Studio Code
       - "docker"
       - "firefox-developer-edition"
       - "gnome-calculator"
       - "gnome-disk-utility"
       - "gnome-screenshot"
-      - "gnome-terminal"
-      - "nautilus"
+      - "gnome-terminal" # Required dependency for `docker`
+      - "nautilus" # File Manager
       - "spotifyd"
       - "wezterm"
     yay:
       - "android-studio"
-      - "webcord"
+      - "webcord" # Discord
