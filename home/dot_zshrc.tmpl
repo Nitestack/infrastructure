@@ -32,6 +32,8 @@ if [[ -n "${SSH_CONNECTION:-""}" ]]; then
 else
   export EDITOR="{{- .editor -}}"
 fi
+# Editor for `sudoedit`
+export SUDO_EDITOR="vim"
 
 {{- if eq .chezmoi.os "darwin" }}
 
