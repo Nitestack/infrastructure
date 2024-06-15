@@ -13,6 +13,8 @@ function M.setup(config)
 
   -- On Hyprland
   config.enable_tab_bar = false
+  -- NOTE: Temporary solution to make WezTerm work
+  config.enable_wayland = false
 end
 
 return M
