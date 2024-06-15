@@ -37,7 +37,7 @@ start_task "Installing essential packages"
 # ── pacman ────────────────────────────────────────────────────────────
 echo
 echo "pacman:"
-sudo pacman -Syu
+paru -Syu
 sudo pacman -S --needed --noconfirm "{{- $essentialPackages | join "\" \""  -}}"
 # {{ end }}
 
@@ -103,10 +103,10 @@ echo
 echo "pacman:"
 sudo pacman -S --needed --noconfirm "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
 
-# ── yay ───────────────────────────────────────────────────────────────
+# ── paru ───────────────────────────────────────────────────────────────
 echo
-echo "yay:"
-yay -S --needed --noconfirm "{{- .packages.arch.yay | uniq | sortAlpha | join "\" \""  -}}"
+echo "paru:"
+paru -S --needed --noconfirm "{{- .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
