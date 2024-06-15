@@ -6,8 +6,8 @@
 true || source "../../.chezmoitemplates/bash-library.sh"
 
 setup_reflector_automation() {
-	# Check if reflector automation for Germany has not been set up yet
-	if systemctl is-active --quiet reflector.service; then
+	# Check if reflector automation has not been set up yet
+	if systemctl is-active --quiet reflector.timer; then
 		echo "Arch Linux: Reflector automation is already set up"
 		exit 2
 	else
@@ -24,11 +24,11 @@ setup_reflector_automation() {
 --latest 5
 EOF'
 
-		# Run on boot
-		sudo systemctl enable reflector.service
+		# Run weekly
+		sudo systemctl enable reflector.timer
 
 		# Start immediately
-		sudo systemctl start reflector.service
+		sudo systemctl start reflector.timer
 	fi
 }
 
