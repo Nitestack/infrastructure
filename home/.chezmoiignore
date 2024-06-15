@@ -21,6 +21,7 @@ Documents
 .config/Code
 .config/hypr
 .config/lazygit
+.config/paru
 .config/project-manager
 
 .hushlogin
