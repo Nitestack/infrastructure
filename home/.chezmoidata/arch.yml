@@ -15,7 +15,7 @@ packages:
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
       - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
       - "wireplumber" # Volume control
-    yay:
+    paru:
       - "aylurs-gtk-shell" # ags
       - "playerctld-systemd-unit" # playerctld automation
 apps:
@@ -32,6 +32,6 @@ apps:
       - "nautilus" # File Manager
       - "spotifyd"
       - "wezterm"
-    yay:
+    paru:
       - "android-studio"
       - "webcord" # Discord

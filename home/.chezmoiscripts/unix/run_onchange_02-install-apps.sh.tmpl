@@ -18,10 +18,10 @@ echo
 echo "pacman:"
 sudo pacman -S --needed --noconfirm "{{- concat .apps.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
 
-# ── yay ───────────────────────────────────────────────────────────────
+# ── paru ───────────────────────────────────────────────────────────────
 echo
-echo "yay:"
-yay -S --needed --noconfirm "{{- .apps.arch.yay | uniq | sortAlpha | join "\" \""  -}}"
+echo "paru:"
+paru -S --needed --noconfirm "{{- .apps.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
 
 complete_task "Arch Linux: Installed apps"
 # {{ end }}

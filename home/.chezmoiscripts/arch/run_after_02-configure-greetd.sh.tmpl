@@ -8,11 +8,11 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 configure_greetd() {
 	# Ensure greetd is installed
 	if ! pacman -Qi "greetd" &>/dev/null; then
-		sudo pacman -S --needed --noconfirm "greetd"
+		sudo pacman -S --needed "greetd"
 	fi
 	# Ensure qtgreet is installed
-	if ! yay -Qi "greetd-qtgreet" &>/dev/null; then
-		yay -S --needed --noconfirm "greetd-qtgreet"
+	if ! paru -Qi "greetd-qtgreet" &>/dev/null; then
+		paru -S --needed "greetd-qtgreet"
 	fi
 
 	# Ensure the greetd will run on boot

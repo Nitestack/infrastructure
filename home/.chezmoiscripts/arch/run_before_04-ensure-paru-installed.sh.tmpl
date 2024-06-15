@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+ensure_paru_installed() {
+	# Check if paru is already installed
+	if command -v paru &>/dev/null; then
+		echo "Arch Linux: paru is already installed"
+		exit 2
+	fi
+
+	# Install paru
+	git clone https://aur.archlinux.org/paru.git ~/paru-git
+	cd ~/paru-git
+	makepkg -si --noconfirm
+	cd ..
+	rm -rf ~/paru-git
+}
+
+show_spinner "ensure_paru_installed" "Arch Linux: Checking if paru is installed" "Arch Linux: paru is installed"

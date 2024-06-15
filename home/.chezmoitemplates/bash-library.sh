@@ -119,18 +119,18 @@ pacman_ensure_installed() {
 	show_spinner "install_with_pacman" "${package_name}" "${package_name}"
 }
 
-yay_ensure_installed() {
+paru_ensure_installed() {
 	local package_name="$1"
 	shift
 
-	install_with_yay() {
-		if yay -Qi "${package_name}" &>/dev/null; then
+	install_with_paru() {
+		if paru -Qi "${package_name}" &>/dev/null; then
 			echo "${package_name}"
 			exit 2
 		fi
 
-		yay -S --needed --noconfirm "${package_name}"
+		paru -S --needed --noconfirm "${package_name}"
 	}
 
-	show_spinner "install_with_yay" "${package_name}" "${package_name}"
+	show_spinner "install_with_paru" "${package_name}" "${package_name}"
 }
