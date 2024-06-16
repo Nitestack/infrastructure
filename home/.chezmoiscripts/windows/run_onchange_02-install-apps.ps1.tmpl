@@ -1,25 +1,10 @@
 # {{ template "pwsh-library.ps1" . }}
 
-Write-StartTask "Windows: Installing apps"
+_Log -l info "Installing apps"
 
 # ── winget ────────────────────────────────────────────────────────────
-Write-Host "`nwinget:"
-# {{ range (.apps.win.winget | uniq) }}
-$PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
-Show-Spinner -StartMessage "$PackageName" -CompletionMessage "$PackageName" -ScriptBlock {
-  winget list -e "{{- . -}}" | Out-Null
-  if ($?) {
-    $PackageName = (winget search -e "{{- . -}}" | Select-Object -Last 1).Split("{{- . -}}")[0].Trim()
-    return ":$PackageName"
-  }
+Write-Output "# winget:" | gum format
+_Install-PackagesWinget "{{- .apps.win.winget | uniq | join "\", \"" -}}"
 
-  try {
-    Invoke-Expression "winget install -e --accept-package-agreements --accept-source-agreements --id {{ . -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
-# {{ end }}
-
-Write-CompleteTask "Windows: Installed apps"
+Write-Host
+_Log -l info "Installed apps"

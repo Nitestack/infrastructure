@@ -10,7 +10,7 @@ function _Log {
 
 function _Spin {
   param([String]$Title, [Parameter(Position = 1, ValueFromRemainingArguments = $true)]
-  $Rest)
+    $Rest)
 
   gum spin --show-error --spinner points --title $Title $Rest
 }
@@ -19,8 +19,10 @@ function _Install-PackagesWinget {
   param([string[]]$Packages)
 
   foreach ($Pkg in $Packages) {
-    if (winget list -e $Pkg | Out-Null) {
-      _Log -l warn --prefix "winget" "$Pkg is already installed"
+    winget list -e $Pkg | Out-Null
+    if ($?) {
+      $PackageName = (winget search -e $Pkg | Select-Object -Last 1).Split("$Pkg")[0].Trim()
+      _Log -l warn --prefix "winget" "$PackageName is already installed"
       continue
     }
 
