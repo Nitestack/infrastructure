@@ -11,6 +11,8 @@ packages:
       - "dart-sass" # Required dependency for ags
       - "dconf-editor"
       - "greetd" # Display manager
+      - "hypridle" # Idle daemon for Hyprland
+      - "hyprpaper" # Wallpaper utility for Hyprland
       - "man-db"
       - "man-pages-de"
       - "pacman-contrib"
