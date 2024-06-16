@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+configure_bluetooth() {
+	# Check if Bluetooth automation has not been set up yet
+	if systemctl is-enabled --quiet bluetooth.service; then
+		echo "Arch Linux: Bluetooth automation is already set up"
+		exit 2
+	else
+		# Run on boot
+		sudo systemctl enable bluetooth.service
+
+		# Start immediately
+		sudo systemctl start bluetooth.service
+	fi
+}
+
+show_spinner "configure_bluetooth" "Arch Linux: Checking if Bluetooth automation is set up" "Arch Linux: Set up Bluetooth automation"
