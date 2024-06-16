@@ -16,7 +16,7 @@ configure_greetd() {
 	fi
 
 	# Ensure the greetd will run on boot
-	if ! systemctl is-enabled --quiet reflector.service; then
+	if ! systemctl is-enabled --quiet greetd.service; then
 		sudo systemctl enable greetd.service
 	fi
 
