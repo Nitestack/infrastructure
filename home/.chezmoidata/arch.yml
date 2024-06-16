@@ -7,12 +7,14 @@ packages:
   arch:
     pacman:
       - "arc-gtk-theme" # System theme
-      - "brightnessctl" # Required dependency for ags
+      - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
       - "dconf-editor"
+      - "ddcutil" # Required for `ddcci-driver-linux`
       - "greetd" # Display manager
       - "hypridle" # Idle daemon for Hyprland
       - "hyprpaper" # Wallpaper utility for Hyprland
+      - "i2c-tools" # Required for `ddcutil`
       - "man-db"
       - "man-pages-de"
       - "pacman-contrib"
@@ -23,6 +25,7 @@ packages:
       - "wireplumber" # Volume control
     paru:
       - "aylurs-gtk-shell" # ags
+      - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "greetd-qtgreet" # Greeter for greetd
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+configure_brightness() {
+	# Check if i2c_dev is loaded
+	if ! ls /dev/i2c-* >&/dev/null; then
+		echo "i2c_dev" | sudo tee "/etc/modules-load.d/i2c.conf"
+		echo "Arch Linux: A reboot is required to load i2c_dev"
+		exit 1
+	fi
+
+	# Extract the device number using ddcutil
+	device_number=$(ddcutil detect | grep -oE 'i2c-[0-9]+')
+
+	# Check if the ddcci kernel module is loaded
+	if ! lsmod | grep -q '^ddcci'; then
+		# Load the ddcci kernel module
+		sudo modprobe ddcci
+	fi
+
+	# Check if device number is found
+	if [[ -n "${device_number}" ]]; then
+		# Attempt to create the new device entry
+		if ! echo "ddcci 0x37" | sudo tee "/sys/bus/i2c/devices/${device_number}/new_device" >/dev/null 2>&1; then
+			echo "Arch Linux: Device entry already exists"
+			exit 2
+		fi
+	else
+		echo "Arch Linux: Failed to find ddcci device number"
+		exit 1
+	fi
+}
+
+show_spinner "configure_brightness" "Arch Linux: Checking if brightness controls are configured" "Arch Linux: Configured brightness controls"
