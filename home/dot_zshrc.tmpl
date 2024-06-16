@@ -133,3 +133,13 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # Load fzf (must stay on the end)
 source <(fzf --zsh)
+
+# fastfetch
+if [[ $(tty) == *"pts"* ]]; then
+  fastfetch
+else
+  echo
+  if [ -f /bin/hyprctl ]; then
+    echo "Start Hyprland with command Hyprland"
+  fi
+fi
