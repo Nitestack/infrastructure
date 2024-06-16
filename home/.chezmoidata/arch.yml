@@ -21,12 +21,12 @@ packages:
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
       - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
       - "wireplumber" # Volume control
-      - "wl-clip-persist" # Persistent clipboard
     paru:
       - "aylurs-gtk-shell" # ags
       - "greetd-qtgreet" # Greeter for greetd
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags
+      - "wl-clip-persist" # Persistent clipboard
 apps:
   arch:
     pacman:
