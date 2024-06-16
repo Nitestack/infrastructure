@@ -19,6 +19,7 @@ packages:
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
       - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
       - "wireplumber" # Volume control
+      - "wl-clip-persist" # Persistent clipboard
     paru:
       - "aylurs-gtk-shell" # ags
       - "greetd-qtgreet" # Greeter for greetd
