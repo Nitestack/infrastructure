@@ -118,6 +118,7 @@ return {
   },
   {
     "echasnovski/mini.pairs",
+    keys = { ":", "/", "?" },
     event = function()
       return { "LazyFile" }
     end,
