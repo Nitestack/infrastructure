@@ -7,6 +7,8 @@ packages:
   arch:
     pacman:
       - "arc-gtk-theme" # System theme
+      - "brightnessctl" # Required dependency for ags
+      - "dart-sass" # Required dependency for ags
       - "dconf-editor"
       - "man-db"
       - "man-pages-de"
@@ -19,6 +21,7 @@ packages:
     paru:
       - "aylurs-gtk-shell" # ags
       - "playerctld-systemd-unit" # playerctld automation
+      - "swww" # Required dependency for ags
 apps:
   arch:
     pacman:
