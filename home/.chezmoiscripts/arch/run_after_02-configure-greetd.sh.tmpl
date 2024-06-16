@@ -6,18 +6,14 @@
 true || source "../../.chezmoitemplates/bash-library.sh"
 
 configure_greetd() {
-	# Ensure greetd is installed
-	if ! pacman -Qi "greetd" &>/dev/null; then
-		sudo pacman -S --needed "greetd"
-	fi
-	# Ensure qtgreet is installed
-	if ! paru -Qi "greetd-qtgreet" &>/dev/null; then
-		paru -S --needed "greetd-qtgreet"
-	fi
-
 	# Ensure the greetd will run on boot
 	if ! systemctl is-enabled --quiet greetd.service; then
 		sudo systemctl enable greetd.service
+	fi
+
+	if [[ -f "/etc/greetd/config.toml" ]] && [[ -f "/etc/greetd/hyprland.conf" ]] && [[ -f "/etc/greetd/environments" ]]; then
+		echo "Arch Linux: greetd is already set up"
+		exit 2
 	fi
 
 	# Create /etc/greetd/config.toml

@@ -10,6 +10,7 @@ packages:
       - "brightnessctl" # Required dependency for ags
       - "dart-sass" # Required dependency for ags
       - "dconf-editor"
+      - "greetd" # Display manager
       - "man-db"
       - "man-pages-de"
       - "pacman-contrib"
@@ -20,6 +21,7 @@ packages:
       - "wireplumber" # Volume control
     paru:
       - "aylurs-gtk-shell" # ags
+      - "greetd-qtgreet" # Greeter for greetd
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags
 apps:
