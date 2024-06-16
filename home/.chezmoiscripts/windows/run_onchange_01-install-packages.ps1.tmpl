@@ -22,7 +22,7 @@ _Log -l info "Installing essential packages"
 
 # ── winget ────────────────────────────────────────────────────────────
 Write-Output "# winget:" | gum format
-_Install-PackagesWinget "{{- $essentialPackages | join "`" `"" -}}"
+_Install-PackagesWinget "{{- $essentialPackages | join "\", \"" -}}"
 
 # ── custom ────────────────────────────────────────────────────────────
 Write-Output "# custom:" | gum format
@@ -61,17 +61,18 @@ else {
 }
 # {{ end }}
 
-Write-CompleteTask "Installed essential packages"
+Write-Host
+_Log -l info "Installed essential packages"
 
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install packages                                         │
 # ╰──────────────────────────────────────────────────────────╯
-Write-StartTask "Installing packages"
+_Log -l info "Installing packages"
 
 # {{ $packages := list }}
 # {{ $customPackages := list }}
 # {{ range .packages.common }}
-#   {{ if and (eq $os "win") (hasKey . "win") }}
+#   {{ if and (eq $os "windows") (hasKey . "win") }}
 #     {{ if eq "string" (printf "%T" .win) }}
 #       {{ $packages = mustAppend $packages .win }}
 #     {{ else if .win.custom }}
@@ -81,14 +82,15 @@ Write-StartTask "Installing packages"
 #     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
 #   {{ end }}
 # {{ end }}
+# {{ $packages = concat $packages .packages.win.winget }}
 
 # ── winget ────────────────────────────────────────────────────────────
 Write-Output "# winget:" | gum format
-_Install-PackagesWinget "{{- $packages | join "`" `"" -}}"
+_Install-PackagesWinget "{{- $packages | join "\", \"" -}}"
 
 # ── PowerShell Gallery ────────────────────────────────────────────────
 Write-Output "# PowerShell Gallery:" | gum format
-_Install-PackagesGallery "{{- .packages.win.modules | uniq | sortAlpha | join "`" `"" -}}"
+_Install-PackagesGallery "{{- .packages.win.modules | uniq | sortAlpha | join "\" \"" -}}"
 
 # ── custom ────────────────────────────────────────────────────────────
 Write-Output "# custom:" | gum format
