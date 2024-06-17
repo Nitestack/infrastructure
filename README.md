@@ -5,8 +5,7 @@
   Cross-Platform & Cross-Shell Dotfiles
   <br/>
   <sup>
-    <sub>Powered by a cross-platform CLI and chezmoi
-    </sub>
+    <sub>Powered by chezmoi</sub>
   </sup>
 </h1>
 
@@ -14,9 +13,9 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
 ![Github Created At](https://img.shields.io/github/created-at/Nitestack/dotfiles?style=for-the-badge)
 
-[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Credits](#-credits) • [License](#-license)
+[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
 
-_Universal command set and vibrant shell configurations for [Zsh](https://zsh.org) and [PowerShell](https://learn.microsoft.com/powershell). Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos) and [Arch Linux](https://archlinux.org), these configurations are effortlessly managed using a [cross-platform CLI](scripts) customized specifically for the needs of this repository, alongside [chezmoi](https://chezmoi.io) for seamless synchronization._
+_Universal command set and vibrant configurations. Compatible with [Windows](https://microsoft.com/windows), [macOS](https://apple.com/macos) and [Arch Linux](https://archlinux.org), these configurations are effortlessly managed using [chezmoi](https://chezmoi.io) for seamless synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -27,7 +26,6 @@ _Universal command set and vibrant shell configurations for [Zsh](https://zsh.or
 
 The major features of this repository are:
 
-- [**CLI**](scripts) tailored to this repository with a native [PowerShell](scripts/windows/dotfiles.ps1) and [Bash](scripts/unix/dotfiles) version (cross-platform)
 - [**Neovim**](home/private_dot_config/exact_nvim) Configuration powered by [LazyVim](https://lazyvim.org) (cross-platform)
 - [**WezTerm**](home/private_dot_config/exact_wezterm) Configuration with Neovim workflow integration (cross-platform)
 - [**Visual Studio Code**](home/.chezmoitemplates/Code/User) Configuration (cross-platform)
@@ -56,99 +54,52 @@ Some of the additional features are:
   - [Windows](https://microsoft.com/windows)
   - [macOS](https://apple.com/macos)
   - [Arch Linux](https://archlinux.org)
-- **Font:** a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
+- **Font:** a Sans Font of choice, a Monospace Font of choice, a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
 - **Commands:**
   - [git](https://git-scm.com/downloads)
   - [chezmoi](https://chezmoi.io/install)
   - **UNIX only:** [wget](https://gnu.org/software/wget) or [curl](https://curl.se/download.html) installed
-  - **Windows only:** [pwsh](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
+  - **Windows only:** [pwsh (PowerShell Core)](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
 
 ## 🏁 Getting Started
 
-First you need to install the [`dotfiles`](scripts) CLI. Simply run the following command in your terminal:
+Use the install script to bootstrap your environment. Simply run the following command in your terminal:
 
 #### Bash
 
 ```sh
-wget -O ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/unix/dotfiles
+bash -c "$(wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.sh)"
 ```
 
 > We use `wget` here because it comes preinstalled with most UNIX operating systems. But you can also use `curl`:
 >
 > ```sh
-> curl -o ~/.local/bin/dotfiles https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/unix/dotfiles
+> bash -c "$(curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.sh)"
 > ```
 
-To make it executable, run:
+To pass environment variables:
 
 ```sh
-chmod +x ~/.local/bin/dotfiles
+BRANCH="beta" bash -c "$(wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.sh)"
 ```
-
-> :warning: **Make sure to add the `~/.local/bin` directory to your `$PATH` variable or use another location.**
-> Use the following command to append `~/.local/bin` to your `$PATH` variable in your Bash/Zsh config (`~/.bashrc` or `~/.zshrc`).
-
-> ```sh
-> echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.zshrc
-> ```
->
-> Or manually add the following line to your Bash/Zsh config:
->
-> ```bash
-> export PATH="$PATH:$HOME/.local/bin"
-> ```
 
 #### PowerShell Core
 
 ```pwsh
-iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/windows/dotfiles.ps1 -OutFile $env:USERPROFILE\.local\bin\dotfiles.ps1
+iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps1 | iex
 ```
 
-> :warning: **Make sure to add the `$env:USERPROFILE\.local\bin` directory to your `PATH` or use another location.**
-> Use the following command to append `$env:USERPROFILE\.local\bin` to your `PATH` in your PowerShell config (`$PROFILE`).
->
-> ```pwsh
-> Add-Content -Path $PROFILE -Value "`r`n`$env:PATH += `";`$env:USERPROFILE\.local\bin`""
-> ```
->
-> Or manually add the following line to your PowerShell config:
->
-> ```ps1
-> $env:PATH += ";$env:USERPROFILE\.local\bin"
-> ```
->
-> Alternatively, you can use the following command to permanently add it to your `PATH` environment variable, if it's not already there (therefore you don't need to add it into your PowerShell config).
->
-> ```pwsh
-> if (!([System.Environment]::GetEnvironmentVariable("PATH", "User").Split(";") -contains "$env:USERPROFILE\.local\bin")) { [System.Environment]::SetEnvironmentVariable("PATH", "$([System.Environment]::GetEnvironmentVariable('PATH', 'User'));$env:USERPROFILE\.local\bin", "User") }
-> ```
+To pass environment variables:
 
----
+```pwsh
+iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps1 | iex -Branch "beta"
+```
 
-Now you can run `dotfiles download` and `dotfiles install` to download and install the dotfiles. Run `dotfiles -h` to see the available commands.
+#### Environment Variables
 
-> :bulb: **The -h flag works on Windows and UNIX!**
-
-## 📚 Documentation
-
-### CLI
-
-The UNIX CLI version of `dotfiles` was created with [`Bashly`](https://bashly.dannyb.co).
-The Windows CLI version of `dotfiles` was created with native [PowerShell](https://learn.microsoft.com/powershell).
-
-Because PowerShell and Bash are so different from each other, the command flags will have minor differences.
-
-The convention for UNIX-style CLI's is to use `-` for short flags and `--` for long flags. It uses the `kebab-case` if it is a long flag.
-For example, `dotfiles -h` and `dotfiles --help` are the same command.
-
-The convention for PowerShell is to use only `-`, but for short and long flags. It uses the `PascalCase` if it is a long flag.
-For example, `dotfiles -h` and `dotfiles -Help` or even `Get-Help dotfiles` are the same command.
-
-> :bulb: **As you might have noticed, the `-h` flag works on both Windows and UNIX!**
-
-> :bulb: **The short flags (if any) also work on both Windows and UNIX!**
-
-Other than these conventions, the Bash version of `dotfiles` is equal to the Windows version. They come with the same commands and flags.
+- `BRANCH` (Bash) or `-Branch` (PowerShell) - The branch you want to install. Defaults to `master`.
+- `SSH` (Bash) or `-SSH` (PowerShell) - Whether or not you want to install the dotfiles with SSH. Defaults to `false`.
+- `ONE_SHOT` (Bash) or `-OneShot` (PowerShell) - Install your dotfiles and then remove all traces of chezmoi from the system. This is useful for setting up temporary environments (e.g. Docker containers). Defaults to `false`.
 
 ## 🙌 Credits
 
