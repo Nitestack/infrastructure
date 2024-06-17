@@ -7,7 +7,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 _log -l info "Starting the update process for Neovim and its plugins"
 
-if gum confirm "Proceed with the updates?"; then
+if gum confirm "Proceed with the updates?" --default=false; then
 	_spin "Updating Neovim" -- bob update --all
 	_log -l info "Updated Neovim"
 

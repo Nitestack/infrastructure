@@ -2,7 +2,7 @@
 
 _Log -l info "Starting the update process for Neovim and its plugins"
 
-gum confirm "Proceed with the updates?"
+gum confirm "Proceed with the updates?" --default=false
 if ($?) {
   bob update --all
   _Log -l info "Updated Neovim"
