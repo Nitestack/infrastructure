@@ -18,6 +18,8 @@ packages:
     - name: "python"
       arch: "python"
       win: "Python.Python.3.12"
+    - name: "pip"
+      arch: "python-pip"
     - name: "ruby"
       arch: "ruby"
       mac: "ruby"
