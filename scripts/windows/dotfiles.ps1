@@ -150,12 +150,6 @@ function Invoke-EnsureGitInstalled() {
 function Invoke-EnsureChezmoiInstalled() {
   Invoke-EnsureInstalled -Command "chezmoi" -Message "Visit 'https://www.chezmoi.io/install' to install chezmoi"
 }
-function Invoke-EnsureNeovimInstalled() {
-  Invoke-EnsureInstalled -Command "nvim" -Message "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires `bob` to be installed)"
-}
-function Invoke-EnsureBobInstalled() {
-  Invoke-EnsureInstalled -Command "bob" -Message "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires `cargo` to be installed)"
-}
 
 # ── Commands ──────────────────────────────────────────────────────────
 
@@ -294,11 +288,7 @@ USAGE:
     [Alias("l")]
     [Switch]$Local,
 
-    [Switch]$CLI,
-
-    [Alias("n")]
-    [Alias("nvim")]
-    [Switch]$Neovim
+    [Switch]$CLI
   )
 
   Write-StartTask "Updating dotfiles"
@@ -335,85 +325,6 @@ USAGE:
       }
 
       Copy-Item -Path "$UpdatedScriptDir" -Destination "$ScriptDir" -Force || throw "Failed to sync 'dotfiles.ps1' file"
-    }
-  }
-
-  # Update Neovim related files
-  if ($Neovim) {
-    # Update Neovim
-    Show-Spinner -StartMessage "Updating Neovim" -CompletionMessage "Updated Neovim" -ScriptBlock {
-      bob update --all || throw "Failed to update Neovim"
-    }
-
-    # Update Lazy plugins and Mason packages
-    Show-Spinner -StartMessage "Updating Neovim plugins" -CompletionMessage "Updated Neovim plugins" -ScriptBlock {
-      nvim --headless -c "Lazy! sync" +qa || throw "Failed to update Neovim plugins"
-    }
-
-    Show-Spinner -StartMessage "Updating Mason packages" -CompletionMessage "Updated Mason packages" -ScriptBlock {
-      nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)" || throw "Failed to update Mason packages"
-    }
-
-    # Sync lazy-lock.json file
-    Show-Spinner -StartMessage "Syncing 'lazy-lock.json' file" -CompletionMessage "Synced 'lazy-lock.json' file" -ScriptBlock {
-      $SourcePath = chezmoi source-path
-      $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
-      if ([string]::IsNullOrEmpty($LazyLockPath)) {
-        throw "Could not find 'lazy-lock.json' file in '$SourcePath'"
-      }
-      $ConfigPath = "$env:LOCALAPPDATA\nvim"
-      $UpdatedLazyLockPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazy-lock.json" -File | Select-Object -First 1).FullName
-      if ([string]::IsNullOrEmpty($UpdatedLazyLockPath)) {
-        throw "Could not find 'lazy-lock.json' file in '$ConfigPath'"
-      }
-      Copy-Item -Path "$UpdatedLazyLockPath" -Destination "$LazyLockPath" -Force || throw "Failed to sync 'lazy-lock.json' file"
-    }
-
-    # Commit the updated 'lazy-lock.json' file
-    Show-Spinner -StartMessage "Committing 'lazy-lock.json' file" -CompletionMessage "Committed 'lazy-lock.json' file" -ScriptBlock {
-      $SourcePath = chezmoi source-path
-      $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
-      $CurrentPath = Get-Location
-      Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || throw "Failed to set current path to '$(chezmoi source-path)/..'"
-      # Check if there are any changes
-      Invoke-Expression "git diff --quiet -- $LazyLockPath"
-      if ($LASTEXITCODE -eq 0) {
-        return ":No changes in 'lazy-lock.json' file"
-      }
-      git add "$LazyLockPath" || throw "Failed to add 'lazy-lock.json' file to git"
-      git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json" || throw "Failed to commit 'lazy-lock.json' file"
-      Set-Location "$CurrentPath" || throw "Failed to set current path to '$CurrentPath'"
-    }
-
-    # Sync lazyvim.json file
-    Show-Spinner -StartMessage "Syncing 'lazyvim.json' file" -CompletionMessage "Synced 'lazyvim.json' file" -ScriptBlock {
-      $SourcePath = chezmoi source-path
-      $LazyvimPath = (Get-ChildItem -Path $SourcePath -Filter "*lazyvim.json" -File -Recurse | Select-Object -First 1).FullName
-      if ([string]::IsNullOrEmpty($LazyvimPath)) {
-        throw "Could not find 'lazyvim.json' file in '$SourcePath'"
-      }
-      $ConfigPath = "$env:LOCALAPPDATA\nvim"
-      $UpdatedLazyvimPath = (Get-ChildItem -Path $ConfigPath -Filter "*lazyvim.json" -File | Select-Object -First 1).FullName
-      if ([string]::IsNullOrEmpty($UpdatedLazyvimPath)) {
-        throw "Could not find 'lazyvim.json' file in '$ConfigPath'"
-      }
-      Copy-Item -Path "$UpdatedLazyvimPath" -Destination "$LazyvimPath" -Force || throw "Failed to sync 'lazyvim.json' file"
-    }
-
-    # Commit the updated 'lazyvim.json' file
-    Show-Spinner -StartMessage "Committing 'lazyvim.json' file" -CompletionMessage "Committed 'lazyvim.json' file" -ScriptBlock {
-      $SourcePath = chezmoi source-path
-      $LazyvimPath = (Get-ChildItem -Path $SourcePath -Filter "*lazyvim.json" -File -Recurse | Select-Object -First 1).FullName
-      $CurrentPath = Get-Location
-      Set-Location "$(Resolve-Path "$(chezmoi source-path)/..")" || throw "Failed to set current path to '$(chezmoi source-path)/..'"
-      # Check if there are any changes
-      Invoke-Expression "git diff --quiet -- $LazyvimPath"
-      if ($LASTEXITCODE -eq 0) {
-        return ":No changes in 'lazyvim.json' file"
-      }
-      git add "$LazyvimPath" || throw "Failed to add 'lazyvim.json' file to git"
-      git commit "$LazyvimPath" -m "chore(nvim): update lazyvim.json" || throw "Failed to commit 'lazyvim.json' file"
-      Set-Location "$CurrentPath" || throw "Failed to set current path to '$CurrentPath'"
     }
   }
 }
@@ -517,8 +428,6 @@ switch ($Command) {
     Invoke-Expression "Invoke-Install $Rest"
   }
   "update" {
-    Invoke-EnsureNeovimInstalled
-    Invoke-EnsureBobInstalled
     if ($Help) {
       Get-Help Invoke-Update -Full
       exit

@@ -219,10 +219,6 @@ dotfiles_update_usage() {
     printf "    Update the CLI itself. This defaults to false.\n"
     echo
 
-    printf "  %s\n" "--nvim"
-    printf "    Update Neovim plugins, Mason packages and sync lazy-lock.json file if it\n    exists.\n"
-    echo
-
     printf "  %s\n" "--help, -h"
     printf "    Show this help\n"
     echo
@@ -385,7 +381,7 @@ send_completions() {
   echo $'      ;;'
   echo $''
   echo $'    \'update\'*)'
-  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "--cli --help --local --nvim --refresh-externals -R -h -l")" -- "$cur" )'
+  echo $'      while read -r; do COMPREPLY+=( "$REPLY" ); done < <( compgen -W "$(_dotfiles_completions_filter "--cli --help --local --refresh-externals -R -h -l")" -- "$cur" )'
   echo $'      ;;'
   echo $''
   echo $'    \'edit\'*)'
@@ -604,84 +600,6 @@ dotfiles_update_command() {
   	}
 
   	show_spinner "update_cli" "Updating CLI" "Updated CLI"
-  fi
-
-  if [[ -n "${args["--nvim"]}" ]]; then
-  	update_neovim() {
-  		bob update --all
-  	}
-  	show_spinner "update_neovim" "Updating Neovim" "Updated Neovim"
-
-  	update_neovim_plugins() {
-  		nvim --headless -c "Lazy! sync" +qa
-  	}
-  	show_spinner "update_neovim_plugins" "Updating Neovim plugins" "Updated Neovim plugins"
-
-  	update_mason_packages() {
-  		nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)"
-  	}
-  	show_spinner "update_mason_packages" "Updating Mason packages" "Updated Mason packages"
-
-  	source_path=$(chezmoi source-path)
-  	lazy_lock_path=$(find "${source_path}" -type f -name "*lazy-lock.json" -print -quit)
-  	sync_lazy_lock() {
-  		if [[ ! -f "${lazy_lock_path}" ]]; then
-  			echo "Could not find 'lazy-lock.json' file in '${source_path}'"
-  			exit 1
-  		fi
-  		config_path="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
-  		updated_lazy_lock_path=$(find "${config_path}" -type f -name "*lazy-lock.json" -print -quit)
-  		if [[ ! -f "${updated_lazy_lock_path}" ]]; then
-  			echo "Could not find 'lazy-lock.json' file in '${config_path}'"
-  			exit 1
-  		fi
-  		cp -f "${updated_lazy_lock_path}" "${lazy_lock_path}"
-  	}
-  	show_spinner "sync_lazy_lock" "Syncing 'lazy-lock.json' file" "Synced 'lazy-lock.json' file"
-
-  	commit_lazy_lock() {
-  		current_path=$(pwd)
-  		cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
-  		# Check if there are any changes
-  		if git diff --quiet "${lazy_lock_path}"; then
-  			echo "No changes in 'lazy-lock.json' file"
-  			exit 2
-  		fi
-  		git add "${lazy_lock_path}"
-  		git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
-  		cd "${current_path}" || exit 1
-  	}
-  	show_spinner "commit_lazy_lock" "Committing 'lazy-lock.json' file" "Committed 'lazy-lock.json' file"
-
-  	lazyvim_path=$(find "${source_path}" -type f -name "*lazyvim.json" -print -quit)
-  	sync_lazyvim() {
-  		if [[ ! -f "${lazyvim_path}" ]]; then
-  			echo "Could not find 'lazyvim.json' file in '${source_path}'"
-  			exit 1
-  		fi
-  		config_path="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
-  		updated_lazyvim_path=$(find "${config_path}" -type f -name "*lazyvim.json" -print -quit)
-  		if [[ ! -f "${updated_lazyvim_path}" ]]; then
-  			echo "Could not find 'lazyvim.json' file in '${config_path}'"
-  			exit 1
-  		fi
-  		cp -f "${updated_lazyvim_path}" "${lazyvim_path}"
-  	}
-  	show_spinner "sync_lazyvim" "Syncing 'lazyvim.json' file" "Synced 'lazyvim.json' file"
-
-  	commit_lazyvim() {
-  		current_path=$(pwd)
-  		cd "$(realpath "$(chezmoi source-path)/..")" || exit 1
-  		# Check if there are any changes
-  		if git diff --quiet "${lazyvim_path}"; then
-  			echo "No changes in 'lazyvim.json' file"
-  			exit 2
-  		fi
-  		git add "${lazyvim_path}"
-  		git commit "${lazyvim_path}" -m "chore(nvim): update lazyvim.json"
-  		cd "${current_path}" || exit 1
-  	}
-  	show_spinner "commit_lazyvim" "Committing 'lazyvim.json' file" "Committed 'lazyvim.json' file"
   fi
 
 }
@@ -1060,22 +978,6 @@ dotfiles_update_parse_requirements() {
     esac
   done
 
-  if command -v nvim >/dev/null 2>&1; then
-    deps['nvim']="$(command -v nvim | head -n1)"
-  else
-    printf "missing dependency: nvim\n" >&2
-    printf "%s\n" "Run 'bob install stable' (or 'bob install nightly' for the nightly release of Neovim) (note that this requires \`bob\` to be installed)" >&2
-    exit 1
-  fi
-
-  if command -v bob >/dev/null 2>&1; then
-    deps['bob']="$(command -v bob | head -n1)"
-  else
-    printf "missing dependency: bob\n" >&2
-    printf "%s\n" "Run 'pacman -S bob' if you are on Arch Linux or otherwise 'cargo install bob-nvim' to install bob (note that this requires \`cargo\` to be installed)" >&2
-    exit 1
-  fi
-
   action="update"
 
   while [[ $# -gt 0 ]]; do
@@ -1103,12 +1005,6 @@ dotfiles_update_parse_requirements() {
       --cli)
 
         args['--cli']=1
-        shift
-        ;;
-
-      --nvim)
-
-        args['--nvim']=1
         shift
         ;;
 
