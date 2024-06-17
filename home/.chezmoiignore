@@ -17,6 +17,8 @@ Documents
 {{ if ne .osid "linux-arch" }}
 .chezmoiscripts/arch/**
 
+Pictures
+
 .config/ags
 .config/bat
 .config/Code
