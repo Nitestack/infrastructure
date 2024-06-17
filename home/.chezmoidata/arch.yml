@@ -11,7 +11,6 @@ packages:
       - "bluez-utils" # Bluetooth
       - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
-      - "dconf-editor"
       - "ddcutil" # Required for `ddcci-driver-linux`
       - "greetd" # Display manager
       - "hypridle" # Idle daemon for Hyprland
@@ -25,10 +24,12 @@ packages:
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
       - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
       - "wireplumber" # Volume control
+      - "xdg-user-dirs"
     paru:
       - "aylurs-gtk-shell" # ags
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "greetd-qtgreet" # Greeter for greetd
+      - "hyprpicker-git" # Required dependency for ags
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags
       - "wl-clip-persist" # Persistent clipboard
@@ -37,6 +38,7 @@ apps:
     pacman:
       - "bitwarden"
       - "code" # Visual Studio Code
+      - "dconf-editor"
       - "docker"
       - "firefox-developer-edition"
       - "gnome-calculator"
@@ -46,6 +48,7 @@ apps:
       - "nautilus" # File Manager
       - "spotifyd"
       - "wezterm"
+      - "vlc"
     paru:
       - "android-studio"
       - "webcord" # Discord
