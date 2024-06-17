@@ -26,16 +26,16 @@ if (Test-Path "$Target") {
   $Path = Resolve-Path "$Target"
   $Git = "git -C $Path"
   # Ensure that the remote is set to the correct URL
-  if (Invoke-CommandExpression "$Git remote | Select-String `"^origin$`" -Quiet") {
-    Invoke-CommandExpression "$Git remote set-url origin $Remote"
+  if (Invoke-Expression "$Git remote | Select-String `"^origin$`" -Quiet") {
+    Invoke-Expression "$Git remote set-url origin $Remote"
   }
   else {
-    Invoke-CommandExpression "$Git remote add origin $Remote"
+    Invoke-Expression "$Git remote add origin $Remote"
   }
-  Invoke-CommandExpression "$Git checkout -B $Branch"
-  Invoke-CommandExpression "$Git fetch origin $Branch"
-  Invoke-CommandExpression "$Git reset --hard FETCH_HEAD"
-  Invoke-CommandExpression "$Git clean -fdx"
+  Invoke-Expression "$Git checkout -B $Branch"
+  Invoke-Expression "$Git fetch origin $Branch"
+  Invoke-Expression "$Git reset --hard FETCH_HEAD"
+  Invoke-Expression "$Git clean -fdx"
 }
 else {
   git clone -b $Branch $Remote $Target
