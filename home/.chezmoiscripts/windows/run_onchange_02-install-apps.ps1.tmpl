@@ -2,9 +2,19 @@
 
 _Log -l info "Installing apps"
 
+# {{ $apps := list }}
+# {{ range .apps.common }}
+#   {{ if hasKey . "win" }}
+#     {{ if eq "string" (printf "%T" .win) }}
+#       {{ $apps = mustAppend $apps .win }}
+#     {{ end }}
+#   {{ end }}
+# {{ end }}
+# {{ $apps := concat $apps .apps.win.winget | uniq }}
+
 # ── winget ────────────────────────────────────────────────────────────
 Write-Output "# winget:" | gum format
-_Install-PackagesWinget "{{- .apps.win.winget | uniq | join "\", \"" -}}"
+_Install-PackagesWinget "{{- $apps | join "\", \"" -}}"
 
 Write-Host
 _Log -l info "Installed apps"

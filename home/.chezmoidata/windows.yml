@@ -16,23 +16,10 @@ apps:
   win:
     winget:
       - "Guru3D.Afterburner"
-      - "Google.AndroidStudio"
-      - "TheBrowserCompany.Arc"
-      - "Bitwarden.Bitwarden"
-      - "Discord.Discord"
-      - "Docker.DockerDesktop"
-      - "Figma.Figma"
       - "MicaForEveryone.MicaForEveryone"
-      - "Notion.Notion"
-      - "PDFgear.PDFgear"
       - "Microsoft.PowerToys"
       - "Nilesoft.Shell"
-      - "Readdle.Spark"
-      - "9NCBCSZSJRSB" # Spotify Music (installed from Microsoft Store)
-      - "Microsoft.VisualStudioCode"
       - "Microsoft.VisualStudio.2022.Community"
-      - "wez.wezterm"
-      - "9NKSQGP7F2NH" # WhatsApp (installed from Microsoft Store)
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     manual:
       - "AnkerWork"

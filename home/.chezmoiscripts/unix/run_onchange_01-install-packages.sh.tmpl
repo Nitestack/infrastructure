@@ -23,10 +23,10 @@ _log -l info "Installing essential packages"
 #   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
 #     {{ if eq "string" (printf "%T" .arch) }}
 #       {{ $essentialPackages = mustAppend $essentialPackages .arch }}
-#     {{ else if .arch.custom }}
+#     {{ else if hasKey .arch "custom" }}
 #       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .arch.custom) }}
 #     {{ end }}
-#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") .mac.custom) }}
+#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
 #     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .mac.custom) }}
 #   {{ else if hasKey . "custom" }}
 #     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
@@ -79,10 +79,10 @@ _log -l info "Installing packages"
 #   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
 #     {{ if eq "string" (printf "%T" .arch) }}
 #       {{ $packages = mustAppend $packages .arch }}
-#     {{ else if .arch.custom }}
+#     {{ else if hasKey .arch "custom" }}
 #       {{ $customPackages = mustAppend $customPackages (dict .name .arch.custom) }}
 #     {{ end }}
-#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") .mac.custom) }}
+#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
 #     {{ $customPackages = mustAppend $customPackages (dict .name .mac.custom) }}
 #   {{ else if hasKey . "custom" }}
 #     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
