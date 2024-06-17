@@ -8,13 +8,6 @@ function _Log {
   gum log -s $Args
 }
 
-function _Spin {
-  param([String]$Title, [Parameter(Position = 1, ValueFromRemainingArguments = $true)]
-    $Rest)
-
-  gum spin --show-error --spinner points --title $Title $Rest
-}
-
 function _Install-PackagesWinget {
   param([string[]]$Packages)
 

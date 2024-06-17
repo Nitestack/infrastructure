@@ -2,24 +2,25 @@
 
 _Log -l info "Starting the update process for Neovim and its plugins"
 
-if (gum confirm "Proceed with the updates?") {
-  Invoke-Expression '_Spin "Updating Neovim" -- bob update --all'
-	_Log -l info "Updated Neovim"
+gum confirm "Proceed with the updates?"
+if ($?) {
+  bob update --all
+  _Log -l info "Updated Neovim"
 
-	Write-Host
-  Invoke-Expression '_Spin "Updating Neovim plugins" -- nvim --headless -c "Lazy! sync" +qa'
-	_Log -l info "Updated Neovim plugins"
+  Write-Host
+  nvim --headless -c "Lazy! sync" +qa
+  _Log -l info "Updated Neovim plugins"
 
-	Write-Host
-  Invoke-Expression "_Spin `"Updating Mason packages`" -- nvim --headless -c `"lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)`""
-	_Log -l info "Updated Mason packages"
+  Write-Host
+  nvim --headless -c "lua vim.schedule(function() vim.api.nvim_create_autocmd('User', { pattern = 'MasonToolsUpdateCompleted', command = 'qa' }); require('mason-tool-installer').check_install(true) end)"
+  _Log -l info "Updated Mason packages"
 
-	$SourcePath = chezmoi source-path
+  $SourcePath = chezmoi source-path
   $ConfigPath = "$env:LOCALAPPDATA\nvim"
   $CurrentPath = Get-Location
 
-	Write-Host
-	_Log -l info "Checking if lazy-lock.json has changed and commit"
+  Write-Host
+  _Log -l info "Checking if lazy-lock.json has changed and commit"
   $LazyLockPath = (Get-ChildItem -Path $SourcePath -Filter "*lazy-lock.json" -File -Recurse | Select-Object -First 1).FullName
   if ([string]::IsNullOrEmpty($LazyLockPath)) {
     _Log -l error "Could not find lazy-lock.json file in $SourcePath"
@@ -44,8 +45,8 @@ if (gum confirm "Proceed with the updates?") {
     _Log -l info "Committed updated lazy-lock.json file"
   }
 
-	Write-Host
-	_Log -l info "Checking if lazyvim.json has changed and commit"
+  Write-Host
+  _Log -l info "Checking if lazyvim.json has changed and commit"
   $LazyvimPath = (Get-ChildItem -Path $SourcePath -Filter "*lazyvim.json" -File -Recurse | Select-Object -First 1).FullName
   if ([string]::IsNullOrEmpty($LazyvimPath)) {
     _Log -l error "Could not find lazyvim.json file in $SourcePath"
@@ -70,8 +71,8 @@ if (gum confirm "Proceed with the updates?") {
     _Log -l info "Committed updated lazyvim.json file"
   }
 
-	_Log -l info "Completed updates"
+  _Log -l info "Completed updates"
 }
 else {
-	_Log -l warn "Cancelled update process"
+  _Log -l warn "Cancelled update process"
 }
