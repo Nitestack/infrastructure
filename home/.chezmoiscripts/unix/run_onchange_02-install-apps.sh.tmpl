@@ -22,18 +22,21 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 #     {{ end }}
 #   {{ end }}
 # {{ end }}
-# {{ $pacmanApps = concat $pacmanApps .apps.arch.pacman | uniq | sortAlpha }}
-# {{ $paruApps = concat $paruApps .apps.arch.paru | uniq | sortAlpha }}
+# {{ if hasKey .apps.arch "pacman" }}
+# {{   $pacmanApps = concat $pacmanApps .apps.arch.pacman }}
+# {{ else if hasKey .apps.arch "paru" }}
+# {{   $paruApps = concat $paruApps .apps.arch.paru  }}
+# {{ end }}
 
 _log -l info "Installing apps"
 
 # ── pacman ────────────────────────────────────────────────────────────
 gum format -- "# pacman:"
-_install_packages_pacman "{{- $pacmanApps | join "\" \""  -}}"
+_install_packages_pacman "{{- $pacmanApps | uniq | sortAlpha | join "\" \""  -}}"
 
 # ── paru ───────────────────────────────────────────────────────────────
 gum format -- "# paru:"
-_install_packages_paru "{{- $paruApps | join "\" \""  -}}"
+_install_packages_paru "{{- $paruApps | uniq | sortAlpha | join "\" \""  -}}"
 
 echo
 _log -l info "Installed apps"

@@ -10,11 +10,13 @@ _Log -l info "Installing apps"
 #     {{ end }}
 #   {{ end }}
 # {{ end }}
-# {{ $apps := concat $apps .apps.win.winget | uniq }}
+# {{ if hasKey .apps.win "winget" }}
+# {{ $apps := concat $apps .apps.win.winget }}
+# {{ end }}
 
 # ── winget ────────────────────────────────────────────────────────────
 Write-Output "# winget:" | gum format
-_Install-PackagesWinget "{{- $apps | join "\", \"" -}}"
+_Install-PackagesWinget "{{- $apps | uniq | join "\", \"" -}}"
 
 Write-Host
 _Log -l info "Installed apps"
