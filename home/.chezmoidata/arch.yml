@@ -14,6 +14,7 @@ packages:
       - "ddcutil" # Required for `ddcci-driver-linux`
       - "greetd" # Display manager
       - "hypridle" # Idle daemon for Hyprland
+      - "hyprlock" # Lock screen for Hyprland
       - "hyprpaper" # Wallpaper utility for Hyprland
       - "i2c-tools" # Required for `ddcutil`
       - "man-db"
@@ -21,6 +22,7 @@ packages:
       - "pacman-contrib"
       - "papirus-icon-theme" # Icon theme
       - "playerctl" # Media control
+      - "polkit-gnome"
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
       - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
       - "wireplumber" # Volume control
@@ -30,6 +32,7 @@ packages:
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "greetd-qtgreet" # Greeter for greetd
       - "hyprpicker-git" # Required dependency for ags
+      - "hyprshade" # Switching screen shaders in Hyprland
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags
       - "wl-clip-persist" # Persistent clipboard
@@ -51,4 +54,5 @@ apps:
       - "vlc" # Media player
     paru:
       - "android-studio"
+      - "ferdium" # Messaging (WhatsApp, etc...)
       - "webcord" # Discord
