@@ -4,6 +4,7 @@
 
 # Windows
 {{ if ne .chezmoi.os "windows" }}
+.chezmoiscripts/_windows/**
 .chezmoiscripts/windows/**
 
 AppData
@@ -36,6 +37,7 @@ Library
 
 # Unix
 {{ if eq .chezmoi.os "windows" }}
+.chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
 
 .config/tmux

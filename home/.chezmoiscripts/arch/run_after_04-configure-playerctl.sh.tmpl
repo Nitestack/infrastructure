@@ -5,18 +5,18 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-setup_playerctl_automation() {
-	# Check if playerctl automation has not been set up yet
-	if systemctl --user is-enabled --quiet playerctld.service; then
-		echo "Arch Linux: playerctld automation is already set up"
-		exit 2
-	else
-		# Run on boot
-		systemctl --user enable playerctld.service
+_log -l info "Checking if playerctld is set up to run on boot"
 
-		# Start immediately
-		systemctl --user start playerctld.service
-	fi
-}
+# Check if playerctl automation has not been set up yet
+if systemctl --user is-enabled --quiet playerctld.service; then
+	_log -l warn "playerctld is already set up"
+	exit
+fi
 
-show_spinner "setup_playerctl_automation" "Arch Linux: Checking if playerctld automation is set up" "Arch Linux: Set up playerctld automation"
+# Run on boot
+_spin "Enabling playerctld service" -- systemctl --user enable playerctld.service
+
+# Start immediately
+_spin "Starting playerctld" -- systemctl --user start playerctld.service
+
+_log -l info "Set up playerctld to run on boot"

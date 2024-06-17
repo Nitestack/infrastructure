@@ -5,15 +5,15 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-ensure_brew_installed() {
-	# Check if Homebrew is installed
-	if command -v brew &>/dev/null; then
-		echo "macOS: Homebrew is already installed"
-		exit 2
-	fi
+_log -l info "Checking if brew is installed"
 
-	# Install Homebrew
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-}
+# Check if Homebrew is installed
+if command -v brew &>/dev/null; then
+	_log -l warn "brew is already installed"
+	exit
+fi
 
-show_spinner "ensure_brew_installed" "macOS: Checking if Homebrew is installed" "macOS: Installed Homebrew"
+# Install Homebrew
+_spin "Installing brew" -- /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+_log -l info "Installed brew"

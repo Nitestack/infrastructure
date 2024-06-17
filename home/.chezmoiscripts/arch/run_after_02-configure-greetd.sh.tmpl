@@ -5,19 +5,22 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-configure_greetd() {
-	# Ensure the greetd will run on boot
-	if ! systemctl is-enabled --quiet greetd.service; then
-		sudo systemctl enable greetd.service
-	fi
+_log -l info "Checking if greetd is set up"
 
-	if [[ -f "/etc/greetd/config.toml" ]] && [[ -f "/etc/greetd/hyprland.conf" ]] && [[ -f "/etc/greetd/environments" ]]; then
-		echo "Arch Linux: greetd is already set up"
-		exit 2
-	fi
+if systemctl is-enabled --quiet greetd.service && [[ -f "/etc/greetd/config.toml" ]] && [[ -f "/etc/greetd/hyprland.conf" ]] && [[ -f "/etc/greetd/environments" ]]; then
+	_log -l warn "greetd is already set up"
+	exit
+fi
 
-	# Create /etc/greetd/config.toml
-	sudo bash -c 'cat <<EOF >/etc/greetd/config.toml
+sudo -v
+
+# Ensure the greetd will run on boot
+if ! systemctl is-enabled --quiet greetd.service; then
+	_spin "Enabling greetd service" -- sudo systemctl enable greetd.service
+fi
+
+# Create /etc/greetd/config.toml
+_spin "Creating /etc/greetd/config.toml" -- sudo bash -c 'cat <<EOF >/etc/greetd/config.toml
 [terminal]
 vt = 1
 
@@ -25,17 +28,16 @@ vt = 1
 command = "Hyprland --config /etc/greetd/hyprland.conf"
 EOF'
 
-	# Create /etc/greetd/environments
-	sudo bash -c 'cat <<EOF >/etc/greetd/environments
+# Create /etc/greetd/environments
+_spin "Creating /etc/greetd/environments" -- sudo bash -c 'cat <<EOF >/etc/greetd/environments
 Hyprland
 zsh
 EOF'
 
-	# Create /etc/greetd/hyprland.conf
-	sudo bash -c 'cat << "EOF" >/etc/greetd/hyprland.conf
+# Create /etc/greetd/hyprland.conf
+_spin "Creating /etc/greetd/hyprland.conf" -- sudo bash -c 'cat << "EOF" >/etc/greetd/hyprland.conf
 {{ template "hyprland/env.conf" . }}
 exec-once = qtgreet; hyprctl dispatch exit
 EOF'
-}
 
-show_spinner "configure_greetd" "Arch Linux: Setting up greetd" "Arch Linux: greetd is set up"
+_log -l info "Set up greetd"

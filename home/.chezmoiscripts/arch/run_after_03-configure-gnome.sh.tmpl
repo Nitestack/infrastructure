@@ -20,20 +20,20 @@ function gsettings_ensure() {
 	fi
 }
 
-configure_gnome() {
-	# Setup VS Code as default text editor on GNOME
-	xdg-mime default code.desktop text/plain
+_log -l info "Configuring GNOME"
 
-	# Calculator
-	gsettings_ensure org.gnome.calculator show-thousands true
+# Setup VS Code as default text editor on GNOME
+xdg-mime default code.desktop text/plain
 
-	# Nautilus
-	gsettings_ensure org.gnome.nautilus.preferences show-hidden-files true
+# Calculator
+gsettings_ensure org.gnome.calculator show-thousands true
 
-	# Misc
-	gsettings_ensure org.gnome.desktop.interface monospace-font-name "{{- .font.nerd.family -}}"
-	gsettings_ensure org.gtk.Settings.FileChooser show-hidden true
-	gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
-}
+# Nautilus
+gsettings_ensure org.gnome.nautilus.preferences show-hidden-files true
 
-show_spinner "configure_gnome" "Arch Linux: Configuring GNOME" "Arch Linux: Configured GNOME"
+# Misc
+gsettings_ensure org.gnome.desktop.interface monospace-font-name "{{- .font.nerd.family -}}"
+gsettings_ensure org.gtk.Settings.FileChooser show-hidden true
+gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
+
+_log -l info "Configured GNOME"

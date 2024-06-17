@@ -5,18 +5,20 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-configure_paccache() {
-	# Check if paccache automation has not been set up yet
-	if systemctl is-enabled --quiet paccache.timer; then
-		echo "Arch Linux: paccache automation is already set up"
-		exit 2
-	else
-		# Run weekly
-		sudo systemctl enable paccache.timer
+_log -l info "Checking if paccache is set up to run weekly"
 
-		# Start immediately
-		sudo systemctl start paccache.timer
-	fi
-}
+# Check if paccache automation has not been set up yet
+if systemctl is-enabled --quiet paccache.timer; then
+	_log -l warn "paccache is already set up"
+	exit
+fi
 
-show_spinner "configure_paccache" "Arch Linux: Checking if paccache automation is configured" "Arch Linux: Configured paccache automation"
+sudo -v
+
+# Run weekly
+_spin "Enabling paccache timer" -- sudo systemctl enable paccache.timer
+
+# Start immediately
+_spin "Starting" -- sudo systemctl start paccache.timer
+
+_log -l info "Set up paccache to run weekly"

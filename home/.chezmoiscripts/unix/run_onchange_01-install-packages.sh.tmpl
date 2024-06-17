@@ -13,7 +13,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install essentials                                       │
 # ╰──────────────────────────────────────────────────────────╯
-start_task "Installing essential packages"
+_log -l info "Installing essential packages"
 
 # {{ $osid := .osid }}
 # {{ $os := .chezmoi.os }}
@@ -35,51 +35,43 @@ start_task "Installing essential packages"
 
 # {{ if eq $osid "linux-arch"}}
 # ── pacman ────────────────────────────────────────────────────────────
-echo
-echo "pacman:"
+gum format -- "# pacman:"
 paru -Syu
-sudo pacman -S --needed --noconfirm "{{- $essentialPackages | join "\" \""  -}}"
+_install_packages_pacman "{{- $essentialPackages | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
-echo
-echo "custom:"
+gum format -- "# custom:"
 # {{ range $essentialCustomPackages }}
 # {{ range $cmd_name, $lines := . }}
-install_custom_cmd() {
-	if command -v "{{- $cmd_name -}}" &>/dev/null; then
-		echo "{{- $cmd_name -}}"
-		exit 2
-	else
-		# {{ "\n" }} {{ $lines }}
-	fi
-}
-show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
+if command -v "{{- $cmd_name -}}" &>/dev/null; then
+	_log -l warn "{{- $cmd_name }} is already installed"
+else
+	# {{ "\n" }} {{ $lines }}
+	_log -l info "Installed {{ $cmd_name -}}"
+fi
 # {{ end }}
 # {{ end }}
 
 # ── volta ─────────────────────────────────────────────────────────────
-echo
-echo "volta:"
+gum format -- "# volta:"
 volta_list=$(volta list --format plain)
 # {{ range (.packages.volta | uniq) }}
-install_with_volta() {
-	if echo "${volta_list}" | grep -q "{{- . -}}"; then
-		echo "{{- . -}}"
-		exit 2
-	else
-		volta install "{{- . -}}"
-	fi
-}
-show_spinner "install_with_volta" "{{- . -}}" "{{- . -}}"
+if echo "${volta_list}" | grep -q "{{- . -}}"; then
+	_log -l warn --prefix "volta" "{{- . }} is already installed"
+else
+	volta install "{{- . -}}"
+	_log -l info --prefix "volta" "Installed {{ . -}}"
+fi
 # {{ end }}
 
-complete_task "Installed essential packages"
+echo
+_log -l info "Installed essential packages"
 
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install packages                                         │
 # ╰──────────────────────────────────────────────────────────╯
-start_task "Installing packages"
+_log -l info "Installing packages"
 
 # {{ $packages := list }}
 # {{ $customPackages := list }}
@@ -99,64 +91,50 @@ start_task "Installing packages"
 
 # {{ if eq $osid "linux-arch" }}
 # ── pacman ────────────────────────────────────────────────────────────
-echo
-echo "pacman:"
-sudo pacman -S --needed --noconfirm "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
+gum format -- "# pacman:"
+_install_packages_pacman "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
 
 # ── paru ───────────────────────────────────────────────────────────────
-echo
-echo "paru:"
-paru -S --needed --noconfirm "{{- .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
+gum format -- "# paru:"
+_install_packages_paru "{{- .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
-echo
-echo "custom:"
+gum format -- "# custom:"
 # {{ range $customPackages }}
 # {{ range $cmd_name, $lines := . }}
-install_custom_cmd() {
-	if command -v "{{- $cmd_name -}}" &>/dev/null; then
-		echo "{{- $cmd_name -}}"
-		exit 2
-	else
-		# {{ "\n" }}{{ $lines }}
-	fi
-}
-show_spinner "install_custom_cmd" "{{- $cmd_name -}}" "{{- $cmd_name -}}"
+if command -v "{{- $cmd_name -}}" &>/dev/null; then
+	_log -l warn "{{- $cmd_name }} is already installed"
+else
+	# {{ "\n" }} {{ $lines }}
+	_log -l info "Installed {{ $cmd_name -}}"
+fi
 # {{ end }}
 # {{ end }}
 
 # ── pnpm ──────────────────────────────────────────────────────────────
-echo
-echo "npm:"
+gum format -- "# pnpm:"
 pnpm_list=$(pnpm list -g --depth 0)
 # {{ range (.packages.npm | uniq | sortAlpha) }}
-install_with_pnpm() {
-	if echo "${pnpm_list}" | grep -q "{{- . -}}"; then
-		echo "{{- . -}}"
-		exit 2
-	else
-		pnpm add -g "{{- . -}}"
-	fi
-}
-show_spinner "install_with_pnpm" "{{- . -}}" "{{- . -}}"
+if echo "${pnpm_list}" | grep -q "{{- . -}}"; then
+	_log -l warn --prefix "pnpm" "{{- . }} is already installed"
+else
+	pnpm add -g "{{- . -}}"
+	_log -l info --prefix "pnpm" "Installed {{ . -}}"
+fi
 # {{ end }}
 
 # ── cargo ─────────────────────────────────────────────────────────────
-echo
-echo "cargo:"
+gum format -- "# cargo:"
 cargo_list=$(cargo install --list)
 # {{ range (.packages.cargo | uniq | sortAlpha) }}
-install_with_cargo() {
-	if echo "${cargo_list}" | grep -q "{{- . -}}"; then
-		echo "{{- . -}}"
-		exit 2
-	else
-		cargo install "{{- . -}}"
-	fi
-}
-show_spinner "install_with_cargo" "{{- . -}}" "{{- . -}}"
+if echo "${cargo_list}" | grep -q "{{- . -}}"; then
+	_log -l warn --prefix "cargo" "{{- . }} is already installed"
+else
+	cargo install "{{- . -}}"
+	_log -l info --prefix "cargo" "Installed {{ . -}}"
+fi
 # {{ end }}
-echo
 
-complete_task "Installed packages"
+echo
+_log -l info "Installed packages"
