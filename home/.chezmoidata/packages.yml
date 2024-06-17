@@ -137,6 +137,3 @@ packages:
   cargo:
     - "bob-nvim"
     - "nvim-switcher"
-apps:
-  # ── Apps ──────────────────────────────────────────────────────────────
-  common: []

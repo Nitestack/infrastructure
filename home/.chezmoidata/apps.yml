@@ -1,0 +1,54 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ APPS                                                     │
+# ╰──────────────────────────────────────────────────────────╯
+
+apps:
+  common:
+    - name: "Android Studio"
+      arch:
+        paru: "android-studio"
+      mac: "android-studio"
+      win: "Google.AndroidStudio"
+    - name: "Arc"
+      mac: "arc"
+      win: "TheBrowserCompany.Arc"
+    - name: "Bitwarden"
+      arch: "bitwarden"
+      mac: "bitwarden"
+      win: "Bitwarden.Bitwarden"
+    - name: "Docker"
+      arch: "docker"
+      mac: "docker"
+      win: "Docker.DockerDesktop"
+    - name: "Ferdium"
+      arch:
+        paru: "ferdium"
+      mac: "ferdium"
+      win: "Ferdium.Ferdium"
+    - name: "Figma"
+      mac: "figma"
+      win: "Figma.Figma"
+    - name: "Notion"
+      mac: "notion"
+      win: "Notion.Notion"
+    - name: "PDFgear"
+      mac:
+        mas:
+          name: "PDFgear"
+          id: "6469021132"
+      win: "PDFgear.PDFgear"
+    - name: "Spark"
+      mac: "readdle-spark"
+      win: "Readdle.Spark"
+    - name: "Spotify"
+      arch: "spotify-launcher"
+      mac: "spotify"
+      win: "9NCBCSZSJRSB"
+    - name: "Visual Studio Code"
+      arch: "code"
+      mac: "visual-studio-code"
+      win: "Microsoft.VisualStudioCode"
+    - name: "WezTerm"
+      arch: "wezterm"
+      mac: "wezterm"
+      win: "wez.wezterm"

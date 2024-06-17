@@ -5,14 +5,13 @@
 # ╰──────────────────────────────────────────────────────────╯
 _Log -l info "Installing essential packages"
 
-# {{ $os := .chezmoi.os }}
 # {{ $essentialPackages := list }}
 # {{ $essentialCustomPackages := list }}
 # {{ range .packages.essentials }}
-#   {{ if and (eq $os "windows") (hasKey . "win") }}
+#   {{ if hasKey . "win" }}
 #     {{ if eq "string" (printf "%T" .win) }}
 #       {{ $essentialPackages = mustAppend $essentialPackages .win }}
-#     {{ else if .win.custom }}
+#     {{ else if hasKey .win "custom" }}
 #       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .win.custom) }}
 #     {{ end }}
 #   {{ else if hasKey . "custom" }}
@@ -72,10 +71,10 @@ _Log -l info "Installing packages"
 # {{ $packages := list }}
 # {{ $customPackages := list }}
 # {{ range .packages.common }}
-#   {{ if and (eq $os "windows") (hasKey . "win") }}
+#   {{ if hasKey . "win" }}
 #     {{ if eq "string" (printf "%T" .win) }}
 #       {{ $packages = mustAppend $packages .win }}
-#     {{ else if .win.custom }}
+#     {{ else if hasKey .win "custom" }}
 #       {{ $customPackages = mustAppend $customPackages (dict .name .win.custom) }}
 #     {{ end }}
 #   {{ else if hasKey . "custom" }}

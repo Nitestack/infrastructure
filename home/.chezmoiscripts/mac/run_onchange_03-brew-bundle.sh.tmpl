@@ -22,7 +22,21 @@ _log -l info "Installing formulae, casks and App Store apps"
 #   {{ end }}
 # {{ end }}
 # Only sort the regular formulae, not the essentials
-# {{ $formulae = concat $essentialFormulae (concat $formulae .packages.mac.formulae | sortAlpha) }}
+# {{ $formulae = concat $essentialFormulae (concat $formulae .packages.mac.formulae | uniq | sortAlpha) | uniq }}
+# ── Casks ─────────────────────────────────────────────────────────────
+# {{ $casks := list }}
+# {{ $appStoreApps := list }}
+# {{ range .apps.common }}
+#   {{ if hasKey . "mac" }}
+#     {{ if eq "string" (printf "%T" .mac) }}
+#       {{ $casks = mustAppend $casks .mac }}
+#     {{ else if hasKey .mac "mas" }}
+#       {{ $appStoreApps = mustAppend $appStoreApps .mac.mas }}
+#     {{ end }}
+#   {{ end }}
+# {{ end }}
+# {{ $casks = concat $casks .apps.mac.casks | uniq | sortAlpha }}
+# {{ $appStoreApps = concat $appStoreApps .apps.mac.mas }}
 
 brew update
 brew upgrade
@@ -47,17 +61,17 @@ tap "homebrew/command-not-found"
 tap "homebrew/services"
 
 brew "mas"
-{{ range ($formulae | uniq) -}}
+{{ range $formulae -}}
 brew "{{- . -}}"
 {{ end -}}
 
-{{ range (.apps.mac.casks | uniq | sortAlpha) -}}
+{{ range $casks -}}
 cask "{{- . -}}"
 {{ end -}}
 
-{{ range (.apps.mac.mas | uniq) }}
-mas "{{- .name -}}", id: {{ .id -}}
-{{ end }}
+{{ range $appStoreApps -}}
+mas "{{- .name -}}", id: {{ .id }}
+{{ end -}}
 EOF
 
 _log -l info "Installed formulae, casks and App Store apps"
