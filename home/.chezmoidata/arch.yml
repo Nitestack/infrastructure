@@ -36,19 +36,19 @@ packages:
 apps:
   arch:
     pacman:
-      - "bitwarden"
+      - "bitwarden" # Password manager
       - "code" # Visual Studio Code
       - "dconf-editor"
       - "docker"
-      - "firefox-developer-edition"
-      - "gnome-calculator"
-      - "gnome-disk-utility"
-      - "gnome-screenshot"
+      - "firefox-developer-edition" # Browser
+      - "gnome-calculator" # Calculator
+      - "gnome-disk-utility" # Disk utility
+      - "gnome-screenshot" # Screenshot
       - "gnome-terminal" # Required dependency for `docker`
       - "nautilus" # File Manager
-      - "spotifyd"
-      - "wezterm"
-      - "vlc"
+      - "spotify-launcher" # Music streaming platform
+      - "wezterm" # Terminal
+      - "vlc" # Media player
     paru:
       - "android-studio"
       - "webcord" # Discord
