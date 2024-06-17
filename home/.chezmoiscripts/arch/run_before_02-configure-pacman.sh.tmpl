@@ -5,6 +5,8 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
+_log -l info "Checking if pacman is configured"
+
 # Path to the pacman configuration file
 PACMAN_CONF="/etc/pacman.conf"
 
@@ -47,27 +49,24 @@ add_line_after() {
 	fi
 }
 
-configure_pacman() {
-	# Enable UseSyslog
-	uncomment_option_or_flag "UseSyslog"
+# Enable UseSyslog
+uncomment_option_or_flag "UseSyslog"
 
-	# Enable ParallelDownloads
-	uncomment_option_or_flag "ParallelDownloads"
+# Enable ParallelDownloads
+uncomment_option_or_flag "ParallelDownloads"
 
-	# Enable Color
-	uncomment_option_or_flag "Color"
+# Enable Color
+uncomment_option_or_flag "Color"
 
-	# Add ILoveCandy under ParallelDownloads if not already there
-	add_line_after "ILoveCandy" "ParallelDownloads"
+# Add ILoveCandy under ParallelDownloads if not already there
+add_line_after "ILoveCandy" "ParallelDownloads"
 
-	# Uncomment multilib repository (for 32-bit support)
-	uncomment_option_or_flag "\[multilib\]"
-	uncomment_next_line_if_commented "\[multilib\]"
+# Uncomment multilib repository (for 32-bit support)
+uncomment_option_or_flag "\[multilib\]"
+uncomment_next_line_if_commented "\[multilib\]"
 
-	if [[ "${i}" -eq 0 ]]; then
-		echo "Arch Linux: pacman was already configured"
-		exit 2
-	fi
-}
-
-show_spinner "configure_pacman" "Arch Linux: Checking if pacman is configured" "Arch Linux: Configured pacman"
+if [[ "${i}" -eq 0 ]]; then
+	_log -l warn "pacman was already configured"
+else
+	_log -l info "Configured pacman (${PACMAN_CONF})"
+fi

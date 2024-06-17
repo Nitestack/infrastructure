@@ -5,18 +5,20 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-configure_bluetooth() {
-	# Check if Bluetooth automation has not been set up yet
-	if systemctl is-enabled --quiet bluetooth.service; then
-		echo "Arch Linux: Bluetooth automation is already set up"
-		exit 2
-	else
-		# Run on boot
-		sudo systemctl enable bluetooth.service
+_log -l info "Checking if Bluetooth is set up to run on boot"
 
-		# Start immediately
-		sudo systemctl start bluetooth.service
-	fi
-}
+# Check if Bluetooth automation has not been set up yet
+if systemctl is-enabled --quiet bluetooth.service; then
+	_log -l warn "Bluetooth is already set up"
+	exit
+fi
 
-show_spinner "configure_bluetooth" "Arch Linux: Checking if Bluetooth automation is set up" "Arch Linux: Set up Bluetooth automation"
+sudo -v
+
+# Run on boot
+_spin "Enabling Bluetooth service" -- sudo systemctl enable bluetooth.service
+
+# Start immediately
+_spin "Starting Bluetooth" -- sudo systemctl start bluetooth.service
+
+_log -l info "Set up Bluetooth to run on boot"

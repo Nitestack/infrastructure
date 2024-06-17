@@ -5,19 +5,19 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-add_ags_types() {
-	ags_config_path="${HOME}/.dotfiles/home/private_dot_config/ags"
+_log -l info "Checking if ags types are added"
 
-	# Check if the types already exist
-	if [[ -d "${ags_config_path}/types" ]]; then
-		echo "Arch Linux: ags types are already added"
-		exit 2
-	fi
+ags_config_path="${HOME}/.dotfiles/home/private_dot_config/ags"
 
-	# Init config in ags-dotfiles
-	ags --init --config "${ags_config_path}/config.js"
+# Check if the types already exist
+if [[ -d "${ags_config_path}/types" ]]; then
+	_log -l warn "ags types are already added"
+	exit
+fi
 
-	rm -f "${ags_config_path}/README.md"
-}
+# Init config in ags-dotfiles
+_spin "Generating types" -- ags --init --config "${ags_config_path}/config.js"
 
-show_spinner "add_ags_types" "Arch Linux: Checking if ags types are added" "Arch Linux: Added ags types"
+rm -f "${ags_config_path}/README.md"
+
+_log -l info "Added ags types"

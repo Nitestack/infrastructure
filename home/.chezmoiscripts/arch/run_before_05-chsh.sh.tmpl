@@ -5,17 +5,19 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-set_zsh_as_default_shell() {
-	# Check if the current shell is zsh already
-	if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
-		echo "Arch Linux: Default shell is already Zsh"
-		exit 2
-	fi
+_log -l info "Checking if zsh is the default shell"
 
-	# Check if zsh is installed
-	pacman_ensure_installed zsh
+# Check if the current shell is zsh already
+if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
+	_log -l warn "Default shell is already zsh"
+	exit
+fi
 
-	chsh -s "/usr/bin/zsh"
-}
+# Ensure zsh is installed
+if ! pacman -Qi "zsh" &>/dev/null; then
+	_spin "Installing zsh" -- sudo pacman -S --needed --noconfirm "zsh"
+fi
 
-show_spinner "set_zsh_as_default_shell" "Arch Linux: Checking if Zsh is the default shell" "Arch Linux: Set default shell to Zsh"
+chsh -s "/usr/bin/zsh"
+
+_log -l info "Set the default shell to zsh"

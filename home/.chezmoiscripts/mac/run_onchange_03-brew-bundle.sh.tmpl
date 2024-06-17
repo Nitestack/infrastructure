@@ -5,6 +5,8 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
+_log -l info "Installing formulae, casks and App Store apps"
+
 # ── Essential formulae ────────────────────────────────────────────────
 # {{ $essentialFormulae := list }}
 # {{ range .packages.essentials }}
@@ -22,18 +24,20 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # Only sort the regular formulae, not the essentials
 # {{ $formulae = concat $essentialFormulae (concat $formulae .packages.mac.formulae | sortAlpha) }}
 
-update_mac() {
-	brew update
-	brew upgrade
-	if brew tap | grep -q "buo/cask-upgrade"; then
-		brew cu
-	fi
-	if brew list "mas" &>/dev/null; then
-		mas upgrade
-	fi
-	sudo softwareupdate --agree-to-license --install-rosetta
+brew update
+brew upgrade
+# Upgrade casks
+if brew tap | grep -q "buo/cask-upgrade"; then
+	brew cu
+fi
+# Upgrade App Store apps
+if brew list "mas" &>/dev/null; then
+	mas upgrade
+fi
+sudo softwareupdate --agree-to-license --install-rosetta
 
-	brew bundle --no-lock --file=/dev/stdin <<EOF
+# Create bundle
+brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/core"
 tap "homebrew/bundle"
 tap "homebrew/cask"
@@ -55,5 +59,5 @@ cask "{{- . -}}"
 mas "{{- .name -}}", id: {{ .id -}}
 {{ end }}
 EOF
-}
-show_spinner "macOS: Installing formulae, casks and Mac App Store apps" "macOS: Installed formulae, casks and Mac App Store apps"
+
+_log -l info "Installed formulae, casks and App Store apps"

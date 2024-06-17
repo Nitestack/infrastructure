@@ -11,17 +11,16 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # ╰──────────────────────────────────────────────────────────╯
 
 # {{ if eq .osid "linux-arch"}}
-start_task "Arch Linux: Installing apps"
+_log -l info "Installing apps"
 
 # ── pacman ────────────────────────────────────────────────────────────
-echo
-echo "pacman:"
-sudo pacman -S --needed --noconfirm "{{- concat .apps.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
+gum format -- "# pacman:"
+_install_packages_pacman "{{- concat .apps.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
 
 # ── paru ───────────────────────────────────────────────────────────────
-echo
-echo "paru:"
-paru -S --needed --noconfirm "{{- .apps.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
+gum format -- "# paru:"
+_install_packages_paru "{{- .apps.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
 
-complete_task "Arch Linux: Installed apps"
+echo
+_log -l info "Installed apps"
 # {{ end }}

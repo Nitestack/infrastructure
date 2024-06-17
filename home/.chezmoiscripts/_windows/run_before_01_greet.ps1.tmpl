@@ -1,0 +1,17 @@
+# {{ template "pwsh-library.ps1" . }}
+
+$Logo = @"
+      _       _    __ _ _
+     | |     | |  / _(_) |
+   __| | ___ | |_| |_ _| | ___  ___
+  / _` |/ _ \| __|  _| | |/ _ \/ __|
+ | (_| | (_) | |_| | | | |  __/\__ \
+  \__,_|\___/ \__|_| |_|_|\___||___/
+"@
+
+Write-Host "$Logo"
+
+# Install gum
+if (-not (winget list -e "gum" | Out-Null)) {
+  winget install -e --silent --accept-package-agreements --accept-source-agreements --id "charmbracelet.gum" | Out-Null
+}

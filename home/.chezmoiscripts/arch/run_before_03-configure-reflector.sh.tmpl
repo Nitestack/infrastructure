@@ -5,31 +5,33 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-setup_reflector_automation() {
-	# Check if reflector automation has not been set up yet
-	if systemctl is-enabled --quiet reflector.timer; then
-		echo "Arch Linux: Reflector automation is already set up"
-		exit 2
-	else
-		# Ensure reflector is installed
-		if ! pacman -Qi "reflector" &>/dev/null; then
-			sudo pacman -S --needed --noconfirm "reflector"
-		fi
+_log -l info "Checking if reflector is set up to run weekly"
 
-		# Create or overwrite the reflector configuration file
-		sudo bash -c 'cat <<EOF >/etc/xdg/reflector/reflector.conf
+# Check if reflector automation has not been set up yet
+if systemctl is-enabled --quiet reflector.timer; then
+	_log -l warn "Reflector is already set up"
+	exit
+fi
+
+sudo -v
+
+# Ensure reflector is installed
+if ! pacman -Qi "reflector" &>/dev/null; then
+	_spin "Installing reflector" -- sudo pacman -S --needed --noconfirm "reflector"
+fi
+
+# Create or overwrite the reflector configuration file
+_spin "Creating reflector config" -- sudo bash -c 'cat <<EOF >/etc/xdg/reflector/reflector.conf
 --save /etc/pacman.d/mirrorlist
 --country Germany
 --protocol https
 --latest 5
 EOF'
 
-		# Run weekly
-		sudo systemctl enable reflector.timer
+# Run weekly
+_spin "Enabling reflector timer" -- sudo systemctl enable reflector.timer
 
-		# Start immediately
-		sudo systemctl start reflector.timer
-	fi
-}
+# Start immediately
+_spin "Starting reflector" sudo systemctl start reflector.timer
 
-show_spinner "setup_reflector_automation" "Arch Linux: Checking if reflector automation is set up" "Arch Linux: Set up reflector automation"
+_log -l info "Set up reflector to run weekly"
