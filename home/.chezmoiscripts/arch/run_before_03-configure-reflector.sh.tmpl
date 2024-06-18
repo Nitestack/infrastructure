@@ -5,33 +5,17 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info "Checking if reflector is set up to run weekly"
+pre_exec() {
+	# Ensure reflector is installed
+	_install_packages_pacman "reflector"
 
-# Check if reflector automation has not been set up yet
-if systemctl is-enabled --quiet reflector.timer; then
-	_log -l warn "Reflector is already set up"
-	exit
-fi
-
-sudo -v
-
-# Ensure reflector is installed
-if ! pacman -Qi "reflector" &>/dev/null; then
-	_spin "Installing reflector" -- sudo pacman -S --needed --noconfirm "reflector"
-fi
-
-# Create or overwrite the reflector configuration file
-_spin "Creating reflector config" -- sudo bash -c 'cat <<EOF >/etc/xdg/reflector/reflector.conf
---save /etc/pacman.d/mirrorlist
+	# Create or overwrite the reflector configuration file
+	_spin "Creating reflector config" -- _write_file_with_sudo "/etc/xdg/reflector/reflector.conf" "--save /etc/pacman.d/mirrorlist
 --country Germany
 --protocol https
 --latest 5
 EOF'
+	"
+}
 
-# Run weekly
-_spin "Enabling reflector timer" -- sudo systemctl enable reflector.timer
-
-# Start immediately
-_spin "Starting reflector" sudo systemctl start reflector.timer
-
-_log -l info "Set up reflector to run weekly"
+_enable_system_service "reflector.timer" "pre_exec"

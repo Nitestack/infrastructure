@@ -20,7 +20,7 @@ function gsettings_ensure() {
 	fi
 }
 
-_log -l info "Configuring GNOME"
+_log -l info --prefix "GNOME" "Setting options"
 
 # Setup VS Code as default text editor on GNOME
 xdg-mime default code.desktop text/plain
@@ -36,4 +36,4 @@ gsettings_ensure org.gnome.desktop.interface monospace-font-name "{{- .font.nerd
 gsettings_ensure org.gtk.Settings.FileChooser show-hidden true
 gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
 
-_log -l info "Configured GNOME"
+_log -l info --prefix "GNOME" "Set options"

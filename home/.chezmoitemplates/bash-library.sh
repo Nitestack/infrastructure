@@ -20,6 +20,9 @@ _spin() {
 }
 
 # Utils
+
+# Function to install packages using pacman
+# Usage: _install_packages_pacman <package1> [<package2> ...]
 _install_packages_pacman() {
 	toInstall=()
 
@@ -38,6 +41,8 @@ _install_packages_pacman() {
 	sudo pacman --needed --noconfirm -S "${toInstall[@]}"
 }
 
+# Function to install packages using paru
+# Usage: _install_packages_paru <package1> [<package2> ...]
 _install_packages_paru() {
 	toInstall=()
 
@@ -54,4 +59,103 @@ _install_packages_paru() {
 	fi
 
 	paru --needed -S "${toInstall[@]}"
+}
+
+# Function to set an option with sudo access
+# Usage: _set_option_with_sudo <option_name> <option_value> <config_file>
+_set_option_with_sudo() {
+	local option_name="$1"
+	local option_value="$2"
+	local config_file="$3"
+
+	echo "Setting ${option_name} to ${option_value} in ${config_file}"
+
+	if grep -q "^${option_name}=${option_value}$" "${config_file}"; then
+		return
+	fi
+
+	if grep -q "^#${option_name}=${option_value}$" "${config_file}"; then
+		sudo sed -i "s|^#${option_name}=${option_value}$|${option_name}=${option_value}|" "${config_file}"
+	else
+		if grep -q "^#${option_name}=" "${config_file}"; then
+			sudo sed -i "s|^#${option_name}=.*|${option_name}=${option_value}|" "${config_file}"
+		else
+			echo "${option_name}=${option_value}" | sudo tee -a "${config_file}"
+		fi
+	fi
+}
+
+# Function to enable a flag with sudo access (option without a value)
+# Usage: _enable_flag_with_sudo <flag_name> <config_file>
+_enable_flag_with_sudo() {
+	local flag_name="$1"
+	local config_file="$2"
+
+	echo "Enabling ${flag_name} in ${config_file}"
+
+	if grep -q "^${flag_name}$" "${config_file}"; then
+		return
+	fi
+
+	if grep -q "^#${flag_name}$" "${config_file}"; then
+		sudo sed -i "s|^#${flag_name}$|${flag_name}|" "${config_file}"
+		sudo sed -i "s|^#${flag_name}=.*|${flag_name}|" "${config_file}"
+	else
+		echo "${flag_name}" | sudo tee -a "${config_file}"
+	fi
+}
+
+# Function to write content to a file with sudo access
+# Usage: _write_file_with_sudo <file_path> <content>
+_write_file_with_sudo() {
+	local file_path="$1"
+	local content="$2"
+
+	echo "${content}" | sudo tee "${file_path}" >/dev/null
+}
+
+# Function to ensure a system service is enabled with sudo
+# Usage: _enable_system_service <service_name> [<pre_exec_function>]
+_enable_system_service() {
+	local service_name="$1"
+	local pre_exec_function="${2:-}"
+
+	_log -l info --prefix "systemd" "Enabling ${service_name} service"
+
+	if systemctl is-enabled --quiet "${service_name}"; then
+		_log -l warn --prefix "systemd" "Service ${service_name} is already enabled"
+	else
+		[[ -n ${pre_exec_function} ]] && ${pre_exec_function}
+
+		sudo -v
+
+		# Enable service
+		_spin "Enabling ${service_name} service" -- sudo systemctl enable "${service_name}"
+		# Start service
+		_spin "Starting ${service_name} service" -- sudo systemctl start "${service_name}"
+
+		_log -l info --prefix "systemd" "Enabled ${service_name} service"
+	fi
+}
+
+# Function to ensure a system service is enabled for the current user
+# Usage: _enable_user_service <service_name> [<pre_exec_function>]
+_enable_user_service() {
+	local service_name="$1"
+	local pre_exec_function="${2:-}"
+
+	_log -l info --prefix "systemd" "Enabling ${service_name} service for the current user"
+
+	if systemctl --user is-enabled --quiet "${service_name}"; then
+		_log -l warn --prefix "systemd" "Service ${service_name} is already enabled for the current user"
+	else
+		[[ -n ${pre_exec_function} ]] && ${pre_exec_function}
+
+		# Enable service for the current user
+		_spin "Enabling ${service_name} service for the current user" -- systemctl --user enable "${service_name}"
+		# Start service for the current user
+		_spin "Starting ${service_name} service for the current user" -- systemctl --user start "${service_name}"
+
+		_log -l info --prefix "systemd" "Enabled ${service_name} service for the current user"
+	fi
 }

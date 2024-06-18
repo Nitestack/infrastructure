@@ -5,24 +5,24 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info "Checking if ags types are added"
+_log -l info --prefix "ags" "Checking if types are added"
 
 ags_config_path=$(find "${HOME}/.dotfiles/home" -type d -name '*ags' | head -n 1)
 
 if [[ -z "${ags_config_path}" ]]; then
-	_log -l warn "No ags config found"
+	_log -l warn --prefix "ags" "No config found"
 	exit
 fi
 
 # Check if the types already exist
 if [[ -d "${ags_config_path}/types" ]]; then
-	_log -l warn "ags types are already added"
+	_log -l warn --prefix "ags" "types are already added"
 	exit
 fi
 
 # Init config in ags-dotfiles
-_spin "Generating types" -- ags --init --config "${ags_config_path}/config.js"
+_spin "Generating types for ags" -- ags --init --config "${ags_config_path}/config.js"
 
 rm -f "${ags_config_path}/README.md"
 
-_log -l info "Added ags types"
+_log -l info --prefix "ags" "Added types"

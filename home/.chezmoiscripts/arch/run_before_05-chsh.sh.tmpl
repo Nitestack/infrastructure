@@ -14,9 +14,7 @@ if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
 fi
 
 # Ensure zsh is installed
-if ! pacman -Qi "zsh" &>/dev/null; then
-	_spin "Installing zsh" -- sudo pacman -S --needed --noconfirm "zsh"
-fi
+_install_packages_pacman "zsh"
 
 chsh -s "/usr/bin/zsh"
 

@@ -5,21 +5,18 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info "Checking if pacman is configured"
-
 # Path to the pacman configuration file
 PACMAN_CONF="/etc/pacman.conf"
 
-i=0
+_log -l info --prefix "pacman" "Checking if ${PACMAN_CONF} is set up"
 
 # Uncomment an option or flag if commented
-uncomment_option_or_flag() {
+uncomment_option() {
 	local option=$1
 
 	# Uncomment if commented
 	if grep -q "^#\s*${option}" "${PACMAN_CONF}"; then
 		sudo sed -i "s/^#\s*\(${option}\)/\1/" "${PACMAN_CONF}"
-		((i++))
 	fi
 }
 
@@ -33,7 +30,6 @@ uncomment_next_line_if_commented() {
 		local next_line_number=$((line_number + 1))
 		if sed "${next_line_number}q;d" "${PACMAN_CONF}" | grep -q "^#"; then
 			sudo sed -i "${next_line_number}s/^#//" "${PACMAN_CONF}"
-			((i++))
 		fi
 	fi
 }
@@ -45,28 +41,25 @@ add_line_after() {
 
 	if ! grep -q "${line_to_add}" "${PACMAN_CONF}"; then
 		sudo sed -i "/${line_to_search}/a ${line_to_add}" "${PACMAN_CONF}"
-		((i++))
 	fi
 }
 
 # Enable UseSyslog
-uncomment_option_or_flag "UseSyslog"
+_enable_flag_with_sudo "UseSyslog" "${PACMAN_CONF}"
 
 # Enable ParallelDownloads
-uncomment_option_or_flag "ParallelDownloads"
+if grep -q "^#\s*ParallelDownloads" "${PACMAN_CONF}"; then
+	sudo sed -i "s/^#\s*\(ParallelDownloads\)/\1/" "${PACMAN_CONF}"
+fi
 
 # Enable Color
-uncomment_option_or_flag "Color"
+_enable_flag_with_sudo "Color" "${PACMAN_CONF}"
 
 # Add ILoveCandy under ParallelDownloads if not already there
 add_line_after "ILoveCandy" "ParallelDownloads"
 
 # Uncomment multilib repository (for 32-bit support)
-uncomment_option_or_flag "\[multilib\]"
+_enable_flag_with_sudo "\[multilib\]" "${PACMAN_CONF}"
 uncomment_next_line_if_commented "\[multilib\]"
 
-if [[ "${i}" -eq 0 ]]; then
-	_log -l warn "pacman was already configured"
-else
-	_log -l info "Configured pacman (${PACMAN_CONF})"
-fi
+_log -l info --prefix "pacman" "Set up ${PACMAN_CONF}"
