@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+TARGET_DIR="/usr/share/sddm/themes/sddm-astronaut-theme"
+
+_log -l info "Setting up sddm"
+
+echo
+_log -l info "Ensure required dependencies are installed"
+_install_packages_pacman "qt6-5compat" "qt6-declarative" "qt6-svg"
+
+sudo -v
+
+sudo rm -rf "${TARGET_DIR}"
+_spin "Downloading sddm-astronaut-theme" -- sudo git clone --depth 1 "https://github.com/keyitdev/sddm-astronaut-theme.git" "${TARGET_DIR}"
+_log -l info "Downloaded sddm-astronaut-theme"
+sudo cp "${TARGET_DIR}"/Fonts/* "/usr/share/fonts/"
+
+# Customize sddm-astronaut-theme
+_spin "Customizing sddm-astronaut-theme" -- echo 'PartialBlur="false"
+Font="{{- .font.mono.family -}}"
+HourFormat="hh:mm:ss"
+DateFormat="dddd, MMMM d, yyyy"
+' | sudo tee "${TARGET_DIR}/theme.conf.user"
+
+# Create sddm config
+_spin "Creating sddm config" -- sudo bash -c 'cat <<EOF >/etc/sddm.conf
+[Theme]
+Current=sddm-astronaut-theme
+EOF'
+_log -l info "Created sddm config and set theme"
+
+# Check if sddm automation has not been set up yet
+if systemctl is-enabled --quiet sddm.service; then
+	_log -l warn "sddm service is already enabled"
+else
+	# Run on boot
+	__spin "Enabling sddm service" -- sudo systemctl enable sddm.service
+fi
+
+_log -l info "Set up sddm"

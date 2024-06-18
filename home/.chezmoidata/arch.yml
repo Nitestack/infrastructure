@@ -12,7 +12,6 @@ packages:
       - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
       - "ddcutil" # Required for `ddcci-driver-linux`
-      - "greetd" # Display manager
       - "hypridle" # Idle daemon for Hyprland
       - "hyprlock" # Lock screen for Hyprland
       - "hyprpaper" # Wallpaper utility for Hyprland
@@ -23,6 +22,7 @@ packages:
       - "papirus-icon-theme" # Icon theme
       - "playerctl" # Media control
       - "polkit-gnome"
+      - "sddm" # Display manager
       - "ttf-monaspace-variable" # Font: Monaspace Neon Var
       - "ttf-nerd-fonts-symbols" # Font: MonaspiceNe Nerd Font
       - "wireplumber" # Volume control
@@ -30,9 +30,9 @@ packages:
     paru:
       - "aylurs-gtk-shell" # ags
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
-      - "greetd-qtgreet" # Greeter for greetd
       - "hyprpicker-git" # Required dependency for ags
       - "hyprshade" # Switching screen shaders in Hyprland
+      - "matugen-bin" # Material You color generation tool
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags
       - "wl-clip-persist" # Persistent clipboard
