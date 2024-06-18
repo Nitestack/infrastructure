@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+# Reruns script when a new release was made. Current release: {{ (gitHubLatestRelease "Coopydood/HyperFluent-GRUB-Theme").TagName }}
+
+THEMES_DIR="/boot/grub/themes"
+TMP_DIR="/tmp/HyperFluent-GRUB-Theme"
+GRUB_CONFIG="/etc/default/grub"
+
+_log -l info "Setting up grub"
+
+mkdir -p "${TMP_DIR}"
+
+# Download the theme tar.gz
+echo
+_spin "Downloading hyperfluent themes" -- git clone --depth 1 "https://github.com/Coopydood/HyperFluent-GRUB-Theme.git" "${TMP_DIR}"
+_log -l info "Downloaded hyperfluent themes"
+
+sudo -v
+
+sudo rm -rf "${THEMES_DIR}/hyperfluent-arch"
+sudo mkdir -p "${THEMES_DIR}/hyperfluent-arch"
+_spin "Moving hyperfluent-arch to the GRUB themes directory" -- sudo mv "${TMP_DIR}"/arch/* "${THEMES_DIR}/hyperfluent-arch"
+
+rm -rf "${TMP_DIR}"
+
+echo
+_log -l info "Set grub options"
+
+# Update the GRUB configuration file
+if grep -q "^GRUB_THEME=" "${GRUB_CONFIG}"; then
+	sudo sed -i 's|^GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/hyperfluent-arch/theme.txt"|' "${GRUB_CONFIG}"
+else
+	if grep -q "^#GRUB_THEME=" "${GRUB_CONFIG}"; then
+		sudo sed -i 's|^#GRUB_THEME=.*|GRUB_THEME="/boot/grub/themes/hyperfluent-arch/theme.txt"|' "${GRUB_CONFIG}"
+	else
+		echo 'GRUB_THEME="/boot/grub/themes/hyperfluent-arch/theme.txt"' | sudo tee -a "${GRUB_CONFIG}"
+	fi
+fi
+
+if grep -q "^GRUB_GFXMODE=" "${GRUB_CONFIG}"; then
+	sudo sed -i 's|^GRUB_GFXMODE=.*|GRUB_GFXMODE=1920x1080,auto|' "${GRUB_CONFIG}"
+else
+	if grep -q "^#GRUB_GFXMODE=" "${GRUB_CONFIG}"; then
+		sudo sed -i 's|^#GRUB_GFXMODE=.*|GRUB_GFXMODE=1920x1080,auto|' "${GRUB_CONFIG}"
+	else
+		echo 'GRUB_GFXMODE=1920x1080,auto' | sudo tee -a "${GRUB_CONFIG}"
+	fi
+fi
+
+if gum confirm "Do you have a dual-boot system and want os-prober to auto-detect other operating systems?" --default=false; then
+	_install_packages_pacman "os-prober"
+
+	if grep -q "^GRUB_DISABLE_OS_PROBER=" "${GRUB_CONFIG}"; then
+		sudo sed -i 's|^GRUB_DISABLE_OS_PROBER=.*|GRUB_DISABLE_OS_PROBER=false|' "${GRUB_CONFIG}"
+	else
+		if grep -q "^#GRUB_DISABLE_OS_PROBER=" "${GRUB_CONFIG}"; then
+			sudo sed -i 's|^#GRUB_DISABLE_OS_PROBER=.*|GRUB_DISABLE_OS_PROBER=false|' "${GRUB_CONFIG}"
+		else
+			echo 'GRUB_DISABLE_OS_PROBER=false' | sudo tee -a "${GRUB_CONFIG}"
+		fi
+	fi
+
+	sudo os-prober
+fi
+_log -l info "Set grub options"
+
+# Update GRUB
+echo
+_spin "Updating GRUB configuration" -- sudo grub-mkconfig -o /boot/grub/grub.cfg
+_log -l info "Updated GRUB configuration"
+
+echo
+_log -l info "Set up grub"

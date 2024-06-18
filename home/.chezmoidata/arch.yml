@@ -12,6 +12,8 @@ packages:
       - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
       - "ddcutil" # Required for `ddcci-driver-linux`
+      - "efibootmgr" # Required for `grub`
+      - "grub" # Boot loader
       - "hypridle" # Idle daemon for Hyprland
       - "hyprlock" # Lock screen for Hyprland
       - "hyprpaper" # Wallpaper utility for Hyprland
