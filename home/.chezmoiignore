@@ -51,3 +51,10 @@ Library
 {{ end }}
 
 .config/nvim/templates
+
+# ags
+.config/ags/bun.lockb
+.config/ags/node_modules
+.config/ags/package.json
+.config/ags/prettier.config.mjs
+.config/ags/types
