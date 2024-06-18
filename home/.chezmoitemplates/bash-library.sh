@@ -28,8 +28,6 @@ _set_option_with_sudo() {
 	local option_value="$2"
 	local config_file="$3"
 
-	echo "Setting ${option_name} to ${option_value} in ${config_file}"
-
 	if grep -q "^${option_name}=${option_value}$" "${config_file}"; then
 		return
 	fi
@@ -50,8 +48,6 @@ _set_option_with_sudo() {
 _enable_flag_with_sudo() {
 	local flag_name="$1"
 	local config_file="$2"
-
-	echo "Enabling ${flag_name} in ${config_file}"
 
 	if grep -q "^${flag_name}$" "${config_file}"; then
 		return
