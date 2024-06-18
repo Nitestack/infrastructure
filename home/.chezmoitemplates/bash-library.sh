@@ -7,7 +7,7 @@ set -uo pipefail
 
 echo
 
-# Log functions
+# ── Log ───────────────────────────────────────────────────────────────
 _log() {
 	gum log -s "$@"
 }
@@ -19,47 +19,7 @@ _spin() {
 	gum spin --show-error --spinner points --title "${title}" "$@"
 }
 
-# Utils
-
-# Function to install packages using pacman
-# Usage: _install_packages_pacman <package1> [<package2> ...]
-_install_packages_pacman() {
-	toInstall=()
-
-	for pkg; do
-		if pacman -Q "${pkg}" &>/dev/null; then
-			_log -l warn --prefix "pacman" "${pkg} is already installed"
-			continue
-		fi
-		toInstall+=("${pkg}")
-	done
-
-	if [[ "${toInstall[*]}" == "" ]]; then
-		return
-	fi
-
-	sudo pacman --needed --noconfirm -S "${toInstall[@]}"
-}
-
-# Function to install packages using paru
-# Usage: _install_packages_paru <package1> [<package2> ...]
-_install_packages_paru() {
-	toInstall=()
-
-	for pkg; do
-		if paru -Q "${pkg}" &>/dev/null; then
-			_log -l warn --prefix "paru" "${pkg} is already installed"
-			continue
-		fi
-		toInstall+=("${pkg}")
-	done
-
-	if [[ "${toInstall[*]}" == "" ]]; then
-		return
-	fi
-
-	paru --needed -S "${toInstall[@]}"
-}
+# ── Utils ─────────────────────────────────────────────────────────────
 
 # Function to set an option with sudo access
 # Usage: _set_option_with_sudo <option_name> <option_value> <config_file>
@@ -114,6 +74,49 @@ _write_file_with_sudo() {
 	echo "${content}" | sudo tee "${file_path}" >/dev/null
 }
 
+# ── Arch Linux ────────────────────────────────────────────────────────
+# {{ if eq .osid "linux-arch" }}
+
+# Function to install packages using pacman
+# Usage: _install_packages_pacman <package1> [<package2> ...]
+_install_packages_pacman() {
+	toInstall=()
+
+	for pkg; do
+		if pacman -Q "${pkg}" &>/dev/null; then
+			_log -l warn --prefix "pacman" "${pkg} is already installed"
+			continue
+		fi
+		toInstall+=("${pkg}")
+	done
+
+	if [[ "${toInstall[*]}" == "" ]]; then
+		return
+	fi
+
+	sudo pacman --needed --noconfirm -S "${toInstall[@]}"
+}
+
+# Function to install packages using paru
+# Usage: _install_packages_paru <package1> [<package2> ...]
+_install_packages_paru() {
+	toInstall=()
+
+	for pkg; do
+		if paru -Q "${pkg}" &>/dev/null; then
+			_log -l warn --prefix "paru" "${pkg} is already installed"
+			continue
+		fi
+		toInstall+=("${pkg}")
+	done
+
+	if [[ "${toInstall[*]}" == "" ]]; then
+		return
+	fi
+
+	paru --needed -S "${toInstall[@]}"
+}
+
 # Function to ensure a system service is enabled with sudo
 # Usage: _enable_system_service <service_name> [<pre_exec_function>]
 _enable_system_service() {
@@ -159,3 +162,5 @@ _enable_user_service() {
 		_log -l info --prefix "systemd" "Enabled ${service_name} service for the current user"
 	fi
 }
+
+# {{ end }}
