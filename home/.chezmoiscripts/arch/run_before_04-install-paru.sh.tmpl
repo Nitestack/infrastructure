@@ -14,11 +14,12 @@ if pacman -Q paru &>/dev/null; then
 fi
 
 # Install paru
+mkdir -p /tmp/paru-git
 (
-	git clone https://aur.archlinux.org/paru.git ~/paru-git
-	cd ~/paru-git || exit 1
+	git clone https://aur.archlinux.org/paru.git /tmp/paru-git
+	cd /tmp/paru-git || exit 1
 	makepkg -si --noconfirm
-	rm -rf ~/paru-git
 )
+rm -rf /tmp/paru-git
 
 _log -l info "Installed paru"
