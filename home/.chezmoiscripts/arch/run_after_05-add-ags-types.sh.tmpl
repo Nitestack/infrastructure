@@ -7,7 +7,12 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 _log -l info "Checking if ags types are added"
 
-ags_config_path="${HOME}/.dotfiles/home/private_dot_config/exact_ags"
+ags_config_path=$(find "${HOME}/.dotfiles/home" -type d -name '*ags' | head -n 1)
+
+if [[ -z "${ags_config_path}" ]]; then
+	_log -l warn "No ags config found"
+	exit
+fi
 
 # Check if the types already exist
 if [[ -d "${ags_config_path}/types" ]]; then
