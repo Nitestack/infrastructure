@@ -28,6 +28,7 @@ Pictures
 .config/project-manager
 
 .hushlogin
+.zprofile
 {{ end }}
 
 # macOS
@@ -47,7 +48,6 @@ Library
 .oh-my-zsh
 
 .zshrc
-.zprofile
 {{ end }}
 
 .config/nvim/templates
