@@ -105,7 +105,7 @@ Ensure you have the latest stable release of [Arch Linux](https://archlinux.org)
 [**Homebrew**](https://brew.sh) (**macOS only**)
 
 ```sh
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
 ```
 
 [**Git**](https://www.git-scm.com)
