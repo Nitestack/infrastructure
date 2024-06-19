@@ -54,7 +54,7 @@ Some of the additional features are:
   - [Windows](https://microsoft.com/windows)
   - [macOS](https://apple.com/macos)
   - [Arch Linux](https://archlinux.org)
-- **Font:** a Sans Font of choice, a Monospace Font of choice, a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
+- **Font:** a Sans Font of choice, a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
 - **Commands:**
   - [git](https://git-scm.com/downloads)
   - [chezmoi](https://chezmoi.io/install)

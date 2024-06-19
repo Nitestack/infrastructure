@@ -17,8 +17,8 @@ function M.setup(config)
   -- ── Font ────────────────────────────────────────────────────────────
   config.font = wezterm.font_with_fallback({
     {
-      family = "{{ .font.mono.family }}",
-      weight = "{{ .font.mono.weight }}",
+      family = "{{- .font.nerd.family -}}",
+      weight = "{{- .font.nerd.weight -}}",
     },
     "{{ .font.icon.family }}",
   })

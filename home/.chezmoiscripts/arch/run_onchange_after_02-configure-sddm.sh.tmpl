@@ -22,7 +22,7 @@ sudo cp "${TARGET_DIR}"/Fonts/* "/usr/share/fonts/"
 
 # Customize sddm-astronaut-theme
 _write_file_with_sudo "${TARGET_DIR}/theme.conf.user" 'PartialBlur="false"
-Font="{{- .font.mono.family -}}"
+Font="{{- .font.nerd.family -}}"
 HourFormat="hh:mm:ss"
 DateFormat="dddd, MMMM d, yyyy"'
 _log -l info "Customized sddm-astronaut-theme"

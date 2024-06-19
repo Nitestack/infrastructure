@@ -15,7 +15,7 @@ apps:
       - "appcleaner"
       - "betterdisplay"
       - "command-x"
-      - "font-monaspace"
+      - "font-monaspace-nerd-font"
       - "font-symbols-only-nerd-font"
       - "iina"
       - "latest"

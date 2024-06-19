@@ -1,23 +1,14 @@
 {{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
 {{- $email := promptStringOnce . "email" "Email Address" -}}
-{{- $font_display := promptStringOnce . "sans-font" "Sans Font" -}}
-{{- $font_display_weight := promptStringOnce . "sans-font-weight" "Sans Font Weight" -}}
-{{- $font_mono := promptStringOnce . "mono-font" "Monospace Font" -}}
-{{- $font_mono_weight := promptStringOnce . "mono-font-weight" "Monospace Font Weight" -}}
+{{- $font_display := promptStringOnce . "sans-font" "Sans Font" "Geist" -}}
+{{- $font_display_weight := promptStringOnce . "sans-font-weight" "Sans Font Weight" "Bold" -}}
 {{- $font_nerd := promptStringOnce . "nerd-font" "Nerd Font" -}}
+{{- $font_nerd_weight := promptStringOnce . "nerd-font-weight" "Nerd Font Weight" "Regular" "MonaspiceNe Nerd Font" -}}
 {{- $font_size := promptStringOnce . "font-size" "Font Size" "14" -}}
-{{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") -}}
-{{- $project_base_path := "" -}}
+{{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") "personal" -}}
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
 {{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
-{{- end -}}
-{{- if eq $hosttype "personal" -}}
-  {{- if eq .chezmoi.os "windows" -}}
-    {{- $project_base_path = "Programmierung/projects" -}}
-  {{- else if eq .chezmoi.os "linux" -}}
-    {{- $project_base_path = "projects" -}}
-  {{- end -}}
 {{- end -}}
 {{- $chassisType := "desktop" }}
 {{- if eq .chezmoi.os "darwin" }}
@@ -45,16 +36,14 @@ data:
       weight: {{ $font_display_weight | quote }}
     icon:
       family: "Symbols Nerd Font"
-    mono:
-      family: {{ $font_mono | quote }}
-      weight: {{ $font_mono_weight | quote }}
     nerd:
       family: {{ $font_nerd | quote }}
+      weight: {{ $font_nerd_weight | quote }}
     size: {{ $font_size | quote }}
   hosttype: {{ $hosttype | quote }}
   device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}
-  project_base_path: {{ $project_base_path | quote }}
+  project_base_path: "Programming/projects"
   # do not override the following values
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
