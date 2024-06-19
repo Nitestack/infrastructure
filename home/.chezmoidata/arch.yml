@@ -20,6 +20,7 @@ packages:
       - "i2c-tools" # Required for `ddcutil`
       - "man-db"
       - "man-pages-de"
+      - "noto-fonts-emoji" # Font: Noto
       - "otf-monaspace-nerd" # Font: MonaspiceNe Nerd Font
       - "pacman-contrib"
       - "papirus-icon-theme" # Icon theme

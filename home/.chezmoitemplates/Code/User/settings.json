@@ -3,7 +3,7 @@
   "diffEditor.codeLens": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.fontFamily": "{{ .font.nerd.family }}, {{ .font.icon.family }}, Consolas, 'Courier New', monospace",
+  "editor.fontFamily": "'{{ .font.nerd.family }}', 'Symbols Nerd Font', 'Noto Color Emoji', Consolas, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": {{ addf (float64 .font.size) 2 }},
   "editor.lineNumbers": "relative",

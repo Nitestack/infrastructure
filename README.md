@@ -54,12 +54,14 @@ Some of the additional features are:
   - [Windows](https://microsoft.com/windows)
   - [macOS](https://apple.com/macos)
   - [Arch Linux](https://archlinux.org)
-- **Font:** a Sans Font of choice, a [Nerd Font](https://nerdfonts.com/font-downloads) of choice and [Symbols Nerd Font](https://nerdfonts.com/font-downloads) installed on your system
 - **Commands:**
   - [git](https://git-scm.com/downloads)
   - [chezmoi](https://chezmoi.io/install)
-  - **UNIX only:** [wget](https://gnu.org/software/wget) or [curl](https://curl.se/download.html) installed
-  - **Windows only:** [pwsh (PowerShell Core)](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
+- **UNIX only:**
+  - [wget](https://gnu.org/software/wget) or [curl](https://curl.se/download.html) installed
+- **Windows only:**
+  - [pwsh](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows)
+  - **Fonts:** a Sans Font of choice, a [Nerd Font](https://nerdfonts.com/font-downloads) of choice, [Symbols Nerd Font](https://nerdfonts.com/font-downloads) and [Noto Color Emoji](https://fonts.google.com/noto) installed on your system
 
 ## 🏁 Getting Started
 

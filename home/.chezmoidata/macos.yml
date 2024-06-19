@@ -16,6 +16,7 @@ apps:
       - "betterdisplay"
       - "command-x"
       - "font-monaspace-nerd-font"
+      - "font-noto-color-emoji"
       - "font-symbols-only-nerd-font"
       - "iina"
       - "latest"
