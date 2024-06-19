@@ -12,6 +12,7 @@ packages:
       - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
       - "ddcutil" # Required for `ddcci-driver-linux`
+      - "easyeffects" # Audio effects for PipeWire applications
       - "efibootmgr" # Required for `grub`
       - "grub" # Boot loader
       - "hypridle" # Idle daemon for Hyprland
@@ -33,6 +34,7 @@ packages:
     paru:
       - "aylurs-gtk-shell" # ags
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
+      - "easyeffects-presets" # Control EasyEffects from the polybar status bar
       - "hyprpicker-git" # Required dependency for ags
       - "hyprshade" # Switching screen shaders in Hyprland
       - "matugen-bin" # Material You color generation tool
