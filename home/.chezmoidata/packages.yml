@@ -6,8 +6,12 @@
 packages:
   # ── Essentials (get installed before the other packages) ──────────────
   essentials:
-    - name: "base=devel"
+    - name: "base-devel"
       arch: "base-devel"
+    - name: "chezmoi"
+      arch: "chezmoi"
+      mac: "chezmoi"
+      win: "twpayne.chezmoi"
     - name: "curl"
       arch: "curl"
       mac: "curl"
@@ -15,6 +19,8 @@ packages:
       arch: "git"
       mac: "git"
       win: "Git.Git"
+    - name: "pwsh"
+      win: "Microsoft.PowerShell"
     - name: "python"
       arch: "python"
       win: "Python.Python.3.12"
