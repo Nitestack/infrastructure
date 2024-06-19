@@ -45,7 +45,7 @@ label {
     monitor =
     text = cmd[update:1000] echo "$(date +"%H:%M:%S")"
     font_size = 120
-    font_family = Monaspace Neon Var Bold
+    font_family = {{ .font.nerd.family }}
     position = 0, -300
     halign = center
     valign = top
@@ -56,7 +56,7 @@ label {
     monitor =
     text = cmd[update:0] echo "Welcome back, ${USER^}"
     font_size = 25
-    font_family = Monaspace Neon Var
+    font_family = {{ .font.nerd.family }}
     position = 0, -40
     halign = center
     valign = center
