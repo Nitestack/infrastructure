@@ -40,6 +40,7 @@ packages:
       - "matugen-bin" # Material You color generation tool
       - "otf-geist" # Font: Geist
       - "playerctld-systemd-unit" # playerctld automation
+      - "safeeyes" # Reduce and prevent repetitive strain injury
       - "swww" # Required dependency for ags
       - "wl-clip-persist" # Persistent clipboard
 apps:
