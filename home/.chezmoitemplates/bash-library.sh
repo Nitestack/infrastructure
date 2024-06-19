@@ -67,7 +67,7 @@ _write_file_with_sudo() {
 	local file_path="$1"
 	local content="$2"
 
-	echo "${content}" | sudo tee "${file_path}" >/dev/null
+	_spin "Writing to ${file_path}" -- echo "${content}" | sudo tee "${file_path}" >/dev/null
 }
 
 # ── Arch Linux ────────────────────────────────────────────────────────

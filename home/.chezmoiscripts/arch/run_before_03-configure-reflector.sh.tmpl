@@ -10,7 +10,7 @@ pre_exec() {
 	_install_packages_pacman "reflector"
 
 	# Create or overwrite the reflector configuration file
-	_spin "Creating reflector config" -- _write_file_with_sudo "/etc/xdg/reflector/reflector.conf" "--save /etc/pacman.d/mirrorlist
+	_write_file_with_sudo "/etc/xdg/reflector/reflector.conf" "--save /etc/pacman.d/mirrorlist
 --country Germany
 --protocol https
 --latest 5

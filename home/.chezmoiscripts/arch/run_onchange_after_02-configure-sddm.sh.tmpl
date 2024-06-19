@@ -21,14 +21,14 @@ _log -l info "Downloaded sddm-astronaut-theme"
 sudo cp "${TARGET_DIR}"/Fonts/* "/usr/share/fonts/"
 
 # Customize sddm-astronaut-theme
-_spin "Customizing sddm-astronaut-theme" -- _write_file_with_sudo "${TARGET_DIR}/theme.conf.user" 'PartialBlur="false"
+_write_file_with_sudo "${TARGET_DIR}/theme.conf.user" 'PartialBlur="false"
 Font="{{- .font.mono.family -}}"
 HourFormat="hh:mm:ss"
 DateFormat="dddd, MMMM d, yyyy"'
 _log -l info "Customized sddm-astronaut-theme"
 
 # Create sddm config
-_spin "Creating sddm config" -- _write_file_with_sudo "/etc/sddm.conf" "[Theme]
+_write_file_with_sudo "/etc/sddm.conf" "[Theme]
 Current=sddm-astronaut-theme"
 _log -l info "Created sddm config and set theme"
 
