@@ -15,6 +15,7 @@ apps:
       - "appcleaner"
       - "betterdisplay"
       - "command-x"
+      - "font-geist"
       - "font-monaspace-nerd-font"
       - "font-noto-color-emoji"
       - "font-symbols-only-nerd-font"

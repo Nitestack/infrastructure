@@ -36,6 +36,7 @@ packages:
       - "hyprpicker-git" # Required dependency for ags
       - "hyprshade" # Switching screen shaders in Hyprland
       - "matugen-bin" # Material You color generation tool
+      - "otf-geist" # Font: Geist
       - "playerctld-systemd-unit" # playerctld automation
       - "swww" # Required dependency for ags
       - "wl-clip-persist" # Persistent clipboard

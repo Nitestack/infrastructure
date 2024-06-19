@@ -32,6 +32,8 @@ gsettings_ensure org.gnome.calculator show-thousands true
 gsettings_ensure org.gnome.nautilus.preferences show-hidden-files true
 
 # Misc
+gsettings_ensure org.gnome.desktop.interface font-name "{{- .font.sans.family -}}"
+gsettings_ensure org.gnome.desktop.interface document-font-name "{{- .font.sans.family -}}"
 gsettings_ensure org.gnome.desktop.interface monospace-font-name "{{- .font.nerd.family -}}"
 gsettings_ensure org.gtk.Settings.FileChooser show-hidden true
 gsettings_ensure org.gtk.gtk4.Settings.FileChooser show-hidden true
