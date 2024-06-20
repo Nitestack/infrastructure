@@ -31,6 +31,7 @@ packages:
       - "otf-monaspace-nerd" # Font: MonaspiceNe Nerd Font
       - "pacman-contrib" # Required for `paccache`
       - "papirus-icon-theme" # Icon theme
+      - "pavucontrol" # Volume control tool ("mixer") for PulseAudio
       - "pipewire" # Multimedia framework
       - "pipewire-audio" # Audio
       - "pipewire-alsa" # ALSA support
@@ -43,7 +44,9 @@ packages:
       - "sddm" # Display manager
       - "slurp" # Region selection for Wayland compositors
       - "smartmontools" # analyzing and monitoring storage devices
+      - "swappy" # Wayland native snapshot editing tool
       - "ttf-nerd-fonts-symbols" # Font: Symbols Nerd Font
+      - "wf-recorder" # Recording program for wlroots-based compositors
       - "wireless_tools" # Manipulate the Wireless Extensions
       - "wireplumber" # Volume control with PipeWire
       - "wofi" # Application launcher
@@ -62,6 +65,7 @@ packages:
       - "playerctld-systemd-unit" # playerctld automation
       - "safeeyes" # Reduce and prevent repetitive strain injury
       - "swww" # Required dependency for ags
+      - "wayshot" # Screenshot tool for wlroots compositors
       - "wl-clip-persist" # Persistent clipboard
 apps:
   arch:
