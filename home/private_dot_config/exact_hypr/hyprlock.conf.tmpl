@@ -2,7 +2,7 @@
 # │ HYPRLOCK CONFIG                                          │
 # ╰──────────────────────────────────────────────────────────╯
 
-# BACKGROUND
+# ── BACKGROUND ────────────────────────────────────────────────────────
 background {
     monitor =
     path = ~/Pictures/wallpaper.png
@@ -13,7 +13,7 @@ background {
     vibrancy_darkness = 0.0
 }
 
-# GENERAL
+# ── GENERAL ───────────────────────────────────────────────────────────
 general {
     # no_fade_in = false
     grace = 5
@@ -21,7 +21,7 @@ general {
     pam_module = sudo
 }
 
-# INPUT FIELD
+# ── INPUT FIELD ───────────────────────────────────────────────────────
 input-field {
     monitor =
     size = 280, 80
@@ -40,7 +40,7 @@ input-field {
     valign = center
 }
 
-# TIME
+# ── TIME ──────────────────────────────────────────────────────────────
 label {
     monitor =
     text = cmd[update:1000] echo "$(date +"%H:%M:%S")"
@@ -51,7 +51,7 @@ label {
     valign = top
 }
 
-# USER
+# ── USER ──────────────────────────────────────────────────────────────
 label {
     monitor =
     text = cmd[update:0] echo "Welcome back, ${USER^}"
