@@ -52,5 +52,6 @@ apps:
       - "gnome-disk-utility" # Disk utility
       - "gnome-screenshot" # Screenshot
       - "gnome-terminal" # Required dependency for `docker`
+      - "loupe" # Image viewer
       - "nautilus" # File Manager
       - "vlc" # Media player
