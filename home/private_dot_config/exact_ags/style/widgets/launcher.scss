@@ -139,4 +139,20 @@ window#launcher .launcher {
       text-shadow: $text-shadow;
     }
   }
+
+  button.cliphist-item {
+    @include button($flat: true, $reactive: false);
+    padding: 0 ($padding * 0.5);
+
+    transition: $transition;
+    color: $fg;
+
+    &:hover,
+    &:focus {
+      color: $primary-bg;
+      background-color: transparentize($primary-bg, 0.9);
+      border-radius: 0;
+      text-shadow: $text-shadow;
+    }
+  }
 }

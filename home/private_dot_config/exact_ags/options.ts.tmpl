@@ -36,7 +36,7 @@ const options = mkOptions(OPTIONS, {
       border: opt("#080808"),
     },
 
-    blur: opt(10),
+    blur: opt(25),
     scheme: opt<"dark" | "light">("dark"),
     widget: { opacity: opt(94) },
     border: {
@@ -136,6 +136,9 @@ const options = mkOptions(OPTIONS, {
     width: opt(0),
     margin: opt(80),
     sh: {
+      max: opt(16),
+    },
+    cliphist: {
       max: opt(16),
     },
     apps: {

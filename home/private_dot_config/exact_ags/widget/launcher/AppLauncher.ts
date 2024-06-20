@@ -107,6 +107,9 @@ export function Launcher() {
   });
 
   return Object.assign(list, {
+    clear() {
+      list.children.forEach((item) => (item.reveal_child = false));
+    },
     filter(text: string | null) {
       first = query(text || "")[0];
       list.children.reduce((i, item) => {
