@@ -224,7 +224,7 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 ## 🙌 Credits
 
 - [Tom Payne](https://github.com/twpayne)
-  - creator of chezmoi
+  - creator of [chezmoi](https://chezmoi.io)
   - parts of his dotfiles are used
 - [Folke Lemaitre](https://github.com/folke)
   - creator of [LazyVim](https://github.com/LazyVim/LazyVim)
@@ -232,7 +232,10 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 - [Felipe Santos](https://github.com/felipecrs)
   - parts of his README are used
 - [René-Marc Simard](https://github.com/renemarc)
-  - the header section of his README is used
+  - the header section of his dotfiles README is used
+- [Aylur](https://github.com/Aylur)
+  - creator of [ags](https://aylur.github.io/ags-docs)
+  - his ags configuration was used as a base
 
 ## 📝 License
 
