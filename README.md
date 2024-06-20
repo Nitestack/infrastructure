@@ -46,7 +46,7 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **Package & App Management**: Consistent management of common apps and packages across all systems, including system-specific packages and apps
 
-- **Font Management**: Ensuring a uniform look and feel across different platforms, with support for Nerd icons ([Symbols Nerd Font](https://www.nerdfonts.com/font-downloads)) and emojis ([Noto Emoji Color](https://fonts.google.com/noto))
+- **Font Management**: Ensuring a uniform look and feel across different platforms, with support for Nerd icons ([Symbols Nerd Font](https://www.nerdfonts.com/font-downloads)) and emojis ([Noto Color Emoji](https://fonts.google.com/noto))
 
 - **Performance Always in Mind**: Optimized configurations to ensure efficient and smooth performance
 
