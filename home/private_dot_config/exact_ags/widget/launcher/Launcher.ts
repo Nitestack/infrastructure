@@ -50,8 +50,7 @@ function Launcher() {
     child: Widget.Box(
       { vertical: true },
       HelpButton("sh", "run a binary"),
-      HelpButton("ch", "copy a clipboard history entry"),
-      Widget.Box()
+      HelpButton("ch", "copy a clipboard history entry")
     ),
   });
 
@@ -70,7 +69,7 @@ function Launcher() {
     on_change: ({ text }) => {
       text ||= "";
       favs.reveal_child = text === "";
-      help.reveal_child = text.split(" ").length === 1 && text?.startsWith(":");
+      help.reveal_child = text.length < 3 && text?.startsWith(":");
 
       if (text?.startsWith(":sh")) sh.filter(text.substring(3));
       else sh.filter("");
@@ -79,6 +78,7 @@ function Launcher() {
       else ch.clear();
 
       if (!text?.startsWith(":")) applauncher.filter(text);
+      else applauncher.clear();
     },
   });
 
