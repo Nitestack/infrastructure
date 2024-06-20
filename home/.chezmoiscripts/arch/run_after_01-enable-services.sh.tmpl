@@ -5,7 +5,7 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info "Enabling system and user services"
+_log -l info --prefix "systemd" "Enabling system and user services"
 
 # paccache
 echo
@@ -19,5 +19,8 @@ _enable_user_service "playerctld.service"
 echo
 _enable_system_service "bluetooth.service"
 
+# Audio
+_enable_user_service "pipewire-pulse.service"
+
 echo
-_log -l info "Enabled system and user services"
+_log -l info --prefix "systemd" "Enabled system and user services"

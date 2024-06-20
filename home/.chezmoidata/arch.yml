@@ -15,24 +15,44 @@ packages:
       - "easyeffects" # Audio effects for PipeWire applications
       - "efibootmgr" # Required for `grub`
       - "grub" # Boot loader
+      - "gst-plugin-pipewire" # Required for `pipewire`
+      - "htop" # Process monitor
       - "hypridle" # Idle daemon for Hyprland
+      - "hyprland" # Wayland compositor
       - "hyprlock" # Lock screen for Hyprland
       - "hyprpaper" # Wallpaper utility for Hyprland
       - "i2c-tools" # Required for `ddcutil`
-      - "man-db"
-      - "man-pages-de"
-      - "noto-fonts-emoji" # Font: Noto
+      - "iwd" # Wireless daemon
+      - "libpulse" # Required for `pipewire-pulse`
+      - "man-db" # man for Arch
+      - "man-pages-de" # man in German
+      - "noto-fonts-emoji" # Font: Noto Emoji Color
+      - "openssh" # SSH protocol implementation
       - "otf-monaspace-nerd" # Font: MonaspiceNe Nerd Font
-      - "pacman-contrib"
+      - "pacman-contrib" # Required for `paccache`
       - "papirus-icon-theme" # Icon theme
+      - "pipewire" # Multimedia framework
+      - "pipewire-audio" # Audio
+      - "pipewire-alsa" # ALSA support
+      - "pipewire-jack" # JACK support
+      - "pipewire-pulse" # PulseAudio support
       - "playerctl" # Media control
-      - "polkit-gnome"
+      - "polkit-gnome" # Authentication agent
+      - "qt5-wayland" # Widget toolkit
+      - "qt6-wayland" # Widget toolkit
       - "sddm" # Display manager
+      - "slurp" # Region selection for Wayland compositors
+      - "smartmontools" # analyzing and monitoring storage devices
       - "ttf-nerd-fonts-symbols" # Font: Symbols Nerd Font
-      - "wireplumber" # Volume control
-      - "xdg-user-dirs"
+      - "wireless_tools" # Manipulate the Wireless Extensions
+      - "wireplumber" # Volume control with PipeWire
+      - "wofi" # Application launcher
+      - "wpa_supplicant" # Supplicant
+      - "xdg-desktop-portal-hyprland" # Required for `Hyprland`
+      - "xdg-user-dirs" # Manage "well known" user directories
+      - "xdg-utils" # Utilities for managing XDG MIME Applications
     paru:
-      - "aylurs-gtk-shell" # ags
+      - "aylurs-gtk-shell" # ags - GTK widget toolkit
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "easyeffects-presets" # Control EasyEffects from the polybar status bar
       - "hyprpicker-git" # Required dependency for ags
@@ -46,7 +66,7 @@ packages:
 apps:
   arch:
     pacman:
-      - "dconf-editor"
+      - "dconf-editor" # dconf editor
       - "firefox-developer-edition" # Browser
       - "gnome-calculator" # Calculator
       - "gnome-disk-utility" # Disk utility
