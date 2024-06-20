@@ -54,14 +54,14 @@ const options = mkOptions(OPTIONS, {
 
   font: {
     size: opt(13),
-    name: opt("{{- .font.nerd.family -}}"),
+    name: opt("{{- .font.sans.family -}}"),
   },
 
   bar: {
-    flatButtons: opt(true),
+    flatButtons: opt(false),
     position: opt<"top" | "bottom">("top"),
     corners: opt(50),
-    transparent: opt(false),
+    transparent: opt(true),
     layout: {
       start: opt<Array<import("widget/bar/Bar").BarWidget>>([
         "launcher",
@@ -110,7 +110,7 @@ const options = mkOptions(OPTIONS, {
     },
     taskbar: {
       iconSize: opt(0),
-      monochrome: opt(true),
+      monochrome: opt(false),
       exclusive: opt(false),
     },
     messages: {
@@ -120,7 +120,7 @@ const options = mkOptions(OPTIONS, {
       ignore: opt(["KDE Connect Indicator", "spotify-client"]),
     },
     media: {
-      monochrome: opt(true),
+      monochrome: opt(false),
       preferred: opt("spotify"),
       direction: opt<"left" | "right">("right"),
       format: opt("{artists} - {title}"),
