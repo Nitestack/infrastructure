@@ -6,7 +6,6 @@ import options from "options";
 import Group from "./Group";
 import Page from "./Page";
 import Row from "./Row";
-import Wallpaper from "./Wallpaper";
 
 const {
   autotheme: at,
@@ -40,7 +39,6 @@ export default [
     icons.ui.themes,
     Group(
       "",
-      Wallpaper() as ReturnType<typeof Row>,
       Row({ opt: at, title: "Auto Generate Color Scheme" }),
       Row({
         opt: scheme,
