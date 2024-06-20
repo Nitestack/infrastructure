@@ -1,42 +1,46 @@
 @mixin media() {
-    @include widget;
-    padding: $padding;
+  @include widget;
+  padding: $padding;
 
-    .cover {
-        @if $shadows {
-            box-shadow: 2px 2px 2px 0 $shadow-color;
-        }
-
-        background-size: cover;
-        background-position: center;
-        border-radius: $radius*0.8;
-        margin-right: $spacing;
+  .cover {
+    @if $shadows {
+      box-shadow: 2px 2px 2px 0 $shadow-color;
     }
 
-    button {
-        @include button($flat: true);
-        padding: $padding * .5;
+    background-size: cover;
+    background-position: center;
+    border-radius: $radius * 0.8;
+    margin-right: $spacing;
+  }
 
-        &.play-pause {
-            margin: 0 ($spacing * .5);
-        }
+  button {
+    @include button($flat: true);
+    padding: $padding * 0.5;
 
-        image {
-            font-size: 1.2em;
-        }
+    &.play-pause {
+      margin: 0 ($spacing * 0.5);
     }
 
-    .artist {
-        color: transparentize($fg, .2);
-        font-size: .9em;
+    image {
+      font-size: 1.2em;
     }
+  }
 
-    scale {
-        @include slider($width: .5em, $slider: false, $gradient: linear-gradient($fg, $fg));
-        margin-bottom: $padding * .5;
+  .artist {
+    color: transparentize($fg, 0.2);
+    font-size: 0.9em;
+  }
 
-        trough {
-            border: none;
-        }
+  scale {
+    @include slider(
+      $width: 0.5em,
+      $slider: false,
+      $gradient: linear-gradient($fg, $fg)
+    );
+    margin-bottom: $padding * 0.5;
+
+    trough {
+      border: none;
     }
+  }
 }
