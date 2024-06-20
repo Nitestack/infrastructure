@@ -89,16 +89,16 @@ const options = mkOptions(OPTIONS, {
       },
       label: {
         colored: opt(false),
-        label: opt(" Applications"),
+        label: opt(" Arch Linux"),
       },
       action: opt(() => App.toggleWindow("launcher")),
     },
     date: {
-      format: opt("%H:%M - %A %e."),
+      format: opt("%H:%M - %A, %B %e, %Y"),
       action: opt(() => App.toggleWindow("datemenu")),
     },
     battery: {
-      bar: opt<"hidden" | "regular" | "whole">("regular"),
+      bar: opt<"hidden" | "regular" | "whole">("hidden"),
       charging: opt("#00D787"),
       percentage: opt(true),
       blocks: opt(7),
@@ -106,7 +106,7 @@ const options = mkOptions(OPTIONS, {
       low: opt(30),
     },
     workspaces: {
-      workspaces: opt(7),
+      workspaces: opt(10),
     },
     taskbar: {
       iconSize: opt(0),
@@ -146,7 +146,7 @@ const options = mkOptions(OPTIONS, {
           "firefox",
           "wezterm",
           "org.gnome.Nautilus",
-          "org.gnome.Calendar",
+          "ferdium",
           "spotify",
         ],
       ]),
