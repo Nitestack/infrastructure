@@ -50,7 +50,6 @@ packages:
       - "wf-recorder" # Recording program for wlroots-based compositors
       - "wireless_tools" # Manipulate the Wireless Extensions
       - "wireplumber" # Volume control with PipeWire
-      - "wofi" # Application launcher
       - "wpa_supplicant" # Supplicant
       - "xdg-desktop-portal-hyprland" # Required for `Hyprland`
       - "xdg-user-dirs" # Manage "well known" user directories
