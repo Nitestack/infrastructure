@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+_log -l info --prefix "accountsservice" "Configuring account"
+
+if [[ -e "/var/lib/AccountsService/icons/{{- .chezmoi.username -}}" ]]; then
+	_log -l warn --prefix "accountsservice" "Account already configured"
+	exit
+fi
+
+_write_file_with_sudo "/var/lib/AccountsService/users/{{- .chezmoi.username -}}" "[User]
+Icon=/var/lib/AccountsService/icons/{{- .chezmoi.username -}}
+"
+
+sudo cp "{{- .chezmoi.sourceDir -}}/Pictures/user-avatar.jpg" "/var/lib/AccountsService/icons/{{- .chezmoi.username -}}"
+
+sudo chmod 644 "/var/lib/AccountsService/users/{{- .chezmoi.username -}}"
+sudo chmod 644 "/var/lib/AccountsService/icons/{{- .chezmoi.username -}}"
+
+_log -l info --prefix "accountsservice" "Account configured"
