@@ -22,6 +22,9 @@ Set-Alias ls eza
 function la {
   Invoke-Expression "eza -al $($Args -join ' ')"
 }
+function lt {
+  Invoke-Expression "eza -T $($Args -join ' ')"
+}
 function admin {
   if ($Args.Count -gt 0) {
     $argList = "& '" + $Args + "'"
