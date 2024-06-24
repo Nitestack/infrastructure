@@ -1,10 +1,12 @@
+local sourceDir = "{{ .chezmoi.sourceDir }}"
+
 ---@type LazySpec
 return {
   {
     "alker0/chezmoi.vim",
     lazy = false,
     init = function()
-      vim.g["chezmoi#source_dir_path"] = "{{ .chezmoi.sourceDir }}"
+      vim.g["chezmoi#source_dir_path"] = sourceDir
       vim.g["chezmoi#use_tmp_buffer"] = true
     end,
   },
@@ -14,27 +16,38 @@ return {
     opts = function(_, opts)
       opts.servers = opts.servers or {}
 
-      -- Lua
-      local lua_ls_filetypes = require("lspconfig.server_configurations.lua_ls").default_config.filetypes
-      opts.servers.lua_ls = opts.servers.lua_ls or {}
-      opts.servers.lua_ls.filetypes = vim.list_extend(lua_ls_filetypes, { "lua.chezmoitmpl" })
-      -- Bash
-      local bashls_filetypes = require("lspconfig.server_configurations.bashls").default_config.filetypes
-      opts.servers.bashls = opts.servers.bashls or {}
-      opts.servers.bashls.filetypes = vim.list_extend(bashls_filetypes, { "sh.chezmoitmpl" })
-      -- PowerShell
-      local powershell_es_filetypes = require("lspconfig.server_configurations.powershell_es").default_config.filetypes
-      opts.servers.powershell_es = opts.servers.powershell_es or {}
-      opts.servers.powershell_es.filetypes = vim.list_extend(powershell_es_filetypes, { "ps1.chezmoitmpl" })
-      -- JSON
-      local jsonls_filetypes = require("lspconfig.server_configurations.jsonls").default_config.filetypes
-      opts.servers.jsonls = opts.servers.jsonls or {}
-      opts.servers.jsonls.filetypes = vim.list_extend(jsonls_filetypes, { "json.chezmoitmpl", "jsonc.chezmoitmpl" })
-      -- YAML
-      local yamlls_filetypes = require("lspconfig.server_configurations.yamlls").default_config.filetypes
-      opts.servers.yamlls = opts.servers.yamlls or {}
-      opts.servers.yamlls.filetypes =
-        vim.list_extend(yamlls_filetypes, { "yaml.chezmoitmpl", "yaml.docker-compose.chezmoitmpl" })
+      ---@type (string|{[1]:string, ft:string|string[]})[]
+      local modify_servers = {
+        "bashls",
+        { "hyprls", ft = sourceDir .. "/private_dot_config/exact_hypr/*.conf" },
+        "jsonls",
+        "lua_ls",
+        "powershell_es",
+        "vtsls",
+        "yamlls",
+      }
+
+      for _, server_config in ipairs(modify_servers) do
+        local server_name
+        if type(server_config) == "string" then
+          server_name = server_config
+        else
+          server_name = server_config[1]
+        end
+
+        local filetypes = require("lspconfig.server_configurations." .. server_name).default_config.filetypes
+        if type(server_config) == "table" then
+          vim.list_extend(filetypes, utils.str_to_tbl(server_config.ft))
+        end
+
+        opts.servers[server_name] = opts.servers[server_name] or {}
+        opts.servers[server_name].filetypes = vim.list_extend(
+          filetypes,
+          vim.tbl_map(function(filetype)
+            return filetype .. ".chezmoitmpl"
+          end, filetypes)
+        )
+      end
     end,
   },
 }
