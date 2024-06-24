@@ -1,4 +1,5 @@
 return utils.plugin.with_extensions({
+  { import = "lazyvim.plugins.extras.editor.telescope" },
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
