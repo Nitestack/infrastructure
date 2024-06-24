@@ -52,19 +52,16 @@ return utils.plugin.get_language_spec({
           },
         },
       },
-      prismals = {},
     },
   },
   mason = {
     "eslint_d",
     "prettierd",
     "prettier",
-    "prisma-language-server",
   },
   treesitter = {
     "javascript",
     "jsdoc",
-    "prisma",
   },
   formatter = {
     formatters_by_ft = {
@@ -85,6 +82,7 @@ return utils.plugin.get_language_spec({
   plugins = utils.plugin.with_extensions({
     { import = "lazyvim.plugins.extras.linting.eslint" }, -- Use this as long as eslint_d doesn't work for eslint v9
     { import = "lazyvim.plugins.extras.lang.typescript" },
+    { import = "lazyvim.plugins.extras.lang.prisma" },
     {
       "vuki656/package-info.nvim",
       dependencies = {
