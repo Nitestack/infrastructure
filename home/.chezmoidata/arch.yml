@@ -71,7 +71,6 @@ apps:
   arch:
     pacman:
       - "dconf-editor" # dconf editor
-      - "firefox-developer-edition" # Browser
       - "gnome-calculator" # Calculator
       - "gnome-disk-utility" # Disk utility
       - "gnome-screenshot" # Screenshot
