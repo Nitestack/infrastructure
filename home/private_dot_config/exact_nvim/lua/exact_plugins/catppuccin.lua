@@ -40,7 +40,6 @@ return {
       }
     end,
     integrations = {
-      gitsigns = true,
       markdown = true,
       native_lsp = {
         enabled = true,
