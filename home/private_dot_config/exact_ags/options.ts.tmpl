@@ -158,8 +158,8 @@ const options = mkOptions(OPTIONS, {
 
   overview: {
     scale: opt(9),
-    workspaces: opt(7),
-    monochromeIcon: opt(true),
+    workspaces: opt(10),
+    monochromeIcon: opt(false),
   },
 
   powermenu: {
@@ -180,7 +180,7 @@ const options = mkOptions(OPTIONS, {
     position: opt<"left" | "center" | "right">("right"),
     networkSettings: opt("gtk-launch gnome-control-center"),
     media: {
-      monochromeIcon: opt(true),
+      monochromeIcon: opt(false),
       coverSize: opt(100),
     },
   },
@@ -214,7 +214,7 @@ const options = mkOptions(OPTIONS, {
   hyprland: {
     gaps: opt(2.4),
     inactiveBorder: opt("#282828"),
-    gapsWhenOnly: opt(false),
+    gapsWhenOnly: opt(true),
   },
 });
 
