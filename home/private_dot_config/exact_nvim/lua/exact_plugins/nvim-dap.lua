@@ -158,4 +158,8 @@ return utils.plugin.with_extensions({
   },
 }, {
   lualine = "nvim-dap-ui",
+  catppuccin = {
+    dap = true,
+    dap_ui = true,
+  },
 })

@@ -19,4 +19,7 @@ return utils.plugin.with_extensions({
   },
 }, {
   lualine = "trouble",
+  catppuccin = {
+    lsp_trouble = true,
+  },
 })

@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -118,4 +117,8 @@ return {
       })
     end,
   },
-}
+}, {
+  catppuccin = {
+    cmp = true,
+  },
+})

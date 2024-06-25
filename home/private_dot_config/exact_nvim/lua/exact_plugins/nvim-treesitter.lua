@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
@@ -65,4 +64,9 @@ return {
     end,
   },
   { import = "lazyvim.plugins.extras.ui.treesitter-context" },
-}
+}, {
+  catppuccin = {
+    treesitter_context = true,
+    treesitter = true,
+  },
+})

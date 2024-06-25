@@ -139,6 +139,7 @@ end
 ---@class utils.plugin.extension_config
 ---@field telescope? utils.plugin.extension_config.telescope
 ---@field lualine? string|string[]
+---@field catppuccin? table<string, boolean|table>
 
 ---@class utils.plugin.extension_config.telescope
 ---@field extensions? string|string[]
@@ -172,6 +173,14 @@ function M.with_extensions(plugins, extensions)
       opts = function(_, opts)
         opts.extensions = vim.list_extend(opts.extensions or {}, utils.str_to_tbl(extensions.lualine))
       end,
+    })
+  end
+  if extensions.catppuccin then
+    table.insert(plugins, {
+      "catppuccin/nvim",
+      opts = {
+        extensions = extensions.catppuccin,
+      },
     })
   end
   return plugins

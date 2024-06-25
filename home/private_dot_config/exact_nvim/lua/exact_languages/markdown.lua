@@ -7,7 +7,7 @@ return utils.plugin.get_language_spec({
     "prettierd",
     "prettier",
   },
-  plugins = {
+  plugins = utils.plugin.with_extensions({
     { import = "lazyvim.plugins.extras.lang.markdown" },
     {
       "lukas-reineke/headlines.nvim",
@@ -24,5 +24,9 @@ return utils.plugin.get_language_spec({
         vim.g.mkdp_filetypes = { "markdown" }
       end,
     },
-  },
+  }, {
+    catppuccin = {
+      headlines = true,
+    },
+  }),
 })

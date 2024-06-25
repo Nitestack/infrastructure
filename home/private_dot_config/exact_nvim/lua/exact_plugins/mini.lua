@@ -1,5 +1,4 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
   {
     "echasnovski/mini.indentscope",
@@ -123,4 +122,11 @@ return {
       return { "LazyFile" }
     end,
   },
-}
+}, {
+  catppuccin = {
+    mini = {
+      enabled = true,
+      indentscope_color = "overlay0",
+    },
+  },
+})

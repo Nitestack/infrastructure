@@ -62,4 +62,7 @@ return utils.plugin.with_extensions({
   },
 }, {
   lualine = "neo-tree",
+  catppuccin = {
+    neotree = true,
+  },
 })

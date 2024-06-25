@@ -48,4 +48,7 @@ return utils.plugin.with_extensions({
   },
 }, {
   lualine = "mason",
+  catppuccin = {
+    mason = true,
+  },
 })

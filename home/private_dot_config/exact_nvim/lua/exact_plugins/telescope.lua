@@ -91,4 +91,10 @@ return utils.plugin.with_extensions({
   telescope = {
     extensions = "fzf",
   },
+  catppuccin = {
+    telescope = {
+      enabled = true,
+      style = "nvchad",
+    },
+  },
 })

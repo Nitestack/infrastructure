@@ -7,6 +7,10 @@ return {
   opts = {
     transparent_background = core.config.ui.transparent.enabled,
     flavour = "mocha",
+    term_colors = true,
+    dim_inactive = {
+      enabled = true,
+    },
     styles = {
       loops = { "italic" },
       booleans = { "italic" },
@@ -39,18 +43,8 @@ return {
       }
     end,
     integrations = {
-      dashboard = true,
       gitsigns = true,
-      headlines = true,
-      indent_blankline = { enabled = true },
       markdown = true,
-      mason = true,
-      mini = { enabled = true, indentscope_color = "overlay0" },
-      neotest = true,
-      noice = true,
-      dap = true,
-      dap_ui = true,
-      cmp = true,
       native_lsp = {
         enabled = true,
         virtual_text = {
@@ -67,16 +61,7 @@ return {
         },
         inlay_hints = { background = true },
       },
-      notify = true,
       semantic_tokens = true,
-      treesitter_context = true,
-      treesitter = true,
-      telescope = {
-        enabled = true,
-        style = "nvchad",
-      },
-      lsp_trouble = true,
-      which_key = true,
     },
   },
 }
