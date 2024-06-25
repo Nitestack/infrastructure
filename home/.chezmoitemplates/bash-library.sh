@@ -28,17 +28,37 @@ _set_option_with_sudo() {
 	local option_value="$2"
 	local config_file="$3"
 
-	if grep -q "^${option_name}=${option_value}$" "${config_file}"; then
+	# Regular expression patterns to match lines with optional whitespace around the equal sign
+	local pattern="^\s*${option_name}\s*=\s*${option_value}\s*$"
+	local commented_pattern="^\s*#\s*${option_name}\s*=\s*${option_value}\s*$"
+	local commented_any_value_pattern="^\s*#\s*${option_name}\s*=\s*.*$"
+	local any_value_pattern="^\s*${option_name}\s*=\s*.*$"
+
+	# Check if the exact option is already set in the config file
+	if grep -Eq "${pattern}" "${config_file}"; then
+		_log -l debug "Option ${option_name} is already set to ${option_value} in ${config_file}"
 		return
 	fi
 
-	if grep -q "^#${option_name}=${option_value}$" "${config_file}"; then
-		sudo sed -i "s|^#${option_name}=${option_value}$|${option_name}=${option_value}|" "${config_file}"
+	# Check if the option is commented out with the exact value
+	if grep -Eq "${commented_pattern}" "${config_file}"; then
+		_log -l debug "Comment out option ${option_name} in ${config_file}"
+		sudo sed -i "s|${commented_pattern}|${option_name}=${option_value}|" "${config_file}"
 	else
-		if grep -q "^#${option_name}=" "${config_file}"; then
-			sudo sed -i "s|^#${option_name}=.*|${option_name}=${option_value}|" "${config_file}"
+		# Check if the option is commented out with any value
+		if grep -Eq "${commented_any_value_pattern}" "${config_file}"; then
+			_log -l debug "Comment out option ${option_name} in ${config_file} and set value to ${option_value}"
+			sudo sed -i "s|${commented_any_value_pattern}|${option_name}=${option_value}|" "${config_file}"
 		else
-			echo "${option_name}=${option_value}" | sudo tee -a "${config_file}"
+			# Check if the option is set with any value
+			if grep -Eq "${any_value_pattern}" "${config_file}"; then
+				_log -l debug "Set option ${option_name} in ${config_file} to ${option_value}"
+				sudo sed -i "s|${any_value_pattern}|${option_name}=${option_value}|" "${config_file}"
+			else
+				# If the option is not present at all, add it to the end of the config file
+				_log -l debug "Add option ${option_name} in ${config_file} to ${option_value}"
+				echo "${option_name}=${option_value}" | sudo tee -a "${config_file}"
+			fi
 		fi
 	fi
 }
