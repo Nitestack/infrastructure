@@ -8,7 +8,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # Path to the pacman configuration file
 PACMAN_CONF="/etc/pacman.conf"
 
-_log -l info --prefix "pacman" "Checking if ${PACMAN_CONF} is set up"
+_log_header "pacman Configuration"
 
 # Uncomment an option or flag if commented
 uncomment_option() {

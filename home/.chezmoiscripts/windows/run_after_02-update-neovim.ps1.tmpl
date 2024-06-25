@@ -1,6 +1,6 @@
 # {{ template "pwsh-library.ps1" . }}
 
-_Log -l info "Starting the update process for Neovim and its plugins"
+_LogHeader "Neovim"
 
 gum confirm "Proceed with the updates?" --default=false
 if ($?) {

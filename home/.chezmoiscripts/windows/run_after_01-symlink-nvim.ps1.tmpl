@@ -1,6 +1,6 @@
 # {{ template "pwsh-library.ps1" . }}
 
-_Log -l info "Checking if symlink for Neovim config dir exists"
+_LogHeader "Neovim Configuration Directory"
 
 $target_path = "$env:LOCALAPPDATA\nvim"
 $symlink_path = "$env:USERPROFILE\.config\nvim"

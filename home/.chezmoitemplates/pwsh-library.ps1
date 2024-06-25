@@ -8,6 +8,11 @@ function _Log {
   gum log -s $Args
 }
 
+function _LogHeader {
+  param([string]$Title)
+  Write-Output "# $Title" | gum format
+}
+
 function _Install-PackagesWinget {
   param([string[]]$Packages)
 

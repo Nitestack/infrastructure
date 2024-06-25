@@ -5,7 +5,7 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info --prefix "ags" "Checking if types are added"
+_log_header "AGS Types"
 
 ags_config_path=$(find "${HOME}/.dotfiles/home" -type d -name '*ags' | head -n 1)
 

@@ -1,6 +1,6 @@
 # {{ template "pwsh-library.ps1" . }}
 
-_Log -l info "Installing apps"
+_LogHeader "Apps"
 
 # {{ $apps := list }}
 # {{ range .apps.common }}
@@ -15,7 +15,7 @@ _Log -l info "Installing apps"
 # {{ end }}
 
 # ── winget ────────────────────────────────────────────────────────────
-Write-Output "# winget:" | gum format
+Write-Output "## winget:" | gum format
 _Install-PackagesWinget "{{- $apps | uniq | join "\", \"" -}}"
 
 Write-Host

@@ -13,7 +13,7 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install essentials                                       │
 # ╰──────────────────────────────────────────────────────────╯
-_log -l info "Installing essential packages"
+_log_header "Essential Packages"
 
 # {{ $osid := .osid }}
 # {{ $os := .chezmoi.os }}
@@ -35,13 +35,13 @@ _log -l info "Installing essential packages"
 
 # {{ if eq $osid "linux-arch"}}
 # ── pacman ────────────────────────────────────────────────────────────
-gum format -- "# pacman:"
+gum format -- "## pacman:"
 paru -Syu
 _install_packages_pacman "{{- $essentialPackages | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
-gum format -- "# custom:"
+gum format -- "## custom:"
 # {{ range $essentialCustomPackages }}
 # {{ range $cmd_name, $lines := . }}
 if command -v "{{- $cmd_name -}}" &>/dev/null; then
@@ -54,7 +54,7 @@ fi
 # {{ end }}
 
 # ── volta ─────────────────────────────────────────────────────────────
-gum format -- "# volta:"
+gum format -- "## volta:"
 volta_list=$(volta list --format plain)
 # {{ range (.packages.volta | uniq) }}
 if echo "${volta_list}" | grep -q "{{- . -}}"; then
@@ -71,7 +71,7 @@ _log -l info "Installed essential packages"
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install packages                                         │
 # ╰──────────────────────────────────────────────────────────╯
-_log -l info "Installing packages"
+_log_header "Packages"
 
 # {{ $packages := list }}
 # {{ $customPackages := list }}
@@ -91,16 +91,16 @@ _log -l info "Installing packages"
 
 # {{ if eq $osid "linux-arch" }}
 # ── pacman ────────────────────────────────────────────────────────────
-gum format -- "# pacman:"
+gum format -- "## pacman:"
 _install_packages_pacman "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
 
 # ── paru ───────────────────────────────────────────────────────────────
-gum format -- "# paru:"
+gum format -- "## paru:"
 _install_packages_paru "{{- .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
-gum format -- "# custom:"
+gum format -- "## custom:"
 # {{ range $customPackages }}
 # {{ range $cmd_name, $lines := . }}
 if command -v "{{- $cmd_name -}}" &>/dev/null; then
@@ -113,7 +113,7 @@ fi
 # {{ end }}
 
 # ── pnpm ──────────────────────────────────────────────────────────────
-gum format -- "# pnpm:"
+gum format -- "## pnpm:"
 pnpm_list=$(pnpm list -g --depth 0)
 # {{ range (.packages.npm | uniq | sortAlpha) }}
 if echo "${pnpm_list}" | grep -q "{{- . -}}"; then
@@ -125,7 +125,7 @@ fi
 # {{ end }}
 
 # ── cargo ─────────────────────────────────────────────────────────────
-gum format -- "# cargo:"
+gum format -- "## cargo:"
 cargo_list=$(cargo install --list)
 # {{ range (.packages.cargo | uniq | sortAlpha) }}
 if echo "${cargo_list}" | grep -q "{{- . -}}"; then

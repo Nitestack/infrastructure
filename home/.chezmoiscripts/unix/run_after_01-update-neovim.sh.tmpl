@@ -5,7 +5,7 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info "Starting the update process for Neovim and its plugins"
+_log_header "Neovim"
 
 if gum confirm "Proceed with the updates?" --default=false; then
 	_spin "Updating Neovim" -- bob update --all

@@ -7,6 +7,8 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 # Rerun if the following file changes: {{ include "private_dot_config/exact_hypr/hyprshade.toml" | sha256sum }}
 
+_log_header "Hyprland: Screen Shader"
+
 _spin "Installing systemd units for hyprshade" -- hyprshade install
 _log -l info --prefix "hyprshade" "Installed systemd units"
 

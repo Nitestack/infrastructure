@@ -11,12 +11,11 @@ THEMES_DIR="/boot/grub/themes"
 TMP_DIR="/tmp/HyperFluent-GRUB-Theme"
 GRUB_CONFIG="/etc/default/grub"
 
-_log -l info "Setting up grub"
+_log_header "Boot Loader Configuration"
 
 mkdir -p "${TMP_DIR}"
 
 # Download the theme tar.gz
-echo
 _spin "Downloading hyperfluent themes" -- git clone --depth 1 "https://github.com/Coopydood/HyperFluent-GRUB-Theme.git" "${TMP_DIR}"
 _log -l info "Downloaded hyperfluent themes"
 

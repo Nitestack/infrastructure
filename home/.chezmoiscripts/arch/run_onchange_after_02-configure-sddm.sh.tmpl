@@ -7,9 +7,8 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 
 TARGET_DIR="/usr/share/sddm/themes/sddm-astronaut-theme"
 
-_log -l info "Setting up sddm"
+_log_header "Display Manager Theme"
 
-echo
 _log -l info "Ensure required dependencies are installed"
 _install_packages_pacman "qt6-5compat" "qt6-declarative" "qt6-svg"
 

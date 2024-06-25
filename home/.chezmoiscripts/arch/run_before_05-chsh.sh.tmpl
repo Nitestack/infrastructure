@@ -5,7 +5,7 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log -l info "Checking if zsh is the default shell"
+_log_header "Shell Configuration"
 
 # Check if the current shell is zsh already
 if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then

@@ -20,7 +20,7 @@ function gsettings_ensure() {
 	fi
 }
 
-_log -l info --prefix "GNOME" "Setting options"
+_log_header "GNOME Configuration"
 
 # Setup VS Code as default text editor on GNOME
 xdg-mime default code.desktop text/plain

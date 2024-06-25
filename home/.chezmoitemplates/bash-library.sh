@@ -5,9 +5,11 @@
 
 set -uo pipefail
 
-echo
-
 # ── Log ───────────────────────────────────────────────────────────────
+_log_header() {
+	gum format -- "# $1"
+}
+
 _log() {
 	gum log -s "$@"
 }

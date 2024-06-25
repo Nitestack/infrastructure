@@ -28,14 +28,14 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # {{   $paruApps = concat $paruApps .apps.arch.paru  }}
 # {{ end }}
 
-_log -l info "Installing apps"
+_log_header "Apps"
 
 # ── pacman ────────────────────────────────────────────────────────────
-gum format -- "# pacman:"
+gum format -- "## pacman:"
 _install_packages_pacman "{{- $pacmanApps | uniq | sortAlpha | join "\" \""  -}}"
 
 # ── paru ───────────────────────────────────────────────────────────────
-gum format -- "# paru:"
+gum format -- "## paru:"
 _install_packages_paru "{{- $paruApps | uniq | sortAlpha | join "\" \""  -}}"
 
 echo

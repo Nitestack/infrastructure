@@ -3,7 +3,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install essentials                                       │
 # ╰──────────────────────────────────────────────────────────╯
-_Log -l info "Installing essential packages"
+_LogHeader "Essential Packages"
 
 # {{ $essentialPackages := list }}
 # {{ $essentialCustomPackages := list }}
@@ -20,11 +20,11 @@ _Log -l info "Installing essential packages"
 # {{ end }}
 
 # ── winget ────────────────────────────────────────────────────────────
-Write-Output "# winget:" | gum format
+Write-Output "## winget:" | gum format
 _Install-PackagesWinget "{{- $essentialPackages | join "\", \"" -}}"
 
 # ── custom ────────────────────────────────────────────────────────────
-Write-Output "# custom:" | gum format
+Write-Output "## custom:" | gum format
 # {{ range $essentialCustomPackages }}
 # {{ range $cmd_name, $lines := . }}
 if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
@@ -43,7 +43,7 @@ else {
 # {{ end }}
 
 # ── volta ─────────────────────────────────────────────────────────────
-Write-Output "# volta:" | gum format
+Write-Output "## volta:" | gum format
 $voltaList = volta list --format plain
 # {{ range (.packages.volta | uniq) }}
 if ($voltaList -match "{{- . -}}") {
@@ -66,7 +66,7 @@ _Log -l info "Installed essential packages"
 # ╭──────────────────────────────────────────────────────────╮
 # │ Install packages                                         │
 # ╰──────────────────────────────────────────────────────────╯
-_Log -l info "Installing packages"
+_LogHeader "Packages"
 
 # {{ $packages := list }}
 # {{ $customPackages := list }}
@@ -84,15 +84,15 @@ _Log -l info "Installing packages"
 # {{ $packages = concat $packages .packages.win.winget }}
 
 # ── winget ────────────────────────────────────────────────────────────
-Write-Output "# winget:" | gum format
+Write-Output "## winget:" | gum format
 _Install-PackagesWinget "{{- $packages | join "\", \"" -}}"
 
 # ── PowerShell Gallery ────────────────────────────────────────────────
-Write-Output "# PowerShell Gallery:" | gum format
+Write-Output "## PowerShell Gallery:" | gum format
 _Install-PackagesGallery "{{- .packages.win.modules | uniq | sortAlpha | join "\" \"" -}}"
 
 # ── custom ────────────────────────────────────────────────────────────
-Write-Output "# custom:" | gum format
+Write-Output "## custom:" | gum format
 # {{ range $_, $pkg := $customPackages }}
 # {{ range $cmd_name, $lines := . }}
 if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
@@ -111,7 +111,7 @@ else {
 # {{ end }}
 
 # ── Global npm dependencies ───────────────────────────────────────────
-Write-Output "# pnpm:" | gum format
+Write-Output "## pnpm:" | gum format
 $pnpmList = pnpm list -g --depth 0
 # {{ range (.packages.npm | uniq | sortAlpha) }}
 if ($pnpmList -match "{{- . -}}") {
@@ -129,7 +129,7 @@ else {
 # {{ end }}
 
 # ── Global cargo crates ───────────────────────────────────────────────
-Write-Output "# cargo:" | gum format
+Write-Output "## cargo:" | gum format
 $cargoList = cargo install --list
 # {{ range (.packages.cargo | uniq | sortAlpha) }}
 if ($cargoList -match "{{- . -}}") {
