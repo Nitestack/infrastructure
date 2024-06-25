@@ -48,9 +48,7 @@ add_line_after() {
 _enable_flag_with_sudo "UseSyslog" "${PACMAN_CONF}"
 
 # Enable ParallelDownloads
-if grep -q "^#\s*ParallelDownloads" "${PACMAN_CONF}"; then
-	sudo sed -i "s/^#\s*\(ParallelDownloads\)/\1/" "${PACMAN_CONF}"
-fi
+_set_option_with_sudo "ParallelDownloads" "5" "${PACMAN_CONF}"
 
 # Enable Color
 _enable_flag_with_sudo "Color" "${PACMAN_CONF}"
