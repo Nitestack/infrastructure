@@ -18,12 +18,17 @@ Set-Alias lvim "$env:USERPROFILE\.local\bin\lvim.ps1"
 Remove-Alias ls
 Remove-Alias cat
 Set-Alias cat bat
-Set-Alias ls eza
+
+$EzaOptions="--group-directories-first --icons"
+
+function ls {
+  Invoke-Expression "eza $EzaOptions $($Args -join ' ')"
+}
 function la {
-  Invoke-Expression "eza -al $($Args -join ' ')"
+  Invoke-Expression "eza $EzaOptions -al $($Args -join ' ')"
 }
 function lt {
-  Invoke-Expression "eza -T $($Args -join ' ')"
+  Invoke-Expression "eza $EzaOptions -T $($Args -join ' ')"
 }
 function admin {
   if ($Args.Count -gt 0) {
