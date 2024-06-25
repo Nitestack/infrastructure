@@ -13,6 +13,7 @@ packages:
       - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
       - "ddcutil" # Required for `ddcci-driver-linux`
+      - "dnsmasq" # Required for `libvirt`
       - "easyeffects" # Audio effects for PipeWire applications
       - "efibootmgr" # Required for `grub`
       - "grub" # Boot loader
@@ -23,11 +24,14 @@ packages:
       - "hyprlock" # Lock screen for Hyprland
       - "hyprpaper" # Wallpaper utility for Hyprland
       - "i2c-tools" # Required for `ddcutil`
+      - "iptables-nft" # Required for `libvirt`
       - "iwd" # Wireless daemon
       - "libpulse" # Required for `pipewire-pulse`
+      - "libvirt" # collection of software that provides a convenient way to manage VM's
       - "man-db" # man for Arch
       - "man-pages-de" # man in German
       - "noto-fonts-emoji" # Font: Noto Emoji Color
+      - "openbsd-netcat" # Required for `libvirt`
       - "openssh" # SSH protocol implementation
       - "otf-monaspace-nerd" # Font: MonaspiceNe Nerd Font
       - "pacman-contrib" # Required for `paccache`
@@ -77,4 +81,6 @@ apps:
       - "gnome-terminal" # Required dependency for `docker`
       - "loupe" # Image viewer
       - "nautilus" # File Manager
+      - "qemu-full" # VM support
+      - "virt-manager" # Desktop user interface for managing VM's
       - "vlc" # Media player
