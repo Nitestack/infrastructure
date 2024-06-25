@@ -8,9 +8,6 @@ return {
     transparent_background = core.config.ui.transparent.enabled,
     flavour = "mocha",
     term_colors = true,
-    dim_inactive = {
-      enabled = true,
-    },
     styles = {
       loops = { "italic" },
       booleans = { "italic" },
