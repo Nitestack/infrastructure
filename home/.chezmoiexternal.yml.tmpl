@@ -14,7 +14,8 @@
   url: "https://github.com/catppuccin/bat/archive/master.tar.gz"
   stripComponents: 1
   refreshPeriod: "168h"
-  include: ["*/themes/**"]
+  include:
+    - "*/themes/**"
 
 # Oh My Zsh
 {{ if ne .chezmoi.os "windows" -}}
@@ -57,4 +58,15 @@
   stripComponents: 1
   exact: true
   refreshPeriod: "168h"
+{{ end }}
+
+# Apple Cursor Theme
+{{ if eq .osid "linux-arch" }}
+".icons":
+  type: archive
+  url: "https://github.com/ful1e5/apple_cursor/releases/download/{{- (gitHubLatestRelease "ful1e5/apple_cursor").TagName -}}/macOS.tar.xz"
+  stripComponents: 1
+  refreshPeriod: "168h"
+  exclude:
+    - "*/LICENSE"
 {{ end }}
