@@ -65,9 +65,9 @@ function M.get_language_spec(config)
   if config.mason then
     table.insert(spec, {
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-      opts = {
-        ensure_installed = utils.str_to_tbl(config.mason),
-      },
+      opts = function(_, opts)
+        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, utils.str_to_tbl(config.mason))
+      end,
     })
   end
 
@@ -169,9 +169,9 @@ function M.with_extensions(plugins, extensions)
   if extensions.lualine then
     table.insert(plugins, {
       "nvim-lualine/lualine.nvim",
-      opts = {
-        extensions = utils.str_to_tbl(extensions.lualine),
-      },
+      opts = function(_, opts)
+        opts.extensions = vim.list_extend(opts.extensions or {}, utils.str_to_tbl(extensions.lualine))
+      end,
     })
   end
   return plugins
