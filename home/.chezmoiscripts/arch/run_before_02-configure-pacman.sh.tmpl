@@ -48,7 +48,7 @@ add_line_after() {
 _enable_flag_with_sudo "UseSyslog" "${PACMAN_CONF}"
 
 # Enable ParallelDownloads
-_set_option_with_sudo "ParallelDownloads" "5" "${PACMAN_CONF}"
+_set_option_with_sudo "ParallelDownloads" "5" "${PACMAN_CONF}" false true
 
 # Enable Color
 _enable_flag_with_sudo "Color" "${PACMAN_CONF}"
