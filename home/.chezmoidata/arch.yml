@@ -6,7 +6,6 @@
 packages:
   arch:
     pacman:
-      - "accountsservice" # User account query and manipulation
       - "arc-gtk-theme" # System theme
       - "bluez" # Bluetooth
       - "bluez-utils" # Bluetooth
