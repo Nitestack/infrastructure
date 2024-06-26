@@ -11,30 +11,48 @@ const options = mkOptions(OPTIONS, {
     dark: {
       primary: {
         bg: opt("#89b4fa"),
-        fg: opt("#181825"),
+        fg: opt("#cdd6f4"),
       },
       error: {
         bg: opt("#f38ba8"),
-        fg: opt("#181825"),
+        fg: opt("#cdd6f4"),
+      },
+      surface: {
+        bg: opt("#313244"),
+        fg: opt("#cdd6f4"),
+      },
+      container: {
+        bg: opt("#181825"),
+        fg: opt("#cdd6f4"),
       },
       bg: opt("#1e1e2e"),
       fg: opt("#cdd6f4"),
       widget: opt("#cdd6f4"),
       border: opt("#cdd6f4"),
+      inactiveBorder: opt("#282828"),
     },
     light: {
       primary: {
         bg: opt("#1e66f5"),
-        fg: opt("#e6e9ef"),
+        fg: opt("#4c4f69"),
       },
       error: {
         bg: opt("#d20f39"),
-        fg: opt("#e6e9ef"),
+        fg: opt("#4c4f69"),
+      },
+      surface: {
+        bg: opt("#ccd0da"),
+        fg: opt("#4c4f69"),
+      },
+      container: {
+        bg: opt("#e6e9ef"),
+        fg: opt("#4c4f69"),
       },
       bg: opt("#eff1f5"),
       fg: opt("#4c4f69"),
       widget: opt("#4c4f69"),
       border: opt("#4c4f69"),
+      inactiveBorder: opt("#282828"),
     },
 
     blur: opt(25),
@@ -208,7 +226,6 @@ const options = mkOptions(OPTIONS, {
 
   hyprland: {
     gaps: opt(2.4),
-    inactiveBorder: opt("#282828"),
   },
 });
 

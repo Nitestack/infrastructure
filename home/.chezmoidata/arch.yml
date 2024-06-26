@@ -6,7 +6,6 @@
 packages:
   arch:
     pacman:
-      - "arc-gtk-theme" # System theme
       - "bluez" # Bluetooth
       - "bluez-utils" # Bluetooth
       - "brightnessctl" # Brightness control for internal monitors
@@ -59,9 +58,11 @@ packages:
       - "xdg-user-dirs" # Manage "well known" user directories
       - "xdg-utils" # Utilities for managing XDG MIME Applications
     paru:
+      - "adw-gtk3-git" # System theme (customizable with `gradience`)
       - "aylurs-gtk-shell" # ags - GTK widget toolkit
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "easyeffects-presets" # Control EasyEffects from the polybar status bar
+      - "gradience" # Customizing Libadwaita applications and the adw-gtk3 theme
       - "hyprpicker-git" # Required dependency for ags
       - "hyprshade" # Switching screen shaders in Hyprland
       - "matugen-bin" # Material You color generation tool

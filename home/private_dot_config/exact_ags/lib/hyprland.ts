@@ -10,35 +10,10 @@ const {
     border: { width },
     blur,
     shadows,
-    dark: {
-      primary: { bg: darkActive },
-    },
-    light: {
-      primary: { bg: lightActive },
-    },
-    scheme,
   },
 } = options;
 
-const deps = [
-  "hyprland",
-  spacing.id,
-  radius.id,
-  blur.id,
-  width.id,
-  shadows.id,
-  darkActive.id,
-  lightActive.id,
-  scheme.id,
-];
-
-function primary() {
-  return scheme.value === "dark" ? darkActive.value : lightActive.value;
-}
-
-function rgba(color: string) {
-  return `rgba(${color}ff)`.replace("#", "");
-}
+const deps = ["hyprland", spacing.id, radius.id, blur.id, width.id, shadows.id];
 
 function sendBatch(batch: string[]) {
   const cmd = batch
@@ -53,12 +28,10 @@ async function setupHyprland() {
   const wm_gaps = Math.floor(hyprland.gaps.value * spacing.value);
 
   sendBatch([
-    `general:border_size ${width}`,
+    `general:border_size ${width.value}`,
     `general:gaps_out ${wm_gaps}`,
     `general:gaps_in ${Math.floor(wm_gaps / 2)}`,
-    `general:col.active_border ${rgba(primary())}`,
-    `general:col.inactive_border ${rgba(hyprland.inactiveBorder.value)}`,
-    `decoration:rounding ${radius}`,
+    `decoration:rounding ${radius.value}`,
     `decoration:drop_shadow ${shadows.value ? "yes" : "no"}`,
   ]);
 

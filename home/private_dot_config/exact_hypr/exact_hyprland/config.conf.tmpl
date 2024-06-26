@@ -15,6 +15,14 @@ monitor=DP-1, 1920x1080@144, 0x0, 1
 # ── General ───────────────────────────────────────────────────────────
 # https://wiki.hyprland.org/Configuring/Variables/#general
 general {
+    gaps_in = 10 # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+    gaps_out = 10 # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+
+    border_size = 3 # size of the border around windows
+
+    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg # border color for the active window
+    col.inactive_border = rgba(595959aa) # border color for inactive windows
+
     resize_on_border = true # enables resizing windows by clicking and dragging on borders and gaps
 
     allow_tearing = true # master switch for allowing tearing to occur
@@ -23,6 +31,9 @@ general {
 # ── Decoration ────────────────────────────────────────────────────────
 # https://wiki.hyprland.org/Configuring/Variables/#decoration
 decoration {
+    rounding = 10 # rounded corners' radius (in layout px)
+
+    drop_shadow = {{ ne .device_type "vm" }} # enable drop shadows on windows
     shadow_ignore_window = true # if true, the shadow will not be rendered behind the window itself, only around it
     shadow_offset = 2 2 # shadow’s rendering offset
     shadow_range = 8 # Shadow range (“size”) in layout px

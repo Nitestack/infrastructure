@@ -17,7 +17,6 @@ const {
   powermenu: pm,
   quicksettings: qs,
   osd,
-  hyprland: h,
 } = options;
 
 const {
@@ -160,14 +159,6 @@ export default [
   Page(
     "General",
     icons.ui.settings,
-    Group(
-      "Hyprland",
-      Row({
-        opt: h.inactiveBorder,
-        type: "color",
-        title: "Inactive Border Color",
-      })
-    ),
     Group(
       "Launcher",
       Row({ opt: l.width, title: "Width" }),
