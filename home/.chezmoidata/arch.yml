@@ -78,6 +78,7 @@ apps:
       - "gnome-calculator" # Calculator
       - "gnome-disk-utility" # Disk utility
       - "gnome-screenshot" # Screenshot
+      - "gnome-system-monitor" # Task manager
       - "gnome-terminal" # Required dependency for `docker`
       - "loupe" # Image viewer
       - "nautilus" # File Manager
