@@ -7,7 +7,7 @@
 windowrulev2 = suppressevent maximize, class:.*
 
 # ── Floating windows ──────────────────────────────────────────────────
-{{ range (list "confirm" "file_progress" "dialog" "org.gnome.Calculator" "org.gnome.Nautilus" "nm-connection-editor" "org.gnome.Settings" "org.gnome.design.Palette" "Color Picker" "com.github.Aylur.ags") -}}
+{{ range (list "confirm" "file_progress" "dialog" "dconf-editor" "org.gnome.Calculator" "org.gnome.Nautilus" "nm-connection-editor" "org.gnome.Settings" "org.gnome.design.Palette" "Color Picker" "com.github.Aylur.ags") -}}
 windowrule=float,^({{- . -}})$
 {{ end }}
 {{ range (list "Open File" "Select a File" "Choose wallpaper" "Open Folder" "Save As" "Library" "File Upload") -}}
