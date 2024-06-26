@@ -173,7 +173,9 @@ const options = mkOptions(OPTIONS, {
     },
     width: opt(380),
     position: opt<"left" | "center" | "right">("right"),
-    networkSettings: opt("gtk-launch gnome-control-center"),
+    networkSettings: opt(
+      'XDG_CURRENT_DESKTOP="gnome" gnome-control-center wifi'
+    ),
     media: {
       monochromeIcon: opt(false),
       coverSize: opt(100),

@@ -4,34 +4,64 @@ import options from "options";
 
 import { ArrowToggleButton, Menu } from "../ToggleButton";
 
-const { wifi } = await Service.import("network");
+const network = await Service.import("network");
 
-export const NetworkToggle = () =>
+export const NetworkIndicator = () =>
+  Widget.Stack({
+    children: {
+      wifi: WifiToggle(),
+      wired: EthernetIndicator(),
+    },
+    shown: network.bind("primary").as((p) => p ?? "wifi"),
+  });
+
+export const WifiToggle = () =>
   ArrowToggleButton({
     name: "network",
-    icon: wifi.bind("icon_name"),
-    label: wifi.bind("ssid").as((ssid) => ssid || "Not Connected"),
-    connection: [wifi, () => wifi.enabled],
-    deactivate: () => (wifi.enabled = false),
+    icon: network.wifi.bind("icon_name"),
+    label: network.wifi.bind("ssid").as((ssid) => ssid ?? "Not Connected"),
+    connection: [network.wifi, () => network.wifi.enabled],
+    deactivate: () => (network.wifi.enabled = false),
     activate: () => {
-      wifi.enabled = true;
-      wifi.scan();
+      network.wifi.enabled = true;
+      network.wifi.scan();
     },
+  });
+
+export const EthernetIndicator = () =>
+  Widget.Button({
+    class_name: "simple-toggle",
+    setup: (self) =>
+      self.hook(network.wired, () => {
+        self.toggleClassName("active", network.wired.internet === "connected");
+      }),
+    child: Widget.Box([
+      Widget.Icon({ icon: network.wired.bind("icon_name") }),
+      Widget.Label({
+        max_width_chars: 10,
+        truncate: "end",
+        label: network.wired
+          .bind("internet")
+          .as(
+            (internet) => `${internet[0]!.toUpperCase()}${internet.slice(1)}`
+          ),
+      }),
+    ]),
   });
 
 export const WifiSelection = () =>
   Menu({
     name: "network",
-    icon: wifi.bind("icon_name"),
+    icon: network.wifi.bind("icon_name"),
     title: "Wifi Selection",
     content: [
       Widget.Box({
         vertical: true,
         setup: (self) =>
           self.hook(
-            wifi,
+            network.wifi,
             () =>
-              (self.children = wifi.access_points
+              (self.children = network.wifi.access_points
                 .sort((a, b) => b.strength - a.strength)
                 .slice(0, 10)
                 .map((ap) =>
@@ -45,7 +75,7 @@ export const WifiSelection = () =>
                     child: Widget.Box({
                       children: [
                         Widget.Icon(ap.iconName),
-                        Widget.Label(ap.ssid || ""),
+                        Widget.Label(ap.ssid ?? ""),
                         Widget.Icon({
                           icon: icons.ui.tick,
                           hexpand: true,
