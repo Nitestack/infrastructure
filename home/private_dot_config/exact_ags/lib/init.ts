@@ -10,11 +10,11 @@ export default function init() {
   try {
     gtk();
     tmux();
-    colorgen();
     matugen();
+    colorgen();
+    hyprland();
     lowBattery();
     notifications();
-    hyprland();
   } catch (error) {
     logError(error);
   }
