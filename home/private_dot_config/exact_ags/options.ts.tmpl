@@ -44,7 +44,7 @@ const options = mkOptions(OPTIONS, {
       opacity: opt(96),
     },
 
-    shadows: opt(true),
+    shadows: opt({{- ne .device_type "vm" -}}),
     padding: opt(7),
     spacing: opt(12),
     radius: opt(11),
@@ -214,7 +214,6 @@ const options = mkOptions(OPTIONS, {
   hyprland: {
     gaps: opt(2.4),
     inactiveBorder: opt("#282828"),
-    gapsWhenOnly: opt(true),
   },
 });
 
