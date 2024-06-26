@@ -63,7 +63,7 @@ function generateGTKTheme() {
       ? options.theme.dark
       : options.theme.light;
 
-  return bash(
+  bash(
     `cp ${App.configDir}/templates/gradience/preset.json ${presetPath}`
   ).then(() => {
     overridePresetTemplate({
@@ -103,7 +103,7 @@ function generateHyprlandTheme() {
     options.theme.scheme.value === "dark"
       ? options.theme.dark
       : options.theme.light;
-  return sendBatch([
+  sendBatch([
     `general:col.active_border rgba(${colorPalette.surface.fg.value.replace("#", "")}39)`,
     `general:col.inactive_border rgba(${colorPalette.inactiveBorder.value.replace("#", "")}30)`,
     `misc:background_color rgba(${colorPalette.surface.bg.value.replace("#", "")}FF)`,
@@ -111,8 +111,18 @@ function generateHyprlandTheme() {
 }
 
 // ── Color Generation ────────────────────────────────────────────────
-export async function colorgen(...generate: ("gtk" | "hypr" | "all")[]) {
-  if (generate.includes("gtk") || generate.includes("all")) generateGTKTheme();
-  if (generate.includes("hypr") || generate.includes("all"))
-    generateHyprlandTheme();
+type GenerationType = "gtk" | "hypr";
+export async function colorgen(...generate: (GenerationType | "all")[]) {
+  const genMap: Record<GenerationType, () => void> = {
+    gtk: generateGTKTheme,
+    hypr: generateHyprlandTheme,
+  };
+  for (const genKey of Object.keys(genMap)) {
+    if (
+      generate.includes("all") ||
+      generate.includes(genKey as GenerationType)
+    ) {
+      genMap[genKey as GenerationType]();
+    }
+  }
 }
