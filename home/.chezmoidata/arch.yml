@@ -29,6 +29,7 @@ packages:
       - "libvirt" # collection of software that provides a convenient way to manage VM's
       - "man-db" # man for Arch
       - "man-pages-de" # man in German
+      - "network-manager" # Network manager
       - "noto-fonts-emoji" # Font: Noto Emoji Color
       - "openbsd-netcat" # Required for `libvirt`
       - "openssh" # SSH protocol implementation

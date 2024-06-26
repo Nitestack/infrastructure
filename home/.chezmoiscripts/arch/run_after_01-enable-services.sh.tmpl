@@ -18,6 +18,10 @@ _enable_user_service "playerctld.service"
 echo
 _enable_system_service "bluetooth.service"
 
+# Network
+echo
+_enable_system_service "NetworkManager.service"
+
 echo
 # Audio
 _enable_user_service "pipewire-pulse.service"
