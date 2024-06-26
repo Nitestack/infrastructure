@@ -2,6 +2,7 @@ import icons from "lib/icons";
 import { mkOptions, opt } from "lib/option";
 import { icon } from "lib/utils";
 import { distro } from "lib/variables";
+import { FONT_SANS_FAMILY, IS_NOT_VM } from "template";
 
 const options = mkOptions(OPTIONS, {
   autotheme: opt(false),
@@ -44,7 +45,7 @@ const options = mkOptions(OPTIONS, {
       opacity: opt(96),
     },
 
-    shadows: opt({{- ne .device_type "vm" -}}),
+    shadows: opt(IS_NOT_VM),
     padding: opt(7),
     spacing: opt(12),
     radius: opt(11),
@@ -54,7 +55,7 @@ const options = mkOptions(OPTIONS, {
 
   font: {
     size: opt(13),
-    name: opt("{{- .font.sans.family -}}"),
+    name: opt(FONT_SANS_FAMILY),
   },
 
   bar: {
@@ -63,15 +64,15 @@ const options = mkOptions(OPTIONS, {
     corners: opt(50),
     transparent: opt(true),
     layout: {
-      start: opt<Array<import("widget/bar/Bar").BarWidget>>([
+      start: opt<import("widget/bar/Bar").BarWidget[]>([
         "launcher",
         "workspaces",
         "taskbar",
         "expander",
         "messages",
       ]),
-      center: opt<Array<import("widget/bar/Bar").BarWidget>>(["date"]),
-      end: opt<Array<import("widget/bar/Bar").BarWidget>>([
+      center: opt<import("widget/bar/Bar").BarWidget[]>(["date"]),
+      end: opt<import("widget/bar/Bar").BarWidget[]>([
         "media",
         "expander",
         "systray",
@@ -145,13 +146,7 @@ const options = mkOptions(OPTIONS, {
       iconSize: opt(62),
       max: opt(6),
       favorites: opt([
-        [
-          "firefox",
-          "wezterm",
-          "org.gnome.Nautilus",
-          "ferdium",
-          "spotify",
-        ],
+        ["firefox", "wezterm", "org.gnome.Nautilus", "ferdium", "spotify"],
       ]),
     },
   },
@@ -173,7 +168,7 @@ const options = mkOptions(OPTIONS, {
 
   quicksettings: {
     avatar: {
-      image: opt("{{- .chezmoi.homeDir -}}/Pictures/user-avatar.jpg"),
+      image: opt(`${Utils.HOME}/Pictures/user-avatar.jpg`),
       size: opt(70),
     },
     width: opt(380),
@@ -206,7 +201,7 @@ const options = mkOptions(OPTIONS, {
   },
 
   notifications: {
-    position: opt<Array<"top" | "bottom" | "left" | "right">>(["top", "right"]),
+    position: opt<("top" | "bottom" | "left" | "right")[]>(["top", "right"]),
     blacklist: opt(["Spotify"]),
     width: opt(440),
   },
@@ -217,5 +212,5 @@ const options = mkOptions(OPTIONS, {
   },
 });
 
-globalThis["options"] = options;
+globalThis.options = options;
 export default options;
