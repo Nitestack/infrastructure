@@ -162,7 +162,6 @@ export default [
     icons.ui.settings,
     Group(
       "Hyprland",
-      Row({ opt: h.gapsWhenOnly, title: "Gaps When Only" }),
       Row({
         opt: h.inactiveBorder,
         type: "color",
