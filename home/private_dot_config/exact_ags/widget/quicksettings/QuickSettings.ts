@@ -8,7 +8,7 @@ import { DND } from "./widgets/DND";
 import { Header } from "./widgets/Header";
 import { Media } from "./widgets/Media";
 import { MicMute } from "./widgets/MicMute";
-import { NetworkToggle, WifiSelection } from "./widgets/Network";
+import { NetworkIndicator, WifiSelection } from "./widgets/Network";
 import { ProfileSelector, ProfileToggle } from "./widgets/PowerProfile";
 import { AppMixer, Microphone, SinkSelector, Volume } from "./widgets/Volume";
 
@@ -53,7 +53,10 @@ const Settings = () =>
           Brightness(),
         ],
       }),
-      Row([NetworkToggle, BluetoothToggle], [WifiSelection, BluetoothDevices]),
+      Row(
+        [NetworkIndicator, BluetoothToggle],
+        [WifiSelection, BluetoothDevices]
+      ),
       Row([ProfileToggle, DarkModeToggle], [ProfileSelector]),
       Row([MicMute, DND]),
       Widget.Box({
