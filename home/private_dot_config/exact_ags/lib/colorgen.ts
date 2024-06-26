@@ -72,7 +72,6 @@ function gradience() {
         bash(`gradience-cli apply -p ${presetPath} --gtk both`).then(() => {
           options.theme.scheme.emit("changed");
           bash(`rm -rf ${presetPath}`);
-          Utils.notify("GTK Theme", "New theme applied");
         });
       });
     });
