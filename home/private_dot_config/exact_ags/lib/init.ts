@@ -1,4 +1,5 @@
 import lowBattery from "./battery";
+import colorgen from "./colorgen";
 import gtk from "./gtk";
 import hyprland from "./hyprland";
 import matugen from "./matugen";
@@ -9,6 +10,7 @@ export default function init() {
   try {
     gtk();
     tmux();
+    colorgen();
     matugen();
     lowBattery();
     notifications();
