@@ -65,7 +65,6 @@ packages:
       - "gradience" # Customizing Libadwaita applications and the adw-gtk3 theme
       - "hyprpicker-git" # Required dependency for ags
       - "hyprshade" # Switching screen shaders in Hyprland
-      - "matugen-bin" # Material You color generation tool
       - "playerctld-systemd-unit" # playerctld automation
       - "safeeyes" # Reduce and prevent repetitive strain injury
       - "swww" # Required dependency for ags
