@@ -1,0 +1,35 @@
+name: Update Hyprland Bindings
+
+on:
+  push:
+    paths:
+      - "home/private_dot_config/exact_hypr/exact_hyprland/bindings.conf"
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Parse keybindings and update README
+        run: python scripts/update_hyprland_bindings.py
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes
+        run: |
+          git add README.md
+          git commit -m "chore(build): Update Hyprland bindings"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
