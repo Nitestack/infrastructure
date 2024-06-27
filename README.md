@@ -28,7 +28,6 @@ _Elevate your computing experience across platforms with this curated collection
 
 ### Cross-Platform (Arch Linux, macOS, Windows)
 
-
 - **Neovim Configuration**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
 
 - **WezTerm Configuration**: Integrated Neovim workflow for a seamless terminal and text editing setup
