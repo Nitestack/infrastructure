@@ -22,9 +22,13 @@ _enable_system_service "bluetooth.service"
 echo
 _enable_system_service "NetworkManager.service"
 
-echo
 # Audio
+echo
 _enable_user_service "pipewire-pulse.service"
+
+# Power Profile
+echo
+_enable_system_service "power-profiles-daemon.service"
 
 echo
 _log -l info --prefix "systemd" "Enabled system and user services"

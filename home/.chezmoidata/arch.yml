@@ -43,6 +43,7 @@ packages:
       - "pipewire-pulse" # PulseAudio support
       - "playerctl" # Media control
       - "polkit-gnome" # Authentication agent
+      - "power-profiles-daemon" # Power profiles
       - "qt5-wayland" # Widget toolkit
       - "qt6-wayland" # Widget toolkit
       - "sddm" # Display manager
