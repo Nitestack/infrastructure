@@ -56,7 +56,9 @@ packages:
       - "wireless_tools" # Manipulate the Wireless Extensions
       - "wireplumber" # Volume control with PipeWire
       - "wpa_supplicant" # Supplicant
+      - "xdg-desktop-portal" # Desktop integration portal for sandboxed apps
       - "xdg-desktop-portal-hyprland" # Required for `Hyprland`
+      - "xdg-desktop-portal-wlr" # Required for `Hyprland`
       - "xdg-user-dirs" # Manage "well known" user directories
       - "xdg-utils" # Utilities for managing XDG MIME Applications
     paru:
@@ -66,7 +68,7 @@ packages:
       - "easyeffects-presets" # Control EasyEffects from the polybar status bar
       - "gradience" # Customizing Libadwaita applications and the adw-gtk3 theme
       - "hyprpicker-git" # Required dependency for ags
-      - "hyprshade" # Switching screen shaders in Hyprland
+      - "hyprshade-git" # Switching screen shaders in Hyprland
       - "playerctld-systemd-unit" # playerctld automation
       - "safeeyes" # Reduce and prevent repetitive strain injury
       - "swww" # Required dependency for ags
@@ -78,6 +80,7 @@ apps:
     pacman:
       - "dconf-editor" # dconf editor
       - "gnome-calculator" # Calculator
+      - "gnome-control-center" # System settings
       - "gnome-disk-utility" # Disk utility
       - "gnome-screenshot" # Screenshot
       - "gnome-system-monitor" # Task manager
