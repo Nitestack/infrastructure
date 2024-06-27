@@ -17,6 +17,18 @@ export const uptime = Variable(0, {
   ],
 });
 
+export const df = Variable(0, {
+  poll: [
+    1000,
+    "/bin/df / --output=size,used",
+    (out) => {
+      out = out.trim().split("\n")[1]!;
+      const [total, used] = out.match(/\d+/g).map(Number);
+      return (used! * 100.0) / total!;
+    },
+  ],
+});
+
 export const distro = {
   id: GLib.get_os_info("ID"),
   logo: GLib.get_os_info("LOGO"),
