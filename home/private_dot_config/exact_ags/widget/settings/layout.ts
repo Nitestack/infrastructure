@@ -8,7 +8,6 @@ import Page from "./Page";
 import Row from "./Row";
 
 const {
-  autotheme: at,
   font,
   theme,
   bar: b,
@@ -38,7 +37,6 @@ export default [
     icons.ui.themes,
     Group(
       "",
-      Row({ opt: at, title: "Auto Generate Color Scheme" }),
       Row({
         opt: scheme,
         title: "Color Scheme",

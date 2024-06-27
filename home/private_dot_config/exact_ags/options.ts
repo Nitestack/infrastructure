@@ -5,8 +5,6 @@ import { distro } from "lib/variables";
 import { FONT_SANS_FAMILY, IS_NOT_VM } from "template";
 
 const options = mkOptions(OPTIONS, {
-  autotheme: opt(false),
-
   theme: {
     dark: {
       primary: {
