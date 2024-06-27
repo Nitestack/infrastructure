@@ -225,6 +225,84 @@ curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/ins
 iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps1 | iex -Branch "dev"
 ```
 
+## 📖 Documentation
+
+### Hyprland Bindings
+
+| Modifiers | Key | Description | Dispatcher | Params | Flags |
+| --- | --- | --- | --- | --- | --- |
+| CTRL SHIFT | R | - | exec | ags -b hypr quit; ags -b hypr | - |
+| ALT | tab | - | exec | ags -b hypr -t overview | - |
+| ALT | space | - | exec | ags -b hypr -t launcher | - |
+| SUPER | V | - | exec | ags -b hypr -r 'launcher.open(":ch ")' | - |
+|  | XF86PowerOff | - | exec | ags -b hypr -t powermenu | - |
+|  | Print | - | exec | ags -b hypr -r 'recorder.screenshot()' | - |
+| SUPER | Print | - | exec | ags -b hypr -r 'recorder.screenshot(true)' | - |
+| SUPER ALT | Print | - | exec | ags -b hypr -r 'recorder.start()' | - |
+| SUPER | Backslash | - | exec | wezterm start -- tmux | - |
+| SUPER | E | - | exec | nautilus --new-window | - |
+| SUPER | W | - | exec | firefox-developer-edition | - |
+|  | XF86AudioLowerVolume | - | exec | wpctl set-volume @DEFAULT_AUDIO_SINK@ -l 1 2%- | l e |
+|  | XF86AudioRaiseVolume | - | exec | wpctl set-volume @DEFAULT_AUDIO_SINK@ -l 1 2%+ | l e |
+|  | XF86AudioMute | - | exec | wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle | l |
+|  | XF86AudioMicMute | - | exec | wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle | l |
+|  | XF86AudioPlay | - | exec | playerctl play-pause | l |
+|  | XF86AudioPause | - | exec | playerctl play-pause | l |
+|  | XF86AudioNext | - | exec | playerctl next | l |
+|  | XF86AudioPrev | - | exec | playerctl previous | l |
+|  | XF86MonBrightnessDown | - | exec | brightnessctl set 5%- | l e |
+|  | XF86MonBrightnessUp | - | exec | brightnessctl set +5% | l e |
+| SUPER | H | - | movefocus | l | - |
+| SUPER | L | - | movefocus | r | - |
+| SUPER | K | - | movefocus | u | - |
+| SUPER | J | - | movefocus | d | - |
+| SUPER | $rmb | - | resizewindow | - | m |
+| SUPER | F | - | fullscreen | 0 | - |
+| SUPER | M | - | fullscreen | 1 | - |
+| SUPER | left | - | resizeactive | -20 0 | e |
+| SUPER | right | - | resizeactive | 20 0 | e |
+| SUPER | up | - | resizeactive | 0 -20 | e |
+| SUPER | down | - | resizeactive | 0 20 | e |
+| SUPER | $lmb | - | movewindow | - | m |
+| SUPER ALT | H | - | movewindow | l | - |
+| SUPER ALT | L | - | movewindow | r | - |
+| SUPER ALT | K | - | movewindow | u | - |
+| SUPER ALT | J | - | movewindow | d | - |
+| SUPER | Q | - | killactive | - | - |
+| SUPER | C | - | centerwindow | 1 | - |
+| SUPER | P | - | pseudo | - | - |
+| SUPER | R | - | togglesplit | - | - |
+| SUPER | T | - | togglefloating | - | - |
+| SUPER SHIFT | T | - | exec | hyprctl dispatch workspaceopt allfloat | - |
+| SUPER | 1 | - | workspace | 1 | - |
+| SUPER | 2 | - | workspace | 2 | - |
+| SUPER | 3 | - | workspace | 3 | - |
+| SUPER | 4 | - | workspace | 4 | - |
+| SUPER | 5 | - | workspace | 5 | - |
+| SUPER | 6 | - | workspace | 6 | - |
+| SUPER | 7 | - | workspace | 7 | - |
+| SUPER | 8 | - | workspace | 8 | - |
+| SUPER | 9 | - | workspace | 9 | - |
+| SUPER | 0 | - | workspace | 10 | - |
+| SUPER CTRL | H | - | workspace | e-1 | - |
+| SUPER CTRL | L | - | workspace | e+1 | - |
+| SUPER | mouse_down | - | workspace | e+1 | - |
+| SUPER | mouse_up | - | workspace | e-1 | - |
+| SUPER SHIFT | 1 | - | movetoworkspace | 1 | - |
+| SUPER SHIFT | 2 | - | movetoworkspace | 2 | - |
+| SUPER SHIFT | 3 | - | movetoworkspace | 3 | - |
+| SUPER SHIFT | 4 | - | movetoworkspace | 4 | - |
+| SUPER SHIFT | 5 | - | movetoworkspace | 5 | - |
+| SUPER SHIFT | 6 | - | movetoworkspace | 6 | - |
+| SUPER SHIFT | 7 | - | movetoworkspace | 7 | - |
+| SUPER SHIFT | 8 | - | movetoworkspace | 8 | - |
+| SUPER SHIFT | 9 | - | movetoworkspace | 9 | - |
+| SUPER SHIFT | 0 | - | movetoworkspace | 10 | - |
+| SUPER SHIFT | H | - | movetoworkspace | e-1 | - |
+| SUPER SHIFT | L | - | movetoworkspace | e+1 | - |
+| SUPER | S | - | togglespecialworkspace | magic | - |
+| SUPER SHIFT | S | - | movetoworkspace | special:magic | - |
+
 ## 🙌 Credits
 
 - [Tom Payne](https://github.com/twpayne)
