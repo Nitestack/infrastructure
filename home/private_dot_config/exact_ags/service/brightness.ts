@@ -21,7 +21,7 @@ class Brightness extends Service {
   #kbdMax = get(`--device ${kbd} max`);
   #kbd = get(`--device ${kbd} get`);
   #screenMax = get("max");
-  #screen = get("get") / (get("max") || 1);
+  #screen = get("get") / (get("max") ?? 1);
 
   get kbd() {
     return this.#kbd;
@@ -31,7 +31,7 @@ class Brightness extends Service {
   }
 
   set kbd(value) {
-    if (value < 0 || value > this.#kbdMax) return;
+    if (value < 0 ?? value > this.#kbdMax) return;
 
     sh(`brightnessctl -d ${kbd} s ${value} -q`).then(() => {
       this.#kbd = value;

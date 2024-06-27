@@ -53,7 +53,7 @@ export default function Setter<T>({
     case "float":
     case "object":
       return Widget.Entry({
-        on_accept: (self) => (opt.value = JSON.parse(self.text || "")),
+        on_accept: (self) => (opt.value = JSON.parse(self.text ?? "")),
         setup: (self) =>
           self.hook(opt, () => (self.text = JSON.stringify(opt.value))),
       });

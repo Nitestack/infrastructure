@@ -12,7 +12,7 @@ const dispatch = (arg: string | number) => {
 
 const Workspaces = (ws: number) =>
   Widget.Box({
-    children: range(ws || 20).map((i) =>
+    children: range(ws ?? 20).map((i) =>
       Widget.Label({
         attribute: i,
         vpack: "center",
@@ -22,7 +22,7 @@ const Workspaces = (ws: number) =>
             self.toggleClassName("active", hyprland.active.workspace.id === i);
             self.toggleClassName(
               "occupied",
-              (hyprland.getWorkspace(i)?.windows || 0) > 0
+              (hyprland.getWorkspace(i)?.windows ?? 0) > 0
             );
           }),
       })

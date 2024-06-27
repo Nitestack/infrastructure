@@ -4,7 +4,7 @@ import options from "options";
 import PanelButton from "../PanelButton";
 
 const { format, action } = options.bar.date;
-const time = Utils.derive([clock, format], (c, f) => c.format(f) || "");
+const time = Utils.derive([clock, format], (c, f) => c.format(f) ?? "");
 
 export default () =>
   PanelButton({

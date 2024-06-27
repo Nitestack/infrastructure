@@ -33,7 +33,7 @@ const AppItem = (app: Application) => {
 
   const description = Widget.Label({
     class_name: "description",
-    label: app.description || "",
+    label: app.description ?? "",
     hexpand: true,
     wrap: true,
     max_width_chars: 30,
@@ -111,9 +111,9 @@ export function Launcher() {
       list.children.forEach((item) => (item.reveal_child = false));
     },
     filter(text: string | null) {
-      first = query(text || "")[0];
+      first = query(text ?? "")[0];
       list.children.reduce((i, item) => {
-        if (!text || i >= max.value) {
+        if (!text ?? i >= max.value) {
           item.reveal_child = false;
           return i;
         }

@@ -9,7 +9,7 @@ const mpris = await Service.import("mpris");
 const { length, direction, preferred, monochrome, format } = options.bar.media;
 
 const getPlayer = (name = preferred.value) =>
-  mpris.getPlayer(name) || mpris.players[0] || null;
+  mpris.getPlayer(name) ?? mpris.players[0] ?? null;
 
 const Content = (player: MprisPlayer) => {
   const revealer = Widget.Revealer({
@@ -41,7 +41,7 @@ const Content = (player: MprisPlayer) => {
           `${format}`
             .replace("{title}", player.track_title)
             .replace("{artists}", player.track_artists.join(", "))
-            .replace("{artist}", player.track_artists[0] || "")
+            .replace("{artist}", player.track_artists[0] ?? "")
             .replace("{album}", player.track_album)
             .replace("{name}", player.name)
             .replace("{identity}", player.identity)

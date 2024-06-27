@@ -11,7 +11,7 @@ const Indicator = () =>
     setup: (self) =>
       self.hook(battery, () => {
         self.icon =
-          battery.charging || battery.charged
+          battery.charging ?? battery.charged
             ? icons.battery.charging
             : battery.icon_name;
       }),
@@ -60,7 +60,7 @@ const WholeButton = () =>
           icon: icons.battery.charging,
           visible: Utils.merge(
             [battery.bind("charging"), battery.bind("charged")],
-            (ing, ed) => ing || ed
+            (ing, ed) => ing ?? ed
           ),
         }),
         Widget.Box({
@@ -97,7 +97,7 @@ export default () =>
           w.toggleClassName("bar-hidden", bar.value === "hidden")
         )
         .hook(battery, (w) => {
-          w.toggleClassName("charging", battery.charging || battery.charged);
+          w.toggleClassName("charging", battery.charging ?? battery.charged);
           w.toggleClassName("low", battery.percent < low.value);
         }),
   });

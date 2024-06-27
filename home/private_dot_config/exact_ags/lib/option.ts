@@ -30,11 +30,11 @@ export class Opt<T = unknown> extends Variable<T> {
   };
 
   init(cacheFile: string) {
-    const cacheV = JSON.parse(Utils.readFile(cacheFile) || "{}")[this.id];
+    const cacheV = JSON.parse(Utils.readFile(cacheFile) ?? "{}")[this.id];
     if (cacheV !== undefined) this.value = cacheV;
 
     this.connect("changed", () => {
-      const cache = JSON.parse(Utils.readFile(cacheFile) || "{}");
+      const cache = JSON.parse(Utils.readFile(cacheFile) ?? "{}");
       cache[this.id] = this.value;
       Utils.writeFileSync(JSON.stringify(cache, null, 2), cacheFile);
     });
@@ -80,7 +80,7 @@ export function mkOptions<T extends object>(cacheFile: string, object: T) {
   );
   Utils.writeFileSync(JSON.stringify(values, null, 2), configFile);
   Utils.monitorFile(configFile, () => {
-    const cache = JSON.parse(Utils.readFile(configFile) || "{}");
+    const cache = JSON.parse(Utils.readFile(configFile) ?? "{}");
     for (const opt of getOptions(object)) {
       if (JSON.stringify(cache[opt.id]) !== JSON.stringify(opt.value))
         opt.value = cache[opt.id];

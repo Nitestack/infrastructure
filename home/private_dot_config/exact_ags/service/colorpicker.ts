@@ -16,7 +16,7 @@ class ColorPicker extends Service {
   }
 
   #notifID = 0;
-  #colors = JSON.parse(Utils.readFile(COLORS_CACHE) || "[]") as string[];
+  #colors = JSON.parse(Utils.readFile(COLORS_CACHE) ?? "[]") as string[];
 
   get colors() {
     return [...this.#colors];

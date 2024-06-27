@@ -16,7 +16,7 @@ export const Arrow = (name: string, activate?: false | (() => void)) => {
   let iconOpened = false;
   const icon = Widget.Icon(icons.ui.arrow.right).hook(opened, () => {
     if (
-      (opened.value === name && !iconOpened) ||
+      (opened.value === name && !iconOpened) ??
       (opened.value !== name && iconOpened)
     ) {
       const step = opened.value === name ? 10 : -10;

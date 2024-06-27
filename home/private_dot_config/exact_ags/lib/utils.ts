@@ -16,11 +16,11 @@ export type Binding<T> = import("types/service").Binding<any, any, T>;
  * @returns substitute icon || name || fallback icon
  */
 export function icon(name: string | null, fallback = icons.missing) {
-  if (!name) return fallback || "";
+  if (!name) return fallback ?? "";
 
   if (GLib.file_test(name, GLib.FileTest.EXISTS)) return name;
 
-  const icon = substitutes[name] || name;
+  const icon = substitutes[name] ?? name;
   if (Utils.lookUpIcon(icon)) return icon;
 
   print(`no icon substitute "${icon}" for "${name}", fallback: "${fallback}"`);
@@ -56,7 +56,7 @@ export async function sh(cmd: string | string[]) {
 }
 
 export function forMonitors(widget: (monitor: number) => Gtk.Window) {
-  const n = Gdk.Display.get_default()?.get_n_monitors() || 1;
+  const n = Gdk.Display.get_default()?.get_n_monitors() ?? 1;
   return range(n, 0).flatMap(widget);
 }
 
