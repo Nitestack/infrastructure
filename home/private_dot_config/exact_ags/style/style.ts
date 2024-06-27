@@ -42,7 +42,7 @@ const variables = () => [
   ),
   $("fg", t(dark.fg.value, light.fg.value)),
 
-  $("primary-bg", t(dark.primary.bg.value, light.primary.bg.value)),
+  $("primary-bg", t(dark.primary.accent.value, light.primary.accent.value)),
   $("primary-fg", t(dark.fg.value, light.fg.value)),
 
   $("error-bg", t(dark.error.accent.value, light.error.bg.value)),
@@ -76,7 +76,7 @@ const variables = () => [
 
   $(
     "active-gradient",
-    `linear-gradient(to right, ${t(dark.primary.bg.value, light.primary.bg.value)}, darken(${t(dark.primary.bg.value, light.primary.bg.value)}, 4%))`
+    `linear-gradient(to right, ${t(dark.primary.accent.value, light.primary.accent.value)}, darken(${t(dark.primary.accent.value, light.primary.accent.value)}, 4%))`
   ),
   $("shadow-color", t("rgba(0,0,0,.6)", "rgba(0,0,0,.4)")),
   $("text-shadow", t("2pt 2pt 2pt $shadow-color", "none")),
