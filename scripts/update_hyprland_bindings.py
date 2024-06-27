@@ -84,14 +84,14 @@ def generate_table(bindings):
     table_content += "| --- | --- | --- | --- | --- | --- |\n"
 
     for binding in bindings:
-        modifiers = ' '.join(binding['mods'])  # Join multiple modifiers with space
+        modifiers = ' + '.join(binding['mods'])  # Join multiple modifiers with space
         key = binding['key']
         description = binding['description'] if binding['description'] else '-'
         dispatcher = binding['dispatcher']
         params = binding['params'] if binding['params'] else '-'
-        flags = ' '.join(binding['flags']) if binding['flags'] else '-'
+        flags = '`' + '`, `'.join(binding['flags']) + '`' if binding['flags'] else '-'
 
-        table_content += f"| {modifiers} | {key} | {dispatcher} | {params} | {flags} | {description} |\n"
+        table_content += f"| {modifiers} | {key} | {dispatcher} | `{params}` | {flags} | {description} |\n"
 
     return table_content.strip()
 
