@@ -238,6 +238,8 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 - [Aylur](https://github.com/Aylur)
   - creator of [ags](https://aylur.github.io/ags-docs)
   - his ags configuration was used as a base
+- [end-4](https://github.com/end-4)
+  - parts of his dotfiles are used
 
 ## 📝 License
 
