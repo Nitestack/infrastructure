@@ -3,6 +3,7 @@ import options from "options";
 import BatteryBar from "./buttons/BatteryBar";
 import ColorPicker from "./buttons/ColorPicker";
 import Date from "./buttons/Date";
+import Hyprshade from "./buttons/Hyprshade";
 import Launcher from "./buttons/Launcher";
 import Media from "./buttons/Media";
 import Messages from "./buttons/Messages";
@@ -30,6 +31,7 @@ const widget = {
   taskbar: Taskbar,
   workspaces: Workspaces,
   screenrecord: ScreenRecord,
+  hyprshade: Hyprshade,
   messages: Messages,
   expander: () => Widget.Box({ expand: true }),
 };

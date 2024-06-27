@@ -1,6 +1,7 @@
 import GLib from "gi://GLib";
 import icons from "lib/icons";
 import { bash, dependencies, sh } from "lib/utils";
+import hyprshade from "service/hyprshade";
 
 const now = () => GLib.DateTime.new_now_local().format("%Y-%m-%d_%H-%M-%S");
 
@@ -23,11 +24,23 @@ class Recorder extends Service {
 
   recording = false;
   timer = 0;
+  is_night = false;
+
+  stopHyprshade() {
+    this.is_night = hyprshade.isNight;
+    if (this.is_night) hyprshade.toggle();
+  }
+
+  resetHyprshade() {
+    if (this.is_night) hyprshade.toggle();
+  }
 
   async start() {
     if (!dependencies("slurp", "wf-recorder")) return;
 
     if (this.recording) return;
+
+    this.stopHyprshade();
 
     Utils.ensureDirectory(this.#recordings);
     this.#file = `${this.#recordings}/${now()}.mp4`;
@@ -53,6 +66,8 @@ class Recorder extends Service {
     this.changed("recording");
     GLib.source_remove(this.#interval);
 
+    this.resetHyprshade();
+
     Utils.notify({
       iconName: icons.fallback.video,
       summary: "Screenrecord",
@@ -70,6 +85,8 @@ class Recorder extends Service {
     const file = `${this.#screenshots}/${now()}.png`;
     Utils.ensureDirectory(this.#screenshots);
 
+    this.stopHyprshade();
+
     if (full) {
       await sh(`wayshot -f ${file}`);
     } else {
@@ -78,6 +95,7 @@ class Recorder extends Service {
 
       await sh(`wayshot -f ${file} -s "${size}"`);
     }
+    this.resetHyprshade();
 
     bash(`wl-copy < ${file}`);
 

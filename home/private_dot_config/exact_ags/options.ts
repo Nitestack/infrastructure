@@ -102,6 +102,7 @@ const options = mkOptions(OPTIONS, {
         "systray",
         "colorpicker",
         "screenrecord",
+        "hyprshade",
         "system",
         "battery",
         "powermenu",
@@ -206,6 +207,10 @@ const options = mkOptions(OPTIONS, {
 
   datemenu: {
     position: opt<"left" | "center" | "right">("center"),
+  },
+
+  hyprshade: {
+    interval: opt(10000),
   },
 
   osd: {
