@@ -12,7 +12,8 @@ _enable_system_service "paccache.timer"
 
 # playerctl
 echo
-_enable_user_service "playerctld.service"
+_enable_user_service "gvfs-daemon.service"
+_enable_user_service "mpris-proxy.service"
 
 # Bluetooth
 echo

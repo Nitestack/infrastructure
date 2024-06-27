@@ -17,6 +17,7 @@ packages:
       - "grub" # Boot loader
       - "gst-plugin-pipewire" # Required for `pipewire`
       - "gnome-bluetooth-3.0" # Required for `ags`
+      - "gvfs" # Required for `ags`
       - "htop" # Process monitor
       - "hypridle" # Idle daemon for Hyprland
       - "hyprland" # Wayland compositor
@@ -69,7 +70,7 @@ packages:
       - "gradience" # Customizing Libadwaita applications and the adw-gtk3 theme
       - "hyprpicker-git" # Required dependency for ags
       - "hyprshade-git" # Switching screen shaders in Hyprland
-      - "playerctld-systemd-unit" # playerctld automation
+      - "mpris-proxy-service" # mpris-proxy automation
       - "safeeyes" # Reduce and prevent repetitive strain injury
       - "swww" # Required dependency for ags
       - "ttf-rubik-vf" # Font: Rubik
