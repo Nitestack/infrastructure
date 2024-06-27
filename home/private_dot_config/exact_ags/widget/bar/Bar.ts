@@ -10,6 +10,7 @@ import Messages from "./buttons/Messages";
 import PowerMenu from "./buttons/PowerMenu";
 import ScreenRecord from "./buttons/ScreenRecord";
 import SystemIndicators from "./buttons/SystemIndicators";
+import SystemInfo from "./buttons/SystemInfo";
 import SysTray from "./buttons/SysTray";
 import Taskbar from "./buttons/Taskbar";
 import Workspaces from "./buttons/Workspaces";
@@ -33,6 +34,7 @@ const widget = {
   screenrecord: ScreenRecord,
   hyprshade: Hyprshade,
   messages: Messages,
+  ["system-info"]: SystemInfo,
   expander: () => Widget.Box({ expand: true }),
 };
 
