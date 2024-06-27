@@ -151,21 +151,19 @@ _enable_system_service() {
 	local service_name="$1"
 	local pre_exec_function="${2:-}"
 
-	_log -l info --prefix "systemd" "Enabling ${service_name} service"
+	_log -l info --prefix "systemd" "Enabling ${service_name} unit"
 
 	if systemctl is-enabled --quiet "${service_name}"; then
-		_log -l warn --prefix "systemd" "Service ${service_name} is already enabled"
+		_log -l warn --prefix "systemd" "${service_name} unit is already enabled"
 	else
 		[[ -n ${pre_exec_function} ]] && ${pre_exec_function}
 
 		sudo -v
 
 		# Enable service
-		_spin "Enabling ${service_name} service" -- sudo systemctl enable "${service_name}"
-		# Start service
-		_spin "Starting ${service_name} service" -- sudo systemctl start "${service_name}"
+		_spin "Enabling and starting ${service_name} unit" -- sudo systemctl enable --now "${service_name}"
 
-		_log -l info --prefix "systemd" "Enabled ${service_name} service"
+		_log -l info --prefix "systemd" "Enabled ${service_name} unit"
 	fi
 }
 
@@ -175,19 +173,17 @@ _enable_user_service() {
 	local service_name="$1"
 	local pre_exec_function="${2:-}"
 
-	_log -l info --prefix "systemd" "Enabling ${service_name} service for the current user"
+	_log -l info --prefix "systemd" "Enabling ${service_name} unit for the current user"
 
 	if systemctl --user is-enabled --quiet "${service_name}"; then
-		_log -l warn --prefix "systemd" "Service ${service_name} is already enabled for the current user"
+		_log -l warn --prefix "systemd" "${service_name} unit is already enabled for the current user"
 	else
 		[[ -n ${pre_exec_function} ]] && ${pre_exec_function}
 
-		# Enable service for the current user
-		_spin "Enabling ${service_name} service for the current user" -- systemctl --user enable "${service_name}"
-		# Start service for the current user
-		_spin "Starting ${service_name} service for the current user" -- systemctl --user start "${service_name}"
+		# Enable and start service for the current user
+		_spin "Enabling and starting ${service_name} unit for the current user" -- systemctl --user enable --now "${service_name}"
 
-		_log -l info --prefix "systemd" "Enabled ${service_name} service for the current user"
+		_log -l info --prefix "systemd" "Enabled ${service_name} unit for the current user"
 	fi
 }
 
