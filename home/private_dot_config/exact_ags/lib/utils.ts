@@ -134,20 +134,22 @@ export function findApp(className: string) {
 
   if (ret.length === 0) ret = filter(["name", "executable", "description"]);
 
-  if (ret.length > 1) print(`multiple apps found for ${className}`);
-  ret.forEach((app) => {
-    const props = [
-      "name",
-      "icon_name",
-      "desktop",
-      "wm_class",
-      "description",
-      "frequency",
-      "executable",
-    ];
-    print(`  - name: ${app.name}`);
-    for (const prop of props) print(`    * ${prop}: ${app[prop]}`);
-  });
+  if (ret.length > 1) {
+    print(`multiple apps found for ${className}`);
+    ret.forEach((app) => {
+      const props = [
+        "name",
+        "icon_name",
+        "desktop",
+        "wm_class",
+        "description",
+        "frequency",
+        "executable",
+      ];
+      print(`  - name: ${app.name}`);
+      for (const prop of props) print(`    * ${prop}: ${app[prop]}`);
+    });
+  }
 
   if (ret.length === 0) print(`no app found for ${className}`);
   return ret[0];
