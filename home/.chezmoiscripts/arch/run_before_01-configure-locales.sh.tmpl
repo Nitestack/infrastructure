@@ -41,7 +41,7 @@ fi
 # Set regional settings
 if ! locale_is_set "${REGIONAL_LOCALE}"; then
 	sudo localectl set-locale LC_ADDRESS="${REGIONAL_LOCALE}.UTF-8"
-	sudo localectl set-locale LC_CTYPE="${REGIONAL_LOCALE}.UTF-8"
+	sudo localectl set-locale LC_IDENTIFICATION="${REGIONAL_LOCALE}.UTF-8"
 	sudo localectl set-locale LC_MEASUREMENT="${REGIONAL_LOCALE}.UTF-8"
 	sudo localectl set-locale LC_MONETARY="${REGIONAL_LOCALE}.UTF-8"
 	sudo localectl set-locale LC_NAME="${REGIONAL_LOCALE}.UTF-8"
