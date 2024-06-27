@@ -15,7 +15,7 @@ const VolumeIndicator = (type: Type = "speaker") =>
     child: Widget.Icon({
       icon: audio[type]
         .bind("icon_name")
-        .as((i) => icon(i || "", icons.audio.mic.high)),
+        .as((i) => icon(i ?? "", icons.audio.mic.high)),
       tooltipText: audio[type]
         .bind("volume")
         .as((vol) => `Volume: ${Math.floor(vol * 100)}%`),
@@ -68,9 +68,9 @@ const MixerItem = (stream: Stream) =>
       class_name: "mixer-item horizontal",
     },
     Widget.Icon({
-      tooltip_text: stream.bind("name").as((n) => n || ""),
+      tooltip_text: stream.bind("name").as((n) => n ?? ""),
       icon: stream.bind("name").as((n) => {
-        return Utils.lookUpIcon(n || "") ? n || "" : icons.fallback.audio;
+        return Utils.lookUpIcon(n ?? "") ? n ?? "" : icons.fallback.audio;
       }),
     }),
     Widget.Box(
@@ -79,7 +79,7 @@ const MixerItem = (stream: Stream) =>
         xalign: 0,
         truncate: "end",
         max_width_chars: 28,
-        label: stream.bind("description").as((d) => d || ""),
+        label: stream.bind("description").as((d) => d ?? ""),
       }),
       Widget.Slider({
         hexpand: true,
@@ -97,11 +97,11 @@ const SinkItem = (stream: Stream) =>
     child: Widget.Box({
       children: [
         Widget.Icon({
-          icon: icon(stream.icon_name || "", icons.fallback.audio),
-          tooltip_text: stream.icon_name || "",
+          icon: icon(stream.icon_name ?? "", icons.fallback.audio),
+          tooltip_text: stream.icon_name ?? "",
         }),
         Widget.Label(
-          (stream.description || "").split(" ").slice(0, 4).join(" ")
+          (stream.description ?? "").split(" ").slice(0, 4).join(" ")
         ),
         Widget.Icon({
           icon: icons.ui.tick,

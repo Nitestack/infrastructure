@@ -56,7 +56,7 @@ function OnScreenProgress(vertical: boolean) {
       () =>
         show(
           audio.speaker.volume,
-          icon(audio.speaker.icon_name || "", icons.audio.type.speaker)
+          icon(audio.speaker.icon_name ?? "", icons.audio.type.speaker)
         ),
       "notify::volume"
     );

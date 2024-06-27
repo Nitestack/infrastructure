@@ -25,7 +25,7 @@ const NotificationIcon = ({ app_entry, app_icon, image }: Notification) => {
   let icon = icons.fallback.notification;
   if (Utils.lookUpIcon(app_icon)) icon = app_icon;
 
-  if (Utils.lookUpIcon(app_entry || "")) icon = app_entry || "";
+  if (Utils.lookUpIcon(app_entry ?? "")) icon = app_entry ?? "";
 
   return Widget.Box({
     vpack: "start",

@@ -32,8 +32,8 @@ export default (id: number) => {
     clients
       .filter(({ workspace }) => workspace.id === id)
       .forEach((c) => {
-        const x = c.at[0] - (hyprland.getMonitor(c.monitor)?.x || 0);
-        const y = c.at[1] - (hyprland.getMonitor(c.monitor)?.y || 0);
+        const x = c.at[0] - (hyprland.getMonitor(c.monitor)?.x ?? 0);
+        const y = c.at[1] - (hyprland.getMonitor(c.monitor)?.y ?? 0);
         c.mapped && fixed.put(Window(c), scale(x), scale(y));
       });
     fixed.show_all();

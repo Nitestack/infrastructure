@@ -27,7 +27,7 @@ const Player = (player: MprisPlayer) => {
       (path, url, size) => `
             min-width: ${size}px;
             min-height: ${size}px;
-            background-image: url('${path || url}');
+            background-image: url('${path ?? url}');
         `
     ),
   });
@@ -69,7 +69,7 @@ const Player = (player: MprisPlayer) => {
     hpack: "start",
     setup: (self) => {
       const update = (_: unknown, time?: number) => {
-        self.label = lengthStr(time || player.position);
+        self.label = lengthStr(time ?? player.position);
         self.visible = player.length > 0;
       };
       self.hook(player, update, "position");
@@ -89,7 +89,7 @@ const Player = (player: MprisPlayer) => {
     hexpand: true,
     hpack: "end",
     vpack: "start",
-    tooltip_text: player.identity || "",
+    tooltip_text: player.identity ?? "",
     icon: Utils.merge(
       [player.bind("entry"), media.monochromeIcon.bind()],
       (e, s) => {

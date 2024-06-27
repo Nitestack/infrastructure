@@ -67,7 +67,7 @@ function Launcher() {
       entry.text = "";
     },
     on_change: ({ text }) => {
-      text ||= "";
+      text ??= "";
       favs.reveal_child = text === "";
       help.reveal_child = text.length < 3 && text?.startsWith(":");
 

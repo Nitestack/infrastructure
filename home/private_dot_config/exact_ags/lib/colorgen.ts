@@ -142,7 +142,7 @@ export async function colorgen(...generate: (GenerationType | "all")[]) {
   };
   for (const genKey of Object.keys(genMap)) {
     if (
-      generate.includes("all") ||
+      generate.includes("all") ??
       generate.includes(genKey as GenerationType)
     ) {
       genMap[genKey as GenerationType]();

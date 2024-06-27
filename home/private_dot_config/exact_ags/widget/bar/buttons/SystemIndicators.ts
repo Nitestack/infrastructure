@@ -42,7 +42,7 @@ const MicrophoneIndicator = () =>
       audio,
       (self) =>
         (self.visible =
-          audio.recorders.length > 0 || audio.microphone.is_muted || false)
+          audio.recorders.length > 0 ?? audio.microphone.is_muted ?? false)
     )
     .hook(audio.microphone, (self) => {
       const vol = audio.microphone.is_muted ? 0 : audio.microphone.volume;
@@ -53,7 +53,7 @@ const MicrophoneIndicator = () =>
         [1, low],
         [0, muted],
       ] as const;
-      self.icon = cons.find(([n]) => n <= vol * 100)?.[1] || "";
+      self.icon = cons.find(([n]) => n <= vol * 100)?.[1] ?? "";
     });
 
 const DNDIndicator = () =>
@@ -81,7 +81,7 @@ const BluetoothIndicator = () =>
 const NetworkIndicator = () =>
   Widget.Icon().hook(network, (self) => {
     const icon = network[network.primary ?? "wifi"]?.icon_name;
-    self.icon = icon || "";
+    self.icon = icon ?? "";
     self.visible = !!icon;
   });
 
@@ -96,7 +96,7 @@ const AudioIndicator = () =>
       [1, low],
       [0, muted],
     ] as const;
-    self.icon = cons.find(([n]) => n <= vol * 100)?.[1] || "";
+    self.icon = cons.find(([n]) => n <= vol * 100)?.[1] ?? "";
   });
 
 export default () =>

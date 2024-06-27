@@ -19,7 +19,7 @@ const DummyItem = (address: string) =>
 
 const AppItem = (address: string) => {
   const client = hyprland.getClient(address);
-  if (!client || client.class === "") return DummyItem(address);
+  if (!client ?? client.class === "") return DummyItem(address);
 
   const app = findApp(client.class);
 
