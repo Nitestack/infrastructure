@@ -16,6 +16,7 @@ packages:
       - "efibootmgr" # Required for `grub`
       - "grub" # Boot loader
       - "gst-plugin-pipewire" # Required for `pipewire`
+      - "gnome-bluetooth-3.0" # Required for `ags`
       - "htop" # Process monitor
       - "hypridle" # Idle daemon for Hyprland
       - "hyprland" # Wayland compositor

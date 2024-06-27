@@ -14,8 +14,10 @@ export const BluetoothToggle = () =>
     label: Utils.watch("Disabled", bluetooth, () => {
       if (!bluetooth.enabled) return "Disabled";
 
+      if (bluetooth.connected_devices.length === 0) return "Not Connected";
+
       if (bluetooth.connected_devices.length === 1)
-        return bluetooth.connected_devices[0].alias;
+        return bluetooth.connected_devices[0]!.alias;
 
       return `${bluetooth.connected_devices.length} Connected`;
     }),

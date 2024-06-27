@@ -18,6 +18,8 @@ _enable_user_service "playerctld.service"
 echo
 _enable_system_service "bluetooth.service"
 
+_set_option_with_sudo "Experimental" "true" "/etc/bluetooth/main.conf" false true
+
 # Network
 echo
 _enable_system_service "NetworkManager.service"
