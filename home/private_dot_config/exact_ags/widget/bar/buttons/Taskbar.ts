@@ -1,11 +1,10 @@
 import icons from "lib/icons";
-import { icon, launchApp } from "lib/utils";
+import { findApp, icon, launchApp } from "lib/utils";
 import options from "options";
 
 import PanelButton from "../PanelButton";
 
 const hyprland = await Service.import("hyprland");
-const apps = await Service.import("applications");
 const { monochrome, exclusive, iconSize } = options.bar.taskbar;
 const { position } = options.bar;
 
@@ -22,14 +21,14 @@ const AppItem = (address: string) => {
   const client = hyprland.getClient(address);
   if (!client || client.class === "") return DummyItem(address);
 
-  const app = apps.list.find((app) => app.match(client.class));
+  const app = findApp(client.class);
 
   const btn = PanelButton({
     class_name: "panel-button",
     tooltip_text: Utils.watch(
       client.title,
       hyprland,
-      () => hyprland.getClient(address)?.title || ""
+      () => hyprland.getClient(address)?.title ?? ""
     ),
     on_primary_click: () => focus(address),
     on_middle_click: () => app && launchApp(app),
@@ -39,7 +38,7 @@ const AppItem = (address: string) => {
         .bind()
         .as((m) =>
           icon(
-            (app?.icon_name || client.class) + (m ? "-symbolic" : ""),
+            (app?.icon_name ?? client.class) + (m ? "-symbolic" : ""),
             icons.fallback.executable + (m ? "-symbolic" : "")
           )
         ),

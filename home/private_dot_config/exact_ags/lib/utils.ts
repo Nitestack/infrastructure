@@ -8,6 +8,8 @@ import icons, { substitutes } from "./icons";
 
 import type Gtk from "gi://Gtk?version=3.0";
 
+const apps = await Service.import("applications");
+
 export type Binding<T> = import("types/service").Binding<any, any, T>;
 
 /**
@@ -116,4 +118,37 @@ export function createSurfaceFromWidget(widget: Gtk.Widget) {
   cr.fill();
   widget.draw(cr);
   return surface;
+}
+
+export function findApp(className: string) {
+  function filter(props: string[]) {
+    return apps.list.filter((app) =>
+      props.some((prop) => {
+        const value = typeof app[prop] === "function" ? app[prop]() : app[prop];
+        return value?.toLowerCase().includes(className.toLowerCase());
+      })
+    );
+  }
+
+  let ret = filter(["icon_name", "desktop"]);
+
+  if (ret.length === 0) ret = filter(["name", "executable", "description"]);
+
+  if (ret.length > 1) print(`multiple apps found for ${className}`);
+  ret.forEach((app) => {
+    const props = [
+      "name",
+      "icon_name",
+      "desktop",
+      "wm_class",
+      "description",
+      "frequency",
+      "executable",
+    ];
+    print(`  - name: ${app.name}`);
+    for (const prop of props) print(`    * ${prop}: ${app[prop]}`);
+  });
+
+  if (ret.length === 0) print(`no app found for ${className}`);
+  return ret[0];
 }
