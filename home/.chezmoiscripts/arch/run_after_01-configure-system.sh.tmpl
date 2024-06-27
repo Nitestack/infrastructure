@@ -5,7 +5,7 @@
 # The following line is for ShellCheck to correctly identify the above included library
 true || source "../../.chezmoitemplates/bash-library.sh"
 
-_log_header "systemd Services"
+_log_header "systemd Units"
 
 # paccache
 _enable_system_service "paccache.timer"
@@ -33,4 +33,4 @@ echo
 _enable_system_service "power-profiles-daemon.service"
 
 echo
-_log -l info --prefix "systemd" "Enabled system and user services"
+_log -l info --prefix "systemd" "Enabled units for system and user"
