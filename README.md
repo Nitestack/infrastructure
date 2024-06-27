@@ -36,6 +36,8 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **Oh My Posh Configuration**: Customized prompt for a visually appealing and informative shell experience
 
+- **Fastfetch Configuration**: Customized settings for a fast and efficient system information display
+
 - **bat Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/bat) theme
 
 - **Lazygit Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
