@@ -7,37 +7,43 @@ import options from "options";
 import { hyprland as _hyprland } from "resource:///com/github/Aylur/ags/service/hyprland.js";
 
 export default function init() {
-  options.theme.light.primary.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.primary.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.error.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.error.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.surface.bg.connect("changed", () =>
-    colorgen("gtk", "hypr")
-  );
-  options.theme.light.surface.fg.connect("changed", () =>
-    colorgen("gtk", "hypr")
-  );
-  options.theme.light.container.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.container.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.light.inactiveBorder.connect("changed", () => colorgen("hypr"));
+  const gtkOnlyArgs = ["changed", () => colorgen("gtk")] as const;
 
-  options.theme.dark.primary.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.primary.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.error.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.error.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.fg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.surface.bg.connect("changed", () =>
-    colorgen("gtk", "hypr")
-  );
-  options.theme.dark.surface.fg.connect("changed", () =>
-    colorgen("gtk", "hypr")
-  );
-  options.theme.dark.container.bg.connect("changed", () => colorgen("gtk"));
-  options.theme.dark.container.fg.connect("changed", () => colorgen("gtk"));
+  // Primary
+  options.theme.light.primary.bg.connect(...gtkOnlyArgs);
+  options.theme.light.primary.accent.connect(...gtkOnlyArgs);
+  options.theme.dark.primary.bg.connect(...gtkOnlyArgs);
+  options.theme.dark.primary.accent.connect(...gtkOnlyArgs);
+  // Error
+  options.theme.light.error.bg.connect(...gtkOnlyArgs);
+  options.theme.light.error.accent.connect(...gtkOnlyArgs);
+  options.theme.dark.error.bg.connect(...gtkOnlyArgs);
+  options.theme.dark.error.accent.connect(...gtkOnlyArgs);
+  // Success
+  options.theme.light.success.bg.connect(...gtkOnlyArgs);
+  options.theme.light.success.accent.connect(...gtkOnlyArgs);
+  options.theme.dark.success.bg.connect(...gtkOnlyArgs);
+  options.theme.dark.success.accent.connect(...gtkOnlyArgs);
+  // Warning
+  options.theme.light.warning.bg.connect(...gtkOnlyArgs);
+  options.theme.light.warning.accent.connect(...gtkOnlyArgs);
+  options.theme.dark.warning.bg.connect(...gtkOnlyArgs);
+  options.theme.dark.warning.accent.connect(...gtkOnlyArgs);
+
+  options.theme.light.fg.connect("changed", () => colorgen("gtk", "hypr"));
+  options.theme.dark.fg.connect("changed", () => colorgen("gtk", "hypr"));
+  options.theme.light.bg.connect(...gtkOnlyArgs);
+  options.theme.dark.bg.connect(...gtkOnlyArgs);
+  options.theme.light.view.connect(...gtkOnlyArgs);
+  options.theme.dark.view.connect(...gtkOnlyArgs);
+  options.theme.light.card.connect(...gtkOnlyArgs);
+  options.theme.dark.card.connect(...gtkOnlyArgs);
+  options.theme.light.surface.connect(...gtkOnlyArgs);
+  options.theme.dark.surface.connect(...gtkOnlyArgs);
+
+  // Inactive Border
   options.theme.light.inactiveBorder.connect("changed", () => colorgen("hypr"));
+  options.theme.dark.inactiveBorder.connect("changed", () => colorgen("hypr"));
 
   colorgen("all");
 }
@@ -67,16 +73,33 @@ function generateGTKTheme() {
     `cp ${App.configDir}/templates/gradience/preset.json ${presetPath}`
   ).then(() => {
     overridePresetTemplate({
+      primaryAccent: colorPalette.primary.accent.value,
       primary: colorPalette.primary.bg.value,
-      onPrimary: colorPalette.primary.fg.value,
+      onPrimary: colorPalette.fg.value,
+
+      errorAccent: colorPalette.error.accent.value,
       error: colorPalette.error.bg.value,
-      onError: colorPalette.error.fg.value,
+      onError: colorPalette.fg.value,
+
+      successAccent: colorPalette.success.accent.value,
+      success: colorPalette.success.bg.value,
+      onSuccess: colorPalette.fg.value,
+
+      warningAccent: colorPalette.warning.accent.value,
+      warning: colorPalette.warning.bg.value,
+      onWarning: colorPalette.fg.value,
+
       background: colorPalette.bg.value,
       onBackground: colorPalette.fg.value,
-      surface: colorPalette.surface.bg.value,
-      onSurface: colorPalette.surface.fg.value,
-      container: colorPalette.container.bg.value,
-      onContainer: colorPalette.container.fg.value,
+
+      view: colorPalette.view.value,
+      onView: colorPalette.fg.value,
+
+      card: colorPalette.card.value,
+      onCard: colorPalette.fg.value,
+
+      surface: colorPalette.surface.value,
+      onSurface: colorPalette.fg.value,
     }).then(() => {
       bash("mkdir -p ~/.config/presets").then(() => {
         bash(`gradience-cli apply -p ${presetPath} --gtk both`).then(() => {
@@ -104,9 +127,9 @@ function generateHyprlandTheme() {
       ? options.theme.dark
       : options.theme.light;
   sendBatch([
-    `general:col.active_border rgba(${colorPalette.surface.fg.value.replace("#", "")}39)`,
+    `general:col.active_border rgba(${colorPalette.fg.value.replace("#", "")}39)`,
     `general:col.inactive_border rgba(${colorPalette.inactiveBorder.value.replace("#", "")}30)`,
-    `misc:background_color rgba(${colorPalette.surface.bg.value.replace("#", "")}FF)`,
+    `misc:background_color rgba(${colorPalette.view.value.replace("#", "")}FF)`,
   ]);
 }
 

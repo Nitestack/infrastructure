@@ -1,6 +1,3 @@
-/* eslint-disable max-len */
-
-import { type Opt } from "lib/option";
 import { bash, dependencies } from "lib/utils";
 import options from "options";
 
@@ -30,56 +27,56 @@ const {
 const popoverPaddingMultiplier = 1.6;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const t = (dark: Opt<any> | string, light: Opt<any> | string) =>
+const t = (dark: string, light: string) =>
   scheme.value === "dark" ? `${dark}` : `${light}`;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const $ = (name: string, value: string | Opt<any>) => `$${name}: ${value};`;
+const $ = (name: string, value: string | number) => `$${name}: ${value};`;
 
 const variables = () => [
   $(
     "bg",
     blur.value
-      ? `transparentize(${t(dark.bg, light.bg)}, ${blur.value / 100})`
-      : t(dark.bg, light.bg)
+      ? `transparentize(${t(dark.bg.value, light.bg.value)}, ${blur.value / 100})`
+      : t(dark.bg.value, light.bg.value)
   ),
-  $("fg", t(dark.fg, light.fg)),
+  $("fg", t(dark.fg.value, light.fg.value)),
 
-  $("primary-bg", t(dark.primary.bg, light.primary.bg)),
-  $("primary-fg", t(dark.primary.fg, light.primary.fg)),
+  $("primary-bg", t(dark.primary.bg.value, light.primary.bg.value)),
+  $("primary-fg", t(dark.fg.value, light.fg.value)),
 
-  $("error-bg", t(dark.error.bg, light.error.bg)),
-  $("error-fg", t(dark.error.fg, light.error.fg)),
+  $("error-bg", t(dark.error.accent.value, light.error.bg.value)),
+  $("error-fg", t(dark.fg.value, light.fg.value)),
 
-  $("scheme", scheme),
-  $("padding", `${padding}pt`),
-  $("spacing", `${spacing}pt`),
-  $("radius", `${radius}px`),
-  $("transition", `${options.transition}ms`),
+  $("scheme", scheme.value),
+  $("padding", `${padding.value}pt`),
+  $("spacing", `${spacing.value}pt`),
+  $("radius", `${radius.value}px`),
+  $("transition", `${options.transition.value}ms`),
 
-  $("shadows", `${shadows}`),
+  $("shadows", `${shadows.value}`),
 
   $(
     "widget-bg",
-    `transparentize(${t(dark.widget, light.widget)}, ${widget.opacity.value / 100})`
+    `transparentize(${t(dark.widget.value, light.widget.value)}, ${widget.opacity.value / 100})`
   ),
 
   $(
     "hover-bg",
-    `transparentize(${t(dark.widget, light.widget)}, ${(widget.opacity.value * 0.9) / 100})`
+    `transparentize(${t(dark.widget.value, light.widget.value)}, ${(widget.opacity.value * 0.9) / 100})`
   ),
-  $("hover-fg", `lighten(${t(dark.fg, light.fg)}, 8%)`),
+  $("hover-fg", `lighten(${t(dark.fg.value, light.fg.value)}, 8%)`),
 
-  $("border-width", `${border.width}px`),
+  $("border-width", `${border.width.value}px`),
   $(
     "border-color",
-    `transparentize(${t(dark.border, light.border)}, ${border.opacity.value / 100})`
+    `transparentize(${t(dark.border.value, light.border.value)}, ${border.opacity.value / 100})`
   ),
   $("border", "$border-width solid $border-color"),
 
   $(
     "active-gradient",
-    `linear-gradient(to right, ${t(dark.primary.bg, light.primary.bg)}, darken(${t(dark.primary.bg, light.primary.bg)}, 4%))`
+    `linear-gradient(to right, ${t(dark.primary.bg.value, light.primary.bg.value)}, darken(${t(dark.primary.bg.value, light.primary.bg.value)}, 4%))`
   ),
   $("shadow-color", t("rgba(0,0,0,.6)", "rgba(0,0,0,.4)")),
   $("text-shadow", t("2pt 2pt 2pt $shadow-color", "none")),
@@ -93,19 +90,19 @@ const variables = () => [
 
   $(
     "popover-border-color",
-    `transparentize(${t(dark.border, light.border)}, ${Math.max((border.opacity.value - 1) / 100, 0)})`
+    `transparentize(${t(dark.border.value, light.border.value)}, ${Math.max((border.opacity.value - 1) / 100, 0)})`
   ),
   $("popover-padding", `$padding * ${popoverPaddingMultiplier}`),
   $("popover-radius", radius.value === 0 ? "0" : "$radius + $popover-padding"),
 
-  $("font-size", `${options.font.size}pt`),
-  $("font-name", options.font.name),
+  $("font-size", `${options.font.size.value}pt`),
+  $("font-name", options.font.name.value),
 
   // etc
-  $("charging-bg", options.bar.battery.charging),
-  $("bar-battery-blocks", options.bar.battery.blocks),
-  $("bar-position", options.bar.position),
-  $("hyprland-gaps-multiplier", options.hyprland.gaps),
+  $("charging-bg", options.bar.battery.charging.value),
+  $("bar-battery-blocks", options.bar.battery.blocks.value),
+  $("bar-position", options.bar.position.value),
+  $("hyprland-gaps-multiplier", options.hyprland.gaps.value),
   $("screen-corner-multiplier", `${options.bar.corners.value * 0.01}`),
 ];
 

@@ -10,23 +10,27 @@ const options = mkOptions(OPTIONS, {
   theme: {
     dark: {
       primary: {
-        bg: opt("#89b4fa"),
-        fg: opt("#cdd6f4"),
+        bg: opt("#1e66f5"),
+        accent: opt("#89b4fa"),
       },
       error: {
-        bg: opt("#f38ba8"),
-        fg: opt("#cdd6f4"),
+        bg: opt("#d20f39"),
+        accent: opt("#f38ba8"),
       },
-      surface: {
-        bg: opt("#313244"),
-        fg: opt("#cdd6f4"),
+      success: {
+        bg: opt("#40a02b"),
+        accent: opt("#a6e3a1"),
       },
-      container: {
-        bg: opt("#181825"),
-        fg: opt("#cdd6f4"),
+      warning: {
+        bg: opt("#df8e1d"),
+        accent: opt("#f9e2af"),
       },
-      bg: opt("#1e1e2e"),
       fg: opt("#cdd6f4"),
+      bg: opt("#1e1e2e"),
+      view: opt("#181825"),
+      card: opt("#11111b"),
+      surface: opt("#313244"),
+
       widget: opt("#cdd6f4"),
       border: opt("#cdd6f4"),
       inactiveBorder: opt("#282828"),
@@ -34,22 +38,26 @@ const options = mkOptions(OPTIONS, {
     light: {
       primary: {
         bg: opt("#1e66f5"),
-        fg: opt("#4c4f69"),
+        accent: opt("#8caaee"),
       },
       error: {
         bg: opt("#d20f39"),
-        fg: opt("#4c4f69"),
+        accent: opt("#e78284"),
       },
-      surface: {
-        bg: opt("#ccd0da"),
-        fg: opt("#4c4f69"),
+      success: {
+        bg: opt("#40a02b"),
+        accent: opt("#a6d189"),
       },
-      container: {
-        bg: opt("#e6e9ef"),
-        fg: opt("#4c4f69"),
+      warning: {
+        bg: opt("#df8e1d"),
+        accent: opt("#e5c890"),
       },
-      bg: opt("#eff1f5"),
       fg: opt("#4c4f69"),
+      bg: opt("#eff1f5"),
+      view: opt("#e6e9ef"),
+      card: opt("#dce0e8"),
+      surface: opt("#ccd0da"),
+
       widget: opt("#4c4f69"),
       border: opt("#4c4f69"),
       inactiveBorder: opt("#282828"),
@@ -73,7 +81,7 @@ const options = mkOptions(OPTIONS, {
 
   font: {
     size: opt(13),
-    name: opt(FONT_SANS_FAMILY),
+    name: opt<string>(FONT_SANS_FAMILY),
   },
 
   bar: {

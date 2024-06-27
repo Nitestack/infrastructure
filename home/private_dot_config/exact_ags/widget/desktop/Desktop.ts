@@ -14,7 +14,7 @@ export default (monitor: number) =>
     anchor: ["top", "bottom", "left", "right"],
     child: Widget.Box({
       expand: true,
-      css: options.theme.dark.primary.bg.bind().as(
+      css: options.theme.dark.primary.accent.bind().as(
         (c) => `
             transition: 500ms;
             background-color: ${c}`
