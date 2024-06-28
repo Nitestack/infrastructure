@@ -241,5 +241,5 @@ const options = mkOptions(OPTIONS, {
   },
 });
 
-globalThis.options = options;
+Object.assign(globalThis, { options });
 export default options;
