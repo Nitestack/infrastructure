@@ -230,7 +230,7 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 ### Hyprland Bindings
 
 | Modifiers | Key | Description | Flags |
-| --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | Ctrl + Shift | R | - | - |
 | Alt | Tab | - | - |
 | Alt | Space | - | - |
