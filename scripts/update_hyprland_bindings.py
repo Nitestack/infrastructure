@@ -61,23 +61,31 @@ def parse_bindings(file_path, variables):
             description = ""
 
             if bind_with_description:
-                flags = list(bind_with_description.group(1))
-                mods = bind_with_description.group(2).split(" ")
-                key = bind_with_description.group(3)
-                description = bind_with_description.group(4)
-                dispatcher = bind_with_description.group(5)
+                flags = list(bind_with_description.group(1).strip())
+                mods = (
+                    bind_with_description.group(2).strip().split(" ")
+                    if bind_with_description.group(2).strip()
+                    else []
+                )
+                key = bind_with_description.group(3).strip()
+                description = bind_with_description.group(4).strip()
+                dispatcher = bind_with_description.group(5).strip()
                 params = (
-                    bind_with_description.group(6)
+                    bind_with_description.group(6).strip()
                     if bind_with_description.group(6)
                     else ""
                 )
                 flags.remove("d")
             elif bind_match:
-                flags = list(bind_match.group(1))
-                mods = bind_match.group(2).split(" ")
-                key = bind_match.group(3)
-                dispatcher = bind_match.group(4)
-                params = bind_match.group(5) if bind_match.group(5) else ""
+                flags = list(bind_match.group(1).strip())
+                mods = (
+                    bind_match.group(2).strip().split(" ")
+                    if bind_match.group(2).strip()
+                    else []
+                )
+                key = bind_match.group(3).strip()
+                dispatcher = bind_match.group(4).strip()
+                params = bind_match.group(5).strip() if bind_match.group(5) else ""
 
             if bind_match or bind_with_description:
                 bindings.append(
@@ -99,7 +107,7 @@ def generate_table(bindings):
     table_content += "| --- | --- | --- | --- | --- | --- |\n"
 
     for binding in bindings:
-        modifiers = " + ".join(binding["mods"])
+        modifiers = " + ".join(binding["mods"]) if len(binding["mods"]) > 0 else "-"
         key = binding["key"]
         description = binding["description"] if binding["description"] else "-"
         dispatcher = binding["dispatcher"]

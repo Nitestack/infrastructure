@@ -235,23 +235,23 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 | ALT | tab | exec | `ags -b hypr -t overview` | - | - |
 | ALT | space | exec | `ags -b hypr -t launcher` | - | - |
 | SUPER | V | exec | `ags -b hypr -r 'launcher.open(":ch ")'` | - | - |
-|  | XF86PowerOff | exec | `ags -b hypr -t powermenu` | - | - |
-|  | Print | exec | `ags -b hypr -r 'recorder.screenshot()'` | - | - |
+| - | XF86PowerOff | exec | `ags -b hypr -t powermenu` | - | - |
+| - | Print | exec | `ags -b hypr -r 'recorder.screenshot()'` | - | - |
 | SUPER | Print | exec | `ags -b hypr -r 'recorder.screenshot(true)'` | - | - |
 | SUPER + ALT | Print | exec | `ags -b hypr -r 'recorder.start()'` | - | - |
 | SUPER | Backslash | exec | `wezterm start -- tmux` | - | - |
 | SUPER | E | exec | `nautilus --new-window` | - | - |
 | SUPER | W | exec | `firefox-developer-edition` | - | - |
-|  | XF86AudioLowerVolume | exec | `wpctl set-volume @DEFAULT_AUDIO_SINK@ -l 1 2%-` | `l`, `e` | - |
-|  | XF86AudioRaiseVolume | exec | `wpctl set-volume @DEFAULT_AUDIO_SINK@ -l 1 2%+` | `l`, `e` | - |
-|  | XF86AudioMute | exec | `wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle` | `l` | - |
-|  | XF86AudioMicMute | exec | `wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle` | `l` | - |
-|  | XF86AudioPlay | exec | `playerctl play-pause` | `l` | - |
-|  | XF86AudioPause | exec | `playerctl play-pause` | `l` | - |
-|  | XF86AudioNext | exec | `playerctl next` | `l` | - |
-|  | XF86AudioPrev | exec | `playerctl previous` | `l` | - |
-|  | XF86MonBrightnessDown | exec | `brightnessctl set 5%-` | `l`, `e` | - |
-|  | XF86MonBrightnessUp | exec | `brightnessctl set +5%` | `l`, `e` | - |
+| - | XF86AudioLowerVolume | exec | `wpctl set-volume @DEFAULT_AUDIO_SINK@ -l 1 2%-` | `l`, `e` | - |
+| - | XF86AudioRaiseVolume | exec | `wpctl set-volume @DEFAULT_AUDIO_SINK@ -l 1 2%+` | `l`, `e` | - |
+| - | XF86AudioMute | exec | `wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle` | `l` | - |
+| - | XF86AudioMicMute | exec | `wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle` | `l` | - |
+| - | XF86AudioPlay | exec | `playerctl play-pause` | `l` | - |
+| - | XF86AudioPause | exec | `playerctl play-pause` | `l` | - |
+| - | XF86AudioNext | exec | `playerctl next` | `l` | - |
+| - | XF86AudioPrev | exec | `playerctl previous` | `l` | - |
+| - | XF86MonBrightnessDown | exec | `brightnessctl set 5%-` | `l`, `e` | - |
+| - | XF86MonBrightnessUp | exec | `brightnessctl set +5%` | `l`, `e` | - |
 | SUPER | H | movefocus | `l` | - | - |
 | SUPER | L | movefocus | `r` | - | - |
 | SUPER | K | movefocus | `u` | - | - |
