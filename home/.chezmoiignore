@@ -11,6 +11,11 @@ AppData
 Documents
 
 .wslconfig
+
+# komorebi
+applications.yaml
+.config/whkdrc
+komorebi.json
 {{ end }}
 
 # Arch Linux
