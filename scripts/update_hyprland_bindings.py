@@ -113,10 +113,18 @@ def generate_table(bindings):
     table_content = "| Modifiers | Key | Description | Flags |\n"
     table_content += "| --- | --- | --- | --- |\n"
 
+    def change_mod_label(mod):
+        mod = mod.capitalize() if mod.isalpha() else mod
+
+        if mod == "Super":
+            mod = "Win"
+
+        return mod
+
     for binding in bindings:
         # Mods
         modifiers = (
-            " + ".join(map(lambda mod: mod.capitalize(), binding["mods"]))
+            " + ".join(map(change_mod_label, binding["mods"]))
             if len(binding["mods"]) > 0
             else "-"
         )
