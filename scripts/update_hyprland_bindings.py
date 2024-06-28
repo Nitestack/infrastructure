@@ -103,18 +103,36 @@ def parse_bindings(file_path, variables):
 
 
 def generate_table(bindings):
-    table_content = "| Modifiers | Key | Dispatcher | Params | Flags | Description |\n"
+    key_labels = {
+        "mouse:272": "Left Mouse Button",
+        "mouse:273": "Right Mouse Button",
+        "mouse_up": "Mouse Wheel Up",
+        "mouse_down": "Mouse Wheel Down",
+    }
+
+    table_content = "| Modifiers | Key | Description | Flags |\n"
     table_content += "| --- | --- | --- | --- | --- | --- |\n"
 
     for binding in bindings:
-        modifiers = " + ".join(binding["mods"]) if len(binding["mods"]) > 0 else "-"
-        key = binding["key"]
+        # Mods
+        modifiers = (
+            " + ".join(map(lambda mod: mod.capitalize(), binding["mods"]))
+            if len(binding["mods"]) > 0
+            else "-"
+        )
+        # Key
+        key = re.sub(r"XF86([a-zA-Z0-9]+)", r"\1 Button", binding["key"])
+        if binding["key"] in key_labels:
+            key = key_labels[key]
+        key = key.capitalize() if key.isalpha() else key
+
+        # Optional description
         description = binding["description"] if binding["description"] else "-"
-        dispatcher = binding["dispatcher"]
-        params = binding["params"] if binding["params"] else "-"
+
+        # Flags
         flags = "`" + "`, `".join(binding["flags"]) + "`" if binding["flags"] else "-"
 
-        table_content += f"| {modifiers} | {key} | {dispatcher} | `{params}` | {flags} | {description} |\n"
+        table_content += f"| {modifiers} | {key} | {description} | {flags} |\n"
 
     return table_content.strip()
 
