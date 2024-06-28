@@ -88,6 +88,8 @@ def parse_bindings(file_path, variables):
                 params = bind_match.group(5).strip() if bind_match.group(5) else ""
 
             if bind_match or bind_with_description:
+                if "m" in flags:
+                    flags.remove("m")
                 bindings.append(
                     {
                         "flags": flags,
