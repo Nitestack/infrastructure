@@ -15,7 +15,7 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 {{ $paths := list }}
 {{- $homeDir := .chezmoi.homeDir }}
-{{- range $_, $relPath := list "bin" ".local/bin" ".local/share/bob/nvim-bin" ".cargo/bin" "go/bin" -}}
+{{- range $_, $relPath := list "bin" ".local/bin" ".local/share/bob/nvim-bin" ".cargo/bin" ".console-ninja/.bin" "go/bin" -}}
 {{-   $path := joinPath $homeDir $relPath -}}
 {{-   if stat $path -}}
 {{-     $paths = mustAppend $paths $path -}}
