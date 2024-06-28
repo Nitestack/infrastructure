@@ -234,14 +234,14 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 | Ctrl + Shift | R | - | - |
 | Alt | Tab | - | - |
 | Alt | Space | - | - |
-| Super | V | - | - |
+| Win | V | - | - |
 | - | PowerOff Button | - | - |
 | - | Print | - | - |
-| Super | Print | - | - |
-| Super + Alt | Print | - | - |
-| Super | Backslash | - | - |
-| Super | E | - | - |
-| Super | W | - | - |
+| Win | Print | - | - |
+| Win + Alt | Print | - | - |
+| Win | Backslash | - | - |
+| Win | E | - | - |
+| Win | W | - | - |
 | - | AudioLowerVolume Button | - | `l`, `e` |
 | - | AudioRaiseVolume Button | - | `l`, `e` |
 | - | AudioMute Button | - | `l` |
@@ -252,56 +252,56 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 | - | AudioPrev Button | - | `l` |
 | - | MonBrightnessDown Button | - | `l`, `e` |
 | - | MonBrightnessUp Button | - | `l`, `e` |
-| Super | H | - | - |
-| Super | L | - | - |
-| Super | K | - | - |
-| Super | J | - | - |
-| Super | Right Mouse Button | - | `m` |
-| Super | F | - | - |
-| Super | M | - | - |
-| Super | Left | - | `e` |
-| Super | Right | - | `e` |
-| Super | Up | - | `e` |
-| Super | Down | - | `e` |
-| Super | Left Mouse Button | - | `m` |
-| Super + Alt | H | - | - |
-| Super + Alt | L | - | - |
-| Super + Alt | K | - | - |
-| Super + Alt | J | - | - |
-| Super | Q | - | - |
-| Super | C | - | - |
-| Super | P | - | - |
-| Super | R | - | - |
-| Super | T | - | - |
-| Super + Shift | T | - | - |
-| Super | 1 | - | - |
-| Super | 2 | - | - |
-| Super | 3 | - | - |
-| Super | 4 | - | - |
-| Super | 5 | - | - |
-| Super | 6 | - | - |
-| Super | 7 | - | - |
-| Super | 8 | - | - |
-| Super | 9 | - | - |
-| Super | 0 | - | - |
-| Super + Ctrl | H | - | - |
-| Super + Ctrl | L | - | - |
-| Super | Mouse Wheel Down | - | - |
-| Super | Mouse Wheel Up | - | - |
-| Super + Shift | 1 | - | - |
-| Super + Shift | 2 | - | - |
-| Super + Shift | 3 | - | - |
-| Super + Shift | 4 | - | - |
-| Super + Shift | 5 | - | - |
-| Super + Shift | 6 | - | - |
-| Super + Shift | 7 | - | - |
-| Super + Shift | 8 | - | - |
-| Super + Shift | 9 | - | - |
-| Super + Shift | 0 | - | - |
-| Super + Shift | H | - | - |
-| Super + Shift | L | - | - |
-| Super | S | - | - |
-| Super + Shift | S | - | - |
+| Win | H | - | - |
+| Win | L | - | - |
+| Win | K | - | - |
+| Win | J | - | - |
+| Win | Right Mouse Button | - | `m` |
+| Win | F | - | - |
+| Win | M | - | - |
+| Win | Left | - | `e` |
+| Win | Right | - | `e` |
+| Win | Up | - | `e` |
+| Win | Down | - | `e` |
+| Win | Left Mouse Button | - | `m` |
+| Win + Alt | H | - | - |
+| Win + Alt | L | - | - |
+| Win + Alt | K | - | - |
+| Win + Alt | J | - | - |
+| Win | Q | - | - |
+| Win | C | - | - |
+| Win | P | - | - |
+| Win | R | - | - |
+| Win | T | - | - |
+| Win + Shift | T | - | - |
+| Win | 1 | - | - |
+| Win | 2 | - | - |
+| Win | 3 | - | - |
+| Win | 4 | - | - |
+| Win | 5 | - | - |
+| Win | 6 | - | - |
+| Win | 7 | - | - |
+| Win | 8 | - | - |
+| Win | 9 | - | - |
+| Win | 0 | - | - |
+| Win + Ctrl | H | - | - |
+| Win + Ctrl | L | - | - |
+| Win | Mouse Wheel Down | - | - |
+| Win | Mouse Wheel Up | - | - |
+| Win + Shift | 1 | - | - |
+| Win + Shift | 2 | - | - |
+| Win + Shift | 3 | - | - |
+| Win + Shift | 4 | - | - |
+| Win + Shift | 5 | - | - |
+| Win + Shift | 6 | - | - |
+| Win + Shift | 7 | - | - |
+| Win + Shift | 8 | - | - |
+| Win + Shift | 9 | - | - |
+| Win + Shift | 0 | - | - |
+| Win + Shift | H | - | - |
+| Win + Shift | L | - | - |
+| Win | S | - | - |
+| Win + Shift | S | - | - |
 
 #### Binding Flags
 
