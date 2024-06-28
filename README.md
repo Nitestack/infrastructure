@@ -231,77 +231,77 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 
 | Modifiers | Key | Description | Flags |
 | --- | --- | --- | --- |
-| Ctrl + Shift | R | - | - |
-| Alt | Tab | - | - |
-| Alt | Space | - | - |
-| Win | V | - | - |
-| - | PowerOff Button | - | - |
-| - | Print | - | - |
-| Win | Print | - | - |
-| Win + Alt | Print | - | - |
-| Win | Backslash | - | - |
-| Win | E | - | - |
-| Win | W | - | - |
-| - | AudioLowerVolume Button | - | `l`, `e` |
-| - | AudioRaiseVolume Button | - | `l`, `e` |
-| - | AudioMute Button | - | `l` |
-| - | AudioMicMute Button | - | `l` |
-| - | AudioPlay Button | - | `l` |
-| - | AudioPause Button | - | `l` |
-| - | AudioNext Button | - | `l` |
-| - | AudioPrev Button | - | `l` |
-| - | MonBrightnessDown Button | - | `l`, `e` |
-| - | MonBrightnessUp Button | - | `l`, `e` |
-| Win | H | - | - |
-| Win | L | - | - |
-| Win | K | - | - |
-| Win | J | - | - |
-| Win | Right Mouse Button | - | `m` |
-| Win | F | - | - |
-| Win | M | - | - |
-| Win | Left | - | `e` |
-| Win | Right | - | `e` |
-| Win | Up | - | `e` |
-| Win | Down | - | `e` |
-| Win | Left Mouse Button | - | `m` |
-| Win + Alt | H | - | - |
-| Win + Alt | L | - | - |
-| Win + Alt | K | - | - |
-| Win + Alt | J | - | - |
-| Win | Q | - | - |
-| Win | C | - | - |
-| Win | P | - | - |
-| Win | R | - | - |
-| Win | T | - | - |
-| Win + Shift | T | - | - |
-| Win | 1 | - | - |
-| Win | 2 | - | - |
-| Win | 3 | - | - |
-| Win | 4 | - | - |
-| Win | 5 | - | - |
-| Win | 6 | - | - |
-| Win | 7 | - | - |
-| Win | 8 | - | - |
-| Win | 9 | - | - |
-| Win | 0 | - | - |
-| Win + Ctrl | H | - | - |
-| Win + Ctrl | L | - | - |
-| Win | Mouse Wheel Down | - | - |
-| Win | Mouse Wheel Up | - | - |
-| Win + Shift | 1 | - | - |
-| Win + Shift | 2 | - | - |
-| Win + Shift | 3 | - | - |
-| Win + Shift | 4 | - | - |
-| Win + Shift | 5 | - | - |
-| Win + Shift | 6 | - | - |
-| Win + Shift | 7 | - | - |
-| Win + Shift | 8 | - | - |
-| Win + Shift | 9 | - | - |
-| Win + Shift | 0 | - | - |
-| Win + Shift | H | - | - |
-| Win + Shift | L | - | - |
-| Win | S | - | - |
-| Win + Shift | S | - | - |
+| Ctrl + Shift | R | Reload `ags` | - |
+| Win | Tab | Toggle Workspaces Overview | - |
+| Alt | Space | Toggle App Launcher | - |
+| Win | V | Open Clipboard History | - |
+| - | PowerOff Button | Toggle Power Menu | - |
+| - | Print | Take Screenshot (Select Area) | - |
+| Win | Print | Take Fullscreen Screenshot | - |
+| Win + Alt | Print | Start Screen Recording | - |
+| Win | Backslash | Open Terminal | - |
+| Win | E | Open File Manager | - |
+| Win | W | Open Browser | - |
+| - | AudioLowerVolume Button | Decrease Volume | `l`, `e` |
+| - | AudioRaiseVolume Button | Increase Volume | `l`, `e` |
+| - | AudioMute Button | Mute/Unmute Volume | `l` |
+| - | AudioMicMute Button | Mute/Unmute Microphone | `l` |
+| - | AudioPlay Button | Play/Pause | `l` |
+| - | AudioPause Button | Play/Pause | `l` |
+| - | AudioNext Button | Skip to Next Track | `l` |
+| - | AudioPrev Button | Return to Previous Track | `l` |
+| - | MonBrightnessDown Button | Decrease Screen Brightness | `l`, `e` |
+| - | MonBrightnessUp Button | Increase Screen Brightness | `l`, `e` |
+| Win | H | Move Focus to Left Window | - |
+| Win | L | Move Focus to Right Window | - |
+| Win | K | Move Focus to Upper Window | - |
+| Win | J | Move Focus to Lower Window | - |
+| Win | Right Mouse Button | Resize Window | `m` |
+| Win | F | Toggle Fullscreen | - |
+| Win | M | Maximize/Restore Window | - |
+| Win | Left | Resize Window to the Left | `e` |
+| Win | Right | Resize Window to the Right | `e` |
+| Win | Up | Resize Window Upwards | `e` |
+| Win | Down | Resize Window Downwards | `e` |
+| Win | Left Mouse Button | Move Window | `m` |
+| Win + Alt | H | Move Window Left | - |
+| Win + Alt | L | Move Window Right | - |
+| Win + Alt | K | Move Window Upwards | - |
+| Win + Alt | J | Move Window Downwards | - |
+| Win | Q | Close Active Window | - |
+| Win | C | Center Window | - |
+| Win | P | Toggle Focused Window's Pseudo Mode | - |
+| Win | R | Toggle Split Orientation | - |
+| Win | T | Toggle Active Window Floating | - |
+| Win + Shift | T | Toggle All Windows Floating | - |
+| Win | 1 | Switch to Workspace 1 | - |
+| Win | 2 | Switch to Workspace 2 | - |
+| Win | 3 | Switch to Workspace 3 | - |
+| Win | 4 | Switch to Workspace 4 | - |
+| Win | 5 | Switch to Workspace 5 | - |
+| Win | 6 | Switch to Workspace 6 | - |
+| Win | 7 | Switch to Workspace 7 | - |
+| Win | 8 | Switch to Workspace 8 | - |
+| Win | 9 | Switch to Workspace 9 | - |
+| Win | 0 | Switch to Workspace 10 | - |
+| Win + Ctrl | H | Switch to Previous Workspace | - |
+| Win + Ctrl | L | Switch to Next Workspace | - |
+| Win | Mouse Wheel Down | Switch to Previous Workspace | - |
+| Win | Mouse Wheel Up | Switch to Next Workspace | - |
+| Win + Shift | 1 | Move Active Window to Workspace 1 | - |
+| Win + Shift | 2 | Move Active Window to Workspace 2 | - |
+| Win + Shift | 3 | Move Active Window to Workspace 3 | - |
+| Win + Shift | 4 | Move Active Window to Workspace 4 | - |
+| Win + Shift | 5 | Move Active Window to Workspace 5 | - |
+| Win + Shift | 6 | Move Active Window to Workspace 6 | - |
+| Win + Shift | 7 | Move Active Window to Workspace 7 | - |
+| Win + Shift | 8 | Move Active Window to Workspace 8 | - |
+| Win + Shift | 9 | Move Active Window to Workspace 9 | - |
+| Win + Shift | 0 | Move Active Window to Workspace 10 | - |
+| Win + Shift | H | Move Active Window to Previous Workspace | - |
+| Win + Shift | L | Move Active Window to Next Workspace | - |
+| Win | S | Toggle Scratchpad | - |
+| Win + Shift | S | Move Active Window to Scratchpad | - |
 
 #### Binding Flags
 
