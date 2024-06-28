@@ -13,7 +13,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
 ![Github Created At](https://img.shields.io/github/created-at/Nitestack/dotfiles?style=for-the-badge)
 
-[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
+[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Credits](#-credits) • [License](#-license)
 
 ![2024-06-27_19-06-06](https://github.com/Nitestack/dotfiles/assets/74626967/c419ca64-d908-4bdd-8bf2-bf44d59fd9fb)
 
