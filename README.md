@@ -256,14 +256,14 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 | Win | L | Move Focus to Right Window | - |
 | Win | K | Move Focus to Upper Window | - |
 | Win | J | Move Focus to Lower Window | - |
-| Win | Right Mouse Button | Resize Window | `m` |
+| Win | Right Mouse Button | Resize Window | - |
 | Win | F | Toggle Fullscreen | - |
 | Win | M | Maximize/Restore Window | - |
 | Win | Left | Resize Window to the Left | `e` |
 | Win | Right | Resize Window to the Right | `e` |
 | Win | Up | Resize Window Upwards | `e` |
 | Win | Down | Resize Window Downwards | `e` |
-| Win | Left Mouse Button | Move Window | `m` |
+| Win | Left Mouse Button | Move Window | - |
 | Win + Alt | H | Move Window Left | - |
 | Win + Alt | L | Move Window Right | - |
 | Win + Alt | K | Move Window Upwards | - |
