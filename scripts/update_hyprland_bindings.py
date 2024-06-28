@@ -1,5 +1,6 @@
 import re
 
+# File paths and markers
 BINDINGS_FILE = "home/private_dot_config/exact_hypr/exact_hyprland/bindings.conf"
 README_FILE = "README.md"
 START_MARKER = "### Hyprland Bindings"
@@ -7,6 +8,15 @@ END_MARKER = "#### Binding Flags"
 
 
 def preprocess_variables(file_path):
+    """
+    Preprocess variables from a configuration file.
+
+    Args:
+    - file_path (str): Path to the configuration file.
+
+    Returns:
+    - variables (dict): Dictionary of parsed variables.
+    """
     variables = {}
     with open(file_path, "r") as file:
         for line in file:
@@ -23,6 +33,16 @@ def preprocess_variables(file_path):
 
 
 def parse_bindings(file_path, variables):
+    """
+    Parse bindings from a configuration file using predefined patterns.
+
+    Args:
+    - file_path (str): Path to the bindings configuration file.
+    - variables (dict): Dictionary of variables for variable substitution.
+
+    Returns:
+    - bindings (list): List of parsed bindings as dictionaries.
+    """
     bindings = []
 
     with open(file_path, "r") as file:
@@ -38,21 +58,26 @@ def parse_bindings(file_path, variables):
             for var_name, var_value in variables.items():
                 line = line.replace(f"${var_name}", var_value)
 
+            # Debug: print processed line
+            print(f"Processed line: {line}")
+
             # Remove comment at end of line if present
             line = re.sub(r"\s*#.*$", "", line)
 
-            # A binding without a description
-            # bind<flag[]> = <mod[]>, <key>, <dispatcher>, [params]
+            # Debug: print line after removing comments
+            print(f"Line after comment removal: {line}")
+
+            # Patterns for different binding types
             bind_match = re.match(
                 r"^bind([a-z]*)\s*=\s*(.*?)\s*,\s*(.*?)\s*,\s*(.*?)(?:\s*,\s*(.*?))?\s*$",
                 line,
             )
-            # A binding with a description
-            # bindd<flag[]> = <mod[]>, <key>, <description>, <dispatcher>, [params]
             bind_with_description = re.match(
                 r"^bind([a-z]*d[a-z]*)\s*=\s*(.*?)\s*,\s*(.*?)\s*,\s*(.*?)\s*,\s*(.*?)(?:\s*,\s*(.*?))?\s*$",
                 line,
             )
+
+            # Initialize variables for parsing
             flags = []
             mods = []
             key = ""
@@ -60,6 +85,7 @@ def parse_bindings(file_path, variables):
             params = ""
             description = ""
 
+            # Parse based on matched pattern
             if bind_with_description:
                 flags = list(bind_with_description.group(1).strip())
                 mods = (
@@ -87,6 +113,7 @@ def parse_bindings(file_path, variables):
                 dispatcher = bind_match.group(4).strip()
                 params = bind_match.group(5).strip() if bind_match.group(5) else ""
 
+            # If a valid binding was found, add to bindings list
             if bind_match or bind_with_description:
                 if "m" in flags:
                     flags.remove("m")
@@ -105,6 +132,15 @@ def parse_bindings(file_path, variables):
 
 
 def generate_table(bindings):
+    """
+    Generate a markdown table from parsed bindings.
+
+    Args:
+    - bindings (list): List of bindings as dictionaries.
+
+    Returns:
+    - table_content (str): Markdown formatted table content.
+    """
     key_labels = {
         "mouse:272": "Left Mouse Button",
         "mouse:273": "Right Mouse Button",
@@ -133,7 +169,7 @@ def generate_table(bindings):
         # Key
         key = re.sub(r"XF86([a-zA-Z0-9]+)", r"\1 Button", binding["key"])
         if binding["key"] in key_labels:
-            key = key_labels[key]
+            key = key_labels[binding["key"]]
         key = key.capitalize() if key.isalpha() else key
 
         # Optional description
@@ -148,6 +184,15 @@ def generate_table(bindings):
 
 
 def update_readme(readme_file, start_marker, end_marker, table_content):
+    """
+    Update the README file with the generated table content.
+
+    Args:
+    - readme_file (str): Path to the README file.
+    - start_marker (str): Start marker in README to begin updating from.
+    - end_marker (str): End marker in README to stop updating at.
+    - table_content (str): Markdown formatted table content.
+    """
     updated_readme = ""
     in_bindings_section = False
 
@@ -171,7 +216,24 @@ def update_readme(readme_file, start_marker, end_marker, table_content):
 
 
 if __name__ == "__main__":
+    # Debug: Print the starting point
+    print("Script started")
+
+    # Preprocess variables from the bindings file
     variables = preprocess_variables(BINDINGS_FILE)
+    print(f"Variables: {variables}")
+
+    # Parse bindings using preprocessed variables
     bindings = parse_bindings(BINDINGS_FILE, variables)
+    print(f"Bindings: {bindings}")
+
+    # Generate markdown table from parsed bindings
     table_content = generate_table(bindings)
+    print(f"Table content:\n{table_content}")
+
+    # Update the README file with the generated table content
     update_readme(README_FILE, START_MARKER, END_MARKER, table_content)
+    print("README.md updated")
+
+    # Debug: Print the completion
+    print("Script completed")
