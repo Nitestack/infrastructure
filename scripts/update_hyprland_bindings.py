@@ -111,7 +111,7 @@ def generate_table(bindings):
     }
 
     table_content = "| Modifiers | Key | Description | Flags |\n"
-    table_content += "| --- | --- | --- | --- | --- | --- |\n"
+    table_content += "| --- | --- | --- | --- |\n"
 
     for binding in bindings:
         # Mods
