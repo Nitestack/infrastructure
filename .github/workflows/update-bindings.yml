@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "home/private_dot_config/exact_hypr/exact_hyprland/bindings.conf"
+      - "scripts/update_hyprland_bindings.py"
 
 jobs:
   update-readme:
