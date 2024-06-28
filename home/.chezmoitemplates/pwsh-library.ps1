@@ -19,8 +19,7 @@ function _Install-PackagesWinget {
   foreach ($Pkg in $Packages) {
     winget list -e $Pkg | Out-Null
     if ($?) {
-      $PackageName = (winget search -e $Pkg | Select-Object -Last 1).Split("$Pkg")[0].Trim()
-      _Log -l warn --prefix "winget" "$PackageName is already installed"
+      _Log -l warn --prefix "winget" "$Pkg is already installed"
       continue
     }
 
