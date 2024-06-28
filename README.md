@@ -311,7 +311,6 @@ From the [Hyprland binding flags reference](https://wiki.hyprland.org/Configurin
 - `r` - release, will trigger on release of a key.
 - `e` - repeat, will repeat when held.
 - `n` - non-consuming, key/mouse events will be passed to the active window in addition to triggering the dispatcher.
-- `m` - mouse, see below.
 - `t` - transparent, cannot be shadowed by other binds.
 - `i` - ignore mods, will ignore modifiers.
 - `s` - separate, will arbitrarily combine keys between each mod/key, see [Keysym combos](https://wiki.hyprland.org/Configuring/Binds/#keysym-combos).
