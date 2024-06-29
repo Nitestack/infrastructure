@@ -19,18 +19,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Parse keybindings and update README
+      - name: Parse Hyprland bindings and update README.md
         run: python scripts/update_hyprland_bindings.py
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit changes
-        run: |
-          git add README.md
-          git commit -m "chore(build): Update Hyprland bindings"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(build): Update Hyprland bindings"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
