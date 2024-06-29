@@ -96,6 +96,8 @@ After installing Arch Linux on a new machine, this repository can set up the res
 
 - **PowerShell Profile**: Customized PowerShell profile with a styled prompt, optimized history settings, aliases, and various Linux utilities ported over to PowerShell for enhanced productivity
 
+- **Komorebi Configuration**: Customizations and tweaks for the tiling window manager (extension to the [Desktop Window Manager](https://docs.microsoft.com/en-us/windows/win32/dwm/dwm-overview))
+
 ---
 
 And more to discover.
