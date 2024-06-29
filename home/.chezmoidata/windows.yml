@@ -6,12 +6,12 @@
 packages:
   win:
     winget:
+      - "AutoHotkey.AutoHotkey"
       - "Microsoft.DotNet.SDK.8"
       - "LGUG2Z.komorebi"
       - "LLVM.LLVM"
       - "mbuilov.sed"
       - "Microsoft.VCRedist.2015+.x64"
-      - "LGUG2Z.whkd"
     modules:
       - "PSFzf"
 apps:
