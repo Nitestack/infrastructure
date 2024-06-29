@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.25/schema.json",
-  "app_specific_configuration_path": "$env:APPDATA/komorebi/applications.yaml",
+  "app_specific_configuration_path": "{{- env "KOMOREBI_CONFIG_HOME" | replace "\\" "/" -}}/applications.yaml",
   "window_hiding_behaviour": "Cloak",
   "cross_monitor_move_behaviour": "Insert",
   "default_workspace_padding": 20,
