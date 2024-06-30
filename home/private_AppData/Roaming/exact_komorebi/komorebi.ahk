@@ -39,7 +39,7 @@ Komorebic(cmd) {
 
 #q:: Komorebic("close")
 
-: Toggling
+; Toggling
 #r:: Komorebic("cycle-layout next")
 #t:: Komorebic("toggle-float")
 +#t:: Komorebic("toggle-pause")
