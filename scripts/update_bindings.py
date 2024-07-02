@@ -1,18 +1,21 @@
 import re
 
 # File paths and markers
-BINDINGS_FILE = "home/private_dot_config/exact_hypr/exact_hyprland/bindings.conf"
+HYPRLAND_BINDINGS_FILE = (
+    "home/private_dot_config/exact_hypr/exact_hyprland/bindings.conf"
+)
+KOMOREBI_AHK_CONFIG_FILE = "home/private_AppData/Roaming/exact_komorebi/komorebi.ahk"
 README_FILE = "README.md"
-START_MARKER = "### Hyprland Bindings"
-END_MARKER = "#### Binding Flags"
+START_MARKER = "### Bindings"
+END_MARKER = "#### OS Compatibility"
 
 
-def preprocess_variables(file_path):
+def preprocess_hyprland_variables(file_path):
     """
-    Preprocess variables from a configuration file.
+    Preprocess variables from a Hyprland configuration file.
 
     Args:
-    - file_path (str): Path to the configuration file.
+    - file_path (str): Path to the Hyprland configuration file.
 
     Returns:
     - variables (dict): Dictionary of parsed variables.
@@ -32,27 +35,55 @@ def preprocess_variables(file_path):
     return variables
 
 
-def parse_bindings(file_path, variables):
+def parse_bindings(hyprland_config_path, variables, ahk_config_path):
     """
     Parse bindings from a configuration file using predefined patterns.
 
     Args:
-    - file_path (str): Path to the bindings configuration file.
+    - hyprland_config_path (str): Path to the bindings configuration file.
     - variables (dict): Dictionary of variables for variable substitution.
+    - ahk_config_path (str): Path to the AutoHotKey configuration file (Windows).
 
     Returns:
     - bindings (list): List of parsed bindings as dictionaries.
     """
     bindings = []
 
-    with open(file_path, "r") as file:
+    win_bindings = [
+        {"mods": ["ALT"], "key": "space"},
+        {"mods": ["SUPER"], "key": "V"},
+        {"mods": [], "key": "XF86PowerOff"},
+        {"mods": [], "key": "Print"},
+        {"mods": ["SUPER"], "key": "Print"},
+        {"mods": ["SUPER", "ALT"], "key": "Print"},
+        {"mods": ["SUPER"], "key": "E"},
+        {"mods": [], "key": "XF86AudioLowerVolume"},
+        {"mods": [], "key": "XF86AudioRaiseVolume"},
+        {"mods": [], "key": "XF86AudioMute"},
+        {"mods": [], "key": "XF86AudioMicMute"},
+        {"mods": [], "key": "XF86AudioPlay"},
+        {"mods": [], "key": "XF86AudioPause"},
+        {"mods": [], "key": "XF86AudioNext"},
+        {"mods": [], "key": "XF86AudioPrev"},
+        {"mods": [], "key": "XF86MonBrightnessDown"},
+        {"mods": [], "key": "XF86MonBrightnessUp"},
+    ]
+
+    ahk_mods = {"#": "SUPER", "^": "CTRL", "+": "SHIFT", "!": "ALT"}
+    ahk_characters = {
+        "\\": "Backslash",
+        "WheelUp": "mouse_up",
+        "WheelDown": "mouse_down",
+    }
+
+    with open(hyprland_config_path, "r") as file:
         for line in file:
+            # Strip leading/trailing whitespace and comments
+            line = line.strip()
+
             # Skip lines that do not start with 'bind'
             if not line.startswith("bind"):
                 continue
-
-            # Strip leading/trailing whitespace and comments
-            line = line.strip()
 
             # Replace variables
             for var_name, var_value in variables.items():
@@ -80,7 +111,7 @@ def parse_bindings(file_path, variables):
             # Initialize variables for parsing
             flags = []
             mods = []
-            key = ""
+            unresolved_key = ""
             dispatcher = ""
             params = ""
             description = ""
@@ -93,7 +124,7 @@ def parse_bindings(file_path, variables):
                     if bind_with_description.group(2).strip()
                     else []
                 )
-                key = bind_with_description.group(3).strip()
+                unresolved_key = bind_with_description.group(3).strip()
                 description = bind_with_description.group(4).strip()
                 dispatcher = bind_with_description.group(5).strip()
                 params = (
@@ -109,7 +140,7 @@ def parse_bindings(file_path, variables):
                     if bind_match.group(2).strip()
                     else []
                 )
-                key = bind_match.group(3).strip()
+                unresolved_key = bind_match.group(3).strip()
                 dispatcher = bind_match.group(4).strip()
                 params = bind_match.group(5).strip() if bind_match.group(5) else ""
 
@@ -121,12 +152,58 @@ def parse_bindings(file_path, variables):
                     {
                         "flags": flags,
                         "mods": mods,
-                        "key": key,
+                        "key": unresolved_key,
                         "description": description,
                         "dispatcher": dispatcher,
                         "params": params,
                     }
                 )
+
+    with open(ahk_config_path, "r") as file:
+        beginning = False
+        for line in file:
+            # Strip leading/trailing whitespace and comments
+            line = line.strip()
+
+            # Don't start until we find the `Komorebic` function
+            if line.startswith("Komorebic"):
+                beginning = True
+                continue
+            if not beginning or line == "":
+                continue
+
+            if line[0] not in ahk_mods.keys():
+                continue
+
+            mods = []
+            key = ""
+
+            keys = re.findall(r"\w+|\W", line.split("::")[0])
+
+            for unresolved_key in keys:
+                if unresolved_key in ahk_mods.keys():
+                    mods.append(ahk_mods[unresolved_key])
+                elif unresolved_key in ahk_characters.keys():
+                    key = ahk_characters[unresolved_key]
+                else:
+                    key = unresolved_key.upper() or ""
+
+            if key and mods:
+                win_bindings.append(
+                    {
+                        "mods": mods,
+                        "key": key,
+                    }
+                )
+
+    for win_binding in win_bindings:
+        for binding in bindings:
+            if (
+                set(map(lambda mod: mod.lower(), binding["mods"]))
+                == set(map(lambda mod: mod.lower(), win_binding["mods"]))
+                and binding["key"].lower() == win_binding["key"].lower()
+            ):
+                binding["has_win"] = True
 
     return bindings
 
@@ -148,8 +225,8 @@ def generate_table(bindings):
         "mouse_down": "Mouse Wheel Down",
     }
 
-    table_content = "| Modifiers | Key | Description | Flags |\n"
-    table_content += "| --- | --- | --- | --- |\n"
+    table_content = "| Modifiers | Key | Description | OS | Flags |\n"
+    table_content += "| --- | --- | --- | --- | --- |\n"
 
     def change_mod_label(mod):
         mod = mod.capitalize() if mod.isalpha() else mod
@@ -178,7 +255,7 @@ def generate_table(bindings):
         # Flags
         flags = "`" + "`, `".join(binding["flags"]) + "`" if binding["flags"] else "-"
 
-        table_content += f"| {modifiers} | {key} | {description} | {flags} |\n"
+        table_content += f"| {modifiers} | {key} | {description} | `L`{", `W`" if ("has_win" in binding and binding["has_win"] or False) else ""} | {flags} |\n"
 
     return table_content.strip()
 
@@ -220,11 +297,13 @@ if __name__ == "__main__":
     print("Script started")
 
     # Preprocess variables from the bindings file
-    variables = preprocess_variables(BINDINGS_FILE)
+    variables = preprocess_hyprland_variables(HYPRLAND_BINDINGS_FILE)
     print(f"Variables: {variables}")
 
     # Parse bindings using preprocessed variables
-    bindings = parse_bindings(BINDINGS_FILE, variables)
+    bindings = parse_bindings(
+        HYPRLAND_BINDINGS_FILE, variables, KOMOREBI_AHK_CONFIG_FILE
+    )
     print(f"Bindings: {bindings}")
 
     # Generate markdown table from parsed bindings

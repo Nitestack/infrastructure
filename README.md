@@ -229,7 +229,7 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 
 ## 📖 Documentation
 
-### Hyprland Bindings
+### Bindings
 
 | Modifiers    | Key                      | Description                              | Flags    |
 | ------------ | ------------------------ | ---------------------------------------- | -------- |
@@ -304,6 +304,12 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 | Win + Shift  | L                        | Move Active Window to Next Workspace     | -        |
 | Win          | S                        | Toggle Scratchpad                        | -        |
 | Win + Shift  | S                        | Move Active Window to Scratchpad         | -        |
+
+#### OS Compatibility
+
+- `L` - Linux
+- `W` - Windows
+- `M` - macOS
 
 #### Binding Flags
 
