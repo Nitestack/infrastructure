@@ -45,10 +45,6 @@ return {
     opts.diagnostics.virtual_text = opts.diagnostics.virtual_text or {}
     opts.diagnostics.virtual_text.prefix = "icons"
 
-    -- Code lens
-    opts.codelens = opts.codelens or {}
-    opts.codelens.enabled = false
-
     -- Semantic tokens
     LazyVim.lsp.on_attach(function(client, buffer)
       if
