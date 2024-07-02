@@ -1,10 +1,10 @@
-name: Update Hyprland Bindings
+name: Update Bindings
 
 on:
   push:
     paths:
       - "home/private_dot_config/exact_hypr/exact_hyprland/bindings.conf"
-      - "scripts/update_hyprland_bindings.py"
+      - "scripts/update_bindings.py"
 
 jobs:
   update-readme:
@@ -19,13 +19,13 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Parse Hyprland bindings and update README.md
-        run: python scripts/update_hyprland_bindings.py
+      - name: Parse bindings and update README.md
+        run: python scripts/update_bindings.py
 
       - name: Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore(build): Update Hyprland bindings"
+          commit_message: "chore(build): Update bindings"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
