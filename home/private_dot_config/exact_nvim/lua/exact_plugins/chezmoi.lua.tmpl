@@ -2,6 +2,7 @@ local sourceDir = "{{ .chezmoi.sourceDir }}"
 
 ---@type LazySpec
 return {
+  { import = "lazyvim.plugins.extras.util.chezmoi" },
   {
     "alker0/chezmoi.vim",
     lazy = false,
