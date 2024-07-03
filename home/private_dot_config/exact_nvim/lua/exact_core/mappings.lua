@@ -71,7 +71,6 @@ M.mappings[{ "n", "v" }] = {
 
 ---@param cmd string
 local function execute_command(cmd)
-  require("lazy").load({ plugins = { "toggleterm.nvim" } })
   require("toggleterm").exec(cmd, nil, nil, nil, "float")
 end
 
