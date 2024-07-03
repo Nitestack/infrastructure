@@ -1,4 +1,4 @@
-local sourceDir = "{{ .chezmoi.sourceDir }}"
+local sourceDir = string.gsub("{{ .chezmoi.sourceDir }}", "^/home/[^/]+/", "")
 
 ---@type LazySpec
 return {
@@ -12,6 +12,18 @@ return {
     end,
   },
   {
+    "xvzc/chezmoi.nvim",
+    init = function()
+      -- run chezmoi edit on file enter
+      vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+        pattern = { "{{- .chezmoi.sourceDir -}}/*" },
+        callback = function()
+          vim.schedule(require("chezmoi.commands.__edit").watch)
+        end,
+      })
+    end,
+  },
+  {
     "neovim/nvim-lspconfig",
     ---@param opts utils.plugin.language_config.lsp
     opts = function(_, opts)
@@ -20,7 +32,7 @@ return {
       ---@type (string|{[1]:string, ft:string|string[]})[]
       local modify_servers = {
         "bashls",
-        { "hyprls", ft = sourceDir .. "/private_dot_config/exact_hypr/*.conf" },
+        { "hyprls", ft = sourceDir .. "/private_dot_config/exact_hypr/exact_hyprland/*.conf" },
         "jsonls",
         "lua_ls",
         "powershell_es",
