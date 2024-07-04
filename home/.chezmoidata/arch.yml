@@ -26,11 +26,13 @@ packages:
       - "i2c-tools" # Required for `ddcutil`
       - "iptables-nft" # Required for `libvirt`
       - "iwd" # Wireless daemon
+      - "kvantum" # Qt6 theme engine
+      - "kvantum-qt5" # Qt6 theme engine
       - "libpulse" # Required for `pipewire-pulse`
       - "libvirt" # collection of software that provides a convenient way to manage VM's
       - "man-db" # man for Arch
       - "man-pages-de" # man in German
-      - "network-manager" # Network manager
+      - "networkmanager" # Network manager
       - "noto-fonts-emoji" # Font: Noto Emoji Color
       - "openbsd-netcat" # Required for `libvirt`
       - "openssh" # SSH protocol implementation
@@ -81,6 +83,7 @@ apps:
     pacman:
       - "dconf-editor" # dconf editor
       - "gnome-calculator" # Calculator
+      - "gnome-clocks" # Timers
       - "gnome-control-center" # System settings
       - "gnome-disk-utility" # Disk utility
       - "gnome-screenshot" # Screenshot
@@ -89,5 +92,7 @@ apps:
       - "loupe" # Image viewer
       - "nautilus" # File Manager
       - "qemu-full" # VM support
+      - "qt5ct" # Qt5 Configuration Tool
+      - "qt6ct" # Qt6 Configuration Tool
       - "virt-manager" # Desktop user interface for managing VM's
       - "vlc" # Media player
