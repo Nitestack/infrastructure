@@ -26,6 +26,8 @@ Pictures
 .config/lazygit
 .config/paru
 .config/project-manager
+.config/qt5ct
+.config/qt6ct
 
 .hushlogin
 .zprofile
