@@ -2,7 +2,6 @@
 return {
   {
     "cbochs/grapple.nvim",
-    dependencies = "nvim-tree/nvim-web-devicons",
     cmd = "Grapple",
     keys = core.lazy_map({
       n = {
