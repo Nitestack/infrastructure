@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name=Snapdrop
-Comment=The easiest way to transfer files across devices
-Exec=google-chrome-stable --app="https://snapdrop.net" --name=Snapdrop
-Terminal=false
-Type=Application
-Icon=/home/$USER/.local/share/icons/Snapdrop.png
-Categories=Network;FileTransfer;
