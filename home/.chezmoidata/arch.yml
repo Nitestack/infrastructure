@@ -10,6 +10,7 @@ packages:
       - "bluez-utils" # Bluetooth
       - "brightnessctl" # Brightness control for internal monitors
       - "dart-sass" # Required dependency for ags
+      - "desktop-file-utils" # Utilities for working with desktop entries
       - "ddcutil" # Required for `ddcci-driver-linux`
       - "dnsmasq" # Required for `libvirt`
       - "easyeffects" # Audio effects for PipeWire applications

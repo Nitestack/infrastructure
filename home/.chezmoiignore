@@ -29,6 +29,8 @@ Pictures
 .config/qt5ct
 .config/qt6ct
 
+.local
+
 .hushlogin
 .zprofile
 {{ end }}
