@@ -52,7 +52,6 @@ M.winbar_filetype_exclude = {
 
 function M.get_filename()
   local filename = vim.fn.expand("%:t")
-  local extension = vim.fn.expand("%:e")
   local file_path = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.:h")
 
   if not M.str_is_empty(filename) then
@@ -62,9 +61,10 @@ function M.get_filename()
       file_icon = core.icons.ui.Circle:gsub("%s+", "")
       hl_group = "BreadcrumbsModified"
     else
-      local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
+      local devicons_ok, mini_icons = pcall(require, "mini.icons")
       if devicons_ok then
-        file_icon, hl_group = devicons.get_icon(filename, extension, { default = true })
+        ---@diagnostic disable-next-line: cast-local-type
+        file_icon, hl_group = mini_icons.get("file", filename)
 
         if M.str_is_empty(file_icon) then
           file_icon = ""
