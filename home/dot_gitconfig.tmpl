@@ -7,6 +7,7 @@
   email = "{{- .email -}}"
 [core]
   editor = "{{ .editor }}"
+  longpaths = true
 {{- if eq .editor "nvim" }}
   pager = "delta"
 {{- end }}
