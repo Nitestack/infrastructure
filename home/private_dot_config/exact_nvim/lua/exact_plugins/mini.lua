@@ -1,3 +1,25 @@
+---@param category "directory" | "file"
+---@param name string
+local function resolve_chezmoi_name(category, name)
+  ---@type string[]
+  local shared_modifiers = { "private_" }
+  ---@type string[]
+  local file_modifiers = { "create_", "empty_", "executable_" }
+  ---@type string[]
+  local directory_modifiers = { "exact_" }
+
+  local patterns = vim.list_extend(shared_modifiers, category == "directory" and directory_modifiers or file_modifiers)
+
+  local result = name
+  for _, pattern in ipairs(patterns) do
+    result = string.gsub(result, pattern, "")
+  end
+  -- Replace `dot_` with `.`
+  result = string.gsub(result, "dot_", ".")
+
+  return result
+end
+
 return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
   {
@@ -9,6 +31,7 @@ return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.editor.mini-files" },
   {
     "echasnovski/mini.files",
+    dependencies = "echasnovski/mini.icons",
     keys = core.lazy_map({
       n = {
         ["<leader>e"] = {
@@ -49,10 +72,9 @@ return utils.plugin.with_extensions({
 
       opts.content = opts.content or {}
       opts.content.prefix = function(fs_entry)
-        if fs_entry.fs_type == "directory" then
-          return core.icons.ui.FolderClosed .. " ", "MiniFilesDirectory"
-        end
-        return require("mini.files").default_prefix(fs_entry)
+        local category = fs_entry.fs_type == "directory" and "directory" or "file"
+        local icon, hl = require("mini.icons").get(category, resolve_chezmoi_name(category, fs_entry.name))
+        return icon .. " ", hl
       end
     end,
   },
