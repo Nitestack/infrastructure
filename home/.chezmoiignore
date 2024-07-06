@@ -47,6 +47,7 @@ Library
 .chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
 
+.config/spicetify
 .config/tmux
 
 .oh-my-zsh
