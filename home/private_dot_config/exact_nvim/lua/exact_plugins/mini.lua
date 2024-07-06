@@ -16,6 +16,8 @@ local function resolve_chezmoi_name(category, name)
   end
   -- Replace `dot_` with `.`
   result = string.gsub(result, "dot_", ".")
+  -- Remove .tmpl extension
+  result = string.gsub(result, ".tmpl$", "")
 
   return result
 end
