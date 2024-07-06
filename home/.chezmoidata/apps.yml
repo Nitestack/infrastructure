@@ -38,6 +38,9 @@ apps:
     - name: "Notion"
       mac: "notion"
       win: "Notion.Notion"
+    - name: "Notion Calendar"
+      mac: "notion-calendar"
+      win: "Notion.NotionCalendar"
     - name: "PDFgear"
       mac:
         mas:

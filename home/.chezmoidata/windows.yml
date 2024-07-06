@@ -25,7 +25,6 @@ apps:
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
     manual:
       - "AnkerWork"
-      - "Notion Calendar"
       - "Rubik Font"
       - "MonaspiceNe Nerd Font"
       - "Symbols Nerd Font"

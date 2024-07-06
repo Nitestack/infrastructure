@@ -23,7 +23,6 @@ apps:
       - "latest"
       - "maccy"
       - "mission-control-plus"
-      - "notion-calendar"
       - "raycast"
       - "rectangle"
     mas:
