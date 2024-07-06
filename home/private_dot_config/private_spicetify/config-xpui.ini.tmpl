@@ -1,1 +1,1 @@
-{{- template "spicetify/config-xpui.ini" dict "spotify_path" "$HOME/.local/share/spotify-launcher/install/usr/share/spotify/" "prefs_path" "/home/nhan/.config/spotify/prefs" -}}
+{{- template "spicetify/config-xpui.ini" dict "spotify_path" "$HOME/.local/share/spotify-launcher/install/usr/share/spotify" "prefs_path" (printf "%s%s" .chezmoi.homeDir "/.config/spotify/prefs") -}}
