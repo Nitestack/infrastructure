@@ -53,7 +53,7 @@ apps:
     - name: "Spotify"
       arch: "spotify-launcher"
       mac: "spotify"
-      win: "9NCBCSZSJRSB"
+      win: "Spotify.Spotify"
     - name: "Visual Studio Code"
       arch:
         paru: "visual-studio-code-bin"

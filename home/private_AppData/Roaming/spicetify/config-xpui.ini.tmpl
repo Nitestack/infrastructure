@@ -1,1 +1,1 @@
-{{- template "spicetify/config-xpui.ini" dict "spotify_path" "C:\\Program Files\\WindowsApps\\SpotifyAB.SpotifyMusic_1.241.434.0_x64__zpdnekdrzrea0" "prefs_path" (printf "%s%s" (env "LOCALAPPDATA") "\\Packages\\SpotifyAB.SpotifyMusic_zpdnekdrzrea0\\LocalState\\Spotify\\prefs") -}}
+{{- template "spicetify/config-xpui.ini" dict "spotify_path" (printf "%s%s" (env "APPDATA") "\\Spotify") "prefs_path" (printf "%s%s" (env "APPDATA") "\\Spotify\\prefs") -}}
