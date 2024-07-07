@@ -41,12 +41,6 @@ return utils.plugin.with_extensions({
       opts.default_component_configs.name = opts.default_component_configs.name or {}
       opts.default_component_configs.name.highlight_opened_files = true
 
-      opts.default_component_configs.icon = opts.default_component_configs.icon or {}
-      opts.default_component_configs.icon.folder_closed = core.icons.ui.FolderClosed
-      opts.default_component_configs.icon.folder_open = core.icons.ui.FolderOpen
-      opts.default_component_configs.icon.folder_empty = core.icons.ui.EmptyFolder
-      opts.default_component_configs.icon.folder_empty_open = core.icons.ui.EmptyFolderOpen
-
       opts.default_component_configs.git_status = opts.default_component_configs.git_status or {}
       opts.default_component_configs.git_status.symbols = opts.default_component_configs.git_status.symbols or {}
       opts.default_component_configs.git_status.symbols.added = core.icons.git.LineAdded
