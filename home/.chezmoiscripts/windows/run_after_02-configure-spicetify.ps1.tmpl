@@ -1,0 +1,15 @@
+# {{ template "pwsh-library.ps1" . }}
+
+_LogHeader "Spicetify"
+
+if (Test-Path (spicetify -c)) {
+  _Log -l warn "Spicetify is already configured"
+  exit
+}
+
+spicetify
+spicetify backup apply enable-devtools
+
+Invoke-WebRequest "https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.ps1" | Invoke-Expression
+
+_Log -l info "Spicetify configured"

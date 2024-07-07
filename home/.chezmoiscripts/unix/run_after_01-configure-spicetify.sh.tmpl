@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+_log_header "Spicetify"
+
+if [[ -e "$(spicetify -c)" ]]; then
+  _log -l warn "Spicetify is already configured"
+  exit
+fi
+
+_spin "Generating config file" -- spicetify
+
+_spin "Enabling devtools" -- spicetify backup apply enable-devtools
+
+curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/resources/install.sh | sh
+
+_log -l info "Spicetify configured"
