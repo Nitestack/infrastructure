@@ -1,10 +1,5 @@
 {{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
 {{- $email := promptStringOnce . "email" "Email Address" -}}
-{{- $font_display := promptStringOnce . "sans-font" "Sans Font" "Rubik" -}}
-{{- $font_display_weight := promptStringOnce . "sans-font-weight" "Sans Font Weight" "Bold" -}}
-{{- $font_nerd := promptStringOnce . "nerd-font" "Nerd Font" "MonaspiceNe Nerd Font" -}}
-{{- $font_nerd_weight := promptStringOnce . "nerd-font-weight" "Nerd Font Weight" "Regular" -}}
-{{- $font_size := promptStringOnce . "font-size" "Font Size" "14" -}}
 {{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") "personal" -}}
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
@@ -30,14 +25,6 @@ data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
   editor: "nvim"
-  font:
-    sans:
-      family: {{ $font_display | quote }}
-      weight: {{ $font_display_weight | quote }}
-    nerd:
-      family: {{ $font_nerd | quote }}
-      weight: {{ $font_nerd_weight | quote }}
-    size: {{ $font_size | quote }}
   hosttype: {{ $hosttype | quote }}
   device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}
