@@ -58,6 +58,10 @@ require("lazy").setup({
     { import = "plugins.lsp" },
     { import = "plugins" },
   },
+  rocks = {
+    enabled = false,
+    hererocks = false,
+  },
   defaults = {
     lazy = true,
     -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
