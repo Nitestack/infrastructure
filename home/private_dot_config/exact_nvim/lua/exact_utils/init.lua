@@ -78,4 +78,29 @@ function M.is_nightly()
   return vim.version().prerelease ~= nil
 end
 
+---Resolves chezmoi file/directory names
+---@param category "directory" | "file"
+---@param name string
+function M.resolve_chezmoi_name(category, name)
+  ---@type string[]
+  local shared_modifiers = { "private_" }
+  ---@type string[]
+  local file_modifiers = { "create_", "empty_", "executable_" }
+  ---@type string[]
+  local directory_modifiers = { "exact_" }
+
+  local patterns = vim.list_extend(shared_modifiers, category == "directory" and directory_modifiers or file_modifiers)
+
+  local result = name
+  for _, pattern in ipairs(patterns) do
+    result = string.gsub(result, pattern, "")
+  end
+  -- Replace `dot_` with `.`
+  result = string.gsub(result, "dot_", ".")
+  -- Remove .tmpl extension
+  result = string.gsub(result, ".tmpl$", "")
+
+  return result
+end
+
 return M

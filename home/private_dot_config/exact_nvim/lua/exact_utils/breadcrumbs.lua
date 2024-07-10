@@ -61,10 +61,10 @@ function M.get_filename()
       file_icon = core.icons.ui.Circle:gsub("%s+", "")
       hl_group = "BreadcrumbsModified"
     else
-      local devicons_ok, mini_icons = pcall(require, "mini.icons")
-      if devicons_ok then
+      local icons_ok, mini_icons = pcall(require, "mini.icons")
+      if icons_ok then
         ---@diagnostic disable-next-line: cast-local-type
-        file_icon, hl_group = mini_icons.get("file", filename)
+        file_icon, hl_group = mini_icons.get("file", utils.resolve_chezmoi_name("file", filename))
 
         if M.str_is_empty(file_icon) then
           file_icon = ""
