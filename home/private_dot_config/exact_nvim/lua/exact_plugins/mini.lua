@@ -1,4 +1,13 @@
 return utils.plugin.with_extensions({
+  { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
+  {
+    "echasnovski/mini.hipatterns",
+    opts = {
+      tailwind = {
+        enabled = false,
+      },
+    },
+  },
   { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
   {
     "echasnovski/mini.indentscope",
