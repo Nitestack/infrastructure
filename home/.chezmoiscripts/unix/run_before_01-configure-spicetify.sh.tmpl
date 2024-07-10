@@ -12,6 +12,10 @@ if [[ -e "$(spicetify -c)" ]]; then
   exit
 fi
 
+if [[ ! -d "${HOME}/.config/spotify" ]] || [[ ! -d "${HOME}/.local/share/spotify-launcher" ]]; then
+  _log -l error "Please open Spotify and log in. Then run this script again."
+fi
+
 _spin "Generating config file" -- spicetify
 
 _spin "Enabling devtools" -- spicetify backup apply enable-devtools
