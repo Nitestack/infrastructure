@@ -2,77 +2,77 @@ import icons from "lib/icons";
 import { mkOptions, opt } from "lib/option";
 import { icon } from "lib/utils";
 import { distro } from "lib/variables";
-import { FONT_SANS_FAMILY, IS_NOT_VM } from "template";
+import { FONT_SANS_FAMILY, IS_NOT_VM, THEME } from "template";
 
 const options = mkOptions(OPTIONS, {
   theme: {
     dark: {
       primary: {
-        bg: opt("#1e66f5"),
-        accent: opt("#89b4fa"),
+        bg: opt(THEME.dark.primary.bg),
+        accent: opt(THEME.dark.primary.accent),
       },
       error: {
-        bg: opt("#d20f39"),
-        accent: opt("#f38ba8"),
+        bg: opt(THEME.dark.error.bg),
+        accent: opt(THEME.dark.error.accent),
       },
       success: {
-        bg: opt("#40a02b"),
-        accent: opt("#a6e3a1"),
+        bg: opt(THEME.dark.success.bg),
+        accent: opt(THEME.dark.success.accent),
       },
       warning: {
-        bg: opt("#df8e1d"),
-        accent: opt("#f9e2af"),
+        bg: opt(THEME.dark.warning.bg),
+        accent: opt(THEME.dark.warning.accent),
       },
-      fg: opt("#cdd6f4"),
-      bg: opt("#1e1e2e"),
-      view: opt("#181825"),
-      card: opt("#11111b"),
-      surface: opt("#313244"),
+      fg: opt(THEME.dark.fg),
+      bg: opt(THEME.dark.bg),
+      view: opt(THEME.dark.view),
+      card: opt(THEME.dark.card),
+      surface: opt(THEME.dark.surface),
 
-      widget: opt("#cdd6f4"),
-      border: opt("#cdd6f4"),
-      inactiveBorder: opt("#282828"),
+      widget: opt(THEME.dark.widget),
+      border: opt(THEME.dark.border),
+      inactiveBorder: opt(THEME.dark.inactiveBorder),
     },
     light: {
       primary: {
-        bg: opt("#1e66f5"),
-        accent: opt("#8caaee"),
+        bg: opt(THEME.light.primary.bg),
+        accent: opt(THEME.light.primary.accent),
       },
       error: {
-        bg: opt("#d20f39"),
-        accent: opt("#e78284"),
+        bg: opt(THEME.light.error.bg),
+        accent: opt(THEME.light.error.accent),
       },
       success: {
-        bg: opt("#40a02b"),
-        accent: opt("#a6d189"),
+        bg: opt(THEME.light.success.bg),
+        accent: opt(THEME.light.success.accent),
       },
       warning: {
-        bg: opt("#df8e1d"),
-        accent: opt("#e5c890"),
+        bg: opt(THEME.light.warning.bg),
+        accent: opt(THEME.light.warning.accent),
       },
-      fg: opt("#4c4f69"),
-      bg: opt("#eff1f5"),
-      view: opt("#e6e9ef"),
-      card: opt("#dce0e8"),
-      surface: opt("#ccd0da"),
+      fg: opt(THEME.light.fg),
+      bg: opt(THEME.light.bg),
+      view: opt(THEME.light.view),
+      card: opt(THEME.light.card),
+      surface: opt(THEME.light.surface),
 
-      widget: opt("#4c4f69"),
-      border: opt("#4c4f69"),
-      inactiveBorder: opt("#282828"),
+      widget: opt(THEME.light.widget),
+      border: opt(THEME.light.border),
+      inactiveBorder: opt(THEME.light.inactiveBorder),
     },
 
     blur: opt(15),
-    scheme: opt<"dark" | "light">("dark"),
-    widget: { opacity: opt(94) },
+    scheme: opt<"dark" | "light">(THEME.colorscheme),
+    widget: { opacity: opt(THEME.widget.opacity) },
     border: {
-      width: opt(1),
-      opacity: opt(96),
+      width: opt(THEME.border.width),
+      opacity: opt(THEME.border.opacity),
     },
 
     shadows: opt(IS_NOT_VM),
-    padding: opt(7),
-    spacing: opt(12),
-    radius: opt(11),
+    padding: opt(THEME.padding),
+    spacing: opt(THEME.spacing),
+    radius: opt(THEME.radius),
   },
 
   transition: opt(200),
@@ -237,7 +237,7 @@ const options = mkOptions(OPTIONS, {
   },
 
   hyprland: {
-    gaps: opt(1.7),
+    gaps: opt(THEME.window_margin),
   },
 });
 
