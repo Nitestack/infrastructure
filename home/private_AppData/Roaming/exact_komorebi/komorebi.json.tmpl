@@ -3,10 +3,10 @@
   "app_specific_configuration_path": "{{- env "KOMOREBI_CONFIG_HOME" | replace "\\" "/" -}}/applications.yaml",
   "window_hiding_behaviour": "Cloak",
   "cross_monitor_move_behaviour": "Insert",
-  "default_workspace_padding": 14,
-  "default_container_padding": 14,
+  "default_workspace_padding": {{ floor (divf (mulf .theme.window_margin .theme.spacing) 2) -}},
+  "default_container_padding": {{ floor (divf (mulf .theme.window_margin .theme.spacing) 2) -}},
   "border": true,
-  "border_width": 1,
+  "border_width": {{ .theme.border.width -}},
   "border_z_order": "TopMost",
   "border_offset": -1,
   "border_colours": {
