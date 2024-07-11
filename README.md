@@ -42,6 +42,8 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **Lazygit Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
 
+- **Spicetify Configuration**: Add extensibility and customization to Spotify
+
 - **Git Configuration**: Customized settings for version control
 
 - **ShellCheck Configuration**: Setup for shell script analysis
