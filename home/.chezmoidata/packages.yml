@@ -140,7 +140,6 @@ packages:
   npm:
     - "@bitwarden/cli"
     - "npkill"
-    - "@nitestack/project-manager"
     - "tree-sitter-cli"
     - "tsx"
     - "turbo"
