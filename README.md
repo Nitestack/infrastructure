@@ -342,6 +342,8 @@ From the [Hyprland binding flags reference](https://wiki.hyprland.org/Configurin
   - his ags configuration was used as a base
 - [end-4](https://github.com/end-4)
   - parts of his dotfiles are used
+- [Pratik Gayen](https://github.com/FireDrop6000/hyprland-mydots)
+  - Hyprlock config is used
 
 ## 📝 License
 
