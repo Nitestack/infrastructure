@@ -48,6 +48,7 @@ Library
 
 .config/spicetify
 .config/tmux
+.config/zed
 
 .oh-my-zsh
 
