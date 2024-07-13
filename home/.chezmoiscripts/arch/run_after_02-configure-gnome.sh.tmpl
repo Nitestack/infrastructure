@@ -29,7 +29,8 @@ xdg-mime default code.desktop text/plain
 gsettings_ensure org.gnome.calculator show-thousands true
 
 # Nautilus
-gsettings_ensure org.gnome.nautilus.preferences default-folder-viewer "list-view"
+gsettings_ensure org.gnome.nautilus.preferences default-folder-viewer "icon-view"
+gsettings_ensure org.gnome.nautilus.preferences show-delete-permanently true
 
 # Misc
 gsettings_ensure org.gnome.desktop.interface font-name "{{- .font.sans.family -}}"
