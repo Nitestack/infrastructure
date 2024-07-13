@@ -3,6 +3,16 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 ---
+gtk:
+  icon:
+    theme:
+      name: "WhiteSur"
+      install:
+        paru: "whitesur-icon-theme"
+  cursor:
+    theme:
+      name: "macOS"
+    size: 24
 font:
   size: 14
   sans:

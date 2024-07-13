@@ -39,7 +39,6 @@ packages:
       - "openssh" # SSH protocol implementation
       - "otf-monaspace-nerd" # Font: MonaspiceNe Nerd Font
       - "pacman-contrib" # Required for `paccache`
-      - "papirus-icon-theme" # Icon theme
       - "pavucontrol" # Volume control tool ("mixer") for PulseAudio
       - "pipewire" # Multimedia framework
       - "pipewire-audio" # Audio
