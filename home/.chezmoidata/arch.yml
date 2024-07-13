@@ -82,6 +82,7 @@ apps:
   arch:
     pacman:
       - "dconf-editor" # dconf editor
+      - "geary" # Email client
       - "gnome-calculator" # Calculator
       - "gnome-clocks" # Timers
       - "gnome-control-center" # System settings
