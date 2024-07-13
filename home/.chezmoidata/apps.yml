@@ -63,3 +63,6 @@ apps:
       arch: "wezterm"
       mac: "wezterm"
       win: "wez.wezterm"
+    - name: "Zed"
+      arch: "zed"
+      mac: "zed"
