@@ -74,11 +74,14 @@ _log -l info "Installed essential packages"
 _log_header "Packages"
 
 # {{ $packages := list }}
+# {{ $paruPackages := list }}
 # {{ $customPackages := list }}
 # {{ range .packages.common }}
 #   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
 #     {{ if eq "string" (printf "%T" .arch) }}
 #       {{ $packages = mustAppend $packages .arch }}
+#     {{ else if hasKey .arch "paru" }}
+#       {{ $paruPackages = mustAppend $paruPackages .arch.paru }}
 #     {{ else if hasKey .arch "custom" }}
 #       {{ $customPackages = mustAppend $customPackages (dict .name .arch.custom) }}
 #     {{ end }}
@@ -96,7 +99,7 @@ _install_packages_pacman "{{- concat $packages .packages.arch.pacman | uniq | so
 
 # ── paru ───────────────────────────────────────────────────────────────
 gum format -- "## paru:"
-_install_packages_paru "{{- .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
+_install_packages_paru "{{- concat $paruPackages .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
