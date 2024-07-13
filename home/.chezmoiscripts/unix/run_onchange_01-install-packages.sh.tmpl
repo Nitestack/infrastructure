@@ -93,13 +93,31 @@ _log_header "Packages"
 # {{ end }}
 
 # {{ if eq $osid "linux-arch" }}
+# If icon theme installation is specified, install it
+# {{ if hasKey .gtk.icon.theme "install" }}
+#   {{ if hasKey .gtk.icon.theme.install "pacman" }}
+#     {{ $packages = mustAppend $packages .gtk.icon.theme.install.pacman }}
+#   {{ else if hasKey .gtk.icon.theme.install "paru" }}
+#     {{ $paruPackages = mustAppend $paruPackages .gtk.icon.theme.install.paru }}
+#   {{ end }}
+# {{ end }}
+
+# If cursor theme installation is specified, install it
+# {{ if hasKey .gtk.cursor.theme "install" }}
+#   {{ if hasKey .gtk.cursor.theme.install "pacman" }}
+#     {{ $packages = mustAppend $packages .gtk.cursor.theme.install.pacman }}
+#   {{ else if hasKey .gtk.cursor.theme.install "paru" }}
+#     {{ $paruPackages = mustAppend $paruPackages .gtk.cursor.theme.install.paru }}
+#   {{ end }}
+# {{ end }}
+
 # ── pacman ────────────────────────────────────────────────────────────
 gum format -- "## pacman:"
-_install_packages_pacman "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \""  -}}"
+_install_packages_pacman "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \"" -}}"
 
 # ── paru ───────────────────────────────────────────────────────────────
 gum format -- "## paru:"
-_install_packages_paru "{{- concat $paruPackages .packages.arch.paru | uniq | sortAlpha | join "\" \""  -}}"
+_install_packages_paru "{{- concat $paruPackages .packages.arch.paru | uniq | sortAlpha | join "\" \"" -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
