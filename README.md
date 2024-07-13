@@ -235,77 +235,77 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 
 | Modifiers | Key | Description | OS | Flags |
 | --- | --- | --- | --- | --- |
-| Ctrl + Shift | R | Reload `ags` | `L`, `W` | - |
-| Win | Tab | Toggle Workspaces Overview | `L` | - |
-| Alt | Space | Toggle App Launcher | `L`, `W` | - |
-| Win | V | Open Clipboard History | `L`, `W` | - |
-| - | PowerOff Button | Toggle Power Menu | `L`, `W` | - |
-| - | Print | Take Screenshot (Select Area) | `L`, `W` | - |
-| Win | Print | Take Fullscreen Screenshot | `L`, `W` | - |
-| Win + Alt | Print | Start Screen Recording | `L`, `W` | - |
-| Win | Backslash | Open Terminal | `L`, `W` | - |
-| Win | E | Open File Manager | `L`, `W` | - |
-| Win | W | Open Browser | `L`, `W` | - |
-| - | AudioLowerVolume Button | Decrease Volume | `L`, `W` | `l`, `e` |
-| - | AudioRaiseVolume Button | Increase Volume | `L`, `W` | `l`, `e` |
-| - | AudioMute Button | Mute/Unmute Volume | `L`, `W` | `l` |
-| - | AudioMicMute Button | Mute/Unmute Microphone | `L`, `W` | `l` |
-| - | AudioPlay Button | Play/Pause | `L`, `W` | `l` |
-| - | AudioPause Button | Play/Pause | `L`, `W` | `l` |
-| - | AudioNext Button | Skip to Next Track | `L`, `W` | `l` |
-| - | AudioPrev Button | Return to Previous Track | `L`, `W` | `l` |
-| - | MonBrightnessDown Button | Decrease Screen Brightness | `L`, `W` | `l`, `e` |
-| - | MonBrightnessUp Button | Increase Screen Brightness | `L`, `W` | `l`, `e` |
-| Win | H | Move Focus to Left Window | `L`, `W` | - |
-| Win | L | Move Focus to Right Window | `L`, `W` | - |
-| Win | K | Move Focus to Upper Window | `L`, `W` | - |
-| Win | J | Move Focus to Lower Window | `L`, `W` | - |
-| Win | Right Mouse Button | Resize Window | `L` | - |
-| Win | F | Toggle Fullscreen | `L` | - |
-| Win | M | Maximize/Restore Window | `L`, `W` | - |
-| Win | Left | Resize Window to the Left | `L`, `W` | `e` |
-| Win | Right | Resize Window to the Right | `L`, `W` | `e` |
-| Win | Up | Resize Window Upwards | `L`, `W` | `e` |
-| Win | Down | Resize Window Downwards | `L`, `W` | `e` |
-| Win | Left Mouse Button | Move Window | `L` | - |
-| Win + Alt | H | Move Window Left | `L`, `W` | - |
-| Win + Alt | L | Move Window Right | `L`, `W` | - |
-| Win + Alt | K | Move Window Upwards | `L`, `W` | - |
-| Win + Alt | J | Move Window Downwards | `L`, `W` | - |
-| Win | Q | Close Active Window | `L`, `W` | - |
-| Win | C | Center Window | `L` | - |
-| Win | P | Toggle Focused Window's Pseudo Mode | `L` | - |
-| Win | R | Toggle Split Orientation | `L`, `W` | - |
-| Win | T | Toggle Active Window Floating | `L`, `W` | - |
-| Win + Shift | T | Toggle All Windows Floating | `L`, `W` | - |
-| Win | 1 | Switch to Workspace 1 | `L`, `W` | - |
-| Win | 2 | Switch to Workspace 2 | `L`, `W` | - |
-| Win | 3 | Switch to Workspace 3 | `L`, `W` | - |
-| Win | 4 | Switch to Workspace 4 | `L`, `W` | - |
-| Win | 5 | Switch to Workspace 5 | `L`, `W` | - |
-| Win | 6 | Switch to Workspace 6 | `L`, `W` | - |
-| Win | 7 | Switch to Workspace 7 | `L`, `W` | - |
-| Win | 8 | Switch to Workspace 8 | `L`, `W` | - |
-| Win | 9 | Switch to Workspace 9 | `L`, `W` | - |
-| Win | 0 | Switch to Workspace 10 | `L`, `W` | - |
-| Win + Ctrl | H | Switch to Previous Workspace | `L`, `W` | - |
-| Win + Ctrl | L | Switch to Next Workspace | `L`, `W` | - |
-| Win | Mouse Wheel Down | Switch to Previous Workspace | `L`, `W` | - |
-| Win | Mouse Wheel Up | Switch to Next Workspace | `L`, `W` | - |
-| Win + Shift | 1 | Move Active Window to Workspace 1 | `L`, `W` | - |
-| Win + Shift | 2 | Move Active Window to Workspace 2 | `L`, `W` | - |
-| Win + Shift | 3 | Move Active Window to Workspace 3 | `L`, `W` | - |
-| Win + Shift | 4 | Move Active Window to Workspace 4 | `L`, `W` | - |
-| Win + Shift | 5 | Move Active Window to Workspace 5 | `L`, `W` | - |
-| Win + Shift | 6 | Move Active Window to Workspace 6 | `L`, `W` | - |
-| Win + Shift | 7 | Move Active Window to Workspace 7 | `L`, `W` | - |
-| Win + Shift | 8 | Move Active Window to Workspace 8 | `L`, `W` | - |
-| Win + Shift | 9 | Move Active Window to Workspace 9 | `L`, `W` | - |
-| Win + Shift | 0 | Move Active Window to Workspace 10 | `L`, `W` | - |
-| Win + Shift | H | Move Active Window to Previous Workspace | `L`, `W` | - |
-| Win + Shift | L | Move Active Window to Next Workspace | `L`, `W` | - |
-| Win | S | Toggle Scratchpad | `L` | - |
-| Win + Shift | S | Move Active Window to Scratchpad | `L` | - |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> | <kbd>R</kbd> | Reload `ags` | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Tab</kbd> | Toggle Workspaces Overview | `L` | - |
+| <kbd>Alt</kbd> | <kbd>Space</kbd> | Toggle App Launcher | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>V</kbd> | Open Clipboard History | `L`, `W` | - |
+| - | <kbd>PowerOff Button</kbd> | Toggle Power Menu | `L`, `W` | - |
+| - | <kbd>Print</kbd> | Take Screenshot (Select Area) | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Print</kbd> | Take Fullscreen Screenshot | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>Print</kbd> | Start Screen Recording | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Backslash</kbd> | Open Terminal | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>E</kbd> | Open File Manager | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>W</kbd> | Open Browser | `L`, `W` | - |
+| - | <kbd>AudioLowerVolume Button</kbd> | Decrease Volume | `L`, `W` | `l`, `e` |
+| - | <kbd>AudioRaiseVolume Button</kbd> | Increase Volume | `L`, `W` | `l`, `e` |
+| - | <kbd>AudioMute Button</kbd> | Mute/Unmute Volume | `L`, `W` | `l` |
+| - | <kbd>AudioMicMute Button</kbd> | Mute/Unmute Microphone | `L`, `W` | `l` |
+| - | <kbd>AudioPlay Button</kbd> | Play/Pause | `L`, `W` | `l` |
+| - | <kbd>AudioPause Button</kbd> | Play/Pause | `L`, `W` | `l` |
+| - | <kbd>AudioNext Button</kbd> | Skip to Next Track | `L`, `W` | `l` |
+| - | <kbd>AudioPrev Button</kbd> | Return to Previous Track | `L`, `W` | `l` |
+| - | <kbd>MonBrightnessDown Button</kbd> | Decrease Screen Brightness | `L`, `W` | `l`, `e` |
+| - | <kbd>MonBrightnessUp Button</kbd> | Increase Screen Brightness | `L`, `W` | `l`, `e` |
+| <kbd>Win</kbd> | <kbd>H</kbd> | Move Focus to Left Window | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>L</kbd> | Move Focus to Right Window | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>K</kbd> | Move Focus to Upper Window | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>J</kbd> | Move Focus to Lower Window | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Right Mouse Button</kbd> | Resize Window | `L` | - |
+| <kbd>Win</kbd> | <kbd>F</kbd> | Toggle Fullscreen | `L` | - |
+| <kbd>Win</kbd> | <kbd>M</kbd> | Maximize/Restore Window | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>←</kbd> | Resize Window to the Left | `L`, `W` | `e` |
+| <kbd>Win</kbd> | <kbd>→</kbd> | Resize Window to the Right | `L`, `W` | `e` |
+| <kbd>Win</kbd> | <kbd>↑</kbd> | Resize Window Upwards | `L`, `W` | `e` |
+| <kbd>Win</kbd> | <kbd>↓</kbd> | Resize Window Downwards | `L`, `W` | `e` |
+| <kbd>Win</kbd> | <kbd>Left Mouse Button</kbd> | Move Window | `L` | - |
+| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>H</kbd> | Move Window Left | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>L</kbd> | Move Window Right | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>K</kbd> | Move Window Upwards | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>J</kbd> | Move Window Downwards | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Q</kbd> | Close Active Window | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>C</kbd> | Center Window | `L` | - |
+| <kbd>Win</kbd> | <kbd>P</kbd> | Toggle Focused Window's Pseudo Mode | `L` | - |
+| <kbd>Win</kbd> | <kbd>R</kbd> | Toggle Split Orientation | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>T</kbd> | Toggle Active Window Floating | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>T</kbd> | Toggle All Windows Floating | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>1</kbd> | Switch to Workspace 1 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>2</kbd> | Switch to Workspace 2 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>3</kbd> | Switch to Workspace 3 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>4</kbd> | Switch to Workspace 4 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>5</kbd> | Switch to Workspace 5 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>6</kbd> | Switch to Workspace 6 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>7</kbd> | Switch to Workspace 7 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>8</kbd> | Switch to Workspace 8 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>9</kbd> | Switch to Workspace 9 | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>0</kbd> | Switch to Workspace 10 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Ctrl</kbd> | <kbd>H</kbd> | Switch to Previous Workspace | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Ctrl</kbd> | <kbd>L</kbd> | Switch to Next Workspace | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Mouse Wheel Down</kbd> | Switch to Previous Workspace | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>Mouse Wheel Up</kbd> | Switch to Next Workspace | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>1</kbd> | Move Active Window to Workspace 1 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>2</kbd> | Move Active Window to Workspace 2 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>3</kbd> | Move Active Window to Workspace 3 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>4</kbd> | Move Active Window to Workspace 4 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>5</kbd> | Move Active Window to Workspace 5 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>6</kbd> | Move Active Window to Workspace 6 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>7</kbd> | Move Active Window to Workspace 7 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>8</kbd> | Move Active Window to Workspace 8 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>9</kbd> | Move Active Window to Workspace 9 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>0</kbd> | Move Active Window to Workspace 10 | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>H</kbd> | Move Active Window to Previous Workspace | `L`, `W` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>L</kbd> | Move Active Window to Next Workspace | `L`, `W` | - |
+| <kbd>Win</kbd> | <kbd>S</kbd> | Toggle Scratchpad | `L` | - |
+| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>S</kbd> | Move Active Window to Scratchpad | `L` | - |
 
 #### OS Compatibility
 
