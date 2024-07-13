@@ -223,13 +223,21 @@ def generate_table(bindings):
         "mouse:273": "Right Mouse Button",
         "mouse_up": "Mouse Wheel Up",
         "mouse_down": "Mouse Wheel Down",
+        "left": "←",
+        "right": "→",
+        "up": "↑",
+        "down": "↓",
     }
 
     table_content = "| Modifiers | Key | Description | OS | Flags |\n"
     table_content += "| --- | --- | --- | --- | --- |\n"
 
     def change_mod_label(mod):
-        mod = mod.capitalize() if mod.isalpha() else mod
+        if mod.lower() in key_labels.keys():
+            mod = key_labels[mod.lower()]
+        mod = (
+            mod.capitalize() if mod.isalpha() and mod.lower() not in key_labels else mod
+        )
 
         if mod == "Super":
             mod = "Win"
@@ -239,15 +247,21 @@ def generate_table(bindings):
     for binding in bindings:
         # Mods
         modifiers = (
-            " + ".join(map(change_mod_label, binding["mods"]))
+            "<kbd>"
+            + ("</kbd> + <kbd>".join(map(change_mod_label, binding["mods"])))
+            + "</kbd>"
             if len(binding["mods"]) > 0
             else "-"
         )
         # Key
         key = re.sub(r"XF86([a-zA-Z0-9]+)", r"\1 Button", binding["key"])
-        if binding["key"] in key_labels:
-            key = key_labels[binding["key"]]
-        key = key.capitalize() if key.isalpha() else key
+        if binding["key"].lower() in key_labels.keys():
+            key = key_labels[binding["key"].lower()]
+        key = (
+            key.capitalize()
+            if key.isalpha() and binding["key"].lower() not in key_labels
+            else key
+        )
 
         # Optional description
         description = binding["description"] if binding["description"] else "-"
@@ -255,7 +269,7 @@ def generate_table(bindings):
         # Flags
         flags = "`" + "`, `".join(binding["flags"]) + "`" if binding["flags"] else "-"
 
-        table_content += f"| {modifiers} | {key} | {description} | `L`{", `W`" if ("has_win" in binding and binding["has_win"] or False) else ""} | {flags} |\n"
+        table_content += f"| {modifiers} | <kbd>{key}</kbd> | {description} | `L`{", `W`" if ("has_win" in binding and binding["has_win"] or False) else ""} | {flags} |\n"
 
     return table_content.strip()
 
