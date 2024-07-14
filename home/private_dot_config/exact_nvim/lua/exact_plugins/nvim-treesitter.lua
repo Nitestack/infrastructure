@@ -5,9 +5,6 @@ return utils.plugin.with_extensions({
       "andymass/vim-matchup",
       "RRethy/nvim-treesitter-endwise",
     },
-    event = function()
-      return { "LazyFile" }
-    end,
     opts = function(_, opts)
       opts.highlight = opts.highlight or {}
       -- disable highlighting in chezmoi templates
@@ -50,18 +47,6 @@ return utils.plugin.with_extensions({
     opts = {
       ensure_installed = core.config.plugins.treesitter,
     },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    event = function()
-      return { "LazyFile" }
-    end,
-  },
-  {
-    "windwp/nvim-ts-autotag",
-    event = function()
-      return { "InsertEnter" }
-    end,
   },
   { import = "lazyvim.plugins.extras.ui.treesitter-context" },
 }, {

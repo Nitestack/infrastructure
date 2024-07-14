@@ -1,11 +1,9 @@
----@type LazySpec
-return {
+return utils.plugin.with_extensions({
   {
     "cbochs/grapple.nvim",
     cmd = "Grapple",
     keys = core.lazy_map({
       n = {
-        ["<leader>j"] = "Jump",
         [{ "M", "<leader>jm" }] = {
           function()
             require("grapple").toggle()
@@ -80,4 +78,8 @@ return {
       hide_on_empty = true,
     },
   },
-}
+}, {
+  which_key = {
+    { "<leader>j", group = "Jump" },
+  },
+})

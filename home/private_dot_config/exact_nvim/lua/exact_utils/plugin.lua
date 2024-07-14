@@ -136,10 +136,13 @@ function M.get_language_spec(config)
   return spec
 end
 
+---@module "which-key"
+
 ---@class utils.plugin.extension_config
 ---@field telescope? utils.plugin.extension_config.telescope
 ---@field lualine? string|string[]
 ---@field catppuccin? table<string, boolean|table>
+---@field which_key? wk.Spec
 
 ---@class utils.plugin.extension_config.telescope
 ---@field extensions? string|string[]
@@ -180,6 +183,14 @@ function M.with_extensions(plugins, extensions)
       "catppuccin/nvim",
       opts = {
         extensions = extensions.catppuccin,
+      },
+    })
+  end
+  if extensions.which_key then
+    table.insert(plugins, {
+      "folke/which-key.nvim",
+      opts = {
+        spec = extensions.which_key,
       },
     })
   end

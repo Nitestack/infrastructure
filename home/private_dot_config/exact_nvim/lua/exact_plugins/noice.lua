@@ -2,11 +2,6 @@
 return utils.plugin.with_extensions({
   {
     "folke/noice.nvim",
-    keys = core.lazy_map({
-      [{ "n", "s" }] = {
-        ["<leader>sn"] = "Noice",
-      },
-    }),
     ---@module "noice"
     ---@param opts NoiceConfig
     opts = function(_, opts)
@@ -87,5 +82,8 @@ return utils.plugin.with_extensions({
   },
   catppuccin = {
     noice = true,
+  },
+  which_key = {
+    { "<leader>sn", group = "Noice", mode = { "n", "s" } },
   },
 })

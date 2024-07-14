@@ -1,14 +1,6 @@
 return utils.plugin.with_extensions({
   {
     "folke/which-key.nvim",
-    event = function()
-      return {}
-    end,
-    keys = core.lazy_map({
-      n = {
-        [{ "<leader>", "<C-r>", "<C-w>", "\"", "'", "`", "c", "v", "g" }] = {},
-      },
-    }),
     ---@module "which-key"
     ---@type wk.Opts
     opts = {

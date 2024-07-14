@@ -19,9 +19,6 @@ return utils.plugin.with_extensions({
       },
     },
     keys = core.lazy_map({
-      [{ "n", "v" }] = {
-        ["<leader>d"] = "Debug",
-      },
       n = {
         [{ "<leader>dc", "<F5>" }] = {
           function()
@@ -161,5 +158,8 @@ return utils.plugin.with_extensions({
   catppuccin = {
     dap = true,
     dap_ui = true,
+  },
+  which_key = {
+    { "<leader>d", group = "Debug", mode = { "n", "v" } },
   },
 })

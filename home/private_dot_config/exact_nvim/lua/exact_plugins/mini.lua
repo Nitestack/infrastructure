@@ -68,24 +68,7 @@ return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.editor.mini-move" },
   {
     "echasnovski/mini.move",
-    event = function()
-      return {}
-    end,
     keys = core.lazy_map({
-      [{ "n", "x" }] = {
-        ["<M-j>"] = {
-          desc = "Move down",
-        },
-        ["<M-k>"] = {
-          desc = "Move up",
-        },
-        ["<M-h>"] = {
-          desc = "Move left",
-        },
-        ["<M-l>"] = {
-          desc = "Move right",
-        },
-      },
       i = {
         ["<M-j>"] = {
           "<Esc><cmd>m .+1<cr>==gi",
@@ -101,11 +84,6 @@ return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.coding.mini-surround" },
   {
     "echasnovski/mini.surround",
-    keys = core.lazy_map({
-      [{ "n", "x" }] = {
-        ["s"] = "Surround",
-      },
-    }),
     opts = {
       mappings = {
         add = "sa", -- Add surrounding in Normal and Visual modes
@@ -118,24 +96,14 @@ return utils.plugin.with_extensions({
       },
     },
   },
-  {
-    "echasnovski/mini.ai",
-    event = function()
-      return { "LazyFile" }
-    end,
-  },
-  {
-    "echasnovski/mini.pairs",
-    keys = { ":", "/", "?" },
-    event = function()
-      return { "LazyFile" }
-    end,
-  },
 }, {
   catppuccin = {
     mini = {
       enabled = true,
       indentscope_color = "overlay0",
     },
+  },
+  which_key = {
+    { "s", group = "Surround", mode = { "n", "x" } },
   },
 })
