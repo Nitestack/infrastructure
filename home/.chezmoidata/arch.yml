@@ -32,7 +32,6 @@ packages:
       - "libpulse" # Required for `pipewire-pulse`
       - "libvirt" # collection of software that provides a convenient way to manage VM's
       - "man-db" # man for Arch
-      - "man-pages-de" # man in German
       - "networkmanager" # Network manager
       - "noto-fonts-emoji" # Font: Noto Emoji Color
       - "openbsd-netcat" # Required for `libvirt`
@@ -55,6 +54,7 @@ packages:
       - "smartmontools" # analyzing and monitoring storage devices
       - "swappy" # Wayland native snapshot editing tool
       - "ttf-nerd-fonts-symbols" # Font: Symbols Nerd Font
+      - "waybar" # Wayland bar
       - "wf-recorder" # Recording program for wlroots-based compositors
       - "wireless_tools" # Manipulate the Wireless Extensions
       - "wireplumber" # Volume control with PipeWire
@@ -70,7 +70,7 @@ packages:
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "easyeffects-presets" # Control EasyEffects from the polybar status bar
       - "gradience" # Customizing Libadwaita applications and the adw-gtk3 theme
-      - "hyprpicker-git" # Required dependency for ags
+      - "hyprpicker-git" # Color picker feature in Hyprland
       - "hyprshade-git" # Switching screen shaders in Hyprland
       - "mpris-proxy-service" # mpris-proxy automation
       - "safeeyes" # Reduce and prevent repetitive strain injury
