@@ -6,7 +6,6 @@ return utils.plugin.get_language_spec({
   mason = {
     "css-lsp",
     "cssmodules-language-server",
-    "stylelint",
     "prettierd",
     "prettier",
     "tailwindcss-language-server",
@@ -47,13 +46,6 @@ return utils.plugin.get_language_spec({
           },
         },
       },
-    },
-  },
-  linter = {
-    linters_by_ft = {
-      ["css"] = { "stylelint" },
-      ["scss"] = { "stylelint" },
-      ["sass"] = { "stylelint" },
     },
   },
   formatter = {
