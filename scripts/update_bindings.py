@@ -89,14 +89,8 @@ def parse_bindings(hyprland_config_path, variables, ahk_config_path):
             for var_name, var_value in variables.items():
                 line = line.replace(f"${var_name}", var_value)
 
-            # Debug: print processed line
-            print(f"Processed line: {line}")
-
             # Remove comment at end of line if present
             line = re.sub(r"\s*#.*$", "", line)
-
-            # Debug: print line after removing comments
-            print(f"Line after comment removal: {line}")
 
             # Patterns for different binding types
             bind_match = re.match(
@@ -308,23 +302,27 @@ def update_readme(readme_file, start_marker, end_marker, table_content):
 
 if __name__ == "__main__":
     # Debug: Print the starting point
-    print("Script started")
+    print("Running script...")
 
     # Preprocess variables from the bindings file
+    print("Preprocessing variables...")
     variables = preprocess_hyprland_variables(HYPRLAND_BINDINGS_FILE)
     print(f"Variables: {variables}")
 
     # Parse bindings using preprocessed variables
+    print("Parsing bindings...")
     bindings = parse_bindings(
         HYPRLAND_BINDINGS_FILE, variables, KOMOREBI_AHK_CONFIG_FILE
     )
     print(f"Bindings: {bindings}")
 
     # Generate markdown table from parsed bindings
+    print("Generating table...")
     table_content = generate_table(bindings)
     print(f"Table content:\n{table_content}")
 
     # Update the README file with the generated table content
+    print("Updating README.md...")
     update_readme(README_FILE, START_MARKER, END_MARKER, table_content)
     print("README.md updated")
 
