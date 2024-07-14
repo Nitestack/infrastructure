@@ -15,14 +15,6 @@ return utils.plugin.with_extensions({
     opts = function(_, opts)
       local cmp = require("cmp")
 
-      local duplicates = {
-        nvim_lsp = 0,
-        luasnip = 1,
-        path = 1,
-        buffer = 1,
-      }
-      local duplicates_default = 0
-
       opts.enabled = function()
         if vim.bo[0].buftype ~= "prompt" then
           return true
@@ -46,11 +38,7 @@ return utils.plugin.with_extensions({
 
       -- Window
       opts.window = {
-        completion = cmp.config.window.bordered({
-          scrollbar = false,
-          scrolloff = 8,
-          col_offset = -3,
-        }),
+        completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
       }
 
@@ -70,11 +58,7 @@ return utils.plugin.with_extensions({
           ellipsis_char = core.icons.ui.Ellipsis,
           preset = "codicons",
           before = function(entry, vim_item)
-            vim_item = require("tailwind-tools.cmp").lspkind_format(entry, vim_item)
-            if vim.tbl_contains({ "nvim_lsp" }, entry.source.name) then
-              vim_item.dup = duplicates[entry.source.name] or duplicates_default
-            end
-            return vim_item
+            return require("tailwind-tools.cmp").lspkind_format(entry, vim_item)
           end,
           show_labelDetails = true,
         }),

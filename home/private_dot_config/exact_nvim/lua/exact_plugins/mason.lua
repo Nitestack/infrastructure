@@ -41,9 +41,6 @@ return utils.plugin.with_extensions({
           package_uninstalled = core.icons.ui.PackageUninstalled,
         },
       },
-      pip = {
-        upgrade_pip = true,
-      },
     },
   },
 }, {

@@ -40,11 +40,6 @@ return {
     -- LSP info border
     require("lspconfig.ui.windows").default_options.border = core.config.ui.transparent.floats and "rounded" or "none"
 
-    -- Diagnostics
-    opts.diagnostics = opts.diagnostics or {}
-    opts.diagnostics.virtual_text = opts.diagnostics.virtual_text or {}
-    opts.diagnostics.virtual_text.prefix = "icons"
-
     -- Semantic tokens
     LazyVim.lsp.on_attach(function(client, buffer)
       if

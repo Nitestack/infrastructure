@@ -98,7 +98,6 @@ return utils.plugin.get_language_spec({
       },
       keys = core.lazy_map({
         n = {
-          [""] = "Node.js",
           ["s"] = {
             function()
               require("package-info").show({ force = true })
@@ -159,6 +158,9 @@ return utils.plugin.get_language_spec({
   }, {
     telescope = {
       extensions = "package_info",
+    },
+    which_key = {
+      { "<leader>n", group = "Node.js" },
     },
   }),
 })
