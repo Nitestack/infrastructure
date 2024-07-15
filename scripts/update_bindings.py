@@ -57,6 +57,7 @@ def parse_bindings(hyprland_config_path, variables, ahk_config_path):
         {"mods": ["SUPER"], "key": "Print"},
         {"mods": ["SUPER", "ALT"], "key": "Print"},
         {"mods": ["SUPER"], "key": "E"},
+        {"mods": ["CTRL", "SHIFT"], "key": "Escape"},
         {"mods": [], "key": "XF86AudioLowerVolume"},
         {"mods": [], "key": "XF86AudioRaiseVolume"},
         {"mods": [], "key": "XF86AudioMute"},
