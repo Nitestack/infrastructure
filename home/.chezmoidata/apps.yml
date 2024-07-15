@@ -36,6 +36,8 @@ apps:
       mac: "google-chrome"
       win: "Google.Chrome"
     - name: "Notion"
+      arch:
+        paru: "notion-app-electron"
       mac: "notion"
       win: "Notion.Notion"
     - name: "Notion Calendar"
