@@ -248,6 +248,7 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 | <kbd>Win</kbd> | <kbd>Backslash</kbd> | Open Terminal | `L`, `W` | - |
 | <kbd>Win</kbd> | <kbd>E</kbd> | Open File Manager | `L`, `W` | - |
 | <kbd>Win</kbd> | <kbd>W</kbd> | Open Browser | `L`, `W` | - |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> | <kbd>Escape</kbd> | Open System Monitor | `L`, `W` | - |
 | - | <kbd>AudioLowerVolume Button</kbd> | Decrease Volume | `L`, `W` | `l`, `e` |
 | - | <kbd>AudioRaiseVolume Button</kbd> | Increase Volume | `L`, `W` | `l`, `e` |
 | - | <kbd>AudioMute Button</kbd> | Mute/Unmute Volume | `L`, `W` | `l` |
