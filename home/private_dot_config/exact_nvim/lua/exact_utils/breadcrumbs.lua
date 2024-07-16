@@ -65,13 +65,6 @@ function M.get_filename()
       if icons_ok then
         ---@diagnostic disable-next-line: cast-local-type
         file_icon, hl_group = mini_icons.get("file", utils.resolve_chezmoi_name("file", filename))
-
-        if M.str_is_empty(file_icon) then
-          file_icon = ""
-        end
-        if M.str_is_empty(hl_group) then
-          hl_group = "DevIconDefault"
-        end
       end
 
       local buf_ft = vim.bo.filetype
