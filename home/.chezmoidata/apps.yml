@@ -35,6 +35,9 @@ apps:
         paru: "google-chrome"
       mac: "google-chrome"
       win: "Google.Chrome"
+    - name: "Logi Options+"
+      mac: "logi-options-plus"
+      win: "Logitech.OptionsPlus"
     - name: "Notion"
       arch:
         paru: "notion-app-electron"
