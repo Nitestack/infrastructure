@@ -5,9 +5,7 @@ return utils.plugin.with_extensions({
       "luckasRanarison/tailwind-tools.nvim",
       {
         "onsails/lspkind.nvim",
-        config = function(_, opts)
-          require("lspkind").init(opts)
-        end,
+        opts = {},
       },
     },
     ---@module "cmp"
