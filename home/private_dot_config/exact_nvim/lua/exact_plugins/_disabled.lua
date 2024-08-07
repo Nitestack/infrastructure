@@ -12,6 +12,5 @@ end, {
   "akinsho/bufferline.nvim",
   "folke/flash.nvim",
   "folke/tokyonight.nvim",
-  "nvim-pack/nvim-spectre",
   "roobert/tailwindcss-colorizer-cmp.nvim",
 })
