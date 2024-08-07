@@ -63,3 +63,8 @@ Library
 .config/ags/package.json
 .config/ags/prettier.config.mjs
 .config/ags/types
+
+# Ignore SSH keys in work environment
+# {{ if eq .hosttype "work" }}
+.ssh
+# {{ end }}
