@@ -1,0 +1,19 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ WORK                                                     │
+# ╰──────────────────────────────────────────────────────────╯
+
+---
+apps:
+  work:
+    - name: "IntelliJ IDEA Ultimate Edition"
+      mac: "intellij-idea"
+      win: "JetBrains.IntelliJIDEA.Ultimate"
+    - name: "Microsoft 365 Apps for Enterprise"
+      mac: "microsoft-office"
+      win: "Microsoft.Office"
+    - name: "OneDrive"
+      mac: "onedrive"
+      win: "Microsoft.OneDrive"
+    - name: "Microsoft Teams"
+      mac: "microsoft-teams"
+      win: "Microsoft.Teams"

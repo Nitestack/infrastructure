@@ -24,9 +24,13 @@ _log_header "Homebrew Bundle"
 # Only sort the regular formulae, not the essentials
 # {{ $formulae = concat $essentialFormulae (concat $formulae .packages.mac.formulae | uniq | sortAlpha) | uniq }}
 # ── Casks ─────────────────────────────────────────────────────────────
+# {{ $unresolvedApps := .apps.common }}
+# {{ if eq .hosttype "work" }}
+#   {{ $unresolvedApps = concat $unresolvedApps .apps.work }}
+# {{ end }}
 # {{ $casks := list }}
 # {{ $appStoreApps := list }}
-# {{ range .apps.common }}
+# {{ range $unresolvedApps }}
 #   {{ if hasKey . "mac" }}
 #     {{ if eq "string" (printf "%T" .mac) }}
 #       {{ $casks = mustAppend $casks .mac }}

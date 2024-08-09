@@ -3,7 +3,11 @@
 _LogHeader "Apps"
 
 # {{ $apps := list }}
-# {{ range .apps.common }}
+# {{ $unresolvedApps := .apps.common }}
+# {{ if eq .hosttype "work" }}
+#   {{ $unresolvedApps = concat $unresolvedApps .apps.work }}
+# {{ end }}
+# {{ range $unresolvedApps }}
 #   {{ if hasKey . "win" }}
 #     {{ if eq "string" (printf "%T" .win) }}
 #       {{ $apps = mustAppend $apps .win }}
