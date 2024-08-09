@@ -52,27 +52,17 @@ function M.setup(config)
   config.launch_menu = {
     {
       label = "PowerShell Core",
-      args = { app_data_local .. [[\Microsoft\WindowsApps\pwsh.exe]], "-NoLogo" },
+      args = { [[C:\Program Files\PowerShell\7\pwsh.exe]] },
     },
     {
-      label = "WSL: Arch",
-      args = { home_dir .. [[\Arch\Arch.exe]] },
+      label = "Git Bash",
+      args = { [[C:\Windows\system32\bash.exe]] },
     },
     {
       label = "Command Prompt",
       args = { "cmd" },
     },
-    {
-      label = "Git Bash",
-      args = { app_data_local .. [[\Microsoft\WindowsApps\bash.exe]] },
-    },
   }
-  -- Key bindings
-  table.insert(config.keys, {
-    key = "phys:2",
-    mods = "SHIFT|CTRL",
-    action = act.SpawnTab({ DomainName = "WSL:Arch" }),
-  })
 end
 
 return M
