@@ -13,4 +13,5 @@ end, {
   "folke/flash.nvim",
   "folke/tokyonight.nvim",
   "roobert/tailwindcss-colorizer-cmp.nvim",
+  "markdown-preview.nvim",
 })
