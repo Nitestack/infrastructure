@@ -55,9 +55,7 @@ return utils.plugin.with_extensions({
           maxwidth = math.min(50, math.floor(vim.o.columns * 0.5)),
           ellipsis_char = core.icons.ui.Ellipsis,
           preset = "codicons",
-          before = function(entry, vim_item)
-            return require("tailwind-tools.cmp").lspkind_format(entry, vim_item)
-          end,
+          before = require("tailwind-tools.cmp").lspkind_format,
           show_labelDetails = true,
         }),
       }
