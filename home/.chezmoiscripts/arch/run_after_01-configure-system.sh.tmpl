@@ -33,5 +33,9 @@ _enable_user_service "pipewire-pulse.service"
 echo
 _enable_system_service "power-profiles-daemon.service"
 
+# Docker
+echo
+_enable_system_service "docker.socket"
+
 echo
 _log -l info --prefix "systemd" "Enabled units for system and user"

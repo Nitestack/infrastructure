@@ -15,7 +15,8 @@ apps:
       mac: "bitwarden"
       win: "Bitwarden.Bitwarden"
     - name: "Docker"
-      arch: "docker"
+      arch:
+        paru: "docker-desktop"
       mac: "docker"
       win: "Docker.DockerDesktop"
     - name: "Ferdium"

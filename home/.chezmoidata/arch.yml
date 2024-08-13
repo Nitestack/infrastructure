@@ -12,6 +12,8 @@ packages:
       - "dart-sass" # Required dependency for ags
       - "desktop-file-utils" # Utilities for working with desktop entries
       - "ddcutil" # Required for `ddcci-driver-linux`
+      - "docker" # Containerization
+      - "docker-compose" # Required for `docker`
       - "dnsmasq" # Required for `libvirt`
       - "easyeffects" # Audio effects for PipeWire applications
       - "efibootmgr" # Required for `grub`
