@@ -20,7 +20,7 @@ Remove-Alias ls
 Remove-Alias cat
 Set-Alias cat bat
 
-$EzaOptions="--group-directories-first --icons --git --group --octal-permissions"
+$EzaOptions="--group-directories-first --icons --git --octal-permissions"
 
 function ls {
   Invoke-Expression "eza $EzaOptions $($Args -join ' ')"
