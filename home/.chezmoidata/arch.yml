@@ -29,6 +29,8 @@ packages:
       - "i2c-tools" # Required for `ddcutil`
       - "iptables-nft" # Required for `libvirt`
       - "iwd" # Wireless daemon
+      - "java-environment-common" # containing common files for JDK
+      - "jdk-openjdk" # Latest JDK
       - "kvantum" # Qt6 theme engine
       - "kvantum-qt5" # Qt6 theme engine
       - "libpulse" # Required for `pipewire-pulse`
