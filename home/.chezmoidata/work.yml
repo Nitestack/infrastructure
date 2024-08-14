@@ -5,9 +5,6 @@
 ---
 apps:
   work:
-    - name: "IntelliJ IDEA Ultimate Edition"
-      mac: "intellij-idea"
-      win: "JetBrains.IntelliJIDEA.Ultimate"
     - name: "Microsoft 365 Apps for Enterprise"
       mac: "microsoft-office"
       win: "Microsoft.Office"
