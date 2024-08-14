@@ -37,7 +37,8 @@ apps:
       mac: "google-chrome"
       win: "Google.Chrome"
     - name: "IntelliJ IDEA Ultimate Edition"
-      arch: "intellij-idea-ultimate-edition"
+      arch:
+        paru: "intellij-idea-ultimate-edition"
       mac: "intellij-idea"
       win: "JetBrains.IntelliJIDEA.Ultimate"
     - name: "Logi Options+"
