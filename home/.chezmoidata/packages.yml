@@ -118,7 +118,7 @@ packages:
         bob use stable
     - name: "oh-my-posh"
       arch:
-        custom: "curl -s https://ohmyposh.dev/install.sh | bash -s --  -d ~/.local/bin"
+        custom: "curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin"
       mac: "jandedobbeleer/oh-my-posh/oh-my-posh"
       win: "JanDeDobbeleer.OhMyPosh"
     - name: "rg"
