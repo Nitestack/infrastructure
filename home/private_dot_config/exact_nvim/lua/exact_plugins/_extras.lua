@@ -4,6 +4,7 @@
 -- https://www.lazyvim.org/extras
 
 return utils.plugin.with_extensions({
+  { import = "lazyvim.plugins.extras.coding.neogen" },
   { import = "lazyvim.plugins.extras.coding.yanky" },
   { import = "lazyvim.plugins.extras.editor.illuminate" },
   { import = "lazyvim.plugins.extras.util.dot" },
