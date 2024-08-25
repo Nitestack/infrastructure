@@ -115,6 +115,10 @@ packages:
       arch: "lazygit"
       win: "JesseDuffield.lazygit"
       mac: "jesseduffield/lazygit/lazygit"
+    - name: "less"
+      arch: "less"
+      mac: "less"
+      win: "jftuga.less"
     - name: "nvim"
       custom: |
         bob install stable
@@ -137,6 +141,10 @@ packages:
     - name: "tmux"
       arch: "tmux"
       mac: "tmux"
+    - name: "ueberzug"
+      arch:
+        paru: "ueberzugpp"
+      mac: "jstkdng/programs/ueberzugpp"
     - name: "vim"
       arch: "vim"
       mac: "vim"
