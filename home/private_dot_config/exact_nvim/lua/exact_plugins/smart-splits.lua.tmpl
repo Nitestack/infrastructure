@@ -50,21 +50,6 @@ return {
         end,
         desc = "Select lower window",
       },
-      ["<C-;>"] = {
-        function()
-          if vim.fn.winnr() == vim.fn.winnr("j") then
-            vim.fn.system({
-              "wezterm",
-              "cli",
-              "activate-pane-direction",
-              "Down",
-            })
-          else
-            vim.cmd.wincmd("j")
-          end
-        end,
-        desc = "Toggle WezTerm terminal",
-      },
       ["<C-Up>"] = {
         function()
           require("smart-splits").resize_up()

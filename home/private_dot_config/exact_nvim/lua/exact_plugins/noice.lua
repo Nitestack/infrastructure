@@ -77,9 +77,6 @@ return utils.plugin.with_extensions({
     end,
   },
 }, {
-  telescope = {
-    extensions = "noice",
-  },
   catppuccin = {
     noice = true,
   },

@@ -27,24 +27,8 @@ return utils.plugin.get_language_spec({
         },
       },
       cssmodules_ls = {},
-      ---@type lspconfig.options.tailwindcss
       tailwindcss = {
-        settings = {
-          tailwindCSS = {
-            classAttributes = { "class", "class.*", ".*Class.*", ".*Class", ".*Style.*" },
-            emmetCompletions = true,
-            experimental = {
-              classRegex = {
-                { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-                "(?:enter|leave)(?:From|To)?=\\s*(?:\"|')([^(?:\"|')]*)",
-                { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-              },
-            },
-            lint = {
-              cssConflict = "error",
-            },
-          },
-        },
+        autostart = false,
       },
     },
   },
@@ -61,10 +45,7 @@ return utils.plugin.get_language_spec({
       "luckasRanarison/tailwind-tools.nvim",
       name = "tailwind-tools",
       build = ":UpdateRemotePlugins",
-      dependencies = {
-        "nvim-treesitter/nvim-treesitter",
-        "nvim-telescope/telescope.nvim", -- optional
-      },
+      dependencies = "nvim-treesitter/nvim-treesitter",
       ft = {
         "javascript",
         "javascriptreact",
@@ -76,7 +57,24 @@ return utils.plugin.get_language_spec({
       },
       ---@module "tailwind-tools"
       ---@type TailwindTools.Option
-      opts = {},
+      opts = {
+        server = {
+          settings = {
+            classAttributes = { "class", "class.*", ".*Class.*", ".*Class", ".*Style.*" },
+            emmetCompletions = true,
+            experimental = {
+              classRegex = {
+                { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+                "(?:enter|leave)(?:From|To)?=\\s*(?:\"|')([^(?:\"|')]*)",
+                { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+              },
+            },
+            lint = {
+              cssConflict = "error",
+            },
+          },
+        },
+      },
     },
   },
 })

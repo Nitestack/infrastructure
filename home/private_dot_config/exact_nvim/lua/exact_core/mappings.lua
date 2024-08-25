@@ -34,14 +34,6 @@ local M = {
       "<leader>fT",
       "<C-/>",
       "<C-_>",
-      -- Tabs
-      "<leader><tab>l",
-      "<leader><tab>o",
-      "<leader><tab>f",
-      "<leader><tab><tab>",
-      "<leader><tab>]",
-      "<leader><tab>d",
-      "<leader><tab>[",
     },
     t = {
       -- Terminal
@@ -151,15 +143,6 @@ if utils.is_unix() then
 end
 
 M.mappings.v = {
-  -- Indent
-  ["<Tab>"] = {
-    ">gv",
-    desc = "Indent right",
-  },
-  ["<S-Tab>"] = {
-    "<gv",
-    desc = "Indent left",
-  },
   -- End of line
   ["$"] = {
     "g_",

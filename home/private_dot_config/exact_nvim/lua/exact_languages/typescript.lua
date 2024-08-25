@@ -157,9 +157,6 @@ return utils.plugin.get_language_spec({
       opts = {},
     },
   }, {
-    telescope = {
-      extensions = "package_info",
-    },
     which_key = {
       { "<leader>n", group = "Node.js" },
     },

@@ -25,11 +25,12 @@
 
 ---@type core.config
 local M = {
-  performance_mode = true,
+  performance_mode = utils.is_win(),
 }
 
 M.ui = {
   theme = "catppuccin",
+  -- stylua: ignore
   logo = [[
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
 ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
@@ -91,7 +92,6 @@ M.plugins = {
   mason = { "codespell" },
   treesitter = {
     "c",
-    "python",
     "diff",
     "query",
     "regex",
@@ -106,7 +106,6 @@ M.plugins = {
     "ini",
     "tmux",
     "xml",
-    "toml",
   },
   linting = {
     linters_by_ft = {

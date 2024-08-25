@@ -57,27 +57,6 @@ return utils.plugin.with_extensions({
       },
     },
   },
-  {
-    "WolfeCub/harpeek.nvim",
-    keys = core.lazy_map({
-      n = {
-        ["<leader>jp"] = {
-          function()
-            require("harpeek").toggle()
-          end,
-          desc = "Toggle peek menu",
-        },
-      },
-    }),
-    ---@module "harpeek"
-    ---@type harpeek.settings
-    opts = {
-      winopts = {
-        border = core.config.ui.transparent.floats and "rounded" or "none",
-      },
-      hide_on_empty = true,
-    },
-  },
 }, {
   which_key = {
     { "<leader>j", group = "Jump" },

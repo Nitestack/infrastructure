@@ -1,11 +1,6 @@
 return utils.plugin.with_extensions({
   {
     "folke/trouble.nvim",
-    keys = core.lazy_map({
-      n = {
-        [{ "<leader>cs", "<leader>cS" }] = { false },
-      },
-    }),
     ---@module "trouble"
     ---@type trouble.Config
     opts = {

@@ -3,10 +3,7 @@ return utils.plugin.with_extensions({
     "hrsh7th/nvim-cmp",
     dependencies = {
       "luckasRanarison/tailwind-tools.nvim",
-      {
-        "onsails/lspkind.nvim",
-        opts = {},
-      },
+      "onsails/lspkind.nvim",
     },
     ---@module "cmp"
     ---@param opts cmp.ConfigSchema
@@ -30,7 +27,6 @@ return utils.plugin.with_extensions({
       end
 
       -- View
-      opts.view = opts.view or {}
       opts.entries = opts.entries or {}
       opts.entries.follow_cursor = true
 
@@ -48,17 +44,16 @@ return utils.plugin.with_extensions({
       end
 
       -- Formatting
-      opts.formatting = {
-        fields = { "kind", "abbr", "menu" },
-        format = require("lspkind").cmp_format({
-          mode = "symbol",
-          maxwidth = math.min(50, math.floor(vim.o.columns * 0.5)),
-          ellipsis_char = core.icons.ui.Ellipsis,
-          preset = "codicons",
-          before = require("tailwind-tools.cmp").lspkind_format,
-          show_labelDetails = true,
-        }),
-      }
+      opts.formatting = opts.formatting or {}
+      opts.formatting.fields = { "kind", "abbr", "menu" }
+      opts.formatting.format = require("lspkind").cmp_format({
+        mode = "symbol",
+        maxwidth = math.min(50, math.floor(vim.o.columns * 0.5)),
+        ellipsis_char = core.icons.ui.Ellipsis,
+        preset = "codicons",
+        before = require("tailwind-tools.cmp").lspkind_format,
+        show_labelDetails = true,
+      })
     end,
   },
   {

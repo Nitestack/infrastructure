@@ -23,11 +23,6 @@ return utils.plugin.with_extensions({
   {
     "williamboman/mason.nvim",
     dependencies = "WhoIsSethDaniel/mason-tool-installer.nvim",
-    keys = core.lazy_map({
-      n = {
-        ["<leader>cm"] = { false },
-      },
-    }),
     ---@module "mason"
     ---@type MasonSettings
     opts = {

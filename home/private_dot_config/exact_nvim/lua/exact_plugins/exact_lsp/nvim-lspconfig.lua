@@ -24,19 +24,6 @@ return {
       },
     }
 
-    -- Jump directly to the first available definition every time.
-    vim.lsp.handlers["textDocument/definition"] = function(_, result)
-      if not result or vim.tbl_isempty(result) then
-        return
-      end
-
-      if vim.islist(result) then
-        vim.lsp.util.jump_to_location(result[1], "utf-8")
-      else
-        vim.lsp.util.jump_to_location(result, "utf-8")
-      end
-    end
-
     -- LSP info border
     require("lspconfig.ui.windows").default_options.border = core.config.ui.transparent.floats and "rounded" or "none"
 

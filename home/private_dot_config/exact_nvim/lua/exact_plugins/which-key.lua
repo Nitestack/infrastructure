@@ -14,7 +14,14 @@ return utils.plugin.with_extensions({
           { "[", group = "Previous" },
           { "<C-w>", group = "Window" },
           { "<leader>", group = "Leader" },
-          { "<leader>b", group = "Buffer" },
+          { "<leader><Tab>", group = "Tabs" },
+          {
+            "<leader>b",
+            group = "Buffer",
+            expand = function()
+              return require("which-key.extras").expand.buf()
+            end,
+          },
           { "<leader>c", group = "Code" },
           { "<leader>f", group = "File/Find" },
           { "<leader>g", group = "Git" },
@@ -22,7 +29,14 @@ return utils.plugin.with_extensions({
           { "<leader>q", group = "Quit/Session" },
           { "<leader>s", group = "Search" },
           { "<leader>u", group = "UI" },
-          { "<leader>w", group = "Windows" },
+          {
+            "<leader>w",
+            group = "Windows",
+            proxy = "<C-w>",
+            expand = function()
+              return require("which-key.extras").expand.win()
+            end,
+          },
           { "<leader>x", group = "Diagnostics/Quickfix/Location" },
         },
       },

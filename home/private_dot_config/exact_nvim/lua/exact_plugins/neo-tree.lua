@@ -3,7 +3,7 @@ return utils.plugin.with_extensions({
     "nvim-neo-tree/neo-tree.nvim",
     keys = core.lazy_map({
       n = {
-        [{ "<leader>e", "<leader>E", "<leader>be", "<leader>ge" }] = { false },
+        [{ "<leader>e", "<leader>E" }] = { false },
       },
     }),
     opts = function(_, opts)

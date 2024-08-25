@@ -9,11 +9,12 @@ return {
     flavour = "mocha",
     term_colors = true,
     styles = {
-      loops = { "italic" },
-      booleans = { "italic" },
       comments = { "italic" },
       conditionals = { "italic" },
-      keywords = { "italic" },
+      loops = { "italic" },
+      functions = { "italic" },
+      booleans = { "italic" },
+      types = { "italic" },
     },
     custom_highlights = function(C)
       local treesitter_context_bg = C.crust
