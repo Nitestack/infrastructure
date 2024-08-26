@@ -2,8 +2,6 @@
 -- │ TypeScript                                              │
 -- ╰─────────────────────────────────────────────────────────╯
 
-local filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
-
 -- ── tsserver settings ───────────────────────────────────────────────
 ---@type _.lspconfig.settings.vtsls.Typescript
 local tsserver_settings = {
@@ -47,14 +45,9 @@ return utils.plugin.get_language_spec({
           ---@diagnostic disable-next-line: assign-type-mismatch
           javascript = tsserver_settings,
           vtsls = {
-            autoUseWorkspaceTsdk = true,
             enableMoveToFileCodeAction = true,
           },
         },
-      },
-      eslint = {
-        autostart = false,
-        mason = false,
       },
     },
   },
@@ -87,7 +80,6 @@ return utils.plugin.get_language_spec({
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.lang.angular" },
     { import = "lazyvim.plugins.extras.lang.prisma" },
-    { import = "lazyvim.plugins.extras.linting.eslint" }, -- Use this as long as eslint_d doesn't work for eslint v9
     {
       "vuki656/package-info.nvim",
       dependencies = {
@@ -150,11 +142,6 @@ return utils.plugin.get_language_spec({
       opts = {
         package_manager = "pnpm",
       },
-    },
-    {
-      "axelvc/template-string.nvim",
-      ft = filetypes,
-      opts = {},
     },
   }, {
     which_key = {
