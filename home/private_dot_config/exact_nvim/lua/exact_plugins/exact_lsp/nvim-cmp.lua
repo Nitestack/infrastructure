@@ -1,14 +1,26 @@
+local function has_words_before()
+  local line, col = (unpack or table.unpack)(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 return utils.plugin.with_extensions({
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "luckasRanarison/tailwind-tools.nvim",
       "onsails/lspkind.nvim",
+      "zbirenbaum/copilot.lua",
     },
+    keys = core.lazy_map({
+      n = {
+        [{ "<Tab>", "<S-Tab>" }] = { false },
+      },
+    }),
     ---@module "cmp"
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       local cmp = require("cmp")
+      local copilot = require("copilot.suggestion")
 
       opts.enabled = function()
         if vim.bo[0].buftype ~= "prompt" then
@@ -38,10 +50,71 @@ return utils.plugin.with_extensions({
 
       -- Mapping: Only on Windows (excluding Neovide)
       if utils.is_win() and not utils.is_neovide() then
-        opts.mapping = vim.tbl_extend("force", opts.mapping, {
-          ["<C-x>"] = cmp.mapping.complete(),
-        })
+        opts.mapping["<C-x>"] = cmp.mapping.complete()
       end
+
+      -- Integrate Copilot into cmp
+      opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
+        if copilot.is_visible() then
+          copilot.accept()
+        elseif cmp.visible() then
+          cmp.select_next_item()
+        elseif vim.api.nvim_get_mode().mode ~= "c" and vim.snippet.active({ direction = 1 }) then
+          vim.schedule(function()
+            vim.snippet.jump(1)
+          end)
+        elseif has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end, { "i", "s" })
+      opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item()
+        elseif vim.api.nvim_get_mode().mode ~= "c" and vim.snippet.active({ direction = -1 }) then
+          vim.schedule(function()
+            vim.snippet.jump(-1)
+          end)
+        else
+          fallback()
+        end
+      end, { "i", "s" })
+      opts.mapping["<C-x>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.next()
+        end
+      end)
+      opts.mapping["<C-z>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.prev()
+        end
+      end)
+      opts.mapping["<C-right>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.accept_word()
+        end
+      end)
+      opts.mapping["<C-l>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.accept_word()
+        end
+      end)
+      opts.mapping["<C-down>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.accept_line()
+        end
+      end)
+      opts.mapping["<C-j>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.accept_line()
+        end
+      end)
+      opts.mapping["<C-c>"] = cmp.mapping(function()
+        if copilot.is_visible() then
+          copilot.dismiss()
+        end
+      end)
 
       -- Formatting
       opts.formatting = opts.formatting or {}
@@ -53,6 +126,7 @@ return utils.plugin.with_extensions({
         preset = "codicons",
         before = require("tailwind-tools.cmp").lspkind_format,
         show_labelDetails = true,
+        symbol_map = { Copilot = "" },
       })
     end,
   },

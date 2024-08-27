@@ -4,10 +4,6 @@ return utils.plugin.with_extensions({
   {
     "zbirenbaum/copilot.lua",
     opts = {
-      suggestion = {
-        enabled = true,
-        auto_trigger = true,
-      },
       filetypes = { ["*"] = true },
     },
   },
