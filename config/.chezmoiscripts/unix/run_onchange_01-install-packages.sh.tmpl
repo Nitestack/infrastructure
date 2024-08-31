@@ -17,27 +17,13 @@ _log_header "Essential Packages"
 
 # {{ $osid := .osid }}
 # {{ $os := .chezmoi.os }}
-# {{ $essentialPackages := list }}
 # {{ $essentialCustomPackages := list }}
 # {{ range .packages.essentials }}
-#   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
-#     {{ if eq "string" (printf "%T" .arch) }}
-#       {{ $essentialPackages = mustAppend $essentialPackages .arch }}
-#     {{ else if hasKey .arch "custom" }}
-#       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .arch.custom) }}
-#     {{ end }}
-#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
+#   {{ if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
 #     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .mac.custom) }}
 #   {{ else if hasKey . "custom" }}
 #     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
 #   {{ end }}
-# {{ end }}
-
-# {{ if eq $osid "linux-arch"}}
-# ── pacman ────────────────────────────────────────────────────────────
-gum format -- "## pacman:"
-paru -Syu
-_install_packages_pacman "{{- $essentialPackages | join "\" \""  -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
@@ -73,51 +59,13 @@ _log -l info "Installed essential packages"
 # ╰──────────────────────────────────────────────────────────╯
 _log_header "Packages"
 
-# {{ $packages := list }}
-# {{ $paruPackages := list }}
 # {{ $customPackages := list }}
 # {{ range .packages.common }}
-#   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
-#     {{ if eq "string" (printf "%T" .arch) }}
-#       {{ $packages = mustAppend $packages .arch }}
-#     {{ else if hasKey .arch "paru" }}
-#       {{ $paruPackages = mustAppend $paruPackages .arch.paru }}
-#     {{ else if hasKey .arch "custom" }}
-#       {{ $customPackages = mustAppend $customPackages (dict .name .arch.custom) }}
-#     {{ end }}
-#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
+#   {{ if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
 #     {{ $customPackages = mustAppend $customPackages (dict .name .mac.custom) }}
 #   {{ else if hasKey . "custom" }}
 #     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
 #   {{ end }}
-# {{ end }}
-
-# {{ if eq $osid "linux-arch" }}
-# If icon theme installation is specified, install it
-# {{ if hasKey .gtk.icon.theme "install" }}
-#   {{ if hasKey .gtk.icon.theme.install "pacman" }}
-#     {{ $packages = mustAppend $packages .gtk.icon.theme.install.pacman }}
-#   {{ else if hasKey .gtk.icon.theme.install "paru" }}
-#     {{ $paruPackages = mustAppend $paruPackages .gtk.icon.theme.install.paru }}
-#   {{ end }}
-# {{ end }}
-
-# If cursor theme installation is specified, install it
-# {{ if hasKey .gtk.cursor.theme "install" }}
-#   {{ if hasKey .gtk.cursor.theme.install "pacman" }}
-#     {{ $packages = mustAppend $packages .gtk.cursor.theme.install.pacman }}
-#   {{ else if hasKey .gtk.cursor.theme.install "paru" }}
-#     {{ $paruPackages = mustAppend $paruPackages .gtk.cursor.theme.install.paru }}
-#   {{ end }}
-# {{ end }}
-
-# ── pacman ────────────────────────────────────────────────────────────
-gum format -- "## pacman:"
-_install_packages_pacman "{{- concat $packages .packages.arch.pacman | uniq | sortAlpha | join "\" \"" -}}"
-
-# ── paru ───────────────────────────────────────────────────────────────
-gum format -- "## paru:"
-_install_packages_paru "{{- concat $paruPackages .packages.arch.paru | uniq | sortAlpha | join "\" \"" -}}"
 # {{ end }}
 
 # ── custom ────────────────────────────────────────────────────────────
