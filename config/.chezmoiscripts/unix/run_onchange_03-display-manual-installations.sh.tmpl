@@ -10,9 +10,4 @@ _log -l info "You have to manually install the following apps:"
 #   {{ range (concat .apps.mac.manual | uniq | sortAlpha) }}
 echo "- {{ . -}}"
 #   {{ end }}
-# {{ else if and (eq .osid "linux-arch") (hasKey .apps.arch "manual") }}
-_log -l info "You have to manually install the following apps:"
-#   {{ range (concat .apps.arch.manual | uniq | sortAlpha) }}
-echo "- {{ . -}}"
-#   {{ end }}
 # {{ end }}
