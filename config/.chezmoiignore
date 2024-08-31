@@ -30,7 +30,6 @@ Pictures
 
 .local
 
-.hushlogin
 .zprofile
 {{ end }}
 
