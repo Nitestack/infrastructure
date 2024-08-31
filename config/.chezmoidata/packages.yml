@@ -134,16 +134,12 @@ packages:
       mac: "ripgrep"
       win: "BurntSushi.ripgrep.MSVC"
     - name: "Spicetify"
-      arch:
-        paru: "spicetify-cli"
       mac: "spicetify-cli"
       win: "Spicetify.Spicetify"
     - name: "tmux"
       arch: "tmux"
       mac: "tmux"
     - name: "ueberzug"
-      arch:
-        paru: "ueberzugpp"
       mac: "jstkdng/programs/ueberzugpp"
     - name: "vim"
       arch: "vim"
