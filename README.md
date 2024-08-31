@@ -17,7 +17,7 @@
 
 ![image](https://github.com/Nitestack/dotfiles/assets/74626967/154b824c-42f2-4ec0-818b-f244f8c91f4b)
 
-_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [Arch Linux](https://archlinux.org) to [macOS](https://apple.com/macos) and [Windows](https://microsoft.com/windows), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
+_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [macOS](https://apple.com/macos) and [Windows](https://microsoft.com/windows), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -26,7 +26,7 @@ _Elevate your computing experience across platforms with this curated collection
 
 ## 🚀 Features
 
-### Cross-Platform (Arch Linux, macOS, Windows)
+### Cross-Platform (NixOS, macOS, Windows)
 
 - **Neovim Configuration**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
 
@@ -64,30 +64,6 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **Zsh Configuration**: Powered by [Oh My Zsh](https://ohmyz.sh), this configuration includes styled prompts, shell completions, optimized history settings, and useful aliases for a seamless command-line experience
 
-### Arch Linux
-
-This repository provides a comprehensive setup for Arch Linux, including:
-
-- **Hyprland Configuration**: Customized settings and tweaks for the Wayland compositor
-
-- **AGS Configuration**: Beautiful and functional Wayland widgets configuration using [ags](https://aylur.github.io/ags-docs)
-
-- **GRUB Setup**: Configured GRUB options and themed with [Hyperfluent Arch](https://github.com/Coopydood/HyperFluent-GRUB-Theme/tree/main)
-
-- **SDDM Theme**: Aesthetic display manager theme using [Astronaut Theme](https://github.com/Keyitdev/sddm-astronaut-theme)
-
-- **System Services**: Automatic setup for essential services like [Bluetooth](https://wiki.archlinux.org/title/bluetooth)
-
-- **Synced Theming**: Consistent theming across different applications and system components
-
-- **Pacman Configuration**: Enhanced pacman settings for faster downloads and updated servers using [reflector](https://wiki.archlinux.org/title/reflector), along with efficient package cache management ([paccache](https://wiki.archlinux.org/title/Pacman#Cleaning_the_package_cache))
-
-- **AUR Helper**: Inclusion of [paru](https://github.com/Morganamilo/paru) for seamless access to AUR packages
-
-- **Zsh**: Zsh shell configuration for an improved command-line experience
-
-After installing Arch Linux on a new machine, this repository can set up the rest of the system to work properly, ensuring a smooth and efficient workflow.
-
 ### macOS
 
 - **Dependency Management**: Managed with [Homebrew](https://brew.sh), including [formulae](https://formulae.brew.sh), [casks](https://formulae.brew.sh/cask), fonts, and Mac App Store applications (via [mas](https://github.com/mas-cli/mas)), all bundled using [`brew bundle`](https://github.com/Homebrew/homebrew-bundle)
@@ -108,7 +84,7 @@ And more to discover.
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [Arch Linux](https://archlinux.org), [macOS](https://apple.com/macos) or [Windows](https://microsoft.com/windows) installed.
+Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos) or [Windows](https://microsoft.com/windows) installed.
 
 ### Dependencies
 
@@ -119,12 +95,6 @@ curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | 
 ```
 
 [**Git**](https://www.git-scm.com)
-
-Arch Linux:
-
-```sh
-sudo pacman -S --needed --noconfirm git
-```
 
 macOS:
 
@@ -140,12 +110,6 @@ winget install -e --accept-package-agreements --accept-source-agreements --id Gi
 
 [**chezmoi**](https://chezmoi.io)
 
-Arch Linux:
-
-```sh
-sudo pacman -S --needed --noconfirm chezmoi
-```
-
 macOS:
 
 ```sh
@@ -159,12 +123,6 @@ winget install -e --accept-package-agreements --accept-source-agreements --id tw
 ```
 
 [**Wget**](https://www.gnu.org/software/wget) or [**curl**](https://curl.se) (**UNIX only**)
-
-Arch Linux:
-
-```sh
-sudo pacman -S --needed --noconfirm wget curl
-```
 
 macOS (`curl` is pre-installed, but if you want to use `wget`):
 
