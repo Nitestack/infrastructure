@@ -35,7 +35,6 @@ M.winbar_filetype_exclude = {
   "Outline",
   "git",
   "spectre_panel",
-  "toggleterm",
   "DressingSelect",
   "Jaq",
   "harpoon",

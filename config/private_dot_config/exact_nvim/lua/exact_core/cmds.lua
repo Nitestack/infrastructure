@@ -16,20 +16,6 @@ local M = {}
 --  Autocommands
 --------------------------------------------------------------------------------
 M.auto_cmds = {
-  -- Close some filetypes with <q>
-  {
-    "FileType",
-    {
-      group = "close_with_q",
-      pattern = {
-        "toggleterm",
-      },
-      callback = function(event)
-        vim.bo[event.buf].buflisted = false
-        vim.keymap.set("n", "q", vim.cmd.close, { desc = "Close", buffer = event.buf, silent = true })
-      end,
-    },
-  },
   {
     "FileType",
     {
