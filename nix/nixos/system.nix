@@ -47,7 +47,8 @@
     fontconfig = {
       defaultFonts = {
         sansSerif = [ "Rubik" ];
-        monospace = [ "Monaspace NE Nerd Font" ];
+        monospace = [ "MonaspaceNe Nerd Font" ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
   };
@@ -91,11 +92,10 @@
     ripgrep
     tmux
     ueberzugpp
+    unzip
     zoxide
 
-    nixfmt-rfc-style
-
-    # Apps 
+    # Apps
     bitwarden-desktop
     firefox
     google-chrome
@@ -105,9 +105,12 @@
     vscode
     wezterm
     zed-editor
+
+    # NixOS
+    nixfmt-rfc-style
   ];
 
-  # services 
+  # services
   services = {
     openssh = {
       enable = true;

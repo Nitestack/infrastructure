@@ -12,6 +12,7 @@ in
     ./ags.nix
     ./browser.nix
     ./git.nix
+    ./theme.nix
   ];
 
   nixpkgs = {
@@ -59,6 +60,15 @@ in
     systemd = {
       enable = true;
       variables = [ "--all" ];
+    };
+
+    settings = {
+      bind = [
+        "SUPER, Q, killactive"
+        "SUPER, Backslash, exec, kitty"
+        "ALT, space, exec, wofi --show drun"
+        "SUPER, W, exec, firefox"
+      ];
     };
   };
 
