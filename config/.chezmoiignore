@@ -13,12 +13,10 @@ Documents
 .wslconfig
 {{ end }}
 
-# Arch Linux
-{{ if ne .osid "linux-arch" }}
-.chezmoiscripts/arch/**
-
 Pictures
 
+# NixOS
+{{ if ne .osid "linux-nixos" }}
 .config/ags
 .config/bat
 .config/Code
@@ -28,8 +26,6 @@ Pictures
 .config/qt6ct
 
 .local
-
-.zprofile
 {{ end }}
 
 # macOS
@@ -44,7 +40,6 @@ Library
 .chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
 
-.config/spicetify
 .config/tmux
 .config/zed
 

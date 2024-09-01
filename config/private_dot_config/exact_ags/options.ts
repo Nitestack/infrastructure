@@ -116,7 +116,7 @@ const options = mkOptions(OPTIONS, {
       },
       label: {
         colored: opt(false),
-        label: opt(" Arch Linux"),
+        label: opt(" NixOS"),
       },
       action: opt(() => App.toggleWindow("launcher")),
     },
