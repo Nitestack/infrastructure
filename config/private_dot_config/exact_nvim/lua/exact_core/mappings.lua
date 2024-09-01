@@ -32,19 +32,12 @@ local M = {
       -- Terminal
       "<leader>ft",
       "<leader>fT",
-      "<C-/>",
       "<C-_>",
     },
     t = {
       -- Terminal
       "<Esc><Esc>",
-      "<C-/>",
       "<C-_>",
-    },
-    v = {
-      -- Indenting
-      "<",
-      ">",
     },
     [{ "i", "x", "n", "s" }] = {
       -- Save
