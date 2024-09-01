@@ -1,5 +1,5 @@
 {
-  description = "nixOS Configuration of Nitestack";
+  description = "NixOS Configuration of Nitestack";
 
   inputs = {
     # Nixpkgs
@@ -18,6 +18,9 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
+
+    # ags
+    ags.url = "github:Aylur/ags";
   };
 
   outputs =
@@ -62,6 +65,7 @@
             {
               networking.hostName = hostname;
               home-manager = {
+                backupFileExtension = "backup";
                 extraSpecialArgs = {
                   inherit inputs outputs;
                 };

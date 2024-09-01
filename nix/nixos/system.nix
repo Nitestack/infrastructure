@@ -31,6 +31,27 @@
       nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
     };
 
+  fonts = {
+    packages = with pkgs; [
+      rubik
+      noto-fonts-color-emoji
+
+      (nerdfonts.override {
+        fonts = [
+          "Monaspace"
+          "NerdFontsSymbolsOnly"
+        ];
+      })
+    ];
+    enableDefaultPackages = true;
+    fontconfig = {
+      defaultFonts = {
+        sansSerif = [ "Rubik" ];
+        monospace = [ "Monaspace NE Nerd Font" ];
+      };
+    };
+  };
+
   # virtualization
   programs.virt-manager.enable = true;
   virtualisation = {
@@ -43,11 +64,47 @@
 
   # packages
   environment.systemPackages = with pkgs; [
+    gcc
+
+    # Essential
+    chezmoi
+    curl
     git
-    wezterm
-    ripgrep
+    gum
+    python3
+    volta
+    wget
     rustup
+
+    # Packages
+    bat
+    delta
+    eza
+    fd
+    fastfetch
+    fzf
+    jdk
+    lazygit
+    less # ueberzug++ dependency
+    neovim
+    oh-my-posh
+    ripgrep
+    tmux
+    ueberzugpp
+    zoxide
+
     nixfmt-rfc-style
+
+    # Apps 
+    bitwarden-desktop
+    firefox
+    google-chrome
+    jetbrains.idea-ultimate
+    jetbrains.webstorm
+    spotify
+    vscode
+    wezterm
+    zed-editor
   ];
 
   # services 

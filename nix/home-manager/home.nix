@@ -1,4 +1,5 @@
 {
+  inputs,
   outputs,
   pkgs,
   ...
@@ -8,6 +9,8 @@ let
 in
 {
   imports = [
+    ./ags.nix
+    ./browser.nix
     ./git.nix
   ];
 
@@ -41,6 +44,8 @@ in
     homeDirectory = "/home/${username}";
   };
 
+  home.packages = [ ];
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -49,26 +54,16 @@ in
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.hyprland;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     xwayland.enable = true;
-
-    systemd.enable = true;
-
-    settings = {
-      bind = [
-        "ALT, space, exec, wofi --show drun"
-        "SUPER, Backslash, exec, kitty"
-      ];
+    systemd = {
+      enable = true;
+      variables = [ "--all" ];
     };
   };
 
-  home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "Monaspace" ]; })
-  ];
-
   # Enable home-manager
   programs.home-manager.enable = true;
-  programs.lazygit.enable = true;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

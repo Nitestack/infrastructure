@@ -1,5 +1,6 @@
 {
   outputs,
+  pkgs,
   ...
 }:
 {
@@ -32,20 +33,23 @@
     ];
   };
 
-  users.users = {
-    "nhan" = {
-      isNormalUser = true;
-      description = "Nhan Pham";
-      openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
-      ];
-      extraGroups = [
-        "wheel"
-        "networkmanager"
-        "docker"
-        "libvirtd"
-      ];
+  users = {
+    users = {
+      "nhan" = {
+        isNormalUser = true;
+        description = "Nhan Pham";
+        openssh.authorizedKeys.keys = [
+          # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
+        ];
+        extraGroups = [
+          "wheel"
+          "networkmanager"
+          "docker"
+          "libvirtd"
+        ];
+      };
     };
+    defaultUserShell = pkgs.zsh;
   };
 
   programs.zsh.enable = true;
@@ -53,4 +57,5 @@
     enable = true;
     defaultEditor = true;
   };
+  programs.tmux.enable = true;
 }
