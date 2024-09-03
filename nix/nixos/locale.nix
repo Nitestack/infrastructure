@@ -1,7 +1,10 @@
-{ pkgs, ... }: 
+# ╭──────────────────────────────────────────────────────────╮
+# │ LOCALE                                                   │
+# ╰──────────────────────────────────────────────────────────╯
+
+{ pkgs, ... }:
 {
   time.timeZone = "Europe/Berlin";
-
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
@@ -16,13 +19,10 @@
       LC_TIME = "de_DE.UTF-8";
     };
   };
-
   console = {
-    font = "ter-124b";
+    font = "ter-128n";
     keyMap = "us";
-    packages = with pkgs; [
-      terminus_font
-    ];
+    packages = [ pkgs.terminus_font ];
   };
   services.xserver.xkb = {
     layout = "us, us";
