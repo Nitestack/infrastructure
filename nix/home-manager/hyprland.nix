@@ -2,26 +2,24 @@
 # │ HYPRLAND                                                 │
 # ╰──────────────────────────────────────────────────────────╯
 
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
-  programs.hyprland.enable = true;
-
-  nix.settings = {
-    substituters = [ "https://hyprland.cachix.org" ];
-    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
-  };
-
-  xdg.portal = {
+  wayland.windowManager.hyprland = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    xwayland.enable = true;
+    systemd = {
+      enable = true;
+      variables = [ "--all" ];
+    };
+
+    settings = {
+      bind = [
+        "SUPER, Q, killactive"
+        "SUPER, Backslash, exec, kitty"
+        "ALT, space, exec, wofi --show drun"
+        "SUPER, W, exec, firefox"
+      ];
+    };
   };
-
-  security.polkit.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    waybar
-    dunst
-    kitty
-    wofi
-  ];
 }

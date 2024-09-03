@@ -1,3 +1,7 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ NIX CONFIGURATION                                        │
+# ╰──────────────────────────────────────────────────────────╯
+
 {
   outputs,
   pkgs,
@@ -14,12 +18,10 @@
   ];
 
   nixpkgs = {
-    # You can add overlays here
     overlays = [
       # Add overlays your own flake exports (from overlays and pkgs dir):
       outputs.overlays.additions
       outputs.overlays.modifications
-      outputs.overlays.unstable-packages
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -33,24 +35,7 @@
     ];
   };
 
-  users = {
-    users = {
-      "nhan" = {
-        isNormalUser = true;
-        description = "Nhan Pham";
-        openssh.authorizedKeys.keys = [
-          # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
-        ];
-        extraGroups = [
-          "wheel"
-          "networkmanager"
-          "docker"
-          "libvirtd"
-        ];
-      };
-    };
-    defaultUserShell = pkgs.zsh;
-  };
+  users.defaultUserShell = pkgs.zsh;
 
   programs.zsh.enable = true;
   programs.neovim = {
