@@ -64,9 +64,6 @@
     docker.enable = true;
   };
 
-  # dconf
-  programs.dconf.enable = true;
-
   # packages
   environment.systemPackages = with pkgs; [
     gcc
@@ -111,6 +108,8 @@
     zed-editor
 
     # NixOS
+    dconf-editor
+    nautilus
     nixfmt-rfc-style
     (sddm-astronaut.override {
       themeConfig = {
@@ -146,6 +145,7 @@
         wayland.enable = true;
       };
     };
+    gvfs.enable = true;
   };
 
   # Bootloader
