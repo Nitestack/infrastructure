@@ -17,6 +17,7 @@
 
     settings = {
       # ── Environment Variables ─────────────────────────────────────────────
+      # https://wiki.hyprland.org/Configuring/Environment-variables
       "$system_theme" = "adw-gtk3";
       "$cursor_theme" = "macOS";
       "$cursor_size" = "24";
@@ -44,6 +45,128 @@
         "XCURSOR_THEME,$cursor_theme" # Set cursor theme.
         "HYPRCURSOR_THEME,$cursor_theme"
       ];
+
+      # ── Config ────────────────────────────────────────────────────────────
+      # https://wiki.hyprland.org/Configuring/Variables
+
+      # Monitors
+      # https://wiki.hyprland.org/Configuring/Monitors
+      monitor = [
+        "DP-1, 1920x1080@144, 0x0, 1"
+        # "DP-2, 1920x1080@144, 1920x0, 1" # In case of a second monitor
+      ];
+
+      # General
+      # https://wiki.hyprland.org/Configuring/Variables/#general
+      general = {
+        gaps_in = 10; # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+        gaps_out = 10; # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+
+        border_size = 3; # size of the border around windows
+
+        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg"; # border color for the active window
+        "col.inactive_border" = "rgba(595959aa)"; # border color for inactive windows
+
+        resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
+
+        allow_tearing = true; # master switch for allowing tearing to occur
+      };
+
+      # Decoration
+      # https://wiki.hyprland.org/Configuring/Variables/#decoration
+      decoration = {
+        rounding = 10; # rounded corners' radius (in layout px)
+
+        drop_shadow = true; # enable drop shadows on windows
+        shadow_ignore_window = true; # if true, the shadow will not be rendered behind the window itself, only around it
+        shadow_offset = "2 2"; # shadow’s rendering offset
+        shadow_range = 8; # Shadow range (“size”) in layout px
+        shadow_render_power = 2; # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
+        "col.shadow" = "0x66000000"; # shadow’s color. Alpha dictates shadow’s opacity
+
+        # Blur
+        # https://wiki.hyprland.org/Configuring/Variables/#blur
+        blur = {
+          enabled = true; # enable kawase window background blur
+          size = 3; # blur size (distance)
+          passes = 2; # the amount of passes to perform
+        };
+      };
+
+      # Animations
+      # https://wiki.hyprland.org/Configuring/Variables/#animations
+      animations = {
+        enabled = true; # enable animations
+
+        # https://wiki.hyprland.org/Configuring/Animations
+        bezier = [
+          "overshot, 0.05, 0.9, 0.1, 1.05"
+          "smoothOut, 0.36, 0, 0.66, -0.56"
+          "smoothIn, 0.25, 1, 0.5, 1"
+        ];
+        animation = [
+          "windows, 1, 5, overshot, slide"
+          "windowsOut, 1, 4, smoothOut, slide"
+          "windowsMove, 1, 4, default"
+          "border, 1, 10, default"
+          "fade, 1, 10, smoothIn"
+          "fadeDim, 1, 10, smoothIn"
+          "workspaces, 1, 6, default"
+          "specialWorkspace, 1, 4, default, slidevert"
+        ];
+      };
+
+      # Input
+      # https://wiki.hyprland.org/Configuring/Variables/#input
+      input = {
+        # Toggle between US QWERTY and US Intl QWERTY layout on `Win + Space`
+        # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
+        kb_layout = "us, us";
+        kb_variant = "basic, intl";
+        kb_model = "";
+        kb_options = "grp:win_space_toggle";
+        kb_rules = "";
+
+        # Specify if and how cursor movement should affect window focus.
+        # https://wiki.hyprland.org/Configuring/Variables/#follow-mouse-cursor
+        follow_mouse = 2;
+
+        # Touchpad
+        # https://wiki.hyprland.org/Configuring/Variables/#touchpad
+        touchpad = {
+          natural_scroll = true; # Inverts scrolling direction. When enabled, scrolling moves content directly, rather than manipulating a scrollbar
+        };
+      };
+
+      # Gestures
+      # https://wiki.hyprland.org/Configuring/Variables/#gestures
+      gestures = {
+        workspace_swipe = true; # enable workspace swipe gesture on touchpad
+      };
+
+      # Miscellaneous
+      # https://wiki.hyprland.org/Configuring/Variables/#misc
+      misc = {
+        disable_hyprland_logo = true; # disables the random Hyprland logo / anime girl background
+        disable_splash_rendering = true; # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
+        force_default_wallpaper = 0; # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
+        vrr = 2; # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
+        animate_manual_resizes = true; # If true, will animate manual window resizes/moves
+        enable_swallow = true; # Enable window swallowing
+      };
+
+      # XWayland
+      # https://wiki.hyprland.org/Configuring/Variables/#xwayland
+      xwayland = {
+        force_zero_scaling = true; # forces a scale of 1 on xwayland windows on scaled displays
+      };
+
+      # Dwindle
+      # https://wiki.hyprland.org/Configuring/Dwindle-Layout
+      dwindle = {
+        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+        preserve_split = true;
+      };
 
       # ── Windows and Workspace ─────────────────────────────────────────────
       # https://wiki.hyprland.org/Configuring/Window-Rules
