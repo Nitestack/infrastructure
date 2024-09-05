@@ -16,6 +16,35 @@
     };
 
     settings = {
+      # ── Environment Variables ─────────────────────────────────────────────
+      "$system_theme" = "adw-gtk3";
+      "$cursor_theme" = "macOS";
+      "$cursor_size" = "24";
+
+      env = [
+        # Toolkit Backend Variables
+        "CLUTTER_BACKEND,wayland" # Clutter package already has wayland enabled, this variable will force Clutter applications to try and use the Wayland backend
+        "GDK_BACKEND,wayland,x11,*" # GTK: Use wayland if available. If not: try x11, then any other GDK backend.
+        "SDL_VIDEODRIVER,wayland,x11" # Run SDL2 applications on Wayland. Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
+
+        # XDG Specifications
+        "XDG_SESSION_DESKTOP,Hyprland"
+
+        # Qt Variables
+        "QT_AUTO_SCREEN_SCALE_FACTOR,1" # Enables automatic scaling, based on the monitor’s pixel density
+        "QT_QPA_PLATFORM,wayland;xcb" # Tell Qt applications to use the Wayland backend, and fall back to x11 if Wayland is unavailable
+        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1" # Disables window decorations on Qt applications
+        "QT_QPA_PLATFORMTHEME,qt6ct" # Tells Qt based applications to pick your theme from qt6ct, use with Kvantum.
+        "QT_STYLE_OVERRIDE,kvantum"
+
+        # Theming Related Variables
+        "GTK_THEME,$system_theme" # Set system theme.
+        "XCURSOR_SIZE,$cursor_size" # Set cursor size.
+        "HYPRCURSOR_SIZE,$cursor_size"
+        "XCURSOR_THEME,$cursor_theme" # Set cursor theme.
+        "HYPRCURSOR_THEME,$cursor_theme"
+      ];
+
       # ── Windows and Workspace ─────────────────────────────────────────────
       # https://wiki.hyprland.org/Configuring/Window-Rules
       # https://wiki.hyprland.org/Configuring/Workspace-Rules
@@ -123,5 +152,14 @@
         "SUPER, $lmb, Move Window, movewindow"
       ];
     };
+  };
+
+  xdg.desktopEntries."org.gnome.Settings" = {
+    name = "Settings";
+    comment = "Gnome Control Center";
+    icon = "org.gnome.Settings";
+    exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome.gnome-control-center}/bin/gnome-control-center";
+    categories = [ "X-Preferences" ];
+    terminal = false;
   };
 }
