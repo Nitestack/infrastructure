@@ -46,7 +46,7 @@
     extraSpecialArgs = {
       inherit inputs outputs meta;
     };
-    users.${meta.username} = import ./home-manager/home.nix;
+    users.${meta.username} = import ../home-manager/home.nix;
   };
 
   # ── Users ─────────────────────────────────────────────────────────────
