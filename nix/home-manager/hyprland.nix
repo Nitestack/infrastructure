@@ -14,6 +14,45 @@
     };
 
     settings = {
+      # ── Windows and Workspace ─────────────────────────────────────────────
+      # https://wiki.hyprland.org/Configuring/Window-Rules
+      # https://wiki.hyprland.org/Configuring/Workspace-Rules
+
+      windowrule =
+        let
+          f = regex: "float, ^(${regex})$";
+        in
+        [
+          # Floating windows
+          (f "confirm")
+          (f "file_progress")
+          (f "dialog")
+
+          (f "org.gnome.Calculator")
+          (f "org.gnome.Nautilus")
+          (f "org.gnome.SystemMonitor")
+          (f "nm-connection-editor")
+          (f "org.gnome.Settings")
+          (f "org.gnome.design.Palette")
+
+          (f "Color Picker")
+          (f "dconf-editor")
+
+          (f "com.github.Aylur.ags")
+          (f "com.github.GradienceTeam.Gradience")
+
+          "immediate,.*\.exe" # Tearing
+        ];
+
+      windowrulev2 = [
+        "suppressevent maximize, class:.*"
+        "immediate,class:(steam_app)" # Tearing
+      ];
+
+      # ── Bindings ──────────────────────────────────────────────────────────
+      # https://wiki.hyprland.org/Configuring/Binds
+      # SUPER = "Windows" key
+
       "$lmb" = "mouse:272"; # Left mouse button
       "$rmb" = "mouse:273"; # Right mouse button
       "$mmb" = "mouse:274"; # Middle mouse button
