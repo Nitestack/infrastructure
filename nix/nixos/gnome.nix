@@ -3,6 +3,7 @@
   environment.systemPackages = with pkgs; [
     dconf-editor
     glib
+    gnome-control-center
   ];
 
   services.xserver.desktopManager.gnome.enable = true;
