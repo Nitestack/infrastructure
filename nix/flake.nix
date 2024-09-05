@@ -45,12 +45,13 @@
     let
       inherit (self) outputs;
 
+      # Meta Information
       meta = {
         username = "nhan";
         description = "Nhan Pham";
         hostname = "nixstation";
       };
-
+      # Supported Systems
       systems = [
         "aarch64-linux"
         "x86_64-linux"
@@ -81,35 +82,6 @@
             # Home Manager
             home-manager.nixosModules.home-manager
             # Configuration
-            {
-              networking.hostName = meta.hostname;
-              home-manager = {
-                backupFileExtension = "backup";
-                useUserPackages = true;
-                useGlobalPkgs = true;
-                extraSpecialArgs = {
-                  inherit inputs outputs meta;
-                };
-                users.${meta.username} = import ./home-manager/home.nix;
-              };
-              users = {
-                users = {
-                  ${meta.username} = {
-                    isNormalUser = true;
-                    description = meta.description;
-                    openssh.authorizedKeys.keys = [
-                      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixos"
-                    ];
-                    extraGroups = [
-                      "wheel"
-                      "networkmanager"
-                      "docker"
-                      "libvirtd"
-                    ];
-                  };
-                };
-              };
-            }
             ./nixos/configuration.nix
           ];
         };

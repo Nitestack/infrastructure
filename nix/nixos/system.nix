@@ -7,6 +7,7 @@
   config,
   lib,
   pkgs,
+  meta,
   ...
 }:
 {
@@ -19,7 +20,6 @@
     in
     {
       settings = {
-        # Enable flakes and new 'nix' command
         experimental-features = "nix-command flakes";
         # Opinionated: disable global registry
         flake-registry = "";
@@ -87,18 +87,15 @@
     fzf
     jdk
     lazygit
-    less # ueberzug++ dependency
-    neovim
+    less # delta dependency
     oh-my-posh
     ripgrep
-    tmux
     ueberzugpp
     unzip
     zoxide
 
     # Apps
     bitwarden-desktop
-    firefox
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
@@ -108,7 +105,6 @@
     zed-editor
 
     # NixOS
-    dconf-editor
     nautilus
     nixfmt-rfc-style
     (sddm-astronaut.override {
@@ -145,6 +141,10 @@
         wayland.enable = true;
       };
     };
+    xserver = {
+      enable = true;
+      excludePackages = with pkgs; [ xterm ];
+    };
     gvfs.enable = true;
   };
 
@@ -171,7 +171,10 @@
   };
 
   # network
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager.enable = true;
+    hostName = meta.hostname;
+  };
 
   # Bluetooth
   hardware.bluetooth = {
