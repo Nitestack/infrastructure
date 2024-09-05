@@ -24,8 +24,6 @@ Pictures
 .config/lazygit
 .config/qt5ct
 .config/qt6ct
-
-.local
 {{ end }}
 
 # macOS
