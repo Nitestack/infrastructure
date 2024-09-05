@@ -12,6 +12,11 @@ let
     sort-directories-first = true;
     startup-mode = "cwd";
   };
+  cursor_settings = {
+    name = "macOS";
+    package = pkgs.apple-cursor;
+    size = 24;
+  };
 in
 {
   gtk = {
@@ -24,15 +29,15 @@ in
       name = "WhiteSur";
       package = pkgs.whitesur-icon-theme;
     };
-    cursorTheme = {
-      name = "macOS";
-      package = pkgs.apple-cursor;
-      size = 24;
-    };
+    cursorTheme = cursor_settings;
     font = {
       name = "Rubik";
       package = pkgs.rubik;
     };
+  };
+
+  home.pointerCursor = cursor_settings // {
+    gtk.enable = true;
   };
 
   dconf = {
