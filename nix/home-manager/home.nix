@@ -2,6 +2,7 @@
 # │ HOME MANAGER CONFIGURATION                               │
 # ╰──────────────────────────────────────────────────────────╯
 
+{ meta, ... }:
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
@@ -14,8 +15,8 @@
 
   # ── Configuration ─────────────────────────────────────────────────────
   home = {
-    username = "nhan";
-    homeDirectory = "/home/nhan";
+    username = meta.username;
+    homeDirectory = "/home/${meta.username}";
 
     packages = [ ];
 
