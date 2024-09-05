@@ -31,6 +31,7 @@ in
     };
     font = {
       name = "Rubik";
+      package = pkgs.rubik;
     };
   };
 

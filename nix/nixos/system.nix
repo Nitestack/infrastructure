@@ -86,6 +86,7 @@
     fastfetch
     fzf
     jdk
+    jq
     lazygit
     less # delta dependency
     oh-my-posh
