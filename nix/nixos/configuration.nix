@@ -75,4 +75,5 @@
     defaultEditor = true;
   };
   programs.tmux.enable = true;
+  programs.nix-ld.enable = true;
 }

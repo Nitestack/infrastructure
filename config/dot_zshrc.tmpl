@@ -11,6 +11,11 @@ export PATH="$PATH:$(gem env path | sed 's#[^:]\+#&/bin#g')"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
+{{- if eq .chezmoi.os }}
+
+export NIX_LD=$(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"; in NIX_LD')
+{{- end }}
+
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 {{ $paths := list }}
