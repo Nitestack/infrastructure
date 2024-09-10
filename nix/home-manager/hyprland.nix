@@ -298,24 +298,19 @@
       enable = true;
       package = pkgs.rofi-wayland;
       extraConfig = {
-        modes = "drun,run,filebrowser";
+        modi = "drun,run,filebrowser";
         show-icons = true;
-
-        display-drun = "Apps";
-        display-run = "Run";
-        display-filebrowser = "Files";
+        display-drun = "";
+        display-run = "";
+        display-filebrowser = "";
+        drun-display-format = "{name}";
       };
+      font = "MonaspiceNe Nerd Font 10";
       pass = {
         enable = true;
       };
       theme =
         let
-          # Use `mkLiteral` for string-like values that should show without
-          # quotes, e.g.:
-          # {
-          #   foo = "abc"; => foo: "abc";
-          #   bar = mkLiteral "abc"; => bar: abc;
-          # };
           inherit (config.lib.formats.rasi) mkLiteral;
         in
         {
@@ -323,6 +318,7 @@
             ***----- Global Properties -----****
           */
           "*" = {
+            # Catppuccin
             background = mkLiteral "#1E1D2FFF";
             background-alt = mkLiteral "#282839FF";
             foreground = mkLiteral "#D9E0EEFF";
@@ -330,7 +326,7 @@
             active = mkLiteral "#ABE9B3FF";
             urgent = mkLiteral "#F28FADFF";
 
-            font = "Rubik 14";
+            font = "MonaspiceNe Nerd Font 10";
 
             border-colour = mkLiteral "var(selected)";
             handle-colour = mkLiteral "var(selected)";
@@ -366,7 +362,7 @@
             location = mkLiteral "center";
             anchor = mkLiteral "center";
             fullscreen = false;
-            width = mkLiteral "800px";
+            width = mkLiteral "600px";
             x-offset = mkLiteral "0px";
             y-offset = mkLiteral "0px";
 
@@ -381,13 +377,13 @@
             # Backgroud Colors
             background-color = mkLiteral "@background-colour";
             # Backgroud Image
-            # background-image:          url("/path/to/image.png", none);
+            # background-image = mkLiteral "url('/path/to/image.png', none)";
             # Simple Linear Gradient
-            # background-image:          linear-gradient(red, orange, pink, purple);
+            # background-image = mkLiteral "linear-gradient(red, orange, pink, purple)";
             # Directional Linear Gradient
-            # background-image:          linear-gradient(to bottom, pink, yellow, magenta);
+            # background-image = mkLiteral "linear-gradient(to bottom, pink, yellow, magenta)";
             # Angle Linear Gradient
-            # background-image:          linear-gradient(45, cyan, purple, indigo);
+            # background-image = mkLiteral "linear-gradient(45, cyan, purple, indigo)";
           };
 
           /**
@@ -395,9 +391,9 @@
           */
           mainbox = {
             enabled = true;
-            spacing = mkLiteral "0px";
+            spacing = mkLiteral "10px";
             margin = mkLiteral "0px";
-            padding = mkLiteral "20px";
+            padding = mkLiteral "30px";
             border = mkLiteral "0px solid";
             border-radius = mkLiteral "0px 0px 0px 0px";
             border-color = mkLiteral "@border-colour";
@@ -405,7 +401,6 @@
             children = [
               "inputbar"
               "message"
-              "mode-switcher"
               "listview"
             ];
           };
@@ -416,21 +411,22 @@
           inputbar = {
             enabled = true;
             spacing = mkLiteral "10px";
-            margin = mkLiteral "0px 0px 10px 0px";
-            padding = mkLiteral "5px 10px";
+            margin = mkLiteral "0px";
+            padding = mkLiteral "0px";
             border = mkLiteral "0px solid";
-            border-radius = mkLiteral "10px";
+            border-radius = mkLiteral "0px";
             border-color = mkLiteral "@border-colour";
-            background-color = mkLiteral "@alternate-background";
+            background-color = mkLiteral "transparent";
             text-color = mkLiteral "@foreground-colour";
             children = [
               "textbox-prompt-colon"
               "entry"
+              "mode-switcher"
             ];
           };
 
           prompt = {
-            enabled = true;
+            enabled = mkLiteral "true";
             background-color = mkLiteral "inherit";
             text-color = mkLiteral "inherit";
           };
@@ -481,11 +477,11 @@
           */
           listview = {
             enabled = true;
-            columns = 1;
-            lines = 8;
+            columns = mkLiteral "1";
+            lines = mkLiteral "8";
             cycle = true;
             dynamic = true;
-            scrollbar = false;
+            scrollbar = true;
             layout = mkLiteral "vertical";
             reverse = false;
             fixed-height = true;
@@ -493,16 +489,16 @@
 
             spacing = mkLiteral "5px";
             margin = mkLiteral "0px";
-            padding = mkLiteral "10px";
-            border = mkLiteral "0px 2px 2px 2px ";
-            border-radius = mkLiteral "0px 0px 10px 10px";
+            padding = mkLiteral "0px";
+            border = mkLiteral "0px solid";
+            border-radius = mkLiteral "0px";
             border-color = mkLiteral "@border-colour";
             background-color = mkLiteral "transparent";
             text-color = mkLiteral "@foreground-colour";
             cursor = "default";
           };
           scrollbar = {
-            handle-width = mkLiteral "5px";
+            handle-width = mkLiteral "5px ";
             handle-color = mkLiteral "@handle-colour";
             border-radius = mkLiteral "10px";
             background-color = mkLiteral "@alternate-background";
@@ -515,9 +511,9 @@
             enabled = true;
             spacing = mkLiteral "10px";
             margin = mkLiteral "0px";
-            padding = mkLiteral "6px";
+            padding = mkLiteral "5px 10px";
             border = mkLiteral "0px solid";
-            border-radius = mkLiteral "6px";
+            border-radius = mkLiteral "10px";
             border-color = mkLiteral "@border-colour";
             background-color = mkLiteral "transparent";
             text-color = mkLiteral "@foreground-colour";
@@ -579,8 +575,7 @@
           */
           mode-switcher = {
             enabled = true;
-            expand = false;
-            spacing = mkLiteral "0px";
+            spacing = mkLiteral "10px";
             margin = mkLiteral "0px";
             padding = mkLiteral "0px";
             border = mkLiteral "0px solid";
@@ -590,20 +585,17 @@
             text-color = mkLiteral "@foreground-colour";
           };
           button = {
-            padding = mkLiteral "10px";
-            border = mkLiteral "0px 0px 2px 0px";
-            border-radius = mkLiteral "10px 10px 0px 0px";
+            padding = mkLiteral "5px 10px";
+            border = mkLiteral "0px solid";
+            border-radius = mkLiteral "10px";
             border-color = mkLiteral "@border-colour";
-            background-color = mkLiteral "@background-colour";
+            background-color = mkLiteral "@alternate-background";
             text-color = mkLiteral "inherit";
             cursor = mkLiteral "pointer";
           };
           "button selected" = {
-            border = mkLiteral "2px 2px 0px 2px";
-            border-radius = mkLiteral "10px 10px 0px 0px";
-            border-color = mkLiteral "@border-colour";
-            background-color = mkLiteral "var(normal-background)";
-            text-color = mkLiteral "var(normal-foreground)";
+            background-color = mkLiteral "var(selected-normal-background)";
+            text-color = mkLiteral "var(selected-normal-foreground)";
           };
 
           /**
@@ -611,7 +603,7 @@
           */
           message = {
             enabled = true;
-            margin = mkLiteral "0px 0px 10px 0px";
+            margin = mkLiteral "0px";
             padding = mkLiteral "0px";
             border = mkLiteral "0px solid";
             border-radius = mkLiteral "0px 0px 0px 0px";
@@ -620,7 +612,7 @@
             text-color = mkLiteral "@foreground-colour";
           };
           textbox = {
-            padding = mkLiteral "10px";
+            padding = mkLiteral "8px 10px";
             border = mkLiteral "0px solid";
             border-radius = mkLiteral "10px";
             border-color = mkLiteral "@border-colour";
