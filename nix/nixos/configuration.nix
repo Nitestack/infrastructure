@@ -14,6 +14,7 @@
     ./hardware-configuration.nix
 
     ./audio.nix
+    ./gnome.nix
     ./hyprland.nix
     ./locale.nix
     ./system.nix

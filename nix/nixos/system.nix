@@ -80,6 +80,7 @@
 
     # Packages
     bat
+    btop
     delta
     eza
     fd
@@ -102,7 +103,6 @@
     jetbrains.webstorm
     spotify
     vscode
-    wezterm
     zed-editor
 
     # NixOS

@@ -11,6 +11,7 @@
     ./git.nix
     ./hyprland.nix
     ./theme.nix
+    ./wezterm.nix
   ];
 
   # ── Configuration ─────────────────────────────────────────────────────
