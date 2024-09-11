@@ -10,6 +10,7 @@
     ./browser.nix
     ./git.nix
     ./hyprland.nix
+    ./rofi.nix
     ./theme.nix
     ./wezterm.nix
   ];
