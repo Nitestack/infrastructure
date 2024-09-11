@@ -60,10 +60,12 @@
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixos"
         ];
         extraGroups = [
-          "wheel"
-          "networkmanager"
+          "audio"
           "docker"
           "libvirtd"
+          "networkmanager"
+          "video"
+          "wheel"
         ];
       };
     };

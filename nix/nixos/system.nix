@@ -99,6 +99,7 @@
     # Apps
     bitwarden-desktop
     google-chrome
+    gnome-system-monitor
     jetbrains.idea-ultimate
     jetbrains.webstorm
     spotify
@@ -147,6 +148,7 @@
       excludePackages = with pkgs; [ xterm ];
     };
     gvfs.enable = true;
+    playerctld.enable = true;
   };
 
   # Bootloader

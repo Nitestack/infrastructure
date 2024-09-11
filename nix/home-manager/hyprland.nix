@@ -6,6 +6,23 @@
   pkgs,
   ...
 }:
+let
+  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+  cliphist = "${pkgs.cliphist}/bin/cliphist";
+  firefox = "${pkgs.firefox}/bin/firefox";
+  gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
+  kitty = "${pkgs.kitty}/bin/kitty";
+  nautilus = "${pkgs.nautilus}/bin/nautilus";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
+  rofi = "${pkgs.rofi-wayland}/bin/rofi";
+  safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
+  spotify = "${pkgs.spotify}/bin/spotify";
+  wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
+  wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
+  wpctl = "${pkgs.wireplumber}/bin/wpctl";
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -18,17 +35,17 @@
     settings = {
       # ── Autostart ─────────────────────────────────────────────────────────
       exec-once = [
-        "${pkgs.safeeyes}/bin/safeeyes -e"
-        "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular"
-        "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store"
-        "${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store"
+        "${safeeyes} -e"
+        "${wl-clip-persist} --clipboard regular"
+        "${wl-paste} --type text --watch ${cliphist} store"
+        "${wl-paste} --type image --watch ${cliphist} store"
 
-        "[workspace 1 silent] firefox"
-        "[workspace 2 silent] kitty"
-        "[workspace 3 silent] spotify"
+        "[workspace 1 silent] ${firefox}"
+        "[workspace 2 silent] ${kitty}"
+        "[workspace 3 silent] ${spotify}/bin/spotify"
       ];
       exec = [
-        "${pkgs.hyprshade}/bin/hyprshade auto"
+        "${hyprshade} auto"
       ];
 
       # ── Environment Variables ─────────────────────────────────────────────
@@ -233,9 +250,10 @@
       "$mmb" = "mouse:274"; # Middle mouse button
       bindd =
         [
-          "SUPER, Slash, Open Terminal, exec, kitty"
-          "SUPER, E, Open File Manager, exec, nautilus --new-window"
-          "SUPER, W, Open Browser, exec, firefox"
+          "SUPER, Slash, Open Terminal, exec, ${kitty}"
+          "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
+          "SUPER, W, Open Browser, exec, ${firefox}"
+          "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
 
           "SUPER, H, Move Focus to Left Window, movefocus, l"
           "SUPER, L, Move Focus to Right Window, movefocus, r"
@@ -256,7 +274,7 @@
           "SUPER, P, Toggle Focused Window's Pseudo Mode, pseudo"
           "SUPER, R, Toggle Split Orientation, togglesplit"
           "SUPER, T, Toggle Active Window Floating, togglefloating"
-          "SUPER SHIFT, T, Toggle All Windows Floating, exec, hyprctl dispatch workspaceopt allfloat"
+          "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${hyprctl} dispatch workspaceopt allfloat"
         ]
         ++ (builtins.concatLists (
           builtins.genList (
@@ -283,13 +301,28 @@
           "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
         ];
       binddr = [
-        "ALT, space, Toggle App Launcher, exec, pkill rofi || rofi -show drun"
+        "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
       ];
       bindde = [
         "SUPER ALT, H, Move Window Left, movewindow, l"
         "SUPER ALT, L, Move Window Right, movewindow, r"
         "SUPER ALT, K, Move Window Upwards, movewindow, u"
         "SUPER ALT, J, Move Window Downwards, movewindow, d"
+      ];
+      binddl = [
+        ", XF86AudioPlay, Play/Pause, exec, ${playerctl} play-pause"
+        ", XF86AudioPause, Play/Pause, exec, ${playerctl} play-pause"
+        ", XF86AudioNext, Skip to Next Track, exec, ${playerctl} next"
+        ", XF86AudioPrev, Return to Previous Track, exec, ${playerctl} previous"
+      ];
+      binddel = [
+        ", XF86AudioRaiseVolume, Increase Volume, exec, ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, Decrease Volume, exec, ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86AudioMute, Mute/Unmute Volume, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+
+        ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${brightnessctl} s 10%+"
+        ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${brightnessctl} s 10%-"
       ];
       binddm = [
         "SUPER, $rmb, Resize Window, resizewindow"

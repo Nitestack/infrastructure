@@ -34,10 +34,12 @@
   };
 
   environment.systemPackages = with pkgs; [
+    brightnessctl
     cliphist
     dunst
     hyprshade
     kitty
+    polkit_gnome
     safeeyes
     waybar
     wl-clip-persist

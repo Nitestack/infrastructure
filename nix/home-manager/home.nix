@@ -3,6 +3,9 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 { pkgs, meta, ... }:
+let
+  googleChrome = "${pkgs.google-chrome}/bin/google-chrome-stable";
+in
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
@@ -35,7 +38,7 @@
           "Network"
           "FileTransfer"
         ];
-        exec = "google-chrome-stable --app=https://snapdrop.net --name=Snapdrop";
+        exec = "${googleChrome} --app=https://snapdrop.net --name=Snapdrop";
         icon = "${pkgs.fetchurl {
           url = "https://raw.githubusercontent.com/snapdrop/snapdrop/master/client/images/logo_transparent_512x512.png";
           sha256 = "sha256-QMgXdeaNxg+e71dKAojR1h1zcpwBCNX10JQfD0fqhes=";
@@ -47,6 +50,8 @@
       createDirectories = true;
     };
   };
+
+  news.display = "show";
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
