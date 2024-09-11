@@ -220,7 +220,6 @@
       bindd =
         [
           "SUPER, Slash, Open Terminal, exec, kitty"
-
           "SUPER, E, Open File Manager, exec, nautilus --new-window"
           "SUPER, W, Open Browser, exec, firefox"
 
@@ -269,9 +268,10 @@
           "SUPER, S, Toggle Scratchpad, togglespecialworkspace, magic"
           "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
         ];
+      binddr = [
+        "ALT, space, Toggle App Launcher, exec, pkill rofi || rofi -show drun"
+      ];
       bindde = [
-        "ALT, space, Toggle App Launcher, exec, rofi -show drun"
-
         "SUPER ALT, H, Move Window Left, movewindow, l"
         "SUPER ALT, L, Move Window Right, movewindow, r"
         "SUPER ALT, K, Move Window Upwards, movewindow, u"
