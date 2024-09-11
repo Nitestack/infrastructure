@@ -9,7 +9,6 @@ packages:
       - "bluez" # Bluetooth
       - "bluez-utils" # Bluetooth
       - "brightnessctl" # Brightness control for internal monitors
-      - "dart-sass" # Required dependency for ags
       - "desktop-file-utils" # Utilities for working with desktop entries
       - "ddcutil" # Required for `ddcci-driver-linux`
       - "docker" # Containerization
@@ -19,8 +18,6 @@ packages:
       - "efibootmgr" # Required for `grub`
       - "grub" # Boot loader
       - "gst-plugin-pipewire" # Required for `pipewire`
-      - "gnome-bluetooth-3.0" # Required for `ags`
-      - "gvfs" # Required for `ags`
       - "htop" # Process monitor
       - "hypridle" # Idle daemon for Hyprland
       - "hyprland" # Wayland compositor
@@ -70,7 +67,6 @@ packages:
       - "xdg-utils" # Utilities for managing XDG MIME Applications
     paru:
       - "adw-gtk3-git" # System theme (customizable with `gradience`)
-      - "aylurs-gtk-shell" # ags - GTK widget toolkit
       - "ddcci-driver-linux-dkms-git" # Expose external monitors in `sysfs`
       - "easyeffects-presets" # Control EasyEffects from the polybar status bar
       - "gradience" # Customizing Libadwaita applications and the adw-gtk3 theme
@@ -78,7 +74,6 @@ packages:
       - "hyprshade-git" # Switching screen shaders in Hyprland
       - "mpris-proxy-service" # mpris-proxy automation
       - "safeeyes" # Reduce and prevent repetitive strain injury
-      - "swww" # Required dependency for ags
       - "ttf-rubik-vf" # Font: Rubik
       - "wayshot" # Screenshot tool for wlroots compositors
       - "wl-clip-persist" # Persistent clipboard

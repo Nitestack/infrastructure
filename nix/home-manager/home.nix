@@ -6,7 +6,6 @@
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
-    ./ags.nix
     ./browser.nix
     ./git.nix
     ./hyprland.nix

@@ -24,9 +24,6 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    # ags
-    ags.url = "github:Aylur/ags";
-
     # Firefox GNOME Theme
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";

@@ -5,7 +5,6 @@
 {
   inputs,
   pkgs,
-  config,
   ...
 }:
 {
@@ -199,7 +198,6 @@
           (f "Color Picker")
           (f "dconf-editor")
 
-          (f "com.github.Aylur.ags")
           (f "com.github.GradienceTeam.Gradience")
 
           "immediate,.*\.exe" # Tearing

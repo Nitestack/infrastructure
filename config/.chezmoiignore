@@ -17,7 +17,6 @@ Pictures
 
 # NixOS
 {{ if ne .osid "linux-nixos" }}
-.config/ags
 .config/bat
 .config/Code
 .config/hypr
@@ -47,13 +46,6 @@ Library
 {{ end }}
 
 .config/nvim/templates
-
-# ags
-.config/ags/bun.lockb
-.config/ags/node_modules
-.config/ags/package.json
-.config/ags/prettier.config.mjs
-.config/ags/types
 
 # Ignore SSH keys in work environment
 # {{ if eq .hosttype "work" }}
