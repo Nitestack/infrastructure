@@ -16,14 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Hyprland
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    # Hyprland Plugins
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     # Firefox GNOME Theme
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";
