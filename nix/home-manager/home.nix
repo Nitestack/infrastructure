@@ -8,7 +8,9 @@
   imports = [
     ./browser.nix
     ./git.nix
+    ./hypridle.nix
     ./hyprland.nix
+    ./hyprlock.nix
     ./rofi.nix
     ./theme.nix
     ./wezterm.nix
