@@ -305,7 +305,7 @@
         display-filebrowser = "";
         drun-display-format = "{name}";
       };
-      font = "MonaspiceNe Nerd Font 10";
+      font = "MonaspiceNe Nerd Font Mono 10";
       pass = {
         enable = true;
       };
@@ -326,7 +326,7 @@
             active = mkLiteral "#ABE9B3FF";
             urgent = mkLiteral "#F28FADFF";
 
-            font = "MonaspiceNe Nerd Font 10";
+            font = "MonaspiceNe Nerd Font Mono 10";
 
             border-colour = mkLiteral "var(selected)";
             handle-colour = mkLiteral "var(selected)";
