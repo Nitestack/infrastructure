@@ -4,11 +4,18 @@
 
 { pkgs, ... }:
 {
-  programs.hyprland.enable = true;
+  programs = {
+    hyprland.enable = true;
+    hyprlock.enable = true;
+  };
 
   xdg.portal.enable = true;
 
-  security.polkit.enable = true;
+  security = {
+    pam.services.hyprlock = { };
+    polkit.enable = true;
+  };
+  services.hypridle.enable = true;
 
   systemd = {
     user.services.polkit-gnome-authentication-agent-1 = {
@@ -27,10 +34,16 @@
   };
 
   environment.systemPackages = with pkgs; [
-    waybar
+    cliphist
     dunst
+    hyprshade
     kitty
+    safeeyes
+    waybar
+    wl-clip-persist
+    wl-clipboard
   ];
 
+  # Use Wayland (Electron)
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

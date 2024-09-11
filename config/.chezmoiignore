@@ -13,7 +13,6 @@ Documents
 .wslconfig
 {{ end }}
 
-Pictures
 
 # NixOS
 {{ if ne .osid "linux-nixos" }}
@@ -23,6 +22,8 @@ Pictures
 .config/lazygit
 .config/qt5ct
 .config/qt6ct
+
+Pictures
 {{ end }}
 
 # macOS
