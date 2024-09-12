@@ -1,10 +1,12 @@
 { pkgs, ... }:
 {
-  services.xserver.desktopManager.gnome.enable = true;
+  services = {
+    xserver.desktopManager.gnome.enable = true;
+    gnome = {
+      sushi.enable = true;
+      core-developer-tools.enable = true;
+    };
 
-  services.gnome = {
-    sushi.enable = true;
-    core-developer-tools.enable = true;
   };
 
   environment.gnome.excludePackages = (
