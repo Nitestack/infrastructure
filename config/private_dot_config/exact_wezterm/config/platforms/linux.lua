@@ -11,10 +11,11 @@ function M.setup(config)
   config.integrated_title_button_style = "Gnome"
   config.bypass_mouse_reporting_modifiers = "CTRL"
 
-  -- On Hyprland
   config.enable_tab_bar = false
-  -- NOTE: Temporary solution to make WezTerm work
+  -- NOTE: Hyprland Issue
   config.enable_wayland = false
+  -- NOTE: NixOS Issue
+  config.front_end = "WebGpu"
 end
 
 return M

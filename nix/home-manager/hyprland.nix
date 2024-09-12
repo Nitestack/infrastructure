@@ -7,13 +7,13 @@
   ...
 }:
 let
+  # Bins
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   firefox = "${pkgs.firefox}/bin/firefox";
   gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
-  kitty = "${pkgs.kitty}/bin/kitty";
   nautilus = "${pkgs.nautilus}/bin/nautilus";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
@@ -23,6 +23,8 @@ let
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
+
+  wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
 in
 {
   wayland.windowManager.hyprland = {
@@ -43,7 +45,7 @@ in
         "${wl-paste} --type image --watch ${cliphist} store"
 
         "[workspace 1 silent] ${firefox}"
-        "[workspace 2 silent] ${kitty}"
+        "[workspace 2 silent] ${wezterm_startup_script}"
         "[workspace 3 silent] ${spotify}/bin/spotify"
       ];
       exec = [
@@ -252,7 +254,7 @@ in
       "$mmb" = "mouse:274"; # Middle mouse button
       bindd =
         [
-          "SUPER, Slash, Open Terminal, exec, ${kitty}"
+          "SUPER, Slash, Open Terminal, exec, ${wezterm_startup_script}"
           "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
           "SUPER, W, Open Browser, exec, ${firefox}"
           "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
