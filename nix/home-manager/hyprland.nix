@@ -18,6 +18,7 @@ let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
+  snixembed = "${pkgs.snixembed}/bin/snixembed";
   spotify = "${pkgs.spotify}/bin/spotify";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
@@ -35,6 +36,7 @@ in
     settings = {
       # ── Autostart ─────────────────────────────────────────────────────────
       exec-once = [
+        "${snixembed} --fork"
         "${safeeyes} -e"
         "${wl-clip-persist} --clipboard regular"
         "${wl-paste} --type text --watch ${cliphist} store"

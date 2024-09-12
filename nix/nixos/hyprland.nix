@@ -44,6 +44,8 @@
     waybar
     wl-clip-persist
     wl-clipboard
+
+    snixembed
   ];
 
   # Use Wayland (Electron)
