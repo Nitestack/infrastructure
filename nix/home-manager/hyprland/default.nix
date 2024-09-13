@@ -27,6 +27,12 @@ let
   wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
 in
 {
+  imports = [
+    ./hypridle.nix
+    ./hyprlock.nix
+    ./hyprpaper.nix
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -342,16 +348,5 @@ in
     exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
     categories = [ "X-Preferences" ];
     terminal = false;
-  };
-
-  services = {
-    easyeffects.enable = true;
-    hyprpaper = {
-      enable = true;
-      settings = {
-        preload = "~/Pictures/wallpapers/Fantasy-Landscape3.png";
-        wallpaper = ",~/Pictures/wallpapers/Fantasy-Landscape3.png";
-      };
-    };
   };
 }

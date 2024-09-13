@@ -10,10 +10,9 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     ./browser.nix
+    ./easyeffects.nix
     ./git.nix
-    ./hypridle.nix
-    ./hyprland.nix
-    ./hyprlock.nix
+    ./hyprland/default.nix
     ./rofi.nix
     ./theme.nix
     ./wezterm.nix
@@ -58,6 +57,9 @@ in
     neovim = {
       enable = true;
       defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
     };
     home-manager.enable = true;
   };
