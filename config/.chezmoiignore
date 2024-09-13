@@ -19,8 +19,6 @@ Documents
 .config/Code
 .config/hypr
 .config/lazygit
-.config/qt5ct
-.config/qt6ct
 
 Pictures
 {{ end }}
