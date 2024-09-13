@@ -74,8 +74,6 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **PowerShell Profile**: Customized PowerShell profile with a styled prompt, optimized history settings, aliases, and various Linux utilities ported over to PowerShell for enhanced productivity
 
-- **Komorebi Configuration**: Customizations and tweaks for the tiling window manager (extension to the [Desktop Window Manager](https://docs.microsoft.com/windows/win32/dwm/dwm-overview))
-
 ---
 
 And more to discover.
