@@ -23,52 +23,54 @@
   };
 
   # ── Outputs ───────────────────────────────────────────────────────────
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
+    let
+      inherit (self) outputs;
 
-    # Meta Information
-    meta = {
-      username = "nhan";
-      description = "Nhan Pham";
-      hostname = "nixstation";
-    };
-    # Supported Systems
-    systems = [
-      "aarch64-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-    ];
+      # Meta Information
+      meta = {
+        username = "nhan";
+        description = "Nhan Pham";
+        hostname = "nixstation";
+      };
+      # Supported Systems
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
 
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-  in {
-    # Custom Packages
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+    in
+    {
+      # Custom Packages
+      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+      # Formatter
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
-    overlays = import ./overlays;
-    nixosModules = import ./nixos/modules;
-    homeManagerModules = import ./home-manager/modules;
+      overlays = import ./overlays;
+      nixosModules = import ./nixos/modules;
+      homeManagerModules = import ./home-manager/modules;
 
-    nixosConfigurations = {
-      ${meta.hostname} = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs outputs meta;
+      nixosConfigurations = {
+        ${meta.hostname} = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs meta;
+          };
+          system = "x86_64-linux";
+          modules = [
+            # Home Manager
+            home-manager.nixosModules.home-manager
+            # Configuration
+            ./nixos/configuration.nix
+          ];
         };
-        system = "x86_64-linux";
-        modules = [
-          # Home Manager
-          home-manager.nixosModules.home-manager
-          # Configuration
-          ./nixos/configuration.nix
-        ];
       };
     };
-  };
 }

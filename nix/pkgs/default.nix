@@ -1,3 +1,3 @@
 pkgs: {
-  hyprshade = pkgs.callPackage ./hyprshade {};
+  hyprshade = pkgs.callPackage ./hyprshade { };
 }

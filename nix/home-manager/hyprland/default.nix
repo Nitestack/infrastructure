@@ -1,7 +1,8 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ HYPRLAND                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   # Bins
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   cliphist = "${pkgs.cliphist}/bin/cliphist";
@@ -20,7 +21,8 @@
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
   wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
-in {
+in
+{
   imports = [
     ./hypridle.nix
     ./hyprlock.nix
@@ -32,7 +34,7 @@ in {
     xwayland.enable = true;
     systemd = {
       enable = true;
-      variables = ["--all"];
+      variables = [ "--all" ];
     };
 
     settings = {
@@ -210,33 +212,35 @@ in {
       # https://wiki.hyprland.org/Configuring/Window-Rules
       # https://wiki.hyprland.org/Configuring/Workspace-Rules
 
-      windowrule = let
-        f = regex: "float, ^(${regex})$";
-      in [
-        # Floating windows
-        (f "confirm")
-        (f "file_progress")
-        (f "dialog")
+      windowrule =
+        let
+          f = regex: "float, ^(${regex})$";
+        in
+        [
+          # Floating windows
+          (f "confirm")
+          (f "file_progress")
+          (f "dialog")
 
-        (f "org.gnome.Calculator")
-        (f "org.gnome.Nautilus")
-        (f "org.gnome.SystemMonitor")
-        (f "nm-connection-editor")
-        (f "org.gnome.Settings")
-        (f "org.gnome.design.Palette")
+          (f "org.gnome.Calculator")
+          (f "org.gnome.Nautilus")
+          (f "org.gnome.SystemMonitor")
+          (f "nm-connection-editor")
+          (f "org.gnome.Settings")
+          (f "org.gnome.design.Palette")
 
-        (f "Color Picker")
-        (f "dconf-editor")
+          (f "Color Picker")
+          (f "dconf-editor")
 
-        (f "com.github.GradienceTeam.Gradience")
+          (f "com.github.GradienceTeam.Gradience")
 
-        (f "pavucontrol")
-        (f "nm-connection-editor")
-        (f "xdg-desktop-portal")
-        (f "xdg-desktop-portal-gnome")
+          (f "pavucontrol")
+          (f "nm-connection-editor")
+          (f "xdg-desktop-portal")
+          (f "xdg-desktop-portal-gnome")
 
-        "immediate,.*\.exe" # Tearing
-      ];
+          "immediate,.*\.exe" # Tearing
+        ];
 
       windowrulev2 = [
         "suppressevent maximize, class:.*"
@@ -280,18 +284,16 @@ in {
         ]
         ++ (builtins.concatLists (
           builtins.genList (
-            i: let
+            i:
+            let
               wsNo = i + 1;
-              wsIndex =
-                if wsNo == 10
-                then 0
-                else wsNo;
-            in [
+              wsIndex = if wsNo == 10 then 0 else wsNo;
+            in
+            [
               "SUPER, ${toString wsIndex}, Switch to Workspace ${toString wsNo}, workspace, ${toString wsNo}"
               "SUPER SHIFT, ${toString wsIndex}, Move Active Window to Workspace ${toString wsNo}, movetoworkspace, ${toString wsNo}"
             ]
-          )
-          10
+          ) 10
         ))
         ++ [
           "SUPER CTRL, H, Switch to Previous Workspace, workspace, e-1"
@@ -340,7 +342,7 @@ in {
     comment = "Gnome Control Center";
     icon = "org.gnome.Settings";
     exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
-    categories = ["X-Preferences"];
+    categories = [ "X-Preferences" ];
     terminal = false;
   };
 }

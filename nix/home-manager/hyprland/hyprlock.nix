@@ -1,4 +1,5 @@
-{meta, ...}: {
+{ meta, ... }:
+{
   programs.hyprlock = {
     enable = true;
     settings = {

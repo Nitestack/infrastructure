@@ -7,7 +7,8 @@
   pkgs,
   meta,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
 

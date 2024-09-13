@@ -3,7 +3,8 @@
 # ╰──────────────────────────────────────────────────────────╯
 let
   githubUsername = "Nitestack";
-in {
+in
+{
   programs.git = {
     enable = true;
     userName = githubUsername;
