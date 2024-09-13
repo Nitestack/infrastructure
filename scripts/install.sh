@@ -31,12 +31,17 @@ else
   git clone -b "${BRANCH}" "${remote}" "${TARGET}"
 fi
 
+# NixOS only: initialize system
+if command -v "nixos-version" &>/dev/null; then
+  sudo nixos-rebuild switch --flake "${TARGET}/nix#nixstation"
+fi
+
 set -- --source="${TARGET}" --verbose=false
 
 if [[ -n "${ONE_SHOT-}" ]]; then
-	set -- "$@" --one-shot
+  set -- "$@" --one-shot
 else
-	set -- "$@" --apply
+  set -- "$@" --apply
 fi
 
 chezmoi init "$@"
