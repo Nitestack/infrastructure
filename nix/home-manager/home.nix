@@ -5,9 +5,11 @@
   pkgs,
   meta,
   ...
-}: let
+}:
+let
   googleChrome = "${pkgs.google-chrome}/bin/google-chrome-stable";
-in {
+in
+{
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     ./browser.nix

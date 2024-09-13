@@ -4,6 +4,8 @@
 
   # Change versions, add patches, set compilation flags, ...
   # https://nixos.wiki/wiki/Overlays
-  modifications = final: prev: {
-  };
+  modifications =
+    final: prev:
+    {
+    };
 }

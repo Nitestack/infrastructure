@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   services = {
     xserver.desktopManager.gnome.enable = true;
     gnome = {
@@ -8,7 +9,8 @@
   };
 
   environment.gnome.excludePackages = (
-    with pkgs; [
+    with pkgs;
+    [
       baobab
       epiphany
       gnome-text-editor

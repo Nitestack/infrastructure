@@ -35,6 +35,6 @@ pkgs.python3Packages.buildPythonPackage rec {
   postFixup = ''
     wrapProgram $out/bin/hyprshade \
       --set HYPRSHADE_SHADERS_DIR $out/share/hyprshade/shaders \
-      --prefix PATH : ${lib.makeBinPath [pkgs.hyprland]}
+      --prefix PATH : ${lib.makeBinPath [ pkgs.hyprland ]}
   '';
 }

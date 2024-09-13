@@ -1,7 +1,8 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ THEME                                                    │
 # ╰──────────────────────────────────────────────────────────╯
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   gtk_settings = {
     show-hidden = true;
     sort-directories-first = true;
@@ -12,7 +13,8 @@
     package = pkgs.apple-cursor;
     size = 24;
   };
-in {
+in
+{
   gtk = {
     enable = true;
     theme = {
@@ -30,11 +32,9 @@ in {
     };
   };
 
-  home.pointerCursor =
-    cursor_settings
-    // {
-      gtk.enable = true;
-    };
+  home.pointerCursor = cursor_settings // {
+    gtk.enable = true;
+  };
 
   dconf = {
     enable = true;
