@@ -105,9 +105,10 @@
     zed-editor
 
     # NixOS
-    nautilus
     gnome-screenshot
     gnome-system-monitor
+    nautilus
+    nixd
     nixfmt-rfc-style
     (sddm-astronaut.override {
       themeConfig = {

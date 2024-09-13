@@ -14,6 +14,17 @@ return utils.is_linux()
                 },
               },
             },
+            mason = false,
+            autostart = false,
+          },
+          nixd = {
+            settings = {
+              nixd = {
+                formatting = {
+                  command = { "nixfmt" },
+                },
+              },
+            },
           },
         },
       },
