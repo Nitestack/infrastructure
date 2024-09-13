@@ -40,7 +40,7 @@ if ($?) {
   }
   else {
     git add "$LazyLockPath"
-    git commit "$LazyLockPath" -m "chore(nvim): update lazy-lock.json"
+    git commit "$LazyLockPath" -m "chore(nvim): update Neovim plugins"
     Set-Location "$CurrentPath"
     _Log -l info "Committed updated lazy-lock.json file"
   }
@@ -66,7 +66,7 @@ if ($?) {
   }
   else {
     git add "$LazyvimPath"
-    git commit "$LazyvimPath" -m "chore(nvim): update Neovim plugins"
+    git commit "$LazyvimPath" -m "chore(nvim): update LazyVim config"
     Set-Location "$CurrentPath"
     _Log -l info "Committed updated lazyvim.json file"
   }
