@@ -16,7 +16,6 @@ Documents
 
 # NixOS
 {{ if ne .osid "linux-nixos" }}
-.config/bat
 .config/Code
 .config/hypr
 .config/lazygit

@@ -141,6 +141,9 @@ eval "$(zoxide init --cmd cd zsh)"
 # Load fzf (must stay on the end)
 source <(fzf --zsh)
 
+# bat theme
+export BAT_THEME="Catppuccin Mocha"
+
 # fastfetch
 if [[ $(tty) == *"pts"* ]]; then
   fastfetch
