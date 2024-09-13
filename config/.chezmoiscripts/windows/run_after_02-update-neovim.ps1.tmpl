@@ -66,7 +66,7 @@ if ($?) {
   }
   else {
     git add "$LazyvimPath"
-    git commit "$LazyvimPath" -m "chore(nvim): update lazyvim.json"
+    git commit "$LazyvimPath" -m "chore(nvim): update Neovim plugins"
     Set-Location "$CurrentPath"
     _Log -l info "Committed updated lazyvim.json file"
   }
@@ -74,5 +74,5 @@ if ($?) {
   _Log -l info "Completed updates"
 }
 else {
-  _Log -l warn "Cancelled update process"
+  _Log -l warn "Skipping update process"
 }
