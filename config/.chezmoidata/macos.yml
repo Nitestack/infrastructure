@@ -5,7 +5,10 @@
 ---
 packages:
   mac:
-    formulae: []
+    formulae:
+      - "tmux"
+      - "jstkdng/programs/ueberzugpp"
+
 apps:
   mac:
     casks:
