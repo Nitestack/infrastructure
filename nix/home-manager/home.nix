@@ -1,18 +1,19 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ HOME MANAGER CONFIGURATION                               │
 # ╰──────────────────────────────────────────────────────────╯
-
-{ pkgs, meta, ... }:
-let
-  googleChrome = "${pkgs.google-chrome}/bin/google-chrome-stable";
-in
 {
+  pkgs,
+  meta,
+  ...
+}: let
+  googleChrome = "${pkgs.google-chrome}/bin/google-chrome-stable";
+in {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     ./browser.nix
     ./easyeffects.nix
     ./git.nix
-    ./hyprland/default.nix
+    ./hyprland
     ./rofi.nix
     ./theme.nix
     ./wezterm.nix

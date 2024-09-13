@@ -1,17 +1,14 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   services = {
     xserver.desktopManager.gnome.enable = true;
     gnome = {
       sushi.enable = true;
       core-developer-tools.enable = true;
     };
-
   };
 
   environment.gnome.excludePackages = (
-    with pkgs;
-    [
+    with pkgs; [
       baobab
       epiphany
       gnome-text-editor

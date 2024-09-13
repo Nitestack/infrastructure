@@ -1,13 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ LOCALE                                                   │
 # ╰──────────────────────────────────────────────────────────╯
-
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   english = "en_US.UTF-8";
   german = "de_DE.UTF-8";
-in
-{
+in {
   time.timeZone = "Europe/Berlin";
   i18n = {
     defaultLocale = english;
@@ -26,7 +23,7 @@ in
   console = {
     font = "ter-128n";
     keyMap = "us";
-    packages = [ pkgs.terminus_font ];
+    packages = [pkgs.terminus_font];
   };
   services.xserver.xkb = {
     layout = "us, us";

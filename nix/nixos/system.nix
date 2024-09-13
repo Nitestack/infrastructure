@@ -1,7 +1,6 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ SYSTEM                                                   │
 # ╰──────────────────────────────────────────────────────────╯
-
 {
   inputs,
   config,
@@ -9,31 +8,28 @@
   pkgs,
   meta,
   ...
-}:
-{
+}: {
   # nix
   documentation.nixos.enable = false;
   nixpkgs.config.allowUnfree = true;
-  nix =
-    let
-      flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
-    in
-    {
-      settings = {
-        experimental-features = "nix-command flakes";
-        # Opinionated: disable global registry
-        flake-registry = "";
-        # Workaround for https://github.com/NixOS/nix/issues/9574
-        nix-path = config.nix.nixPath;
-        auto-optimise-store = true;
-      };
-      # Opinionated: disable channels
-      channel.enable = false;
-
-      # Opinionated: make flake registry and nix path match flake inputs
-      registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
-      nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  nix = let
+    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  in {
+    settings = {
+      experimental-features = "nix-command flakes";
+      # Opinionated: disable global registry
+      flake-registry = "";
+      # Workaround for https://github.com/NixOS/nix/issues/9574
+      nix-path = config.nix.nixPath;
+      auto-optimise-store = true;
     };
+    # Opinionated: disable channels
+    channel.enable = false;
+
+    # Opinionated: make flake registry and nix path match flake inputs
+    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
+  };
 
   fonts = {
     packages = with pkgs; [
@@ -50,9 +46,9 @@
     enableDefaultPackages = true;
     fontconfig = {
       defaultFonts = {
-        sansSerif = [ "Rubik" ];
-        monospace = [ "MonaspaceNe Nerd Font" ];
-        emoji = [ "Noto Color Emoji" ];
+        sansSerif = ["Rubik"];
+        monospace = ["MonaspaceNe Nerd Font"];
+        emoji = ["Noto Color Emoji"];
       };
     };
   };
@@ -99,7 +95,6 @@
     # Apps
     bitwarden-desktop
     google-chrome
-    gnome-system-monitor
     jetbrains.idea-ultimate
     jetbrains.webstorm
     spotify
@@ -108,6 +103,8 @@
 
     # NixOS
     nautilus
+    gnome-screenshot
+    gnome-system-monitor
     nixfmt-rfc-style
     (sddm-astronaut.override {
       themeConfig = {
@@ -117,6 +114,7 @@
         DateFormat = "dddd, MMMM d";
       };
     })
+    vlc
   ];
 
   # services
@@ -145,7 +143,7 @@
     };
     xserver = {
       enable = true;
-      excludePackages = with pkgs; [ xterm ];
+      excludePackages = with pkgs; [xterm];
     };
     gvfs.enable = true;
     playerctld.enable = true;

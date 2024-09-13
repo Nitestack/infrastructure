@@ -1,15 +1,13 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ HYPRIDLE                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   loginctl = "${pkgs.systemd}/bin/loginctl";
   systemctl = "${pkgs.systemd}/bin/systemctl";
-in
-{
+in {
   services.hypridle = {
     enable = true;
     settings = {
