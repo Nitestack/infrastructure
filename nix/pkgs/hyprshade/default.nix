@@ -1,13 +1,16 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ Hyprshade                                                │
+# ╰──────────────────────────────────────────────────────────╯
 {
   lib,
-  fetchFromGitHub,
   pkgs,
+  ...
 }:
 pkgs.python3Packages.buildPythonPackage rec {
   name = "hyprshade";
   format = "pyproject";
 
-  src = fetchFromGitHub {
+  src = pkgs.fetchFromGitHub {
     owner = "loqusion";
     repo = "hyprshade";
     rev = "152cd2ea06d9412d62bc628d62ee5af7771190b1";

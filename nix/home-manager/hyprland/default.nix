@@ -1,33 +1,22 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ HYPRLAND                                                 │
+# │ Hyprland                                                 │
 # ╰──────────────────────────────────────────────────────────╯
 { pkgs, ... }:
-let
-  # Bins
-  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-  cliphist = "${pkgs.cliphist}/bin/cliphist";
-  firefox = "${pkgs.firefox}/bin/firefox";
-  gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-  hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
-  nautilus = "${pkgs.nautilus}/bin/nautilus";
-  playerctl = "${pkgs.playerctl}/bin/playerctl";
-  rofi = "${pkgs.rofi-wayland}/bin/rofi";
-  safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
-  snixembed = "${pkgs.snixembed}/bin/snixembed";
-  spotify = "${pkgs.spotify}/bin/spotify";
-  waybar = "${pkgs.waybar}/bin/waybar";
-  wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
-  wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
-  wpctl = "${pkgs.wireplumber}/bin/wpctl";
-
-  wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
-in
 {
   imports = [
     ./hypridle.nix
     ./hyprlock.nix
     ./hyprpaper.nix
+    ./hyprshade.nix
+    ./waybar.nix
+  ];
+
+  home.packages = with pkgs; [
+    brightnessctl
+    hyprcursor
+    hyprpicker
+    wl-clip-persist
+    wl-clipboard
   ];
 
   wayland.windowManager.hyprland = {
@@ -38,305 +27,318 @@ in
       variables = [ "--all" ];
     };
 
-    settings = {
-      # ── Autostart ─────────────────────────────────────────────────────────
-      exec-once = [
-        "${snixembed} --fork"
-        "${safeeyes} -e"
-        "${wl-clip-persist} --clipboard regular"
-        "${wl-paste} --type text --watch ${cliphist} store"
-        "${wl-paste} --type image --watch ${cliphist} store"
-        "waybar"
+    settings =
+      let
+        # Bins
+        brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+        cliphist = "${pkgs.cliphist}/bin/cliphist";
+        firefox = "${pkgs.firefox}/bin/firefox";
+        gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
+        hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+        hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
+        nautilus = "${pkgs.nautilus}/bin/nautilus";
+        playerctl = "${pkgs.playerctl}/bin/playerctl";
+        rofi = "${pkgs.rofi-wayland}/bin/rofi";
+        safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
+        snixembed = "${pkgs.snixembed}/bin/snixembed";
+        spotify = "${pkgs.spotify}/bin/spotify";
+        wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
+        wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
+        wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
-        "[workspace 1 silent] ${firefox}"
-        "[workspace 2 silent] ${wezterm_startup_script}"
-        "[workspace 3 silent] ${spotify}/bin/spotify"
-      ];
-      exec = [
-        "${hyprshade} auto"
-      ];
+        wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
+      in
+      {
+        # ── Autostart ─────────────────────────────────────────────────────────
+        exec-once = [
+          "${snixembed} --fork"
+          "${safeeyes} -e"
+          "${wl-clip-persist} --clipboard regular"
+          "${wl-paste} --type text --watch ${cliphist} store"
+          "${wl-paste} --type image --watch ${cliphist} store"
 
-      # ── Environment Variables ─────────────────────────────────────────────
-      # https://wiki.hyprland.org/Configuring/Environment-variables
-      "$system_theme" = "adw-gtk3-dark";
-      "$cursor_theme" = "macOS";
-      "$cursor_size" = "24";
+          "[workspace 1 silent] ${firefox}"
+          "[workspace 2 silent] ${wezterm_startup_script}"
+          "[workspace 3 silent] ${spotify}/bin/spotify"
+        ];
+        exec = [
+          "${hyprshade} auto"
+        ];
 
-      env = [
-        # Toolkit Backend Variables
-        "CLUTTER_BACKEND,wayland" # Clutter package already has wayland enabled, this variable will force Clutter applications to try and use the Wayland backend
-        "GDK_BACKEND,wayland,x11,*" # GTK: Use wayland if available. If not: try x11, then any other GDK backend.
-        "SDL_VIDEODRIVER,wayland,x11" # Run SDL2 applications on Wayland. Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
+        # ── Environment Variables ─────────────────────────────────────────────
+        # https://wiki.hyprland.org/Configuring/Environment-variables
+        "$system_theme" = "adw-gtk3-dark";
+        "$cursor_theme" = "macOS";
+        "$cursor_size" = "24";
 
-        # XDG Specifications
-        "XDG_CURRENT_DESKTOP,Hyprland"
-        "XDG_SESSION_TYPE,wayland"
-        "XDG_SESSION_DESKTOP,Hyprland"
+        env = [
+          # Toolkit Backend Variables
+          "CLUTTER_BACKEND,wayland" # Clutter package already has wayland enabled, this variable will force Clutter applications to try and use the Wayland backend
+          "GDK_BACKEND,wayland,x11,*" # GTK: Use wayland if available. If not: try x11, then any other GDK backend.
+          "SDL_VIDEODRIVER,wayland,x11" # Run SDL2 applications on Wayland. Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
 
-        # Qt Variables
-        "QT_AUTO_SCREEN_SCALE_FACTOR,1" # Enables automatic scaling, based on the monitor’s pixel density
-        "QT_QPA_PLATFORM,wayland;xcb" # Tell Qt applications to use the Wayland backend, and fall back to x11 if Wayland is unavailable
-        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1" # Disables window decorations on Qt applications
-        "QT_QPA_PLATFORMTHEME,qt6ct" # Tells Qt based applications to pick your theme from qt6ct, use with Kvantum.
-        "QT_STYLE_OVERRIDE,kvantum"
+          # XDG Specifications
+          "XDG_CURRENT_DESKTOP,Hyprland"
+          "XDG_SESSION_TYPE,wayland"
+          "XDG_SESSION_DESKTOP,Hyprland"
 
-        # Theming Related Variables
-        "GTK_THEME,$system_theme" # Set system theme.
-        "XCURSOR_SIZE,$cursor_size" # Set cursor size.
-        "HYPRCURSOR_SIZE,$cursor_size"
-        "XCURSOR_THEME,$cursor_theme" # Set cursor theme.
-        "HYPRCURSOR_THEME,$cursor_theme"
-      ];
+          # Qt Variables
+          "QT_AUTO_SCREEN_SCALE_FACTOR,1" # Enables automatic scaling, based on the monitor’s pixel density
+          "QT_QPA_PLATFORM,wayland;xcb" # Tell Qt applications to use the Wayland backend, and fall back to x11 if Wayland is unavailable
+          "QT_WAYLAND_DISABLE_WINDOWDECORATION,1" # Disables window decorations on Qt applications
+          "QT_QPA_PLATFORMTHEME,qt6ct" # Tells Qt based applications to pick your theme from qt6ct, use with Kvantum.
+          "QT_STYLE_OVERRIDE,kvantum"
+        ];
 
-      # ── Config ────────────────────────────────────────────────────────────
-      # https://wiki.hyprland.org/Configuring/Variables
+        # ── Config ────────────────────────────────────────────────────────────
+        # https://wiki.hyprland.org/Configuring/Variables
 
-      # Monitors
-      # https://wiki.hyprland.org/Configuring/Monitors
-      monitor = [
-        "DP-1, 1920x1080@144, 0x0, 1"
-        # "DP-2, 1920x1080@144, 1920x0, 1" # In case of a second monitor
-      ];
+        # Monitors
+        # https://wiki.hyprland.org/Configuring/Monitors
+        monitor = [
+          "DP-1, 1920x1080@144, 0x0, 1"
+          # "DP-2, 1920x1080@144, 1920x0, 1" # In case of a second monitor
+        ];
 
-      # General
-      # https://wiki.hyprland.org/Configuring/Variables/#general
-      general = {
-        gaps_in = 10; # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
-        gaps_out = 10; # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+        # General
+        # https://wiki.hyprland.org/Configuring/Variables/#general
+        general = {
+          gaps_in = 10; # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
+          gaps_out = 10; # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
 
-        border_size = 3; # size of the border around windows
+          border_size = 3; # size of the border around windows
 
-        "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg"; # border color for the active window
-        "col.inactive_border" = "rgba(595959aa)"; # border color for inactive windows
+          "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg"; # border color for the active window
+          "col.inactive_border" = "rgba(595959aa)"; # border color for inactive windows
 
-        resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
+          resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
 
-        allow_tearing = true; # master switch for allowing tearing to occur
-      };
-
-      # Decoration
-      # https://wiki.hyprland.org/Configuring/Variables/#decoration
-      decoration = {
-        rounding = 10; # rounded corners' radius (in layout px)
-
-        drop_shadow = true; # enable drop shadows on windows
-        shadow_ignore_window = true; # if true, the shadow will not be rendered behind the window itself, only around it
-        shadow_offset = "2 2"; # shadow’s rendering offset
-        shadow_range = 8; # Shadow range (“size”) in layout px
-        shadow_render_power = 2; # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
-        "col.shadow" = "0x66000000"; # shadow’s color. Alpha dictates shadow’s opacity
-
-        # Blur
-        # https://wiki.hyprland.org/Configuring/Variables/#blur
-        blur = {
-          enabled = true; # enable kawase window background blur
-          size = 3; # blur size (distance)
-          passes = 2; # the amount of passes to perform
+          allow_tearing = true; # master switch for allowing tearing to occur
         };
-      };
 
-      # Animations
-      # https://wiki.hyprland.org/Configuring/Variables/#animations
-      animations = {
-        enabled = true; # enable animations
+        # Decoration
+        # https://wiki.hyprland.org/Configuring/Variables/#decoration
+        decoration = {
+          rounding = 10; # rounded corners' radius (in layout px)
 
-        # https://wiki.hyprland.org/Configuring/Animations
-        bezier = [
-          "overshot, 0.05, 0.9, 0.1, 1.05"
-          "smoothOut, 0.36, 0, 0.66, -0.56"
-          "smoothIn, 0.25, 1, 0.5, 1"
-        ];
-        animation = [
-          "windows, 1, 5, overshot, slide"
-          "windowsOut, 1, 4, smoothOut, slide"
-          "windowsMove, 1, 4, default"
-          "border, 1, 10, default"
-          "fade, 1, 10, smoothIn"
-          "fadeDim, 1, 10, smoothIn"
-          "workspaces, 1, 6, default"
-          "specialWorkspace, 1, 4, default, slidevert"
-        ];
-      };
+          drop_shadow = true; # enable drop shadows on windows
+          shadow_ignore_window = true; # if true, the shadow will not be rendered behind the window itself, only around it
+          shadow_offset = "2 2"; # shadow’s rendering offset
+          shadow_range = 8; # Shadow range (“size”) in layout px
+          shadow_render_power = 2; # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
+          "col.shadow" = "0x66000000"; # shadow’s color. Alpha dictates shadow’s opacity
 
-      # Input
-      # https://wiki.hyprland.org/Configuring/Variables/#input
-      input = {
-        # Toggle between US QWERTY and US Intl QWERTY layout on `Win + Space`
-        # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
-        kb_layout = "us, us";
-        kb_variant = "basic, intl";
-        kb_model = "";
-        kb_options = "grp:win_space_toggle";
-        kb_rules = "";
-
-        # Specify if and how cursor movement should affect window focus.
-        # https://wiki.hyprland.org/Configuring/Variables/#follow-mouse-cursor
-        follow_mouse = 2;
-
-        # Touchpad
-        # https://wiki.hyprland.org/Configuring/Variables/#touchpad
-        touchpad = {
-          natural_scroll = true; # Inverts scrolling direction. When enabled, scrolling moves content directly, rather than manipulating a scrollbar
+          # Blur
+          # https://wiki.hyprland.org/Configuring/Variables/#blur
+          blur = {
+            enabled = true; # enable kawase window background blur
+            size = 3; # blur size (distance)
+            passes = 2; # the amount of passes to perform
+          };
         };
-      };
 
-      # Gestures
-      # https://wiki.hyprland.org/Configuring/Variables/#gestures
-      gestures = {
-        workspace_swipe = true; # enable workspace swipe gesture on touchpad
-      };
+        # Animations
+        # https://wiki.hyprland.org/Configuring/Variables/#animations
+        animations = {
+          enabled = true; # enable animations
 
-      # Miscellaneous
-      # https://wiki.hyprland.org/Configuring/Variables/#misc
-      misc = {
-        disable_hyprland_logo = true; # disables the random Hyprland logo / anime girl background
-        disable_splash_rendering = true; # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
-        force_default_wallpaper = 0; # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
-        vrr = 2; # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
-        animate_manual_resizes = true; # If true, will animate manual window resizes/moves
-        enable_swallow = true; # Enable window swallowing
-      };
+          # https://wiki.hyprland.org/Configuring/Animations
+          bezier = [
+            "overshot, 0.05, 0.9, 0.1, 1.05"
+            "smoothOut, 0.36, 0, 0.66, -0.56"
+            "smoothIn, 0.25, 1, 0.5, 1"
+          ];
+          animation = [
+            "windows, 1, 5, overshot, slide"
+            "windowsOut, 1, 4, smoothOut, slide"
+            "windowsMove, 1, 4, default"
+            "border, 1, 10, default"
+            "fade, 1, 10, smoothIn"
+            "fadeDim, 1, 10, smoothIn"
+            "workspaces, 1, 6, default"
+            "specialWorkspace, 1, 4, default, slidevert"
+          ];
+        };
 
-      # XWayland
-      # https://wiki.hyprland.org/Configuring/Variables/#xwayland
-      xwayland = {
-        force_zero_scaling = true; # forces a scale of 1 on xwayland windows on scaled displays
-      };
+        # Input
+        # https://wiki.hyprland.org/Configuring/Variables/#input
+        input = {
+          # Toggle between US QWERTY and US Intl QWERTY layout on `Win + Space`
+          # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
+          kb_layout = "us, us";
+          kb_variant = "basic, intl";
+          kb_model = "";
+          kb_options = "grp:win_space_toggle";
+          kb_rules = "";
 
-      # Dwindle
-      # https://wiki.hyprland.org/Configuring/Dwindle-Layout
-      dwindle = {
-        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-        preserve_split = true;
-      };
+          # Specify if and how cursor movement should affect window focus.
+          # https://wiki.hyprland.org/Configuring/Variables/#follow-mouse-cursor
+          follow_mouse = 2;
 
-      # ── Windows and Workspace ─────────────────────────────────────────────
-      # https://wiki.hyprland.org/Configuring/Window-Rules
-      # https://wiki.hyprland.org/Configuring/Workspace-Rules
+          # Touchpad
+          # https://wiki.hyprland.org/Configuring/Variables/#touchpad
+          touchpad = {
+            natural_scroll = true; # Inverts scrolling direction. When enabled, scrolling moves content directly, rather than manipulating a scrollbar
+          };
+        };
 
-      windowrule =
-        let
-          f = regex: "float, ^(${regex})$";
-        in
-        [
-          # Floating windows
-          (f "confirm")
-          (f "file_progress")
-          (f "dialog")
+        # Gestures
+        # https://wiki.hyprland.org/Configuring/Variables/#gestures
+        gestures = {
+          workspace_swipe = true; # enable workspace swipe gesture on touchpad
+        };
 
-          (f "org.gnome.Calculator")
-          (f "org.gnome.Nautilus")
-          (f "org.gnome.SystemMonitor")
-          (f "nm-connection-editor")
-          (f "org.gnome.Settings")
-          (f "org.gnome.design.Palette")
+        # Miscellaneous
+        # https://wiki.hyprland.org/Configuring/Variables/#misc
+        misc = {
+          disable_hyprland_logo = true; # disables the random Hyprland logo / anime girl background
+          disable_splash_rendering = true; # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
+          force_default_wallpaper = 0; # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
+          vrr = 2; # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
+          animate_manual_resizes = true; # If true, will animate manual window resizes/moves
+          enable_swallow = true; # Enable window swallowing
+        };
 
-          (f "Color Picker")
-          (f "dconf-editor")
+        # XWayland
+        # https://wiki.hyprland.org/Configuring/Variables/#xwayland
+        xwayland = {
+          force_zero_scaling = true; # forces a scale of 1 on xwayland windows on scaled displays
+        };
 
-          (f "com.github.GradienceTeam.Gradience")
+        # Dwindle
+        # https://wiki.hyprland.org/Configuring/Dwindle-Layout
+        dwindle = {
+          pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+          preserve_split = true;
+        };
 
-          (f "pavucontrol")
-          (f "nm-connection-editor")
-          (f "xdg-desktop-portal")
-          (f "xdg-desktop-portal-gnome")
+        # ── Windows and Workspace ─────────────────────────────────────────────
+        # https://wiki.hyprland.org/Configuring/Window-Rules
+        # https://wiki.hyprland.org/Configuring/Workspace-Rules
 
-          "immediate,.*\.exe" # Tearing
+        windowrule =
+          let
+            f = regex: "float, ^(${regex})$";
+          in
+          [
+            # Floating windows
+            (f "confirm")
+            (f "file_progress")
+            (f "dialog")
+
+            (f "org.gnome.Calculator")
+            (f "org.gnome.Nautilus")
+            (f "org.gnome.SystemMonitor")
+            (f "nm-connection-editor")
+            (f "org.gnome.Settings")
+            (f "org.gnome.design.Palette")
+
+            (f "Color Picker")
+            (f "dconf-editor")
+
+            (f "com.github.GradienceTeam.Gradience")
+
+            (f "pavucontrol")
+            (f "nm-connection-editor")
+            (f "xdg-desktop-portal")
+            (f "xdg-desktop-portal-gnome")
+
+            "immediate,.*\.exe" # Tearing
+          ];
+
+        windowrulev2 = [
+          "suppressevent maximize, class:.*"
+          "immediate,class:(steam_app)" # Tearing
         ];
 
-      windowrulev2 = [
-        "suppressevent maximize, class:.*"
-        "immediate,class:(steam_app)" # Tearing
-      ];
+        # ── Bindings ──────────────────────────────────────────────────────────
+        # https://wiki.hyprland.org/Configuring/Binds
+        # SUPER = "Windows" key
 
-      # ── Bindings ──────────────────────────────────────────────────────────
-      # https://wiki.hyprland.org/Configuring/Binds
-      # SUPER = "Windows" key
+        "$lmb" = "mouse:272"; # Left mouse button
+        "$rmb" = "mouse:273"; # Right mouse button
+        "$mmb" = "mouse:274"; # Middle mouse button
+        bindd =
+          [
+            "SUPER, Slash, Open Terminal, exec, ${wezterm_startup_script}"
+            "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
+            "SUPER, W, Open Browser, exec, ${firefox}"
+            "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
 
-      "$lmb" = "mouse:272"; # Left mouse button
-      "$rmb" = "mouse:273"; # Right mouse button
-      "$mmb" = "mouse:274"; # Middle mouse button
-      bindd =
-        [
-          "SUPER, Slash, Open Terminal, exec, ${wezterm_startup_script}"
-          "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
-          "SUPER, W, Open Browser, exec, ${firefox}"
-          "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
+            "SUPER, H, Move Focus to Left Window, movefocus, l"
+            "SUPER, L, Move Focus to Right Window, movefocus, r"
+            "SUPER, K, Move Focus to Upper Window, movefocus, u"
+            "SUPER, J, Move Focus to Lower Window, movefocus, d"
 
-          "SUPER, H, Move Focus to Left Window, movefocus, l"
-          "SUPER, L, Move Focus to Right Window, movefocus, r"
-          "SUPER, K, Move Focus to Upper Window, movefocus, u"
-          "SUPER, J, Move Focus to Lower Window, movefocus, d"
+            "SUPER, F, Toggle Fullscreen, fullscreen, 0"
+            "SUPER, M, Maximize/Restore Window, fullscreen, 1"
 
-          "SUPER, F, Toggle Fullscreen, fullscreen, 0"
-          "SUPER, M, Maximize/Restore Window, fullscreen, 1"
+            "SUPER ALT, H, Move Window Left, movewindow, l"
+            "SUPER ALT, L, Move Window Right, movewindow, r"
+            "SUPER ALT, K, Move Window Upwards, movewindow, u"
+            "SUPER ALT, J, Move Window Downwards, movewindow, d"
 
+            "SUPER, Q, Close Active Window, killactive"
+            "SUPER, C, Center Window, centerwindow, 1" # `1` respects the monitor reserved area
+
+            "SUPER, P, Toggle Focused Window's Pseudo Mode, pseudo"
+            "SUPER, R, Toggle Split Orientation, togglesplit"
+            "SUPER, T, Toggle Active Window Floating, togglefloating"
+            "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${hyprctl} dispatch workspaceopt allfloat"
+          ]
+          ++ (builtins.concatLists (
+            builtins.genList (
+              i:
+              let
+                wsNo = i + 1;
+                wsIndex = if wsNo == 10 then 0 else wsNo;
+              in
+              [
+                "SUPER, ${toString wsIndex}, Switch to Workspace ${toString wsNo}, workspace, ${toString wsNo}"
+                "SUPER SHIFT, ${toString wsIndex}, Move Active Window to Workspace ${toString wsNo}, movetoworkspace, ${toString wsNo}"
+              ]
+            ) 10
+          ))
+          ++ [
+            "SUPER CTRL, H, Switch to Previous Workspace, workspace, e-1"
+            "SUPER CTRL, L, Switch to Next Workspace, workspace, e+1"
+            "SUPER, mouse_down, Switch to Previous Workspace, workspace, e+1"
+            "SUPER, mouse_up, Switch to Next Workspace, workspace, e-1"
+            "SUPER SHIFT, H, Move Active Window to Previous Workspace, movetoworkspace, e-1"
+            "SUPER SHIFT, L, Move Active Window to Next Workspace, movetoworkspace, e+1"
+
+            "SUPER, S, Toggle Scratchpad, togglespecialworkspace, magic"
+            "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
+          ];
+        binddr = [
+          "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
+        ];
+        bindde = [
           "SUPER ALT, H, Move Window Left, movewindow, l"
           "SUPER ALT, L, Move Window Right, movewindow, r"
           "SUPER ALT, K, Move Window Upwards, movewindow, u"
           "SUPER ALT, J, Move Window Downwards, movewindow, d"
-
-          "SUPER, Q, Close Active Window, killactive"
-          "SUPER, C, Center Window, centerwindow, 1" # `1` respects the monitor reserved area
-
-          "SUPER, P, Toggle Focused Window's Pseudo Mode, pseudo"
-          "SUPER, R, Toggle Split Orientation, togglesplit"
-          "SUPER, T, Toggle Active Window Floating, togglefloating"
-          "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${hyprctl} dispatch workspaceopt allfloat"
-        ]
-        ++ (builtins.concatLists (
-          builtins.genList (
-            i:
-            let
-              wsNo = i + 1;
-              wsIndex = if wsNo == 10 then 0 else wsNo;
-            in
-            [
-              "SUPER, ${toString wsIndex}, Switch to Workspace ${toString wsNo}, workspace, ${toString wsNo}"
-              "SUPER SHIFT, ${toString wsIndex}, Move Active Window to Workspace ${toString wsNo}, movetoworkspace, ${toString wsNo}"
-            ]
-          ) 10
-        ))
-        ++ [
-          "SUPER CTRL, H, Switch to Previous Workspace, workspace, e-1"
-          "SUPER CTRL, L, Switch to Next Workspace, workspace, e+1"
-          "SUPER, mouse_down, Switch to Previous Workspace, workspace, e+1"
-          "SUPER, mouse_up, Switch to Next Workspace, workspace, e-1"
-          "SUPER SHIFT, H, Move Active Window to Previous Workspace, movetoworkspace, e-1"
-          "SUPER SHIFT, L, Move Active Window to Next Workspace, movetoworkspace, e+1"
-
-          "SUPER, S, Toggle Scratchpad, togglespecialworkspace, magic"
-          "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
         ];
-      binddr = [
-        "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
-      ];
-      bindde = [
-        "SUPER ALT, H, Move Window Left, movewindow, l"
-        "SUPER ALT, L, Move Window Right, movewindow, r"
-        "SUPER ALT, K, Move Window Upwards, movewindow, u"
-        "SUPER ALT, J, Move Window Downwards, movewindow, d"
-      ];
-      binddl = [
-        ", XF86AudioPlay, Play/Pause, exec, ${playerctl} play-pause"
-        ", XF86AudioPause, Play/Pause, exec, ${playerctl} play-pause"
-        ", XF86AudioNext, Skip to Next Track, exec, ${playerctl} next"
-        ", XF86AudioPrev, Return to Previous Track, exec, ${playerctl} previous"
-      ];
-      binddel = [
-        ", XF86AudioRaiseVolume, Increase Volume, exec, ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, Decrease Volume, exec, ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, Mute/Unmute Volume, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        binddl = [
+          ", XF86AudioPlay, Play/Pause, exec, ${playerctl} play-pause"
+          ", XF86AudioPause, Play/Pause, exec, ${playerctl} play-pause"
+          ", XF86AudioNext, Skip to Next Track, exec, ${playerctl} next"
+          ", XF86AudioPrev, Return to Previous Track, exec, ${playerctl} previous"
+        ];
+        binddel = [
+          ", XF86AudioRaiseVolume, Increase Volume, exec, ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, Decrease Volume, exec, ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioMute, Mute/Unmute Volume, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
 
-        ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${brightnessctl} s 10%+"
-        ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${brightnessctl} s 10%-"
-      ];
-      binddm = [
-        "SUPER, $rmb, Resize Window, resizewindow"
-        "SUPER, $lmb, Move Window, movewindow"
-      ];
-    };
+          ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${brightnessctl} s 10%+"
+          ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${brightnessctl} s 10%-"
+        ];
+        binddm = [
+          "SUPER, $rmb, Resize Window, resizewindow"
+          "SUPER, $lmb, Move Window, movewindow"
+        ];
+      };
   };
 
   xdg.desktopEntries."org.gnome.Settings" = {
@@ -347,4 +349,6 @@ in
     categories = [ "X-Preferences" ];
     terminal = false;
   };
+
+  services.safeeyes.enable = true;
 }

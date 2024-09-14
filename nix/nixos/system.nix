@@ -1,5 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ SYSTEM                                                   │
+# │ System                                                   │
 # ╰──────────────────────────────────────────────────────────╯
 {
   inputs,
@@ -34,28 +34,6 @@
       nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
     };
 
-  fonts = {
-    packages = with pkgs; [
-      rubik
-      noto-fonts-color-emoji
-
-      (nerdfonts.override {
-        fonts = [
-          "Monaspace"
-          "NerdFontsSymbolsOnly"
-        ];
-      })
-    ];
-    enableDefaultPackages = true;
-    fontconfig = {
-      defaultFonts = {
-        sansSerif = [ "Rubik" ];
-        monospace = [ "MonaspaceNe Nerd Font" ];
-        emoji = [ "Noto Color Emoji" ];
-      };
-    };
-  };
-
   # virtualization
   programs.virt-manager.enable = true;
   virtualisation = {
@@ -79,19 +57,9 @@
 
     # Packages
     delta
-    eza
-    fd
-    fastfetch
-    fzf
-    jdk
-    jq
     lazygit
-    less # delta dependency
-    oh-my-posh
-    ripgrep
     ueberzugpp
     unzip
-    zoxide
 
     # Apps
     bitwarden-desktop
@@ -99,7 +67,6 @@
     jetbrains.idea-ultimate
     jetbrains.webstorm
     spotify
-    vscode
     zed-editor
 
     # NixOS
@@ -108,14 +75,6 @@
     nautilus
     nixd
     nixfmt-rfc-style
-    (sddm-astronaut.override {
-      themeConfig = {
-        PartialBlur = false;
-        Font = "Rubik";
-        HourFormat = "hh:mm";
-        DateFormat = "dddd, MMMM d";
-      };
-    })
     vlc
   ];
 
@@ -131,23 +90,10 @@
         PasswordAuthentication = false;
       };
     };
-    displayManager = {
-      sddm = {
-        enable = true;
-        package = pkgs.kdePackages.sddm;
-        extraPackages = with pkgs.kdePackages; [
-          qt5compat
-          qtsvg
-        ];
-        theme = "sddm-astronaut-theme";
-        wayland.enable = true;
-      };
-    };
     xserver = {
       enable = true;
       excludePackages = with pkgs; [ xterm ];
     };
-    gvfs.enable = true;
     playerctld.enable = true;
   };
 

@@ -1,11 +1,15 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ GNOME                                                    │
+# ╰──────────────────────────────────────────────────────────╯
 { pkgs, ... }:
 {
   services = {
-    xserver.desktopManager.gnome.enable = true;
     gnome = {
       sushi.enable = true;
       core-developer-tools.enable = true;
     };
+    gvfs.enable = true;
+    xserver.desktopManager.gnome.enable = true;
   };
 
   environment.gnome.excludePackages = (

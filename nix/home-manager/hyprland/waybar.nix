@@ -1,12 +1,9 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Hyprpaper                                                │
+# │ Waybar                                                   │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  services.hyprpaper = {
+  programs.waybar = {
     enable = true;
-    settings = {
-      preload = "~/Pictures/wallpapers/Fantasy-Landscape3.png";
-      wallpaper = ",~/Pictures/wallpapers/Fantasy-Landscape3.png";
-    };
+    systemd.enable = true;
   };
 }

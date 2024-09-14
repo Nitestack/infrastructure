@@ -1,15 +1,15 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ HYPRSHADE CONFIG                                         │
+# │ eza                                                      │
 # ╰──────────────────────────────────────────────────────────╯
-
-# [[shades]]
-# name = "vibrance"
-# default = true  # shader to use during times when there is no other shader scheduled
-
-[[shaders]]
-name = "blue-light-filter"
-start_time = 19:00:00
-end_time = 06:00:00
-[shaders.config]
-temperature = 3600
-strength = 1
+{
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    extraOptions = [
+      "--group-directories-first"
+      "--octal-permissions"
+    ];
+    git = true;
+    icons = true;
+  };
+}
