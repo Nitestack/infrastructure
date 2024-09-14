@@ -60,6 +60,7 @@
     brightnessctl
     cliphist
     dunst
+    hyprcursor
     hyprpicker
     hyprshade
     kitty
