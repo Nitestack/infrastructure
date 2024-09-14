@@ -12,6 +12,7 @@ in
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
+    ./bat.nix
     ./browser.nix
     ./easyeffects.nix
     ./git.nix

@@ -78,7 +78,6 @@
     rustup
 
     # Packages
-    bat
     btop
     delta
     eza
