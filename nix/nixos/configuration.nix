@@ -10,9 +10,10 @@
 }:
 {
   imports = [
-    ./hardware-configuration.nix
+    /etc/nixos/hardware-configuration.nix
 
     ./audio.nix
+    ./display-manager.nix
     ./gnome.nix
     ./hyprland.nix
     ./locale.nix

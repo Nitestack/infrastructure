@@ -1,12 +1,13 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Hyprpaper                                                │
+# │ fzf                                                      │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  services.hyprpaper = {
+  programs.fzf = {
     enable = true;
-    settings = {
-      preload = "~/Pictures/wallpapers/Fantasy-Landscape3.png";
-      wallpaper = ",~/Pictures/wallpapers/Fantasy-Landscape3.png";
-    };
+    enableZshIntegration = true;
+    changeDirWidgetCommand = "fd --type d";
+    defaultCommand = "fd --type f";
+    fileWidgetCommand = "fd --type f";
+    tmux.enableShellIntegration = true;
   };
 }

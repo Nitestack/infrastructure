@@ -47,7 +47,16 @@ Library
 
 .config/nvim/templates
 
+# Ignore on NixOS
+{{ if eq .osid "linux-nixos" }}
+.config/wezterm/wezterm.lua
+
+.ssh
+
+.gitconfig
+{{ end }}
+
 # Ignore SSH keys in work environment or on NixOS
-# {{ if or (eq .hosttype "work") (eq .osid "linux-nixos") }}
+# {{ if eq .hosttype "work" }}
 .ssh
 # {{ end }}

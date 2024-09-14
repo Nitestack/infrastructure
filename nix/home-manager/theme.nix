@@ -1,39 +1,88 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ THEME                                                    │
+# │ Theme                                                    │
 # ╰──────────────────────────────────────────────────────────╯
 { pkgs, ... }:
 let
+  # Theme
+  theme = {
+    name = "adw-gtk3-dark";
+    package = pkgs.adw-gtk3;
+  };
+  cursorTheme = {
+    name = "macOS";
+    package = pkgs.apple-cursor;
+    size = 24;
+  };
+  iconTheme = {
+    name = "WhiteSur";
+    package = pkgs.whitesur-icon-theme;
+  };
+  # Fonts
+  nerdfonts = pkgs.nerdfonts.override {
+    fonts = [
+      "Monaspace"
+      "NerdFontsSymbolsOnly"
+    ];
+  };
+  font = {
+    sans = {
+      name = "Rubik";
+      package = pkgs.rubik;
+    };
+    mono = {
+      name = "MonaspaceNe Nerd Font";
+      package = nerdfonts;
+    };
+    emoji = {
+      name = "Noto Color Emoji";
+      package = pkgs.noto-fonts-color-emoji;
+    };
+  };
+  # GTK settings
   gtk_settings = {
     show-hidden = true;
     sort-directories-first = true;
     startup-mode = "cwd";
   };
-  cursor_settings = {
-    name = "macOS";
-    package = pkgs.apple-cursor;
-    size = 24;
-  };
 in
 {
-  gtk = {
-    enable = true;
-    theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
+  home = {
+    packages = [
+      font.sans.package
+      font.mono.package
+      font.emoji.package
+    ];
+    pointerCursor = cursorTheme // {
+      gtk.enable = true;
     };
-    iconTheme = {
-      name = "WhiteSur";
-      package = pkgs.whitesur-icon-theme;
-    };
-    cursorTheme = cursor_settings;
-    font = {
-      name = "Rubik";
-      package = pkgs.rubik;
+    sessionVariables = {
+      GTK_THEME = theme.name;
+
+      XCURSOR_THEME = cursorTheme.name;
+      XCURSOR_SIZE = "${toString cursorTheme.size}";
+      HYPRCURSOR_THEME = cursorTheme.name;
+      HYPRCURSOR_SIZE = "${toString cursorTheme.size}";
     };
   };
 
-  home.pointerCursor = cursor_settings // {
-    gtk.enable = true;
+  gtk = {
+    inherit theme cursorTheme iconTheme;
+    enable = true;
+    font = font.sans;
+  };
+  qt = {
+    enable = true;
+    platformTheme.name = "kde";
+  };
+
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      serif = [ font.sans.name ];
+      sansSerif = [ font.sans.name ];
+      monospace = [ font.mono.name ];
+      emoji = [ font.emoji.name ];
+    };
   };
 
   dconf = {
@@ -56,15 +105,6 @@ in
       };
       "org/gtk/settings/file-chooser" = gtk_settings;
       "org/gtk/gtk4/settings/file-chooser" = gtk_settings;
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
-    style = {
-      name = "adwaita-dark";
-      package = pkgs.adwaita-qt;
     };
   };
 }
