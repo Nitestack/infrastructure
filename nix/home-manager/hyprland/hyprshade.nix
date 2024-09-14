@@ -1,10 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Hyprshade                                                │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
-  start_time = "19:00:00";
-  end_time = "06:00:00";
+  startTime = "19:00:00";
+  endTime = "06:00:00";
 in
 {
   home.packages = [ pkgs.hyprshade ];
@@ -27,8 +27,8 @@ in
 
       Timer = {
         OnCalendar = [
-          "*-*-* ${end_time}"
-          "*-*-* ${start_time}"
+          "*-*-* ${endTime}"
+          "*-*-* ${startTime}"
         ];
       };
 
@@ -37,15 +37,13 @@ in
       };
     };
   };
-
-  xdg.configFile."hypr/hyprshade.toml".source = (pkgs.formats.toml { }).generate "" {
-    shaders = {
-      inherit start_time end_time;
-      name = "blue-light-filter";
-      config = {
-        temperature = 3600;
-        strength = 1;
-      };
-    };
-  };
+  xdg.configFile."hypr/hyprshade.toml".text = ''
+    [[shaders]]
+    name = "blue-light-filter"
+    start_time = ${startTime}
+    end_time = ${endTime}
+    [shaders.config]
+    temperature = 3600
+    strength = 1
+  '';
 }
