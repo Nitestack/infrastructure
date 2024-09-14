@@ -78,7 +78,6 @@
     rustup
 
     # Packages
-    btop
     delta
     eza
     fd
