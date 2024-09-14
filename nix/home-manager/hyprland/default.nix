@@ -16,6 +16,7 @@ let
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
   snixembed = "${pkgs.snixembed}/bin/snixembed";
   spotify = "${pkgs.spotify}/bin/spotify";
+  waybar = "${pkgs.waybar}/bin/waybar";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -45,6 +46,7 @@ in
         "${wl-clip-persist} --clipboard regular"
         "${wl-paste} --type text --watch ${cliphist} store"
         "${wl-paste} --type image --watch ${cliphist} store"
+        "waybar"
 
         "[workspace 1 silent] ${firefox}"
         "[workspace 2 silent] ${wezterm_startup_script}"
