@@ -70,7 +70,6 @@
     zed-editor
 
     # NixOS
-    gnome-screenshot
     gnome-system-monitor
     nautilus
     nixd

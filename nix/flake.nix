@@ -27,6 +27,12 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    # Hyprland Contrib
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Firefox GNOME Theme
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";

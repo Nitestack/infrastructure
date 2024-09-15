@@ -1,9 +1,15 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Hyprland                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 let
-  hyprswitch_pkg = inputs.hyprswitch.packages.x86_64-linux.default;
+  grimblast_pkg = inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast;
+  hyprswitch_pkg = inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   imports = [
@@ -16,11 +22,12 @@ in
 
   home.packages = [
     pkgs.brightnessctl
+    grimblast_pkg
     pkgs.hyprcursor
     pkgs.hyprpicker
+    hyprswitch_pkg
     pkgs.wl-clip-persist
     pkgs.wl-clipboard
-    hyprswitch_pkg
   ];
 
   xdg.configFile."hypr/hyprswitch.css".text = ''
@@ -48,6 +55,7 @@ in
         cliphist = "${pkgs.cliphist}/bin/cliphist";
         firefox = "${pkgs.firefox}/bin/firefox";
         gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
+        grimblast = "${grimblast_pkg}/bin/grimblast";
         hyprctl = "${pkgs.hyprland}/bin/hyprctl";
         hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
         hyprswitch = "${hyprswitch_pkg}/bin/hyprswitch";
@@ -71,8 +79,8 @@ in
           rm -rf "$tmp_dir"
 
           if [[ -n "$1" ]]; then
-              ${cliphist} decode <<<"$1" | ${wl-copy}
-              exit
+            ${cliphist} decode <<<"$1" | ${wl-copy}
+            exit
           fi
 
           mkdir -p "$tmp_dir"
@@ -80,15 +88,15 @@ in
           read -r -d \'\' prog <<EOF
           /^[0-9]+\s<meta http-equiv=/ { next }
           match(\$0, /^([0-9]+)\s(\[\[\s)?binary.*(jpg|jpeg|png|bmp)/, grp) {
-              system("echo " grp[1] "\\\\\t | ${cliphist} decode >$tmp_dir/"grp[1]"."grp[3])
-              print \$0"\0icon\x1f$tmp_dir/"grp[1]"."grp[3]
-              next
+            system("echo " grp[1] "\\\\\t | ${cliphist} decode >$tmp_dir/"grp[1]"."grp[3])
+            print \$0"\0icon\x1f$tmp_dir/"grp[1]"."grp[3]
+            next
           }
           1
           EOF
           ${cliphist} list | ${pkgs.gawk}/bin/gawk "$prog"
         '';
-
+        screenshots_dir = "${config.xdg.userDirs.pictures}/Screenshots";
       in
       {
         # ── Autostart ─────────────────────────────────────────────────────────
@@ -98,7 +106,7 @@ in
           "${wl-clip-persist} --clipboard regular"
           "${wl-paste} --type text --watch ${cliphist} store"
           "${wl-paste} --type image --watch ${cliphist} store"
-          "${hyprswitch} init --show-title --custom-css ~/.config/hypr/hyprswitch.css &"
+          "${hyprswitch} init --show-title --custom-css ${config.xdg.configHome}/hypr/hyprswitch.css &"
 
           "[workspace 1 silent] ${firefox}"
           "[workspace 2 silent] ${wezterm_startup_script}"
@@ -307,8 +315,11 @@ in
             "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
             "SUPER, W, Open Browser, exec, ${firefox}"
             "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
+
             "ALT, tab, Switch Windows, exec, ${hyprswitch} gui --do-initial-execute"
             "SUPER, V, Open Clipboard History, exec, ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
+            ", Print, Take Screenshot (Select Area), exec, ${grimblast} --notify --freeze copysave area ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
+            "SUPER, Print, Take Fullscreen Screenshot, exec, ${grimblast} --notify --freeze copysave screen ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
 
             "SUPER, H, Move Focus to Left Window, movefocus, l"
             "SUPER, L, Move Focus to Right Window, movefocus, r"
