@@ -33,7 +33,7 @@ fi
 
 # NixOS only: initialize system
 if command -v "nixos-version" &>/dev/null; then
-  sudo nixos-rebuild switch --flake "${TARGET}/nix#nixstation"
+  sudo nixos-rebuild switch --flake "${TARGET}/nix#nixstation" --impure
 fi
 
 set -- --source="${TARGET}" --verbose=false
