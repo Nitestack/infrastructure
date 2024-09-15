@@ -26,6 +26,12 @@ _Elevate your computing experience across platforms with this curated collection
 
 ## 🚀 Features
 
+### NixOS (Full System)
+
+This setup runs on [Wayland](https://wayland.freedesktop.org), using [Hyprland](https://hyprland.org) as the compositor for a smooth and delightful window management experience. [SDDM](https://github.com/sddm/sddm) handles the display manager with a custom theme for a polished login screen. The system uses [GRUB](https://www.gnu.org/software/grub) as the boot loader, complete with a theme and os-prober for easy dual-booting with Windows or other systems.
+
+Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes all the features listed in the [Cross-Platform](#cross-platform-nixos-macos-windows) and the [UNIX](#unix-nixos-macos) section, making it a complete and fully functional environment.
+
 ### Cross-Platform (NixOS, macOS, Windows)
 
 - **Neovim Configuration**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
@@ -38,8 +44,6 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **Fastfetch Configuration**: Customized settings for a fast and efficient system information display
 
-- **bat Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/bat) theme
-
 - **Lazygit Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
 
 - **Git Configuration**: Customized settings for version control
@@ -47,12 +51,6 @@ _Elevate your computing experience across platforms with this curated collection
 - **ShellCheck Configuration**: Setup for shell script analysis
 
 - **SSH Configuration**: Consistent and secure SSH setup across systems
-
-- **Package & App Management**: Consistent management of common apps and packages across all systems, including system-specific packages and apps
-
-- **Font Management**: Ensuring a uniform look and feel across different platforms, with support for Nerd icons ([Symbols Nerd Font](https://www.nerdfonts.com/font-downloads)) and emojis ([Noto Color Emoji](https://fonts.google.com/noto))
-
-- **Performance Always in Mind**: Optimized configurations to ensure efficient and smooth performance
 
 ### UNIX (NixOS, macOS)
 
@@ -118,14 +116,6 @@ Windows:
 
 ```pwsh
 winget install -e --accept-package-agreements --accept-source-agreements --id twpayne.chezmoi
-```
-
-[**Wget**](https://www.gnu.org/software/wget) or [**curl**](https://curl.se) (**UNIX only**)
-
-macOS (`curl` is pre-installed, but if you want to use `wget`):
-
-```sh
-brew install wget
 ```
 
 [**PowerShell**](https://microsoft.com/PowerShell) (**Windows only**)
