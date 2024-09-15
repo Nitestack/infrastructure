@@ -15,6 +15,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Hyprland
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+
+    # Hyprswitch
+    hyprswitch.url = "github:h3rmt/hyprswitch/release";
+
+    # Hyprspace
+    Hyprspace = {
+      url = "github:KZDKM/Hyprspace";
+      inputs.hyprland.follows = "hyprland";
+    };
+
     # Firefox GNOME Theme
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";

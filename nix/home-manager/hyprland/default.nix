@@ -1,7 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Hyprland                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
+let
+  hyprswitch_pkg = inputs.hyprswitch.packages.x86_64-linux.default;
+in
 {
   imports = [
     ./hypridle.nix
@@ -11,21 +14,32 @@
     ./waybar.nix
   ];
 
-  home.packages = with pkgs; [
-    brightnessctl
-    hyprcursor
-    hyprpicker
-    wl-clip-persist
-    wl-clipboard
+  home.packages = [
+    pkgs.brightnessctl
+    pkgs.hyprcursor
+    pkgs.hyprpicker
+    pkgs.wl-clip-persist
+    pkgs.wl-clipboard
+    hyprswitch_pkg
   ];
+
+  xdg.configFile."hypr/hyprswitch.css".text = ''
+    .client-index {
+      display: none;
+    }
+  '';
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     xwayland.enable = true;
     systemd = {
       enable = true;
       variables = [ "--all" ];
     };
+    plugins = [
+      inputs.Hyprspace.packages.${pkgs.system}.Hyprspace
+    ];
 
     settings =
       let
@@ -36,6 +50,7 @@
         gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
         hyprctl = "${pkgs.hyprland}/bin/hyprctl";
         hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
+        hyprswitch = "${hyprswitch_pkg}/bin/hyprswitch";
         nautilus = "${pkgs.nautilus}/bin/nautilus";
         playerctl = "${pkgs.playerctl}/bin/playerctl";
         rofi = "${pkgs.rofi-wayland}/bin/rofi";
@@ -56,10 +71,11 @@
           "${wl-clip-persist} --clipboard regular"
           "${wl-paste} --type text --watch ${cliphist} store"
           "${wl-paste} --type image --watch ${cliphist} store"
+          "${hyprswitch} init --show-title --custom-css ~/.config/hypr/hyprswitch.css &"
 
           "[workspace 1 silent] ${firefox}"
           "[workspace 2 silent] ${wezterm_startup_script}"
-          "[workspace 3 silent] ${spotify}/bin/spotify"
+          "[workspace 3 silent] ${spotify}"
         ];
         exec = [
           "${hyprshade} auto"
@@ -264,6 +280,7 @@
             "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
             "SUPER, W, Open Browser, exec, ${firefox}"
             "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
+            "ALT, tab, Switch Windows, exec, ${hyprswitch} gui --do-initial-execute"
 
             "SUPER, H, Move Focus to Left Window, movefocus, l"
             "SUPER, L, Move Focus to Right Window, movefocus, r"
@@ -312,6 +329,10 @@
           ];
         binddr = [
           "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
+          "SUPER, SUPER_L, Toggle Workspace Overview, overview:toggle"
+        ];
+        binddrt = [
+          "ALT, ALT_L, Close Window Switcher, exec, ${hyprswitch} close"
         ];
         bindde = [
           "SUPER ALT, H, Move Window Left, movewindow, l"
