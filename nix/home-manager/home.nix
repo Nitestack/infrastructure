@@ -18,6 +18,8 @@
     ./rofi.nix
     ./theme.nix
     ./wezterm.nix
+
+    ./scripts
   ];
 
   # ── Configuration ─────────────────────────────────────────────────────
