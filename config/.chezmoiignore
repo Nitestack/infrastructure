@@ -16,8 +16,6 @@ Documents
 
 # NixOS
 {{ if ne .osid "linux-nixos" }}
-.chezmoiscripts/nix/**
-
 .config/Code
 .config/lazygit
 
