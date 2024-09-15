@@ -1,12 +1,16 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Hyprpaper                                                │
 # ╰──────────────────────────────────────────────────────────╯
+{ config, ... }:
+let
+  picturesDir = config.xdg.userDirs.pictures;
+in
 {
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = "~/Pictures/wallpapers/Fantasy-Landscape3.png";
-      wallpaper = ",~/Pictures/wallpapers/Fantasy-Landscape3.png";
+      preload = "${picturesDir}/wallpapers/Fantasy-Landscape3.png";
+      wallpaper = ",${picturesDir}/wallpapers/Fantasy-Landscape3.png";
     };
   };
 }

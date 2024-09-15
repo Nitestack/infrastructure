@@ -1,18 +1,24 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ NixOS Rebuild                                            │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, meta, ... }:
+{
+  pkgs,
+  meta,
+  config,
+  ...
+}:
 let
   nixos-rebuild = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
+  homeDir = config.home.homeDirectory;
 
   nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
-    sudo ${nixos-rebuild} switch --flake ~/.dotfiles/nix#${meta.hostname} --impure $@
+    sudo ${nixos-rebuild} switch --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
   '';
   nix-boot = pkgs.writeShellScriptBin "nix-boot" ''
-    sudo ${nixos-rebuild} boot --flake ~/.dotfiles/nix#${meta.hostname} --impure $@
+    sudo ${nixos-rebuild} boot --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
   '';
   nix-test = pkgs.writeShellScriptBin "nix-test" ''
-    sudo ${nixos-rebuild} test --flake ~/.dotfiles/nix#${meta.hostname} --impure $@
+    sudo ${nixos-rebuild} test --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
   '';
 in
 {
