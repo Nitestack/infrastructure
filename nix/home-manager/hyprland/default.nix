@@ -58,10 +58,37 @@ in
         snixembed = "${pkgs.snixembed}/bin/snixembed";
         spotify = "${pkgs.spotify}/bin/spotify";
         wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
+        wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
         wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
         wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
         wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
+
+        cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
+          #!/usr/bin/env bash
+
+          tmp_dir="/tmp/cliphist"
+          rm -rf "$tmp_dir"
+
+          if [[ -n "$1" ]]; then
+              ${cliphist} decode <<<"$1" | ${wl-copy}
+              exit
+          fi
+
+          mkdir -p "$tmp_dir"
+
+          read -r -d \'\' prog <<EOF
+          /^[0-9]+\s<meta http-equiv=/ { next }
+          match(\$0, /^([0-9]+)\s(\[\[\s)?binary.*(jpg|jpeg|png|bmp)/, grp) {
+              system("echo " grp[1] "\\\\\t | ${cliphist} decode >$tmp_dir/"grp[1]"."grp[3])
+              print \$0"\0icon\x1f$tmp_dir/"grp[1]"."grp[3]
+              next
+          }
+          1
+          EOF
+          ${cliphist} list | ${pkgs.gawk}/bin/gawk "$prog"
+        '';
+
       in
       {
         # ── Autostart ─────────────────────────────────────────────────────────
@@ -281,6 +308,7 @@ in
             "SUPER, W, Open Browser, exec, ${firefox}"
             "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
             "ALT, tab, Switch Windows, exec, ${hyprswitch} gui --do-initial-execute"
+            "SUPER, V, Open Clipboard History, exec, ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
 
             "SUPER, H, Move Focus to Left Window, movefocus, l"
             "SUPER, L, Move Focus to Right Window, movefocus, r"
