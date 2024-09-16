@@ -16,13 +16,6 @@
     };
   };
   environment.systemPackages = [
-    (pkgs.sddm-astronaut.override {
-      themeConfig = {
-        PartialBlur = false;
-        Font = "Rubik";
-        HourFormat = "hh:mm";
-        DateFormat = "dddd, MMMM d";
-      };
-    })
+    pkgs.sddm-astronaut-theme
   ];
 }
