@@ -68,10 +68,10 @@
       homeManagerModules = import ./home-manager/modules;
       nixosConfigurations =
         let
-          meta = {
-            username = "nhan";
-            description = "Nhan Pham";
-            hostname = "nixstation";
+          meta = import ./config.nix {
+            pkgs = import <nixpkgs> {
+              config.allowUnfree = true;
+            };
           };
         in
         {

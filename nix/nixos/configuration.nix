@@ -13,10 +13,10 @@
     /etc/nixos/hardware-configuration.nix
 
     ./audio.nix
-    ./display-manager.nix
     ./gnome.nix
     ./hyprland.nix
     ./locale.nix
+    ./sddm.nix
     ./system.nix
   ];
 

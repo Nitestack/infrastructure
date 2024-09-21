@@ -63,6 +63,7 @@
 
     # Apps
     bitwarden-desktop
+    discord
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
