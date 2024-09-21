@@ -5,9 +5,12 @@
   inputs,
   pkgs,
   config,
+  meta,
   ...
 }:
 let
+  inherit (meta) theme cursorTheme;
+
   grimblast_pkg = inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast;
   hyprswitch_pkg = inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
@@ -118,8 +121,8 @@ in
 
         # ── Environment Variables ─────────────────────────────────────────────
         # https://wiki.hyprland.org/Configuring/Environment-variables
-        "$system_theme" = "adw-gtk3-dark";
-        "$cursor_theme" = "macOS";
+        "$system_theme" = theme.name;
+        "$cursor_theme" = cursorTheme.name;
         "$cursor_size" = "24";
 
         env = [

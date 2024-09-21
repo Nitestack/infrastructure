@@ -1,21 +1,22 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Display Manager                                          │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
+{ pkgs, meta, ... }:
+let
+  inherit (meta) font;
+in
 {
-  services.displayManager = {
-    sddm = {
-      enable = true;
-      package = pkgs.kdePackages.sddm;
-      extraPackages = with pkgs.kdePackages; [
-        qt5compat
-        qtsvg
-      ];
-      theme = "sddm-astronaut-theme";
-      wayland.enable = true;
-    };
+  services.displayManager.sddm = {
+    enable = true;
+    package = pkgs.kdePackages.sddm;
+    theme = "catppuccin-mocha";
+    wayland.enable = true;
   };
   environment.systemPackages = [
-    pkgs.sddm-astronaut-theme
+    (pkgs.catppuccin-sddm.override {
+      flavor = "mocha";
+      font = font.sans.name;
+    })
+    font.sans.package
   ];
 }
