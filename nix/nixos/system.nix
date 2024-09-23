@@ -57,6 +57,7 @@
 
     # Packages
     delta
+    lazydocker
     lazygit
     ueberzugpp
     unzip
