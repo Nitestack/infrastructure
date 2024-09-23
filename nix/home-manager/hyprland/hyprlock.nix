@@ -187,7 +187,7 @@ in
         }
         {
           monitor = "";
-          text = "cmd[update:1000] echo \"$(date +\"%A, %B %d\")\"";
+          text = "cmd[update:1000] echo \"$(date +\"%A, %d. %B\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 20;
           font_family = "${font.sans} Bold";
@@ -197,7 +197,7 @@ in
         }
         {
           monitor = "";
-          text = "cmd[update:1000] echo \"\$(date +\"%k:%M\")\"";
+          text = "cmd[update:1000] echo \"\$(date +\"%-H:%M\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 93;
           font_family = "${font.sans} Bold";
