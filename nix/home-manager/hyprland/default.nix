@@ -5,12 +5,9 @@
   inputs,
   pkgs,
   config,
-  meta,
   ...
 }:
 let
-  inherit (meta) theme cursorTheme;
-
   grimblast_pkg = inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast;
   hyprswitch_pkg = inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
@@ -56,6 +53,7 @@ in
         # Bins
         brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
         cliphist = "${pkgs.cliphist}/bin/cliphist";
+        discord = "${pkgs.discord}/bin/discord";
         firefox = "${pkgs.firefox}/bin/firefox";
         gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
         grimblast = "${grimblast_pkg}/bin/grimblast";
@@ -113,7 +111,8 @@ in
 
           "[workspace 1 silent] ${firefox}"
           "[workspace 2 silent] ${wezterm_startup_script}"
-          "[workspace 3 silent] ${spotify}"
+          "[workspace 3 silent] ${discord}"
+          "[workspace 4 silent] ${spotify}"
         ];
         exec = [
           "${hyprshade} auto"
@@ -121,10 +120,6 @@ in
 
         # ── Environment Variables ─────────────────────────────────────────────
         # https://wiki.hyprland.org/Configuring/Environment-variables
-        "$system_theme" = theme.name;
-        "$cursor_theme" = cursorTheme.name;
-        "$cursor_size" = "24";
-
         env = [
           # Toolkit Backend Variables
           "CLUTTER_BACKEND,wayland" # Clutter package already has wayland enabled, this variable will force Clutter applications to try and use the Wayland backend

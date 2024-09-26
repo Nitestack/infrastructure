@@ -8,11 +8,8 @@
   ...
 }:
 let
+  inherit (meta) font;
   picturesDir = config.xdg.userDirs.pictures;
-  font = {
-    sans = "Rubik";
-    mono = "MonaspiceNe Nerd Font Mono";
-  };
 
   scripts = {
     battery-status = pkgs.writeShellScriptBin "battery-status" ''
@@ -150,7 +147,7 @@ in
           text = "cmd[update:1000] echo \"$(${scripts.song-status}/bin/song-status)\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 14;
-          font_family = font.mono;
+          font_family = font.mono.name;
           position = "20, 508";
           halign = "left";
           valign = "center";
@@ -160,7 +157,7 @@ in
           text = "cmd[update:1000] echo \"$(${scripts.network-status}/bin/network-status)\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 15;
-          font_family = font.mono;
+          font_family = font.mono.name;
           position = "920, 507";
           halign = "center";
           valign = "center";
@@ -170,7 +167,7 @@ in
           text = "cmd[update:1000] echo \"$(${scripts.battery-status}/bin/battery-status)\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 18;
-          font_family = font.mono;
+          font_family = font.mono.name;
           position = "863, 505";
           halign = "center";
           valign = "center";
@@ -180,7 +177,7 @@ in
           text = "cmd[update:1000] echo \"$(${scripts.layout-status}/bin/layout-status)\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 14;
-          font_family = font.mono;
+          font_family = font.mono.name;
           position = "796, 508";
           halign = "center";
           valign = "center";
@@ -190,7 +187,7 @@ in
           text = "cmd[update:1000] echo \"$(date +\"%A, %d. %B\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 20;
-          font_family = "${font.sans} Bold";
+          font_family = "${font.sans.name} Bold";
           position = "0, 400";
           halign = "center";
           valign = "center";
@@ -200,7 +197,7 @@ in
           text = "cmd[update:1000] echo \"\$(date +\"%-H:%M\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 93;
-          font_family = "${font.sans} Bold";
+          font_family = "${font.sans.name} Bold";
           position = "0, 253";
           halign = "center";
           valign = "center";
@@ -210,7 +207,7 @@ in
           text = "cmd[update:0] echo \"${meta.description}\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 12;
-          font_family = "${font.sans} Bold";
+          font_family = "${font.sans.name} Bold";
           position = "0, -407";
           halign = "center";
           valign = "center";
@@ -220,7 +217,7 @@ in
           text = "Enter Password";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 10;
-          font_family = font.sans;
+          font_family = font.sans.name;
           position = "0, -440";
           halign = "center";
           valign = "center";

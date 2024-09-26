@@ -67,7 +67,7 @@ in
           clock-format = "24h";
           font-antialiasing = "rgba";
           font-hinting = "full";
-          monospace-font-name = "MonaspiceNe Nerd Font";
+          monospace-font-name = font.mono.name;
           show-battery-percentage = true;
         };
         "org/gnome/nautilus/preferences" = {
