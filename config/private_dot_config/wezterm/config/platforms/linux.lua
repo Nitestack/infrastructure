@@ -12,10 +12,6 @@ function M.setup(config)
   config.bypass_mouse_reporting_modifiers = "CTRL"
 
   config.enable_tab_bar = false
-  -- NOTE: Hyprland Issue
-  config.enable_wayland = false
-  -- NOTE: NixOS Issue
-  config.front_end = "WebGpu"
 end
 
 return M

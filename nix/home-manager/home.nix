@@ -16,9 +16,10 @@
     ./fzf.nix
     ./git.nix
     ./hyprland
+    ./kitty.nix
     ./rofi.nix
     ./theme.nix
-    ./wezterm.nix
+    # ./wezterm.nix
 
     ./scripts
   ];
