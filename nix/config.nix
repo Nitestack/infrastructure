@@ -28,7 +28,7 @@
       package = pkgs.rubik;
     };
     mono = {
-      name = "MonaspiceNe Nerd Font";
+      name = "MonaspiceNe Nerd Font Mono";
       package = pkgs.nerdfonts.override {
         fonts = [
           "Monaspace"
