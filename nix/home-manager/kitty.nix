@@ -3,7 +3,7 @@ let
   inherit (meta) font;
 in
 {
-  kitty = {
+  programs.kitty = {
     enable = true;
     font = {
       name = font.mono.name;
@@ -12,5 +12,4 @@ in
     shellIntegration.enableZshIntegration = true;
     themeFile = "Catppuccin-Mocha";
   };
-
 }
