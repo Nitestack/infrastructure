@@ -59,6 +59,7 @@
     delta
     lazydocker
     lazygit
+    openssl
     ueberzugpp
     unzip
 
