@@ -5,9 +5,12 @@
   inputs,
   pkgs,
   config,
+  meta,
   ...
 }:
 let
+  inherit (meta) cursorTheme;
+
   grimblast_pkg = inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast;
   hyprswitch_pkg = inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
@@ -71,7 +74,7 @@ in
         wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
         wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
-        wezterm_startup_script = "${pkgs.wezterm}/bin/wezterm -e tmux";
+        kitty_startup_script = "${pkgs.kitty}/bin/kitty tmux";
 
         cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
           #!/usr/bin/env bash
@@ -108,9 +111,10 @@ in
           "${wl-paste} --type text --watch ${cliphist} store"
           "${wl-paste} --type image --watch ${cliphist} store"
           "${hyprswitch} init --show-title --custom-css ${config.xdg.configHome}/hypr/hyprswitch.css &"
+          "${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size}"
 
           "[workspace 1 silent] ${firefox}"
-          "[workspace 2 silent] ${wezterm_startup_script}"
+          "[workspace 2 silent] ${kitty_startup_script}"
           "[workspace 3 silent] ${webcord}"
           "[workspace 4 silent] ${spotify}"
         ];
@@ -270,6 +274,8 @@ in
             f = regex: "float, ^(${regex})$";
           in
           [
+            "opacity 0.89 override 0.89 override, .*" # Transparency
+
             # Floating windows
             (f "confirm")
             (f "file_progress")
@@ -309,7 +315,7 @@ in
         "$mmb" = "mouse:274"; # Middle mouse button
         bindd =
           [
-            "SUPER, Slash, Open Terminal, exec, ${wezterm_startup_script}"
+            "SUPER, Slash, Open Terminal, exec, ${kitty_startup_script}"
             "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
             "SUPER, W, Open Browser, exec, ${firefox}"
             "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
