@@ -53,7 +53,6 @@ in
         # Bins
         brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
         cliphist = "${pkgs.cliphist}/bin/cliphist";
-        discord = "${pkgs.discord}/bin/discord";
         firefox = "${pkgs.firefox}/bin/firefox";
         gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
         grimblast = "${grimblast_pkg}/bin/grimblast";
@@ -66,6 +65,7 @@ in
         safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
         snixembed = "${pkgs.snixembed}/bin/snixembed";
         spotify = "${pkgs.spotify}/bin/spotify";
+        webcord = "${pkgs.webcord}/bin/webcord";
         wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
         wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
         wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
@@ -111,7 +111,7 @@ in
 
           "[workspace 1 silent] ${firefox}"
           "[workspace 2 silent] ${wezterm_startup_script}"
-          "[workspace 3 silent] ${discord}"
+          "[workspace 3 silent] ${webcord}"
           "[workspace 4 silent] ${spotify}"
         ];
         exec = [
