@@ -65,11 +65,11 @@
 
     # Apps
     bitwarden-desktop
-    discord
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
     spotify
+    webcord
     zed-editor
 
     # NixOS
