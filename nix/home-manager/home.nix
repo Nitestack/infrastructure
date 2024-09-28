@@ -12,6 +12,7 @@
   imports = [
     ./bat.nix
     ./browser.nix
+    ./dunst.nix
     ./eza.nix
     ./fzf.nix
     ./git.nix
@@ -95,7 +96,6 @@
   # ── Services ──────────────────────────────────────────────────────────
   services = {
     cliphist.enable = true;
-    dunst.enable = true;
     easyeffects.enable = true;
   };
 }
