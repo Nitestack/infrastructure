@@ -56,6 +56,7 @@
     rustup
 
     # Packages
+    bc # for TokyoNight TMUX
     delta
     lazydocker
     lazygit
