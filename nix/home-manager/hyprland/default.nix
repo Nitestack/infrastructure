@@ -20,7 +20,6 @@ in
     ./hyprlock.nix
     ./hyprpaper.nix
     ./hyprshade.nix
-    ./waybar.nix
   ];
 
   home.packages = [
