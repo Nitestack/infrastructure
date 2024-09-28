@@ -17,7 +17,7 @@
 
 ![image](https://github.com/Nitestack/dotfiles/assets/74626967/154b824c-42f2-4ec0-818b-f244f8c91f4b)
 
-_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [Arch Linux](https://archlinux.org) to [macOS](https://apple.com/macos) and [Windows](https://microsoft.com/windows), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
+_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [macOS](https://apple.com/macos) and [Windows](https://microsoft.com/windows), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -26,7 +26,16 @@ _Elevate your computing experience across platforms with this curated collection
 
 ## 🚀 Features
 
-### Cross-Platform (Arch Linux, macOS, Windows)
+### NixOS (Full System)
+
+> [!WARNING]
+> The NixOS full system configuration is still incomplete! The key feature yet to be implemented is the integration of [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs). This requires a rewrite from the previous Arch-based version of the dotfiles, meaning there is currently no top or bottom bar, and the power menu is also missing.
+
+This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor to deliver a smooth and visually pleasing window management experience. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined and polished interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and os-prober for seamless dual-booting with Windows or other operating systems. To further elevate the visual aesthetic, both [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs) are used, creating a cohesive design for app launchers, power and notification menus, top and bottom bars, and more.
+
+Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes all the features listed in the [Cross-Platform](#cross-platform-nixos-macos-windows) and the [UNIX](#unix-nixos-macos) section, making it a complete and fully functional environment.
+
+### Cross-Platform (NixOS, macOS, Windows)
 
 - **Neovim Configuration**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
 
@@ -38,11 +47,7 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **Fastfetch Configuration**: Customized settings for a fast and efficient system information display
 
-- **bat Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/bat) theme
-
 - **Lazygit Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
-
-- **Spicetify Configuration**: Add extensibility and customization to Spotify
 
 - **Git Configuration**: Customized settings for version control
 
@@ -50,43 +55,13 @@ _Elevate your computing experience across platforms with this curated collection
 
 - **SSH Configuration**: Consistent and secure SSH setup across systems
 
-- **Package & App Management**: Consistent management of common apps and packages across all systems, including system-specific packages and apps
-
-- **Font Management**: Ensuring a uniform look and feel across different platforms, with support for Nerd icons ([Symbols Nerd Font](https://www.nerdfonts.com/font-downloads)) and emojis ([Noto Color Emoji](https://fonts.google.com/noto))
-
-- **Performance Always in Mind**: Optimized configurations to ensure efficient and smooth performance
-
-### UNIX
+### UNIX (NixOS, macOS)
 
 - **tmux Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/tmux) theme, featuring session management and an integrated Neovim workflow
 
 - **Zed Configuration**: Settings for the new lightweight code editor
 
 - **Zsh Configuration**: Powered by [Oh My Zsh](https://ohmyz.sh), this configuration includes styled prompts, shell completions, optimized history settings, and useful aliases for a seamless command-line experience
-
-### Arch Linux
-
-This repository provides a comprehensive setup for Arch Linux, including:
-
-- **Hyprland Configuration**: Customized settings and tweaks for the Wayland compositor
-
-- **AGS Configuration**: Beautiful and functional Wayland widgets configuration using [ags](https://aylur.github.io/ags-docs)
-
-- **GRUB Setup**: Configured GRUB options and themed with [Hyperfluent Arch](https://github.com/Coopydood/HyperFluent-GRUB-Theme/tree/main)
-
-- **SDDM Theme**: Aesthetic display manager theme using [Astronaut Theme](https://github.com/Keyitdev/sddm-astronaut-theme)
-
-- **System Services**: Automatic setup for essential services like [Bluetooth](https://wiki.archlinux.org/title/bluetooth)
-
-- **Synced Theming**: Consistent theming across different applications and system components
-
-- **Pacman Configuration**: Enhanced pacman settings for faster downloads and updated servers using [reflector](https://wiki.archlinux.org/title/reflector), along with efficient package cache management ([paccache](https://wiki.archlinux.org/title/Pacman#Cleaning_the_package_cache))
-
-- **AUR Helper**: Inclusion of [paru](https://github.com/Morganamilo/paru) for seamless access to AUR packages
-
-- **Zsh**: Zsh shell configuration for an improved command-line experience
-
-After installing Arch Linux on a new machine, this repository can set up the rest of the system to work properly, ensuring a smooth and efficient workflow.
 
 ### macOS
 
@@ -100,17 +75,17 @@ After installing Arch Linux on a new machine, this repository can set up the res
 
 - **PowerShell Profile**: Customized PowerShell profile with a styled prompt, optimized history settings, aliases, and various Linux utilities ported over to PowerShell for enhanced productivity
 
-- **Komorebi Configuration**: Customizations and tweaks for the tiling window manager (extension to the [Desktop Window Manager](https://docs.microsoft.com/windows/win32/dwm/dwm-overview))
-
 ---
 
 And more to discover.
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [Arch Linux](https://archlinux.org), [macOS](https://apple.com/macos) or [Windows](https://microsoft.com/windows) installed.
+Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos) or [Windows](https://microsoft.com/windows) installed.
 
 ### Dependencies
+
+> **NixOS** users can skip this section.
 
 [**Homebrew**](https://brew.sh) (**macOS only**)
 
@@ -119,12 +94,6 @@ curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | 
 ```
 
 [**Git**](https://www.git-scm.com)
-
-Arch Linux:
-
-```sh
-sudo pacman -S --needed --noconfirm git
-```
 
 macOS:
 
@@ -140,12 +109,6 @@ winget install -e --accept-package-agreements --accept-source-agreements --id Gi
 
 [**chezmoi**](https://chezmoi.io)
 
-Arch Linux:
-
-```sh
-sudo pacman -S --needed --noconfirm chezmoi
-```
-
 macOS:
 
 ```sh
@@ -156,20 +119,6 @@ Windows:
 
 ```pwsh
 winget install -e --accept-package-agreements --accept-source-agreements --id twpayne.chezmoi
-```
-
-[**Wget**](https://www.gnu.org/software/wget) or [**curl**](https://curl.se) (**UNIX only**)
-
-Arch Linux:
-
-```sh
-sudo pacman -S --needed --noconfirm wget curl
-```
-
-macOS (`curl` is pre-installed, but if you want to use `wget`):
-
-```sh
-brew install wget
 ```
 
 [**PowerShell**](https://microsoft.com/PowerShell) (**Windows only**)
@@ -233,101 +182,6 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 
 ## 📖 Documentation
 
-### Bindings
-
-| Modifiers | Key | Description | OS | Flags |
-| --- | --- | --- | --- | --- |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> | <kbd>R</kbd> | Reload `ags` | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Tab</kbd> | Toggle Workspaces Overview | `L` | - |
-| <kbd>Alt</kbd> | <kbd>Space</kbd> | Toggle App Launcher | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>V</kbd> | Open Clipboard History | `L`, `W` | - |
-| - | <kbd>PowerOff Button</kbd> | Toggle Power Menu | `L`, `W` | - |
-| - | <kbd>Print</kbd> | Take Screenshot (Select Area) | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Print</kbd> | Take Fullscreen Screenshot | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>Print</kbd> | Start Screen Recording | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Backslash</kbd> | Open Terminal | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>E</kbd> | Open File Manager | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>W</kbd> | Open Browser | `L`, `W` | - |
-| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> | <kbd>Escape</kbd> | Open System Monitor | `L`, `W` | - |
-| - | <kbd>AudioLowerVolume Button</kbd> | Decrease Volume | `L`, `W` | `l`, `e` |
-| - | <kbd>AudioRaiseVolume Button</kbd> | Increase Volume | `L`, `W` | `l`, `e` |
-| - | <kbd>AudioMute Button</kbd> | Mute/Unmute Volume | `L`, `W` | `l` |
-| - | <kbd>AudioMicMute Button</kbd> | Mute/Unmute Microphone | `L`, `W` | `l` |
-| - | <kbd>AudioPlay Button</kbd> | Play/Pause | `L`, `W` | `l` |
-| - | <kbd>AudioPause Button</kbd> | Play/Pause | `L`, `W` | `l` |
-| - | <kbd>AudioNext Button</kbd> | Skip to Next Track | `L`, `W` | `l` |
-| - | <kbd>AudioPrev Button</kbd> | Return to Previous Track | `L`, `W` | `l` |
-| - | <kbd>MonBrightnessDown Button</kbd> | Decrease Screen Brightness | `L`, `W` | `l`, `e` |
-| - | <kbd>MonBrightnessUp Button</kbd> | Increase Screen Brightness | `L`, `W` | `l`, `e` |
-| <kbd>Win</kbd> | <kbd>H</kbd> | Move Focus to Left Window | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>L</kbd> | Move Focus to Right Window | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>K</kbd> | Move Focus to Upper Window | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>J</kbd> | Move Focus to Lower Window | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Right Mouse Button</kbd> | Resize Window | `L` | - |
-| <kbd>Win</kbd> | <kbd>F</kbd> | Toggle Fullscreen | `L` | - |
-| <kbd>Win</kbd> | <kbd>M</kbd> | Maximize/Restore Window | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>←</kbd> | Resize Window to the Left | `L`, `W` | `e` |
-| <kbd>Win</kbd> | <kbd>→</kbd> | Resize Window to the Right | `L`, `W` | `e` |
-| <kbd>Win</kbd> | <kbd>↑</kbd> | Resize Window Upwards | `L`, `W` | `e` |
-| <kbd>Win</kbd> | <kbd>↓</kbd> | Resize Window Downwards | `L`, `W` | `e` |
-| <kbd>Win</kbd> | <kbd>Left Mouse Button</kbd> | Move Window | `L` | - |
-| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>H</kbd> | Move Window Left | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>L</kbd> | Move Window Right | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>K</kbd> | Move Window Upwards | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Alt</kbd> | <kbd>J</kbd> | Move Window Downwards | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Q</kbd> | Close Active Window | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>C</kbd> | Center Window | `L` | - |
-| <kbd>Win</kbd> | <kbd>P</kbd> | Toggle Focused Window's Pseudo Mode | `L` | - |
-| <kbd>Win</kbd> | <kbd>R</kbd> | Toggle Split Orientation | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>T</kbd> | Toggle Active Window Floating | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>T</kbd> | Toggle All Windows Floating | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>1</kbd> | Switch to Workspace 1 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>2</kbd> | Switch to Workspace 2 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>3</kbd> | Switch to Workspace 3 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>4</kbd> | Switch to Workspace 4 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>5</kbd> | Switch to Workspace 5 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>6</kbd> | Switch to Workspace 6 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>7</kbd> | Switch to Workspace 7 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>8</kbd> | Switch to Workspace 8 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>9</kbd> | Switch to Workspace 9 | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>0</kbd> | Switch to Workspace 10 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Ctrl</kbd> | <kbd>H</kbd> | Switch to Previous Workspace | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Ctrl</kbd> | <kbd>L</kbd> | Switch to Next Workspace | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Mouse Wheel Down</kbd> | Switch to Previous Workspace | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>Mouse Wheel Up</kbd> | Switch to Next Workspace | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>1</kbd> | Move Active Window to Workspace 1 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>2</kbd> | Move Active Window to Workspace 2 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>3</kbd> | Move Active Window to Workspace 3 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>4</kbd> | Move Active Window to Workspace 4 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>5</kbd> | Move Active Window to Workspace 5 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>6</kbd> | Move Active Window to Workspace 6 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>7</kbd> | Move Active Window to Workspace 7 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>8</kbd> | Move Active Window to Workspace 8 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>9</kbd> | Move Active Window to Workspace 9 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>0</kbd> | Move Active Window to Workspace 10 | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>H</kbd> | Move Active Window to Previous Workspace | `L`, `W` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>L</kbd> | Move Active Window to Next Workspace | `L`, `W` | - |
-| <kbd>Win</kbd> | <kbd>S</kbd> | Toggle Scratchpad | `L` | - |
-| <kbd>Win</kbd> + <kbd>Shift</kbd> | <kbd>S</kbd> | Move Active Window to Scratchpad | `L` | - |
-
-#### OS Compatibility
-
-- `L` - Linux
-- `W` - Windows
-- `M` - macOS
-
-#### Binding Flags
-
-From the [Hyprland binding flags reference](https://wiki.hyprland.org/Configuring/Binds/#bind-flags):
-
-- `l` - locked, will also work when an input inhibitor (e.g. a lockscreen) is active.
-- `r` - release, will trigger on release of a key.
-- `e` - repeat, will repeat when held.
-- `n` - non-consuming, key/mouse events will be passed to the active window in addition to triggering the dispatcher.
-- `t` - transparent, cannot be shadowed by other binds.
-- `i` - ignore mods, will ignore modifiers.
-- `s` - separate, will arbitrarily combine keys between each mod/key, see [Keysym combos](https://wiki.hyprland.org/Configuring/Binds/#keysym-combos).
-
 ## 🙌 Credits
 
 - [Tom Payne](https://github.com/twpayne)
@@ -341,12 +195,13 @@ From the [Hyprland binding flags reference](https://wiki.hyprland.org/Configurin
 - [René-Marc Simard](https://github.com/renemarc)
   - the header section of his dotfiles README is used
 - [Aylur](https://github.com/Aylur)
-  - creator of [ags](https://aylur.github.io/ags-docs)
-  - his ags configuration was used as a base
+  - parts of his Nix configuration was used
 - [end-4](https://github.com/end-4)
   - parts of his dotfiles are used
 - [Pratik Gayen](https://github.com/FireDrop6000/hyprland-mydots)
   - Hyprlock config is used
+- [Elliott Minns](https://github.com/elliottminns) ([Dreams of Code](https://www.youtube.com/@dreamsofcode))
+  - parts of his Nix configuration was used
 
 ## 📝 License
 

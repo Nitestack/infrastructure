@@ -42,7 +42,7 @@ if gum confirm "Proceed with the updates?" --default=false; then
 		_log -l warn "No changes in lazy-lock.json file"
 	else
 		git add "${lazy_lock_path}"
-		git commit "${lazy_lock_path}" -m "chore(nvim): update lazy-lock.json"
+		git commit "${lazy_lock_path}" -m "chore(nvim): update Neovim plugins"
 		cd "${current_path}" || exit 1
 		_log -l info "Committed updated lazy-lock.json file"
 	fi
@@ -66,12 +66,12 @@ if gum confirm "Proceed with the updates?" --default=false; then
 		_log -l warn "No changes in lazyvim.json file"
 	else
 		git add "${lazyvim_path}"
-		git commit "${lazyvim_path}" -m "chore(nvim): update lazyvim.json"
+		git commit "${lazyvim_path}" -m "chore(nvim): update LazyVim config"
 		cd "${current_path}" || exit 1
 		_log -l info "Committed updated lazyvim.json file"
 	fi
 
 	_log -l info "Completed updates"
 else
-	_log -l warn "Cancelled update process"
+	_log -l warn "Skipping update process"
 fi

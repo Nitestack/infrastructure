@@ -1,5 +1,5 @@
 {{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
-{{- $email := promptStringOnce . "email" "Email Address" -}}
+{{- $email := promptStringOnce . "email" "Email Address" "74626967+Nitestack@users.noreply.github.com" -}}
 {{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") "personal" -}}
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
@@ -28,7 +28,6 @@ data:
   hosttype: {{ $hosttype | quote }}
   device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}
-  project_base_path: "Programming/projects"
   # do not override the following values
 {{- if eq .chezmoi.os "linux" -}}
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}

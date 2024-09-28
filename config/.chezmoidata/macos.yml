@@ -5,7 +5,12 @@
 ---
 packages:
   mac:
-    formulae: []
+    formulae:
+      - "bc" # for TokyoNight TMUX
+      - "nowplaying-cli"
+      - "tmux"
+      - "jstkdng/programs/ueberzugpp"
+
 apps:
   mac:
     casks:

@@ -13,25 +13,13 @@ Documents
 .wslconfig
 {{ end }}
 
-# Arch Linux
-{{ if ne .osid "linux-arch" }}
-.chezmoiscripts/arch/**
+
+# NixOS
+{{ if ne .osid "linux-nixos" }}
+.config/Code
+.config/lazygit
 
 Pictures
-
-.config/ags
-.config/bat
-.config/Code
-.config/hypr
-.config/lazygit
-.config/paru
-.config/qt5ct
-.config/qt6ct
-
-.local
-
-.hushlogin
-.zprofile
 {{ end }}
 
 # macOS
@@ -46,7 +34,6 @@ Library
 .chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
 
-.config/spicetify
 .config/tmux
 .config/zed
 
@@ -57,14 +44,16 @@ Library
 
 .config/nvim/templates
 
-# ags
-.config/ags/bun.lockb
-.config/ags/node_modules
-.config/ags/package.json
-.config/ags/prettier.config.mjs
-.config/ags/types
+# Ignore on NixOS
+{{ if eq .osid "linux-nixos" }}
+.config/wezterm/wezterm.lua
 
-# Ignore SSH keys in work environment
+.ssh
+
+.gitconfig
+{{ end }}
+
+# Ignore SSH keys in work environment or on NixOS
 # {{ if eq .hosttype "work" }}
 .ssh
 # {{ end }}

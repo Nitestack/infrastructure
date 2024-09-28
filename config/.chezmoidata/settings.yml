@@ -3,16 +3,6 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 ---
-gtk:
-  icon:
-    theme:
-      name: "WhiteSur"
-      install:
-        paru: "whitesur-icon-theme"
-  cursor:
-    theme:
-      name: "macOS"
-    size: 24
 font:
   size: 14
   sans:
@@ -21,59 +11,3 @@ font:
   nerd:
     family: "MonaspiceNe Nerd Font"
     weight: "Regular"
-theme:
-  colorscheme: "dark"
-  blur: 15
-  spacing: 12
-  padding: 7
-  window_margin: 1.7
-  border:
-    width: 1
-    opacity: 96
-  radius: 11
-  widget:
-    opacity: 94
-  dark:
-    primary:
-      bg: "#1e66f5"
-      accent: "#89b4fa"
-    error:
-      bg: "#d20f39"
-      accent: "#f38ba8"
-    success:
-      bg: "#40a02b"
-      accent: "#a6e3a1"
-    warning:
-      bg: "#df8e1d"
-      accent: "#f9e2af"
-    fg: "#cdd6f4"
-    bg: "#1e1e2e"
-    view: "#181825"
-    card: "#11111b"
-    surface: "#313244"
-
-    widget: "#cdd6f4"
-    border: "#cdd6f4"
-    inactiveBorder: "#282828"
-  light:
-    primary:
-      bg: "#1e66f5"
-      accent: "#8caaee"
-    error:
-      bg: "#d20f39"
-      accent: "#e78284"
-    success:
-      bg: "#40a02b"
-      accent: "#a6d189"
-    warning:
-      bg: "#df8e1d"
-      accent: "#e5c890"
-    fg: "#4c4f69"
-    bg: "#eff1f5"
-    view: "#e6e9ef"
-    card: "#dce0e8"
-    surface: "#ccd0da"
-
-    widget: "#4c4f69"
-    border: "#4c4f69"
-    inactiveBorder: "#282828"

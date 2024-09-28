@@ -6,16 +6,19 @@
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-export PATH="$PATH:$(gem env path | sed 's#[^:]\+#&/bin#g')"
-
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
+
+{{- if eq .osid "linux-nixos" }}
+
+export NIX_LD=$(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"; in NIX_LD')
+{{- end }}
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 {{ $paths := list }}
 {{- $homeDir := .chezmoi.homeDir }}
-{{- range $_, $relPath := list "bin" ".local/bin" ".local/share/bob/nvim-bin" ".cargo/bin" ".console-ninja/.bin" "go/bin" -}}
+{{- range $_, $relPath := list "bin" ".local/bin" ".cargo/bin" ".console-ninja/.bin" -}}
 {{-   $path := joinPath $homeDir $relPath -}}
 {{-   if stat $path -}}
 {{-     $paths = mustAppend $paths $path -}}
@@ -127,6 +130,7 @@ alias v="nvim"
 alias c="clear"
 alias cat="bat"
 alias lg="lazygit"
+alias lzd="lazydocker"
 alias ls="eza --group-directories-first --icons --git --octal-permissions"
 alias lt="ls -T"
 
@@ -137,6 +141,9 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # Load fzf (must stay on the end)
 source <(fzf --zsh)
+
+# bat theme
+export BAT_THEME="Catppuccin Mocha"
 
 # fastfetch
 if [[ $(tty) == *"pts"* ]]; then

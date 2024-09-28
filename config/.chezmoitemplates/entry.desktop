@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Name={{- .name }}
-Comment={{- .comment }}
-Exec=google-chrome-stable --app="{{- .url -}}" --name={{- .name }}
-Terminal=false
-Type=Application
-Icon={{- env "HOME" -}}/.local/share/icons/{{- .name -}}.png
-Categories={{- .categories | join ";" }};
