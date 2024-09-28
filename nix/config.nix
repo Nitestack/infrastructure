@@ -31,6 +31,7 @@
       name = "MonaspiceNe Nerd Font Mono";
       package = pkgs.nerdfonts.override {
         fonts = [
+          "Iosevka" # For Unicode characters
           "Monaspace"
           "NerdFontsSymbolsOnly"
         ];
