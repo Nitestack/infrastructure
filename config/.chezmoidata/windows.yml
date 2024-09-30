@@ -6,6 +6,7 @@
 packages:
   win:
     winget:
+      - "9MZNMNKSM73X" # Arch WSL
       - "Microsoft.DotNet.SDK.8"
       - "LLVM.LLVM"
       - "mbuilov.sed"
