@@ -75,6 +75,8 @@ Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), e
 
 - **PowerShell Profile**: Customized PowerShell profile with a styled prompt, optimized history settings, aliases, and various Linux utilities ported over to PowerShell for enhanced productivity
 
+- **Windows Terminal**: Customized Windows Terminal settings with TMUX-like keybindings
+
 ---
 
 And more to discover.
