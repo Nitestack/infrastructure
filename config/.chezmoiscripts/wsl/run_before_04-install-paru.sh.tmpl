@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+_log_header "AUR Helper"
+
+# Check if paru is already installed
+if pacman -Q paru &>/dev/null; then
+  _log -l warn "paru is already installed"
+  exit
+fi
+
+# Install paru
+mkdir -p /tmp/paru-git
+(
+  git clone https://aur.archlinux.org/paru.git /tmp/paru-git
+  cd /tmp/paru-git || exit 1
+  makepkg -si --noconfirm
+)
+rm -rf /tmp/paru-git
+
+_log -l info "Installed paru"

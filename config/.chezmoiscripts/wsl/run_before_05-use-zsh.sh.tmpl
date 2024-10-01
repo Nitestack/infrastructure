@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# {{ template "bash-library.sh" . }}
+
+# The following line is for ShellCheck to correctly identify the above included library
+true || source "../../.chezmoitemplates/bash-library.sh"
+
+_log_header "Shell Configuration"
+
+# Check if the current shell is zsh already
+if [[ "${SHELL}" == "/usr/bin/zsh" ]]; then
+  _log -l warn "Default shell is already zsh"
+  exit
+fi
+
+# Ensure zsh is installed
+_install_packages_pacman "zsh"
+
+chsh -s "/usr/bin/zsh"
+
+_log -l info "Set the default shell to zsh"

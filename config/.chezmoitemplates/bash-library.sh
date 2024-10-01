@@ -101,3 +101,90 @@ _write_file_with_sudo() {
 
 	_spin "Writing to ${file_path}" -- echo "${content}" | sudo tee "${file_path}" >/dev/null
 }
+
+# ── Arch Linux ────────────────────────────────────────────────────────
+# {{ if eq .osid "linux-arch" }}
+
+# Function to install packages using pacman
+# Usage: _install_packages_pacman <package1> [<package2> ...]
+_install_packages_pacman() {
+	toInstall=()
+
+	for pkg; do
+		if pacman -Q "${pkg}" &>/dev/null; then
+			_log -l warn --prefix "pacman" "${pkg} is already installed"
+			continue
+		fi
+		toInstall+=("${pkg}")
+	done
+
+	if [[ "${toInstall[*]}" == "" ]]; then
+		return
+	fi
+
+	sudo pacman --needed --noconfirm -S "${toInstall[@]}"
+}
+
+# Function to install packages using paru
+# Usage: _install_packages_paru <package1> [<package2> ...]
+_install_packages_paru() {
+	toInstall=()
+
+	for pkg; do
+		if paru -Q "${pkg}" &>/dev/null; then
+			_log -l warn --prefix "paru" "${pkg} is already installed"
+			continue
+		fi
+		toInstall+=("${pkg}")
+	done
+
+	if [[ "${toInstall[*]}" == "" ]]; then
+		return
+	fi
+
+	paru --needed -S "${toInstall[@]}"
+}
+
+# Function to ensure a system service is enabled with sudo
+# Usage: _enable_system_service <service_name> [<pre_exec_function>]
+_enable_system_service() {
+	local service_name="$1"
+	local pre_exec_function="${2:-}"
+
+	_log -l info --prefix "systemd" "Enabling ${service_name} unit"
+
+	if systemctl is-enabled --quiet "${service_name}"; then
+		_log -l warn --prefix "systemd" "${service_name} unit is already enabled"
+	else
+		[[ -n ${pre_exec_function} ]] && ${pre_exec_function}
+
+		sudo -v
+
+		# Enable service
+		_spin "Enabling and starting ${service_name} unit" -- sudo systemctl enable --now "${service_name}"
+
+		_log -l info --prefix "systemd" "Enabled ${service_name} unit"
+	fi
+}
+
+# Function to ensure a system service is enabled for the current user
+# Usage: _enable_user_service <service_name> [<pre_exec_function>]
+_enable_user_service() {
+	local service_name="$1"
+	local pre_exec_function="${2:-}"
+
+	_log -l info --prefix "systemd" "Enabling ${service_name} unit for the current user"
+
+	if systemctl --user is-enabled --quiet "${service_name}"; then
+		_log -l warn --prefix "systemd" "${service_name} unit is already enabled for the current user"
+	else
+		[[ -n ${pre_exec_function} ]] && ${pre_exec_function}
+
+		# Enable and start service for the current user
+		_spin "Enabling and starting ${service_name} unit for the current user" -- systemctl --user enable --now "${service_name}"
+
+		_log -l info --prefix "systemd" "Enabled ${service_name} unit for the current user"
+	fi
+}
+
+# {{ end }}
