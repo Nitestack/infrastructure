@@ -46,7 +46,7 @@ return {
           server_name = server_config[1]
         end
 
-        local filetypes = require("lspconfig.server_configurations." .. server_name).default_config.filetypes
+        local filetypes = require("lspconfig.configs." .. server_name).default_config.filetypes
         if type(server_config) == "table" then
           vim.list_extend(filetypes, utils.str_to_tbl(server_config.ft))
         end
