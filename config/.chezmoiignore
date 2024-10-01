@@ -65,6 +65,8 @@ Library
 # Ignore on WSL
 {{ if .is_wsl }}
 .config/Code
+.config/wezterm
+.config/zed
 {{ end }}
 
 # Ignore SSH keys in work environment or on NixOS
