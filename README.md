@@ -17,7 +17,7 @@
 
 ![image](https://github.com/Nitestack/dotfiles/assets/74626967/154b824c-42f2-4ec0-818b-f244f8c91f4b)
 
-_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [macOS](https://apple.com/macos) and [Windows](https://microsoft.com/windows), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
+_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [macOS](https://apple.com/macos), [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([Arch Linux](https://archlinux.org)), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -37,23 +37,23 @@ Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), e
 
 ### Cross-Platform (NixOS, macOS, Windows)
 
-- **Neovim Configuration**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
+- **Neovim Configuration (with WSL)**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
 
 - **WezTerm Configuration**: Integrated Neovim workflow for a seamless terminal and text editing setup
 
 - **Visual Studio Code Configuration**: Settings and extensions for an optimized development environment
 
-- **Oh My Posh Configuration**: Customized prompt for a visually appealing and informative shell experience
+- **Oh My Posh Configuration (with WSL)**: Customized prompt for a visually appealing and informative shell experience
 
-- **Fastfetch Configuration**: Customized settings for a fast and efficient system information display
+- **Fastfetch Configuration (with WSL)**: Customized settings for a fast and efficient system information display
 
-- **Lazygit Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
+- **Lazygit Configuration (with WSL)**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
 
-- **Git Configuration**: Customized settings for version control
+- **Git Configuration (with WSL)**: Customized settings for version control
 
-- **ShellCheck Configuration**: Setup for shell script analysis
+- **ShellCheck Configuration (with WSL)**: Setup for shell script analysis
 
-- **SSH Configuration**: Consistent and secure SSH setup across systems
+- **SSH Configuration (with WSL)**: Consistent and secure SSH setup across systems
 
 ### UNIX (NixOS, macOS)
 
@@ -61,7 +61,7 @@ Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), e
 
 - **Zed Configuration**: Settings for the new lightweight code editor
 
-- **Zsh Configuration**: Powered by [Oh My Zsh](https://ohmyz.sh), this configuration includes styled prompts, shell completions, optimized history settings, and useful aliases for a seamless command-line experience
+- **Zsh Configuration (with WSL)**: Powered by [Oh My Zsh](https://ohmyz.sh), this configuration includes styled prompts, shell completions, optimized history settings, and useful aliases for a seamless command-line experience
 
 ### macOS
 
@@ -71,7 +71,7 @@ Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), e
 
 ### Windows
 
-- **WSL Configuration**: Optimized settings for Windows Subsystem for Linux (WSL) to ensure seamless integration and performance
+- **Full WSL System**: Optimized settings for Windows Subsystem for Linux (WSL) to ensure seamless integration and performance
 
 - **PowerShell Profile**: Customized PowerShell profile with a styled prompt, optimized history settings, aliases, and various Linux utilities ported over to PowerShell for enhanced productivity
 
@@ -83,11 +83,12 @@ And more to discover.
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos) or [Windows](https://microsoft.com/windows) installed.
+Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos), [Windows](https://microsoft.com/windows) or [WSL](https://learn.microsoft.com/windows/wsl) installed.
 
 ### Dependencies
 
-> **NixOS** users can skip this section.
+> [!NOTE]
+> If you are on **NixOS**, just ensure you have `git`, `chezmoi` and `curl` (or `wget`) active in your current shell.
 
 [**Homebrew**](https://brew.sh) (**macOS only**)
 
@@ -109,6 +110,12 @@ Windows:
 winget install -e --accept-package-agreements --accept-source-agreements --id Git.Git
 ```
 
+WSL (Arch Linux):
+
+```sh
+sudo pacman -S --needed --noconfirm git
+```
+
 [**chezmoi**](https://chezmoi.io)
 
 macOS:
@@ -121,6 +128,26 @@ Windows:
 
 ```pwsh
 winget install -e --accept-package-agreements --accept-source-agreements --id twpayne.chezmoi
+```
+
+WSL (Arch Linux):
+
+```sh
+sudo pacman -S --needed --noconfirm chezmoi
+```
+
+[**Wget**](https://www.gnu.org/software/wget) or [**curl**](https://curl.se) (**WSL only**)
+
+WSL (Arch Linux):
+
+```sh
+sudo pacman -S --needed --noconfirm wget curl
+```
+
+macOS (`curl` is pre-installed, but if you want to use `wget`):
+
+```sh
+brew install wget
 ```
 
 [**PowerShell**](https://microsoft.com/PowerShell) (**Windows only**)
@@ -197,6 +224,7 @@ iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps
 - [René-Marc Simard](https://github.com/renemarc)
   - the header section of his dotfiles README is used
 - [Aylur](https://github.com/Aylur)
+  - creator of [Ags](https://aylur.github.io/ags-docs) and [Astal](https://aylur.github.io/astal)
   - parts of his Nix configuration was used
 - [end-4](https://github.com/end-4)
   - parts of his dotfiles are used

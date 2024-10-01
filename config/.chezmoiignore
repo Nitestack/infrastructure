@@ -13,12 +13,15 @@ Documents
 .wslconfig
 {{ end }}
 
+# WSL
+{{ if not .is_wsl }}
+.chezmoiscripts/wsl/**
+
+.config/paru
+{{ end }}
 
 # NixOS
 {{ if ne .osid "linux-nixos" }}
-.config/Code
-.config/lazygit
-
 Pictures
 {{ end }}
 
@@ -42,6 +45,12 @@ Library
 .zshrc
 {{ end }}
 
+# Linux
+{{ if ne .chezmoi.os "linux" }}
+.config/Code
+.config/lazygit
+{{ end }}
+
 .config/nvim/templates
 
 # Ignore on NixOS
@@ -51,6 +60,11 @@ Library
 .ssh
 
 .gitconfig
+{{ end }}
+
+# Ignore on WSL
+{{ if .is_wsl }}
+.config/Code
 {{ end }}
 
 # Ignore SSH keys in work environment or on NixOS
