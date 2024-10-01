@@ -3,9 +3,6 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 # ── Environment variables ─────────────────────────────────────────────
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
@@ -134,8 +131,6 @@ alias lzd="lazydocker"
 alias ls="eza --group-directories-first --icons --git --octal-permissions"
 alias lt="ls -T"
 
-alias gnome-control-center='XDG_CURRENT_DESKTOP="gnome" gnome-control-center'
-
 # Load zoxide
 eval "$(zoxide init --cmd cd zsh)"
 
@@ -148,9 +143,4 @@ export BAT_THEME="Catppuccin Mocha"
 # fastfetch
 if [[ $(tty) == *"pts"* ]]; then
   fastfetch
-else
-  echo
-  if [ -f /bin/hyprctl ]; then
-    echo "Start Hyprland with command Hyprland"
-  fi
 fi
