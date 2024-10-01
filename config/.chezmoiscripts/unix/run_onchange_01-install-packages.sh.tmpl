@@ -58,6 +58,11 @@ fi
 # {{ end }}
 
 # ── volta ─────────────────────────────────────────────────────────────
+
+# Needed for first-time installation
+VOLTA_HOME="${HOME}/.volta"
+PATH="${VOLTA_HOME}/bin:${PATH}"
+
 gum format -- "## volta:"
 volta_list=$(volta list --format plain)
 # {{ range (.packages.volta | uniq) }}
