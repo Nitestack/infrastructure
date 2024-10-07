@@ -56,5 +56,8 @@ apps:
     - name: "WezTerm"
       mac: "wezterm"
       win: "wez.wezterm"
+    - name: "WhatsApp Desktop"
+      mac: "whatsapp"
+      win: "9NKSQGP7F2NH"
     - name: "Zed"
       mac: "zed"
