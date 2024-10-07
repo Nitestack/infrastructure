@@ -3,6 +3,7 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 # bat
+{{ if ne .osid "linux-nixos" }}
 {{ if eq .chezmoi.os "windows" -}}
 "AppData/Roaming/bat":
 {{- else if eq .chezmoi.os "darwin" }}
@@ -16,6 +17,7 @@
   refreshPeriod: "168h"
   include:
     - "*/themes/**"
+{{- end }}
 
 # Oh My Zsh
 {{ if ne .chezmoi.os "windows" -}}
