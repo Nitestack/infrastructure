@@ -54,6 +54,18 @@
             sha256 = "sha256-QMgXdeaNxg+e71dKAojR1h1zcpwBCNX10JQfD0fqhes=";
           }}";
         };
+        whatsapp = {
+          name = "WhatsApp";
+          comment = "Quickly send and receive WhatsApp messages right from your computer.";
+          categories = [
+            "Network"
+          ];
+          exec = "${googleChrome} --app=https://web.whatsapp.com --name=WhatsApp";
+          icon = "${pkgs.fetchurl {
+            url = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/240px-WhatsApp.svg.png";
+            sha256 = "15spvy9w3aj3nx161z60wkhqswrp13j5kp4v2sijbmd36myg38xj";
+          }}";
+        };
       };
     userDirs = {
       enable = true;
