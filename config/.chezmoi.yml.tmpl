@@ -29,7 +29,7 @@ data:
   device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}
   # do not override the following values
-{{-   if and (.chezmoi.kernel.osrelease | lower | contains "microsoft") (eq $osID "linux-arch") }}
+{{- if and (eq $osID "linux-arch") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
   is_wsl: true
 {{- else }}
   is_wsl: false
