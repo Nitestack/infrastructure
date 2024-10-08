@@ -103,7 +103,7 @@ require("lazy").setup({
         "gzip",
         "matchit",
         "matchparen",
-        "netrwPlugin",
+        -- "netrwPlugin", -- Needed for spell checking files
         "tarPlugin",
         "tohtml",
         "tutor",
