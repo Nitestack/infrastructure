@@ -16,10 +16,10 @@ let
 in
 {
   imports = [
-    ./hypridle.nix
-    ./hyprlock.nix
-    ./hyprpaper.nix
-    ./hyprshade.nix
+    ./plugins/hypridle.nix
+    ./plugins/hyprlock.nix
+    ./plugins/hyprpaper.nix
+    ./plugins/hyprshade.nix
   ];
 
   home.packages = [
