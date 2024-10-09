@@ -8,6 +8,7 @@ local M = {}
 ---@param config Config
 function M.setup(config)
   -- ── Settings ────────────────────────────────────────────────────────
+  config.integrated_title_button_alignment = "Left"
   config.integrated_title_button_style = "MacOsNative"
   config.bypass_mouse_reporting_modifiers = "SUPER"
 end

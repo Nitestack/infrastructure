@@ -13,7 +13,7 @@
 
       require("config.appearance").setup(config)
       require("config.general").setup(config)
-      require("config.keys").setup(config, smart_splits)
+      require("config.keys").setup(config)
       require("config.platforms").setup(config)
 
       local smart_splits_config = {

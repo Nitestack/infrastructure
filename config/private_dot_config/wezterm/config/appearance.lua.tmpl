@@ -38,23 +38,13 @@ function M.setup(config)
   config.command_palette_fg_color = colors.text
 
   -- ── Rendering ───────────────────────────────────────────────────────
-  config.animation_fps = 144
   config.max_fps = 144
 
   config.underline_thickness = 3
   config.cursor_thickness = 4
   config.underline_position = -6
 
-  -- ── Cursor ──────────────────────────────────────────────────────────
-  -- {{- if eq .device_type "desktop" }}
-  config.cursor_blink_ease_in = "Constant"
-  config.cursor_blink_ease_out = "Constant"
-  config.cursor_blink_rate = 700
-  -- {{- end }}
-  config.scrollback_lines = 10000
-
-  -- ── Window ──────────────────────────────────────────────────────────
-  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  -- -- ── Window ──────────────────────────────────────────────────────────
   config.window_padding = {
     top = 0,
     bottom = 0,

@@ -59,58 +59,54 @@ end
 
 -- ── Regular bindings ────────────────────────────────────────────────
 ---@param config Config
-function M.setup(config, smart_splits)
-  local function find_vim_pane(tab)
-    for _, pane in ipairs(tab:panes()) do
-      if smart_splits.is_vim(pane) then
-        return pane
-      end
-    end
-  end
-
+function M.setup(config)
   config.disable_default_key_bindings = true
 
   config.keys = {
     { key = "C", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
     { key = "V", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
 
-    -- Tab
-    { key = "T", mods = "CTRL", action = act.SpawnTab("DefaultDomain") },
-    { key = "phys:1", mods = "SHIFT|CTRL", action = act.SpawnTab("DefaultDomain") },
-    { key = "W", mods = "CTRL|SHIFT", action = act.CloseCurrentTab({ confirm = false }) },
-    { key = "RightArrow", mods = mod.SUPER_REV, action = act.ActivateTabRelative(1) },
-    { key = "LeftArrow", mods = mod.SUPER_REV, action = act.ActivateTabRelative(-1) },
-
     {
       key = "P",
       mods = "CTRL",
       action = act.ActivateCommandPalette,
     },
-    {
-      key = "R",
-      mods = "CTRL|SHIFT",
-      action = act.PromptInputLine({
-        description = "Enter new name for tab",
-        ---@diagnostic disable-next-line: param-type-mismatch, missing-parameter
-        action = wezterm.action_callback(function(window, _, line)
-          -- line will be `nil` if they hit escape without entering anything
-          -- An empty string if they just hit enter
-          -- Or the actual line of text they wrote
-          if line then
-            window:active_tab():set_title(line)
-          end
-        end),
-      }),
-    },
     { key = "F11", mods = "NONE", action = act.ToggleFullScreen },
     { key = "F", mods = "CTRL|SHIFT", action = act.Search({ CaseInSensitiveString = "" }) },
   }
 
-  for i = 1, 9, 1 do
-    table.insert(config.keys, { key = tostring(i), mods = mod.SUPER_REV, action = act.ActivateTab(i - 1) })
-  end
-
+  -- Windows
   if utils.is_win() then
+    local tab_keys = {
+      { key = "T", mods = "CTRL", action = act.SpawnTab("DefaultDomain") },
+      { key = "phys:1", mods = "SHIFT|CTRL", action = act.SpawnTab("DefaultDomain") },
+      { key = "W", mods = "CTRL|SHIFT", action = act.CloseCurrentTab({ confirm = false }) },
+      { key = "RightArrow", mods = mod.SUPER_REV, action = act.ActivateTabRelative(1) },
+      { key = "LeftArrow", mods = mod.SUPER_REV, action = act.ActivateTabRelative(-1) },
+      {
+        key = "R",
+        mods = "CTRL|SHIFT",
+        action = act.PromptInputLine({
+          description = "Enter new name for tab",
+          ---@diagnostic disable-next-line: param-type-mismatch, missing-parameter
+          action = wezterm.action_callback(function(window, _, line)
+            -- line will be `nil` if they hit escape without entering anything
+            -- An empty string if they just hit enter
+            -- Or the actual line of text they wrote
+            if line then
+              window:active_tab():set_title(line)
+            end
+          end),
+        }),
+      },
+    }
+    for i = 1, 9, 1 do
+      table.insert(config.keys, { key = tostring(i), mods = mod.SUPER_REV, action = act.ActivateTab(i - 1) })
+    end
+    for _, binding in ipairs(tab_keys) do
+      table.insert(config.keys, binding)
+    end
+
     add_tmux_bindings(config)
   end
 end

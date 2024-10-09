@@ -4,13 +4,11 @@
 
 ---@type Wezterm
 ---@diagnostic disable-next-line: assign-type-mismatch
-local wezterm = require("wezterm")
-local act = wezterm.action
 local colors = require("colors")
+local wezterm = require("wezterm")
 
 local M = {}
 
-local home_dir = os.getenv("USERPROFILE")
 local app_data_local = os.getenv("LOCALAPPDATA")
 
 ---@param config Config
@@ -18,12 +16,11 @@ function M.setup(config)
   -- ── Settings ────────────────────────────────────────────────────────
   config.integrated_title_button_style = "Windows"
   config.bypass_mouse_reporting_modifiers = "CTRL"
-  ---@diagnostic disable-next-line: assign-type-mismatch
-  config.quote_dropped_files = "Windows"
 
   -- ── Tabs ────────────────────────────────────────────────────────────
   config.show_tab_index_in_tab_bar = false
   config.switch_to_last_active_tab_when_closing_tab = true
+  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE" -- `INTEGRATED_BUTTONS` causes a thick line on the top of the window on Linux, that's why it's Windows only
   config.window_frame = {
     font = wezterm.font_with_fallback({
       {
@@ -48,20 +45,18 @@ function M.setup(config)
   }
 
   -- ── Shell ───────────────────────────────────────────────────────────
-  config.default_prog = { [[C:\Program Files\PowerShell\7\pwsh.exe]], "-NoLogo" }
+  local wsl_arch = {
+    label = "WSL: Arch",
+    args = { app_data_local .. [[Microsoft\WindowsApps\arch.exe]] },
+  }
+  local powershell = {
+    label = "PowerShell Core",
+    args = { [[C:\Program Files\PowerShell\7\pwsh.exe]], "-NoLogo" },
+  }
+  config.default_prog = wsl_arch.args
   config.launch_menu = {
-    {
-      label = "PowerShell Core",
-      args = { [[C:\Program Files\PowerShell\7\pwsh.exe]] },
-    },
-    {
-      label = "Git Bash",
-      args = { [[C:\Windows\system32\bash.exe]] },
-    },
-    {
-      label = "Command Prompt",
-      args = { "cmd" },
-    },
+    wsl_arch,
+    powershell,
   }
 end
 

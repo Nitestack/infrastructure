@@ -57,6 +57,8 @@ function M.setup(config)
     },
   }
   config.warn_about_missing_glyphs = false
+
+  config.scrollback_lines = 10000
 end
 
 return M

@@ -10,7 +10,7 @@ local smart_splits = wezterm.plugin.require("https://github.com/mrjones2014/smar
 
 require("config.appearance").setup(config)
 require("config.general").setup(config)
-require("config.keys").setup(config, smart_splits)
+require("config.keys").setup(config)
 require("config.platforms").setup(config)
 
 ---@type SmartSplitsWeztermConfig
