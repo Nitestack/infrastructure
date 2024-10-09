@@ -20,8 +20,4 @@ echo
 if ! pacman -Q "gum" &>/dev/null; then
   sudo pacman -S --needed --noconfirm gum &>/dev/null
 fi
-# {{ else if eq .chezmoi.os "darwin" }}
-if ! brew list "gum" &>/dev/null; then
-  brew install gum &>/dev/null
-fi
 # {{ end }}

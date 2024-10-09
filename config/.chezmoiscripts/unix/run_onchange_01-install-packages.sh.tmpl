@@ -6,11 +6,6 @@
 true || source "../../.chezmoitemplates/bash-library.sh"
 
 # ╭──────────────────────────────────────────────────────────╮
-# │ Note: Any brew related packages for macOS are handled    │
-# │ already, check the custom mac scripts                    │
-# ╰──────────────────────────────────────────────────────────╯
-
-# ╭──────────────────────────────────────────────────────────╮
 # │ Install essentials                                       │
 # ╰──────────────────────────────────────────────────────────╯
 _log_header "Essential Packages"
@@ -29,8 +24,6 @@ _log_header "Essential Packages"
 #     {{ else if hasKey .arch "custom" }}
 #       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .arch.custom) }}
 #     {{ end }}
-#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
-#     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .mac.custom) }}
 #   {{ else if hasKey . "custom" }}
 #     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
 #   {{ end }}
@@ -94,8 +87,6 @@ _log_header "Packages"
 #     {{ else if hasKey .arch "custom" }}
 #       {{ $customPackages = mustAppend $customPackages (dict .name .arch.custom) }}
 #     {{ end }}
-#   {{ else if and (eq $os "darwin") (and (hasKey . "mac") (hasKey .mac "custom")) }}
-#     {{ $customPackages = mustAppend $customPackages (dict .name .mac.custom) }}
 #   {{ else if hasKey . "custom" }}
 #     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
 #   {{ end }}

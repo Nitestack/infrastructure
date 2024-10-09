@@ -35,17 +35,6 @@ fi
 # Editor for `sudoedit`
 export SUDO_EDITOR="vim"
 
-{{- if eq .chezmoi.os "darwin" }}
-
-# Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [[ -f "${HB_CNF_HANDLER}" ]]; then
-  source "${HB_CNF_HANDLER}"
-fi
-{{- end }}
-
 # ── Options ───────────────────────────────────────────────────────────
 COMPLETION_WAITING_DOTS="true"
 

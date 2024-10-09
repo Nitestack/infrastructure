@@ -7,4 +7,5 @@ packages:
   wsl:
     pacman:
       - "openssh"
+      - "tmux"
     paru: []

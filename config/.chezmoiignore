@@ -2,7 +2,10 @@
 # │ CHEZMOI IGNORE CONFIG                                    │
 # ╰──────────────────────────────────────────────────────────╯
 
-# Windows
+# Ignore everywhere
+.config/nvim/templates
+
+# Windows only
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/_windows/**
 .chezmoiscripts/windows/**
@@ -13,26 +16,19 @@ Documents
 .wslconfig
 {{ end }}
 
-# WSL
+# WSL only
 {{ if not .is_wsl }}
 .chezmoiscripts/wsl/**
 
 .config/paru
 {{ end }}
 
-# NixOS
+# NixOS only
 {{ if ne .osid "linux-nixos" }}
 Pictures
 {{ end }}
 
-# macOS
-{{ if ne .chezmoi.os "darwin" }}
-.chezmoiscripts/mac/**
-
-Library
-{{ end }}
-
-# Unix
+# Unix only
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
@@ -45,13 +41,11 @@ Library
 .zshrc
 {{ end }}
 
-# Linux
+# Linux only
 {{ if ne .chezmoi.os "linux" }}
 .config/Code
 .config/lazygit
 {{ end }}
-
-.config/nvim/templates
 
 # Ignore on NixOS
 {{ if eq .osid "linux-nixos" }}

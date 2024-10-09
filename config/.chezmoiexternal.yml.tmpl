@@ -6,8 +6,6 @@
 {{ if ne .osid "linux-nixos" }}
 {{ if eq .chezmoi.os "windows" -}}
 "AppData/Roaming/bat":
-{{- else if eq .chezmoi.os "darwin" }}
-"Library/Application Support":
 {{- else }}
 ".config/bat":
 {{- end }}

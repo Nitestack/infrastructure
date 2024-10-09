@@ -2,7 +2,7 @@
 <h1>
   ~/.dotfiles&nbsp;📂
   <br/>
-  Cross-Platform & Cross-Shell Dotfiles
+  For NixOS and Windows (including WSL)
   <br/>
   <sup>
     <sub>Powered by <a href="https://chezmoi.io" target="_blank">chezmoi</a></sub>
@@ -17,7 +17,7 @@
 
 ![image](https://github.com/Nitestack/dotfiles/assets/74626967/154b824c-42f2-4ec0-818b-f244f8c91f4b)
 
-_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [macOS](https://apple.com/macos), [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([Arch Linux](https://archlinux.org)), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
+_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([Arch Linux](https://archlinux.org)), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -33,9 +33,9 @@ _Elevate your computing experience across platforms with this curated collection
 
 This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor to deliver a smooth and visually pleasing window management experience. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined and polished interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and os-prober for seamless dual-booting with Windows or other operating systems. To further elevate the visual aesthetic, both [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs) are used, creating a cohesive design for app launchers, power and notification menus, top and bottom bars, and more.
 
-Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes all the features listed in the [Cross-Platform](#cross-platform-nixos-macos-windows) and the [UNIX](#unix-nixos-macos) section, making it a complete and fully functional environment.
+Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes all the features listed in the [Cross-Platform](#cross-platform-nixos-windows) and the [UNIX](#unix-nixos) section, making it a complete and fully functional environment.
 
-### Cross-Platform (NixOS, macOS, Windows)
+### Cross-Platform (NixOS, Windows)
 
 - **Neovim Configuration (with WSL)**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
 
@@ -55,19 +55,13 @@ Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), e
 
 - **SSH Configuration (with WSL)**: Consistent and secure SSH setup across systems
 
-### UNIX (NixOS, macOS)
+### UNIX (NixOS)
 
 - **tmux Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/tmux) theme, featuring session management and an integrated Neovim workflow
 
 - **Zed Configuration**: Settings for the new lightweight code editor
 
 - **Zsh Configuration (with WSL)**: Powered by [Oh My Zsh](https://ohmyz.sh), this configuration includes styled prompts, shell completions, optimized history settings, and useful aliases for a seamless command-line experience
-
-### macOS
-
-- **Dependency Management**: Managed with [Homebrew](https://brew.sh), including [formulae](https://formulae.brew.sh), [casks](https://formulae.brew.sh/cask), fonts, and Mac App Store applications (via [mas](https://github.com/mas-cli/mas)), all bundled using [`brew bundle`](https://github.com/Homebrew/homebrew-bundle)
-
-- **System Settings**: Configured using `defaults` to set macOS system preferences and settings
 
 ### Windows
 
@@ -83,26 +77,14 @@ And more to discover.
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos), [Windows](https://microsoft.com/windows) or [WSL](https://learn.microsoft.com/windows/wsl) installed.
+Ensure you have the latest stable release of [NixOS](https://nixos.org), [Windows](https://microsoft.com/windows) or [WSL](https://learn.microsoft.com/windows/wsl) installed.
 
 ### Dependencies
 
 > [!NOTE]
 > If you are on **NixOS**, just ensure you have `git`, `chezmoi` and `curl` (or `wget`) active in your current shell.
 
-[**Homebrew**](https://brew.sh) (**macOS only**)
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash
-```
-
 [**Git**](https://www.git-scm.com)
-
-macOS:
-
-```sh
-brew install git
-```
 
 Windows:
 
@@ -117,12 +99,6 @@ sudo pacman -S --needed --noconfirm git
 ```
 
 [**chezmoi**](https://chezmoi.io)
-
-macOS:
-
-```sh
-brew install chezmoi
-```
 
 Windows:
 
@@ -144,12 +120,6 @@ WSL (Arch Linux):
 sudo pacman -S --needed --noconfirm wget curl
 ```
 
-macOS (`curl` is pre-installed, but if you want to use `wget`):
-
-```sh
-brew install wget
-```
-
 [**PowerShell**](https://microsoft.com/PowerShell) (**Windows only**)
 
 > All versions of Windows come with PowerShell 5.1 pre-installed. However, please note that this repository requires PowerShell 7.x or higher. PowerShell 7.x+ does not replace or upgrade PowerShell 5.1; instead, it is installed alongside PowerShell 5.1.
@@ -169,7 +139,7 @@ winget install -e --accept-package-agreements --accept-source-agreements --id Mi
 
 ### Installation
 
-#### UNIX
+#### UNIX (including WSL)
 
 To install on UNIX systems, run the following command in your terminal:
 
