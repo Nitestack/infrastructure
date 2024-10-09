@@ -22,8 +22,7 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
-
-  kitty_startup_script = "${pkgs.kitty}/bin/kitty tmux";
+  wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
 
   cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
     #!/usr/bin/env bash
@@ -58,7 +57,7 @@ in
     "$mmb" = "mouse:274"; # Middle mouse button
     bindd =
       [
-        "SUPER, Slash, Open Terminal, exec, ${kitty_startup_script}"
+        "SUPER, Slash, Open Terminal, exec, ${wezterm} -e tmux"
         "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
         "SUPER, W, Open Browser, exec, ${firefox}"
         "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
