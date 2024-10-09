@@ -18,9 +18,6 @@
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
-    # Hyprswitch
-    hyprswitch.url = "github:h3rmt/hyprswitch/release";
-
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";

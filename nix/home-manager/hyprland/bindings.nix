@@ -17,9 +17,6 @@ let
     inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
   }/bin/grimblast";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-  hyprswitch = "${
-    inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
-  }/bin/hyprswitch";
   nautilus = "${pkgs.nautilus}/bin/nautilus";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
@@ -66,7 +63,6 @@ in
         "SUPER, W, Open Browser, exec, ${firefox}"
         "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
 
-        "ALT, tab, Switch Windows, exec, ${hyprswitch} gui --do-initial-execute"
         "SUPER, V, Open Clipboard History, exec, ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
         ", Print, Take Screenshot (Select Area), exec, ${grimblast} --notify --freeze copysave area ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
         "SUPER, Print, Take Fullscreen Screenshot, exec, ${grimblast} --notify --freeze copysave screen ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
@@ -118,9 +114,6 @@ in
       ];
     binddr = [
       "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
-    ];
-    binddrt = [
-      "ALT, ALT_L, Close Window Switcher, exec, ${hyprswitch} close"
     ];
     bindde = [
       "SUPER ALT, H, Move Window Left, movewindow, l"

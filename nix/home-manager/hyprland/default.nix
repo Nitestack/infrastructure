@@ -25,16 +25,9 @@
     inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
     pkgs.hyprcursor
     pkgs.hyprpicker
-    inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs.wl-clip-persist
     pkgs.wl-clipboard
   ];
-
-  xdg.configFile."hypr/hyprswitch.css".text = ''
-    .client-index {
-      display: none;
-    }
-  '';
 
   wayland.windowManager.hyprland = {
     enable = true;
