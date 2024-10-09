@@ -9,7 +9,7 @@
 {
   imports = [
     ./animations.nix
-    ./colors.nix
+    ./appearance.nix
     ./bindings.nix
     ./execs.nix
     ./rules.nix
@@ -79,33 +79,8 @@
 
       # General
       general = {
-        gaps_in = 10; # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
-        gaps_out = 10; # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
-
-        border_size = 3; # size of the border around windows
-
         resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
-
         allow_tearing = true; # master switch for allowing tearing to occur
-      };
-
-      # Decoration
-      decoration = {
-        rounding = 10; # rounded corners' radius (in layout px)
-
-        drop_shadow = true; # enable drop shadows on windows
-        shadow_ignore_window = true; # if true, the shadow will not be rendered behind the window itself, only around it
-        shadow_offset = "2 2"; # shadow’s rendering offset
-        shadow_range = 8; # Shadow range (“size”) in layout px
-        shadow_render_power = 2; # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
-
-        # Blur
-        # https://wiki.hyprland.org/Configuring/Variables/#blur
-        blur = {
-          enabled = true; # enable kawase window background blur
-          size = 3; # blur size (distance)
-          passes = 2; # the amount of passes to perform
-        };
       };
 
       # Input
