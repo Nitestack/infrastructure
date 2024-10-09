@@ -21,12 +21,6 @@
     # Hyprswitch
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
 
-    # Hyprspace
-    Hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";

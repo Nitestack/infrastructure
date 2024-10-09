@@ -44,9 +44,6 @@
       enable = true;
       variables = [ "--all" ];
     };
-    plugins = [
-      inputs.Hyprspace.packages.${pkgs.system}.Hyprspace
-    ];
 
     settings = {
       # ── Environment Variables ─────────────────────────────────────────────

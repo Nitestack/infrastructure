@@ -118,7 +118,6 @@ in
       ];
     binddr = [
       "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
-      "SUPER, SUPER_L, Toggle Workspace Overview, overview:toggle"
     ];
     binddrt = [
       "ALT, ALT_L, Close Window Switcher, exec, ${hyprswitch} close"
