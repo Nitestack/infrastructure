@@ -65,6 +65,7 @@ in
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
           clock-format = "24h";
+          document-font-name = font.sans.name;
           font-antialiasing = "rgba";
           font-hinting = "full";
           monospace-font-name = font.mono.name;
