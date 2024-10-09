@@ -24,6 +24,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # WezTerm
+    wezterm.url = "github:wez/wezterm?dir=nix";
+
     # Firefox GNOME Theme
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";
@@ -72,6 +75,12 @@
             modules = [
               home-manager.nixosModules.home-manager
               ./nixos/configuration.nix
+              {
+                nix.settings = {
+                  substituters = [ "https://wezterm.cachix.org" ];
+                  trusted-public-keys = [ "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0=" ];
+                };
+              }
             ];
           };
         };

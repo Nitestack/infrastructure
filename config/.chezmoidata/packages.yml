@@ -72,7 +72,7 @@ packages:
     - name: "lazydocker"
       arch:
         paru: "lazydocker"
-      win: "JesseDuffield.lazydocker"
+      win: "JesseDuffield.Lazydocker"
     - name: "lazygit"
       arch: "lazygit"
       win: "JesseDuffield.lazygit"
