@@ -8,10 +8,6 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 _log_header "Neovim"
 
 if gum confirm "Proceed with the updates?" --default=false; then
-	_spin "Updating Neovim" -- bob update --all
-	_log -l info "Updated Neovim"
-
-	echo
 	_spin "Updating Neovim plugins" -- nvim --headless -c "Lazy! sync" +qa
 	_log -l info "Updated Neovim plugins"
 

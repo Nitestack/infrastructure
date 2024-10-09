@@ -4,10 +4,6 @@ _LogHeader "Neovim"
 
 gum confirm "Proceed with the updates?" --default=false
 if ($?) {
-  bob update --all
-  _Log -l info "Updated Neovim"
-
-  Write-Host
   nvim --headless -c "Lazy! sync" +qa
   _Log -l info "Updated Neovim plugins"
 
