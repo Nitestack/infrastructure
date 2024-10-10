@@ -49,8 +49,6 @@ Pictures
 
 # Ignore on NixOS
 {{ if eq .osid "linux-nixos" }}
-.config/wezterm/wezterm.lua
-
 .ssh
 
 .gitconfig
