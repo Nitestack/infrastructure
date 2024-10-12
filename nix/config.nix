@@ -2,6 +2,7 @@
 {
   # User Info
   hostname = "nixstation";
+  wslHostname = "wslstation";
   username = "nhan";
   description = "Nhan Pham";
   # Theme

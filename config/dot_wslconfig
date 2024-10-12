@@ -3,10 +3,9 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 [wsl2]
-memory=4GB
-swap=2GB
+memory=8GB
+swap=4GB
 localhostForwarding=true
-kernelCommandLine="sysctl.vm.swappiness=10"
 
 [experimental]
 autoMemoryReclaim=gradual

@@ -6,7 +6,6 @@
   config,
   lib,
   pkgs,
-  meta,
   ...
 }:
 {
@@ -34,18 +33,10 @@
       nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
     };
 
-  # virtualization
-  programs.virt-manager.enable = true;
-  virtualisation = {
-    libvirtd.enable = true;
-    docker.enable = true;
-  };
-
   # packages
   environment.systemPackages = with pkgs; [
-    gcc
-
     # Essential
+    gcc
     chezmoi
     curl
     git
@@ -62,78 +53,23 @@
     lazygit
     oh-my-posh
     openssl
-    ueberzugpp
     unzip
 
-    # Apps
-    bitwarden-desktop
-    google-chrome
-    jetbrains.idea-ultimate
-    jetbrains.webstorm
-    spotify
-    webcord
-    zed-editor
-
-    # NixOS
-    gnome-system-monitor
-    nautilus
+    # Nix
     nixd
     nixfmt-rfc-style
-    vlc
   ];
 
-  # services
-  services = {
-    openssh = {
-      enable = true;
-      settings = {
-        # Opinionated: forbid root login through SSH.
-        PermitRootLogin = "no";
-        # Opinionated: use keys only.
-        # Remove if you want to SSH using passwords
-        PasswordAuthentication = false;
-      };
-    };
-    xserver = {
-      enable = true;
-      excludePackages = with pkgs; [ xterm ];
-    };
-    playerctld.enable = true;
-  };
-
-  # Bootloader
-  boot = {
-    tmp.cleanOnBoot = true;
-    loader = {
-      timeout = 60;
-      efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        theme = (
-          pkgs.sleek-grub-theme.override {
-            withStyle = "dark";
-            withBanner = "Boot Manager";
-          }
-        );
-        efiSupport = true;
-        useOSProber = true;
-        device = "nodev";
-        gfxmodeEfi = "1920x1080,auto";
-      };
-    };
-  };
-
-  # network
-  networking = {
-    networkmanager.enable = true;
-    hostName = meta.hostname;
-  };
-
-  # Bluetooth
-  hardware.bluetooth = {
+  # openssh
+  services.openssh = {
     enable = true;
-    powerOnBoot = true;
-    settings.General.Experimental = true;
+    settings = {
+      # Opinionated: forbid root login through SSH.
+      PermitRootLogin = "no";
+      # Opinionated: use keys only.
+      # Remove if you want to SSH using passwords
+      PasswordAuthentication = false;
+    };
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

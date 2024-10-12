@@ -12,7 +12,7 @@ pkgs.python3Packages.buildPythonPackage rec {
 
   src = pkgs.fetchFromGitHub {
     owner = "loqusion";
-    repo = "hyprshade";
+    repo = name;
     rev = "152cd2ea06d9412d62bc628d62ee5af7771190b1";
     sha256 = "0wf1iqikfg7539k7hf5bbrhzwxfhgwwmkng0sb2bw712cbnhy6jm";
   };

@@ -6,40 +6,19 @@
 packages:
   # ── Essentials (get installed before the other packages) ──────────────
   essentials:
-    - name: "base-devel"
-      arch: "base-devel"
     - name: "chezmoi"
-      arch: "chezmoi"
       win: "twpayne.chezmoi"
-    - name: "curl"
-      arch: "curl"
     - name: "git"
-      arch: "git"
       win: "Git.Git"
     - name: "gum"
-      arch: "gum"
       win: "charmbracelet.gum"
     - name: "pwsh"
       win: "Microsoft.PowerShell"
     - name: "python"
-      arch: "python"
       win: "Python.Python.3.12"
-    - name: "pip"
-      arch: "python-pip"
-    - name: "unzip"
-      arch: "unzip"
     - name: "volta"
-      arch:
-        paru: "volta-bin"
       win: "Volta.Volta"
-    - name: "wget"
-      arch: "wget"
     - name: "rustup"
-      arch:
-        custom: |
-          sudo pacman -S --needed --noconfirm rustup
-          rustup update
-          rustup default stable
       win:
         custom: |
           winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup
@@ -50,48 +29,6 @@ packages:
     - "pnpm"
     - "yarn"
   # ── Packages ──────────────────────────────────────────────────────────
-  common:
-    - name: "bat"
-      arch: "bat"
-      win: "sharkdp.bat"
-    - name: "delta"
-      arch: "git-delta"
-      win: "dandavison.delta"
-    - name: "eza"
-      arch: "eza"
-      win: "eza-community.eza"
-    - name: "fd"
-      arch: "fd"
-      win: "sharkdp.fd"
-    - name: "fastfetch"
-      arch: "fastfetch"
-      win: "Fastfetch-cli.Fastfetch"
-    - name: "fzf"
-      arch: "fzf"
-      win: "junegunn.fzf"
-    - name: "lazydocker"
-      arch:
-        paru: "lazydocker"
-      win: "JesseDuffield.Lazydocker"
-    - name: "lazygit"
-      arch: "lazygit"
-      win: "JesseDuffield.lazygit"
-    - name: "less"
-      arch: "less"
-      win: "jftuga.less"
-    - name: "nvim"
-      arch: "neovim"
-      win: "Neovim.Neovim"
-    - name: "oh-my-posh"
-      arch:
-        paru: "oh-my-posh-bin"
-      win: "JanDeDobbeleer.OhMyPosh"
-    - name: "rg"
-      arch: "ripgrep"
-      win: "BurntSushi.ripgrep.MSVC"
-    - name: "zoxide"
-      arch: "zoxide"
-      win: "ajeetdsouza.zoxide"
   npm:
     - "npkill"
     - "tree-sitter-cli"

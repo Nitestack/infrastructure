@@ -10,46 +10,6 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # ╰──────────────────────────────────────────────────────────╯
 _log_header "Essential Packages"
 
-# {{ $osid := .osid }}
-# {{ $os := .chezmoi.os }}
-# {{ $essentialPackages := list }}
-# {{ $essentialParuPackages := list }}
-# {{ $essentialCustomPackages := list }}
-# {{ range .packages.essentials }}
-#   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
-#     {{ if eq "string" (printf "%T" .arch) }}
-#       {{ $essentialPackages = mustAppend $essentialPackages .arch }}
-#     {{ else if hasKey .arch "paru" }}
-#       {{ $essentialParuPackages = mustAppend $essentialParuPackages .arch.paru }}
-#     {{ else if hasKey .arch "custom" }}
-#       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .arch.custom) }}
-#     {{ end }}
-#   {{ else if hasKey . "custom" }}
-#     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
-#   {{ end }}
-# {{ end }}
-
-# {{ if eq .osid "linux-arch"}}
-# ── pacman ────────────────────────────────────────────────────────────
-gum format -- "## pacman:"
-paru -Syu
-_install_packages_pacman "{{- $essentialPackages | join "\" \"" -}}"
-_install_packages_paru "{{- $essentialParuPackages | join "\" \"" -}}"
-# {{ end }}
-
-# ── custom ────────────────────────────────────────────────────────────
-gum format -- "## custom:"
-# {{ range $essentialCustomPackages }}
-# {{ range $cmd_name, $lines := . }}
-if command -v "{{- $cmd_name -}}" &>/dev/null; then
-	_log -l warn "{{- $cmd_name }} is already installed"
-else
-	# {{ "\n" }} {{ $lines }}
-	_log -l info "Installed {{ $cmd_name -}}"
-fi
-# {{ end }}
-# {{ end }}
-
 # ── volta ─────────────────────────────────────────────────────────────
 
 # Needed for first-time installation
@@ -74,46 +34,6 @@ _log -l info "Installed essential packages"
 # │ Install packages                                         │
 # ╰──────────────────────────────────────────────────────────╯
 _log_header "Packages"
-
-# {{ $packages := list }}
-# {{ $paruPackages := list }}
-# {{ $customPackages := list }}
-# {{ range .packages.common }}
-#   {{ if and (eq $osid "linux-arch") (hasKey . "arch") }}
-#     {{ if eq "string" (printf "%T" .arch) }}
-#       {{ $packages = mustAppend $packages .arch }}
-#     {{ else if hasKey .arch "paru" }}
-#       {{ $paruPackages = mustAppend $paruPackages .arch.paru }}
-#     {{ else if hasKey .arch "custom" }}
-#       {{ $customPackages = mustAppend $customPackages (dict .name .arch.custom) }}
-#     {{ end }}
-#   {{ else if hasKey . "custom" }}
-#     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
-#   {{ end }}
-# {{ end }}
-
-# {{ if eq $osid "linux-arch" }}
-# ── pacman ────────────────────────────────────────────────────────────
-gum format -- "## pacman:"
-_install_packages_pacman "{{- concat $packages .packages.wsl.pacman | uniq | sortAlpha | join "\" \"" -}}"
-
-# ── paru ───────────────────────────────────────────────────────────────
-gum format -- "## paru:"
-_install_packages_paru "{{- concat $paruPackages .packages.wsl.paru | uniq | sortAlpha | join "\" \"" -}}"
-# {{ end }}
-
-# ── custom ────────────────────────────────────────────────────────────
-gum format -- "## custom:"
-# {{ range $customPackages }}
-# {{ range $cmd_name, $lines := . }}
-if command -v "{{- $cmd_name -}}" &>/dev/null; then
-	_log -l warn "{{- $cmd_name }} is already installed"
-else
-	# {{ "\n" }} {{ $lines }}
-	_log -l info "Installed {{ $cmd_name -}}"
-fi
-# {{ end }}
-# {{ end }}
 
 # ── pnpm ──────────────────────────────────────────────────────────────
 gum format -- "## pnpm:"

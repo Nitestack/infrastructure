@@ -6,13 +6,25 @@
 packages:
   win:
     winget:
-      - "9MZNMNKSM73X" # Arch WSL
+      - "sharkdp.bat"
+      - "dandavison.delta"
       - "Microsoft.DotNet.SDK.8"
-      - "LLVM.LLVM"
-      - "ojdkbuild.ojdkbuild"
-      - "mbuilov.sed"
+      - "eza-community.eza"
+      - "sharkdp.fd"
+      - "Fastfetch-cli.Fastfetch"
+      - "junegunn.fzf"
       - "gerardog.gsudo"
+      - "JesseDuffield.Lazydocker"
+      - "JesseDuffield.lazygit"
+      - "jftuga.less"
+      - "LLVM.LLVM"
+      - "Neovim.Neovim"
+      - "JanDeDobbeleer.OhMyPosh"
+      - "ojdkbuild.ojdkbuild"
+      - "BurntSushi.ripgrep.MSVC"
+      - "mbuilov.sed"
       - "Microsoft.VCRedist.2015+.x64"
+      - "ajeetdsouza.zoxide"
     modules:
       - "PSFzf"
 apps:

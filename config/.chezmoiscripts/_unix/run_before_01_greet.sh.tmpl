@@ -14,10 +14,3 @@ cat <<"EOF"
   \__,_|\___/ \__|_| |_|_|\___||___/
 EOF
 echo
-
-# Install gum
-# {{ if eq .osid "linux-arch" }}
-if ! pacman -Q "gum" &>/dev/null; then
-  sudo pacman -S --needed --noconfirm gum &>/dev/null
-fi
-# {{ end }}

@@ -3,7 +3,7 @@
 _LogHeader "Apps"
 
 # {{ $apps := list }}
-# {{ $unresolvedApps := .apps.common }}
+# {{ $unresolvedApps := list }}
 # {{ if eq .hosttype "work" }}
 #   {{ $unresolvedApps = concat $unresolvedApps .apps.work }}
 # {{ end }}

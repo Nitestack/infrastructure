@@ -9,6 +9,9 @@
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    # NixOS WSL
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
     # Home Manager
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -40,6 +43,7 @@
       self,
       nixpkgs,
       home-manager,
+      nixos-wsl,
       ...
     }@inputs:
     let
@@ -65,16 +69,21 @@
               config.allowUnfree = true;
             };
           };
+
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit inputs outputs meta;
+          };
+          modules = [
+            home-manager.nixosModules.home-manager
+            ./nixos/base-config.nix
+          ];
         in
         {
           ${meta.hostname} = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              inherit inputs outputs meta;
-            };
-            system = "x86_64-linux";
-            modules = [
-              home-manager.nixosModules.home-manager
-              ./nixos/configuration.nix
+            inherit specialArgs system;
+            modules = modules ++ [
+              ./nixos/full-config.nix
               {
                 nix.settings = {
                   substituters = [ "https://wezterm.cachix.org" ];
@@ -82,6 +91,17 @@
                 };
               }
             ];
+          };
+          ${meta.wslHostname} = nixpkgs.lib.nixosSystem {
+            inherit specialArgs system;
+            modules =
+              [
+                nixos-wsl.nixosModules.default
+              ]
+              ++ modules
+              ++ [
+                ./nixos/wsl-config.nix
+              ];
           };
         };
     };

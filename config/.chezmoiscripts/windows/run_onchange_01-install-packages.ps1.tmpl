@@ -68,47 +68,13 @@ _Log -l info "Installed essential packages"
 # ╰──────────────────────────────────────────────────────────╯
 _LogHeader "Packages"
 
-# {{ $packages := list }}
-# {{ $customPackages := list }}
-# {{ range .packages.common }}
-#   {{ if hasKey . "win" }}
-#     {{ if eq "string" (printf "%T" .win) }}
-#       {{ $packages = mustAppend $packages .win }}
-#     {{ else if hasKey .win "custom" }}
-#       {{ $customPackages = mustAppend $customPackages (dict .name .win.custom) }}
-#     {{ end }}
-#   {{ else if hasKey . "custom" }}
-#     {{ $customPackages = mustAppend $customPackages (dict .name .custom) }}
-#   {{ end }}
-# {{ end }}
-# {{ $packages = concat $packages .packages.win.winget }}
-
 # ── winget ────────────────────────────────────────────────────────────
 Write-Output "## winget:" | gum format
-_Install-PackagesWinget "{{- $packages | join "\", \"" -}}"
+_Install-PackagesWinget "{{- .packages.win.winget | join "\", \"" -}}"
 
 # ── PowerShell Gallery ────────────────────────────────────────────────
 Write-Output "## PowerShell Gallery:" | gum format
 _Install-PackagesGallery "{{- .packages.win.modules | uniq | sortAlpha | join "\" \"" -}}"
-
-# ── custom ────────────────────────────────────────────────────────────
-Write-Output "## custom:" | gum format
-# {{ range $_, $pkg := $customPackages }}
-# {{ range $cmd_name, $lines := . }}
-if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
-  _Log -l warn "{{- $cmd_name }} is already installed"
-}
-else {
-  try {
-    # {{ "\n" }}{{ $lines }}
-    _Log -l info "Installed {{ $cmd_name -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
-# {{ end }}
-# {{ end }}
 
 # ── Global npm dependencies ───────────────────────────────────────────
 Write-Output "## pnpm:" | gum format

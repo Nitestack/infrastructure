@@ -1,7 +1,6 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Locale                                                   │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
 {
   time.timeZone = "Europe/Berlin";
   i18n =
@@ -23,14 +22,4 @@
         LC_TIME = german;
       };
     };
-  console = {
-    font = "ter-128n";
-    keyMap = "us";
-    packages = [ pkgs.terminus_font ];
-  };
-  services.xserver.xkb = {
-    layout = "us, us";
-    variant = "basic, intl";
-    options = "grp:win_space_toggle";
-  };
 }

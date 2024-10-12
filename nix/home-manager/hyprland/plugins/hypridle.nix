@@ -7,7 +7,6 @@ let
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   loginctl = "${pkgs.systemd}/bin/loginctl";
-  systemctl = "${pkgs.systemd}/bin/systemctl";
 in
 {
   services.hypridle = {
@@ -39,10 +38,6 @@ in
           timeout = 600; # 10min
           on-timeout = "${loginctl} lock-session"; # lock screen when timeout has passed
         }
-        # {
-        #   timeout = 1800; # 30min
-        #   on-timeout = "${systemctl} suspend"; # suspend pc
-        # }
       ];
     };
   };

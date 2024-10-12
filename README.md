@@ -13,11 +13,11 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
 ![Github Created At](https://img.shields.io/github/created-at/Nitestack/dotfiles?style=for-the-badge)
 
-[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Credits](#-credits) • [License](#-license)
+[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
 
 ![image](https://github.com/Nitestack/dotfiles/assets/74626967/154b824c-42f2-4ec0-818b-f244f8c91f4b)
 
-_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([Arch Linux](https://archlinux.org)), personalize your environment effortlessly, managed securely across multiple diverse machines using [chezmoi](https://chezmoi.io). Leverage advanced features like templates, password manager support, file encryption, and script execution for seamless deployment and synchronization._
+_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([NixOS](https://nix-community.github.io/NixOS-WSL)), personalize your environment effortlessly. Securely manage diverse machines using [chezmoi](https://chezmoi.io) and leverage seamless deployment and synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -29,47 +29,31 @@ _Elevate your computing experience across platforms with this curated collection
 ### NixOS (Full System)
 
 > [!WARNING]
-> The NixOS full system configuration is still incomplete! The key feature yet to be implemented is the integration of [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs). This requires a rewrite from the previous Arch-based version of the dotfiles, meaning there is currently no top or bottom bar, and the power menu is also missing.
+> The NixOS full system configuration is still incomplete. Key features yet to be implemented include the integration of [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs). This requires a rewrite from the previous Arch-based version of the dotfiles, meaning there is currently no top or bottom bar, and the power menu is also missing.
 
-This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor to deliver a smooth and visually pleasing window management experience. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined and polished interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and os-prober for seamless dual-booting with Windows or other operating systems. To further elevate the visual aesthetic, both [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs) are used, creating a cohesive design for app launchers, power and notification menus, top and bottom bars, and more.
+This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor for smooth and visually pleasing window management. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and `os-prober` for seamless dual-booting with Windows or other operating systems. Both [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs) create a cohesive design for app launchers, power and notification menus, top and bottom bars, and more.
 
-Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes all the features listed in the [Cross-Platform](#cross-platform-nixos-windows) and the [UNIX](#unix-nixos) section, making it a complete and fully functional environment.
+Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes features listed in the [Cross-Platform](#cross-platform-nixos-windows) and [UNIX](#unix-nixos) sections, making it a complete and functional environment.
 
 ### Cross-Platform (NixOS, Windows)
 
-- **Neovim Configuration (with WSL)**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust and efficient text editing experience
+- **Neovim Configuration (with WSL)**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust text editing experience.
 
-- **WezTerm Configuration**: Integrated Neovim workflow for a seamless terminal and text editing setup
+- **WezTerm Configuration**: Integrated Neovim workflow for a seamless terminal and text editing setup.
 
-- **Visual Studio Code Configuration**: Settings and extensions for an optimized development environment
+- **Visual Studio Code Configuration**: Settings and extensions for an optimized development environment.
 
-- **Oh My Posh Configuration (with WSL)**: Customized prompt for a visually appealing and informative shell experience
+- **Oh My Posh Configuration (with WSL)**: Customized prompt for a visually appealing and informative shell experience.
 
-- **Fastfetch Configuration (with WSL)**: Customized settings for a fast and efficient system information display
+- **Fastfetch Configuration (with WSL)**: Customized settings for efficient system information display.
 
-- **Lazygit Configuration (with WSL)**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel
+- **Lazygit Configuration (with WSL)**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel.
 
-- **Git Configuration (with WSL)**: Customized settings for version control
+- **Git Configuration (with WSL)**: Customized settings for version control.
 
-- **ShellCheck Configuration (with WSL)**: Setup for shell script analysis
+- **ShellCheck Configuration (with WSL)**: Setup for shell script analysis.
 
-- **SSH Configuration (with WSL)**: Consistent and secure SSH setup across systems
-
-### UNIX (NixOS)
-
-- **tmux Configuration**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/tmux) theme, featuring session management and an integrated Neovim workflow
-
-- **Zed Configuration**: Settings for the new lightweight code editor
-
-- **Zsh Configuration (with WSL)**: Powered by [Oh My Zsh](https://ohmyz.sh), this configuration includes styled prompts, shell completions, optimized history settings, and useful aliases for a seamless command-line experience
-
-### Windows
-
-- **Full WSL System**: Optimized settings for Windows Subsystem for Linux (WSL) to ensure seamless integration and performance
-
-- **PowerShell Profile**: Customized PowerShell profile with a styled prompt, optimized history settings, aliases, and various Linux utilities ported over to PowerShell for enhanced productivity
-
-- **Windows Terminal**: Customized Windows Terminal settings with TMUX-like keybindings
+- **SSH Configuration (with WSL)**: Consistent and secure SSH setup across systems.
 
 ---
 
@@ -77,58 +61,58 @@ And more to discover.
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [NixOS](https://nixos.org), [Windows](https://microsoft.com/windows) or [WSL](https://learn.microsoft.com/windows/wsl) installed.
+Ensure you have the latest stable release of [NixOS](https://nixos.org), [Windows](https://microsoft.com/windows), or [WSL](https://learn.microsoft.com/windows/wsl) installed.
 
-### Dependencies
+### WSL (NixOS)
 
-> [!NOTE]
-> If you are on **NixOS**, just ensure you have `git`, `chezmoi` and `curl` (or `wget`) active in your current shell.
+Ensure you have the latest release of [NixOS-WSL](https://github.com/nix-community/NixOS-WSL/releases/latest) downloaded.
 
-[**Git**](https://www.git-scm.com)
-
-Windows:
+Open PowerShell and run:
 
 ```pwsh
-winget install -e --accept-package-agreements --accept-source-agreements --id Git.Git
+wsl --import NixOS --version 2 $env:USERPROFILE\NixOS\ nixos-wsl.tar.gz
 ```
 
-WSL (Arch Linux):
+#### Post-Install
+
+After the initial installation, update your channels to use `nixos-rebuild`:
 
 ```sh
-sudo pacman -S --needed --noconfirm git
+sudo nix-channel --update
 ```
 
-[**chezmoi**](https://chezmoi.io)
+Then rebuild the system:
 
-Windows:
+```sh
+sudo nixos-rebuild switch
+```
+
+To make NixOS your default distribution, use:
 
 ```pwsh
-winget install -e --accept-package-agreements --accept-source-agreements --id twpayne.chezmoi
+wsl -s NixOS
 ```
 
-WSL (Arch Linux):
+### NixOS (including WSL)
+
+Ensure you have `git` and `chezmoi` available when needed in the installation section.
 
 ```sh
-sudo pacman -S --needed --noconfirm chezmoi
+nix-shell -p git chezmoi
 ```
 
-[**Wget**](https://www.gnu.org/software/wget) or [**curl**](https://curl.se) (**WSL only**)
+### Windows
 
-WSL (Arch Linux):
-
-```sh
-sudo pacman -S --needed --noconfirm wget curl
-```
-
-[**PowerShell**](https://microsoft.com/PowerShell) (**Windows only**)
-
-> All versions of Windows come with PowerShell 5.1 pre-installed. However, please note that this repository requires PowerShell 7.x or higher. PowerShell 7.x+ does not replace or upgrade PowerShell 5.1; instead, it is installed alongside PowerShell 5.1.
+Ensure you have `git`, `chezmoi`, and `pwsh` installed.
 
 ```pwsh
-winget install -e --accept-package-agreements --accept-source-agreements --id Microsoft.PowerShell
+winget install -e --accept-package-agreements --accept-source-agreements Git.Git twpayne.chezmoi Microsoft.PowerShell
 ```
 
-**Fonts** (**Windows only**)
+> [!IMPORTANT]
+> All versions of Windows come with PowerShell 5.1 pre-installed. However, this repository requires PowerShell 7.x or higher. PowerShell 7.x+ does not replace or upgrade PowerShell 5.1; it is installed alongside it.
+
+#### Fonts
 
 - [Rubik Font](https://fonts.google.com/specimen/Rubik)
 - [MonaspiceNe Nerd Font](https://nerdfonts.com/font-downloads)
@@ -137,71 +121,66 @@ winget install -e --accept-package-agreements --accept-source-agreements --id Mi
 
 ## 🏁 Getting Started
 
-### Installation
-
-#### UNIX (including WSL)
-
-To install on UNIX systems, run the following command in your terminal:
+Clone the dotfiles repository:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.sh | bash
+git clone https://github.com/Nitestack/dotfiles.git ~/.dotfiles
+# or with SSH
+git clone git@github.com:Nitestack/dotfiles.git ~/.dotfiles
 ```
 
-Or, using `wget`:
+### NixOS
+
+Before continuing with the installation, initialize the NixOS system:
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.sh | bash
+sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation" --impure
+```
+
+Please reboot the system and then continue with the [Final Steps](#final-steps).
+
+### WSL (NixOS)
+
+Before continuing with the installation, initialize the NixOS WSL system:
+
+```sh
+sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#wslstation" --impure
+```
+
+Execute the following commands in PowerShell to correctly apply the custom username:
+
+```pwsh
+wsl -t NixOS
+wsl -d NixOS --user root exit
+wsl -t NixOS
+```
+
+Start WSL and then continue with the [Final Steps](#final-steps).
+
+### Final Steps
+
+Initialize chezmoi:
+
+#### UNIX
+
+```sh
+chezmoi init --source="$HOME/.dotfiles" --apply
 ```
 
 #### Windows
 
-To install on Windows, run the following command in PowerShell:
-
 ```pwsh
-iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps1 | iex
+chezmoi init --source="$env:USERPROFILE\.dotfiles" --apply
 ```
-
-### Environment Variables
-
-You can customize the installation by passing environment variables to the installation script:
-
-- `BRANCH` (for Bash) or `-Branch` (for PowerShell): Specify the branch you want to install. Defaults to `master`.
-- `SSH` (for Bash) or `-SSH` (for PowerShell): Set to `true` if you want to install the dotfiles with SSH. Defaults to `false`.
-- `ONE_SHOT` (for Bash) or `-OneShot` (for PowerShell): Set to `true` to install your dotfiles and then remove all traces of chezmoi from the system. Useful for setting up temporary environments (e.g., Docker containers). Defaults to `false`.
-
-For example, to install using a specific branch:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.sh | BRANCH="dev" bash
-```
-
-```pwsh
-iwr https://raw.githubusercontent.com/Nitestack/dotfiles/HEAD/scripts/install.ps1 | iex -Branch "dev"
-```
-
-## 📖 Documentation
 
 ## 🙌 Credits
 
-- [Tom Payne](https://github.com/twpayne)
-  - creator of [chezmoi](https://chezmoi.io)
-  - parts of his dotfiles are used
-- [Folke Lemaitre](https://github.com/folke)
-  - creator of [LazyVim](https://github.com/LazyVim/LazyVim)
-  - parts of his dotfiles are used
-- [Felipe Santos](https://github.com/felipecrs)
-  - parts of his README are used
-- [René-Marc Simard](https://github.com/renemarc)
-  - the header section of his dotfiles README is used
-- [Aylur](https://github.com/Aylur)
-  - creator of [Ags](https://aylur.github.io/ags-docs) and [Astal](https://aylur.github.io/astal)
-  - parts of his Nix configuration was used
-- [end-4](https://github.com/end-4)
-  - parts of his dotfiles are used
-- [Pratik Gayen](https://github.com/FireDrop6000/hyprland-mydots)
-  - Hyprlock config is used
-- [Elliott Minns](https://github.com/elliottminns) ([Dreams of Code](https://www.youtube.com/@dreamsofcode))
-  - parts of his Nix configuration was used
+- [Tom Payne](https://github.com/twpayne): Creator of [chezmoi](https://chezmoi.io). Parts of his dotfiles are used.
+- [Folke Lemaitre](https://github.com/folke): Creator of [LazyVim](https://github.com/LazyVim/LazyVim). Parts of his dotfiles are used.
+- [Aylur](https://github.com/Aylur): Creator of [Ags](https://aylur.github.io/ags-docs) and [Astal](https://aylur.github.io/astal). Parts of his Nix configuration were used.
+- [end-4](https://github.com/end-4): Parts of his dotfiles are used.
+- [Pratik Gayen](https://github.com/FireDrop6000/hyprland-mydots): Hyprlock config is used.
+- [Elliott Minns](https://github.com/elliottminns) ([Dreams of Code](https://www.youtube.com/@dreamsofcode)): Parts of his Nix configuration were used.
 
 ## 📝 License
 

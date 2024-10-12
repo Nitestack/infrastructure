@@ -16,13 +16,6 @@ Documents
 .wslconfig
 {{ end }}
 
-# WSL only
-{{ if not .is_wsl }}
-.chezmoiscripts/wsl/**
-
-.config/paru
-{{ end }}
-
 # NixOS only
 {{ if ne .osid "linux-nixos" }}
 Pictures
@@ -35,10 +28,6 @@ Pictures
 
 .config/tmux
 .config/zed
-
-.oh-my-zsh
-
-.zshrc
 {{ end }}
 
 # Linux only
@@ -52,17 +41,9 @@ Pictures
 .ssh
 
 .gitconfig
-.zshrc
 {{ end }}
 
-# Ignore on WSL
-{{ if .is_wsl }}
-.config/Code
-.config/wezterm
-.config/zed
-{{ end }}
-
-# Ignore SSH keys in work environment or on NixOS
+# Ignore on Work Environment
 # {{ if eq .hosttype "work" }}
 .ssh
 # {{ end }}

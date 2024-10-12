@@ -1,5 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NIX CONFIGURATION                                        │
+# │ NIX BASE CONFIGURATION                                   │
 # ╰──────────────────────────────────────────────────────────╯
 {
   inputs,
@@ -10,13 +10,7 @@
 }:
 {
   imports = [
-    /etc/nixos/hardware-configuration.nix
-
-    ./audio.nix
-    ./gnome.nix
-    ./hyprland.nix
     ./locale.nix
-    ./sddm.nix
     ./system.nix
   ];
 
@@ -47,7 +41,6 @@
     extraSpecialArgs = {
       inherit inputs outputs meta;
     };
-    users.${meta.username} = import ../home-manager/home.nix;
   };
 
   # ── Users ─────────────────────────────────────────────────────────────
@@ -56,9 +49,6 @@
       ${meta.username} = {
         isNormalUser = true;
         description = meta.description;
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixos"
-        ];
         extraGroups = [
           "audio"
           "docker"

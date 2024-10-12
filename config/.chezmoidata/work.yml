@@ -5,12 +5,6 @@
 ---
 apps:
   work:
-    - name: "Microsoft 365 Apps for Enterprise"
-      win: "Microsoft.Office"
-    - name: "Microsoft OneDrive"
-      win: "Microsoft.OneDrive"
-    - name: "Microsoft Teams"
-      win: "Microsoft.Teams"
     - name: "MySQL"
       win: "Oracle.MySQL"
     - name: "MySQL Workbench"

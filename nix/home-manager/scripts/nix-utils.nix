@@ -13,15 +13,30 @@ let
 
   nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
     #!/usr/bin/env bash
-    sudo ${nixos-rebuild} switch --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+
+    if command -v "nixos-wsl-version" &>/dev/null; then
+      sudo ${nixos-rebuild} switch --flake ${homeDir}/.dotfiles/nix#${meta.wslHostname} --impure $@
+    elif command -v "nixos-version" &>/dev/null; then
+      sudo ${nixos-rebuild} switch --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+    fi
   '';
   nix-boot = pkgs.writeShellScriptBin "nix-boot" ''
     #!/usr/bin/env bash
-    sudo ${nixos-rebuild} boot --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+
+    if command -v "nixos-wsl-version" &>/dev/null; then
+      sudo ${nixos-rebuild} boot --flake ${homeDir}/.dotfiles/nix#${meta.wslHostname} --impure $@
+    elif command -v "nixos-version" &>/dev/null; then
+      sudo ${nixos-rebuild} boot --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+    fi
   '';
   nix-test = pkgs.writeShellScriptBin "nix-test" ''
     #!/usr/bin/env bash
-    sudo ${nixos-rebuild} test --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+
+    if command -v "nixos-wsl-version" &>/dev/null; then
+      sudo ${nixos-rebuild} test --flake ${homeDir}/.dotfiles/nix#${meta.wslHostname} --impure $@
+    elif command -v "nixos-version" &>/dev/null; then
+      sudo ${nixos-rebuild} test --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+    fi
   '';
 
   nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
