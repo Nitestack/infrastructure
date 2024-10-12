@@ -45,6 +45,7 @@ apps:
       - "PDFgear.PDFgear"
       - "Microsoft.PowerToys"
       - "Nilesoft.Shell"
+      - "OpenWhisperSystems.Signal"
       - "Readdle.Spark"
       - "Spotify.Spotify"
       - "Microsoft.VisualStudio.2022.Community"

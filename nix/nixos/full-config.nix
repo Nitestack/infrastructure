@@ -31,6 +31,7 @@
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
+    signal-desktop
     spotify
     webcord
     zed-editor
