@@ -6,16 +6,11 @@
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
-{{- if eq .osid "linux-nixos" }}
-
-export NIX_LD=$(nix eval --impure --raw --expr 'let pkgs = import <nixpkgs> {}; NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"; in NIX_LD')
-{{- end }}
-
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 {{ $paths := list }}
 {{- $homeDir := .chezmoi.homeDir }}
-{{- range $_, $relPath := list "bin" ".local/bin" ".cargo/bin" ".console-ninja/.bin" -}}
+{{- range $_, $relPath := list ".local/bin" ".cargo/bin" -}}
 {{-   $path := joinPath $homeDir $relPath -}}
 {{-   if stat $path -}}
 {{-     $paths = mustAppend $paths $path -}}
@@ -26,14 +21,8 @@ export PATH={{ toStrings $paths | join ":" }}:$PATH
 {{- end }}
 export PATH=/usr/local/bin:$PATH
 
-# Preferred editor for local and remote sessions
-if [[ -n "${SSH_CONNECTION:-""}" ]]; then
-  export EDITOR="vim"
-else
-  export EDITOR="{{- .editor -}}"
-fi
-# Editor for `sudoedit`
-export SUDO_EDITOR="vim"
+# Preferred editor
+export EDITOR="{{- .editor -}}"
 
 # ── Options ───────────────────────────────────────────────────────────
 COMPLETION_WAITING_DOTS="true"
@@ -67,20 +56,15 @@ ZSH_THEME=""
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   aliases
-  colorize
+  # {{- if eq .osid "linux-arch" }}
+  archlinux
+  # {{- end }}
   command-not-found
-  cp
+  eza
   fzf-tab
   git
-  node
-  npm
-  nvm
-  python
-  pip
   tmux
-  tmuxinator
   vi-mode
-  web-search
   zsh-autosuggestions
   zsh-history-substring-search
   zsh-syntax-highlighting
@@ -112,12 +96,9 @@ bindkey "^[w" kill-region
 alias vim="nvim"
 alias vi="nvim"
 alias v="nvim"
-alias c="clear"
-alias cat="bat"
 alias lg="lazygit"
 alias lzd="lazydocker"
 alias ls="eza --group-directories-first --icons --git --octal-permissions"
-alias lt="ls -T"
 
 # Load zoxide
 eval "$(zoxide init --cmd cd zsh)"

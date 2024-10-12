@@ -72,10 +72,16 @@
     defaultUserShell = pkgs.zsh;
   };
 
+  # ── Zsh ───────────────────────────────────────────────────────────────
   programs.zsh.enable = true;
+  # zsh completion for system packages
+  environment.pathsToLink = [ "/share/zsh" ];
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
   };
   programs.tmux.enable = true;
   programs.nix-ld.enable = true;

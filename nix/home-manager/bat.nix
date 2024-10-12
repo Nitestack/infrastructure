@@ -5,6 +5,9 @@
 {
   programs.bat = {
     enable = true;
+    config = {
+      theme = "Catppuccin Mocha";
+    };
     themes."Catppuccin Mocha" = {
       src = pkgs.fetchFromGitHub {
         owner = "catppuccin";

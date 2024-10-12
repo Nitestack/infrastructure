@@ -20,6 +20,7 @@
     ./rofi.nix
     ./theme.nix
     ./wezterm.nix
+    ./zsh.nix
 
     ./scripts
   ];

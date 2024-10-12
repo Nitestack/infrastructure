@@ -4,7 +4,7 @@
 {
   programs.eza = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false;
     extraOptions = [
       "--group-directories-first"
       "--octal-permissions"

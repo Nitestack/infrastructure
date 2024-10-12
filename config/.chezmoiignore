@@ -52,6 +52,7 @@ Pictures
 .ssh
 
 .gitconfig
+.zshrc
 {{ end }}
 
 # Ignore on WSL
