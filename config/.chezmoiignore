@@ -43,6 +43,13 @@ Pictures
 .gitconfig
 {{ end }}
 
+# Ignore on WSL
+{{ if .is_wsl }}
+.config/Code
+.config/wezterm
+.config/zed
+{{ end }}
+
 # Ignore on Work Environment
 # {{ if eq .hosttype "work" }}
 .ssh
