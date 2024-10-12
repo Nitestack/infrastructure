@@ -18,7 +18,7 @@
 {{- end }}
 
 # Oh My Zsh
-{{ if ne .chezmoi.os "windows" -}}
+{{ if and (ne .chezmoi.os "windows") (ne .osid "linux-nixos") -}}
 ".oh-my-zsh":
   type: archive
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -43,6 +43,12 @@
 ".oh-my-zsh/custom/plugins/zsh-completions":
   type: archive
   url: "https://github.com/zsh-users/zsh-completions/archive/master.tar.gz"
+  stripComponents: 1
+  exact: true
+  refreshPeriod: "168h"
+".oh-my-zsh/custom/plugins/zsh-history-substring-search":
+  type: archive
+  url: "https://github.com/zsh-users/zsh-history-substring-search/archive/master.tar.gz"
   stripComponents: 1
   exact: true
   refreshPeriod: "168h"
