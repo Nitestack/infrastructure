@@ -60,6 +60,7 @@
     delta
     lazydocker
     lazygit
+    oh-my-posh
     openssl
     ueberzugpp
     unzip

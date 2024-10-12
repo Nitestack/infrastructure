@@ -92,10 +92,11 @@
       vimAlias = true;
       vimdiffAlias = true;
     };
-    oh-my-posh = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+    # Module is not supporting custom path, so using it manually
+    # oh-my-posh = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    # };
     ripgrep.enable = true;
     vscode.enable = true;
     zoxide = {
