@@ -82,6 +82,7 @@ plugins=(
   vi-mode
   web-search
   zsh-autosuggestions
+  zsh-history-substring-search
   zsh-syntax-highlighting
 )
 
@@ -104,9 +105,9 @@ zstyle ":fzf-tab:complete:cd:*" fzf-preview 'ls --color $realpath'
 zstyle ":fzf-tab:complete:__zoxide_z:*" fzf-preview 'ls --color $realpath'
 
 # Keybindings
-bindkey -e
-bindkey "^p" history-search-backward
-bindkey "^n" history-search-forward
+bindkey -v
+bindkey "^p" history-substring-search-up
+bindkey "^n" history-substring-search-down
 bindkey "^[w" kill-region
 
 # Aliases
