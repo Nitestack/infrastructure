@@ -7,7 +7,6 @@
 
 # Windows only
 {{ if ne .chezmoi.os "windows" }}
-.chezmoiscripts/_windows/**
 .chezmoiscripts/windows/**
 
 AppData
@@ -23,7 +22,6 @@ Pictures
 
 # Unix only
 {{ if eq .chezmoi.os "windows" }}
-.chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
 
 .config/zed
