@@ -31,6 +31,9 @@
       unbind ]
       bind-key p paste-buffer
 
+      bind-key -T copy-mode-vi v send-keys -X begin-selection
+      bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+
       # Keybindings
 
       # Switch windows
