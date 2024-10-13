@@ -26,7 +26,6 @@ Pictures
 .chezmoiscripts/_unix/**
 .chezmoiscripts/unix/**
 
-.config/tmux
 .config/zed
 {{ end }}
 

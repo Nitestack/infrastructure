@@ -13,6 +13,7 @@
     ./eza.nix
     ./fzf.nix
     ./git.nix
+    ./tmux.nix
     ./zsh.nix
 
     ./scripts
