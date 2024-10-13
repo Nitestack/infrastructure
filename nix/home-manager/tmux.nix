@@ -1,7 +1,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ tmux                                                     │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   programs.tmux = rec {
     enable = true;
@@ -69,7 +69,7 @@
         extraConfig = "set -g @continuum-restore 'on'";
       }
       {
-        plugin = tmux-sessionx;
+        plugin = inputs.tmux-sessionx.packages.${pkgs.system}.default;
         extraConfig = ''
           unbind o
           set -g @sessionx-bind "o"
