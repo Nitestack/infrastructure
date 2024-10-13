@@ -33,12 +33,6 @@
       # Opinionated: make flake registry and nix path match flake inputs
       registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
       nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-
-      # Garbage Collection
-      gc = {
-        automatic = true;
-        options = "--delete-older-than 7d";
-      };
     };
 
   # ── Overlays ──────────────────────────────────────────────────────────
@@ -129,6 +123,11 @@
     };
     tmux.enable = true;
     nix-ld.enable = true;
+    nh = {
+      enable = true;
+      clean.enable = true;
+      flake = "${config.users.users.${meta.username}.home}/.dotfiles/nix";
+    };
   };
 
   # ── Services ──────────────────────────────────────────────────────────

@@ -8,39 +8,40 @@
   ...
 }:
 let
-  nixos-rebuild = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
+  nh = "${pkgs.nh}/bin/nh";
   homeDir = config.home.homeDirectory;
 
   nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
     #!/usr/bin/env bash
 
     if command -v "nixos-wsl-version" &>/dev/null; then
-      sudo ${nixos-rebuild} switch --flake ${homeDir}/.dotfiles/nix#${meta.wslHostname} --impure $@
+      ${nh} os switch ${homeDir}/.dotfiles/nix -H ${meta.wslHostname} -- --impure $@
     elif command -v "nixos-version" &>/dev/null; then
-      sudo ${nixos-rebuild} switch --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+      ${nh} os switch ${homeDir}/.dotfiles/nix -H ${meta.hostname} -- --impure $@
     fi
   '';
   nix-boot = pkgs.writeShellScriptBin "nix-boot" ''
     #!/usr/bin/env bash
 
     if command -v "nixos-wsl-version" &>/dev/null; then
-      sudo ${nixos-rebuild} boot --flake ${homeDir}/.dotfiles/nix#${meta.wslHostname} --impure $@
+      ${nh} os boot ${homeDir}/.dotfiles/nix -H ${meta.wslHostname} -- --impure $@
     elif command -v "nixos-version" &>/dev/null; then
-      sudo ${nixos-rebuild} boot --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+      ${nh} os boot ${homeDir}/.dotfiles/nix -H ${meta.hostname} -- --impure $@
     fi
   '';
   nix-test = pkgs.writeShellScriptBin "nix-test" ''
     #!/usr/bin/env bash
 
     if command -v "nixos-wsl-version" &>/dev/null; then
-      sudo ${nixos-rebuild} test --flake ${homeDir}/.dotfiles/nix#${meta.wslHostname} --impure $@
+      ${nh} os test ${homeDir}/.dotfiles/nix -H ${meta.wslHostname} -- --impure $@
     elif command -v "nixos-version" &>/dev/null; then
-      sudo ${nixos-rebuild} test --flake ${homeDir}/.dotfiles/nix#${meta.hostname} --impure $@
+      ${nh} os test ${homeDir}/.dotfiles/nix -H ${meta.hostname} -- --impure $@
     fi
   '';
 
   nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
     #!/usr/bin/env bash
+
     nix flake update --commit-lock-file ${homeDir}/.dotfiles/nix $@
   '';
 in
