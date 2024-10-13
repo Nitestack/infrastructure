@@ -10,7 +10,6 @@ return vim.tbl_map(function(plugin_name)
   }
 end, {
   "akinsho/bufferline.nvim",
-  "folke/flash.nvim",
   "folke/tokyonight.nvim",
   "roobert/tailwindcss-colorizer-cmp.nvim",
 })
