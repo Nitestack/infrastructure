@@ -8,10 +8,8 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     # NixOS WSL
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-
     # Home Manager
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -20,12 +18,14 @@
 
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Tmux SessionX
+    tmux-sessionx.url = "github:omerxx/tmux-sessionx";
 
     # WezTerm
     wezterm.url = "github:wez/wezterm?dir=nix";
