@@ -13,13 +13,9 @@ Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 Set-Alias vim nvim
 Set-Alias vi nvim
 Set-Alias v nvim
-Set-Alias c Clear-Host
-Set-Alias lvim "$env:USERPROFILE\.local\bin\lvim.ps1"
 Set-Alias lg lazygit
 Set-Alias lzd lazydocker
 Remove-Alias ls
-Remove-Alias cat
-Set-Alias cat bat
 
 $EzaOptions="--group-directories-first --icons --git --octal-permissions"
 
@@ -28,9 +24,6 @@ function ls {
 }
 function la {
   Invoke-Expression "eza $EzaOptions -al $($Args -join ' ')"
-}
-function lt {
-  Invoke-Expression "eza $EzaOptions -T $($Args -join ' ')"
 }
 function admin {
   if ($Args.Count -gt 0) {
@@ -47,15 +40,6 @@ Set-Alias -Name sudo -Value admin
 function which($Command) {
   Get-Command -Name $Command -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path -ErrorAction SilentlyContinue
 }
-function reload-profile {
-  & $PROFILE
-}
-function find-file($Name) {
-  Get-ChildItem -recurse -filter "*${Name}*" -ErrorAction SilentlyContinue | ForEach-Object {
-    $PlacePath = $_.directory
-    Write-Output "${PlacePath}\${_}"
-  }
-}
 function unzip($File) {
   Write-Output("Extracting", $File, "to", $PWD)
   $FullFile = Get-ChildItem -Path $PWD -Filter .\cove.zip | ForEach-Object { $_.FullName }
@@ -70,12 +54,6 @@ function grep($Regex, $Dir) {
 }
 function touch($File) {
   "" | Out-File $File -Encoding ASCII
-}
-function df {
-  Get-Volume
-}
-function sed($File, $Find, $Replace) {
-    (Get-Content $File).replace("$Find", $Replace) | Set-Content $File
 }
 function export($Name, $Value) {
   Set-Item -Force -Path "env:$Name" -Value $Value;
