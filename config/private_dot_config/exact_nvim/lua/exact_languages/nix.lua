@@ -7,13 +7,6 @@ return utils.is_linux()
       lsp = {
         servers = {
           nil_ls = {
-            settings = {
-              ["nil"] = {
-                formatting = {
-                  command = { "nixfmt" },
-                },
-              },
-            },
             mason = false,
             autostart = false,
           },
@@ -26,6 +19,11 @@ return utils.is_linux()
               },
             },
           },
+        },
+      },
+      linter = {
+        linters_by_ft = {
+          ["nix"] = { "nix" },
         },
       },
       plugins = {
