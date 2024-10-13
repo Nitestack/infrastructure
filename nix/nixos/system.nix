@@ -47,11 +47,9 @@
     rustup
 
     # Packages
-    bc # for TokyoNight TMUX
     delta
     lazydocker
     lazygit
-    oh-my-posh
     openssl
     unzip
 

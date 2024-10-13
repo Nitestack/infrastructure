@@ -55,36 +55,48 @@
         };
       }
     ];
-    initExtra = ''
-      bindkey "^p" history-substring-search-up
-      bindkey "^n" history-substring-search-down
-      bindkey "^[w" kill-region
+    initExtra =
+      let
+        fastfetch = "${pkgs.fastfetch}/bin/fastfetch";
+        oh-my-posh = "${pkgs.oh-my-posh}/bin/oh-my-posh";
+      in
+      ''
+        bindkey "^p" history-substring-search-up
+        bindkey "^n" history-substring-search-down
+        bindkey "^[w" kill-region
 
-      if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-        eval "$(oh-my-posh init zsh --config "''${XDG_CONFIG_HOME:-''${HOME}/.config}/oh-my-posh/config.yml")"
-      fi
+        if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+          eval "$(${oh-my-posh} init zsh --config "${config.xdg.configHome}/oh-my-posh/config.yml")"
+        fi
 
-      # fastfetch
-      if [[ $(tty) == *"pts"* ]]; then
-        fastfetch
-      fi
-    '';
+        # fastfetch
+        if [[ $(tty) == *"pts"* ]]; then
+          ${fastfetch}
+        fi
+      '';
   };
-  home = {
-    sessionVariables = {
-      PNPM_HOME = "$HOME/.local/share/pnpm";
-      VOLTA_HOME = "$HOME/.volta";
+  home =
+    let
+      PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
+      VOLTA_HOME = "${config.home.homeDirectory}/.volta";
+    in
+    {
+      sessionVariables = {
+        inherit PNPM_HOME VOLTA_HOME;
+      };
+      sessionPath = [
+        "${config.home.homeDirectory}/.cargo/bin"
+        "${config.home.homeDirectory}/.local/bin"
+        PNPM_HOME
+        "${VOLTA_HOME}/bin"
+      ];
+      shellAliases = {
+        v = "nvim";
+        lg = "lazygit";
+        lzd = "lazydocker";
+      };
+      packages = with pkgs; [
+        oh-my-posh
+      ];
     };
-    sessionPath = [
-      "$HOME/.cargo/bin"
-      "$HOME/.local/bin"
-      config.home.sessionVariables.PNPM_HOME
-      "${config.home.sessionVariables.VOLTA_HOME}/bin"
-    ];
-    shellAliases = {
-      v = "nvim";
-      lg = "lazygit";
-      lzd = "lazydocker";
-    };
-  };
 }
