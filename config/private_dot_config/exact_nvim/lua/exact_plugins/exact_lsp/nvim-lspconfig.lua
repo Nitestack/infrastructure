@@ -40,7 +40,9 @@ return {
 
     -- Workspace diagnostics
     LazyVim.lsp.on_attach(function(client, buffer)
-      require("workspace-diagnostics").populate_workspace_diagnostics(client, buffer)
+      if client.name ~= "copilot" then
+        require("workspace-diagnostics").populate_workspace_diagnostics(client, buffer)
+      end
     end)
   end,
 }
