@@ -103,4 +103,7 @@
       tmuxPlugins.yank
     ];
   };
+  home.packages = with pkgs; [
+    bc # for TokyoNight TMUX
+  ];
 }
