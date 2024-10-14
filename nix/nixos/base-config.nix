@@ -74,6 +74,9 @@
     openssl
     unzip
 
+    # Apps
+    evince
+
     # Nix
     nixd
     nixfmt-rfc-style
