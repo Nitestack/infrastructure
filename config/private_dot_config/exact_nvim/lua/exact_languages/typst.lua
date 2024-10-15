@@ -1,9 +1,9 @@
 return utils.plugin.get_language_spec({
   treesitter = "typst",
-  mason = { "typst-lsp", "typstfmt" },
+  mason = { "tinymist", "typstfmt" },
   lsp = {
     servers = {
-      typst_lsp = {},
+      tinymist = {},
     },
   },
   formatter = {
