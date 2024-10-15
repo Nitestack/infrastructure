@@ -3,12 +3,8 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 # bat
-{{ if ne .osid "linux-nixos" }}
 {{ if eq .chezmoi.os "windows" -}}
 "AppData/Roaming/bat":
-{{- else }}
-".config/bat":
-{{- end }}
   type: archive
   url: "https://github.com/catppuccin/bat/archive/master.tar.gz"
   stripComponents: 1

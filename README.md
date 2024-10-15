@@ -41,8 +41,6 @@ Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), e
 
 - **WezTerm Configuration**: Integrated Neovim workflow for a seamless terminal and text editing setup.
 
-- **Visual Studio Code Configuration**: Settings and extensions for an optimized development environment.
-
 - **Oh My Posh Configuration (with WSL)**: Customized prompt for a visually appealing and informative shell experience.
 
 - **Fastfetch Configuration (with WSL)**: Customized settings for efficient system information display.

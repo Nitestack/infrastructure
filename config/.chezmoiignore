@@ -29,7 +29,6 @@ Pictures
 
 # Linux only
 {{ if ne .chezmoi.os "linux" }}
-.config/Code
 .config/lazygit
 {{ end }}
 
@@ -42,7 +41,6 @@ Pictures
 
 # Ignore on WSL
 {{ if .is_wsl }}
-.config/Code
 .config/wezterm
 .config/zed
 {{ end }}
