@@ -79,7 +79,7 @@
         '';
       }
       {
-        plugin = tokyo-night-tmux;
+        plugin = tmuxPlugins.tokyo-night-tmux;
         extraConfig = ''
           # ID styles
           set -g @tokyo-night-tmux_window_id_style digital
