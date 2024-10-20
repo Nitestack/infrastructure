@@ -30,27 +30,21 @@ packages:
 apps:
   win:
     winget:
-      - "Guru3D.Afterburner"
       - "Bitwarden.Bitwarden"
       - "Google.Chrome"
       - "Docker.DockerDesktop"
       - "Discord.Discord"
       - "Figma.Figma"
       - "Mozilla.Firefox"
-      - "JetBrains.IntelliJIDEA.Ultimate"
       - "MicaForEveryone.MicaForEveryone"
       - "Notion.Notion"
-      - "Notion.NotionCalendar"
       - "Logitech.OptionsPlus"
-      - "PDFgear.PDFgear"
       - "Microsoft.PowerToys"
       - "Nilesoft.Shell"
       - "OpenWhisperSystems.Signal"
-      - "Readdle.Spark"
       - "Spotify.Spotify"
       - "Microsoft.VisualStudio.2022.Community"
       - "Microsoft.VisualStudioCode"
-      - "JetBrains.WebStorm"
       - "wez.wezterm"
       - "9P8LTPGCBZXD" # Wintoys (installed from Microsoft Store)
       - "9NKSQGP7F2NH" # WhatsApp Desktop
