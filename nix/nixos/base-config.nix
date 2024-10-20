@@ -139,6 +139,14 @@
 
   # ── Services ──────────────────────────────────────────────────────────
   services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true; # Enable mDNS for IPv4
+      nssmdns6 = true; # Enable mDNS for IPv6
+      ipv4 = true; # Ensure IPv4 support
+      ipv6 = true; # Ensure IPv6 support
+      openFirewall = true; # Open the firewall for Avahi
+    };
     openssh = {
       enable = true;
       settings = {
