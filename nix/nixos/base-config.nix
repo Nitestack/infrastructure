@@ -74,6 +74,10 @@
     openssl
     unzip
 
+    # Ansible
+    ansible
+    sshpass
+
     # Apps
     evince
 
