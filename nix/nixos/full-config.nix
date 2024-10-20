@@ -31,6 +31,7 @@
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
+    rpi-imager
     signal-desktop
     spotify
     webcord
