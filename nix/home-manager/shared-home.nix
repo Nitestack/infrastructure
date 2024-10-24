@@ -56,6 +56,10 @@
       vimAlias = true;
       vimdiffAlias = true;
     };
+    nix-index = {
+      enable = true;
+      enableZshIntegration = true;
+    };
     # Module is not supporting custom path, so using it manually
     # oh-my-posh = {
     #   enable = true;
