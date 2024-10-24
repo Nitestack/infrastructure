@@ -3,6 +3,7 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   pkgs,
+  config,
   ...
 }:
 {
@@ -49,6 +50,17 @@
         }}";
       };
     };
+
+  # Nautilus
+  gtk.gtk3.bookmarks =
+    let
+      home = config.home.homeDirectory;
+    in
+    [
+      "file://${home}/Programming"
+      "file://${home}/Studium"
+      "file:///mnt/windows Windows"
+    ];
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
