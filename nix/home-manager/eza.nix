@@ -10,6 +10,6 @@
       "--octal-permissions"
     ];
     git = true;
-    icons = true;
+    icons = "always";
   };
 }
