@@ -42,7 +42,6 @@
     # NixOS
     gnome-system-monitor
     nautilus
-    vlc
   ];
 
   # Virtualization

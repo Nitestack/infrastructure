@@ -5,8 +5,8 @@
 {
   services = {
     gnome = {
-      sushi.enable = true;
       core-developer-tools.enable = true;
+      rygel.enable = false;
     };
     gvfs.enable = true;
     xserver.desktopManager.gnome.enable = true;
@@ -18,6 +18,7 @@
       baobab
       epiphany
       gnome-text-editor
+      gnome-characters
       gnome-console
       gnome-contacts
       gnome-logs
@@ -25,11 +26,17 @@
       gnome-system-monitor
       gnome-weather
       gnome-connections
+      simple-scan
       snapshot
       yelp
 
       devhelp
       gnome-builder
+
+      file-roller
+      gnome-disk-utility
+      seahorse
+      sysprof
     ]
   );
 }
