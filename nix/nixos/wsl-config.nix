@@ -1,7 +1,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ NIXOS WSL CONFIGURATION                                  │
 # ╰──────────────────────────────────────────────────────────╯
-{ meta, ... }:
+{ meta, pkgs, ... }:
 {
   wsl = {
     enable = true;
@@ -12,4 +12,10 @@
 
   # ── Home Manager ──────────────────────────────────────────────────────
   home-manager.users.${meta.username} = import ../home-manager/shared-home.nix;
+
+  # ── Packages ──────────────────────────────────────────────────────────
+  environment.systemPackages = with pkgs; [
+    # Apps
+    evince
+  ];
 }

@@ -78,9 +78,6 @@
     ansible
     sshpass
 
-    # Apps
-    evince
-
     # Nix
     nixd
     nixfmt-rfc-style
