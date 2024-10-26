@@ -32,6 +32,7 @@
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
+    nextcloud-client
     rpi-imager
     signal-desktop
     spotify

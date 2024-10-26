@@ -39,6 +39,7 @@ apps:
       - "MicaForEveryone.MicaForEveryone"
       - "Notion.Notion"
       - "Logitech.OptionsPlus"
+      - "Nextcloud.NextcloudDesktop"
       - "Microsoft.PowerToys"
       - "Nilesoft.Shell"
       - "OpenWhisperSystems.Signal"
