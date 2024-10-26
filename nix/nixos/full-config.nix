@@ -29,6 +29,7 @@
 
     # Apps
     bitwarden-desktop
+    endeavour
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.webstorm
