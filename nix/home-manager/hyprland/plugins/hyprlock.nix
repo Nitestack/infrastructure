@@ -4,12 +4,13 @@
 {
   pkgs,
   meta,
-  config,
   ...
 }:
 let
   inherit (meta) font;
-  picturesDir = config.xdg.userDirs.pictures;
+
+  wallpaper = ../../../images/wallpapers/Fantasy-Landscape3.png;
+  user_avatar = ../../../images/user-avatar.png;
 
   scripts = {
     battery-status = pkgs.writeShellScriptBin "battery-status" ''
@@ -82,7 +83,7 @@ in
       # ── Background ────────────────────────────────────────────────────────
       background = {
         monitor = "";
-        path = "${picturesDir}/wallpapers/Fantasy-Landscape-Night.png"; # only png supported for now
+        path = "${wallpaper}"; # only png supported for now
         color = "rgba(25, 20, 20, 1.0)";
 
         # all these options are taken from hyprland, see https://wiki.hyprland.org/Configuring/Variables/#blur for explanations
@@ -211,7 +212,7 @@ in
       # ── Image ─────────────────────────────────────────────────────────────
       image = {
         monitor = "";
-        path = "${picturesDir}/user-avatar.png";
+        path = "${user_avatar}";
         border_color = "0xffdddddd";
         border_size = 0;
         size = 73;

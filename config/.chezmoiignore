@@ -15,11 +15,6 @@ Documents
 .wslconfig
 {{ end }}
 
-# NixOS only
-{{ if ne .osid "linux-nixos" }}
-Pictures
-{{ end }}
-
 # Unix only
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/unix/**
