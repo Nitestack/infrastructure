@@ -68,15 +68,12 @@
     rustup
 
     # Packages
+    ansible
     delta
     lazydocker
     lazygit
     openssl
     unzip
-
-    # Ansible
-    ansible
-    sshpass
 
     # Nix
     nixd
