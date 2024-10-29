@@ -69,9 +69,6 @@
           eval "$(${oh-my-posh} init zsh --config "${config.xdg.configHome}/oh-my-posh/config.yml")"
         fi
 
-        # nix-index command-not-found implementation
-        source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-
         # fastfetch
         if [[ $(tty) == *"pts"* ]]; then
           ${fastfetch}
