@@ -104,6 +104,7 @@
     options = [
       "rw"
       "uid=1000"
+      "nofail"
     ];
   };
 }
