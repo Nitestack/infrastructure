@@ -12,7 +12,7 @@ in
   systemd.user = {
     services.hyprshade = {
       Unit = {
-        description = "Apply screen filter";
+        Description = "Apply screen filter";
       };
 
       Service = {
@@ -22,7 +22,7 @@ in
     };
     timers.hyprshade = {
       Unit = {
-        description = "Apply screen filter on schedule";
+        Description = "Apply screen filter on schedule";
       };
 
       Timer = {
