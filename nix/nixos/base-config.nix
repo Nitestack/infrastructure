@@ -76,6 +76,7 @@
     unzip
 
     # Nix
+    nix-prefetch-git
     nixd
     nixfmt-rfc-style
   ];
