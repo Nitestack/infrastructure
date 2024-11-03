@@ -12,7 +12,6 @@ let
 
   # Bins
   cliphist = "${pkgs.cliphist}/bin/cliphist";
-  firefox = "${pkgs.firefox}/bin/firefox";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
@@ -22,6 +21,7 @@ let
   wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
+  zen = "${inputs.zen-browser.packages.x86_64-linux.generic}/bin/zen";
 in
 {
   wayland.windowManager.hyprland.settings = {
@@ -33,7 +33,7 @@ in
       "${wl-paste} --type image --watch ${cliphist} store"
       "${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size}"
 
-      "[workspace 1 silent] ${firefox}"
+      "[workspace 1 silent] ${zen}"
       "[workspace 2 silent] ${wezterm} -e tmux"
       "[workspace 3 silent] ${webcord}"
       "[workspace 4 silent] ${spotify}"

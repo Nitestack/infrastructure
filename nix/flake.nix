@@ -30,11 +30,8 @@
     # WezTerm
     wezterm.url = "github:wez/wezterm?dir=nix";
 
-    # Firefox GNOME Theme
-    firefox-gnome-theme = {
-      url = "github:rafaelmardojai/firefox-gnome-theme";
-      flake = false;
-    };
+    # Zen Browser
+    zen-browser.url = "github:MarceColl/zen-browser-flake";
   };
 
   # ── Outputs ───────────────────────────────────────────────────────────

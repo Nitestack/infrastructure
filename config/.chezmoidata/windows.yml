@@ -24,6 +24,7 @@ packages:
       - "BurntSushi.ripgrep.MSVC"
       - "mbuilov.sed"
       - "Microsoft.VCRedist.2015+.x64"
+      - "Zen-Team.Zen-Browser"
       - "ajeetdsouza.zoxide"
     modules:
       - "PSFzf"

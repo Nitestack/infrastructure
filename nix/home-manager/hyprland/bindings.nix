@@ -11,7 +11,6 @@ let
   # Bins
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   cliphist = "${pkgs.cliphist}/bin/cliphist";
-  firefox = "${pkgs.firefox}/bin/firefox";
   gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
   grimblast = "${
     inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
@@ -23,6 +22,7 @@ let
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
   wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
+  zen = "${inputs.zen-browser.packages.x86_64-linux.generic}/bin/zen";
 
   cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
     #!/usr/bin/env bash
@@ -59,7 +59,7 @@ in
       [
         "SUPER, Slash, Open Terminal, exec, ${wezterm} -e tmux"
         "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
-        "SUPER, W, Open Browser, exec, ${firefox}"
+        "SUPER, W, Open Browser, exec, ${zen}"
         "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
 
         "SUPER, V, Open Clipboard History, exec, ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
