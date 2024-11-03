@@ -33,7 +33,6 @@
       devhelp
       gnome-builder
 
-      file-roller
       gnome-disk-utility
       seahorse
       sysprof
