@@ -14,6 +14,7 @@
     ./gnome.nix
     ./hyprland.nix
     ./sddm.nix
+    ./steam.nix
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
