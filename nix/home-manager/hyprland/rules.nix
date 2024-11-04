@@ -5,32 +5,35 @@
   wayland.windowManager.hyprland.settings = {
     windowrule =
       let
-        f = regex: "float, ^(${regex})$";
+        float = regex: "float, ^(${regex})$";
+        floatAction = regex: "float, title:^(${regex})(.*)$";
       in
       [
         "opacity 0.89 override 0.89 override, .*" # Transparency
 
         # Floating windows
-        (f "confirm")
-        (f "file_progress")
-        (f "dialog")
+        (float "confirm")
+        (float "file_progress")
+        (float "dialog")
 
-        (f "org.gnome.Calculator")
-        (f "org.gnome.Nautilus")
-        (f "org.gnome.SystemMonitor")
-        (f "nm-connection-editor")
-        (f "org.gnome.Settings")
-        (f "org.gnome.design.Palette")
+        (float "org.gnome.Calculator")
+        (float "org.gnome.Nautilus")
+        (float "org.gnome.SystemMonitor")
+        (float "nm-connection-editor")
+        (float "org.gnome.Settings")
 
-        (f "Color Picker")
-        (f "dconf-editor")
+        (float "Color Picker")
+        (float "dconf-editor")
 
-        (f "com.github.GradienceTeam.Gradience")
+        (float "pavucontrol")
+        (float "nm-connection-editor")
+        (float "xdg-desktop-portal")
+        (float "xdg-desktop-portal-gnome")
 
-        (f "pavucontrol")
-        (f "nm-connection-editor")
-        (f "xdg-desktop-portal")
-        (f "xdg-desktop-portal-gnome")
+        # Actions
+        (floatAction "Open Files")
+        (floatAction "Open Folder")
+        (floatAction "Save As")
 
         "immediate,.*\.exe" # Tearing
       ];
