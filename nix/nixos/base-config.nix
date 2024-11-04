@@ -62,8 +62,9 @@
     curl
     git
     gum
+    nodejs
+    pnpm
     python3
-    volta
     wget
     rustup
 

@@ -78,17 +78,15 @@
   home =
     let
       PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
-      VOLTA_HOME = "${config.home.homeDirectory}/.volta";
     in
     {
       sessionVariables = {
-        inherit PNPM_HOME VOLTA_HOME;
+        inherit PNPM_HOME;
       };
       sessionPath = [
         "${config.home.homeDirectory}/.cargo/bin"
         "${config.home.homeDirectory}/.local/bin"
         PNPM_HOME
-        "${VOLTA_HOME}/bin"
       ];
       shellAliases = {
         v = "nvim";

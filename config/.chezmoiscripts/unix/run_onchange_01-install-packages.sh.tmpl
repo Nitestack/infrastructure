@@ -6,31 +6,6 @@
 true || source "../../.chezmoitemplates/bash-library.sh"
 
 # ╭──────────────────────────────────────────────────────────╮
-# │ Install essentials                                       │
-# ╰──────────────────────────────────────────────────────────╯
-_log_header "Essential Packages"
-
-# ── volta ─────────────────────────────────────────────────────────────
-
-# Needed for first-time installation
-VOLTA_HOME="${HOME}/.volta"
-PATH="${VOLTA_HOME}/bin:${PATH}"
-
-gum format -- "## volta:"
-volta_list=$(volta list --format plain)
-# {{ range (.packages.volta | uniq) }}
-if echo "${volta_list}" | grep -q "{{- . -}}"; then
-	_log -l warn --prefix "volta" "{{- . }} is already installed"
-else
-	volta install "{{- . -}}"
-	_log -l info --prefix "volta" "Installed {{ . -}}"
-fi
-# {{ end }}
-
-echo
-_log -l info "Installed essential packages"
-
-# ╭──────────────────────────────────────────────────────────╮
 # │ Install packages                                         │
 # ╰──────────────────────────────────────────────────────────╯
 _log_header "Packages"
