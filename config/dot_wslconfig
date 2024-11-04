@@ -5,7 +5,8 @@
 [wsl2]
 memory=8GB
 swap=4GB
-localhostForwarding=true
+networkingMode=mirrored
 
 [experimental]
 autoMemoryReclaim=gradual
+hostAddressLoopback=true
