@@ -11,6 +11,7 @@
   imports = [
     ./shared-home.nix
 
+    ./ags.nix
     ./browser.nix
     ./dunst.nix
     ./hyprland
