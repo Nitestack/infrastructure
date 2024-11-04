@@ -43,7 +43,7 @@ in
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      serif = [ font.sans.name ];
+      serif = [ font.serif.name ];
       sansSerif = [ font.sans.name ];
       monospace = [ font.mono.name ];
       emoji = [ font.emoji.name ];
@@ -65,7 +65,7 @@ in
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
           clock-format = "24h";
-          document-font-name = font.sans.name;
+          document-font-name = font.serif.name;
           font-antialiasing = "rgba";
           font-hinting = "full";
           monospace-font-name = font.mono.name;

@@ -28,6 +28,10 @@
       name = "Rubik";
       package = pkgs.rubik;
     };
+    serif = {
+      name = "CrimsonPro";
+      package = pkgs.crimson-pro;
+    };
     mono = {
       name = "MonaspiceNe Nerd Font Mono";
       package = pkgs.nerdfonts.override {
