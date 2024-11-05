@@ -3,12 +3,13 @@ return utils.plugin.get_language_spec({
   mason = { "tinymist", "typstfmt" },
   lsp = {
     servers = {
-      tinymist = {},
-    },
-  },
-  formatter = {
-    formatters_by_ft = {
-      ["typst"] = { "typstfmt" },
+      tinymist = {
+        single_file_support = true,
+        settings = {
+          exportPdf = "onSave",
+          formatterMode = "typstfmt",
+        },
+      },
     },
   },
   plugins = {
