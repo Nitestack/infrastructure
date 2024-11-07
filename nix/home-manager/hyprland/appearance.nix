@@ -18,13 +18,6 @@
     decoration = {
       rounding = 20; # rounded corners' radius (in layout px)
 
-      drop_shadow = true; # enable drop shadows on windows
-      shadow_ignore_window = true; # if true, the shadow will not be rendered behind the window itself, only around it
-      shadow_offset = "0 2"; # shadow’s rendering offset
-      shadow_range = 20; # Shadow range (“size”) in layout px
-      shadow_render_power = 4; # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
-      "col.shadow" = "rgba(0000002A)"; # shadow’s color. Alpha dictates shadow’s opacity
-
       # Blur
       blur = {
         enabled = true;
@@ -38,6 +31,15 @@
         contrast = 1;
         popups = true;
         popups_ignorealpha = 0.6;
+      };
+
+      # Shadow
+      shadow = {
+        enabled = true;
+        range = 20; # Shadow range (“size”) in layout px
+        offset = "0 2"; # shadow’s rendering offset
+        render_power = 4; # in what power to render the falloff (more power, the faster the falloff) [1 - 4]
+        color = "rgba(0000002A)"; # shadow’s color. Alpha dictates shadow’s opacity
       };
     };
 
