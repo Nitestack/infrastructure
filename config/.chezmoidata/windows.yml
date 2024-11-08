@@ -19,6 +19,7 @@ packages:
       - "jftuga.less"
       - "LLVM.LLVM"
       - "Neovim.Neovim"
+      - "Nextcloud.NextcloudDesktop"
       - "JanDeDobbeleer.OhMyPosh"
       - "ojdkbuild.ojdkbuild"
       - "BurntSushi.ripgrep.MSVC"
