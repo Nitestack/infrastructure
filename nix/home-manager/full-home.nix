@@ -60,7 +60,6 @@
     [
       "file://${home}/Programming"
       "file://${home}/Studium"
-      "file:///mnt/windows Windows"
     ];
 
   # ── Programs ──────────────────────────────────────────────────────────
