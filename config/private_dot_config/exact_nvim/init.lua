@@ -73,8 +73,6 @@ require("lazy").setup({
   },
   defaults = {
     lazy = true,
-    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-    -- have outdated releases, which may break your Neovim install
     version = false, -- always use the latest git commit
   },
   install = {
@@ -90,12 +88,10 @@ require("lazy").setup({
   ui = {
     size = { width = core.config.ui.width, height = core.config.ui.height },
     border = core.config.ui.transparent.floats and "rounded" or "none",
-    title = core.config.ui.transparent.floats and "lazy.nvim" or nil,
     icons = {
       loaded = core.icons.ui.PackageInstalled,
       not_loaded = core.icons.ui.PackageUninstalled,
     },
-    backdrop = 100,
   },
   performance = {
     rtp = {

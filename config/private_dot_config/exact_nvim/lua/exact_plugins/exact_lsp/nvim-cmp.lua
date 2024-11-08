@@ -23,10 +23,6 @@ return utils.plugin.with_extensions({
       local copilot = require("copilot.suggestion")
 
       opts.enabled = function()
-        if vim.bo[0].buftype ~= "prompt" then
-          return true
-        end
-
         -- Check if in a DAP window (`require("cmp_dap").is_dap_buffer()` uses deprecated function, so using this)
         local filetype = vim.bo[0].filetype
         if vim.startswith(filetype, "dapui_") then
@@ -35,7 +31,7 @@ return utils.plugin.with_extensions({
         if filetype == "dap-repl" then
           return true
         end
-        return false
+        return require("cmp.config.default")().enabled()
       end
 
       -- View
@@ -48,8 +44,8 @@ return utils.plugin.with_extensions({
         documentation = cmp.config.window.bordered(),
       }
 
-      -- Mapping: Only on Windows (excluding Neovide)
-      if utils.is_win() and not utils.is_neovide() then
+      -- Mapping: Only on Windows
+      if utils.is_win() then
         opts.mapping["<C-x>"] = cmp.mapping.complete()
       end
 
@@ -80,41 +76,6 @@ return utils.plugin.with_extensions({
           fallback()
         end
       end, { "i", "s" })
-      opts.mapping["<C-x>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.next()
-        end
-      end)
-      opts.mapping["<C-z>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.prev()
-        end
-      end)
-      opts.mapping["<C-right>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.accept_word()
-        end
-      end)
-      opts.mapping["<C-l>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.accept_word()
-        end
-      end)
-      opts.mapping["<C-down>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.accept_line()
-        end
-      end)
-      opts.mapping["<C-j>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.accept_line()
-        end
-      end)
-      opts.mapping["<C-c>"] = cmp.mapping(function()
-        if copilot.is_visible() then
-          copilot.dismiss()
-        end
-      end)
 
       -- Formatting
       opts.formatting = opts.formatting or {}

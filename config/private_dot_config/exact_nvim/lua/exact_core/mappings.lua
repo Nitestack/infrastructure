@@ -32,12 +32,6 @@ local M = {
       -- Terminal
       "<leader>ft",
       "<leader>fT",
-      "<C-_>",
-    },
-    t = {
-      -- Terminal
-      "<Esc><Esc>",
-      "<C-_>",
     },
     [{ "i", "x", "n", "s" }] = {
       -- Save
@@ -113,13 +107,6 @@ M.mappings.x = {
     end,
     desc = "Execute macro over visual range",
     silent = false,
-  },
-}
-
-M.mappings.t = {
-  ["<Esc>"] = {
-    "<C-\\><C-n>",
-    desc = "Enter Normal Mode",
   },
 }
 

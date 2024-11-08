@@ -10,7 +10,6 @@ return utils.plugin.get_language_spec({
   },
   lsp = {
     servers = {
-      ---@type lspconfig.options.lua_ls
       lua_ls = {
         settings = {
           Lua = {

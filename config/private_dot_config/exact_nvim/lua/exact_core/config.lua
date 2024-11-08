@@ -89,7 +89,7 @@ M.lazyvim = {
 }
 
 M.plugins = {
-  mason = { "codespell" },
+  mason = {},
   treesitter = {
     "c",
     "diff",
@@ -108,9 +108,7 @@ M.plugins = {
     "xml",
   },
   linting = {
-    linters_by_ft = {
-      ["*"] = { "codespell" },
-    },
+    linters_by_ft = {},
     linters = {},
   },
   formatting = {

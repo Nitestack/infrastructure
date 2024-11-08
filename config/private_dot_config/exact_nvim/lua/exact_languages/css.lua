@@ -16,7 +16,6 @@ return utils.plugin.get_language_spec({
   },
   lsp = {
     servers = {
-      ---@type lspconfig.options.cssls
       cssls = {
         settings = {
           css = {

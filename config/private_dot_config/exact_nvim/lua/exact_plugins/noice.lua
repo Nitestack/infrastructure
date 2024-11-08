@@ -9,13 +9,6 @@ return utils.plugin.with_extensions({
       opts.cmdline = opts.cmdline or {}
       opts.cmdline.view = "cmdline"
 
-      -- Disable notify
-      -- opts.messages = opts.messages or {}
-      -- opts.messages.enabled = true
-      -- opts.messages.view = "mini"
-      -- opts.messages.view_error = "mini"
-      -- opts.messages.view_warn = "mini"
-
       -- LSP
       opts.lsp = opts.lsp or {}
       opts.lsp.message = opts.lsp.message or {}
@@ -24,13 +17,7 @@ return utils.plugin.with_extensions({
       opts.lsp.hover.silent = true
 
       -- Routes
-      opts.routes = opts.routes or {}
-      vim.list_extend(opts.routes, {
-        -- Show @recording messages
-        {
-          view = "notify",
-          filter = { event = "msg_showmode" },
-        },
+      opts.routes = vim.list_extend(opts.routes or {}, {
         -- Disable various messages
         {
           opts = { skip = true },
@@ -43,36 +30,14 @@ return utils.plugin.with_extensions({
               { event = "msg_show", find = "%d+ change" },
               { event = "msg_show", find = "%d+ line" },
               { event = "msg_show", find = "%d+ more line" },
+              { event = "msg_show", find = "%d+ fewer lines" },
             },
           },
         },
       })
 
-      -- Views
-      opts.views = opts.views or {}
-      opts.views.cmdline_popup = {
-        border = core.config.ui.transparent.floats and {
-          style = "rounded",
-        } or {
-          style = "none",
-          padding = { 1, 2 },
-        },
-        win_options = {
-          winhighlight = {
-            Normal = "NormalFloat",
-          },
-        },
-      }
-      opts.views.mini = {
-        position = {
-          -- auto-adjust height based on cmdheight (so it doesn't overlap with the statusline)
-          row = -1 - vim.o.cmdheight,
-        },
-      }
-
       -- Presets
       opts.presets = opts.presets or {}
-      opts.presets.inc_rename = false
       opts.presets.lsp_doc_border = core.config.ui.transparent.floats and true or false
     end,
   },

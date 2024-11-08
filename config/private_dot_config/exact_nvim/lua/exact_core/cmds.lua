@@ -47,17 +47,6 @@ M.auto_cmds = {
       end,
     },
   },
-  -- Disable diagnostics in `node_modules`
-  {
-    { "BufReadPre", "BufNewFile" },
-    {
-      group = "disable_diagnostics",
-      pattern = "*/node_modules/*",
-      callback = function()
-        vim.diagnostic.enable(false, { bufnr = 0 })
-      end,
-    },
-  },
   -- Enable breadcrumbs
   {
     {

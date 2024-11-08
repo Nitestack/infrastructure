@@ -68,11 +68,6 @@ function M.is_wsl()
   return os.getenv("WSL_DISTRO_NAME") ~= nil
 end
 
----Checks if the current Neovim GUI is Neovide
-function M.is_neovide()
-  return vim.g.neovide ~= nil
-end
-
 ---Checks if the current Neovim version is nightly
 function M.is_nightly()
   return vim.version().prerelease ~= nil

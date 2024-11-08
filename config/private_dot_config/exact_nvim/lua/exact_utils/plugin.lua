@@ -19,7 +19,7 @@ local M = {}
 
 ---@class utils.plugin.language_config.lsp
 ---@field servers? table<string, table>
----@field setup? table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+---@field setup? table<string, fun(server:string, opts:table):boolean?>
 
 ---@module "conform"
 

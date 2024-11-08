@@ -24,20 +24,6 @@ return {
       },
     }
 
-    -- LSP info border
-    require("lspconfig.ui.windows").default_options.border = core.config.ui.transparent.floats and "rounded" or "none"
-
-    -- Semantic tokens
-    LazyVim.lsp.on_attach(function(client, buffer)
-      if
-        vim.lsp.semantic_tokens
-        and client.supports_method("textDocument/semanticTokens/full")
-        and vim.b[buffer].semantic_tokens == nil
-      then
-        vim.b[buffer].semantic_tokens = true
-      end
-    end)
-
     -- Workspace diagnostics
     LazyVim.lsp.on_attach(function(client, buffer)
       if client.name ~= "copilot" then

@@ -38,7 +38,6 @@ local tsserver_settings = {
 return utils.plugin.get_language_spec({
   lsp = {
     servers = {
-      ---@type lspconfig.options.vtsls
       vtsls = {
         settings = {
           typescript = tsserver_settings,

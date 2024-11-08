@@ -13,11 +13,7 @@ M.options = {
   helplang = "de", -- Set the language for the help messages
   pumblend = 0,
   list = false,
-
-  -- Backup
-  backup = false, -- Disable backup files
   swapfile = false, -- Disable swap file
-  undodir = vim.fn.expand("~/.vim/undodir"), -- Directory for undo files
 
   -- GUI settings
   guifont = "{{ .font.nerd.family }},Symbols Nerd Font,Noto Color Emoji:h{{ .font.size }}", -- Set font for graphical Neovim apps
@@ -25,19 +21,6 @@ M.options = {
 
   -- Indentation
   softtabstop = 2, -- Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
-
-  -- File Management
-  wildignore = { -- Patterns to ignore during file navigation
-    -- "**/node_modules/**",
-    -- "**/.git/**",
-    -- "**/dist/**",
-    -- "**/build/**",
-    -- "**/.next/**",
-    -- "**/.cache/**",
-    -- "**/coverage/**",
-    -- "**/target/**",
-    -- "**/dist/**",
-  },
 
   -- Spelling
   spelllang = { "en_us", "de_de" },
@@ -72,14 +55,6 @@ function M.run()
   -- Set language
   vim.cmd.language("en_US.UTF-8")
 
-  -- Neovide settings
-  if utils.is_neovide() then
-    vim.g.neovide_hide_mouse_when_typing = true
-  end
-
-  -- Enable undercurl
-  vim.cmd([[let &t_Cs = "\e[4:3m"]])
-  vim.cmd([[let &t_Ce = "\e[4:0m"]])
   -- Go to previous/next line with h/l/left arrow/right arrow when cursor reaches end/beginning of line
   vim.opt.whichwrap:append("<>[]hl")
   -- Add binaries installed by `mason.nvim` to path
