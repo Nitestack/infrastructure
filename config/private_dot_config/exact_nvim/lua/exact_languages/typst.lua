@@ -4,7 +4,6 @@ return utils.plugin.get_language_spec({
   lsp = {
     servers = {
       tinymist = {
-        single_file_support = true,
         settings = {
           exportPdf = "onSave",
           formatterMode = "typstfmt",
