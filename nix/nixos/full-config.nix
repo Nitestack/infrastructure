@@ -96,16 +96,4 @@
     networkmanager.enable = true;
     hostName = meta.hostname;
   };
-
-  # Mount Windows Drive (for dual boot systems)
-  boot.supportedFilesystems = [ "ntfs" ];
-  fileSystems."/mnt/windows" = {
-    device = "/dev/nvme0n1p3"; # Depending on your system
-    fsType = "ntfs-3g";
-    options = [
-      "rw"
-      "uid=1000"
-      "nofail"
-    ];
-  };
 }
