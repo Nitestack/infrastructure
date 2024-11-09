@@ -6,9 +6,13 @@ return utils.plugin.get_language_spec({
       tinymist = {
         settings = {
           exportPdf = "onSave",
-          formatterMode = "typstfmt",
         },
       },
+    },
+  },
+  formatter = {
+    formatters_by_ft = {
+      ["typst"] = { "typstfmt" },
     },
   },
   plugins = {
