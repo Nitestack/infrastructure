@@ -14,7 +14,7 @@ in
   home = {
     packages = [
       font.sans.package
-      font.mono.package
+      font.nerd.package
       font.emoji.package
     ];
     pointerCursor = cursorTheme // {
@@ -45,7 +45,11 @@ in
     defaultFonts = {
       serif = [ font.serif.name ];
       sansSerif = [ font.sans.name ];
-      monospace = [ font.mono.name ];
+      monospace = [
+        font.nerd.name
+        font.nerd.monoName
+        font.nerd.propoName
+      ];
       emoji = [ font.emoji.name ];
     };
   };
@@ -68,7 +72,7 @@ in
           document-font-name = font.serif.name;
           font-antialiasing = "rgba";
           font-hinting = "full";
-          monospace-font-name = font.mono.name;
+          monospace-font-name = font.nerd.monoName;
           show-battery-percentage = true;
         };
         "org/gnome/nautilus/preferences" = {
