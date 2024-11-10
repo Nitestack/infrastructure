@@ -32,8 +32,10 @@
       name = "CrimsonPro";
       package = pkgs.crimson-pro;
     };
-    mono = {
-      name = "GeistMono NFM";
+    nerd = {
+      name = "GeistMono NF";
+      monoName = "GeistMono NFM";
+      propoName = "GeistMono NFP";
       package = pkgs.nerdfonts.override {
         fonts = [
           "Iosevka" # For Unicode characters
