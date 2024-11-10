@@ -112,8 +112,8 @@ winget install -e --accept-package-agreements --accept-source-agreements Git.Git
 
 #### Fonts
 
-- [Rubik Font](https://fonts.google.com/specimen/Rubik)
-- [MonaspiceNe Nerd Font](https://nerdfonts.com/font-downloads)
+- [Geist Sans](https://vercel.com/font)
+- [Geist Mono Nerd Font](https://nerdfonts.com/font-downloads)
 - [Symbols Nerd Font](https://nerdfonts.com/font-downloads)
 - [Noto Color Emoji](https://fonts.google.com/noto)
 

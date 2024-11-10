@@ -25,19 +25,19 @@
   # Fonts
   font = {
     sans = {
-      name = "Rubik";
-      package = pkgs.rubik;
+      name = "Geist";
+      package = pkgs.geist-font;
     };
     serif = {
       name = "CrimsonPro";
       package = pkgs.crimson-pro;
     };
     mono = {
-      name = "MonaspiceNe Nerd Font Mono";
+      name = "GeistMono NFM";
       package = pkgs.nerdfonts.override {
         fonts = [
           "Iosevka" # For Unicode characters
-          "Monaspace"
+          "GeistMono"
           "NerdFontsSymbolsOnly"
         ];
       };

@@ -6,8 +6,8 @@
 font:
   size: 14
   sans:
-    family: "Rubik"
+    family: "Geist"
     weight: "Bold"
   nerd:
-    family: "MonaspiceNe Nerd Font"
+    family: "GeistMono NF"
     weight: "Regular"

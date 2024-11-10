@@ -53,7 +53,7 @@ apps:
       - "9NKSQGP7F2NH" # WhatsApp Desktop
     manual:
       - "AnkerWork"
-      - "Rubik Font"
-      - "MonaspiceNe Nerd Font"
+      - "Geist Sans"
+      - "Geist Mono Nerd Font"
       - "Symbols Nerd Font"
       - "Noto Color Emoji Font"
