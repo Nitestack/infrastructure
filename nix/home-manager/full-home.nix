@@ -14,6 +14,7 @@
     ./browser.nix
     ./hyprland
     ./rofi.nix
+    ./swaync.nix
     ./theme.nix
     ./wezterm.nix
   ];
@@ -69,6 +70,5 @@
   services = {
     cliphist.enable = true;
     easyeffects.enable = true;
-    swaync.enable = true;
   };
 }
