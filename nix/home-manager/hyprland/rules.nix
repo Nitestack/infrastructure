@@ -1,46 +1,62 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Window and Workspace Rules                               │
 # ╰──────────────────────────────────────────────────────────╯
+{ config, ... }:
 {
-  wayland.windowManager.hyprland.settings = {
-    windowrule =
-      let
-        float = regex: "float, ^(${regex})$";
-        floatAction = regex: "float, title:^(${regex})(.*)$";
-      in
-      [
-        "opacity 0.89 override 0.89 override, .*" # Transparency
+  wayland.windowManager.hyprland.settings =
+    let
+      floatByTitle = regex: "float, title:^(${regex})(.*)$";
+      centerByTitle = regex: "center, title:^(${regex})(.*)$";
+      floatByExactTitle = regex: "float, title:^(${regex})$";
+      floatByClass = regex: "float, class:^(${regex})(.*)$";
+      floatByExactClass = regex: "float, class:^(${regex})$";
 
-        # Floating windows
-        (float "confirm")
-        (float "file_progress")
-        (float "dialog")
+      gap =
+        config.wayland.windowManager.hyprland.settings.general.gaps_out
+        + config.wayland.windowManager.hyprland.settings.general.border_size;
+    in
+    {
+      windowrulev2 = [
+        "opacity 0.89 override 0.89 override, class:.*" # Transparency
 
-        (float "org.gnome.Calculator")
-        (float "org.gnome.Nautilus")
-        (float "org.gnome.SystemMonitor")
-        (float "nm-connection-editor")
-        (float "org.gnome.Settings")
+        (floatByExactClass "confirm")
+        (floatByExactClass "file_progress")
+        (floatByExactClass "dialog")
+        (floatByExactClass "org.gnome.Calculator")
+        (floatByExactClass "org.gnome.FileRoller")
+        (floatByExactClass "org.gnome.Nautilus")
+        (floatByExactClass "org.gnome.SystemMonitor")
+        (floatByExactClass "org.gnome.Settings")
+        (floatByExactClass "dconf-editor")
+        (floatByExactClass "steam")
+        (floatByExactClass "WebCord")
 
-        (float "Color Picker")
-        (float "dconf-editor")
+        (floatByClass "xdg-desktop-portal")
+        (floatByClass "xdg-desktop-portal-gnome")
+        (floatByClass ".blueman-manager")
+        (floatByClass "org.raspberrypi")
 
-        (float "pavucontrol")
-        (float "nm-connection-editor")
-        (float "xdg-desktop-portal")
-        (float "xdg-desktop-portal-gnome")
+        (floatByExactTitle "btop")
 
-        # Actions
-        (floatAction "Open Files")
-        (floatAction "Open Folder")
-        (floatAction "Save As")
+        # Picture-in-Picture
+        (floatByExactTitle "Picture-in-Picture")
+        "keepaspectratio, title:^(Picture-in-Picture)$"
+        "size 25% 25%, title:^(Picture-in-Picture)$"
+        "move 100%-w-${toString gap} 100%-w-${toString gap}, title:^(Picture-in-Picture)$"
+        "pin, title:^(Picture-in-Picture)$"
 
-        "immediate,.*\.exe" # Tearing
+        (floatByTitle "Open File")
+        (floatByTitle "Open Folder")
+        (floatByTitle "File Upload")
+        (centerByTitle "File Upload")
+        (floatByTitle "Select Folder to Upload")
+        (centerByTitle "Select Folder to Upload")
+        (floatByTitle "Save As")
+        (centerByTitle "Save As")
+        (floatByTitle "Spotify")
+
+        "suppressevent maximize, class:.*"
+        "immediate,class:(steam_app)" # Tearing
       ];
-
-    windowrulev2 = [
-      "suppressevent maximize, class:.*"
-      "immediate,class:(steam_app)" # Tearing
-    ];
-  };
+    };
 }
