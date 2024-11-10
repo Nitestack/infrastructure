@@ -13,7 +13,6 @@
 
     ./ags.nix
     ./browser.nix
-    ./dunst.nix
     ./hyprland
     ./rofi.nix
     ./theme.nix
@@ -71,5 +70,6 @@
   services = {
     cliphist.enable = true;
     easyeffects.enable = true;
+    swaync.enable = true;
   };
 }
