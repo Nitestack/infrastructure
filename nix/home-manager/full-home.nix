@@ -11,7 +11,6 @@
   imports = [
     ./shared-home.nix
 
-    ./ags.nix
     ./browser.nix
     ./hyprland
     ./rofi.nix

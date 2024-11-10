@@ -28,10 +28,7 @@ _Elevate your computing experience across platforms with this curated collection
 
 ### NixOS (Full System)
 
-> [!WARNING]
-> The NixOS full system configuration is still incomplete. Key features yet to be implemented include the integration of [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs). This requires a rewrite from the previous Arch-based version of the dotfiles, meaning there is currently no top or bottom bar, and the power menu is also missing.
-
-This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor for smooth and visually pleasing window management. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and `os-prober` for seamless dual-booting with Windows or other operating systems. Both [Astal](https://aylur.github.io/astal) and [AGS](https://aylur.github.io/ags-docs) create a cohesive design for app launchers, power and notification menus, top and bottom bars, and more.
+This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor for smooth and visually pleasing window management. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and `os-prober` for seamless dual-booting with Windows or other operating systems.
 
 Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes features listed in the [Cross-Platform](#cross-platform-nixos-windows) and [UNIX](#unix-nixos) sections, making it a complete and functional environment.
 

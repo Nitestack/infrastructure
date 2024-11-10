@@ -16,9 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # AGS
-    ags.url = "github:aylur/ags/v2";
-
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     # Hyprland Contrib
