@@ -30,6 +30,7 @@
 
     # Apps
     bitwarden-desktop
+    blueman
     endeavour
     google-chrome
     jetbrains.idea-ultimate
