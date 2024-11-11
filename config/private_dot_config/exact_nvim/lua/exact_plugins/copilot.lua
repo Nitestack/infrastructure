@@ -1,5 +1,5 @@
 return utils.plugin.with_extensions({
-  { import = "lazyvim.plugins.extras.coding.copilot" },
+  { import = "lazyvim.plugins.extras.ai.copilot" },
   {
     "zbirenbaum/copilot.lua",
     opts = {
