@@ -64,6 +64,7 @@
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
+    cava.enable = true;
     vscode.enable = true;
   };
 
