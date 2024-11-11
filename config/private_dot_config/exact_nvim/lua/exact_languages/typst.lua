@@ -1,3 +1,7 @@
+-- ╭─────────────────────────────────────────────────────────╮
+-- │ Typst                                                   │
+-- ╰─────────────────────────────────────────────────────────╯
+
 return utils.plugin.get_language_spec({
   treesitter = "typst",
   mason = { "tinymist", "typstfmt" },
