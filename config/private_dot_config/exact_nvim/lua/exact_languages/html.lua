@@ -10,7 +10,6 @@ return utils.plugin.get_language_spec({
     "html-lsp",
     "emmet-language-server",
     "prettierd",
-    "prettier",
   },
   lsp = {
     servers = {
@@ -20,7 +19,7 @@ return utils.plugin.get_language_spec({
   },
   formatter = {
     formatters_by_ft = {
-      ["html"] = { "prettierd", "prettier" },
+      ["html"] = { "prettierd" },
     },
   },
 })

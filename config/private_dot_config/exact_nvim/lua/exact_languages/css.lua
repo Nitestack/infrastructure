@@ -7,7 +7,6 @@ return utils.plugin.get_language_spec({
     "css-lsp",
     "cssmodules-language-server",
     "prettierd",
-    "prettier",
     "tailwindcss-language-server",
   },
   treesitter = {
@@ -33,9 +32,9 @@ return utils.plugin.get_language_spec({
   },
   formatter = {
     formatters_by_ft = {
-      ["css"] = { "prettierd", "prettier" },
-      ["scss"] = { "prettierd", "prettier" },
-      ["sass"] = { "prettierd", "prettier" },
+      ["css"] = { "prettierd" },
+      ["scss"] = { "prettierd" },
+      ["sass"] = { "prettierd" },
     },
   },
   plugins = {

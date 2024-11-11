@@ -53,7 +53,6 @@ return utils.plugin.get_language_spec({
   mason = {
     "eslint_d",
     "prettierd",
-    "prettier",
   },
   treesitter = {
     "javascript",
@@ -61,10 +60,10 @@ return utils.plugin.get_language_spec({
   },
   formatter = {
     formatters_by_ft = {
-      ["javascript"] = { "prettierd", "prettier" },
-      ["javascriptreact"] = { "prettierd", "prettier" },
-      ["typescript"] = { "prettierd", "prettier" },
-      ["typescriptreact"] = { "prettierd", "prettier" },
+      ["javascript"] = { "prettierd" },
+      ["javascriptreact"] = { "prettierd" },
+      ["typescript"] = { "prettierd" },
+      ["typescriptreact"] = { "prettierd" },
     },
   },
   linter = {
