@@ -16,6 +16,7 @@
     ./rofi.nix
     ./swaync.nix
     ./theme.nix
+    ./waybar.nix
     ./wezterm.nix
   ];
 
