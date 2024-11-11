@@ -18,8 +18,6 @@ Documents
 # Unix only
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/unix/**
-
-.config/zed
 {{ end }}
 
 # Linux only
@@ -37,7 +35,6 @@ Documents
 # Ignore on WSL
 {{ if .is_wsl }}
 .config/wezterm
-.config/zed
 {{ end }}
 
 # Ignore on Work Environment

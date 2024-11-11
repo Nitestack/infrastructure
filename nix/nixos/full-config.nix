@@ -40,7 +40,6 @@
     signal-desktop
     spotify
     webcord
-    zed-editor
 
     # NixOS
     gnome-system-monitor
