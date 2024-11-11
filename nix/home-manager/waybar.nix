@@ -21,16 +21,11 @@ in
         layer = "top";
         position = "top";
         # Modules
-        modules-left = [
-          "custom/logo"
-          "hyprland/workspaces"
-          "hyprland/window"
-        ];
+        modules-left = [ "custom/logo" ];
         modules-center = [ "custom/music" ];
         modules-right = [
           "pulseaudio"
           "clock"
-          "tray"
           "custom/lock"
           "custom/power"
         ];
@@ -38,28 +33,6 @@ in
           format = "";
           tooltip = false;
           on-click = "pkill rofi || ${rofi} -show drun";
-        };
-        "hyprland/window" = {
-          icon = true;
-          icon-size = 21;
-          separate-outputs = true;
-          rewrite = {
-            "(.*) — Zen Browser" = "$1";
-            "(.*) - Google Chrome" = "$1";
-            "Spotify Free" = "Spotify";
-            "WebCord - (.*)" = "$1";
-            "web.whatsapp.com" = "WhatsApp";
-          };
-        };
-        "hyprland/workspaces" = {
-          format = " {icon} ";
-          format-icons = {
-            active = "";
-          };
-        };
-        tray = {
-          icon-size = 21;
-          spacing = 10;
         };
         "custom/music" = {
           format = "  {}";
@@ -98,6 +71,36 @@ in
           format = "";
         };
       }
+      {
+        layer = "top";
+        position = "bottom";
+        modules-left = [ "hyprland/workspaces" ];
+        modules-center = [ "hyprland/window" ];
+        modules-right = [ "tray" ];
+        "hyprland/workspaces" = {
+          format = " {icon} ";
+          format-icons = {
+            active = "";
+            default = "";
+          };
+        };
+        "hyprland/window" = {
+          icon = true;
+          icon-size = 21;
+          separate-outputs = true;
+          rewrite = {
+            "(.*) — Zen Browser" = "$1";
+            "(.*) - Google Chrome" = "$1";
+            "Spotify Free" = "Spotify";
+            "WebCord - (.*)" = "$1";
+            "web.whatsapp.com" = "WhatsApp";
+          };
+        };
+        tray = {
+          icon-size = 21;
+          spacing = 16;
+        };
+      }
     ];
     style = ''
       @import "${catppuccin-css-filename}.css";
@@ -113,30 +116,6 @@ in
         color: @text;
       }
 
-      #workspaces {
-        border-radius: 1rem;
-        margin: 5px;
-        background-color: @surface0;
-        margin-left: 1rem;
-        margin-right: 0;
-      }
-
-      #workspaces button {
-        color: @lavender;
-        border-radius: 1rem;
-        padding: 0.4rem;
-      }
-
-      #workspaces button.active {
-        color: @sky;
-        border-radius: 1rem;
-      }
-
-      #workspaces button:hover {
-        color: @sapphire;
-        border-radius: 1rem;
-      }
-
       #custom-logo,
       #window,
       #custom-music,
@@ -150,20 +129,15 @@ in
         margin: 5px 0;
       }
 
+      /*
+      * ── Top Bar ───────────────────────────────────────────────────────────
+      */
+
+      /* Logo */
       #custom-logo {
         color: #5277C3;
         border-radius: 1rem;
         margin-left: 0.5rem;
-      }
-
-      #window {
-        margin-left: 1rem;
-        margin-right: 1rem;
-        border-radius: 1rem;
-      }
-
-      window#waybar.empty #window {
-        background-color: transparent;
       }
 
       #clock {
@@ -194,8 +168,45 @@ in
         margin-right: 0.5rem;
       }
 
-      #tray {
+      /*
+      * ── Bottom Bar ────────────────────────────────────────────────────────
+      */
+
+      /* Workspaces */
+      #workspaces {
+        border-radius: 1rem;
+        margin: 5px;
+        background-color: @surface0;
+        margin-left: 0.5rem;
         margin-right: 1rem;
+      }
+      #workspaces button {
+        color: @lavender;
+        border-radius: 1rem;
+        padding: 0.1rem;
+      }
+      #workspaces button.active {
+        color: @sky;
+        border-radius: 1rem;
+      }
+      #workspaces button:hover {
+        color: @sapphire;
+        border-radius: 1rem;
+      }
+
+      /* Active App */
+      #window {
+        border-radius: 1rem;
+      }
+
+      window#waybar.empty #window {
+        background-color: transparent;
+      }
+
+      /* Tray */
+      #tray {
+        margin-left: 1rem;
+        margin-right: 0.5rem;
         border-radius: 1rem;
       }
     '';
