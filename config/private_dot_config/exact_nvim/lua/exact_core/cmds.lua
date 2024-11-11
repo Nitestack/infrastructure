@@ -47,27 +47,6 @@ M.auto_cmds = {
       end,
     },
   },
-  -- Enable breadcrumbs
-  {
-    {
-      "WinResized",
-      "BufWinEnter",
-      "BufModifiedSet",
-    },
-    {
-      group = "breadcrumbs",
-      callback = function()
-        vim.api.nvim_set_hl(0, "BreadcrumbsPath", { fg = "#7f849c" })
-        vim.api.nvim_set_hl(0, "BreadcrumbsFile", { fg = "#cdd6f4", bold = true })
-        vim.api.nvim_set_hl(0, "BreadcrumbsModified", { fg = "#fab387" })
-
-        local status_ok, _ = pcall(vim.api.nvim_buf_get_var, 0, "lsp_floating_window")
-        if not status_ok then
-          utils.breadcrumbs.get_winbar()
-        end
-      end,
-    },
-  },
 }
 
 M.auto_cmd_opts = {}

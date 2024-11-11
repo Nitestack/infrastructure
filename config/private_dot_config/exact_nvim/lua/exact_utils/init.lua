@@ -3,7 +3,6 @@
 -- ╰─────────────────────────────────────────────────────────╯
 
 ---@class utils
----@field breadcrumbs utils.breadcrumbs
 ---@field cmds utils.cmds
 ---@field lualine utils.lualine
 ---@field mappings utils.mappings

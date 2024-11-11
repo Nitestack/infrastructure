@@ -43,8 +43,6 @@ M.kind = {
 }
 
 M.ui = {
-  ChevronShortRight = "",
-  Circle = "",
   Ellipsis = "",
   LineLeft = "▏",
   Tab = "󰌒",
