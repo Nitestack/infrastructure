@@ -29,7 +29,6 @@
         (floatByExactClass "org.gnome.Settings")
         (floatByExactClass "dconf-editor")
         (floatByExactClass "steam")
-        (floatByExactClass "WebCord")
 
         (floatByClass "xdg-desktop-portal")
         (floatByClass "xdg-desktop-portal-gnome")
@@ -53,7 +52,6 @@
         (centerByTitle "Select Folder to Upload")
         (floatByTitle "Save As")
         (centerByTitle "Save As")
-        (floatByTitle "Spotify")
 
         "suppressevent maximize, class:.*"
         "immediate,class:(steam_app)" # Tearing
