@@ -97,17 +97,4 @@ M.mappings.v = {
   },
 }
 
-M.mappings.x = {
-  -- Macros
-  ["@"] = {
-    function()
-      vim.ui.input({ prompt = "Macro Register: " }, function(reg)
-        vim.cmd("'<,'>normal @" .. reg)
-      end)
-    end,
-    desc = "Execute macro over visual range",
-    silent = false,
-  },
-}
-
 return M

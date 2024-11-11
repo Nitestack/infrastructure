@@ -7,23 +7,6 @@ return utils.plugin.with_extensions({
       },
     }),
     opts = function(_, opts)
-      opts.hide_root_node = true
-      opts.retain_hidden_root_indent = true
-
-      -- Window
-      opts.window = opts.window or {}
-      opts.window.position = "float"
-      ---@module "nui/popup"
-      ---@type nui_popup_options
-      opts.window.popup = opts.window.popup or {}
-      opts.window.popup.position = "50%"
-      opts.window.popup.border = opts.window.popup.border or {}
-      opts.window.popup.border.style = core.config.ui.transparent.floats and "rounded" or "none"
-      opts.window.popup.border.padding = core.config.ui.transparent.floats and { 0, 0 } or { 1, 1 }
-      opts.window.popup.size = opts.window.popup.size or {}
-      opts.window.popup.size.width = core.config.ui.width
-      opts.window.popup.size.height = core.config.ui.height
-
       -- Show hidden files
       opts.filesystem = opts.filesystem or {}
       opts.filesystem.filtered_items = opts.filesystem.filtered_items or {}
@@ -31,9 +14,6 @@ return utils.plugin.with_extensions({
       opts.filesystem.filtered_items.hide_dotfiles = false
       opts.filesystem.filtered_items.hide_gitignored = false
       opts.filesystem.filtered_items.hide_hidden = false
-      opts.filesystem.filtered_items.never_show = {
-        ".DS_Store",
-      }
 
       -- Default component configs
       opts.default_component_configs = opts.default_component_configs or {}

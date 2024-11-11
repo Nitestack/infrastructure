@@ -9,13 +9,6 @@ return utils.plugin.with_extensions({
       opts.cmdline = opts.cmdline or {}
       opts.cmdline.view = "cmdline"
 
-      -- LSP
-      opts.lsp = opts.lsp or {}
-      opts.lsp.message = opts.lsp.message or {}
-      opts.lsp.message.view = "mini"
-      opts.lsp.hover = opts.lsp.hover or {}
-      opts.lsp.hover.silent = true
-
       -- Routes
       opts.routes = vim.list_extend(opts.routes or {}, {
         -- Disable various messages
