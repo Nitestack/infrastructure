@@ -2,9 +2,6 @@
 # │ CHEZMOI IGNORE CONFIG                                    │
 # ╰──────────────────────────────────────────────────────────╯
 
-# Ignore everywhere
-.config/nvim/templates
-
 # Windows only
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
