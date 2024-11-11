@@ -11,9 +11,6 @@
 ---@class core.config.ui
 ---@field theme "catppuccin"
 ---@field logo string Generate ANSI art with: https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow
----@field width number
----@field height number
----@field transparent { enabled: boolean, floats: boolean }
 
 ---@module "conform"
 
@@ -40,12 +37,6 @@ M.ui = {
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
 - Nitestack -
 ]],
-  transparent = {
-    enabled = true,
-    floats = true,
-  },
-  width = 0.8,
-  height = 0.8,
 }
 
 M.lazyvim = {

@@ -4,7 +4,7 @@ return utils.plugin.with_extensions({
     opts = {
       current_line_blame_formatter = "<author>, <author_time:-%d.%m.%Y> - <summary>",
       preview_config = {
-        border = core.config.ui.transparent.floats and "rounded" or "none",
+        border = "rounded",
       },
     },
   },

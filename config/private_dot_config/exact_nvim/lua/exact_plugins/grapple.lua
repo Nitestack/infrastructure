@@ -53,7 +53,7 @@ return utils.plugin.with_extensions({
     opts = {
       scope = "git_branch",
       win_opts = {
-        border = core.config.ui.transparent.floats and "rounded" or "none",
+        border = "rounded",
       },
     },
   },

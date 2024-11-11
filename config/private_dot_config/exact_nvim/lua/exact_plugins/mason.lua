@@ -27,9 +27,7 @@ return utils.plugin.with_extensions({
     ---@type MasonSettings
     opts = {
       ui = {
-        border = core.config.ui.transparent.floats and "rounded" or "none",
-        height = core.config.ui.height,
-        width = core.config.ui.width,
+        border = "rounded",
       },
     },
   },

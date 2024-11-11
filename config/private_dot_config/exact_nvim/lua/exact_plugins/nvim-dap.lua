@@ -135,7 +135,7 @@ return utils.plugin.with_extensions({
     ---@type dapui.Config
     opts = {
       floating = {
-        border = core.config.ui.transparent.floats and "rounded" or "none",
+        border = "rounded",
       },
     },
   },

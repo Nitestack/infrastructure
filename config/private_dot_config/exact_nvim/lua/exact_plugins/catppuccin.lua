@@ -5,7 +5,7 @@ return {
   ---@module "catppuccin"
   ---@type CatppuccinOptions
   opts = {
-    transparent_background = core.config.ui.transparent.enabled,
+    transparent_background = true,
     flavour = "mocha",
     term_colors = true,
     styles = {

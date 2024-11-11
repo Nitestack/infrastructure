@@ -31,7 +31,7 @@ return utils.plugin.with_extensions({
 
       -- Presets
       opts.presets = opts.presets or {}
-      opts.presets.lsp_doc_border = core.config.ui.transparent.floats and true or false
+      opts.presets.lsp_doc_border = true
     end,
   },
 }, {
