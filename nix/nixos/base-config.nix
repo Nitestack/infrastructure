@@ -57,6 +57,7 @@
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     # Essential
+    cargo
     gcc
     chezmoi
     curl
@@ -65,8 +66,8 @@
     nodejs
     pnpm
     python3
+    rustc
     wget
-    rustup
 
     # Packages
     ansible
