@@ -51,9 +51,6 @@ M.ui = {
 M.lazyvim = {
   colorscheme = M.ui.theme,
   icons = {
-    diagnostics = vim.tbl_map(function(icon)
-      return icon .. " "
-    end, core.icons.diagnostics),
     dap = {
       Stopped = {
         core.icons.dap.Stopped .. " ",
@@ -76,11 +73,6 @@ M.lazyvim = {
         core.icons.dap.LogPoint .. " ",
         "DapLogPoint",
       },
-    },
-    git = {
-      added = core.icons.git.LineAdded .. " ",
-      modified = core.icons.git.LineModified .. " ",
-      removed = core.icons.git.LineRemoved .. " ",
     },
     kinds = vim.tbl_map(function(icon)
       return icon .. " "

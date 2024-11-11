@@ -20,18 +20,6 @@ return utils.plugin.with_extensions({
 
       opts.default_component_configs.name = opts.default_component_configs.name or {}
       opts.default_component_configs.name.highlight_opened_files = true
-
-      opts.default_component_configs.git_status = opts.default_component_configs.git_status or {}
-      opts.default_component_configs.git_status.symbols = opts.default_component_configs.git_status.symbols or {}
-      opts.default_component_configs.git_status.symbols.added = core.icons.git.LineAdded
-      opts.default_component_configs.git_status.symbols.deleted = core.icons.git.LineRemoved
-      opts.default_component_configs.git_status.symbols.modified = core.icons.git.LineRemoved
-      opts.default_component_configs.git_status.symbols.renamed = core.icons.git.FileRenamed
-      opts.default_component_configs.git_status.symbols.untracked = core.icons.git.FileUntracked
-      opts.default_component_configs.git_status.symbols.unstaged = core.icons.git.FileUnstaged
-      opts.default_component_configs.git_status.symbols.staged = core.icons.git.FileStaged
-      opts.default_component_configs.git_status.symbols.ignored = core.icons.git.FileIgnored
-      opts.default_component_configs.git_status.symbols.conflict = core.icons.git.FileUnmerged
     end,
   },
 }, {

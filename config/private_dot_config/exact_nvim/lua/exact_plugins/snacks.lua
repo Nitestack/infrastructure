@@ -15,12 +15,5 @@ return {
     opts.terminal.win.wo = opts.terminal.win.wo or {}
     opts.terminal.win.width = core.config.ui.width
     opts.terminal.win.height = core.config.ui.height
-
-    -- Notifier
-    opts.notifier = opts.notifier or {}
-    opts.notifier.icons = opts.notifier.icons or {}
-    for name, icon in pairs(core.icons.diagnostics) do
-      opts.notifier.icons[name:lower()] = icon
-    end
   end,
 }

@@ -41,8 +41,6 @@ return utils.plugin.with_extensions({
         },
       },
       icons = {
-        breadcrumb = core.icons.ui.DoubleChevronRight,
-        ellipsis = core.icons.ui.Ellipsis,
         group = "",
         separator = "",
       },

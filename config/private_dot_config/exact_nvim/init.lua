@@ -88,10 +88,6 @@ require("lazy").setup({
   ui = {
     size = { width = core.config.ui.width, height = core.config.ui.height },
     border = core.config.ui.transparent.floats and "rounded" or "none",
-    icons = {
-      loaded = core.icons.ui.PackageInstalled,
-      not_loaded = core.icons.ui.PackageUninstalled,
-    },
   },
   performance = {
     rtp = {

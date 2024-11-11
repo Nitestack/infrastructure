@@ -5,21 +5,6 @@
 ---@class core.icons
 local M = {}
 
--- M.vscode = {
---   ActiveTS = " ",
---   BufferClose = "",
---   DefaultFile = "",
---   Diagnostic = "",
---   FoldClosed = "",
---   FoldOpened = "",
---   Git = "",
---   GitConflict = "",
---   MacroRecording = "",
---   Paste = "",
---   Selected = "",
---   TabClose = "",
--- }
-
 M.kind = {
   Array = "",
   Boolean = "",
@@ -57,100 +42,12 @@ M.kind = {
   Variable = "",
 }
 
-M.git = {
-  LineAdded = "",
-  LineModified = "",
-  LineRemoved = "",
-  FileUnstaged = "󰄱",
-  FileStaged = "󰱒",
-  FileIgnored = "",
-  FileRenamed = "",
-  FileUnmerged = "",
-  FileUntracked = "",
-  -- Diff = "",
-  -- Repo = "",
-  Octoface = "",
-  Branch = "",
-}
-
 M.ui = {
-  ActiveLSP = "",
-  -- ArrowCircleDown = "",
-  -- ArrowCircleLeft = "",
-  -- ArrowCircleRight = "",
-  -- ArrowCircleUp = "",
-  -- BoldArrowDown = "",
-  -- BoldArrowLeft = "",
-  -- BoldArrowRight = "",
-  -- BoldArrowUp = "",
-  -- BoldClose = "",
-  -- BoldDividerLeft = "",
-  -- BoldDividerRight = "",
-  BoldLineLeft = "▎",
-  BookMark = "",
-  -- BoxChecked = "",
-  -- Bug = "",
-  -- Calendar = "",
-  -- Check = "",
   ChevronShortRight = "",
   Circle = "",
-  -- Close = "",
-  -- CloudDownload = "",
-  -- Code = "",
-  -- Comment = "",
-  -- Dashboard = "",
-  -- DebugConsole = "",
-  -- DividerLeft = "",
-  -- DividerRight = "",
-  DoubleChevronRight = "»",
   Ellipsis = "",
-  File = "",
-  -- FileSymlink = "",
-  -- Files = "",
-  -- FindFile = "󰈞",
-  -- FindText = "󰊄",
-  -- Fire = "",
-  -- FolderEmpty = "",
-  -- FolderSymlink = "",
-  -- Forward = "",
-  -- History = "",
-  -- Lightbulb = "",
   LineLeft = "▏",
-  -- LineMiddle = "│",
-  -- List = "",
-  Lock = "",
-  -- NewFile = "",
-  -- Note = "",
-  Package = "",
-  PackagePending = "",
-  PackageInstalled = "󰄳",
-  PackageUninstalled = "",
-  -- Pencil = "󰏫",
-  -- Plus = "",
-  -- Project = "",
-  -- Stacks = "",
-  -- Scopes = "",
-  Search = "",
-  -- SignIn = "",
-  SignOut = "",
   Tab = "󰌒",
-  -- Table = "",
-  -- Target = "󰀘",
-  Text = "",
-  -- Tree = "",
-  Triangle = "󰐊",
-  -- TriangleShortArrowDown = "",
-  -- TriangleShortArrowLeft = "",
-  -- TriangleShortArrowRight = "",
-  -- TriangleShortArrowUp = "",
-  -- Watches = "󰂥",
-}
-
-M.diagnostics = {
-  Error = "",
-  Warn = "",
-  Info = "",
-  Hint = "",
 }
 
 M.dap = {
@@ -160,15 +57,5 @@ M.dap = {
   LogPoint = "",
   Stopped = "",
 }
-
--- M.misc = {
---   Robot = "󰚩",
---   Squirrel = "",
---   Tag = "",
---   Watch = "",
---   Smiley = "",
---   Package = "",
---   CircuitBoard = "",
--- }
 
 return M
