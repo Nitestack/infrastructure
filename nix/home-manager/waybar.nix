@@ -111,14 +111,6 @@ in
       #waybar {
         background: transparent;
         color: @text;
-        margin: 5px 5px;
-      }
-
-      #custom-logo {
-        background-color: @surface0;
-        color: #5277C3;
-        padding: 0.5rem 1rem;
-        border-radius: 1rem;
       }
 
       #workspaces {
@@ -145,6 +137,7 @@ in
         border-radius: 1rem;
       }
 
+      #custom-logo,
       #window,
       #custom-music,
       #tray,
@@ -157,10 +150,16 @@ in
         margin: 5px 0;
       }
 
+      #custom-logo {
+        color: #5277C3;
+        border-radius: 1rem;
+        margin-left: 0.5rem;
+      }
+
       #window {
-        font-size: 13px;
         margin-left: 1rem;
         margin-right: 1rem;
+        border-radius: 1rem;
       }
 
       window#waybar.empty #window {
@@ -185,13 +184,14 @@ in
       }
 
       #custom-lock {
-          border-radius: 1rem 0px 0px 1rem;
-          color: @lavender;
+        border-radius: 1rem 0px 0px 1rem;
+        color: @lavender;
       }
 
       #custom-power {
-          border-radius: 0px 1rem 1rem 0px;
-          color: @red;
+        border-radius: 0px 1rem 1rem 0px;
+        color: @red;
+        margin-right: 0.5rem;
       }
 
       #tray {
