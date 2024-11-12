@@ -12,7 +12,7 @@ let
 
   # Bins
   cliphist = "${pkgs.cliphist}/bin/cliphist";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
   hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
   snixembed = "${pkgs.snixembed}/bin/snixembed";

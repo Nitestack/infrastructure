@@ -15,7 +15,7 @@ let
   grimblast = "${
     inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
   }/bin/grimblast";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
   nautilus = "${pkgs.nautilus}/bin/nautilus";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
