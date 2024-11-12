@@ -61,7 +61,7 @@
       homeManagerModules = import ./home-manager/modules;
       nixosConfigurations =
         let
-          meta = import ./config.nix {
+          meta = import ./meta.nix {
             pkgs = import <nixpkgs> {
               config.allowUnfree = true;
             };
