@@ -1,13 +1,18 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Waybar                                                   │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, meta, ... }:
+{
+  pkgs,
+  meta,
+  theme,
+  ...
+}:
 let
   inherit (meta) font;
 
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
-
-  catppuccin-css-filename = "mocha";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
+  hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
 in
 {
   programs.waybar = {
@@ -39,8 +44,8 @@ in
           escape = true;
           interval = 5;
           tooltip = false;
-          exec = "playerctl metadata --format='{{ title }}'";
-          on-click = "playerctl play-pause";
+          exec = "${playerctl} metadata --format='{{ artist }} - {{ title }}'";
+          on-click = "${playerctl} play-pause";
         };
         clock = {
           timezone = "Europe/Berlin";
@@ -62,7 +67,7 @@ in
         };
         "custom/lock" = {
           tooltip = false;
-          on-click = "hyprlock";
+          on-click = hyprlock;
           format = "";
         };
         "custom/power" = {
@@ -102,117 +107,123 @@ in
         };
       }
     ];
-    style = ''
-      @import "${catppuccin-css-filename}.css";
+    style =
+      let
+        inherit (theme.variables)
+          windowBgColor
+          windowFgColor
+          accentBgColor
+          successColor
+          warningBgColor
+          errorColor
+          ;
+        bgColor = windowBgColor;
+        textColor = windowFgColor;
+        primaryColor = accentBgColor;
+      in
+      ''
+        * {
+          font-family: "${font.nerd.propoName}";
+          font-size: 17px;
+          min-height: 0;
+        }
 
-      * {
-        font-family: "${font.nerd.propoName}";
-        font-size: 17px;
-        min-height: 0;
-      }
+        #waybar {
+          background: transparent;
+          color: ${textColor};
+        }
 
-      #waybar {
-        background: transparent;
-        color: @text;
-      }
+        #custom-logo,
+        #window,
+        #workspaces,
+        #custom-music,
+        #tray,
+        #clock,
+        #pulseaudio,
+        #custom-lock,
+        #custom-power {
+          background-color: ${bgColor};
+          padding: 0.5rem 1rem;
+          margin: 5px 0;
+        }
 
-      #custom-logo,
-      #window,
-      #custom-music,
-      #tray,
-      #clock,
-      #pulseaudio,
-      #custom-lock,
-      #custom-power {
-        background-color: @surface0;
-        padding: 0.5rem 1rem;
-        margin: 5px 0;
-      }
+        /*
+        * ── Top Bar ───────────────────────────────────────────────────────────
+        */
 
-      /*
-      * ── Top Bar ───────────────────────────────────────────────────────────
-      */
+        /* Logo */
+        #custom-logo {
+          color: #5277C3;
+          border-radius: 1rem;
+          margin-left: 0.5rem;
+        }
 
-      /* Logo */
-      #custom-logo {
-        color: #5277C3;
-        border-radius: 1rem;
-        margin-left: 0.5rem;
-      }
+        #clock {
+          border-radius: 0px 1rem 1rem 0px;
+          margin-right: 1rem;
+        }
 
-      #clock {
-        color: @blue;
-        border-radius: 0px 1rem 1rem 0px;
-        margin-right: 1rem;
-      }
+        #pulseaudio {
+          border-radius: 1rem 0px 0px 1rem;
+          margin-left: 1rem;
+        }
 
-      #pulseaudio {
-        color: @maroon;
-        border-radius: 1rem 0px 0px 1rem;
-        margin-left: 1rem;
-      }
+        #custom-music {
+          color: ${successColor};
+          border-radius: 1rem;
+        }
 
-      #custom-music {
-        color: @mauve;
-        border-radius: 1rem;
-      }
+        #custom-lock {
+          border-radius: 1rem 0px 0px 1rem;
+          color: ${warningBgColor};
+        }
 
-      #custom-lock {
-        border-radius: 1rem 0px 0px 1rem;
-        color: @lavender;
-      }
+        #custom-power {
+          border-radius: 0px 1rem 1rem 0px;
+          color: ${errorColor};
+          margin-right: 0.5rem;
+        }
 
-      #custom-power {
-        border-radius: 0px 1rem 1rem 0px;
-        color: @red;
-        margin-right: 0.5rem;
-      }
+        /*
+        * ── Bottom Bar ────────────────────────────────────────────────────────
+        */
 
-      /*
-      * ── Bottom Bar ────────────────────────────────────────────────────────
-      */
+        /* Workspaces */
+        #workspaces {
+          border-radius: 1rem;
+          margin-left: 0.5rem;
+          margin-right: 1rem;
+          padding: 0;
+        }
+        #workspaces button {
+          border-radius: 1rem;
+          padding: 0.1rem;
+        }
+        #workspaces button.active {
+          color: ${primaryColor};
+          border-radius: 1rem;
+        }
+        #workspaces button:hover {
+          color: ${primaryColor};
+          border-radius: 1rem;
+        }
 
-      /* Workspaces */
-      #workspaces {
-        border-radius: 1rem;
-        margin: 5px;
-        background-color: @surface0;
-        margin-left: 0.5rem;
-        margin-right: 1rem;
-      }
-      #workspaces button {
-        color: @lavender;
-        border-radius: 1rem;
-        padding: 0.1rem;
-      }
-      #workspaces button.active {
-        color: @sky;
-        border-radius: 1rem;
-      }
-      #workspaces button:hover {
-        color: @sapphire;
-        border-radius: 1rem;
-      }
+        /* Active App */
+        #window {
+          border-radius: 1rem;
+          font-weight: bold;
+        }
 
-      /* Active App */
-      #window {
-        border-radius: 1rem;
-      }
+        window#waybar.empty #window {
+          background-color: transparent;
+        }
 
-      window#waybar.empty #window {
-        background-color: transparent;
-      }
-
-      /* Tray */
-      #tray {
-        margin-left: 1rem;
-        margin-right: 0.5rem;
-        border-radius: 1rem;
-      }
-    '';
-  };
-  xdg.configFile."waybar/${catppuccin-css-filename}.css".source = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/catppuccin/waybar/refs/heads/main/themes/${catppuccin-css-filename}.css";
-    sha256 = "05yx7v4j9k1s1xanlak7yngqfwvxvylwxc2fhjcfha68rjbhbqx6";
+        /* Tray */
+        #tray {
+          margin-left: 1rem;
+          margin-right: 0.5rem;
+          border-radius: 1rem;
+        }
+      '';
   };
 }
