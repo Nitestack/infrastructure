@@ -66,10 +66,16 @@
               config.allowUnfree = true;
             };
           };
+          theme = builtins.fromJSON (builtins.readFile ./theme.json);
 
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs outputs meta;
+            inherit
+              inputs
+              outputs
+              meta
+              theme
+              ;
           };
           modules = [
             home-manager.nixosModules.home-manager

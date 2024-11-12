@@ -8,6 +8,7 @@
   lib,
   pkgs,
   meta,
+  theme,
   ...
 }:
 {
@@ -89,7 +90,12 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {
-      inherit inputs outputs meta;
+      inherit
+        inputs
+        outputs
+        meta
+        theme
+        ;
     };
   };
 
