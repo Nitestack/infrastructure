@@ -92,8 +92,16 @@ in
         layer = "top";
         position = "bottom";
         modules-left = [ "hyprland/workspaces" ];
-        modules-center = [ "hyprland/window" ];
-        modules-right = [ "tray" ];
+        modules-center = [
+          "privacy"
+          "hyprland/window"
+        ];
+        modules-right = [
+          "tray"
+          "cpu"
+          "memory"
+          "disk"
+        ];
         "hyprland/workspaces" = {
           format = " {icon} ";
           format-icons = {
@@ -102,6 +110,9 @@ in
           };
           on-scroll-up = "${hyprctl} dispatch workspace e+1";
           on-scroll-down = "${hyprctl} dispatch workspace e-1";
+        };
+        privacy = {
+          icon-spacing = 16;
         };
         "hyprland/window" = {
           icon = true;
@@ -114,6 +125,18 @@ in
             "WebCord - (.*)" = "$1";
             "web.whatsapp.com" = "WhatsApp";
           };
+        };
+        cpu = {
+          format = " {usage}%";
+        };
+        memory = {
+          format = " {percentage}%";
+          tooltip-format = "{used:0.1f}/{total:0.1f}GiB RAM used\n{swapUsed:0.1f}/{swapTotal}GiB swap used";
+        };
+        disk = {
+          format = " {percentage_used}%";
+          unit = "GiB";
+          tooltip-format = "{specific_used:0.1f}/{specific_total:0.1f}GiB used";
         };
         tray = {
           icon-size = 21;
@@ -131,6 +154,9 @@ in
           errorColor
           ;
         inherit (theme.palette)
+          orange
+          blue
+          yellow
           red
           ;
         bgColor = windowBgColor;
@@ -151,13 +177,17 @@ in
 
         #custom-logo,
         #window,
+        #privacy,
         #workspaces,
         #mpris,
         #tray,
         #clock,
         #wireplumber,
         #custom-lock,
-        #custom-power {
+        #custom-power,
+        #cpu,
+        #memory,
+        #disk {
           background-color: ${bgColor};
           padding: 0.5rem 1rem;
           margin: 5px 0;
@@ -222,7 +252,6 @@ in
         #workspaces {
           border-radius: 1rem;
           margin-left: 0.5rem;
-          margin-right: 1rem;
           padding: 0;
         }
         #workspaces button {
@@ -238,6 +267,19 @@ in
           border-radius: 1rem;
         }
 
+        /* Privacy */
+        #privacy {
+          margin-left: 1rem;
+          margin-right: 1rem;
+          border-radius: 1rem;
+        }
+        #privacy-item.screenshare {
+          color: ${orange."2"};
+        }
+        #privacy-item.audio-in {
+          color: ${red."3"};
+        }
+
         /* Active App */
         #window {
           border-radius: 1rem;
@@ -248,9 +290,24 @@ in
           background-color: transparent;
         }
 
+        /* System Stats */
+        #cpu {
+          margin-left: 1rem;
+          border-radius: 1rem 0px 0px 1rem;
+          color: ${orange."2"};
+        }
+        #memory {
+          color: ${blue."2"};
+        }
+        #disk {
+          border-radius: 0px 1rem 1rem 0px;
+          margin-right: 0.5rem;
+          color: ${yellow."3"};
+        }
+
         /* Tray */
         #tray {
-          margin-left: 1rem;
+          margin-left: 0.5rem;
           margin-right: 0.5rem;
           border-radius: 1rem;
         }
