@@ -2,6 +2,7 @@
 # │ Waybar                                                   │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  inputs,
   pkgs,
   meta,
   theme,
@@ -11,8 +12,8 @@ let
   inherit (meta) font;
 
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
-  playerctl = "${pkgs.playerctl}/bin/playerctl";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
+  hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
 in
 {
   programs.waybar = {
@@ -27,7 +28,7 @@ in
         position = "top";
         # Modules
         modules-left = [ "custom/logo" ];
-        modules-center = [ "custom/music" ];
+        modules-center = [ "mpris" ];
         modules-right = [
           "pulseaudio"
           "clock"
@@ -39,13 +40,26 @@ in
           tooltip = false;
           on-click = "pkill rofi || ${rofi} -show drun";
         };
-        "custom/music" = {
-          format = "  {}";
-          escape = true;
-          interval = 5;
-          tooltip = false;
-          exec = "${playerctl} metadata --format='{{ artist }} - {{ title }}'";
-          on-click = "${playerctl} play-pause";
+        mpris = {
+          format = "{player_icon} {dynamic}";
+          format-paused = "{status_icon} <i>{dynamic}</i>";
+          interval = 1;
+          dynamic-order = [
+            "title"
+            "artist"
+            "position"
+            "length"
+          ];
+          player-icons = {
+            firefox = "";
+            spotify = "";
+            default = "";
+          };
+          status-icons = {
+            playing = "";
+            paused = "";
+            stopped = "";
+          };
         };
         clock = {
           timezone = "Europe/Berlin";
@@ -88,6 +102,8 @@ in
             active = "";
             default = "";
           };
+          on-scroll-up = "${hyprctl} dispatch workspace e+1";
+          on-scroll-down = "${hyprctl} dispatch workspace e-1";
         };
         "hyprland/window" = {
           icon = true;
@@ -113,7 +129,7 @@ in
           windowBgColor
           windowFgColor
           accentBgColor
-          successColor
+          successBgColor
           warningBgColor
           errorColor
           ;
@@ -136,7 +152,7 @@ in
         #custom-logo,
         #window,
         #workspaces,
-        #custom-music,
+        #mpris,
         #tray,
         #clock,
         #pulseaudio,
@@ -158,6 +174,21 @@ in
           margin-left: 0.5rem;
         }
 
+        /* MPRIS */
+        #mpris {
+          font-weight: bold;
+          border-radius: 1rem;
+        }
+        #mpris.spotify {
+          color: #1ED760;
+        }
+        #mpris.firefox {
+          color: ${primaryColor};
+        }
+        #mpris.paused {
+          color: ${warningBgColor};
+        }
+
         #clock {
           border-radius: 0px 1rem 1rem 0px;
           margin-right: 1rem;
@@ -166,11 +197,6 @@ in
         #pulseaudio {
           border-radius: 1rem 0px 0px 1rem;
           margin-left: 1rem;
-        }
-
-        #custom-music {
-          color: ${successColor};
-          border-radius: 1rem;
         }
 
         #custom-lock {
