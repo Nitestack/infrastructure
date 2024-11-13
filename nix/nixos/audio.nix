@@ -21,16 +21,6 @@
         };
       };
     };
-    mpd = {
-      enable = true;
-      extraConfig = ''
-        audio_output {
-          type "pipewire"
-          name "My PipeWire Output"
-        }
-      '';
-
-    };
     udev.extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
       KERNEL=="hpet", GROUP="audio"
