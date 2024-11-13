@@ -61,16 +61,22 @@ let
       player_status=$(playerctl status)
 
       if [[ "$player_status" == "Playing" ]]; then
-        if [[ "$player_name" == "spotify" ]]; then
-          song_info=$(playerctl metadata --format '{{title}} 󰓇 {{artist}}')
-        elif [[ "$player_name" == "firefox" ]]; then
-          song_info=$(playerctl metadata --format '{{title}} 󰈹 {{artist}}')
-        elif [[ "$player_name" == "chromium" ]]; then
-          song_info=$(playerctl metadata --format '{{title}} 󰊯 {{artist}}')
-        fi
-      fi
+        case "$player_name" in
+        "spotify")
+          player_icon=""
+          ;;
+        "firefox")
+          player_icon=""
+          ;;
+        *)
+          player_icon=""
+          ;;
+        esac
 
-      echo "$song_info"
+        playerctl metadata --format "$player_icon {{title}} - {{artist}}"
+      else
+        echo ""
+      fi
     '';
   };
 in
