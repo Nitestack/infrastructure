@@ -150,14 +150,13 @@ in
           windowBgColor
           windowFgColor
           accentBgColor
+          warningColor
           warningBgColor
           errorColor
           ;
         inherit (theme.palette)
-          orange
           blue
           yellow
-          red
           ;
         bgColor = windowBgColor;
         textColor = windowFgColor;
@@ -225,7 +224,7 @@ in
           margin-left: 1rem;
         }
         #wireplumber.muted {
-          color: ${red."3"};
+          color: ${errorColor};
         }
 
         #clock {
@@ -238,6 +237,7 @@ in
           color: ${warningBgColor};
         }
 
+        /* Power Button */
         #custom-power {
           border-radius: 0px 1rem 1rem 0px;
           color: ${errorColor};
@@ -253,6 +253,7 @@ in
           border-radius: 1rem;
           margin-left: 0.5rem;
           padding: 0;
+          margin-right: 1rem;
         }
         #workspaces button {
           border-radius: 1rem;
@@ -270,14 +271,13 @@ in
         /* Privacy */
         #privacy {
           margin-left: 1rem;
-          margin-right: 1rem;
           border-radius: 1rem;
         }
         #privacy-item.screenshare {
-          color: ${orange."2"};
+          color: ${warningColor};
         }
         #privacy-item.audio-in {
-          color: ${red."3"};
+          color: ${errorColor};
         }
 
         /* Active App */
@@ -290,11 +290,17 @@ in
           background-color: transparent;
         }
 
+        /* Tray */
+        #tray {
+          margin-left: 1rem;
+          border-radius: 1rem;
+        }
+
         /* System Stats */
         #cpu {
           margin-left: 1rem;
           border-radius: 1rem 0px 0px 1rem;
-          color: ${orange."2"};
+          color: ${warningColor};
         }
         #memory {
           color: ${blue."2"};
@@ -303,13 +309,6 @@ in
           border-radius: 0px 1rem 1rem 0px;
           margin-right: 0.5rem;
           color: ${yellow."3"};
-        }
-
-        /* Tray */
-        #tray {
-          margin-left: 0.5rem;
-          margin-right: 0.5rem;
-          border-radius: 1rem;
         }
       '';
   };
