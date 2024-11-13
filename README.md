@@ -15,7 +15,7 @@
 
 [Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
 
-![image](https://github.com/Nitestack/dotfiles/assets/74626967/154b824c-42f2-4ec0-818b-f244f8c91f4b)
+![image](https://github.com/user-attachments/assets/2d4c126b-b499-400e-9922-43a92badabae)
 
 _Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([NixOS](https://nix-community.github.io/NixOS-WSL)), personalize your environment effortlessly. Securely manage diverse machines using [chezmoi](https://chezmoi.io) and leverage seamless deployment and synchronization._
 
