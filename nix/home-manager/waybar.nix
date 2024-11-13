@@ -14,6 +14,7 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
+  wpctl = "${pkgs.wireplumber}/bin/wpctl";
 in
 {
   programs.waybar = {
@@ -30,7 +31,7 @@ in
         modules-left = [ "custom/logo" ];
         modules-center = [ "mpris" ];
         modules-right = [
-          "pulseaudio"
+          "wireplumber"
           "clock"
           "custom/lock"
           "custom/power"
@@ -66,18 +67,15 @@ in
           format-alt = " {:%d.%m.%Y}";
           format = "󰥔 {:%H:%M}";
         };
-        pulseaudio = {
-          # "scroll-step": 1, # %, can be a float
+        wireplumber = {
           format = "{icon} {volume}%";
-          format-muted = "";
-          format-icons = {
-            default = [
-              ""
-              ""
-              " "
-            ];
-          };
-          on-click = "pavucontrol";
+          format-muted = " {volume}%";
+          format-icons = [
+            ""
+            ""
+            " "
+          ];
+          on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
         };
         "custom/lock" = {
           tooltip = false;
@@ -129,9 +127,11 @@ in
           windowBgColor
           windowFgColor
           accentBgColor
-          successBgColor
           warningBgColor
           errorColor
+          ;
+        inherit (theme.palette)
+          red
           ;
         bgColor = windowBgColor;
         textColor = windowFgColor;
@@ -155,7 +155,7 @@ in
         #mpris,
         #tray,
         #clock,
-        #pulseaudio,
+        #wireplumber,
         #custom-lock,
         #custom-power {
           background-color: ${bgColor};
@@ -189,14 +189,18 @@ in
           color: ${warningBgColor};
         }
 
+        /* WirePlumber */
+        #wireplumber {
+          border-radius: 1rem 0px 0px 1rem;
+          margin-left: 1rem;
+        }
+        #wireplumber.muted {
+          color: ${red."3"};
+        }
+
         #clock {
           border-radius: 0px 1rem 1rem 0px;
           margin-right: 1rem;
-        }
-
-        #pulseaudio {
-          border-radius: 1rem 0px 0px 1rem;
-          margin-left: 1rem;
         }
 
         #custom-lock {
