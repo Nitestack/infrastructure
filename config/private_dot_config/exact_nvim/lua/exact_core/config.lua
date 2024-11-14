@@ -74,6 +74,7 @@ M.lazyvim = {
 M.plugins = {
   mason = {},
   treesitter = {
+    "asm",
     "c",
     "diff",
     "query",
