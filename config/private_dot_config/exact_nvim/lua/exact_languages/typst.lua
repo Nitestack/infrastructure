@@ -8,6 +8,7 @@ return utils.plugin.get_language_spec({
   lsp = {
     servers = {
       tinymist = {
+        offset_encoding = "utf-8",
         settings = {
           exportPdf = "onSave",
         },
