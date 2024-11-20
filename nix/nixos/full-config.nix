@@ -30,7 +30,6 @@
 
     # Apps
     bitwarden-desktop
-    blueman
     endeavour
     google-chrome
     jetbrains.idea-ultimate
@@ -55,6 +54,7 @@
 
   # Services
   services = {
+    blueman.enable = true;
     xserver = {
       enable = true;
       excludePackages = with pkgs; [ xterm ];
