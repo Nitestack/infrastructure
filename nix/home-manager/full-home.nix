@@ -72,5 +72,6 @@
   services = {
     cliphist.enable = true;
     easyeffects.enable = true;
+    mpris-proxy.enable = true;
   };
 }
