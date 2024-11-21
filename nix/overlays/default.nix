@@ -19,5 +19,14 @@
         };
       });
     };
+    magnetic-catppuccin-gtk = prev.magnetic-catppuccin-gtk.overrideAttrs (oldAttrs: {
+      version = "0-unstable-2024-11-06";
+      src = prev.fetchFromGitHub {
+        owner = "Fausto-Korpsvart";
+        repo = "Catppuccin-GTK-Theme";
+        rev = "be79b8289200aa1a17620f84dde3fe4c3b9c5998";
+        hash = "sha256-QItHmYZpe7BiPC+2CtFwiRXyMTG7+ex0sJTs63xmkAo=";
+      };
+    });
   };
 }

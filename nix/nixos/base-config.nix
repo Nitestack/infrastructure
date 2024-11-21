@@ -11,6 +11,9 @@
   theme,
   ...
 }:
+let
+
+in
 {
   # ── Nix ───────────────────────────────────────────────────────────────
   documentation.nixos.enable = false;
@@ -93,9 +96,29 @@
       inherit
         inputs
         outputs
-        meta
         theme
         ;
+      meta = meta // {
+        # Theme
+        theme = {
+          name = "Catppuccin-GTK-Dark";
+          package = pkgs.magnetic-catppuccin-gtk.override {
+            tweaks = [ "macos" ];
+          };
+        };
+        cursorTheme = {
+          name = "macOS";
+          package = pkgs.apple-cursor;
+          size = 24;
+        };
+        iconTheme = {
+          name = "WhiteSur";
+          package = pkgs.whitesur-icon-theme.override {
+            alternativeIcons = true;
+            boldPanelIcons = true;
+          };
+        };
+      };
     };
   };
 
