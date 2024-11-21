@@ -11,7 +11,7 @@
   };
 
   # ── Home Manager ──────────────────────────────────────────────────────
-  home-manager.users.${meta.username} = import ../home-manager/shared-home.nix;
+  home-manager.users.${meta.username} = import ../home-manager/_base.nix;
 
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [

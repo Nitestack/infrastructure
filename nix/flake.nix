@@ -79,14 +79,14 @@
           };
           modules = [
             home-manager.nixosModules.home-manager
-            ./nixos/base-config.nix
+            ./nixos/_base.nix
           ];
         in
         {
           ${meta.hostname} = nixpkgs.lib.nixosSystem {
             inherit specialArgs system;
             modules = modules ++ [
-              ./nixos/full-config.nix
+              ./nixos/_desktop.nix
               {
                 nix.settings = {
                   substituters = [ "https://wezterm.cachix.org" ];
@@ -103,7 +103,7 @@
               ]
               ++ modules
               ++ [
-                ./nixos/wsl-config.nix
+                ./nixos/_wsl.nix
               ];
           };
         };
