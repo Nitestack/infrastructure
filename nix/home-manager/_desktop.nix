@@ -9,15 +9,15 @@
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
-    ./shared-home.nix
+    ./_base.nix
 
-    ./browser.nix
     ./hyprland
     ./rofi.nix
     ./swaync.nix
     ./theme.nix
     ./waybar.nix
     ./wezterm.nix
+    ./zen-browser.nix
   ];
 
   xdg.desktopEntries =
@@ -64,7 +64,7 @@
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
-    cava.enable = true;
+    # cava.enable = true;
     vscode.enable = true;
   };
 

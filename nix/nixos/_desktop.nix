@@ -18,7 +18,7 @@
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
-  home-manager.users.${meta.username} = import ../home-manager/full-home.nix;
+  home-manager.users.${meta.username} = import ../home-manager/_desktop.nix;
 
   # ── System ────────────────────────────────────────────────────────────
 
