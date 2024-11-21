@@ -5,6 +5,7 @@
   pkgs,
   config,
   meta,
+  theme,
   ...
 }:
 let
@@ -23,7 +24,7 @@ in
       display-clipboard = "Clipboard";
       drun-display-format = "{name}\\n[<span weight='light' size='small'><i>({generic})</i></span>]";
     };
-    font = "${font.sans.name} 10";
+    font = "${font.sans.name} 12";
     pass = {
       enable = true;
     };
@@ -32,43 +33,46 @@ in
         inherit (config.lib.formats.rasi) mkLiteral;
       in
       {
-        /*
-          *
-          ***----- Global Properties -----****
-        */
-        "*" = {
-          # Catppuccin
-          background = mkLiteral "#1E1D2FFF";
-          background-alt = mkLiteral "#282839FF";
-          foreground = mkLiteral "#D9E0EEFF";
-          selected = mkLiteral "#7AA2F7FF";
-          active = mkLiteral "#ABE9B3FF";
-          urgent = mkLiteral "#F28FADFF";
-
-          border-color = mkLiteral "var(selected)";
-          handle-color = mkLiteral "var(selected)";
-          background-color = mkLiteral "var(background)";
-          foreground-color = mkLiteral "var(foreground)";
-          alternate-background = mkLiteral "var(background-alt)";
-          normal-background = mkLiteral "var(background)";
-          normal-foreground = mkLiteral "var(foreground)";
-          urgent-background = mkLiteral "var(urgent)";
-          urgent-foreground = mkLiteral "var(background)";
-          active-background = mkLiteral "var(active)";
-          active-foreground = mkLiteral "var(background)";
-          selected-normal-background = mkLiteral "var(selected)";
-          selected-normal-foreground = mkLiteral "var(background)";
-          selected-urgent-background = mkLiteral "var(active)";
-          selected-urgent-foreground = mkLiteral "var(background)";
-          selected-active-background = mkLiteral "var(urgent)";
-          selected-active-foreground = mkLiteral "var(background)";
-          alternate-normal-background = mkLiteral "var(background)";
-          alternate-normal-foreground = mkLiteral "var(foreground)";
-          alternate-urgent-background = mkLiteral "var(urgent)";
-          alternate-urgent-foreground = mkLiteral "var(background)";
-          alternate-active-background = mkLiteral "var(active)";
-          alternate-active-foreground = mkLiteral "var(background)";
-        };
+        # Global Properties
+        "*" =
+          let
+            inherit (theme.variables)
+              windowBgColor
+              viewBgColor
+              windowFgColor
+              accentBgColor
+              accentFgColor
+              successBgColor
+              successFgColor
+              errorBgColor
+              errorFgColor
+              ;
+          in
+          {
+            border-color = mkLiteral accentBgColor;
+            handle-color = mkLiteral accentBgColor;
+            background-color = mkLiteral windowBgColor;
+            foreground-color = mkLiteral windowFgColor;
+            alternate-background = mkLiteral viewBgColor;
+            normal-background = mkLiteral windowBgColor;
+            normal-foreground = mkLiteral windowFgColor;
+            urgent-background = mkLiteral errorBgColor;
+            urgent-foreground = mkLiteral errorFgColor;
+            active-background = mkLiteral successBgColor;
+            active-foreground = mkLiteral successFgColor;
+            selected-normal-background = mkLiteral accentBgColor;
+            selected-normal-foreground = mkLiteral accentFgColor;
+            selected-urgent-background = mkLiteral successBgColor;
+            selected-urgent-foreground = mkLiteral successFgColor;
+            selected-active-background = mkLiteral errorBgColor;
+            selected-active-foreground = mkLiteral errorFgColor;
+            alternate-normal-background = mkLiteral windowBgColor;
+            alternate-normal-foreground = mkLiteral windowFgColor;
+            alternate-urgent-background = mkLiteral errorBgColor;
+            alternate-urgent-foreground = mkLiteral errorFgColor;
+            alternate-active-background = mkLiteral successBgColor;
+            alternate-active-foreground = mkLiteral successFgColor;
+          };
 
         # Main Window
         window = {
