@@ -118,6 +118,12 @@ in
             boldPanelIcons = true;
           };
         };
+        kvantumTheme = {
+          name = "catppuccin-mocha-blue";
+          package = pkgs.catppuccin-kvantum.override {
+            variant = "mocha";
+          };
+        };
       };
     };
   };

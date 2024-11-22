@@ -8,6 +8,7 @@ let
     theme
     cursorTheme
     iconTheme
+    kvantumTheme
     ;
 in
 {
@@ -16,6 +17,7 @@ in
       font.sans.package
       font.nerd.package
       font.emoji.package
+      kvantumTheme.package
     ];
     pointerCursor = cursorTheme // {
       gtk.enable = true;
@@ -37,8 +39,14 @@ in
   };
   qt = {
     enable = true;
-    platformTheme.name = "kde";
+    platformTheme.name = "qtct";
+    style.name = "kvantum";
   };
+  xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+    [General]
+    theme=${kvantumTheme.name}
+  '';
+  xdg.configFile."Kvantum/${kvantumTheme.name}".source = "${kvantumTheme.package}/share/Kvantum/${kvantumTheme.name}";
 
   fonts.fontconfig = {
     enable = true;
