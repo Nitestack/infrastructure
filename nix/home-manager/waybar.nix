@@ -28,7 +28,13 @@ in
         layer = "top";
         position = "top";
         # Modules
-        modules-left = [ "custom/logo" ];
+        modules-left = [
+          "custom/logo"
+          "tray"
+          "cpu"
+          "memory"
+          "disk"
+        ];
         modules-center = [ "mpris" ];
         modules-right = [
           "wireplumber"
@@ -40,6 +46,22 @@ in
           format = "";
           tooltip = false;
           on-click = "pkill rofi || ${rofi} -show drun";
+        };
+        cpu = {
+          format = " {usage}%";
+        };
+        memory = {
+          format = " {percentage}%";
+          tooltip-format = "{used:0.1f}/{total:0.1f}GiB RAM used\n{swapUsed:0.1f}/{swapTotal}GiB swap used";
+        };
+        disk = {
+          format = " {percentage_used}%";
+          unit = "GiB";
+          tooltip-format = "{specific_used:0.1f}/{specific_total:0.1f}GiB used";
+        };
+        tray = {
+          icon-size = 21;
+          spacing = 16;
         };
         mpris = {
           format = "{player_icon} {dynamic}";
@@ -96,12 +118,7 @@ in
           "privacy"
           "hyprland/window"
         ];
-        modules-right = [
-          "tray"
-          "cpu"
-          "memory"
-          "disk"
-        ];
+        modules-right = [ "wlr/taskbar" ];
         "hyprland/workspaces" = {
           format = " {icon} ";
           format-icons = {
@@ -126,21 +143,11 @@ in
             "web.whatsapp.com" = "WhatsApp";
           };
         };
-        cpu = {
-          format = " {usage}%";
-        };
-        memory = {
-          format = " {percentage}%";
-          tooltip-format = "{used:0.1f}/{total:0.1f}GiB RAM used\n{swapUsed:0.1f}/{swapTotal}GiB swap used";
-        };
-        disk = {
-          format = " {percentage_used}%";
-          unit = "GiB";
-          tooltip-format = "{specific_used:0.1f}/{specific_total:0.1f}GiB used";
-        };
-        tray = {
+        "wlr/taskbar" = {
           icon-size = 21;
-          spacing = 16;
+          on-click = "activate";
+          on-click-middle = "close";
+          tooltip-format = "{name}";
         };
       }
     ];
@@ -186,6 +193,7 @@ in
         #custom-power,
         #cpu,
         #memory,
+        #taskbar,
         #disk {
           background-color: ${bgColor};
           padding: 0.5rem 1rem;
@@ -201,6 +209,20 @@ in
           color: #5277C3;
           border-radius: 1rem;
           margin-left: 0.5rem;
+        }
+
+        /* System Stats */
+        #cpu {
+          margin-left: 1rem;
+          border-radius: 1rem 0px 0px 1rem;
+          color: ${warningColor};
+        }
+        #memory {
+          color: ${blue."2"};
+        }
+        #disk {
+          border-radius: 0px 1rem 1rem 0px;
+          color: ${yellow."3"};
         }
 
         /* MPRIS */
@@ -294,21 +316,29 @@ in
         #tray {
           margin-left: 1rem;
           border-radius: 1rem;
+          margin-right: 0.5rem;
         }
 
-        /* System Stats */
-        #cpu {
+        /* Taskbar */
+        #taskbar {
           margin-left: 1rem;
-          border-radius: 1rem 0px 0px 1rem;
-          color: ${warningColor};
-        }
-        #memory {
-          color: ${blue."2"};
-        }
-        #disk {
-          border-radius: 0px 1rem 1rem 0px;
+          border-radius: 1rem;
           margin-right: 0.5rem;
-          color: ${yellow."3"};
+          padding: 0;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
+        #taskbar button {
+          padding: 0.5rem;
+        }
+        #taskbar button.active {
+          padding-bottom: calc(0.5rem - 2px);
+          border-bottom: 2px solid ${primaryColor};
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        #taskbar button.active:hover {
+          border-radius: inherit;
         }
       '';
   };
