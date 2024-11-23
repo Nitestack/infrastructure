@@ -15,7 +15,7 @@
 
 [Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
 
-![image](https://github.com/user-attachments/assets/2d4c126b-b499-400e-9922-43a92badabae)
+![image](https://github.com/user-attachments/assets/8bf0be64-a2e5-40b3-aeeb-97f735d63f07)
 
 _Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([NixOS](https://nix-community.github.io/NixOS-WSL)), personalize your environment effortlessly. Securely manage diverse machines using [chezmoi](https://chezmoi.io) and leverage seamless deployment and synchronization._
 
