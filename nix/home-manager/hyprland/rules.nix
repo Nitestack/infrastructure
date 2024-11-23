@@ -17,8 +17,6 @@
     in
     {
       windowrulev2 = [
-        "opacity 0.89 override 0.89 override, class:.*" # Transparency
-
         (floatByExactClass "confirm")
         (floatByExactClass "file_progress")
         (floatByExactClass "dialog")
