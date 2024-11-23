@@ -30,7 +30,6 @@ in
         # Modules
         modules-left = [
           "custom/logo"
-          "tray"
           "cpu"
           "memory"
           "disk"
@@ -58,10 +57,6 @@ in
           format = " {percentage_used}%";
           unit = "GiB";
           tooltip-format = "{specific_used:0.1f}/{specific_total:0.1f}GiB used";
-        };
-        tray = {
-          icon-size = 21;
-          spacing = 16;
         };
         mpris = {
           format = "{player_icon} {dynamic}";
@@ -118,7 +113,10 @@ in
           "privacy"
           "hyprland/window"
         ];
-        modules-right = [ "wlr/taskbar" ];
+        modules-right = [
+          "tray"
+          "wlr/taskbar"
+        ];
         "hyprland/workspaces" = {
           format = " {icon} ";
           format-icons = {
@@ -148,6 +146,10 @@ in
           on-click = "activate";
           on-click-middle = "close";
           tooltip-format = "{name}";
+        };
+        tray = {
+          icon-size = 21;
+          spacing = 16;
         };
       }
     ];
@@ -316,7 +318,6 @@ in
         #tray {
           margin-left: 1rem;
           border-radius: 1rem;
-          margin-right: 0.5rem;
         }
 
         /* Taskbar */
