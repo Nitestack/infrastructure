@@ -11,6 +11,7 @@
     /etc/nixos/hardware-configuration.nix
 
     ./audio.nix
+    ./backlight.nix
     ./gnome.nix
     ./hyprland.nix
     ./sddm.nix
