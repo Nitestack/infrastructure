@@ -1,6 +1,11 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Appearance                                               │
 # ╰──────────────────────────────────────────────────────────╯
+{ theme, ... }:
+let
+  inherit (theme.variables) accentBgColor;
+  rgba = color: builtins.replaceStrings [ "#" ] [ "" ] "rgba(${color}ff)";
+in
 {
   wayland.windowManager.hyprland.settings = {
     # General
@@ -8,15 +13,15 @@
       gaps_in = 4; # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
       gaps_out = 5; # gaps between windows and monitor edges, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)
 
-      border_size = 1; # size of the border around windows
+      border_size = 2; # size of the border around windows
 
-      "col.active_border" = "rgba(F7DCDE39)"; # border color for the active window
+      "col.active_border" = rgba accentBgColor; # border color for the active window
       "col.inactive_border" = "rgba(A58A8D30)"; # border color for inactive windows
     };
 
     # Decoration
     decoration = {
-      rounding = 20; # rounded corners' radius (in layout px)
+      rounding = 16; # rounded corners' radius (in layout px)
 
       # Blur
       blur = {
@@ -42,7 +47,5 @@
         color = "rgba(0000002A)"; # shadow’s color. Alpha dictates shadow’s opacity
       };
     };
-
-    windowrulev2 = [ "bordercolor rgba(FFB2BCAA) rgba(FFB2BC77),pinned:1" ];
   };
 }
