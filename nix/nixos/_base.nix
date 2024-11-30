@@ -69,6 +69,8 @@ in
     gum
     nodejs
     pnpm
+    prisma
+    prisma-engines
     python3
     rustc
     wget
@@ -86,6 +88,11 @@ in
     nixd
     nixfmt-rfc-style
   ];
+
+  # ── Prisma ────────────────────────────────────────────────────────────
+  environment.variables.PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+  environment.variables.PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
+  environment.variables.PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
 
   # ── Home Manager ──────────────────────────────────────────────────────
   home-manager = {
