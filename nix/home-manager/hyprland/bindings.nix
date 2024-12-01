@@ -127,8 +127,8 @@ in
       ", XF86AudioPrev, Return to Previous Track, exec, ${playerctl} previous"
     ];
     binddel = [
-      ", XF86AudioRaiseVolume, Increase Volume, exec, ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-      ", XF86AudioLowerVolume, Decrease Volume, exec, ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ", XF86AudioRaiseVolume, Increase Volume, exec, ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2%+"
+      ", XF86AudioLowerVolume, Decrease Volume, exec, ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 2%-"
       ", XF86AudioMute, Mute/Unmute Volume, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
       ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
 
