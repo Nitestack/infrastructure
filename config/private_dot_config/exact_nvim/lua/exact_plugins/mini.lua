@@ -90,6 +90,6 @@ return utils.plugin.with_extensions({
     },
   },
   which_key = {
-    { "s", group = "Surround", mode = { "n", "x" } },
+    { "gs", group = "Surround", mode = { "n", "x" } },
   },
 })
