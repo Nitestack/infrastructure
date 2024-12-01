@@ -11,10 +11,6 @@
       name = "Geist";
       package = pkgs.geist-font;
     };
-    serif = {
-      name = "CrimsonPro";
-      package = pkgs.crimson-pro;
-    };
     nerd = {
       name = "GeistMono NF";
       monoName = "GeistMono NFM";

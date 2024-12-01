@@ -51,7 +51,7 @@ in
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      serif = [ font.serif.name ];
+      serif = [ font.sans.name ];
       sansSerif = [ font.sans.name ];
       monospace = [
         font.nerd.name
@@ -77,7 +77,7 @@ in
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
           clock-format = "24h";
-          document-font-name = font.serif.name;
+          document-font-name = font.sans.name;
           font-antialiasing = "rgba";
           font-hinting = "full";
           monospace-font-name = font.nerd.monoName;
