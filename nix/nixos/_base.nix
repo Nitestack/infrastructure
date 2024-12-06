@@ -62,7 +62,9 @@ in
   environment.systemPackages = with pkgs; [
     # Essential
     cargo
+    deno
     gcc
+    caddy
     chezmoi
     curl
     git
@@ -72,6 +74,7 @@ in
     prisma
     prisma-engines
     python3
+    rust-analyzer
     rustc
     wget
 
@@ -161,6 +164,9 @@ in
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
+    java = {
+      enable = true;
+    };
     neovim = {
       enable = true;
       defaultEditor = true;
