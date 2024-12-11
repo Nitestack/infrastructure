@@ -11,7 +11,6 @@
   imports = [
     ./_base.nix
 
-    ./discord.nix
     ./hyprland
     ./rofi.nix
     ./swaync.nix

@@ -20,6 +20,7 @@ Documents
 # Linux only
 {{ if ne .chezmoi.os "linux" }}
 .config/lazygit
+.config/vesktop
 {{ end }}
 
 # Ignore on NixOS
@@ -31,6 +32,7 @@ Documents
 
 # Ignore on WSL
 {{ if .is_wsl }}
+.config/vesktop
 .config/wezterm
 {{ end }}
 

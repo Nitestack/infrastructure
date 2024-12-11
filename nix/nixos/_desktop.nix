@@ -39,6 +39,7 @@
     rpi-imager
     signal-desktop
     spotify
+    vesktop
 
     # NixOS
     gnome-system-monitor
