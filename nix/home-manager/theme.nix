@@ -15,10 +15,9 @@ in
   home = {
     packages = [
       font.sans.package
-      font.nerd.package
       font.emoji.package
       kvantumTheme.package
-    ];
+    ] ++ font.nerd.packages;
     pointerCursor = cursorTheme // {
       gtk.enable = true;
     };
@@ -46,7 +45,8 @@ in
     [General]
     theme=${kvantumTheme.name}
   '';
-  xdg.configFile."Kvantum/${kvantumTheme.name}".source = "${kvantumTheme.package}/share/Kvantum/${kvantumTheme.name}";
+  xdg.configFile."Kvantum/${kvantumTheme.name}".source =
+    "${kvantumTheme.package}/share/Kvantum/${kvantumTheme.name}";
 
   fonts.fontconfig = {
     enable = true;

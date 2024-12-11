@@ -39,7 +39,6 @@
     rpi-imager
     signal-desktop
     spotify
-    webcord
 
     # NixOS
     gnome-system-monitor

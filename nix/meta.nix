@@ -15,13 +15,11 @@
       name = "GeistMono NF";
       monoName = "GeistMono NFM";
       propoName = "GeistMono NFP";
-      package = pkgs.nerdfonts.override {
-        fonts = [
-          "Iosevka" # For Unicode characters
-          "GeistMono"
-          "NerdFontsSymbolsOnly"
-        ];
-      };
+      packages = with pkgs.nerd-fonts; [
+        iosevka
+        geist-mono
+        symbols-only
+      ];
     };
     emoji = {
       name = "Noto Color Emoji";

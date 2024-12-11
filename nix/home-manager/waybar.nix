@@ -138,7 +138,6 @@ in
             "(.*) - Google Chrome" = "$1";
             "Spotify Free" = "Spotify";
             "Spotify Premium" = "Spotify";
-            "WebCord - (.*)" = "$1";
             "web.whatsapp.com" = "WhatsApp";
           };
         };
