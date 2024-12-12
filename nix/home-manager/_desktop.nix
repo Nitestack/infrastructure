@@ -13,6 +13,7 @@
 
     ./hyprland
     ./rofi.nix
+    ./spicetify.nix
     ./swaync.nix
     ./theme.nix
     ./waybar.nix
