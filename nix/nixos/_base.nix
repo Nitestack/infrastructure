@@ -111,8 +111,8 @@ in
       meta = meta // {
         # Theme
         cursorTheme = {
-          name = "macOS";
-          package = pkgs.apple-cursor;
+          name = "catppuccin-mocha-blue-cursors";
+          package = pkgs.catppuccin-cursors.mochaBlue;
           size = 24;
         };
       };
