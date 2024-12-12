@@ -1,15 +1,32 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Theme                                                    │
 # ╰──────────────────────────────────────────────────────────╯
-{ meta, ... }:
+{ meta, pkgs, ... }:
 let
   inherit (meta)
     font
-    theme
     cursorTheme
-    iconTheme
-    kvantumTheme
     ;
+
+  gtkTheme = {
+    name = "Catppuccin-GTK-Dark";
+    package = pkgs.magnetic-catppuccin-gtk.override {
+      tweaks = [ "macos" ];
+    };
+  };
+  iconTheme = {
+    name = "WhiteSur";
+    package = pkgs.whitesur-icon-theme.override {
+      alternativeIcons = true;
+      boldPanelIcons = true;
+    };
+  };
+  kvantumTheme = {
+    name = "catppuccin-mocha-blue";
+    package = pkgs.catppuccin-kvantum.override {
+      variant = "mocha";
+    };
+  };
 in
 {
   home = {
@@ -22,7 +39,7 @@ in
       gtk.enable = true;
     };
     sessionVariables = {
-      GTK_THEME = theme.name;
+      GTK_THEME = gtkTheme.name;
 
       XCURSOR_THEME = cursorTheme.name;
       XCURSOR_SIZE = "${toString cursorTheme.size}";
@@ -32,8 +49,9 @@ in
   };
 
   gtk = {
-    inherit theme cursorTheme iconTheme;
+    inherit cursorTheme iconTheme;
     enable = true;
+    theme = gtkTheme;
     font = font.sans;
   };
   qt = {
