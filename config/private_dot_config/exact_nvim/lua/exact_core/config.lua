@@ -22,7 +22,7 @@
 
 ---@type core.config
 local M = {
-  performance_mode = utils.is_win(),
+  performance_mode = utils.is_win() or utils.is_wsl(),
 }
 
 M.ui = {
