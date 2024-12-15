@@ -4,7 +4,6 @@ return utils.plugin.with_extensions({
     ---@module "which-key"
     ---@type wk.Opts
     opts = {
-      preset = "modern",
       spec = {
         {
           mode = { "n", "v" },

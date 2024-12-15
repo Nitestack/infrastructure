@@ -1,21 +1,46 @@
----@type LazyPluginSpec
-return {
-  "folke/snacks.nvim",
-  ---@module "snacks"
-  ---@param opts snacks.Config
-  opts = function(_, opts)
-    -- Default window options
-    opts.win = opts.win or {}
-    opts.win.border = "rounded"
-
-    -- Terminal
-    opts.terminal = opts.terminal or {}
-    opts.terminal.win = opts.terminal.win or {}
-    opts.terminal.win.style = "float"
-
-    -- Dashboard
-    opts.dashboard = opts.dashboard or {}
-    opts.dashboard.preset = opts.dashboard.preset or {}
-    opts.dashboard.preset.header = core.config.ui.logo
-  end,
-}
+return utils.plugin.with_extensions({
+  {
+    "folke/snacks.nvim",
+    ---@module "snacks"
+    ---@type snacks.Config
+    opts = {
+      -- Animations
+      animate = {
+        fps = not core.config.performance_mode and 144,
+      },
+      -- Dashboard
+      dashboard = {
+        preset = {
+          header = core.config.ui.logo,
+        },
+      },
+      -- Indent
+      -- indent = {
+      --   char = core.icons.ui.LineLeft,
+      --   scope = {
+      --     char = core.icons.ui.LineLeft,
+      --   },
+      -- },
+      -- Scroll
+      scroll = {
+        animate = {
+          duration = { step = 5, total = 200 },
+        },
+      },
+      -- Terminal
+      terminal = {
+        win = {
+          style = "float",
+        },
+      },
+      -- Window
+      win = {
+        border = "rounded",
+      },
+    },
+  },
+}, {
+  catppuccin = {
+    snacks = true,
+  },
+})

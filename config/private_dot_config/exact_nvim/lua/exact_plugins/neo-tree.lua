@@ -14,12 +14,6 @@ return utils.plugin.with_extensions({
       opts.filesystem.filtered_items.hide_dotfiles = false
       opts.filesystem.filtered_items.hide_gitignored = false
       opts.filesystem.filtered_items.hide_hidden = false
-
-      -- Default component configs
-      opts.default_component_configs = opts.default_component_configs or {}
-
-      opts.default_component_configs.name = opts.default_component_configs.name or {}
-      opts.default_component_configs.name.highlight_opened_files = true
     end,
   },
 }, {

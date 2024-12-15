@@ -8,13 +8,6 @@ return utils.plugin.with_extensions({
       },
     },
   },
-  { import = "lazyvim.plugins.extras.ui.mini-indentscope" },
-  {
-    "echasnovski/mini.indentscope",
-    opts = {
-      symbol = core.icons.ui.LineLeft,
-    },
-  },
   { import = "lazyvim.plugins.extras.editor.mini-files" },
   {
     "echasnovski/mini.files",
@@ -83,12 +76,6 @@ return utils.plugin.with_extensions({
   },
   { import = "lazyvim.plugins.extras.coding.mini-surround" },
 }, {
-  catppuccin = {
-    mini = {
-      enabled = true,
-      indentscope_color = "overlay0",
-    },
-  },
   which_key = {
     { "gs", group = "Surround", mode = { "n", "x" } },
   },

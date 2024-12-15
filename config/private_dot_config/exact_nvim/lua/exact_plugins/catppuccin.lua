@@ -22,6 +22,10 @@ return {
 
       ---@type { [string]: CtpHighlight}
       return {
+        -- Snacks
+        SnacksIndentScope = {
+          fg = C.text,
+        },
         -- Treesitter context
         TreesitterContext = {
           bg = treesitter_context_bg,
