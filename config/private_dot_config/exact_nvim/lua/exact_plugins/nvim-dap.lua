@@ -5,19 +5,6 @@ return utils.plugin.with_extensions({
   {
     "mfussenegger/nvim-dap",
     ft = filetypes,
-    dependencies = {
-      {
-        "rcarriga/cmp-dap",
-        dependencies = "hrsh7th/nvim-cmp",
-        config = function()
-          require("cmp").setup.filetype(filetypes, {
-            sources = {
-              { name = "dap" },
-            },
-          })
-        end,
-      },
-    },
     keys = core.lazy_map({
       n = {
         [{ "<leader>dc", "<F5>" }] = {
