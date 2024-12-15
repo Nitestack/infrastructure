@@ -158,6 +158,7 @@ function M.with_extensions(plugins, extensions)
   if extensions.catppuccin then
     table.insert(plugins, {
       "catppuccin/nvim",
+      name = "catppuccin",
       opts = {
         extensions = extensions.catppuccin,
       },
