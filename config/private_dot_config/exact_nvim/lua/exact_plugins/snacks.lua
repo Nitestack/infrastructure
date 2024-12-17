@@ -15,12 +15,14 @@ return utils.plugin.with_extensions({
         },
       },
       -- Indent
-      -- indent = {
-      --   char = core.icons.ui.LineLeft,
-      --   scope = {
-      --     char = core.icons.ui.LineLeft,
-      --   },
-      -- },
+      indent = {
+        indent = {
+          char = core.icons.ui.LineLeft,
+        },
+        scope = {
+          char = core.icons.ui.LineLeft,
+        },
+      },
       -- Scroll
       scroll = {
         animate = {
