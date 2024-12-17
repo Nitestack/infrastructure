@@ -4,10 +4,6 @@ return utils.plugin.with_extensions({
     ---@module "snacks"
     ---@type snacks.Config
     opts = {
-      -- Animations
-      animate = {
-        fps = not core.config.performance_mode and 144,
-      },
       -- Dashboard
       dashboard = {
         preset = {
@@ -27,6 +23,7 @@ return utils.plugin.with_extensions({
       scroll = {
         animate = {
           duration = { step = 5, total = 200 },
+          fps = not core.config.performance_mode and 144,
         },
       },
       -- Terminal
