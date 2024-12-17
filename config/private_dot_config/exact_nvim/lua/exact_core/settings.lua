@@ -11,13 +11,7 @@ local M = {}
 M.options = {
   formatoptions = "jqlnt", -- Formatting options
   helplang = "de", -- Set the language for the help messages
-  pumblend = 0,
-  list = false,
   swapfile = false, -- Disable swap file
-
-  -- GUI settings
-  guifont = "{{ .font.nerd.family }},Symbols Nerd Font,Noto Color Emoji:h{{ .font.size }}", -- Set font for graphical Neovim apps
-  linespace = 6, -- Set a line height of `1.2`
 
   -- Indentation
   softtabstop = 2, -- Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
@@ -74,8 +68,8 @@ function M.run()
         ["*"] = "clip.exe",
       },
       paste = {
-        ["+"] = "powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace(\"`r\", \"\"))",
-        ["*"] = "powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace(\"`r\", \"\"))",
+        ["+"] = [[pwsh.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))]],
+        ["*"] = [[pwsh.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))]],
       },
       cache_enabled = 0,
     }
