@@ -63,7 +63,6 @@ require("lazy").setup({
       opts = core.config.lazyvim,
     },
     { import = "languages" },
-    { import = "plugins.lsp" },
     { import = "plugins" },
   },
   rocks = {
