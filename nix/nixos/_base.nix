@@ -61,7 +61,6 @@ in
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     # Essential
-    cargo
     gcc
     caddy
     chezmoi
@@ -69,8 +68,6 @@ in
     git
     gum
     python3
-    rust-analyzer
-    rustc
     wget
 
     # Packages
