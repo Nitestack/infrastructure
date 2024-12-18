@@ -16,6 +16,7 @@
     ./tmux.nix
     ./zsh.nix
 
+    ./languages
     ./scripts
   ];
 

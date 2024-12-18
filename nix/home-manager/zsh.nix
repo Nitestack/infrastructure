@@ -75,26 +75,18 @@
         fi
       '';
   };
-  home =
-    let
-      PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
-    in
-    {
-      sessionVariables = {
-        inherit PNPM_HOME;
-      };
-      sessionPath = [
         "${config.home.homeDirectory}/.cargo/bin"
-        "${config.home.homeDirectory}/.local/bin"
-        PNPM_HOME
-      ];
-      shellAliases = {
-        v = "nvim";
-        lg = "lazygit";
-        lzd = "lazydocker";
-      };
-      packages = with pkgs; [
-        oh-my-posh
-      ];
+  home = {
+    sessionPath = [
+      "${config.home.homeDirectory}/.local/bin"
+    ];
+    shellAliases = {
+      v = "nvim";
+      lg = "lazygit";
+      lzd = "lazydocker";
     };
+    packages = with pkgs; [
+      oh-my-posh
+    ];
+  };
 }
