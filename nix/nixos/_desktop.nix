@@ -97,4 +97,7 @@
     networkmanager.enable = true;
     hostName = meta.hostname;
   };
+
+  # Hardware Time
+  time.hardwareClockInLocalTime = true;
 }
