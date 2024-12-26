@@ -4,20 +4,16 @@
 
 return utils.plugin.get_language_spec({
   treesitter = "typst",
-  mason = { "tinymist", "typstfmt" },
+  mason = "tinymist",
   lsp = {
     servers = {
       tinymist = {
         offset_encoding = "utf-8",
         settings = {
           exportPdf = "onSave",
+          formatterMode = "typstyle",
         },
       },
-    },
-  },
-  formatter = {
-    formatters_by_ft = {
-      ["typst"] = { "typstfmt" },
     },
   },
   plugins = {
