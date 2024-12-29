@@ -3,7 +3,6 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   meta,
-  config,
   ...
 }:
 {
@@ -28,16 +27,7 @@
     stateVersion = "24.05";
   };
 
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-      extraConfig = {
-        XDG_SCREENSHOTS_DIR = "${config.xdg.userDirs.pictures}/Screenshots";
-      };
-    };
-  };
+  xdg.enable = true;
 
   news.display = "show";
 
@@ -47,18 +37,12 @@
     fastfetch.enable = true;
     fd.enable = true;
     home-manager.enable = true;
-    jq.enable = true;
-    less.enable = true;
     neovim = {
       enable = true;
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
-    };
-    nix-index = {
-      enable = true;
-      enableZshIntegration = true;
     };
     # Module is not supporting custom path, so using it manually
     # oh-my-posh = {

@@ -24,7 +24,16 @@
     ./modules/zsh.nix
   ];
 
+  # Configuration
   shells.zsh.enable = true;
+
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    extraConfig = {
+      XDG_SCREENSHOTS_DIR = "${config.xdg.userDirs.pictures}/Screenshots";
+    };
+  };
 
   xdg.desktopEntries =
     let
@@ -72,6 +81,10 @@
   programs = {
     cava.enable = true;
     vscode.enable = true;
+    nix-index = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 
   # ── Services ──────────────────────────────────────────────────────────
