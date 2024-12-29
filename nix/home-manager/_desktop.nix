@@ -19,7 +19,12 @@
     ./waybar.nix
     ./wezterm.nix
     ./zen-browser.nix
+
+    # Modules
+    ./modules/zsh.nix
   ];
+
+  shells.zsh.enable = true;
 
   xdg.desktopEntries =
     let

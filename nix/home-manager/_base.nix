@@ -1,5 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ SHARED HOME MANAGER CONFIGURATION                        │
+# │ BASE HOME MANAGER CONFIGURATION                          │
 # ╰──────────────────────────────────────────────────────────╯
 {
   meta,
@@ -14,7 +14,6 @@
     ./fzf.nix
     ./git.nix
     ./tmux.nix
-    ./zsh.nix
 
     ./languages
     ./scripts

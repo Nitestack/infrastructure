@@ -63,8 +63,6 @@
       packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       overlays = import ./overlays;
-      nixosModules = import ./nixos/modules;
-      homeManagerModules = import ./home-manager/modules;
       nixosConfigurations =
         let
           meta = import ./meta.nix {
