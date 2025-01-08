@@ -16,13 +16,13 @@ Set-Alias v nvim
 Set-Alias lg lazygit
 Remove-Alias ls
 
-$EzaOptions="--group-directories-first --icons --git --octal-permissions"
+$EzaOptions="--icons always --git --group-directories-first"
 
 function ls {
-  Invoke-Expression "eza $EzaOptions $($Args -join ' ')"
+  Invoke-Expression "eza $EzaOptions -g $($Args -join ' ')"
 }
 function la {
-  Invoke-Expression "eza $EzaOptions -al $($Args -join ' ')"
+  Invoke-Expression "eza $EzaOptions -gla $($Args -join ' ')"
 }
 function admin {
   if ($Args.Count -gt 0) {
@@ -54,9 +54,6 @@ function grep($Regex, $Dir) {
 function touch($File) {
   "" | Out-File $File -Encoding ASCII
 }
-function export($Name, $Value) {
-  Set-Item -Force -Path "env:$Name" -Value $Value;
-}
 function pkill($Name) {
   Get-Process $Name -ErrorAction SilentlyContinue | Stop-Process
 }
@@ -65,8 +62,8 @@ function pgrep($Name) {
 }
 
 # ── Environment Variables ─────────────────────────────────────────────
-export "EDITOR" "{{- .editor -}}"
-export BAT_THEME="Catppuccin Mocha"
+$env:EDITOR = "{{- .editor -}}"
+$env:BAT_THEME = "Catppuccin Mocha"
 
 # ── User config ───────────────────────────────────────────────────────
 
