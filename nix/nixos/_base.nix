@@ -73,7 +73,6 @@ in
     # Packages
     ansible
     delta
-    lazydocker
     lazygit
     openssl
     unzip

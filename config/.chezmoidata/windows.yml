@@ -13,7 +13,6 @@ packages:
       - "sharkdp.fd"
       - "Fastfetch-cli.Fastfetch"
       - "junegunn.fzf"
-      - "JesseDuffield.Lazydocker"
       - "JesseDuffield.lazygit"
       - "jftuga.less"
       - "LLVM.LLVM"
