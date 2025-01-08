@@ -97,6 +97,7 @@ in
         v = "nvim";
         lg = "lazygit";
         lzd = "lazydocker";
+        proton-mail = "XDG_SESSION_TYPE=x11 proton-mail";
       };
       packages = with pkgs; [
         oh-my-posh

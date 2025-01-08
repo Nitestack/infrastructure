@@ -36,6 +36,8 @@
     jetbrains.idea-ultimate
     jetbrains.webstorm
     nextcloud-client
+    protonmail-desktop
+    protonvpn-gui
     rpi-imager
     signal-desktop
     spotify
