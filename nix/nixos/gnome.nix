@@ -33,6 +33,7 @@
       devhelp
       gnome-builder
 
+      geary
       gnome-disk-utility
       seahorse
       sysprof
