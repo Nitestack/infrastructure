@@ -37,7 +37,7 @@
     wezterm.url = "github:wez/wezterm?dir=nix";
 
     # Zen Browser
-    zen-browser.url = "github:MarceColl/zen-browser-flake";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
   # ── Outputs ───────────────────────────────────────────────────────────

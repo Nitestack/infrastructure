@@ -2,11 +2,14 @@
 # │ Browser                                                  │
 # ╰──────────────────────────────────────────────────────────╯
 { inputs, ... }:
+let
+  zen-package = inputs.zen-browser.packages.x86_64-linux.default;
+in
 {
   home = {
-    # sessionVariables.BROWSER = "firefox";
+    sessionVariables.BROWSER = "${zen-package}/bin/zen";
     packages = [
-      inputs.zen-browser.packages.x86_64-linux.generic
+      zen-package
     ];
   };
 }
