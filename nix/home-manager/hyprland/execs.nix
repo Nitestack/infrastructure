@@ -21,7 +21,7 @@ let
   wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
-  zen = "${inputs.zen-browser.packages.x86_64-linux.generic}/bin/zen";
+  zen = "${inputs.zen-browser.packages.x86_64-linux.default}/bin/zen";
 in
 {
   wayland.windowManager.hyprland.settings = {
