@@ -41,6 +41,7 @@
     rpi-imager
     signal-desktop
     spotify
+    stremio
     vesktop
 
     # NixOS
