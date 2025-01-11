@@ -14,6 +14,7 @@ let
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
   hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
+  proton-mail = "${pkgs.protonmail-desktop}/bin/proton-mail";
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
   snixembed = "${pkgs.snixembed}/bin/snixembed";
   spotify = "${pkgs.spotify}/bin/spotify";
@@ -27,16 +28,17 @@ in
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       "${snixembed} --fork"
-      "${safeeyes} -e"
+      "${safeeyes} -e &"
       "${wl-clip-persist} --clipboard regular"
       "${wl-paste} --type text --watch ${cliphist} store"
       "${wl-paste} --type image --watch ${cliphist} store"
-      "${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size}"
+      "${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size} &"
 
       "[workspace 1 silent] ${zen}"
       "[workspace 2 silent] ${wezterm} -e tmux"
-      "[workspace 3 silent] ${vesktop}"
-      "[workspace 4 silent] ${spotify}"
+      "[workspace 3 silent] ${proton-mail}"
+      "[workspace 4 silent] ${vesktop}"
+      "[workspace 5 silent] ${spotify}"
     ];
     exec = [
       "${hyprshade} auto"
