@@ -53,6 +53,8 @@
 
         "suppressevent maximize, class:.*"
         "immediate,class:(steam_app)" # Tearing
+
+        "workspace 4, class:^(vesktop)$"
       ];
     };
 }
