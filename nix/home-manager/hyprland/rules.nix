@@ -39,7 +39,7 @@
         (floatByExactTitle "Picture-in-Picture")
         "keepaspectratio, title:^(Picture-in-Picture)$"
         "size 25% 25%, title:^(Picture-in-Picture)$"
-        "move 100%-w-${toString gap} 100%-w-${toString gap}, title:^(Picture-in-Picture)$"
+        "move 100%-w-${toString gap} 100%-w-${toString (gap + 44)}, title:^(Picture-in-Picture)$"
         "pin, title:^(Picture-in-Picture)$"
 
         (floatByTitle "Open File")
