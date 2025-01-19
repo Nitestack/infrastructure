@@ -99,6 +99,11 @@
   networking = {
     networkmanager.enable = true;
     hostName = meta.hostname;
+    # Spotify
+    firewall = {
+      allowedTCPPorts = [ 57621 ]; # sync local tracks from fs with mobile devices in the same network
+      allowedUDPPorts = [ 5353 ]; # enables discovery of Spotify Connect devices
+    };
   };
 
   # Hardware Time
