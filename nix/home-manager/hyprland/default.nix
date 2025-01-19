@@ -17,7 +17,7 @@
     ./plugins/hypridle.nix
     ./plugins/hyprlock.nix
     ./plugins/hyprpaper.nix
-    ./plugins/hyprshade.nix
+    ./plugins/hyprsunset.nix
   ];
 
   home.packages = [

@@ -13,7 +13,6 @@ let
   # Bins
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
-  hyprshade = "${pkgs.hyprshade}/bin/hyprshade";
   proton-mail = "${pkgs.protonmail-desktop}/bin/proton-mail";
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
   snixembed = "${pkgs.snixembed}/bin/snixembed";
@@ -39,9 +38,6 @@ in
       "[workspace 3 silent] ${proton-mail}"
       "[workspace 4 silent] ${vesktop}"
       "[workspace 5 silent] ${spotify}"
-    ];
-    exec = [
-      "${hyprshade} auto"
     ];
   };
 }
