@@ -31,7 +31,8 @@
         (floatByClass "xdg-desktop-portal")
         (floatByClass "xdg-desktop-portal-gnome")
         (floatByClass ".blueman-manager")
-        (floatByClass "org.raspberrypi")
+
+        "dimaround, class:^(gcr-prompter)$"
 
         (floatByExactTitle "btop")
 
@@ -54,7 +55,7 @@
         "suppressevent maximize, class:.*"
         "immediate,class:(steam_app)" # Tearing
 
-        "workspace 4, class:^(vesktop)$"
+        "workspace 4 silent, class:^(vesktop)$"
       ];
     };
 }
