@@ -19,6 +19,16 @@ return utils.plugin.with_extensions({
           char = core.icons.ui.LineLeft,
         },
       },
+      -- Picker
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ["<Esc>"] = { "close", mode = { "n", "i" } },
+            },
+          },
+        },
+      },
       -- Scroll
       scroll = {
         animate = {
