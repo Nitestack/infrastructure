@@ -2,7 +2,6 @@
 # │ Waybar                                                   │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  inputs,
   pkgs,
   meta,
   theme,
@@ -13,7 +12,7 @@ let
 
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
-  hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 in
 {

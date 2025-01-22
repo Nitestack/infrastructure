@@ -1,10 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Hypridle                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 let
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-  hyprctl = "${inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland}/bin/hyprctl";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   loginctl = "${pkgs.systemd}/bin/loginctl";
 in
