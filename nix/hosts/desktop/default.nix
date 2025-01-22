@@ -1,5 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NIXOS FULL CONFIGURATION                                 │
+# │ NixOS Desktop Configuration                              │
 # ╰──────────────────────────────────────────────────────────╯
 {
   pkgs,
@@ -10,16 +10,16 @@
   imports = [
     /etc/nixos/hardware-configuration.nix
 
-    ./audio.nix
-    ./backlight.nix
-    ./gnome.nix
-    ./hyprland.nix
-    ./sddm.nix
-    ./steam.nix
+    ../../nixos/audio.nix
+    ../../nixos/backlight.nix
+    ../../nixos/gnome.nix
+    ../../nixos/hyprland.nix
+    ../../nixos/sddm.nix
+    ../../nixos/steam.nix
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
-  home-manager.users.${meta.username} = import ../home-manager/_desktop.nix;
+  home-manager.users.${meta.username} = import ../../home-manager/_desktop.nix;
 
   # ── System ────────────────────────────────────────────────────────────
 

@@ -22,7 +22,7 @@ let
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
   wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
-  zen = "${inputs.zen-browser.packages.x86_64-linux.default}/bin/zen";
+  zen = "${inputs.zen-browser.packages.${pkgs.system}.default}/bin/zen";
 
   cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
     #!/usr/bin/env bash

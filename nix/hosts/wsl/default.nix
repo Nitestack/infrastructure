@@ -1,7 +1,11 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NIXOS WSL CONFIGURATION                                  │
+# │ NixOS WSL Configuration                                  │
 # ╰──────────────────────────────────────────────────────────╯
-{ meta, pkgs, ... }:
+{
+  meta,
+  pkgs,
+  ...
+}:
 {
   wsl = {
     enable = true;
@@ -11,7 +15,7 @@
   };
 
   # ── Home Manager ──────────────────────────────────────────────────────
-  home-manager.users.${meta.username} = import ../home-manager/_wsl.nix;
+  home-manager.users.${meta.username} = import ../../home-manager/_wsl.nix;
 
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [

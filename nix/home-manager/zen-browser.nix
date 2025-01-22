@@ -1,9 +1,9 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Browser                                                  │
 # ╰──────────────────────────────────────────────────────────╯
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 let
-  zen-package = inputs.zen-browser.packages.x86_64-linux.default;
+  zen-package = inputs.zen-browser.packages.${pkgs.system}.default;
 in
 {
   home = {

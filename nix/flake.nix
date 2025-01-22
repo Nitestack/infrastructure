@@ -2,7 +2,7 @@
 # │ NIX FLAKE                                                │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  description = "NixOS Configuration of Nitestack";
+  description = "Nix Configuration for NixOS Desktop and NixOS WSL";
 
   # ── Inputs ────────────────────────────────────────────────────────────
   inputs = {
@@ -35,7 +35,10 @@
     wezterm.url = "github:wez/wezterm?dir=nix";
 
     # Zen Browser
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # ── Outputs ───────────────────────────────────────────────────────────
@@ -50,11 +53,10 @@
     let
       inherit (self) outputs;
 
-      # Supported Systems
       systems = [
         "x86_64-linux"
+        "aarch64-darwin"
       ];
-
       forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     {
@@ -70,7 +72,6 @@
           };
           theme = builtins.fromJSON (builtins.readFile ./theme.json);
 
-          system = "x86_64-linux";
           specialArgs = {
             inherit
               inputs
@@ -81,14 +82,14 @@
           };
           modules = [
             home-manager.nixosModules.home-manager
-            ./nixos/_base.nix
+            ./hosts/base
           ];
         in
         {
           ${meta.hostname} = nixpkgs.lib.nixosSystem {
-            inherit specialArgs system;
+            inherit specialArgs;
             modules = modules ++ [
-              ./nixos/_desktop.nix
+              ./hosts/desktop
               {
                 nix.settings = {
                   substituters = [ "https://wezterm.cachix.org" ];
@@ -98,14 +99,14 @@
             ];
           };
           ${meta.wslHostname} = nixpkgs.lib.nixosSystem {
-            inherit specialArgs system;
+            inherit specialArgs;
             modules =
               [
                 nixos-wsl.nixosModules.default
               ]
               ++ modules
               ++ [
-                ./nixos/_wsl.nix
+                ./hosts/wsl
               ];
           };
         };

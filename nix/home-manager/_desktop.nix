@@ -1,5 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NIXOS FULL HOME MANAGER CONFIGURATION                    │
+# │ NixOS Desktop Home Manager Configuration                 │
 # ╰──────────────────────────────────────────────────────────╯
 {
   pkgs,
