@@ -1,32 +1,16 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Theme                                                    │
 # ╰──────────────────────────────────────────────────────────╯
-{ meta, pkgs, ... }:
+{ meta, ... }:
 let
   inherit (meta)
     font
     cursorTheme
+    gtkTheme
+    iconTheme
+    kvantumTheme
     ;
 
-  gtkTheme = {
-    name = "Catppuccin-GTK-Dark";
-    package = pkgs.magnetic-catppuccin-gtk.override {
-      tweaks = [ "macos" ];
-    };
-  };
-  iconTheme = {
-    name = "WhiteSur";
-    package = pkgs.whitesur-icon-theme.override {
-      alternativeIcons = true;
-      boldPanelIcons = true;
-    };
-  };
-  kvantumTheme = {
-    name = "catppuccin-mocha-blue";
-    package = pkgs.catppuccin-kvantum.override {
-      variant = "mocha";
-    };
-  };
 in
 {
   home = {

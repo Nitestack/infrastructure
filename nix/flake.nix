@@ -16,6 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Flake Parts
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
@@ -43,71 +46,26 @@
 
   # ── Outputs ───────────────────────────────────────────────────────────
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      nixos-wsl,
-      ...
-    }@inputs:
-    let
-      inherit (self) outputs;
-
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        ./hosts
+      ];
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
       ];
-      forAllSystems = nixpkgs.lib.genAttrs systems;
-    in
-    {
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
-      overlays = import ./overlays;
-      nixosConfigurations =
-        let
-          meta = import ./meta.nix {
-            pkgs = import <nixpkgs> {
-              config.allowUnfree = true;
-            };
-          };
-          theme = builtins.fromJSON (builtins.readFile ./theme.json);
-
-          specialArgs = {
-            inherit
-              inputs
-              outputs
-              meta
-              theme
-              ;
-          };
-          modules = [
-            home-manager.nixosModules.home-manager
-            ./hosts/base
-          ];
-        in
+      perSystem =
         {
-          ${meta.hostname} = nixpkgs.lib.nixosSystem {
-            inherit specialArgs;
-            modules = modules ++ [
-              ./hosts/desktop
-              {
-                nix.settings = {
-                  substituters = [ "https://wezterm.cachix.org" ];
-                  trusted-public-keys = [ "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0=" ];
-                };
-              }
-            ];
-          };
-          ${meta.wslHostname} = nixpkgs.lib.nixosSystem {
-            inherit specialArgs;
-            system = "x86_64-linux";
-            modules =
-              [
-                nixos-wsl.nixosModules.default
-              ]
-              ++ modules
-              ++ [
-                ./hosts/wsl
-              ];
+          pkgs,
+          system,
+          ...
+        }:
+        {
+          formatter = pkgs.nixfmt-rfc-style;
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            overlays = [ (import ./overlays) ];
           };
         };
     };
