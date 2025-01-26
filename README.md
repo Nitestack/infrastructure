@@ -13,7 +13,7 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
 ![Github Created At](https://img.shields.io/github/created-at/Nitestack/dotfiles?style=for-the-badge)
 
-[Features](#-features) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
+[Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Credits](#-credits) • [License](#-license)
 
 ![image](https://github.com/user-attachments/assets/8bf0be64-a2e5-40b3-aeeb-97f735d63f07)
 
@@ -23,36 +23,6 @@ _Elevate your computing experience across platforms with this curated collection
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
 </p>
 </div>
-
-## 🚀 Features
-
-### NixOS (Full System)
-
-This setup operates on the [Wayland](https://wayland.freedesktop.org) protocol, utilizing [Hyprland](https://hyprland.org) as the compositor for smooth and visually pleasing window management. For login management, [SDDM](https://github.com/sddm/sddm) is employed with a custom theme, providing a refined interface. The system uses [GRUB](https://www.gnu.org/software/grub) as the bootloader, enhanced with a theme and `os-prober` for seamless dual-booting with Windows or other operating systems.
-
-Everything is built using a [Nix Flake](https://nix.dev/concepts/flakes.html), ensuring the system is reproducible. It also includes features listed in the [Cross-Platform](#cross-platform-nixos-windows) and [UNIX](#unix-nixos) sections, making it a complete and functional environment.
-
-### Cross-Platform (NixOS, Windows)
-
-- **Neovim Configuration (with WSL)**: Powered by [LazyVim](http://www.lazyvim.org), ensuring a robust text editing experience.
-
-- **WezTerm Configuration**: Integrated Neovim workflow for a seamless terminal and text editing setup.
-
-- **Oh My Posh Configuration (with WSL)**: Customized prompt for a visually appealing and informative shell experience.
-
-- **Fastfetch Configuration (with WSL)**: Customized settings for efficient system information display.
-
-- **Lazygit Configuration (with WSL)**: Themed with the [Catppuccin Mocha](https://github.com/catppuccin/lazygit) theme for a cohesive look and feel.
-
-- **Git Configuration (with WSL)**: Customized settings for version control.
-
-- **ShellCheck Configuration (with WSL)**: Setup for shell script analysis.
-
-- **SSH Configuration (with WSL)**: Consistent and secure SSH setup across systems.
-
----
-
-And more to discover.
 
 ## ⚙️ Requirements
 
@@ -129,7 +99,7 @@ git clone git@github.com:Nitestack/dotfiles.git ~/.dotfiles
 Before continuing with the installation, initialize the NixOS system:
 
 ```sh
-sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation" --impure
+sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation"
 ```
 
 Please reboot the system and then continue with the [Final Steps](#final-steps).
@@ -139,7 +109,7 @@ Please reboot the system and then continue with the [Final Steps](#final-steps).
 Before continuing with the installation, initialize the NixOS WSL system:
 
 ```sh
-sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#wslstation" --impure
+sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#wslstation"
 ```
 
 Execute the following commands in PowerShell to correctly apply the custom username:

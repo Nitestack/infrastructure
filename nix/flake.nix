@@ -1,13 +1,19 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NIX FLAKE                                                │
+# │ Nix Flake                                                │
 # ╰──────────────────────────────────────────────────────────╯
 {
   description = "Nix Configuration for NixOS Desktop and NixOS WSL";
 
   # ── Inputs ────────────────────────────────────────────────────────────
   inputs = {
+    # ── Principle Inputs ──────────────────────────────────────────────────
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Nix Darwin
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # NixOS WSL
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     # Home Manager
@@ -15,28 +21,26 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    # NixOS Unified
+    nixos-unified.url = "github:srid/nixos-unified";
     # Flake Parts
     flake-parts.url = "github:hercules-ci/flake-parts";
 
+    # ── Software Inputs ───────────────────────────────────────────────────
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     # Spicetify
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     # Tmux SessionX
     tmux-sessionx.url = "github:omerxx/tmux-sessionx";
-
     # WezTerm
     wezterm.url = "github:wez/wezterm?dir=nix";
-
     # Zen Browser
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
@@ -46,27 +50,13 @@
 
   # ── Outputs ───────────────────────────────────────────────────────────
   outputs =
-    inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [
-        ./hosts
-      ];
+    inputs:
+    inputs.nixos-unified.lib.mkFlake {
+      inherit inputs;
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
       ];
-      perSystem =
-        {
-          pkgs,
-          system,
-          ...
-        }:
-        {
-          formatter = pkgs.nixfmt-rfc-style;
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = [ (import ./overlays) ];
-          };
-        };
+      root = ./.;
     };
 }

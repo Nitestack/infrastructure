@@ -176,6 +176,41 @@
         "type": "github"
       }
     },
+    "nix-darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1737504076,
+        "narHash": "sha256-/B4XJnzYU/6K1ZZOBIgsa3K4pqDJrnC2579c44c+4rI=",
+        "owner": "LnL7",
+        "repo": "nix-darwin",
+        "rev": "65cc1fa8e36ceff067daf6cfb142331f02f524d3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "LnL7",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "nixos-unified": {
+      "locked": {
+        "lastModified": 1736962057,
+        "narHash": "sha256-JYrcG4vMdVXwPH8p4j0QcwlvSQ9Q7B7t4p/g2+N6Cyo=",
+        "owner": "srid",
+        "repo": "nixos-unified",
+        "rev": "696519bdcf08b6204e42442525b9e0cbc6f9b15a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "srid",
+        "repo": "nixos-unified",
+        "type": "github"
+      }
+    },
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -295,6 +330,8 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "hyprland-contrib": "hyprland-contrib",
+        "nix-darwin": "nix-darwin",
+        "nixos-unified": "nixos-unified",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
         "spicetify-nix": "spicetify-nix",
