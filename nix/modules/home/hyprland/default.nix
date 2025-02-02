@@ -118,6 +118,12 @@ in
         pseudotile = true; # Master switch for pseudotiling. Enabling is bound to SUPER + P in the keybinds section below
         preserve_split = true;
       };
+
+      # Ecosystem
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
     };
   };
 
