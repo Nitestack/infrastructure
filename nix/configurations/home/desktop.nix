@@ -22,6 +22,7 @@ in
     self.homeModules.theme
     self.homeModules.waybar
     self.homeModules.wezterm
+    self.homeModules.wlogout
     self.homeModules.zen-browser
   ];
 

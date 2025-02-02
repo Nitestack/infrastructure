@@ -13,6 +13,7 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  wlogout = "${pkgs.wlogout}/bin/wlogout";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 in
 {
@@ -100,7 +101,7 @@ in
         };
         "custom/power" = {
           tooltip = false;
-          on-click = "wlogout &";
+          on-click = "${wlogout} &";
           format = "";
         };
       }
