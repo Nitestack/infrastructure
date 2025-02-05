@@ -10,15 +10,23 @@ true || source "../../.chezmoitemplates/bash-library.sh"
 # ╰──────────────────────────────────────────────────────────╯
 _log_header "Packages"
 
-# ── pnpm ──────────────────────────────────────────────────────────────
+# ── Global npm dependencies ───────────────────────────────────────────
+# {{ if hasKey .packages "npm" }}
 gum format -- "## pnpm:"
 pnpm_list=$(pnpm list -g --depth 0)
-# {{ range (.packages.npm | uniq | sortAlpha) }}
+uninstalled_npm_items=()
+#		{{ range (.packages.npm | uniq | sortAlpha) }}
 if echo "${pnpm_list}" | grep -q "{{- . -}}"; then
 	_log -l warn --prefix "pnpm" "{{- . }} is already installed"
 else
-	pnpm add -g "{{- . -}}"
-	_log -l info --prefix "pnpm" "Installed {{ . -}}"
+	uninstalled_npm_items+=("{{- . -}}")
+fi
+#		{{ end }}
+if [[ ${#uninstalled_npm_items[@]} -gt 0 ]]; then
+	pnpm add -g "${uninstalled_npm_items[@]}"
+	for item in "${uninstalled_npm_items[@]}"; do
+		_log -l info --prefix "pnpm" "Installed ${item}"
+	done
 fi
 # {{ end }}
 
