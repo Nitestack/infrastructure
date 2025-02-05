@@ -13,8 +13,14 @@
       name = "CommitMono Nerd Font";
       monoName = "CommitMono Nerd Font Mono";
       propoName = "CommitMono Nerd Font Propo";
+      italic = {
+        name = "VictorMono NF";
+        monoName = "VictorMono NFM";
+        propoName = "VictorMono NFP";
+      };
       packages = with pkgs.nerd-fonts; [
         commit-mono
+        victor-mono
         iosevka
         symbols-only
       ];

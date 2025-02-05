@@ -39,6 +39,16 @@ in
           "Symbols Nerd Font",
           "Noto Color Emoji",
         })
+        config.font_rules = {
+          {
+            italic = true,
+            font = wezterm.font({
+              family = "${font.nerd.italic.name}",
+              style = "Italic",
+              weight = "DemiBold",
+            }),
+          },
+        }
         config.window_background_gradient.colors = { "${windowBgColor}", "${headerbarBorderColor}", "${headerbarBgColor}" }
         config.command_palette_bg_color = "${headerbarBorderColor}"
         config.command_palette_fg_color = "${windowFgColor}"

@@ -12,9 +12,15 @@ return {
       comments = { "italic" },
       conditionals = { "italic" },
       loops = { "italic" },
-      functions = { "italic" },
-      booleans = { "italic" },
-      types = { "italic" },
+      functions = {},
+      keywords = {},
+      strings = {},
+      variables = {},
+      numbers = {},
+      booleans = {},
+      properties = {},
+      types = {},
+      operators = {},
     },
     custom_highlights = function(C)
       local treesitter_context_bg = C.crust
