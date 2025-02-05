@@ -10,12 +10,12 @@
       package = pkgs.geist-font;
     };
     nerd = {
-      name = "GeistMono NF";
-      monoName = "GeistMono NFM";
-      propoName = "GeistMono NFP";
+      name = "CommitMono Nerd Font";
+      monoName = "CommitMono Nerd Font Mono";
+      propoName = "CommitMono Nerd Font Propo";
       packages = with pkgs.nerd-fonts; [
+        commit-mono
         iosevka
-        geist-mono
         symbols-only
       ];
     };

@@ -10,7 +10,7 @@ function M.setup(config)
   -- ── Font ────────────────────────────────────────────────────────────
   config.font_size = 14
   config.command_palette_font_size = 14
-  config.line_height = 1.2
+  config.line_height = 1.5
 
   -- ── Colors ──────────────────────────────────────────────────────────
   config.color_scheme = "Catppuccin Mocha"
