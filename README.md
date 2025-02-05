@@ -5,7 +5,7 @@
   For NixOS and Windows (including WSL)
   <br/>
   <sup>
-    <sub>Powered by <a href="https://chezmoi.io" target="_blank">chezmoi</a></sub>
+    <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a>, <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a> and <a href="https://chezmoi.io" target="_blank">chezmoi</a></sub>
   </sup>
 </h1>
 
@@ -23,6 +23,9 @@ _Elevate your computing experience across platforms with this curated collection
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
 </p>
 </div>
+
+> [!WARNING]
+> This repository is primarily intended for NixOS and NixOS WSL. While I could have included more features on Windows, they may not perform as well as they do on NixOS (WSL). Tools like Neovim, WezTerm and others are technically functional on Windows, but they are slower. As a result, I've excluded them on Windows. If you want to use these tools on Windows, I recommend using NixOS WSL, it's just a better developer experience.
 
 ## ⚙️ Requirements
 
@@ -77,13 +80,6 @@ winget install -e --accept-package-agreements --accept-source-agreements Git.Git
 > [!IMPORTANT]
 > All versions of Windows come with PowerShell 5.1 pre-installed. However, this repository requires PowerShell 7.x or higher. PowerShell 7.x+ does not replace or upgrade PowerShell 5.1; it is installed alongside it.
 
-#### Fonts
-
-- [Geist Sans](https://vercel.com/font)
-- [Geist Mono Nerd Font](https://nerdfonts.com/font-downloads)
-- [Symbols Nerd Font](https://nerdfonts.com/font-downloads)
-- [Noto Color Emoji](https://fonts.google.com/noto)
-
 ## 🏁 Getting Started
 
 Clone the dotfiles repository:
@@ -121,6 +117,10 @@ wsl -t NixOS
 ```
 
 Start WSL and then continue with the [Final Steps](#final-steps).
+
+### Windows
+
+Continue with the [Final Steps](#final-steps).
 
 ### Final Steps
 
