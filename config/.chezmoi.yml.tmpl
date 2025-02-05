@@ -24,7 +24,6 @@
 data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
-  editor: "nvim"
   hosttype: {{ $hosttype | quote }}
   device_type: {{ $chassisType | quote }}
   osid: {{ $osID | quote }}
@@ -39,6 +38,7 @@ diff:
   exclude:
     - "scripts"
     - "externals"
+{{- if not .chezmoi.os "windows" }}
 merge:
   command: "nvim"
   args:
@@ -46,6 +46,7 @@ merge:
     - "{{ "{{" }} .Destination {{ "}}" }}"
     - "{{ "{{" }} .Source {{ "}}" }}"
     - "{{ "{{" }} .Target {{ "}}" }}"
+{{- end }}
 status:
   exclude:
     - always
