@@ -42,11 +42,6 @@ function M.str_to_tbl(str_or_tbl)
   return str_or_tbl
 end
 
----Checks if the current OS is Windows
-function M.is_win()
-  return vim.uv.os_uname().sysname:find("Windows") ~= nil
-end
-
 ---Checks if the current OS is Linux
 function M.is_linux()
   return vim.uv.os_uname().sysname:find("Linux") ~= nil
@@ -55,11 +50,6 @@ end
 ---Checks if the current OS is macOS
 function M.is_mac()
   return vim.uv.os_uname().sysname:find("Darwin") ~= nil
-end
-
----Checks if the current OS is a Unix-like system
-function M.is_unix()
-  return M.is_linux() or M.is_mac()
 end
 
 ---Checks if the current OS is WSL (Windows Subsystem for Linux)

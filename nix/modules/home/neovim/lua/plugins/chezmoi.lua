@@ -1,3 +1,5 @@
+local chezmoi_source_dir = "~/.dotfiles/config"
+
 ---@type LazySpec
 return {
   { import = "lazyvim.plugins.extras.util.chezmoi" },
@@ -5,7 +7,7 @@ return {
     "alker0/chezmoi.vim",
     lazy = false,
     init = function()
-      vim.g["chezmoi#source_dir_path"] = "{{- .chezmoi.sourceDir -}}"
+      vim.g["chezmoi#source_dir_path"] = chezmoi_source_dir
       vim.g["chezmoi#use_tmp_buffer"] = true
     end,
   },
@@ -14,7 +16,7 @@ return {
     init = function()
       -- run chezmoi edit on file enter
       vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-        pattern = { "{{- .chezmoi.sourceDir -}}/*" },
+        pattern = { chezmoi_source_dir .. "/*" },
         callback = function()
           vim.schedule(require("chezmoi.commands.__edit").watch)
         end,
@@ -31,8 +33,6 @@ return {
       local modify_servers = {
         "bashls",
         "jsonls",
-        "lua_ls",
-        "powershell_es",
         "yamlls",
       }
 

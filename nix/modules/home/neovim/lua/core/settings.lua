@@ -44,7 +44,7 @@ function M.run()
   -- Go to previous/next line with h/l/left arrow/right arrow when cursor reaches end/beginning of line
   vim.opt.whichwrap:append("<>[]hl")
   -- Add binaries installed by `mason.nvim` to path
-  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (utils.is_win() and ";" or ":") .. vim.env.PATH
+  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
 
   -- For Tailwind CSS wraps
   vim.opt.breakat:remove({ ":", "/", "-" })
@@ -54,11 +54,6 @@ function M.run()
     a = true, -- append `l`, `m`, `r`, `w` abbreviations
     A = true, -- don't give the "ATTENTION" message when an existing swap file is found
   })
-
-  -- Setup Windows shell
-  if utils.is_win() then
-    LazyVim.terminal.setup("pwsh")
-  end
 
   -- Setup WSL clipboard
   if utils.is_wsl() then

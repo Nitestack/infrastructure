@@ -10,9 +10,6 @@ Set-PsFzfOption -PSReadLineChordProvider "Ctrl+f" -PSReadLineChordReverseHistory
 Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 
 # ── Aliases ───────────────────────────────────────────────────────────
-Set-Alias vim nvim
-Set-Alias vi nvim
-Set-Alias v nvim
 Set-Alias lg lazygit
 Remove-Alias ls
 

@@ -1,9 +1,6 @@
 ---@type LazyPluginSpec
 return {
   "mrjones2014/smart-splits.nvim",
-  -- {{- if and (eq .chezmoi.os "windows") (lookPath "wezterm") }}
-  event = "VeryLazy",
-  -- {{- end }}
   cmd = {
     "SmartResizeLeft",
     "SmartResizeRight",

@@ -18,6 +18,7 @@ in
     self.homeModules.eza
     self.homeModules.fzf
     self.homeModules.git
+    self.homeModules.neovim
     self.homeModules.tmux
     self.homeModules.zsh
 
@@ -44,13 +45,6 @@ in
     fd.enable = true;
     home-manager.enable = true;
     jq.enable = true;
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
-      vimdiffAlias = true;
-    };
     # Module is not supporting custom path, so using it manually
     # oh-my-posh = {
     #   enable = true;

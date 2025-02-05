@@ -76,18 +76,14 @@ M.mappings.n = {
     "\"_x",
     desc = "Delete character without copying into register",
   },
-}
-
-if utils.is_unix() then
-  -- Make file executable
-  M.mappings.n["<leader>bx"] = {
+  ["<leader>bx"] = {
     function()
       vim.cmd("!chmod +x %")
     end,
     desc = "Make script executable",
     ft = "sh",
-  }
-end
+  },
+}
 
 M.mappings.v = {
   -- End of line
