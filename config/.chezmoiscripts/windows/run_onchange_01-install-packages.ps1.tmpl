@@ -28,7 +28,6 @@ if (Get-Command "{{- .name -}}" -ErrorAction SilentlyContinue) {
 # {{ if hasKey .packages.essentials "volta" }}
 Write-Output "## volta:" | gum format
 volta install "{{- .packages.essentials.volta | uniq | join "\" \"" -}}"
-#   {{ end }}
 # {{ end }}
 
 Write-Host
