@@ -50,6 +50,7 @@ in
     jetbrains.webstorm
     nextcloud-client
     protonmail-desktop
+    protonvpn-cli
     protonvpn-gui
     rpi-imager
     signal-desktop
@@ -60,6 +61,19 @@ in
     # NixOS
     gnome-system-monitor
     nautilus
+  ];
+
+  # Proton VPN
+  security.sudo.extraRules = [
+    {
+      users = [ meta.username ];
+      commands = [
+        {
+          command = "${pkgs.protonvpn-cli}/bin/protonvpn";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
   ];
 
   # Virtualization
