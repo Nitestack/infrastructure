@@ -75,8 +75,12 @@ in
       home = config.home.homeDirectory;
     in
     [
-      "file://${home}/Programming"
+      "file://${config.xdg.userDirs.documents}"
       "file://${home}/Studium"
+      "file://${config.xdg.userDirs.pictures}"
+      "file://${config.xdg.userDirs.videos}"
+      "file://${config.xdg.userDirs.download}"
+      "file://${config.xdg.userDirs.music}"
     ];
 
   # ── Programs ──────────────────────────────────────────────────────────
