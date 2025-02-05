@@ -2,28 +2,24 @@
 -- │ PLATFORM CONFIG                                         │
 -- ╰─────────────────────────────────────────────────────────╯
 
-local utils = require("utils")
+---@type Wezterm
+---@diagnostic disable: assign-type-mismatch
+local wezterm = require("wezterm")
 
 local M = {}
 
 ---@module "wezterm"
 ---@param config Config
 function M.setup(config)
-  -- ── UNIX ────────────────────────────────────────────────────────────
-  if utils.is_mac() or utils.is_linux() then
-    require("config.platforms.unix").setup(config)
-  end
+  -- ── Tabs ────────────────────────────────────────────────────────────
+  config.enable_tab_bar = false
   -- ── macOS ───────────────────────────────────────────────────────────
-  if utils.is_mac() then
+  if string.find(wezterm.target_triple, "apple") ~= nil then
     require("config.platforms.macos").setup(config)
   end
   -- ── Linux ───────────────────────────────────────────────────────────
-  if utils.is_linux() then
+  if string.find(wezterm.target_triple, "linux") ~= nil then
     require("config.platforms.linux").setup(config)
-  end
-  -- ── Windows ─────────────────────────────────────────────────────────
-  if utils.is_win() then
-    require("config.platforms.windows").setup(config)
   end
 end
 

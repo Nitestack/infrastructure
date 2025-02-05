@@ -2,40 +2,22 @@
 -- │ APPEARANCE CONFIG                                       │
 -- ╰─────────────────────────────────────────────────────────╯
 
----@type Wezterm
----@diagnostic disable: assign-type-mismatch
-local wezterm = require("wezterm")
-
-local colors = require("colors")
-
 local M = {}
 
+---@module "wezterm"
 ---@param config Config
 function M.setup(config)
-  local font_size = tonumber("{{- .font.size -}}")
-
   -- ── Font ────────────────────────────────────────────────────────────
-  config.font = wezterm.font_with_fallback({
-    {
-      family = "{{- .font.nerd.family -}}",
-      weight = "{{- .font.nerd.weight -}}",
-    },
-    "Symbols Nerd Font",
-    "Noto Color Emoji",
-  })
-  config.font_size = font_size
-  config.command_palette_font_size = font_size
+  config.font_size = 14
+  config.command_palette_font_size = 14
   config.line_height = 1.2
 
   -- ── Colors ──────────────────────────────────────────────────────────
   config.color_scheme = "Catppuccin Mocha"
   config.window_background_gradient = {
     orientation = "Vertical",
-    colors = { colors.base, colors.surface0, colors.crust },
     interpolation = "Linear",
   }
-  config.command_palette_bg_color = colors.surface0
-  config.command_palette_fg_color = colors.text
 
   -- ── Rendering ───────────────────────────────────────────────────────
   config.animation_fps = 144
