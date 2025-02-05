@@ -1,8 +1,0 @@
-# {{ template "pwsh-library.ps1" . }}
-
-# {{ if hasKey .apps.win "manual" }}
-_Log -l info "Windows: You have to manually install the following apps:"
-#   {{ range (concat .apps.win.manual | uniq | sortAlpha) }}
-Write-Host "- {{ . -}}"
-#   {{ end }}
-# {{ end }}

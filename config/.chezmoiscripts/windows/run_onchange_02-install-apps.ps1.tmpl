@@ -1,26 +1,12 @@
 # {{ template "pwsh-library.ps1" . }}
 
+# {{ if hasKey .apps "winget" }}
 _LogHeader "Apps"
-
-# {{ $apps := list }}
-# {{ $unresolvedApps := list }}
-# {{ if eq .hosttype "work" }}
-#   {{ $unresolvedApps = concat $unresolvedApps .apps.work }}
-# {{ end }}
-# {{ range $unresolvedApps }}
-#   {{ if hasKey . "win" }}
-#     {{ if eq "string" (printf "%T" .win) }}
-#       {{ $apps = mustAppend $apps .win }}
-#     {{ end }}
-#   {{ end }}
-# {{ end }}
-# {{ if hasKey .apps.win "winget" }}
-# {{ $apps := concat $apps .apps.win.winget }}
-# {{ end }}
 
 # ── winget ────────────────────────────────────────────────────────────
 Write-Output "## winget:" | gum format
-_Install-PackagesWinget "{{- $apps | uniq | join "\", \"" -}}"
+_Install-PackagesWinget "{{- .apps.winget | uniq | join "\", \"" -}}"
 
 Write-Host
 _Log -l info "Installed apps"
+# {{ end }}

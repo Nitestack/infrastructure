@@ -6,9 +6,11 @@
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
 
+.ssh
 AppData
 Documents
 
+.gitconfig
 .wslconfig
 {{ end }}
 
@@ -23,17 +25,9 @@ Documents
 .config/vesktop
 {{ end }}
 
-# Ignore on NixOS
-{{ if eq .osid "linux-nixos" }}
-.ssh
-
-.gitconfig
-{{ end }}
-
 # Ignore on WSL
 {{ if .is_wsl }}
 .config/vesktop
-.config/wezterm
 {{ end }}
 
 # Ignore on Work Environment

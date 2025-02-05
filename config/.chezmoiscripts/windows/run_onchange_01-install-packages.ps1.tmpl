@@ -5,59 +5,30 @@
 # ╰──────────────────────────────────────────────────────────╯
 _LogHeader "Essential Packages"
 
-# {{ $essentialPackages := list }}
-# {{ $essentialCustomPackages := list }}
-# {{ range .packages.essentials }}
-#   {{ if hasKey . "win" }}
-#     {{ if eq "string" (printf "%T" .win) }}
-#       {{ $essentialPackages = mustAppend $essentialPackages .win }}
-#     {{ else if hasKey .win "custom" }}
-#       {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .win.custom) }}
-#     {{ end }}
-#   {{ else if hasKey . "custom" }}
-#     {{ $essentialCustomPackages = mustAppend $essentialCustomPackages (dict .name .custom) }}
+# ── winget ────────────────────────────────────────────────────────────
+# {{ if hasKey .packages.essentials "winget" }}
+Write-Output "## winget:" | gum format
+_Install-PackagesWinget "{{- .packages.essentials.winget | uniq | join "\", \"" -}}"
+# {{ end }}
+
+# ── custom ────────────────────────────────────────────────────────────
+# {{ if hasKey .packages.essentials "custom" }}
+Write-Output "## custom:" | gum format
+#   {{ range .packages.essentials.custom }}
+if (Get-Command "{{- .name -}}" -ErrorAction SilentlyContinue) {
+  _Log -l warn "{{- .name }} is already installed"
+} else {
+  # {{ "\n" }}{{ .command }}
+  _Log -l info "Installed {{ .name -}}"
+}
 #   {{ end }}
 # {{ end }}
 
-# ── winget ────────────────────────────────────────────────────────────
-Write-Output "## winget:" | gum format
-_Install-PackagesWinget "{{- $essentialPackages | join "\", \"" -}}"
-
-# ── custom ────────────────────────────────────────────────────────────
-Write-Output "## custom:" | gum format
-# {{ range $essentialCustomPackages }}
-# {{ range $cmd_name, $lines := . }}
-if (Get-Command "{{- $cmd_name -}}" -ErrorAction SilentlyContinue) {
-  _Log -l warn "{{- $cmd_name }} is already installed"
-}
-else {
-  try {
-    # {{ "\n" }}{{ $lines }}
-    _Log -l info "Installed {{ $cmd_name -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
-# {{ end }}
-# {{ end }}
-
 # ── volta ─────────────────────────────────────────────────────────────
+# {{ if hasKey .packages.essentials "volta" }}
 Write-Output "## volta:" | gum format
-$voltaList = volta list --format plain
-# {{ range (.packages.volta | uniq) }}
-if ($voltaList -match "{{- . -}}") {
-  _Log -l warn --prefix "volta" "{{- . }} is already installed"
-}
-else {
-  try {
-    volta install "{{- . -}}"
-    _Log -l info "Installed {{ . -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
+volta install "{{- .packages.essentials.volta | uniq | join "\" \"" -}}"
+#   {{ end }}
 # {{ end }}
 
 Write-Host
@@ -69,29 +40,21 @@ _Log -l info "Installed essential packages"
 _LogHeader "Packages"
 
 # ── winget ────────────────────────────────────────────────────────────
+# {{ if hasKey .packages "winget" }}
 Write-Output "## winget:" | gum format
-_Install-PackagesWinget "{{- .packages.win.winget | join "\", \"" -}}"
+_Install-PackagesWinget "{{- .packages.winget | uniq | join "\", \"" -}}"
+# {{ end }}
 
 # ── PowerShell Gallery ────────────────────────────────────────────────
+# {{ if hasKey .packages "pwsh_gallery" }}
 Write-Output "## PowerShell Gallery:" | gum format
-_Install-PackagesGallery "{{- .packages.win.modules | uniq | sortAlpha | join "\" \"" -}}"
+_Install-PackagesGallery "{{- .packages.pwsh_gallery | uniq | sortAlpha | join "\" \"" -}}"
+# {{ end }}
 
 # ── Global npm dependencies ───────────────────────────────────────────
+# {{ if hasKey .packages "npm" }}
 Write-Output "## pnpm:" | gum format
-$pnpmList = pnpm list -g --depth 0
-# {{ range (.packages.npm | uniq | sortAlpha) }}
-if ($pnpmList -match "{{- . -}}") {
-  _Log -l warn --prefix "pnpm" "{{- . }} is already installed"
-}
-else {
-  try {
-    pnpm add -g "{{- . -}}"
-    _Log -l info --prefix "pnpm" "Installed {{ . -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
+pnpm add -g "{{- .packages.npm | uniq | sortAlpha | join "\" \"" -}}"
 # {{ end }}
 
 Write-Host

@@ -1,22 +1,6 @@
 {{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
 {{- $email := promptStringOnce . "email" "Email Address" "74626967+Nitestack@users.noreply.github.com" -}}
 {{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") "personal" -}}
-{{- $osID := .chezmoi.os -}}
-{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
-{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
-{{- end -}}
-{{- $chassisType := "desktop" }}
-{{- if eq .chezmoi.os "darwin" }}
-{{-   if contains "MacBook" (output "sysctl" "-n" "hw.model") }}
-{{-     $chassisType = "laptop" }}
-{{-   else }}
-{{-     $chassisType = "desktop" }}
-{{-   end }}
-{{- else if eq .chezmoi.os "linux" }}
-{{-   $chassisType = (output "hostnamectl" "--json=short" | mustFromJson).Chassis }}
-{{- else if eq .chezmoi.os "windows" }}
-{{-   $chassisType = (output "powershell.exe" "-NoProfile" "-NonInteractive" "-Command" "if ((Get-CimInstance -Class Win32_Battery | Measure-Object).Count -gt 0) { Write-Output 'laptop' } else { Write-Output 'desktop' }") | trim }}
-{{- end -}}
 # ╭──────────────────────────────────────────────────────────╮
 # │ CHEZMOI CONFIG                                           │
 # ╰──────────────────────────────────────────────────────────╯
@@ -25,10 +9,8 @@ data:
   name: {{ $name | quote }}
   email: {{ $email | quote }}
   hosttype: {{ $hosttype | quote }}
-  device_type: {{ $chassisType | quote }}
-  osid: {{ $osID | quote }}
-  # do not override the following values
-{{- if and (eq $osID "linux-nixos") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+  # do not override the WSL check
+{{- if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
   is_wsl: true
 {{- else }}
   is_wsl: false
@@ -38,7 +20,7 @@ diff:
   exclude:
     - "scripts"
     - "externals"
-{{- if not .chezmoi.os "windows" }}
+{{- if ne .chezmoi.os "windows" }}
 merge:
   command: "nvim"
   args:

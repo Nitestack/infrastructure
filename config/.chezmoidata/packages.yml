@@ -4,31 +4,6 @@
 
 ---
 packages:
-  # ── Essentials (get installed before the other packages) ──────────────
-  essentials:
-    - name: "chezmoi"
-      win: "twpayne.chezmoi"
-    - name: "git"
-      win: "Git.Git"
-    - name: "gum"
-      win: "charmbracelet.gum"
-    - name: "pwsh"
-      win: "Microsoft.PowerShell"
-    - name: "python"
-      win: "Python.Python.3.12"
-    - name: "volta"
-      win: "Volta.Volta"
-    - name: "rustup"
-      win:
-        custom: |
-          winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup
-          rustup update
-          rustup default stable
-  volta:
-    - "node"
-    - "pnpm"
-    - "yarn"
-  # ── Packages ──────────────────────────────────────────────────────────
   npm:
     - "npkill"
     - "tree-sitter-cli"
