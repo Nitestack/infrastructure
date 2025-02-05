@@ -22,17 +22,5 @@ else
 fi
 # {{ end }}
 
-# ── cargo ─────────────────────────────────────────────────────────────
-gum format -- "## cargo:"
-cargo_list=$(cargo install --list)
-# {{ range (.packages.cargo | uniq | sortAlpha) }}
-if echo "${cargo_list}" | grep -q "{{- . -}}"; then
-	_log -l warn --prefix "cargo" "{{- . }} is already installed"
-else
-	cargo install "{{- . -}}"
-	_log -l info --prefix "cargo" "Installed {{ . -}}"
-fi
-# {{ end }}
-
 echo
 _log -l info "Installed packages"

@@ -94,23 +94,5 @@ else {
 }
 # {{ end }}
 
-# ── Global cargo crates ───────────────────────────────────────────────
-Write-Output "## cargo:" | gum format
-$cargoList = cargo install --list
-# {{ range (.packages.cargo | uniq | sortAlpha) }}
-if ($cargoList -match "{{- . -}}") {
-  _Log -l warn --prefix "cargo" "{{- . }} is already installed"
-}
-else {
-  try {
-    cargo install "{{- . -}}"
-    _Log -l info --prefix "cargo" "Installed {{ . -}}"
-  }
-  catch {
-    throw "Command failed: $_"
-  }
-}
-# {{ end }}
-
 Write-Host
 _Log -l info "Installed packages"

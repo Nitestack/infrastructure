@@ -16,7 +16,6 @@ packages:
       - "JesseDuffield.lazygit"
       - "jftuga.less"
       - "LLVM.LLVM"
-      - "Neovim.Neovim"
       - "JanDeDobbeleer.OhMyPosh"
       - "ojdkbuild.ojdkbuild"
       - "BurntSushi.ripgrep.MSVC"
