@@ -44,6 +44,15 @@ in
                       name = mkStringOption;
                       monoName = mkStringOption;
                       propoName = mkStringOption;
+                      italic = mkOption {
+                        type = submodule {
+                          options = {
+                            name = mkStringOption;
+                            monoName = mkStringOption;
+                            propoName = mkStringOption;
+                          };
+                        };
+                      };
                       packages = mkOption {
                         type = listOf package;
                         default = [ ];
