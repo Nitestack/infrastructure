@@ -61,5 +61,6 @@ apps:
     - "Vencord.Vesktop"
     - "Microsoft.VisualStudio.2022.Community"
     - "Microsoft.VisualStudioCode"
+    - "wez.wezterm"
     - "9NKSQGP7F2NH" # WhatsApp Desktop
     - "Zen-Team.Zen-Browser"
