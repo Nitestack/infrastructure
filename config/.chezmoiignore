@@ -28,6 +28,7 @@ Documents
 # Ignore on WSL
 {{ if .is_wsl }}
 .config/vesktop
+.config/wezterm
 {{ end }}
 
 # Ignore on Work Environment

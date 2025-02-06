@@ -25,7 +25,7 @@ _Elevate your computing experience across platforms with this curated collection
 </div>
 
 > [!WARNING]
-> This repository is primarily intended for NixOS and NixOS WSL. While I could have included more features on Windows, they may not perform as well as they do on NixOS (WSL). Tools like Neovim, WezTerm and others are technically functional on Windows, but they are slower. As a result, I've excluded them on Windows. If you want to use these tools on Windows, I recommend using NixOS WSL, it's just a better developer experience.
+> This repository is primarily intended for NixOS and NixOS WSL. While I could have included more features on Windows, they may not perform as well as they do on NixOS (WSL). Tools like Neovim and others are technically functional on Windows, but they are slower. As a result, I've excluded them on Windows. If you want to use these tools on Windows, I recommend using NixOS WSL, it's just a better developer experience.
 
 ## ⚙️ Requirements
 

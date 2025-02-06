@@ -1,5 +1,5 @@
 -- ╭─────────────────────────────────────────────────────────╮
--- │ MACOS CONFIG                                            │
+-- │ Windows Config                                          │
 -- ╰─────────────────────────────────────────────────────────╯
 
 local M = {}
@@ -8,9 +8,17 @@ local M = {}
 ---@param config Config
 function M.setup(config)
   -- ── Settings ────────────────────────────────────────────────────────
-  config.integrated_title_button_alignment = "Left"
-  config.integrated_title_button_style = "MacOsNative"
-  config.bypass_mouse_reporting_modifiers = "SUPER"
+  config.integrated_title_button_style = "Windows"
+  ---@diagnostic disable-next-line: assign-type-mismatch
+  config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+  config.bypass_mouse_reporting_modifiers = "CTRL"
+
+  -- hide tabs
+  config.show_tabs_in_tab_bar = false
+  config.show_new_tab_button_in_tab_bar = false
+
+  -- set WSL to be the default program
+  config.default_prog = { [[C:\Program Files\WSL\wsl.exe]], "--cd", "~" }
 end
 
 return M
