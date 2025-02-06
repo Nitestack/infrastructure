@@ -1,5 +1,5 @@
 -- ╭─────────────────────────────────────────────────────────╮
--- │ MAPPINGS                                                │
+-- │ Mappings                                                │
 -- ╰─────────────────────────────────────────────────────────╯
 
 ---@alias core.mappings.terminal_mappings table<string, utils.mappings.mapping>

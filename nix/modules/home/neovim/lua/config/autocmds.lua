@@ -1,5 +1,5 @@
 -- ╭─────────────────────────────────────────────────────────╮
--- │ COMMANDS                                                │
+-- │ Commands                                                │
 -- ╰─────────────────────────────────────────────────────────╯
 
 core.auto_cmds(core.cmds.auto_cmds, core.cmds.auto_cmd_opts, core.cmds.au_group_opts)
