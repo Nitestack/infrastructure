@@ -11,42 +11,20 @@ packages:
       - "Git.Git"
       - "charmbracelet.gum"
       - "Microsoft.PowerShell"
-      - "Python.Python.3.12"
-      - "Volta.Volta"
-    volta:
-      - "node"
-      - "pnpm"
-      - "yarn"
-
-    custom:
-      - name: "rustup"
-        command: |
-          winget install -e --accept-package-agreements --accept-source-agreements --id Rustlang.Rustup
-          rustup update
-          rustup default stable
   winget:
     - "sharkdp.bat"
     - "dandavison.delta"
-    - "Microsoft.DotNet.SDK.8"
     - "eza-community.eza"
-    - "sharkdp.fd"
     - "Fastfetch-cli.Fastfetch"
     - "junegunn.fzf"
     - "JesseDuffield.lazygit"
-    - "jftuga.less"
-    - "LLVM.LLVM"
     - "JanDeDobbeleer.OhMyPosh"
-    - "ojdkbuild.ojdkbuild"
-    - "BurntSushi.ripgrep.MSVC"
-    - "mbuilov.sed"
-    - "Microsoft.VCRedist.2015+.x64"
     - "ajeetdsouza.zoxide"
   pwsh_gallery:
     - "PSFzf"
 apps:
   winget:
     - "Bitwarden.Bitwarden"
-    - "Google.Chrome"
     - "Docker.DockerDesktop"
     - "Logitech.OptionsPlus"
     - "Nextcloud.NextcloudDesktop"
@@ -59,7 +37,6 @@ apps:
     - "Spotify.Spotify"
     - "Stremio.Stremio"
     - "Vencord.Vesktop"
-    - "Microsoft.VisualStudio.2022.Community"
     - "Microsoft.VisualStudioCode"
     - "wez.wezterm"
     - "9NKSQGP7F2NH" # WhatsApp Desktop

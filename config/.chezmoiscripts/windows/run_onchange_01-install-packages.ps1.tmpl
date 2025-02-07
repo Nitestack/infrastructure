@@ -24,27 +24,6 @@ if (Get-Command "{{- .name -}}" -ErrorAction SilentlyContinue) {
 #   {{ end }}
 # {{ end }}
 
-# ── volta ─────────────────────────────────────────────────────────────
-# {{ if hasKey .packages.essentials "volta" }}
-Write-Output "## volta:" | gum format
-$voltaList = volta list --format plain
-$uninstalledVoltaItems = @()
-#   {{ range (.packages.essentials.volta | uniq) }}
-if ($voltaList -match "{{- . -}}") {
-  _Log -l warn --prefix "volta" "{{- . }} is already installed"
-}
-else {
-  $uninstalledVoltaItems += "{{- . -}}"
-}
-#   {{ end }}
-if ($uninstalledVoltaItems.Count -gt 0) {
-  volta install "$uninstalledVoltaItems"
-  foreach ($item in $uninstalledVoltaItems) {
-    _Log -l info --prefix "volta" "Installed $item"
-  }
-}
-# {{ end }}
-
 Write-Host
 _Log -l info "Installed essential packages"
 
@@ -63,27 +42,6 @@ _Install-PackagesWinget "{{- .packages.winget | uniq | join "\", \"" -}}"
 # {{ if hasKey .packages "pwsh_gallery" }}
 Write-Output "## PowerShell Gallery:" | gum format
 _Install-PackagesGallery "{{- .packages.pwsh_gallery | uniq | sortAlpha | join "\" \"" -}}"
-# {{ end }}
-
-# ── Global npm dependencies ───────────────────────────────────────────
-# {{ if hasKey .packages "npm" }}
-Write-Output "## pnpm:" | gum format
-$pnpmList = pnpm list -g --depth 0
-$uninstalledNpmItems = @()
-#   {{ range (.packages.npm | uniq | sortAlpha) }}
-if ($pnpmList -match "{{- . -}}") {
-  _Log -l warn --prefix "pnpm" "{{- . }} is already installed"
-}
-else {
-  $uninstalledNpmItems += "{{- . -}}"
-}
-#   {{ end }}
-if ($uninstalledNpmItems.Count -gt 0) {
-  pnpm add -g "$uninstalledNpmItems"
-  foreach ($item in $uninstalledNpmItems) {
-    _Log -l info --prefix "pnpm" "Installed $item"
-  }
-}
 # {{ end }}
 
 Write-Host
