@@ -1,25 +1,29 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ SDDM                                                     │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, config, ... }:
-let
-  inherit (config.meta) font;
-in
+{ pkgs, ... }:
 {
   services.displayManager = {
     sddm = {
       enable = true;
       package = pkgs.kdePackages.sddm;
-      theme = "catppuccin-mocha";
+      theme = "sddm-astronaut-theme";
       wayland.enable = true;
+      extraPackages = with pkgs; [
+        kdePackages.qtmultimedia
+        kdePackages.qtsvg
+        kdePackages.qtvirtualkeyboard
+      ];
     };
     defaultSession = "hyprland";
   };
   environment.systemPackages = [
-    (pkgs.catppuccin-sddm.override {
-      flavor = "mocha";
-      font = font.sans.name;
+    (pkgs.sddm-astronaut.override {
+      embeddedTheme = "jake_the_dog";
+      themeConfig = {
+        DateFormat = "\"dddd, d MMMM\"";
+        HourFormat = "\"H:mm\"";
+      };
     })
-    font.sans.package
   ];
 }
