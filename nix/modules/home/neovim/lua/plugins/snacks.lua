@@ -1,6 +1,11 @@
 return utils.plugin.with_extensions({
   {
     "folke/snacks.nvim",
+    keys = core.lazy_map({
+      n = {
+        [{ "<leader>e", "<leader>E" }] = { false },
+      },
+    }),
     ---@module "snacks"
     ---@type snacks.Config
     opts = {
