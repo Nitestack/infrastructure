@@ -46,8 +46,6 @@ in
     bitwarden-desktop
     endeavour
     google-chrome
-    jetbrains.idea-ultimate
-    jetbrains.webstorm
     nextcloud-client
     protonmail-desktop
     protonvpn-cli

@@ -4,13 +4,10 @@
 {
   flake,
   pkgs,
-  meta,
-  theme,
   ...
 }:
 let
   inherit (flake) inputs;
-  inherit (meta) font;
 in
 {
   programs.wezterm = {
