@@ -23,9 +23,22 @@ packages:
   pwsh_gallery:
     - "PSFzf"
 apps:
+  work:
+    winget:
+      - "Docker.DockerDesktop"
+      - "wez.wezterm"
+  personal:
+    winget:
+      - "XPDM5VSMTKQLBJ" # Battle.net
+      - "Blitz.Blitz"
+      - "Overwolf.CurseForge"
+      - "EpicGames.EpicGamesLauncher"
+      - "FACEITLTD.FACEITAC"
+      - "Mojang.MinecraftLauncher"
+      - "Valve.Steam"
+      - "RiotGames.Valorant.EU"
   winget:
     - "Bitwarden.Bitwarden"
-    - "Docker.DockerDesktop"
     - "Logitech.OptionsPlus"
     - "Nextcloud.NextcloudDesktop"
     - "Microsoft.PowerToys"
@@ -38,6 +51,11 @@ apps:
     - "Stremio.Stremio"
     - "Vencord.Vesktop"
     - "Microsoft.VisualStudioCode"
-    - "wez.wezterm"
     - "9NKSQGP7F2NH" # WhatsApp Desktop
     - "Zen-Team.Zen-Browser"
+  manual:
+    - "CommitMono Nerd Font"
+    - "Iosevka Nerd Font"
+    - "VictorMono Nerd Font"
+    - "AnkerWork" 
+    - "Zen Browser"
