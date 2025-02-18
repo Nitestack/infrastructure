@@ -10,7 +10,7 @@ return utils.plugin.get_language_spec({
       tinymist = {
         offset_encoding = "utf-8",
         settings = {
-          exportPdf = "onSave",
+          exportPdf = "onType",
           formatterMode = "typstyle",
         },
       },
