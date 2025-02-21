@@ -4,7 +4,6 @@
 
 ---@class utils
 ---@field cmds utils.cmds
----@field lualine utils.lualine
 ---@field mappings utils.mappings
 ---@field plugin utils.plugin
 local M = {}
