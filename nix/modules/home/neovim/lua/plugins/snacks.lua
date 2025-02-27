@@ -15,6 +15,20 @@ return utils.plugin.with_extensions({
           header = core.config.ui.logo,
         },
       },
+      -- Image
+      image = {
+        enabled = true,
+        math = {
+          typst = {
+            tpl = [[
+              #set page(width: auto, height: auto, margin: (x: 2pt, y: 2pt))
+              #show math.equation.where(block: false): set text(top-edge: "bounds", bottom-edge: "bounds")
+              #set text(lang: "de", region: "DE", fill: rgb("${color}"))
+              ${header}
+              ${content}]],
+          },
+        },
+      },
       -- Indent
       indent = {
         indent = {
