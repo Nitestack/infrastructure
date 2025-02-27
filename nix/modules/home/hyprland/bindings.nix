@@ -14,6 +14,7 @@ let
   # Bins
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   cliphist = "${pkgs.cliphist}/bin/cliphist";
+  ghostty = "${pkgs.ghostty}/bin/ghostty";
   gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
   grimblast = "${
     inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
@@ -24,7 +25,7 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
-  wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
+  # wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
   zen = "${inputs.zen-browser.packages.${pkgs.system}.default}/bin/zen";
 
   cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
@@ -60,7 +61,8 @@ in
     "$mmb" = "mouse:274"; # Middle mouse button
     bindd =
       [
-        "SUPER, Slash, Open Terminal, exec, ${wezterm} -e tmux"
+        # "SUPER, Slash, Open Terminal, exec, ${wezterm} -e tmux"
+        "SUPER, Slash, Open Terminal, exec, ${ghostty} -e tmux"
         "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
         "SUPER, W, Open Browser, exec, ${zen}"
         "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
