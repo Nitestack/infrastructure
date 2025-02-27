@@ -54,7 +54,6 @@ in
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     # Essential
-    gcc
     caddy
     chezmoi
     curl
@@ -73,7 +72,6 @@ in
 
     # Nix
     nix-prefetch-git
-    nixd
     nixfmt-rfc-style
   ];
 
