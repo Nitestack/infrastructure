@@ -39,16 +39,15 @@ in
   # Packages
   environment.systemPackages = with pkgs; [
     # Packages
-    ntfs3g
-    ueberzugpp
+    protonvpn-cli
 
     # Apps
     bitwarden-desktop
     endeavour
     google-chrome
     nextcloud-client
+    onlyoffice-desktopeditors
     protonmail-desktop
-    protonvpn-cli
     protonvpn-gui
     rpi-imager
     signal-desktop
