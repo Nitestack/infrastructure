@@ -19,6 +19,7 @@ in
       theme = spicePkgs.themes.catppuccin;
       colorScheme = "mocha";
       enabledExtensions = with spicePkgs.extensions; [
+        adblock
         autoSkipVideo
         beautifulLyrics
         listPlaylistsWithSong
