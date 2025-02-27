@@ -15,6 +15,7 @@ in
   imports = [
     self.homeModules.base
 
+    self.homeModules.ghostty
     self.homeModules.hyprland
     self.homeModules.rofi
     self.homeModules.spicetify
