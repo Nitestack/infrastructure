@@ -4,7 +4,6 @@
 {
   flake,
   config,
-  pkgs,
   ...
 }:
 let
@@ -14,6 +13,8 @@ in
 {
   imports = [
     self.nixosModules.base
+
+    self.darwinModules.darwin-rebuild
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
