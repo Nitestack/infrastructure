@@ -13,22 +13,26 @@ let
     action="$1"
     shift
 
-    ${nh} os $action ~/.dotfiles/nix -H "$(hostname -s)" -- $@
+    if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+      ${nh} os $action ~/.dotfiles/nix -H wslstation -- $@
+    else
+      ${nh} os $action ~/.dotfiles/nix -H nixstation -- $@
+    fi
   ''}/bin/nix-rebuild";
   nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
     #!/usr/bin/env bash
 
     ${nix-rebuild} switch $@
   '';
-  nix-boot = pkgs.writeShellScriptBin "nix-switch" ''
+  nix-boot = pkgs.writeShellScriptBin "nix-boot" ''
     #!/usr/bin/env bash
 
-    ${nix-rebuild} switch $@
+    ${nix-rebuild} boot $@
   '';
-  nix-test = pkgs.writeShellScriptBin "nix-switch" ''
+  nix-test = pkgs.writeShellScriptBin "nix-test" ''
     #!/usr/bin/env bash
 
-    ${nix-rebuild} switch $@
+    ${nix-rebuild} test $@
   '';
   nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
     #!/usr/bin/env bash
