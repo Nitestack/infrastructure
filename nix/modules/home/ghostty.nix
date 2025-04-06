@@ -1,6 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Ghostty                                                  │
 # ╰──────────────────────────────────────────────────────────╯
+{ meta, ... }:
+let
+  inherit (meta) font;
+in
 {
   programs.ghostty = {
     enable = true;
@@ -8,11 +12,11 @@
     settings = {
       theme = "catppuccin-mocha";
       font-family = [
-        "CommitMono Nerd Font"
+        font.nerd.name
+        font.emoji.name
         "Symbols Nerd Font"
-        "Noto Color Emoji"
       ];
-      font-family-italic = "VictorMono NF";
+      font-family-italic = font.nerd.italic.name;
       font-size = 14;
       adjust-cell-height = "50%";
       adjust-cursor-height = "50%";
