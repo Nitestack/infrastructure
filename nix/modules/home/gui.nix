@@ -14,10 +14,8 @@ in
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
-    self.homeModules.ghostty
     self.homeModules.spicetify
     self.homeModules.wezterm
-    self.homeModules.zen-browser
   ];
 
   # Configuration

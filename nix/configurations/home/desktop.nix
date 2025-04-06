@@ -17,12 +17,14 @@ in
     self.homeModules.linux
     self.homeModules.gui
 
+    self.homeModules.ghostty
     self.homeModules.hyprland
     self.homeModules.rofi
     self.homeModules.swaync
     self.homeModules.theme
     self.homeModules.waybar
     self.homeModules.wlogout
+    self.homeModules.zen-browser
   ];
 
   # Configuration
