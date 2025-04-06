@@ -15,10 +15,8 @@ in
 {
   home = {
     packages = [
-      font.sans.package
-      font.emoji.package
       kvantumTheme.package
-    ] ++ font.nerd.packages;
+    ];
     pointerCursor = cursorTheme // {
       gtk.enable = true;
     };
