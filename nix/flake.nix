@@ -21,6 +21,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Homebrew
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     # NixOS Unified
     nixos-unified.url = "github:srid/nixos-unified";
     # Flake Parts
@@ -45,6 +47,16 @@
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # ── Homebrew Taps ─────────────────────────────────────────────────────
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
     };
   };
 
