@@ -29,7 +29,6 @@
       addKeysToAgent = "yes";
     };
   };
-  services.ssh-agent.enable = true;
   home.shellAliases = {
     lg = "lazygit";
   };

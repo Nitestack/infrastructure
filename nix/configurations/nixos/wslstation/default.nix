@@ -15,7 +15,9 @@ in
 {
   imports = [
     inputs.nixos-wsl.nixosModules.default
+
     self.nixosModules.base
+    self.nixosModules.linux
   ];
   wsl = {
     enable = true;
@@ -29,8 +31,10 @@ in
     imports = [ (self + /configurations/home/wsl.nix) ];
   };
 
-  # ── Packages ──────────────────────────────────────────────────────────
+  # Configuration
   nixpkgs.hostPlatform = "x86_64-linux";
+
+  # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     # Apps
     evince

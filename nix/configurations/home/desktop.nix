@@ -14,6 +14,7 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     self.homeModules.base
+    self.homeModules.linux
     self.homeModules.gui
 
     self.homeModules.hyprland

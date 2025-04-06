@@ -9,6 +9,7 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     self.homeModules.base
+    self.homeModules.linux
   ];
 
   shells.zsh = {

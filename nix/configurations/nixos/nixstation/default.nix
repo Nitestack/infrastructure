@@ -16,6 +16,8 @@ in
     ./hardware-configuration.nix
 
     self.nixosModules.base
+    self.nixosModules.linux
+
     self.nixosModules.audio
     self.nixosModules.backlight
     self.nixosModules.gnome
