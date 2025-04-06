@@ -15,6 +15,7 @@ in
     self.nixosModules.base
 
     self.darwinModules.darwin-rebuild
+    self.darwinModules.homebrew
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
@@ -28,5 +29,13 @@ in
   system = {
     configurationRevision = self.rev or self.dirtyRev or null;
     stateVersion = 6;
+  };
+
+  # Packages
+  homebrew = {
+    casks = [
+      "ghostty"
+      "zen-browser"
+    ];
   };
 }
