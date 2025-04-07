@@ -19,6 +19,7 @@
       disable-shadow = true; # disable drop shadow border around screencaptures
       location = "~/Pictures/Screenshots";
     };
+    trackpad.Clicking = true; # enable tap to click
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
       AppleKeyboardUIMode = 3; # keyboard control behavior
