@@ -2,7 +2,7 @@
 <h1>
   ~/.dotfiles&nbsp;📂
   <br/>
-  For NixOS and Windows (including WSL)
+  For NixOS, macOS (with Nix) and Windows (including WSL)
   <br/>
   <sup>
     <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a>, <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a> and <a href="https://chezmoi.io" target="_blank">chezmoi</a></sub>
@@ -17,7 +17,7 @@
 
 ![image](https://github.com/user-attachments/assets/8bf0be64-a2e5-40b3-aeeb-97f735d63f07)
 
-_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [Windows](https://microsoft.com/windows) and [WSL](https://learn.microsoft.com/windows/wsl) ([NixOS](https://nix-community.github.io/NixOS-WSL)), personalize your environment effortlessly. Securely manage diverse machines using [chezmoi](https://chezmoi.io) and leverage seamless deployment and synchronization._
+_Elevate your computing experience across platforms with this curated collection of configuration files and setup scripts. From [NixOS](https://nixos.org) to [macOS](https://apple.com/macos) with [Nix](https://nixos.org) and [Windows](https://microsoft.com/windows) including [WSL](https://learn.microsoft.com/windows/wsl) ([NixOS](https://nix-community.github.io/NixOS-WSL)), personalize your environment effortlessly. Securely manage diverse machines using [chezmoi](https://chezmoi.io) and leverage seamless deployment and synchronization._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -25,11 +25,11 @@ _Elevate your computing experience across platforms with this curated collection
 </div>
 
 > [!WARNING]
-> This repository is primarily intended for NixOS and NixOS WSL. While I could have included more features on Windows, they may not perform as well as they do on NixOS (WSL). Tools like Neovim and others are technically functional on Windows, but they are slower. As a result, I've excluded them on Windows. If you want to use these tools on Windows, I recommend using NixOS WSL, it's just a better developer experience.
+> This repository is primarily intended for NixOS, NixOS WSL and macOS. While I could have included more features on Windows, they may not perform as well as they do on NixOS (WSL). Tools like Neovim and others are technically functional on Windows, but they are slower. As a result, I've excluded them on Windows. If you want to use these tools on Windows, I recommend using NixOS WSL, it's just a better developer experience.
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [NixOS](https://nixos.org), [Windows](https://microsoft.com/windows), or [WSL](https://learn.microsoft.com/windows/wsl) installed.
+Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos), [Windows](https://microsoft.com/windows), or [WSL](https://learn.microsoft.com/windows/wsl) installed.
 
 ### WSL (NixOS)
 
@@ -61,7 +61,18 @@ To make NixOS your default distribution, use:
 wsl -s NixOS
 ```
 
-### NixOS (including WSL)
+### macOS
+
+Ensure you have the latest release of [Nix].
+
+Install `Nix` with the [Nix Installer from Determinate Systems](https://determinate.systems):
+
+```sh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+  sh -s -- install
+```
+
+### Nix (including macOS and WSL)
 
 Ensure you have `git` and `chezmoi` available when needed in the installation section.
 
@@ -86,13 +97,11 @@ Clone the dotfiles repository:
 
 ```sh
 git clone https://github.com/Nitestack/dotfiles.git ~/.dotfiles
-# or with SSH
-git clone git@github.com:Nitestack/dotfiles.git ~/.dotfiles
 ```
 
 ### NixOS
 
-Before continuing with the installation, initialize the NixOS system:
+Before continuing with the installation, initialize the Nix system:
 
 ```sh
 sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation"
@@ -100,9 +109,19 @@ sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation"
 
 Please reboot the system and then continue with the [Final Steps](#final-steps).
 
+### macOS
+
+Before continuing with the installation, initialize the Nix system:
+
+```sh
+nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles/nix#macstation"
+```
+
+Please reboot the system and then continue with the [Final Steps](#final-steps).
+
 ### WSL (NixOS)
 
-Before continuing with the installation, initialize the NixOS WSL system:
+Before continuing with the installation, initialize the Nix system:
 
 ```sh
 sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#wslstation"
@@ -116,7 +135,7 @@ wsl -d NixOS --user root exit
 wsl -t NixOS
 ```
 
-Start WSL and then continue with the [Final Steps](#final-steps).
+Restart WSL and then continue with the [Final Steps](#final-steps).
 
 ### Windows
 
