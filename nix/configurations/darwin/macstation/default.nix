@@ -15,6 +15,7 @@ in
     self.nixosModules.base
 
     self.darwinModules.darwin-rebuild
+    self.darwinModules.defaults
     self.darwinModules.homebrew
   ];
 
