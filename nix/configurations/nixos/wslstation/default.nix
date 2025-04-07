@@ -17,7 +17,7 @@ in
     inputs.nixos-wsl.nixosModules.default
 
     self.nixosModules.base
-    self.nixosModules.linux
+    self.nixosModules.linux-only
   ];
   wsl = {
     enable = true;

@@ -3,6 +3,7 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   flake,
+  pkgs,
   ...
 }:
 let
@@ -13,5 +14,14 @@ in
   imports = [
     self.homeModules.base
     self.homeModules.gui
+  ];
+
+  home.packages = with pkgs; [
+    alt-tab-macos
+    aldente
+    iina
+    maccy
+    raycast
+    rectangle
   ];
 }

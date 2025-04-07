@@ -14,7 +14,7 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     self.homeModules.base
-    self.homeModules.linux
+    self.homeModules.linux-only
     self.homeModules.gui
 
     self.homeModules.ghostty

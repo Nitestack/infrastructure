@@ -5,7 +5,7 @@
   system.defaults = {
     dock = {
       autohide = true;
-      autohide-delay = 0;
+      autohide-delay = 0.0;
       show-recents = false;
     };
     finder = {
@@ -21,13 +21,12 @@
     };
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
-      AppleKeyboardUIMode = 2; # keyboard control behavior
+      AppleKeyboardUIMode = 3; # keyboard control behavior
       ApplePressAndHoldEnabled = false; # disable the press-and-hold feature
       AppleScrollerPagingBehavior = true; # jump to the spot that’s clicked on the scroll bar
       AppleShowAllExtensions = true; # show all file extensions in Finder
       AppleShowAllFiles = true; # show hidden files
       NSDocumentSaveNewDocumentsToCloud = false; # don't save new documents to iCloud
-      NSToolbarTitleViewRolloverDelay = 0; # remove the delay when hovering the toolbar title
       "com.apple.keyboard.fnState" = true; # use F1, F2, etc. keys as standard function keys
       "com.apple.swipescrolldirection" = false; # disable “Natural” scrolling direction
     };
