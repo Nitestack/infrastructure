@@ -27,6 +27,11 @@ in
   # Configuration
   nixpkgs.hostPlatform = "x86_64-darwin";
 
+  security.pam.services.sudo_local = {
+    reattach = true;
+    touchIdAuth = true;
+  };
+
   system = {
     configurationRevision = self.rev or self.dirtyRev or null;
     stateVersion = 6;
