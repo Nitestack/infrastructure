@@ -13,7 +13,7 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     self.homeModules.base
-    self.homeModules.gui
+    self.homeModules.gui-only
   ];
 
   home.packages = with pkgs; [

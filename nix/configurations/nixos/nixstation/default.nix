@@ -17,6 +17,7 @@ in
 
     self.nixosModules.base
     self.nixosModules.linux-only
+    self.nixosModules.gui-only
 
     self.nixosModules.audio
     self.nixosModules.backlight
@@ -37,18 +38,12 @@ in
     protonvpn-cli
 
     # Apps
-    bitwarden-desktop
     endeavour
-    google-chrome
     nextcloud-client
     onlyoffice-desktopeditors
     protonmail-desktop
     protonvpn-gui
-    rpi-imager
-    signal-desktop
-    spotify
     stremio
-    vesktop
 
     # NixOS
     gnome-system-monitor

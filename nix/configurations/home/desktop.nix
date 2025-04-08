@@ -15,7 +15,7 @@ in
   imports = [
     self.homeModules.base
     self.homeModules.linux-only
-    self.homeModules.gui
+    self.homeModules.gui-only
 
     self.homeModules.ghostty
     self.homeModules.hyprland
