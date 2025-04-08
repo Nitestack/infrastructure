@@ -1,5 +1,5 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Linux Configuration                                      │
+# │ Linux Only Configuration                                 │
 # ╰──────────────────────────────────────────────────────────╯
 {
   config,
@@ -20,30 +20,6 @@ in
 
   # Nix
   documentation.nixos.enable = false;
-
-  # ── Packages ──────────────────────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    # Essential
-    caddy
-    chezmoi
-    curl
-    git
-    gum
-    python3
-    wget
-
-    # Packages
-    ansible
-    delta
-    lazygit
-    openssl
-    tree
-    unzip
-
-    # Nix
-    nix-prefetch-git
-    nixfmt-rfc-style
-  ];
 
   # ── Users ─────────────────────────────────────────────────────────────
   users = {
