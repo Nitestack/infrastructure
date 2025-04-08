@@ -25,7 +25,7 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
-  # wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
+  # wezterm = "${pkgs.wezterm}/bin/wezterm";
   zen = "${inputs.zen-browser.packages.${pkgs.system}.default}/bin/zen";
 
   cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''

@@ -20,7 +20,7 @@ let
   snixembed = "${pkgs.snixembed}/bin/snixembed";
   spotify = "${pkgs.spotify}/bin/spotify";
   vesktop = "${pkgs.vesktop}/bin/vesktop";
-  # wezterm = "${inputs.wezterm.packages.${pkgs.system}.default}/bin/wezterm";
+  # wezterm = "${pkgs.wezterm}/bin/wezterm";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
   zen = "${inputs.zen-browser.packages.${pkgs.system}.default}/bin/zen";

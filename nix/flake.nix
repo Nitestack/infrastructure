@@ -41,8 +41,6 @@
     };
     # Tmux SessionX
     tmux-sessionx.url = "github:omerxx/tmux-sessionx";
-    # WezTerm
-    wezterm.url = "github:wez/wezterm?dir=nix";
     # Zen Browser
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
