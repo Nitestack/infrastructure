@@ -19,6 +19,7 @@
     ghostscript
     imagemagick
     nixd
+    tree-sitter
     typst
   ];
 }

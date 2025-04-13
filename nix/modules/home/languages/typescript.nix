@@ -13,6 +13,8 @@ in
     prisma
     prisma-engines
     yarn
+
+    npkill
   ];
 
   # ── Prisma ────────────────────────────────────────────────────────────
