@@ -14,15 +14,15 @@ Documents
 .wslconfig
 {{ end }}
 
-# Unix only
-{{ if eq .chezmoi.os "windows" }}
-.chezmoiscripts/unix/**
-{{ end }}
-
 # Linux only
 {{ if ne .chezmoi.os "linux" }}
 .config/lazygit
 .config/vesktop
+{{ end }}
+
+# macOS
+{{ if ne .chezmoi.os "darwin" }}
+Library
 {{ end }}
 
 # Ignore on WSL
