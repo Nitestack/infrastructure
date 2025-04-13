@@ -2,12 +2,6 @@
   /* font, change to 'gg sans' for default discord font*/
   /* --font: ""; */
 
-  /* color of status indicators and window controls */
-  --online-indicator: #a6e3a1; /* change to #23a55a for default green */
-  --dnd-indicator: #f38ba8; /* change to #f23f43 for default red */
-  --idle-indicator: #f9e2af; /* change to #f0b232 for default yellow */
-  --streaming-indicator: #89b4fa; /* change to #593695 for default purple */
-
   /* accent colors */
   --accent-1: hsl(217, 92%, 76%); /* links */
   --accent-2: hsl(217, 92%, 76%); /* general unread/mention elements */
@@ -21,11 +15,9 @@
     66%,
     0.05
   ); /* mentions & mention messages when hovered */
-
-  /* direct messages moon icon */
-  --discord-icon: block; /* discord icon */
 }
 
-.childWrapper_f90abb:has(> svg:not(.favoriteIcon_dcc7a4)) {
-  background: none;
+body {
+  --dms-icon: default;
+  --dms-background: off;
 }
