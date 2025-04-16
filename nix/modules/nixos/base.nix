@@ -59,7 +59,6 @@ in
     # Packages
     ansible
     delta
-    lazygit
     openssl
     tree
     unzip

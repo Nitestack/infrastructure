@@ -21,16 +21,6 @@ function ls {
 function la {
   Invoke-Expression "eza $EzaOptions -gla $($Args -join ' ')"
 }
-function admin {
-  if ($Args.Count -gt 0) {
-    $argList = "& '" + $Args + "'"
-    Start-Process "$PSHome\pwsh.exe" -Verb runAs -ArgumentList $argList
-  }
-  else {
-    Start-Process "$PSHome\pwsh.exe" -Verb runAs
-  }
-}
-Set-Alias -Name sudo -Value admin
 
 # ── Linux utils ───────────────────────────────────────────────────────
 function which($Command) {

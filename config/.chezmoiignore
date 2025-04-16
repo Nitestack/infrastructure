@@ -16,7 +16,6 @@ Documents
 
 # Linux only
 {{ if ne .chezmoi.os "linux" }}
-.config/lazygit
 .config/vesktop
 {{ end }}
 
