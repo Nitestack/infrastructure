@@ -69,10 +69,20 @@ in
       "file://${config.xdg.userDirs.music}"
     ];
 
+  # Programs
+  programs.onlyoffice = {
+    enable = true;
+    settings = {
+      UITheme = "theme-contrast-dark";
+      titlebar = "custom";
+    };
+  };
+
   # ── Services ──────────────────────────────────────────────────────────
   services = {
     cliphist.enable = true;
     easyeffects.enable = true;
     mpris-proxy.enable = true;
+    nextcloud-client.enable = true;
   };
 }

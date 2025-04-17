@@ -41,6 +41,7 @@ in
   # Packages
   homebrew = {
     casks = [
+      "nextcloud"
       "ghostty"
       "zen-browser"
     ];

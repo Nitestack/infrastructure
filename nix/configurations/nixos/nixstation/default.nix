@@ -39,8 +39,6 @@ in
 
     # Apps
     endeavour
-    nextcloud-client
-    onlyoffice-desktopeditors
     protonmail-desktop
     protonvpn-gui
     stremio
@@ -73,10 +71,6 @@ in
   # Services
   services = {
     blueman.enable = true;
-    xserver = {
-      enable = true;
-      excludePackages = with pkgs; [ xterm ];
-    };
     playerctld.enable = true;
   };
 
