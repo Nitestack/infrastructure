@@ -11,7 +11,7 @@
     # Apps
     bitwarden-desktop
     google-chrome
-    signal-desktop
+    signal-desktop-bin
     spotify
     vesktop
   ];
