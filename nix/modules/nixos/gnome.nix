@@ -28,9 +28,13 @@
     snapshot
     yelp
 
+    gnome-color-manager
+
     devhelp
     gnome-builder
 
+    geary
+    seahorse
     sysprof
   ];
 }
