@@ -42,6 +42,7 @@ in
     protonmail-desktop
     protonvpn-gui
     stremio
+    wasistlos
 
     # NixOS
     gnome-system-monitor
