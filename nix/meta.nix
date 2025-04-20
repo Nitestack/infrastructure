@@ -6,8 +6,8 @@
   # Fonts
   font = {
     sans = {
-      name = "Geist";
-      package = pkgs.geist-font;
+      name = "Quicksand";
+      package = pkgs.quicksand;
     };
     nerd = {
       name = "CommitMono Nerd Font";
