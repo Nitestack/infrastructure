@@ -23,7 +23,6 @@ in
     self.homeModules.swaync
     self.homeModules.theme
     self.homeModules.waybar
-    self.homeModules.wlogout
     self.homeModules.zen-browser
   ];
 

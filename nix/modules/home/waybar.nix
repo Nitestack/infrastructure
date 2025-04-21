@@ -11,9 +11,7 @@ let
   inherit (meta) font;
 
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
-  hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-  wlogout = "${pkgs.wlogout}/bin/wlogout";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 in
 {
@@ -41,8 +39,7 @@ in
           "privacy"
           "wireplumber"
           "clock"
-          "custom/lock"
-          "custom/power"
+          "group/group-power"
         ];
         "custom/logo" = {
           format = "";
@@ -142,15 +139,35 @@ in
           format-alt = " {:%d.%m.%Y}";
           format = "󰥔 {:%H:%M}";
         };
+        "group/group-power" = {
+          orientation = "inherit";
+          drawer.transition-left-to-right = false;
+          modules = [
+            "custom/shutdown"
+            "custom/lock"
+            "custom/suspend"
+            "custom/reboot"
+          ];
+        };
+        "custom/shutdown" = {
+          tooltip = false;
+          on-click = "systemctl poweroff";
+          format = "";
+        };
         "custom/lock" = {
           tooltip = false;
-          on-click = hyprlock;
+          on-click = "loginctl lock-session";
           format = "";
         };
-        "custom/power" = {
+        "custom/suspend" = {
+          format = "";
           tooltip = false;
-          on-click = "${wlogout} &";
-          format = "";
+          on-click = "systemctl suspend";
+        };
+        "custom/reboot" = {
+          format = "";
+          tooltip = false;
+          on-click = "systemctl reboot";
         };
       }
     ];
@@ -160,7 +177,9 @@ in
           windowBgColor
           windowFgColor
           accentBgColor
+          successColor
           warningColor
+          warningBgColor
           errorColor
           headerbarBorderColor
           ;
@@ -182,12 +201,19 @@ in
           color: ${textColor};
         }
 
+        /* Common Module Styles */
         .module, #privacy {
           background-color: ${bgColor};
           padding: 0.25rem 0.5rem;
           margin-right: 0.5rem;
           margin-top: 0.1rem;
           margin-bottom: 0.1rem;
+        }
+
+        /* Modules with Background */
+        #mpris, #workspaces, #tray, #privacy, #group-power:hover {
+          border-radius: 1rem;
+          background-color: ${secondaryColor};
         }
 
         /*
@@ -198,6 +224,9 @@ in
         #custom-logo {
           margin-left: 0.5rem;
           color: #5277C3;
+          padding-top: 0.1rem;
+          padding-bottom: 0.1rem;
+          font-size: 18pt;
         }
 
         /* Active App */
@@ -206,10 +235,6 @@ in
         }
 
         /* MPRIS */
-        #mpris {
-          border-radius: 1rem;
-          background-color: ${secondaryColor};
-        }
         #mpris.spotify {
           color: #1ED760;
         }
@@ -222,9 +247,7 @@ in
 
         /* Workspaces */
         #workspaces {
-          border-radius: 1rem;
           padding: 0;
-          background-color: ${secondaryColor};
         }
         #workspaces button {
           border-radius: 1rem;
@@ -239,17 +262,7 @@ in
           border-radius: 1rem;
         }
 
-        /* Tray */
-        #tray {
-          border-radius: 1rem;
-          background-color: ${secondaryColor};
-        }
-
         /* Privacy */
-        #privacy {
-          border-radius: 1rem;
-          background-color: ${secondaryColor};
-        }
         #privacy-item.screenshare {
           color: ${warningColor};
         }
@@ -262,8 +275,21 @@ in
           color: ${errorColor};
         }
 
-        /* Power Button */
-        #custom-power {
+        /* Power Group */
+        #custom-shutdown, #custom-lock, #custom-suspend, #custom-reboot {
+          background-color: transparent;
+        }
+        #custom-lock {
+          margin-left: 0.5rem;
+          color: ${primaryColor};
+        }
+        #custom-suspend {
+          color: ${warningBgColor};
+        }
+        #custom-reboot {
+          color: ${successColor};
+        }
+        #custom-shutdown {
           color: ${errorColor};
         }
       '';
