@@ -13,6 +13,21 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
+
+  inherit (theme.variables)
+    windowBgColor
+    windowFgColor
+    accentBgColor
+    successColor
+    warningColor
+    warningBgColor
+    errorColor
+    headerbarBorderColor
+    ;
+  bgColor = windowBgColor;
+  textColor = windowFgColor;
+  primaryColor = accentBgColor;
+  secondaryColor = headerbarBorderColor;
 in
 {
   programs.waybar = {
@@ -68,6 +83,7 @@ in
             "org.gnome.Music" = "Music Player";
             "ONLYOFFICE" = "Document Editor";
             ".protonvpn-app-wrapped" = "Proton VPN";
+            "qemu" = "QEMU";
             "qt(.*)ct" = "Qt $1 Configuration Tool";
             "rygel-preferences" = "UPnP/DLNA Preferences";
             "Safeeyes" = "Safe Eyes";
@@ -135,9 +151,19 @@ in
           on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
         };
         clock = {
-          timezone = "Europe/Berlin";
-          format-alt = " {:%d.%m.%Y}";
-          format = "󰥔 {:%H:%M}";
+          format = "{:%a %b %e %R}";
+          tooltip-format = "{calendar}";
+          calendar.format = {
+            months = "<big><span color='${textColor}' face='${font.sans.name}'><b>{}</b></span></big>";
+            days = "<tt><span color='${textColor}'>{}</span></tt>";
+            weekdays = "<tt><span color='${errorColor}'>{}</span></tt>";
+            today = "<tt><span color='${primaryColor}'><b>{}</b></span></tt>";
+          };
+          actions = {
+            on-click = "shift_reset";
+            on-scroll-up = "shift_down";
+            on-scroll-down = "shift_up";
+          };
         };
         "group/group-power" = {
           orientation = "inherit";
@@ -171,127 +197,110 @@ in
         };
       }
     ];
-    style =
-      let
-        inherit (theme.variables)
-          windowBgColor
-          windowFgColor
-          accentBgColor
-          successColor
-          warningColor
-          warningBgColor
-          errorColor
-          headerbarBorderColor
-          ;
-        bgColor = windowBgColor;
-        textColor = windowFgColor;
-        primaryColor = accentBgColor;
-        secondaryColor = headerbarBorderColor;
-      in
-      ''
-        * {
-          font-family: "${font.sans.name}", "${font.nerd.propoName}";
-          font-size: 13pt;
-          min-height: 0;
-        }
+    style = ''
+      * {
+        font-family: "${font.sans.name}", "${font.nerd.propoName}";
+        font-size: 13pt;
+        min-height: 0;
+      }
 
-        #waybar {
-          border-radius: 1rem;
-          background: ${bgColor};
-          color: ${textColor};
-        }
+      #waybar {
+        border-radius: 1rem;
+        background: ${bgColor};
+        color: ${textColor};
+      }
 
-        /* Common Module Styles */
-        .module, #privacy {
-          background-color: ${bgColor};
-          padding: 0.25rem 0.5rem;
-          margin-right: 0.5rem;
-          margin-top: 0.1rem;
-          margin-bottom: 0.1rem;
-        }
+      /* Common Module Styles */
+      .module, #privacy {
+        background-color: ${bgColor};
+        padding: 0.25rem 0.5rem;
+        margin-right: 0.5rem;
+        margin-top: 0.1rem;
+        margin-bottom: 0.1rem;
+      }
 
-        /* Modules with Background */
-        #mpris, #workspaces, #tray, #privacy, #group-power:hover {
-          border-radius: 1rem;
-          background-color: ${secondaryColor};
-        }
+      /* Modules with Background */
+      #mpris, #workspaces, #tray, #privacy, #group-power:hover {
+        border-radius: 1rem;
+        background-color: ${secondaryColor};
+      }
 
-        /*
-        * ── Top Bar ───────────────────────────────────────────────────────────
-        */
+      /*
+      * ── Top Bar ───────────────────────────────────────────────────────────
+      */
 
-        /* Logo */
-        #custom-logo {
-          margin-left: 0.5rem;
-          color: #5277C3;
-          padding-top: 0.1rem;
-          padding-bottom: 0.1rem;
-          font-size: 18pt;
-        }
+      /* Logo */
+      #custom-logo {
+        margin-left: 0.5rem;
+        color: #5277C3;
+        padding-top: 0.1rem;
+        padding-bottom: 0.1rem;
+        font-size: 16pt;
+      }
 
-        /* Active App */
-        #window {
-          font-weight: bold;
-        }
+      /* Active App */
+      #window {
+        font-weight: bold;
+      }
 
-        /* MPRIS */
-        #mpris.spotify {
-          color: #1ED760;
-        }
-        #mpris.firefox {
-          color: ${primaryColor};
-        }
-        #mpris.paused {
-          color: ${textColor};
-        }
+      /* MPRIS */
+      #mpris.spotify {
+        color: #1ED760;
+      }
+      #mpris.firefox {
+        color: ${primaryColor};
+      }
+      #mpris.paused {
+        color: ${textColor};
+      }
 
-        /* Workspaces */
-        #workspaces {
-          padding: 0;
-        }
-        #workspaces button {
-          border-radius: 1rem;
-          padding: 0.1rem;
-        }
-        #workspaces button.active {
-          color: ${primaryColor};
-          border-radius: 1rem;
-        }
-        #workspaces button:hover {
-          color: ${primaryColor};
-          border-radius: 1rem;
-        }
+      /* Workspaces */
+      #workspaces {
+        padding: 0;
+      }
+      #workspaces button {
+        border-radius: 1rem;
+        padding: 0.1rem;
+      }
+      #workspaces button.active {
+        color: ${primaryColor};
+        border-radius: 1rem;
+      }
+      #workspaces button:hover {
+        color: ${primaryColor};
+        border-radius: 1rem;
+      }
 
-        /* Privacy */
-        #privacy-item.screenshare {
-          color: ${warningColor};
-        }
-        #privacy-item.audio-in {
-          color: ${errorColor};
-        }
+      /* Privacy */
+      #privacy-item.screenshare {
+        color: ${warningColor};
+      }
+      #privacy-item.audio-in {
+        color: ${errorColor};
+      }
 
-        /* WirePlumber */
-        #wireplumber.muted {
-          color: ${errorColor};
-        }
+      /* WirePlumber */
+      #wireplumber.muted {
+        color: ${errorColor};
+      }
 
-        /* Power Group */
-        #custom-shutdown, #custom-lock, #custom-suspend, #custom-reboot {
-          background-color: transparent;
-        }
-        #custom-lock {
-          margin-left: 0.5rem;
-          color: ${primaryColor};
-        }
-        #custom-suspend {
-          color: ${warningBgColor};
-        }
-        #custom-reboot {
-          color: ${successColor};
-        }
-        #custom-shutdown {
-          color: ${errorColor};
-        }
-      '';
+      /* Power Group */
+      #custom-shutdown, #custom-lock, #custom-suspend, #custom-reboot {
+        background-color: transparent;
+      }
+      #custom-lock {
+        margin-left: 0.5rem;
+        color: ${primaryColor};
+      }
+      #custom-suspend {
+        color: ${warningBgColor};
+      }
+      #custom-reboot {
+        color: ${successColor};
+      }
+      #custom-shutdown {
+        color: ${errorColor};
+      }
+    '';
   };
 }
