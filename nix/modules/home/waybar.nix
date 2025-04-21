@@ -30,12 +30,15 @@ in
         # Modules
         modules-left = [
           "custom/logo"
-          "cpu"
-          "memory"
-          "disk"
+          "hyprland/window"
+          "mpris"
         ];
-        modules-center = [ "mpris" ];
+        modules-center = [
+          "hyprland/workspaces"
+        ];
         modules-right = [
+          "tray"
+          "privacy"
           "wireplumber"
           "clock"
           "custom/lock"
@@ -46,27 +49,59 @@ in
           tooltip = false;
           on-click = "pkill rofi || ${rofi} -show drun";
         };
-        cpu = {
-          format = " {usage}%";
+        "hyprland/window" = {
+          format = "{class}";
+          separate-outputs = true;
+          rewrite = {
+            ".blueman-manager-wrapped" = "Bluetooth";
+            "com.mitchellh.ghostty" = "Ghostty";
+            "org.gnome.Calculator" = "Calculator";
+            "org.gnome.Calendar" = "Calendar";
+            "org.gnome.clocks" = "Clocks";
+            "dconf-editor" = "dconf Editor";
+            "vesktop" = "Discord";
+            "gnome-disks" = "Disks";
+            "evince" = "Document Viewer";
+            "com.github.wwmm.easyeffects" = "Easy Effects";
+            "org.gnome.FileRoller" = "Archive Manager";
+            "org.gnome.Nautilus" = "Files";
+            "org.gnome.font-view" = "Fonts";
+            "google-chrome" = "Google Chrome";
+            "org.gnome.Loupe" = "Image Viewer";
+            "org.gnome.Music" = "Music Player";
+            "ONLYOFFICE" = "Document Editor";
+            ".protonvpn-app-wrapped" = "Proton VPN";
+            "qt(.*)ct" = "Qt $1 Configuration Tool";
+            "rygel-preferences" = "UPnP/DLNA Preferences";
+            "Safeeyes" = "Safe Eyes";
+            "org.gnome.Settings" = "Settings";
+            "signal" = "Signal";
+            "spotify" = "Spotify";
+            "steam" = "Steam";
+            "com.stremio.stremio" = "Stremio";
+            "com.gnome.SystemMonitor" = "System Monitor";
+            "org.gnome.Todo" = "Todo";
+            "totem" = "Video Player";
+            ".virt-manager-wrapped" = "Virtual Machine Manager";
+            "code" = "Visual Studio Code";
+            "wasistlos" = "WhatsApp";
+            "org.wezfurlong.wezterm" = "WezTerm";
+            "zen" = "Zen Browser";
+            "" = "Desktop";
+          };
         };
-        memory = {
-          format = " {percentage}%";
-          tooltip-format = "{used:0.1f}/{total:0.1f}GiB RAM used\n{swapUsed:0.1f}/{swapTotal}GiB swap used";
-        };
-        disk = {
-          format = " {percentage_used}%";
-          unit = "GiB";
-          tooltip-format = "{specific_used:0.1f}/{specific_total:0.1f}GiB used";
+        privacy = {
+          icon-size = 16;
+          icon-spacing = 12;
         };
         mpris = {
           format = "{player_icon} {dynamic}";
-          format-paused = "{status_icon} <i>{dynamic}</i>";
+          format-paused = "{status_icon} {dynamic}";
           interval = 1;
+          dynamic-len = 60;
           dynamic-order = [
             "title"
             "artist"
-            "position"
-            "length"
           ];
           player-icons = {
             firefox = "";
@@ -79,10 +114,18 @@ in
             stopped = "";
           };
         };
-        clock = {
-          timezone = "Europe/Berlin";
-          format-alt = " {:%d.%m.%Y}";
-          format = "󰥔 {:%H:%M}";
+        "hyprland/workspaces" = {
+          format = " {icon} ";
+          format-icons = {
+            active = "";
+            default = "";
+          };
+          on-scroll-up = "${hyprctl} dispatch workspace e+1";
+          on-scroll-down = "${hyprctl} dispatch workspace e-1";
+        };
+        tray = {
+          icon-size = 18;
+          spacing = 12;
         };
         wireplumber = {
           format = "{icon} {volume}%";
@@ -93,6 +136,11 @@ in
             " "
           ];
           on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        };
+        clock = {
+          timezone = "Europe/Berlin";
+          format-alt = " {:%d.%m.%Y}";
+          format = "󰥔 {:%H:%M}";
         };
         "custom/lock" = {
           tooltip = false;
@@ -105,53 +153,6 @@ in
           format = "";
         };
       }
-      {
-        layer = "top";
-        position = "bottom";
-        modules-left = [ "hyprland/workspaces" ];
-        modules-center = [
-          "privacy"
-          "hyprland/window"
-        ];
-        modules-right = [
-          "tray"
-          "wlr/taskbar"
-        ];
-        "hyprland/workspaces" = {
-          format = " {icon} ";
-          format-icons = {
-            active = "";
-            default = "";
-          };
-          on-scroll-up = "${hyprctl} dispatch workspace e+1";
-          on-scroll-down = "${hyprctl} dispatch workspace e-1";
-        };
-        privacy = {
-          icon-spacing = 16;
-        };
-        "hyprland/window" = {
-          icon = true;
-          icon-size = 21;
-          separate-outputs = true;
-          rewrite = {
-            "(.*) — Zen Browser" = "$1";
-            "(.*) - Google Chrome" = "$1";
-            "Spotify Free" = "Spotify";
-            "Spotify Premium" = "Spotify";
-            "web.whatsapp.com" = "WhatsApp";
-          };
-        };
-        "wlr/taskbar" = {
-          icon-size = 21;
-          on-click = "activate";
-          on-click-middle = "close";
-          tooltip-format = "{name}";
-        };
-        tray = {
-          icon-size = 21;
-          spacing = 16;
-        };
-      }
     ];
     style =
       let
@@ -160,46 +161,33 @@ in
           windowFgColor
           accentBgColor
           warningColor
-          warningBgColor
           errorColor
-          ;
-        inherit (theme.palette)
-          blue
-          yellow
+          headerbarBorderColor
           ;
         bgColor = windowBgColor;
         textColor = windowFgColor;
         primaryColor = accentBgColor;
+        secondaryColor = headerbarBorderColor;
       in
       ''
         * {
-          font-family: "${font.nerd.propoName}";
-          font-size: 17px;
+          font-family: "${font.sans.name}", "${font.nerd.propoName}";
+          font-size: 13pt;
           min-height: 0;
         }
 
         #waybar {
-          background: transparent;
+          border-radius: 1rem;
+          background: ${bgColor};
           color: ${textColor};
         }
 
-        #custom-logo,
-        #window,
-        #privacy,
-        #workspaces,
-        #mpris,
-        #tray,
-        #clock,
-        #wireplumber,
-        #custom-lock,
-        #custom-power,
-        #cpu,
-        #memory,
-        #taskbar,
-        #disk {
+        .module, #privacy {
           background-color: ${bgColor};
-          padding: 0.5rem 1rem;
-          margin: 5px 0;
+          padding: 0.25rem 0.5rem;
+          margin-right: 0.5rem;
+          margin-top: 0.1rem;
+          margin-bottom: 0.1rem;
         }
 
         /*
@@ -208,29 +196,19 @@ in
 
         /* Logo */
         #custom-logo {
-          color: #5277C3;
-          border-radius: 1rem;
           margin-left: 0.5rem;
+          color: #5277C3;
         }
 
-        /* System Stats */
-        #cpu {
-          margin-left: 1rem;
-          border-radius: 1rem 0px 0px 1rem;
-          color: ${warningColor};
-        }
-        #memory {
-          color: ${blue."2"};
-        }
-        #disk {
-          border-radius: 0px 1rem 1rem 0px;
-          color: ${yellow."3"};
+        /* Active App */
+        #window {
+          font-weight: bold;
         }
 
         /* MPRIS */
         #mpris {
-          font-weight: bold;
           border-radius: 1rem;
+          background-color: ${secondaryColor};
         }
         #mpris.spotify {
           color: #1ED760;
@@ -239,45 +217,14 @@ in
           color: ${primaryColor};
         }
         #mpris.paused {
-          color: ${warningBgColor};
+          color: ${textColor};
         }
-
-        /* WirePlumber */
-        #wireplumber {
-          border-radius: 1rem 0px 0px 1rem;
-          margin-left: 1rem;
-        }
-        #wireplumber.muted {
-          color: ${errorColor};
-        }
-
-        #clock {
-          border-radius: 0px 1rem 1rem 0px;
-          margin-right: 1rem;
-        }
-
-        #custom-lock {
-          border-radius: 1rem 0px 0px 1rem;
-          color: ${warningBgColor};
-        }
-
-        /* Power Button */
-        #custom-power {
-          border-radius: 0px 1rem 1rem 0px;
-          color: ${errorColor};
-          margin-right: 0.5rem;
-        }
-
-        /*
-        * ── Bottom Bar ────────────────────────────────────────────────────────
-        */
 
         /* Workspaces */
         #workspaces {
           border-radius: 1rem;
-          margin-left: 0.5rem;
           padding: 0;
-          margin-right: 1rem;
+          background-color: ${secondaryColor};
         }
         #workspaces button {
           border-radius: 1rem;
@@ -292,10 +239,16 @@ in
           border-radius: 1rem;
         }
 
+        /* Tray */
+        #tray {
+          border-radius: 1rem;
+          background-color: ${secondaryColor};
+        }
+
         /* Privacy */
         #privacy {
-          margin-left: 1rem;
           border-radius: 1rem;
+          background-color: ${secondaryColor};
         }
         #privacy-item.screenshare {
           color: ${warningColor};
@@ -304,42 +257,14 @@ in
           color: ${errorColor};
         }
 
-        /* Active App */
-        #window {
-          border-radius: 1rem;
-          font-weight: bold;
+        /* WirePlumber */
+        #wireplumber.muted {
+          color: ${errorColor};
         }
 
-        window#waybar.empty #window {
-          background-color: transparent;
-        }
-
-        /* Tray */
-        #tray {
-          margin-left: 1rem;
-          border-radius: 1rem;
-        }
-
-        /* Taskbar */
-        #taskbar {
-          margin-left: 1rem;
-          border-radius: 1rem;
-          margin-right: 0.5rem;
-          padding: 0;
-          padding-left: 0.5rem;
-          padding-right: 0.5rem;
-        }
-        #taskbar button {
-          padding: 0.5rem;
-        }
-        #taskbar button.active {
-          padding-bottom: calc(0.5rem - 2px);
-          border-bottom: 2px solid ${primaryColor};
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-        #taskbar button.active:hover {
-          border-radius: inherit;
+        /* Power Button */
+        #custom-power {
+          color: ${errorColor};
         }
       '';
   };
