@@ -29,7 +29,11 @@ _Elevate your computing experience across platforms with this curated collection
 
 ## ⚙️ Requirements
 
-Ensure you have the latest stable release of [NixOS](https://nixos.org), [macOS](https://apple.com/macos), [Windows](https://microsoft.com/windows), or [WSL](https://learn.microsoft.com/windows/wsl) installed.
+### NixOS
+
+Ensure you have the latest release of [NixOS](https://nixos.org/download) installed. 
+
+Please run either the graphical installer or manually install NixOS on your system.
 
 ### WSL (NixOS)
 
@@ -63,7 +67,7 @@ wsl -s NixOS
 
 ### macOS
 
-Ensure you have the latest release of [Nix].
+Ensure you have the latest version of [macOS](https://apple.com/macos) and [Nix](https://nixos.org) installed.
 
 Install `Nix` with the [Nix Installer from Determinate Systems](https://determinate.systems):
 
@@ -82,7 +86,7 @@ nix-shell -p git chezmoi
 
 ### Windows
 
-Ensure you have `git`, `chezmoi`, and `pwsh` installed.
+Ensure you have the latest version of [Windows](https://www.microsoft.com/software-download) as well as `git`, `chezmoi`, and `pwsh` installed.
 
 ```pwsh
 winget install -e --accept-package-agreements --accept-source-agreements Git.Git twpayne.chezmoi Microsoft.PowerShell
