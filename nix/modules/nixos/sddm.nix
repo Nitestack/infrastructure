@@ -21,8 +21,8 @@
     (pkgs.sddm-astronaut.override {
       embeddedTheme = "jake_the_dog";
       themeConfig = {
-        DateFormat = "\"dddd, d MMMM\"";
-        HourFormat = "\"H:mm\"";
+        DateFormat = "\"dddd, MMMM d\"";
+        HourFormat = "\"HH:mm\"";
       };
     })
   ];

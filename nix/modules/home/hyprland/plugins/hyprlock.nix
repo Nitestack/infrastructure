@@ -173,7 +173,7 @@ in
         }
         {
           monitor = "";
-          text = "cmd[update:1000] echo \"$(LC_TIME=\"en_US.UTF-8\" date +\"%A, %-d %B\")\"";
+          text = "cmd[update:1000] echo \"$(LC_TIME=\"en_US.UTF-8\" date +\"%A, %B %-d\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 20;
           font_family = "${font.sans.name} Bold";
