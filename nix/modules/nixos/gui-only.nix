@@ -12,7 +12,6 @@
     bitwarden-desktop
     google-chrome
     signal-desktop-bin
-    spotify
     vesktop
   ];
 }

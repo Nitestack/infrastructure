@@ -5,6 +5,7 @@
   flake,
   pkgs,
   meta,
+  config,
   ...
 }:
 let
@@ -18,7 +19,7 @@ let
   proton-mail = "${pkgs.protonmail-desktop}/bin/proton-mail";
   safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
   snixembed = "${pkgs.snixembed}/bin/snixembed";
-  spotify = "${pkgs.spotify}/bin/spotify";
+  spotify = "${config.programs.spicetify.spicedSpotify}/bin/spotify";
   vesktop = "${pkgs.vesktop}/bin/vesktop";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
