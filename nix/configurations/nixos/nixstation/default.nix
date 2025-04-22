@@ -40,7 +40,7 @@ in
     # Apps
     endeavour
     protonmail-desktop
-    protonvpn-gui
+    # protonvpn-gui # INFO: A dependency is marked broken
     stremio
     wasistlos
 
