@@ -89,7 +89,9 @@ in
           enabled = true;
           margin = mkLiteral "0px";
           padding = mkLiteral "0px";
+          border = mkLiteral "2px";
           border-radius = mkLiteral "10px";
+          border-color = mkLiteral "@border-color";
           cursor = "default";
           background-color = mkLiteral "@background-color";
         };
