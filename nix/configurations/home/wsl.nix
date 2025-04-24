@@ -11,9 +11,4 @@ in
     self.homeModules.base
     self.homeModules.linux-only
   ];
-
-  shells.zsh = {
-    enable = true;
-    enablePerformanceMode = true;
-  };
 }

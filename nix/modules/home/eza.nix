@@ -4,12 +4,19 @@
 {
   programs.eza = {
     enable = true;
-    enableZshIntegration = false; # just adds various shell aliases, already handled by Oh My Zsh
+    enableZshIntegration = false;
+    enableNushellIntegration = false;
     extraOptions = [
       "--group-directories-first"
       "--octal-permissions"
     ];
     git = true;
     icons = "always";
+  };
+  home.shellAliases = {
+    ls = "eza";
+    l = "eza -gla";
+    ll = "eza -gl";
+    lt = "eza -T";
   };
 }

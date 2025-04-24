@@ -16,11 +16,11 @@ in
     self.homeModules.bat
     self.homeModules.direnv
     self.homeModules.eza
-    self.homeModules.fzf
     self.homeModules.git
     self.homeModules.neovim
+    self.homeModules.nushell
+    self.homeModules.oh-my-posh
     self.homeModules.tmux
-    self.homeModules.zsh
 
     self.homeModules.languages
   ];
@@ -32,6 +32,14 @@ in
 
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     stateVersion = "24.05";
+
+    packages = with pkgs; [ vivid ];
+
+    # Shared across all shells
+    shellAliases = {
+      v = "nvim";
+      proton-mail = "XDG_SESSION_TYPE=x11 proton-mail";
+    };
   };
 
   xdg.enable = true;
@@ -41,19 +49,14 @@ in
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
     btop.enable = true;
+    carapace.enable = true;
     fastfetch.enable = true;
     fd.enable = true;
     home-manager.enable = true;
     jq.enable = true;
-    # Module is not supporting custom path, so using it manually
-    # oh-my-posh = {
-    #   enable = true;
-    #   enableZshIntegration = true;
-    # };
     ripgrep.enable = true;
     zoxide = {
       enable = true;
-      enableZshIntegration = true;
       options = [
         "--cmd"
         "cd"

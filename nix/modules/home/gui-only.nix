@@ -18,9 +18,6 @@ in
     self.homeModules.wezterm
   ];
 
-  # Configuration
-  shells.zsh.enable = true;
-
   # ── Programs ──────────────────────────────────────────────────────────
   home.packages =
     # Fonts
@@ -37,9 +34,5 @@ in
   programs = {
     cava.enable = true;
     vscode.enable = true;
-    nix-index = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 }

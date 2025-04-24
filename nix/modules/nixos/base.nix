@@ -82,13 +82,11 @@ in
     home = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${meta.username}";
   };
 
-  # ── Zsh ───────────────────────────────────────────────────────────────
-  programs.zsh.enable = true;
-  # zsh completion for system packages
-  environment.pathsToLink = [ "/share/zsh" ];
-
   # ── Programs ──────────────────────────────────────────────────────────
-  programs.tmux.enable = true;
+  programs = {
+    tmux.enable = true;
+    zsh.enable = true;
+  };
 
   # ── Localization ──────────────────────────────────────────────────────
   time.timeZone = "Europe/Berlin";
