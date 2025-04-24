@@ -11,12 +11,6 @@ local M = {}
 ---@module "wezterm"
 ---@param config Config
 function M.setup(config)
-  -- ── Windows ─────────────────────────────────────────────────────────
-  if string.find(wezterm.target_triple, "windows") ~= nil then
-    require("config.platforms.windows").setup(config)
-    return
-  end
-
   -- ── Unix ────────────────────────────────────────────────────────────
   config.enable_tab_bar = false
   -- ── Linux ───────────────────────────────────────────────────────────

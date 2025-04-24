@@ -26,7 +26,6 @@ apps:
   work:
     winget:
       - "Docker.DockerDesktop"
-      - "wez.wezterm"
   personal:
     winget:
       - "XPDM5VSMTKQLBJ" # Battle.net
@@ -57,5 +56,6 @@ apps:
     - "CommitMono Nerd Font"
     - "Iosevka Nerd Font"
     - "VictorMono Nerd Font"
-    - "AnkerWork" 
+    - "AnkerWork"
     - "Zen Browser"
+
