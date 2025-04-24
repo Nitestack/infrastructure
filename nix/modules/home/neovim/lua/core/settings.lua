@@ -55,6 +55,10 @@ function M.run()
     A = true, -- don't give the "ATTENTION" message when an existing swap file is found
   })
 
+  if utils.shell.is_nushell() then
+    utils.shell.setup_nushell()
+  end
+
   -- Setup WSL clipboard
   if utils.is_wsl() then
     -- Sync WSL clipboard with Windows clipboard

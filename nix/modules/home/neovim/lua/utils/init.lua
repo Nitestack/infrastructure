@@ -6,6 +6,7 @@
 ---@field cmds utils.cmds
 ---@field mappings utils.mappings
 ---@field plugin utils.plugin
+---@field shell utils.shell
 local M = {}
 
 setmetatable(M, {

@@ -47,6 +47,20 @@ M.auto_cmds = {
       end,
     },
   },
+  -- Nushell Integration
+  {
+    "OptionSet",
+    {
+      pattern = "shell",
+      callback = function()
+        if utils.shell.is_nushell() then
+          utils.shell.setup_nushell()
+        else
+          utils.shell.setup_posix_shell()
+        end
+      end,
+    },
+  },
 }
 
 M.auto_cmd_opts = {}
