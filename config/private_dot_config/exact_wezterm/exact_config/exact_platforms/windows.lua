@@ -18,7 +18,7 @@ function M.setup(config)
   config.show_new_tab_button_in_tab_bar = false
 
   -- set WSL to be the default program
-  config.default_prog = { [[C:\Program Files\WSL\wsl.exe]], "--cd", "~" }
+  config.default_prog = { [[C:\Program Files\WSL\wsl.exe]], "--", "nu", "-e", "cd" }
 end
 
 return M
