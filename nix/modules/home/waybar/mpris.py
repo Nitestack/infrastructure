@@ -96,6 +96,10 @@ if __name__ == "__main__":
             status,
             player,
         ):
+            # Reset scroll offset on change
+            if (title, artist, player) != (new_title, new_artist, new_player):
+                scroll_offset = 0
+
             title, artist, status, player = (
                 new_title,
                 new_artist,
@@ -104,9 +108,6 @@ if __name__ == "__main__":
             )
             text = f"{title} - {artist}"
             length = len(text)
-            # Reset scroll offset on change
-            if (title, artist, player) != (new_title, new_artist, new_player):
-                scroll_offset = 0
         pos = get_position()
 
         # Scrolling Text
