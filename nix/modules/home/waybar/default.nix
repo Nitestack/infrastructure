@@ -10,8 +10,10 @@
 let
   inherit (meta) font;
 
+  blueman-manager = "${pkgs.blueman}/bin/blueman-manager";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
   inherit (theme.variables)
@@ -48,7 +50,7 @@ in
           modules-left = [
             "custom/logo"
             "hyprland/window"
-            "mpris"
+            "custom/mpris"
           ];
           modules-center = [
             "hyprland/workspaces"
@@ -56,13 +58,14 @@ in
           modules-right = [
             "tray"
             "privacy"
-            "wireplumber"
+            "bluetooth"
             "group/group-network"
+            "wireplumber"
             "clock"
             "group/group-power"
           ];
           "custom/logo" = {
-            format = "";
+            format = "<span color='#5277C3'></span>";
             tooltip = false;
             on-click = "pkill rofi || ${rofi} -show drun";
           };
@@ -112,25 +115,11 @@ in
             icon-spacing = spacing;
             icon-size = 16;
           };
-          mpris = {
-            format = "{player_icon} {dynamic}";
-            format-paused = "{status_icon} {dynamic}";
-            interval = 1;
-            dynamic-len = 60;
-            dynamic-order = [
-              "title"
-              "artist"
-            ];
-            player-icons = {
-              firefox = "";
-              spotify = "";
-              default = "";
-            };
-            status-icons = {
-              playing = "";
-              paused = "";
-              stopped = "";
-            };
+          "custom/mpris" = {
+            exec = "python3 -u ${./mpris.py}";
+            return-type = "json";
+            format = "<tt>{text}</tt>";
+            on-click = "${playerctl} play-pause";
           };
           "hyprland/workspaces" = {
             format = " {icon} ";
@@ -145,15 +134,18 @@ in
             inherit spacing;
             icon-size = 18;
           };
-          wireplumber = {
-            format = "{icon} {volume}%";
-            format-muted = " {volume}%";
-            format-icons = [
-              ""
-              ""
-              " "
-            ];
-            on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          bluetooth = {
+            format-connected = "<span color='${primaryColor}'>󰂱</span>";
+            format-on = "<span color='${primaryColor}'>󰂰</span>";
+            format-off = "<span color='${warningBgColor}'>󰂯</span>";
+            format-disabled = "<span color='${errorColor}'>󰂲</span>";
+            format-no-controller = "";
+            tooltip-format-connected = "Connected Devices:\n{device_enumerate}";
+            tooltip-format-enumerate-connected = "• {device_alias}";
+            tooltip-format-on = "Ready";
+            tooltip-format-off = "Idle";
+            tooltip-format-disabled = "Disabled";
+            on-click = blueman-manager;
           };
           "group/group-network" = {
             orientation = "inherit";
@@ -167,9 +159,9 @@ in
           network = {
             format-ethernet = "󰈀";
             format-wifi = "󰖩";
-            format-disconnected = "󰖪";
-            tooltip-format = "{ifname}\n{gwaddr}";
-            tooltip-format-wifi = "{essid} ({frequency} GHz)\n{gwaddr}";
+            format-disconnected = "<span color='${errorColor}'>󰖪</span>";
+            tooltip-format = "<tt>{gwaddr}</tt>";
+            tooltip-format-wifi = "<b>{essid}</b> ({frequency} GHz)\n<tt>{gwaddr}</tt>";
             tooltip-format-disconnected = "Disconnected";
           };
           "network#download" = {
@@ -181,6 +173,16 @@ in
             interval = 1;
             format = "󰕒 {bandwidthUpBits}";
             tooltip-format = "Sending";
+          };
+          wireplumber = {
+            format = "{icon} {volume}%";
+            format-muted = "<span color='${errorColor}'> {volume}%</span>";
+            format-icons = [
+              ""
+              ""
+              " "
+            ];
+            on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
           };
           clock = {
             format = "{:%a %b %e %R}";
@@ -210,22 +212,22 @@ in
           "custom/shutdown" = {
             tooltip = false;
             on-click = "systemctl poweroff";
-            format = "";
+            format = "<span color='${errorColor}'></span>";
           };
           "custom/lock" = {
             tooltip = false;
             on-click = "loginctl lock-session";
-            format = "";
+            format = "<span color='${primaryColor}'></span>";
           };
           "custom/suspend" = {
-            format = "";
             tooltip = false;
             on-click = "systemctl suspend";
+            format = "<span color='${warningBgColor}'></span>";
           };
           "custom/reboot" = {
-            format = "";
             tooltip = false;
             on-click = "systemctl reboot";
+            format = "<span color='${successColor}'></span>";
           };
         }
       ];
@@ -252,7 +254,7 @@ in
       }
 
       /* Modules with Background */
-      #mpris, #workspaces, #tray, #privacy, #group-network:hover, #group-power:hover {
+      #custom-mpris, #workspaces, #tray, #privacy, #group-network:hover, #group-power:hover {
         border-radius: 1rem;
         background-color: ${secondaryColor};
       }
@@ -278,7 +280,6 @@ in
       /* Logo */
       #custom-logo {
         margin-left: 0.5rem;
-        color: #5277C3;
         padding-top: 0.1rem;
         padding-bottom: 0.1rem;
         font-size: 16pt;
@@ -290,13 +291,16 @@ in
       }
 
       /* MPRIS */
-      #mpris.spotify {
+      #custom-mpris.spotify {
         color: #1ED760;
       }
-      #mpris.firefox {
+      #custom-mpris.youtube {
+        color: #CD201F;
+      }
+      #custom-mpris.firefox, #custom-mpris.default {
         color: ${primaryColor};
       }
-      #mpris.paused {
+      #custom-mpris.paused {
         color: ${textColor};
       }
 
@@ -322,30 +326,6 @@ in
         color: ${warningColor};
       }
       #privacy-item.audio-in {
-        color: ${errorColor};
-      }
-
-      /* WirePlumber */
-      #wireplumber.muted {
-        color: ${errorColor};
-      }
-
-      /* Network Group */
-      #network.disconnected {
-        color: ${errorColor};
-      }
-
-      /* Power Group */
-      #custom-lock {
-        color: ${primaryColor};
-      }
-      #custom-suspend {
-        color: ${warningBgColor};
-      }
-      #custom-reboot {
-        color: ${successColor};
-      }
-      #custom-shutdown {
         color: ${errorColor};
       }
     '';
