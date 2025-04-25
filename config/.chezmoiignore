@@ -19,9 +19,14 @@ Documents
 .config/vesktop
 {{ end }}
 
-# macOS
+# macOS only
 {{ if ne .chezmoi.os "darwin" }}
 Library
+{{ end }}
+
+# Ignore on Windows
+{{ if eq .chezmoi.os "windows" }}
+.config/nushell
 {{ end }}
 
 # Ignore on WSL

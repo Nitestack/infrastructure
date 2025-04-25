@@ -18,8 +18,6 @@ in
     self.homeModules.eza
     self.homeModules.git
     self.homeModules.neovim
-    self.homeModules.nushell
-    self.homeModules.oh-my-posh
     self.homeModules.tmux
 
     self.homeModules.languages
@@ -33,9 +31,12 @@ in
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     stateVersion = "24.05";
 
-    packages = with pkgs; [ vivid ];
-
     # Shared across all shells
+    packages = with pkgs; [
+      oh-my-posh
+      vivid
+      zoxide
+    ];
     shellAliases = {
       v = "nvim";
       proton-mail = "XDG_SESSION_TYPE=x11 proton-mail";
@@ -55,12 +56,5 @@ in
     home-manager.enable = true;
     jq.enable = true;
     ripgrep.enable = true;
-    zoxide = {
-      enable = true;
-      options = [
-        "--cmd"
-        "cd"
-      ];
-    };
   };
 }

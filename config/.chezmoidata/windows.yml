@@ -10,15 +10,16 @@ packages:
       - "twpayne.chezmoi"
       - "Git.Git"
       - "charmbracelet.gum"
-      - "Microsoft.PowerShell"
+      - "Nushell.Nushell"
   winget:
     - "sharkdp.bat"
+    - "rsteube.Carapace"
     - "dandavison.delta"
     - "eza-community.eza"
     - "Fastfetch-cli.Fastfetch"
-    - "junegunn.fzf"
     - "JesseDuffield.lazygit"
     - "JanDeDobbeleer.OhMyPosh"
+    - "sharkdp.vivid"
     - "ajeetdsouza.zoxide"
   pwsh_gallery:
     - "PSFzf"
@@ -35,6 +36,7 @@ apps:
       - "FACEITLTD.FACEITAC"
       - "Mojang.MinecraftLauncher"
       - "Valve.Steam"
+      - "Stremio.Stremio"
       - "RiotGames.Valorant.EU"
   winget:
     - "Bitwarden.Bitwarden"
@@ -47,7 +49,6 @@ apps:
     - "Nilesoft.Shell"
     - "OpenWhisperSystems.Signal"
     - "Spotify.Spotify"
-    - "Stremio.Stremio"
     - "Vencord.Vesktop"
     - "Microsoft.VisualStudioCode"
     - "9NKSQGP7F2NH" # WhatsApp Desktop
@@ -56,6 +57,3 @@ apps:
     - "CommitMono Nerd Font"
     - "Iosevka Nerd Font"
     - "VictorMono Nerd Font"
-    - "AnkerWork"
-    - "Zen Browser"
-

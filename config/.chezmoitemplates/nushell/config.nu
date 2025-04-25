@@ -1,0 +1,73 @@
+# ╭──────────────────────────────────────────────────────────╮
+# │ Nushell Config                                           │
+# ╰──────────────────────────────────────────────────────────╯
+
+let host = {
+  is-mac: (sys host | get name | $in == "Darwin")
+  is-nixos: (sys host | get name | $in == "NixOS")
+  is-windows: (sys host | get name | $in == "Windows")
+  is-wsl: (sys host | get kernel_version | str contains "microsoft-standard-WSL2")
+}
+
+# ── Environment Variables ─────────────────────────────────────────────
+
+$env.PROMPT_INDICATOR_VI_NORMAL = ""
+$env.PROMPT_INDICATOR_VI_INSERT = ""
+$env.LS_COLORS = (vivid generate catppuccin-mocha)
+
+# ── Configuration ─────────────────────────────────────────────────────
+
+# History
+$env.config.history.file_format = "sqlite"
+$env.config.history.max_size = 5000000
+$env.config.history.isolation = false
+
+# Misc
+$env.config.show_banner = false
+$env.config.rm.always_trash = true
+
+# Cmdline Editor
+$env.config.edit_mode = "vi"
+# {{ if ne .chezmoi.os "windows" }} Use Neovim on UNIX
+$env.config.buffer_editor = "nvim"
+# {{ else }} Fallback to VSCode on Windows
+$env.config.buffer_editor = "code"
+# {{ end }}
+$env.config.cursor_shape.vi_normal = "block"
+$env.config.cursor_shape.vi_insert = "line"
+
+# Table
+$env.config.table.mode = "compact"
+
+# Completion
+$env.config.completions.algorithm = "fuzzy"
+
+# Colors
+$env.config.highlight_resolved_externals = not $host.is-wsl
+
+# ── Aliases ───────────────────────────────────────────────────────────
+
+# {{ if ne .chezmoi.os "windows" }} Ignore on Windows
+alias "v" = nvim
+alias "vimdiff" = nvim -d
+# {{ end }}
+
+# {{ if (eq .chezmoi.os "linux") }} Only for NixOS Desktop
+alias "proton-mail" = XDG_SESSION_TYPE=x11 proton-mail
+# {{ end }}
+
+alias "eza" = eza --icons always --git --group-directories-first --octal-permissions
+alias "l" = eza -gla
+alias "lg" = lazygit
+alias "ll" = eza -gl
+alias "ls" = eza
+alias "lt" = eza -T
+
+# ── Initialization ────────────────────────────────────────────────────
+# Nu Script Generation in `env.nu`
+
+source $"($nu.default-config-dir)/.carapace.nu" # Carapace
+source $"($nu.default-config-dir)/.oh-my-posh.nu" # Oh My Posh
+source $"($nu.default-config-dir)/.zoxide.nu" # Zoxide
+
+fastfetch
