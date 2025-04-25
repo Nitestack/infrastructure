@@ -31,9 +31,9 @@ return {
 
       ---@type (string|{[1]:string, ft:string|string[]})[]
       local modify_servers = {
-        "bashls",
         "jsonls",
         "yamlls",
+        "nushell",
       }
 
       for _, server_config in ipairs(modify_servers) do

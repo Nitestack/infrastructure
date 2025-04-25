@@ -53,7 +53,6 @@ in
     chezmoi
     curl
     git
-    gum
     python3
     wget
 

@@ -1,0 +1,6 @@
+# {{ if hasKey .apps "manual" }}
+print "Please manually install the following apps:"
+for $app in ('{{ .apps.manual | uniq | sortAlpha | toJson }}' | from json) {
+  print $"  - ($app)"
+}
+# {{ end }}

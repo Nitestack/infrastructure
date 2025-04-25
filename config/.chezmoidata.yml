@@ -9,8 +9,8 @@ packages:
     winget:
       - "twpayne.chezmoi"
       - "Git.Git"
-      - "charmbracelet.gum"
       - "Nushell.Nushell"
+
   winget:
     - "sharkdp.bat"
     - "rsteube.Carapace"
@@ -21,8 +21,6 @@ packages:
     - "JanDeDobbeleer.OhMyPosh"
     - "sharkdp.vivid"
     - "ajeetdsouza.zoxide"
-  pwsh_gallery:
-    - "PSFzf"
 apps:
   work:
     winget:

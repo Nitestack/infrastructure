@@ -19,6 +19,7 @@
     ghostscript
     imagemagick
     nixd
+    nufmt
     tree-sitter
     typst
   ];

@@ -2,32 +2,30 @@
 -- │ Nix                                                     │
 -- ╰─────────────────────────────────────────────────────────╯
 
-return utils.is_linux()
-    and utils.plugin.get_language_spec({
-      lsp = {
-        servers = {
-          nil_ls = {
-            mason = false,
-            autostart = false,
-          },
+return utils.plugin.get_language_spec({
+  lsp = {
+    servers = {
+      nil_ls = {
+        mason = false,
+        autostart = false,
+      },
+      nixd = {
+        settings = {
           nixd = {
-            settings = {
-              nixd = {
-                formatting = {
-                  command = { "nixfmt" },
-                },
-              },
+            formatting = {
+              command = { "nixfmt" },
             },
           },
         },
       },
-      linter = {
-        linters_by_ft = {
-          ["nix"] = { "nix" },
-        },
-      },
-      plugins = {
-        { import = "lazyvim.plugins.extras.lang.nix" },
-      },
-    })
-  or {}
+    },
+  },
+  linter = {
+    linters_by_ft = {
+      ["nix"] = { "nix" },
+    },
+  },
+  plugins = {
+    { import = "lazyvim.plugins.extras.lang.nix" },
+  },
+})
