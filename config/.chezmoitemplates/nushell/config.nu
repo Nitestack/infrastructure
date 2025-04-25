@@ -13,6 +13,7 @@ let host = {
 
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
+$env.BAT_THEME = "Catppuccin Mocha"
 $env.LS_COLORS = (vivid generate catppuccin-mocha)
 
 # ── Configuration ─────────────────────────────────────────────────────

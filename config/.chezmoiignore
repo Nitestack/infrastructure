@@ -8,7 +8,6 @@
 
 .ssh
 AppData
-Documents
 
 .gitconfig
 .wslconfig
