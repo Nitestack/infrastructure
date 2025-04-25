@@ -4,7 +4,6 @@
 {
   programs.eza = {
     enable = true;
-    enableZshIntegration = false;
     enableNushellIntegration = false;
     extraOptions = [
       "--group-directories-first"

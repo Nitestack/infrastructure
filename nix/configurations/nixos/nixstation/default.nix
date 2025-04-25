@@ -21,6 +21,7 @@ in
 
     self.nixosModules.audio
     self.nixosModules.backlight
+    self.nixosModules.boot
     self.nixosModules.gnome
     self.nixosModules.hyprland
     self.nixosModules.sddm
@@ -73,28 +74,6 @@ in
   services = {
     blueman.enable = true;
     playerctld.enable = true;
-  };
-
-  # Bootloader
-  boot = {
-    tmp.cleanOnBoot = true;
-    loader = {
-      timeout = 60;
-      efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        theme = (
-          pkgs.sleek-grub-theme.override {
-            withStyle = "dark";
-            withBanner = "Boot Manager";
-          }
-        );
-        efiSupport = true;
-        useOSProber = true;
-        device = "nodev";
-        gfxmodeEfi = "1920x1080,auto";
-      };
-    };
   };
 
   # Bluetooth
