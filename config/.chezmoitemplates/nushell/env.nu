@@ -14,3 +14,10 @@ oh-my-posh init nu --config ~/.config/oh-my-posh/config.yml --print | save -f $"
 
 # Zoxide
 zoxide init nushell --cmd cd | save -f $"($nu.default-config-dir)/.zoxide.nu"
+
+# ── Libs ──────────────────────────────────────────────────────────────
+const libs_dir = ($nu.default-config-dir | path join "lib")
+$env.NU_LIB_DIRS ++= [
+  $libs_dir
+  ($libs_dir | path join "nu_scripts/themes")
+]

@@ -44,7 +44,10 @@ $env.config.table.mode = "compact"
 $env.config.completions.algorithm = "fuzzy"
 
 # Colors
+use nu-themes/catppuccin-mocha.nu
+
 $env.config.highlight_resolved_externals = not $host.is-wsl
+$env.config.color_config = (catppuccin-mocha)
 
 # ── Aliases ───────────────────────────────────────────────────────────
 
@@ -53,10 +56,12 @@ alias "v" = nvim
 alias "vimdiff" = nvim -d
 # {{ end }}
 
-# {{ if (eq .chezmoi.os "linux") }} Only for NixOS Desktop
+# {{ if lookPath "proton-mail" }} Only for NixOS Desktop
 alias "proton-mail" = XDG_SESSION_TYPE=x11 proton-mail
 # {{ end }}
 
+alias "cp" = cp -iv
+alias "mv" = mv -iv
 alias "eza" = eza --icons always --git --group-directories-first --octal-permissions
 alias "l" = eza -gla
 alias "lg" = lazygit

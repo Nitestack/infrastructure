@@ -12,3 +12,22 @@
   include:
     - "*/themes/**"
 {{- end }}
+
+# nu_scripts
+{{- if eq .chezmoi.os "windows" }}
+"AppData/Roaming/nushell/nu_scripts":
+{{- else }}
+".config/nushell/lib/nu_scripts":
+{{- end }}
+  type: archive
+  url: "https://github.com/nushell/nu_scripts/archive/master.tar.gz"
+  stripComponents: 1
+  refreshPeriod: "168h"
+  include:
+    - "*/aliases/**"
+    - "*/custom-completions/**"
+    - "*/custom-menus/**"
+    - "*/modules/**"
+    - "*/nu-hooks/**"
+    - "*/sourced/**"
+    - "*/themes/**"
