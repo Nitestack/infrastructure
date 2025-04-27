@@ -9,7 +9,6 @@
 .ssh
 AppData
 
-.gitconfig
 .wslconfig
 {{ end }}
 

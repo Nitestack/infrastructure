@@ -56,5 +56,6 @@ in
     home-manager.enable = true;
     jq.enable = true;
     ripgrep.enable = true;
+    zsh.enable = true;
   };
 }

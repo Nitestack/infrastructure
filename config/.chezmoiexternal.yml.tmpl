@@ -3,15 +3,27 @@
 # ╰──────────────────────────────────────────────────────────╯
 
 # bat
-{{ if eq .chezmoi.os "windows" -}}
+{{- if eq .chezmoi.os "windows" }}
 "AppData/Roaming/bat":
+{{- else if not (lookPath "nix") }}
+".config/bat":
+{{- end }}
   type: archive
   url: "https://github.com/catppuccin/bat/archive/master.tar.gz"
   stripComponents: 1
   refreshPeriod: "168h"
   include:
     - "*/themes/**"
+
+# delta
+{{- if eq .chezmoi.os "windows" }}
+"AppData/Roaming/delta/themes/catppuccin.gitconfig":
+{{- else }}
+".config/delta/themes/catppuccin.gitconfig":
 {{- end }}
+  type: file
+  url: "https://raw.githubusercontent.com/catppuccin/delta/main/catppuccin.gitconfig"
+  refreshPeriod: "168h"
 
 # nu_scripts
 {{- if eq .chezmoi.os "windows" }}

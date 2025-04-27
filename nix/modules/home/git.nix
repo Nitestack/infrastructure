@@ -1,27 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Git                                                      │
 # ╰──────────────────────────────────────────────────────────╯
-{ theme, ... }:
+{ theme, pkgs, ... }:
 {
   programs = {
-    git = {
-      enable = true;
-      userName = "Nitestack";
-      userEmail = "74626967+Nitestack@users.noreply.github.com";
-      aliases = {
-        count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #";
-      };
-      extraConfig = {
-        core.editor = "nvim";
-        push.autoSetupRemote = true;
-        pull.rebase = true;
-        merge.autoStash = true;
-        rebase.autoStash = true;
-        init.defaultBranch = "main";
-        color.ui = true;
-      };
-      delta.enable = true;
-    };
+    git.enable = true;
     lazygit = {
       enable = true;
       settings =
@@ -63,7 +46,12 @@
       addKeysToAgent = "yes";
     };
   };
-  home.shellAliases = {
-    lg = "lazygit";
+  home = {
+    packages = with pkgs; [ delta ];
+    shellAliases = {
+      lg = "lazygit";
+    };
   };
+  # handled by chezmoi
+  xdg.configFile."git/config".enable = false;
 }

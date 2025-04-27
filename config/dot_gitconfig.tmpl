@@ -6,17 +6,33 @@
   name = "{{- .name -}}"
   email = "{{- .email -}}"
 [core]
-  longpaths = true
+{{- if ne .chezmoi.os "windows" }}
+  editor = "nvim"
+{{- end }}
   pager = "delta"
+  longpaths = true
+[interactive]
+  diffFilter = "delta --color-only"
+[delta]
+  dark = true
+  features = "catppuccin-mocha"
+  line-numbers = true
+  navigate = true
+  side-by-side = true
+[include]
+  path = "{{ env (ne .chezmoi.os "windows" | ternary "XDG_CONFIG_HOME" "APPDATA") }}/delta/themes/catppuccin.gitconfig"
+[color]
+  ui = true
 [pull]
   rebase = true
 [merge]
-autoStash = true
+  autoStash = true
+  conflictstyle = "zdiff3"
 [rebase]
-autoStash = true
+  autoStash = true
 [push]
-autoSetupRemote = true
+  autoSetupRemote = true
 [init]
-defaultBranch = "main"
-[color]
-ui = "auto"
+  defaultBranch = "main"
+[alias]
+  count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #"
