@@ -2,6 +2,10 @@
 # │ Nushell Environment                                      │
 # ╰──────────────────────────────────────────────────────────╯
 
+# {{ if ne .chezmoi.os "windows" }} Ignore on Windows
+$env.path ++= ["~/.local/bin"]
+# {{ end }}
+
 # ── Initialization Script Generation ──────────────────────────────────
 # Sourcing of Nu Script Generation in `config.nu`
 
