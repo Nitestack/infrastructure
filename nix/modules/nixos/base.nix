@@ -58,7 +58,6 @@ in
 
     # Packages
     ansible
-    delta
     openssl
     tree
     unzip
