@@ -20,7 +20,7 @@
   navigate = true
   side-by-side = true
 [include]
-  path = "{{ env (ne .chezmoi.os "windows" | ternary "XDG_CONFIG_HOME" "APPDATA") }}/delta/themes/catppuccin.gitconfig"
+  path = "{{ env (ne .chezmoi.os "windows" | ternary (joinPath .chezmoi.homeDir ".config") "APPDATA") }}/delta/themes/catppuccin.gitconfig"
 [color]
   ui = true
 [pull]
