@@ -29,11 +29,7 @@ $env.config.rm.always_trash = true
 
 # Cmdline Editor
 $env.config.edit_mode = "vi"
-# {{ if ne .chezmoi.os "windows" }} Use Neovim on UNIX
-$env.config.buffer_editor = "nvim"
-# {{ else }} Fallback to VSCode on Windows
-$env.config.buffer_editor = "code"
-# {{ end }}
+$env.config.buffer_editor = "{{- ne .chezmoi.os "windows" | ternary "nvim" "code" -}}"
 $env.config.cursor_shape.vi_normal = "block"
 $env.config.cursor_shape.vi_insert = "line"
 
