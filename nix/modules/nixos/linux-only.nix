@@ -3,21 +3,13 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   config,
-  flake,
   pkgs,
   ...
 }:
 let
-  inherit (flake) inputs;
-  inherit (inputs) self;
   inherit (config) meta;
 in
 {
-  # ── Imports ───────────────────────────────────────────────────────────
-  imports = [
-    self.nixosModules.nh
-  ];
-
   # Nix
   documentation.nixos.enable = false;
 
@@ -47,6 +39,10 @@ in
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
+    };
+    nh = {
+      enable = true;
+      clean.enable = true;
     };
     nix-ld.enable = true;
   };

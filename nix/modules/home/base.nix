@@ -18,6 +18,7 @@ in
     self.homeModules.eza
     self.homeModules.git
     self.homeModules.neovim
+    self.homeModules.nh
     self.homeModules.tmux
 
     self.homeModules.languages

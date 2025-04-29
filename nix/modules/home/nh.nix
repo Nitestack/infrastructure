@@ -34,10 +34,10 @@ let
 
     ${nix-rebuild} test $@
   '';
-  nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
+  darwin-switch = pkgs.writeShellScriptBin "darwin-switch" ''
     #!/usr/bin/env bash
 
-    nix flake update --commit-lock-file --flake ~/.dotfiles/nix $@
+    ${nh} darwin switch ~/.dotfiles/nix -H macstation -- $@
   '';
 in
 {
@@ -45,10 +45,15 @@ in
     enable = true;
     clean.enable = true;
   };
-  environment.systemPackages = [
-    nix-switch
-    nix-boot
-    nix-test
-    nix-flake-update
-  ];
+  home.packages =
+    if pkgs.stdenv.isDarwin then
+      [
+        darwin-switch
+      ]
+    else
+      [
+        nix-switch
+        nix-boot
+        nix-test
+      ];
 }

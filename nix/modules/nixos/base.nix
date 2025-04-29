@@ -12,6 +12,12 @@ let
   inherit (flake) inputs;
   inherit (inputs) self;
   inherit (config) meta theme;
+
+  nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
+    #!/usr/bin/env bash
+
+    nix flake update --commit-lock-file --flake ~/.dotfiles/nix $@
+  '';
 in
 {
   # ── Imports ───────────────────────────────────────────────────────────
@@ -63,6 +69,7 @@ in
     unzip
 
     # Nix
+    nix-flake-update
     nix-prefetch-git
     nixfmt-rfc-style
   ];
