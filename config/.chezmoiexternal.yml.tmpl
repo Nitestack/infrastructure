@@ -8,12 +8,14 @@
 {{- else if not (lookPath "nix") }}
 ".config/bat":
 {{- end }}
+{{- if or (eq .chezmoi.os "windows") (not (lookPath "nix"))}}
   type: archive
   url: "https://github.com/catppuccin/bat/archive/master.tar.gz"
   stripComponents: 1
   refreshPeriod: "168h"
   include:
     - "*/themes/**"
+{{- end }}
 
 # delta
 {{- if eq .chezmoi.os "windows" }}
