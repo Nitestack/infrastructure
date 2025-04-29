@@ -15,6 +15,12 @@ data:
 {{- else }}
   is_wsl: false
 {{- end }}
+  # do not override the Raspberry Pi OS check
+{{- if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "rpi") }}
+  is_pi: true
+{{- else }}
+  is_pi: false
+{{- end }}
 sourceDir: {{ .chezmoi.workingTree | quote }}
 diff:
   exclude:

@@ -27,8 +27,8 @@ Library
 .config/nushell
 {{ end }}
 
-# Ignore on environments without GUI
-{{ if or .is_wsl (contains "rpi" .chezmoi.kernel.osrelease) }}
+# Ignore on Linux environments without GUI
+{{ if or .is_wsl .is_pi }}
 .config/vesktop
 {{ end }}
 
