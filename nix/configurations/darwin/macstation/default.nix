@@ -41,6 +41,7 @@ in
   # Packages
   homebrew = {
     casks = [
+      "ente-auth"
       "nextcloud"
       "ghostty"
       "zen-browser"

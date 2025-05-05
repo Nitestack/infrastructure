@@ -38,6 +38,7 @@ apps:
       - "RiotGames.Valorant.EU"
   winget:
     - "Bitwarden.Bitwarden"
+    - "ente-io.auth-desktop"
     - "Logitech.OptionsPlus"
     - "Nextcloud.NextcloudDesktop"
     - "Microsoft.PowerToys"
