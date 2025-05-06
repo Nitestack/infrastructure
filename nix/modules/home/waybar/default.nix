@@ -118,6 +118,7 @@ in
           "custom/mpris" = {
             exec = "python3 -u ${./mpris.py}";
             return-type = "json";
+            hide-empty-text = true;
             format = "<tt>{text}</tt>";
             on-click = "${playerctl} play-pause";
           };

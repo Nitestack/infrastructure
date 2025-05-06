@@ -60,11 +60,11 @@ def get_position():
 
 
 def get_title():
-    return run_cmd(["playerctl", "metadata", "title"], "Unknown Title")
+    return run_cmd(["playerctl", "metadata", "title"])
 
 
 def get_artist():
-    return run_cmd(["playerctl", "metadata", "artist"], "Unknown Artist")
+    return run_cmd(["playerctl", "metadata", "artist"])
 
 
 def get_metadata():
@@ -111,23 +111,36 @@ if __name__ == "__main__":
         pos = get_position()
 
         # Scrolling Text
-        loop_separator = "   "
-        scrolling_text = text + loop_separator + text
-        if length > MAX_LEN:
-            # always grab MAX_LEN chars from scrolling_text, wrapping seamlessly
-            start = scroll_offset % (length + len(loop_separator))
-            display = f" {scrolling_text[start : start + MAX_LEN]}"
-            scroll_offset = (scroll_offset + 1) % (length + len(loop_separator))
-        else:
-            display = text
-
-        icon_status = pick_icon(status, STATUS_ICONS)
-
         out = {
             "class": player if status.lower() == "playing" else status,
-            "text": f"{pick_icon(player, PLAYER_ICONS) if status.lower() == "playing" else icon_status} {display}",
-            "tooltip": f"{icon_status} {pos}",
+            "tooltip": "",
+            "text": "",
         }
+
+        if len(title) > 0 or len(artist) > 0:
+            icon_status = pick_icon(status, STATUS_ICONS)
+            out["tooltip"] = f"{icon_status} {pos}"
+
+            loop_separator = "   "
+            scrolling_text = text + loop_separator + text
+            if length > MAX_LEN:
+                # always grab MAX_LEN chars from scrolling_text, wrapping seamlessly
+                start = scroll_offset % (length + len(loop_separator))
+                display = f" {scrolling_text[start : start + MAX_LEN]}"
+                scroll_offset = (scroll_offset + 1) % (length + len(loop_separator))
+            else:
+                display = text
+
+            out["text"] = (
+                f"{pick_icon(player, PLAYER_ICONS) if status.lower() == "playing" else icon_status} {display}"
+                if len(title) > 0 and len(artist) > 0
+                else ""
+            )
+        else:
+            out["text"] = ""
+            out["tooltip"] = ""
+            print()
+
         print(json.dumps(out), end="\n")
 
         time.sleep(REFRESH_INTERVAL)
