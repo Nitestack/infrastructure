@@ -3,12 +3,6 @@
 -- ╰─────────────────────────────────────────────────────────╯
 
 return utils.plugin.get_language_spec({
-  mason = {
-    "css-lsp",
-    "cssmodules-language-server",
-    "prettierd",
-    "tailwindcss-language-server",
-  },
   treesitter = {
     "css",
     "scss",

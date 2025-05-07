@@ -4,7 +4,6 @@
 
 return utils.plugin.get_language_spec({
   treesitter = "typst",
-  mason = "tinymist",
   lsp = {
     servers = {
       tinymist = {

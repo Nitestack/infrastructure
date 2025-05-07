@@ -16,9 +16,7 @@ let
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
-  grimblast = "${
-    inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
-  }/bin/grimblast";
+  grimblast = "${inputs.hyprland-contrib.packages.${pkgs.system}.grimblast}/bin/grimblast";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   nautilus = "${pkgs.nautilus}/bin/nautilus";
   playerctl = "${pkgs.playerctl}/bin/playerctl";

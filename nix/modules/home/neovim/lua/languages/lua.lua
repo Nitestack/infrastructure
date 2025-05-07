@@ -38,11 +38,6 @@ return utils.plugin.get_language_spec({
       },
     },
   },
-  mason = {
-    "lua-language-server",
-    "stylua",
-    "selene",
-  },
   formatter = {
     formatters_by_ft = {
       ["lua"] = { "stylua" },

@@ -6,7 +6,6 @@ return utils.plugin.get_language_spec({
   lsp = {
     servers = {
       nil_ls = {
-        mason = false,
         autostart = false,
       },
       nixd = {

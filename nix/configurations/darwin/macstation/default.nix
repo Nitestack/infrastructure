@@ -27,7 +27,9 @@ in
 
   # Configuration
   nixpkgs.hostPlatform = "x86_64-darwin";
+  networking.hostName = "macstation";
 
+  # Root Access
   security.pam.services.sudo_local = {
     reattach = true;
     touchIdAuth = true;

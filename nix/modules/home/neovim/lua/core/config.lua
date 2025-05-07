@@ -15,7 +15,6 @@
 ---@module "conform"
 
 ---@class core.config.plugins
----@field mason string[]
 ---@field treesitter string[]
 ---@field linting utils.plugin.language_config.linter
 ---@field formatting conform.setupOpts
@@ -72,7 +71,6 @@ M.lazyvim = {
 }
 
 M.plugins = {
-  mason = {},
   treesitter = {
     "asm",
     "c",
