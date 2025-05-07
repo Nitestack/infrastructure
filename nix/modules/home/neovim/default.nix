@@ -15,7 +15,7 @@
   xdg.configFile."nvim/init.lua".source = ./init.lua;
 
   home.packages = with pkgs; [
-    # LSP's
+    # NOTE: LSP's (# pnpm add -g @prisma/language-server cssmodules-language-server markdown-toc)
     angular-language-server
     ansible-language-server
     bash-language-server
@@ -34,9 +34,6 @@
     vscode-langservers-extracted
     vtsls
     yaml-language-server
-    # cssmodules-language-server
-    # markdown-toc
-    # prisma-language-server
 
     # Debuggers
     python312Packages.debugpy
