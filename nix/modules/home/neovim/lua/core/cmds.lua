@@ -79,15 +79,6 @@ M.user_cmds = {
       vim.notify("Registers cleared!", vim.log.levels.INFO, { title = "Editor" })
     end,
   },
-  {
-    "UpdateAll",
-    function()
-      vim.cmd("TSUpdate")
-      vim.cmd("MasonUpdate")
-      vim.cmd("MasonToolsUpdate")
-      vim.cmd("Lazy! sync")
-    end,
-  },
 }
 
 M.user_cmd_opts = {}

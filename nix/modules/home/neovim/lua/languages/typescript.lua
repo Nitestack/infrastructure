@@ -50,10 +50,6 @@ return utils.plugin.get_language_spec({
       },
     },
   },
-  mason = {
-    "eslint_d",
-    "prettierd",
-  },
   treesitter = {
     "javascript",
     "jsdoc",
@@ -64,6 +60,7 @@ return utils.plugin.get_language_spec({
       ["javascriptreact"] = { "prettierd" },
       ["typescript"] = { "prettierd" },
       ["typescriptreact"] = { "prettierd" },
+      ["htmlangular"] = { "prettierd" },
     },
   },
   linter = {

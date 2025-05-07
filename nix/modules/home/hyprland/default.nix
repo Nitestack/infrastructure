@@ -19,7 +19,7 @@ in
 
   home.packages = [
     pkgs.brightnessctl
-    inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
+    inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
     pkgs.hyprcursor
     pkgs.hyprpicker
     pkgs.wl-clip-persist

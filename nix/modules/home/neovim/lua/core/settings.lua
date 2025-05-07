@@ -43,8 +43,6 @@ M.disabled_providers = { "perl", "ruby", "node", "python3" }
 function M.run()
   -- Go to previous/next line with h/l/left arrow/right arrow when cursor reaches end/beginning of line
   vim.opt.whichwrap:append("<>[]hl")
-  -- Add binaries installed by `mason.nvim` to path
-  vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
 
   -- For Tailwind CSS wraps
   vim.opt.breakat:remove({ ":", "/", "-" })

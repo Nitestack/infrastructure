@@ -3,11 +3,6 @@
 -- ╰─────────────────────────────────────────────────────────╯
 
 return utils.plugin.get_language_spec({
-  mason = {
-    "bash-language-server",
-    "shellcheck",
-    "shfmt",
-  },
   lsp = {
     servers = {
       bashls = {},

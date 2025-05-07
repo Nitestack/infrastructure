@@ -1,7 +1,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Top-level                                                │
 # ╰──────────────────────────────────────────────────────────╯
-{ self, inputs, ... }:
+{ inputs, ... }:
 {
   imports = [
     inputs.nixos-unified.flakeModules.default
@@ -10,16 +10,9 @@
   perSystem =
     {
       pkgs,
-      system,
-      lib,
       ...
     }:
     {
       formatter = pkgs.nixfmt-rfc-style;
-      _module.args.pkgs = import inputs.nixpkgs {
-        inherit system;
-        overlays = lib.attrValues self.overlays;
-        config.allowUnfree = true;
-      };
     };
 }

@@ -8,7 +8,6 @@ local M = {}
 ---@module "dap"
 
 ---@class utils.plugin.language_config
----@field mason? string|string[]
 ---@field treesitter? string|string[]
 ---@field lsp? utils.plugin.language_config.lsp
 ---@field formatter? utils.plugin.language_config.formatter
@@ -61,15 +60,6 @@ end
 function M.get_language_spec(config)
   ---@type LazyPluginSpec[]
   local spec = {}
-
-  if config.mason then
-    table.insert(spec, {
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-      opts = function(_, opts)
-        opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, utils.str_to_tbl(config.mason))
-      end,
-    })
-  end
 
   if config.treesitter then
     table.insert(spec, {
