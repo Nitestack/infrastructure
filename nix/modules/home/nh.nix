@@ -13,11 +13,13 @@ let
     action="$1"
     shift
 
-    if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-      ${nh} os $action ~/.dotfiles/nix -H wslstation -- $@
+    if uname -r | grep -qEi 'microsoft'; then
+      host="wslstation"
     else
-      ${nh} os $action ~/.dotfiles/nix -H nixstation -- $@
+      host="nixstation"
     fi
+
+    ${nh} os $action ~/.dotfiles/nix -H $host -- $@
   ''}/bin/nix-rebuild";
   nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
     #!/usr/bin/env bash
