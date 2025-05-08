@@ -9,7 +9,7 @@
 let
   inherit (meta) font;
 
-  wallpaper = ../../../../images/wallpapers/Fantasy-Landscape3.png;
+  wallpaper = ../../../../images/wallpapers/black-hole.png;
   user_avatar = ../../../../images/user-avatar.png;
 
   scripts = {

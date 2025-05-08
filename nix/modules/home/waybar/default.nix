@@ -83,6 +83,7 @@ in
               "gnome-disks" = "Disks";
               "evince" = "Document Viewer";
               "com.github.wwmm.easyeffects" = "Easy Effects";
+              "io.ente.auth" = "Ente Auth";
               "org.gnome.FileRoller" = "Archive Manager";
               "org.gnome.Nautilus" = "Files";
               "org.gnome.font-view" = "Fonts";
@@ -90,7 +91,7 @@ in
               "org.gnome.Loupe" = "Image Viewer";
               "org.gnome.Music" = "Music Player";
               "ONLYOFFICE" = "Document Editor";
-              ".protonvpn-app-wrapped" = "Proton VPN";
+              # ".protonvpn-app-wrapped" = "Proton VPN";
               "qemu" = "QEMU";
               "qt(.*)ct" = "Qt $1 Configuration Tool";
               "rygel-preferences" = "UPnP/DLNA Preferences";
@@ -105,6 +106,7 @@ in
               "totem" = "Video Player";
               ".virt-manager-wrapped" = "Virtual Machine Manager";
               "code" = "Visual Studio Code";
+              "waypaper" = "Waypaper";
               "wasistlos" = "WhatsApp";
               "org.wezfurlong.wezterm" = "WezTerm";
               "zen" = "Zen Browser";
