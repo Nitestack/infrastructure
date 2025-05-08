@@ -21,6 +21,7 @@ let
   snixembed = "${pkgs.snixembed}/bin/snixembed";
   spotify = "${config.programs.spicetify.spicedSpotify}/bin/spotify";
   vesktop = "${pkgs.vesktop}/bin/vesktop";
+  waypaper = "${pkgs.waypaper}/bin/waypaper";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
   wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
@@ -29,6 +30,7 @@ in
 {
   wayland.windowManager.hyprland.settings = {
     exec-once = [
+      "${waypaper} --restore"
       "${snixembed} --fork"
       "${safeeyes} -e &"
       "${wl-clip-persist} --clipboard regular"
