@@ -56,9 +56,14 @@ alias "vimdiff" = nvim -d
 alias "proton-mail" = XDG_SESSION_TYPE=x11 proton-mail
 # {{ end }}
 
+# {{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "rpi") }}
+alias "duc" = docker compose pull; docker compose up -d; docker image prune
+# {{ end }}
+
 alias "cp" = cp -iv
 alias "mv" = mv -iv
 alias "eza" = eza --icons always --git --group-directories-first --octal-permissions
+alias "c" = clear
 alias "l" = eza -gla
 alias "lg" = lazygit
 alias "ll" = eza -gl
