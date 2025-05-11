@@ -27,6 +27,7 @@
         (floatByExactClass "org.gnome.Settings")
         (floatByExactClass "dconf-editor")
         (floatByExactClass "steam")
+        (floatByExactClass "waypaper")
 
         (floatByClass "xdg-desktop-portal")
         (floatByClass "xdg-desktop-portal-gnome")
@@ -37,11 +38,11 @@
         (floatByExactTitle "btop")
 
         # Picture-in-Picture
-        (floatByExactTitle "Picture-in-Picture")
-        "keepaspectratio, title:^(Picture-in-Picture)$"
-        "size 25% 25%, title:^(Picture-in-Picture)$"
-        "move 100%-w-${toString gap} 100%-w-${toString (gap + 44)}, title:^(Picture-in-Picture)$"
-        "pin, title:^(Picture-in-Picture)$"
+        (floatByExactTitle "[Pp]icture)[ -]in[ -]([Pp]icture")
+        "keepaspectratio, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "size 25% 25%, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "move 100%-w-${toString gap} 100%-w-${toString gap}, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "pin, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
 
         (floatByTitle "Open File")
         (floatByTitle "Open Folder")
