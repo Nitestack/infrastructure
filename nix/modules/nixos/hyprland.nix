@@ -8,17 +8,13 @@
     hyprlock.enable = true;
   };
 
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-  };
+  xdg.portal.xdgOpenUsePortal = true;
 
   security = {
     pam.services = {
       hyprlock = { };
       sddm.enableGnomeKeyring = true;
     };
-    polkit.enable = true;
   };
   services.gnome.gnome-keyring.enable = true;
 
