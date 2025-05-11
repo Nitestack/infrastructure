@@ -25,5 +25,16 @@ in
         listPlaylistsWithSong
         shuffle
       ];
+      enabledCustomApps = with spicePkgs.apps; [
+        lyricsPlus
+        marketplace
+      ];
+      # nix eval --impure --json --expr 'builtins.attrNames ((builtins.getFlake "github:Gerg-L/spicetify-nix").legacyPackages.x86_64-linux.snippets)'
+      enabledSnippets = with spicePkgs.snippets; [
+        fullscreenHidePlayingFrom
+        prettyLyrics
+        removeTheArtistsAndCreditsSectionsFromTheSidebar
+        queueTopSidePanel
+      ];
     };
 }
