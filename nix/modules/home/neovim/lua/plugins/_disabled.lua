@@ -11,7 +11,7 @@ return vim.tbl_map(function(plugin_name)
 end, {
   "akinsho/bufferline.nvim",
   "folke/tokyonight.nvim",
-  "williamboman/mason.nvim",
-  "williamboman/mason-lspconfig.nvim",
+  "mason-org/mason.nvim",
+  "mason-org/mason-lspconfig.nvim",
   "jay-babu/mason-nvim-dap.nvim",
 })
