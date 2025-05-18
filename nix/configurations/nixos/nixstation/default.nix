@@ -42,7 +42,7 @@ in
     endeavour
     ente-auth
     protonmail-desktop
-    # protonvpn-gui # INFO: A dependency is marked broken
+    protonvpn-gui
     stremio
     wasistlos
 
