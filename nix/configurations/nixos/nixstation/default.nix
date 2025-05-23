@@ -46,6 +46,9 @@ in
     stremio
     wasistlos
 
+    # Games
+    prismlauncher
+
     # NixOS
     gnome-system-monitor
     nautilus

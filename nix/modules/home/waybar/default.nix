@@ -92,6 +92,7 @@ in
               "org.gnome.Music" = "Music Player";
               "ONLYOFFICE" = "Document Editor";
               # ".protonvpn-app-wrapped" = "Proton VPN";
+              "org.prismlauncher.PrismLauncher" = "Prism Launcher";
               "qemu" = "QEMU";
               "qt(.*)ct" = "Qt $1 Configuration Tool";
               "rygel-preferences" = "UPnP/DLNA Preferences";
