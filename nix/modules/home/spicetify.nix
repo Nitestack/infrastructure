@@ -21,7 +21,7 @@ in
       enabledExtensions = with spicePkgs.extensions; [
         adblock
         autoSkipVideo
-        beautifulLyrics
+        # beautifulLyrics
         listPlaylistsWithSong
         shuffle
       ];
