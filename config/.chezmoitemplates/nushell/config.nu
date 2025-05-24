@@ -57,7 +57,7 @@ alias "proton-mail" = XDG_SESSION_TYPE=x11 proton-mail
 # {{ end }}
 
 # {{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "rpi") }}
-alias "duc" = docker compose pull; docker compose up -d; docker image prune
+def duc [] { docker compose pull; docker compose up -d; docker image prune }
 # {{ end }}
 
 alias "cp" = cp -iv
