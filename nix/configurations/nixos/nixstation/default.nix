@@ -47,6 +47,7 @@ in
     wasistlos
 
     # Games
+    heroic
     prismlauncher
 
     # NixOS
