@@ -22,10 +22,10 @@ in
     self.nixosModules.audio
     self.nixosModules.backlight
     self.nixosModules.boot
+    self.nixosModules.games
     self.nixosModules.gnome
     self.nixosModules.hyprland
     self.nixosModules.sddm
-    self.nixosModules.steam
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
@@ -45,10 +45,6 @@ in
     protonvpn-gui
     stremio
     wasistlos
-
-    # Games
-    heroic
-    prismlauncher
 
     # NixOS
     gnome-system-monitor
