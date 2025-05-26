@@ -73,11 +73,13 @@ in
             format = "{class}";
             separate-outputs = true;
             rewrite = {
+              "org.gnome.Decibels" = "Audio Player";
               ".blueman-manager-wrapped" = "Bluetooth";
               "com.mitchellh.ghostty" = "Ghostty";
               "org.gnome.Calculator" = "Calculator";
               "org.gnome.Calendar" = "Calendar";
               "org.gnome.clocks" = "Clocks";
+              "org.gnome.dspy" = "D-Spy";
               "dconf-editor" = "dconf Editor";
               "vesktop" = "Discord";
               "gnome-disks" = "Disks";
@@ -92,7 +94,7 @@ in
               "org.gnome.Loupe" = "Image Viewer";
               "org.gnome.Music" = "Music Player";
               "ONLYOFFICE" = "Document Editor";
-              # ".protonvpn-app-wrapped" = "Proton VPN";
+              ".protonvpn-app-wrapped" = "Proton VPN";
               "org.prismlauncher.PrismLauncher" = "Prism Launcher";
               "qemu" = "QEMU";
               "qt(.*)ct" = "Qt $1 Configuration Tool";
