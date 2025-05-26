@@ -88,6 +88,7 @@ in
               "org.gnome.Nautilus" = "Files";
               "org.gnome.font-view" = "Fonts";
               "google-chrome" = "Google Chrome";
+              "heroic" = "Heroic Games Launcher";
               "org.gnome.Loupe" = "Image Viewer";
               "org.gnome.Music" = "Music Player";
               "ONLYOFFICE" = "Document Editor";
