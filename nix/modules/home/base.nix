@@ -55,7 +55,6 @@ in
     fastfetch.enable = true;
     fd.enable = true;
     home-manager.enable = true;
-    jq.enable = true;
     ripgrep.enable = true;
     zsh.enable = true;
   };
