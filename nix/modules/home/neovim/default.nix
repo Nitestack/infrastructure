@@ -22,6 +22,7 @@
     dockerfile-language-server-nodejs
     docker-compose-language-service
     emmet-language-server
+    gopls
     lua-language-server
     marksman
     nixd
@@ -50,6 +51,8 @@
 
     # Formatters
     black
+    gofumpt
+    gotools
     prettierd
     nixfmt-rfc-style
     nufmt
