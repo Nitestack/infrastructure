@@ -94,7 +94,4 @@ in
       allowedUDPPorts = [ 5353 ]; # enables discovery of Spotify Connect devices
     };
   };
-
-  # Hardware Time
-  time.hardwareClockInLocalTime = true;
 }
