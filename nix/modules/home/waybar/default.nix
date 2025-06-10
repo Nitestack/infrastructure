@@ -32,6 +32,7 @@ let
   secondaryColor = headerbarBorderColor;
 in
 {
+  home.packages = with pkgs; [ socat ];
   programs.waybar = {
     enable = true;
     systemd = {
@@ -49,7 +50,7 @@ in
           # Modules
           modules-left = [
             "custom/logo"
-            "hyprland/window"
+            "custom/window"
             "custom/mpris"
           ];
           modules-center = [
@@ -69,53 +70,11 @@ in
             tooltip = false;
             on-click = "pkill rofi || ${rofi} -show drun";
           };
-          "hyprland/window" = {
-            format = "{class}";
-            separate-outputs = true;
-            rewrite = {
-              "org.gnome.Decibels" = "Audio Player";
-              ".blueman-manager-wrapped" = "Bluetooth";
-              "com.mitchellh.ghostty" = "Ghostty";
-              "org.gnome.Calculator" = "Calculator";
-              "org.gnome.Calendar" = "Calendar";
-              "org.gnome.clocks" = "Clocks";
-              "org.gnome.dspy" = "D-Spy";
-              "dconf-editor" = "dconf Editor";
-              "vesktop" = "Discord";
-              "gnome-disks" = "Disks";
-              "evince" = "Document Viewer";
-              "com.github.wwmm.easyeffects" = "Easy Effects";
-              "io.ente.auth" = "Ente Auth";
-              "org.gnome.FileRoller" = "Archive Manager";
-              "org.gnome.Nautilus" = "Files";
-              "org.gnome.font-view" = "Fonts";
-              "google-chrome" = "Google Chrome";
-              "heroic" = "Heroic Games Launcher";
-              "org.gnome.Loupe" = "Image Viewer";
-              "org.gnome.Music" = "Music Player";
-              "ONLYOFFICE" = "Document Editor";
-              ".protonvpn-app-wrapped" = "Proton VPN";
-              "org.prismlauncher.PrismLauncher" = "Prism Launcher";
-              "qemu" = "QEMU";
-              "qt(.*)ct" = "Qt $1 Configuration Tool";
-              "rygel-preferences" = "UPnP/DLNA Preferences";
-              "Safeeyes" = "Safe Eyes";
-              "org.gnome.Settings" = "Settings";
-              "signal" = "Signal";
-              "spotify" = "Spotify";
-              "steam" = "Steam";
-              "com.stremio.stremio" = "Stremio";
-              "com.gnome.SystemMonitor" = "System Monitor";
-              "org.gnome.Todo" = "Todo";
-              "totem" = "Video Player";
-              ".virt-manager-wrapped" = "Virtual Machine Manager";
-              "code" = "Visual Studio Code";
-              "waypaper" = "Waypaper";
-              "wasistlos" = "WhatsApp";
-              "org.wezfurlong.wezterm" = "WezTerm";
-              "zen" = "Zen Browser";
-              "" = "Desktop";
-            };
+          "custom/window" = {
+            exec = "nu ${./app-name.nu}";
+            return-type = "json";
+            hide-empty-text = true;
+            format = "{text}";
           };
           privacy = {
             icon-spacing = spacing;
@@ -192,7 +151,7 @@ in
             on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
           };
           clock = {
-            format = "{:%a %b %e %R}";
+            format = "{:%a %b %d %R}";
             tooltip-format = "{calendar}";
             calendar.format = {
               months = "<big><span color='${textColor}' face='${font.sans.name}'><b>{}</b></span></big>";
@@ -293,7 +252,7 @@ in
       }
 
       /* Active App */
-      #window {
+      #custom-window {
         font-weight: bold;
       }
 
