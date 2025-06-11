@@ -12,17 +12,17 @@ let
 in
 let
   # Bins
-  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
   grimblast = "${inputs.hyprland-contrib.packages.${pkgs.system}.grimblast}/bin/grimblast";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  jq = "${pkgs.jq}/bin/jq";
   nautilus = "${pkgs.nautilus}/bin/nautilus";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
+  swayosd-client = "${pkgs.swayosd}/bin/swayosd-client --monitor \"$(${hyprctl} monitors -j | ${jq} -r '.[] | select(.focused == true).name')\"";
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-  wpctl = "${pkgs.wireplumber}/bin/wpctl";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
   zen = "${inputs.zen-browser.packages.${pkgs.system}.default}/bin/zen";
 
@@ -53,6 +53,7 @@ let
   screenshots_dir = "${config.xdg.userDirs.pictures}/Screenshots";
 in
 {
+  services.swayosd.enable = true;
   wayland.windowManager.hyprland.settings = {
     "$lmb" = "mouse:272"; # Left mouse button
     "$rmb" = "mouse:273"; # Right mouse button
@@ -130,13 +131,13 @@ in
       ", XF86AudioPrev, Return to Previous Track, exec, ${playerctl} previous"
     ];
     binddel = [
-      ", XF86AudioRaiseVolume, Increase Volume, exec, ${wpctl} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2%+"
-      ", XF86AudioLowerVolume, Decrease Volume, exec, ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 2%-"
-      ", XF86AudioMute, Mute/Unmute Volume, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
-      ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+      ", XF86AudioRaiseVolume, Increase Volume, exec, ${swayosd-client} --output-volume +2"
+      ", XF86AudioLowerVolume, Decrease Volume, exec, ${swayosd-client} --output-volume -2"
+      ", XF86AudioMute, Mute/Unmute Volume, exec, ${swayosd-client} --output-volume mute-toggle"
+      ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${swayosd-client} --input-volume mute-toggle"
 
-      ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${brightnessctl} s 10%+"
-      ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${brightnessctl} s 10%-"
+      ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${swayosd-client} --brightness raise"
+      ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${swayosd-client} --brightness lower"
     ];
     binddm = [
       "SUPER, $rmb, Resize Window, resizewindow"

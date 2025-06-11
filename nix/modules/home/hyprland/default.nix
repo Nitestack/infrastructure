@@ -81,10 +81,6 @@ in
         kb_options = "grp:win_space_toggle";
         kb_rules = "";
 
-        # Specify if and how cursor movement should affect window focus.
-        # https://wiki.hyprland.org/Configuring/Variables/#follow-mouse-cursor
-        follow_mouse = 2;
-
         # Touchpad
         # https://wiki.hyprland.org/Configuring/Variables/#touchpad
         touchpad = {
