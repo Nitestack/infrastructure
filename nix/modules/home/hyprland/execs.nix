@@ -17,8 +17,6 @@ let
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   proton-mail = "${pkgs.protonmail-desktop}/bin/proton-mail";
-  safeeyes = "${pkgs.safeeyes}/bin/safeeyes";
-  snixembed = "${pkgs.snixembed}/bin/snixembed";
   spotify = "${config.programs.spicetify.spicedSpotify}/bin/spotify";
   vesktop = "${pkgs.vesktop}/bin/vesktop";
   waypaper = "${pkgs.waypaper}/bin/waypaper";
@@ -31,8 +29,6 @@ in
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       "${waypaper} --restore"
-      "${snixembed} --fork"
-      "${safeeyes} -e &"
       "${wl-clip-persist} --clipboard regular"
       "${wl-paste} --type text --watch ${cliphist} store"
       "${wl-paste} --type image --watch ${cliphist} store"

@@ -133,6 +133,4 @@ in
     categories = [ "X-Preferences" ];
     terminal = false;
   };
-
-  services.safeeyes.enable = true;
 }

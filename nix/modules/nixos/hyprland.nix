@@ -20,7 +20,6 @@
 
   environment.systemPackages = with pkgs; [
     polkit_gnome
-    snixembed
   ];
 
   # Use Wayland (Electron)
