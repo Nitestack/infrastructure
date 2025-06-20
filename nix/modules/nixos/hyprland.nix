@@ -13,7 +13,6 @@
   security = {
     pam.services = {
       hyprlock = { };
-      sddm.enableGnomeKeyring = true;
     };
   };
   services.gnome.gnome-keyring.enable = true;

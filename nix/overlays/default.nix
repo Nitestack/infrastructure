@@ -14,18 +14,4 @@ final: prev: {
       };
     });
   };
-  sddm-astronaut = prev.sddm-astronaut.overrideAttrs (oldAttrs: {
-    propagatedUserEnvPkgs = oldAttrs.propagatedBuildInputs;
-    propagatedBuildInputs = [ ];
-
-    installPhase =
-      oldAttrs.installPhase
-      + ''
-
-        themeDir="$out/share/sddm/themes/sddm-astronaut-theme"
-
-        mkdir -p $out/share/fonts
-        ln -s $out/share/sddm/themes/sddm-astronaut-theme/Fonts/* $out/share/fonts/
-      '';
-  });
 }

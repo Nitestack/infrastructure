@@ -10,6 +10,7 @@
       excludePackages = with pkgs; [ xterm ];
       desktopManager.gnome.enable = true;
     };
+    displayManager.gdm.enable = true;
   };
 
   xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
