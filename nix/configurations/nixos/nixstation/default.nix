@@ -47,7 +47,6 @@ in
 
     # NixOS
     gnome-system-monitor
-    nautilus
   ];
 
   # Proton VPN

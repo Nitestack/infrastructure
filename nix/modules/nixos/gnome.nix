@@ -4,7 +4,7 @@
 { pkgs, ... }:
 {
   services = {
-    gnome.core-developer-tools.enable = true;
+    gnome.core-apps.enable = false;
     xserver = {
       enable = true;
       excludePackages = with pkgs; [ xterm ];
@@ -15,29 +15,29 @@
 
   xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 
+  environment.systemPackages = with pkgs; [
+    decibels
+    gnome-calculator
+    gnome-calendar
+    gnome-clocks
+    gnome-font-viewer
+    loupe
+    nautilus
+    totem
+
+    dconf-editor
+  ];
+
   environment.gnome.excludePackages = with pkgs; [
-    baobab
-    epiphany
-    gnome-text-editor
-    gnome-characters
-    gnome-console
-    gnome-contacts
-    gnome-logs
-    gnome-maps
-    gnome-system-monitor
-    gnome-weather
-    gnome-connections
-    simple-scan
-    snapshot
-    yelp
-
+    # Disabling GNOME core apps
+    adwaita-icon-theme
+    gnome-backgrounds
     gnome-color-manager
+    gnome-tour
+    gnome-user-docs
 
-    devhelp
-    gnome-builder
-
+    # Disabling programs
     geary
     seahorse
-    sysprof
   ];
 }
