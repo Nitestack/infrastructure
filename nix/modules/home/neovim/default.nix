@@ -50,6 +50,7 @@
     shellcheck
 
     # Formatters
+    bibtex-tidy
     black
     gofumpt
     gotools
