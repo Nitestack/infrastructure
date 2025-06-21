@@ -15,6 +15,11 @@ return utils.plugin.get_language_spec({
       },
     },
   },
+  formatter = {
+    formatters_by_ft = {
+      ["bib"] = { "bibtex-tidy" },
+    },
+  },
   plugins = {
     {
       "kaarmu/typst.vim",
