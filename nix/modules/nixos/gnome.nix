@@ -8,8 +8,8 @@
     xserver = {
       enable = true;
       excludePackages = with pkgs; [ xterm ];
-      desktopManager.gnome.enable = true;
     };
+    desktopManager.gnome.enable = true;
     displayManager.gdm.enable = true;
   };
 
