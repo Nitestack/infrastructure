@@ -4,7 +4,6 @@
 { pkgs, ... }:
 {
   services = {
-    gnome.core-apps.enable = false;
     xserver = {
       enable = true;
       excludePackages = with pkgs; [ xterm ];
@@ -16,20 +15,26 @@
   xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 
   environment.systemPackages = with pkgs; [
-    decibels
-    gnome-calculator
-    gnome-calendar
-    gnome-clocks
-    gnome-font-viewer
-    loupe
-    nautilus
-    totem
-
     dconf-editor
   ];
 
   environment.gnome.excludePackages = with pkgs; [
     # Disabling GNOME core apps
+    baobab
+    epiphany
+    gnome-text-editor
+    gnome-characters
+    gnome-console
+    # gnome-contacts
+    gnome-logs
+    # gnome-maps
+    gnome-music
+    gnome-system-monitor
+    gnome-weather
+    gnome-connections
+    yelp
+
+    # Disabling GNOME core shell apps
     adwaita-icon-theme
     gnome-backgrounds
     gnome-color-manager
