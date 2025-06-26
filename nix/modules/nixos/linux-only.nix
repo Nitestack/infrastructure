@@ -31,9 +31,7 @@ in
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
-    java = {
-      enable = true;
-    };
+    java.enable = true;
     neovim = {
       enable = true;
       defaultEditor = true;
