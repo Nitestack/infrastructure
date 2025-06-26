@@ -33,10 +33,4 @@ in
 
   # Configuration
   nixpkgs.hostPlatform = "x86_64-linux";
-
-  # ── Packages ──────────────────────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    # Apps
-    evince
-  ];
 }
