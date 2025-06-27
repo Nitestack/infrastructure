@@ -38,6 +38,7 @@ in
     protonvpn-cli
 
     # Apps
+    bottles
     endeavour
     ente-auth
     protonmail-desktop
