@@ -64,6 +64,8 @@ in
 
     # Packages
     ansible
+    duf
+    ncdu
     openssl
     tree
     unzip
