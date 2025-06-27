@@ -26,7 +26,6 @@
         (floatByExactClass "org.gnome.SystemMonitor")
         (floatByExactClass "org.gnome.Settings")
         (floatByExactClass "dconf-editor")
-        (floatByExactClass "steam")
         (floatByExactClass "waypaper")
 
         (floatByClass "xdg-desktop-portal")
@@ -34,8 +33,6 @@
         (floatByClass ".blueman-manager")
 
         "dimaround, class:^(gcr-prompter)$"
-
-        (floatByExactTitle "btop")
 
         # Picture-in-Picture
         (floatByExactTitle "[Pp]icture)[ -]in[ -]([Pp]icture")
