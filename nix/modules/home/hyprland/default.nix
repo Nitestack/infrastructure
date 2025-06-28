@@ -73,12 +73,11 @@ in
 
       # Input
       input = {
-        # Toggle between US QWERTY and US Intl QWERTY layout on `Win + Space`
         # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
-        kb_layout = "us, us";
-        kb_variant = "basic, intl";
+        kb_layout = "eu";
+        kb_variant = "";
         kb_model = "";
-        kb_options = "grp:win_space_toggle";
+        kb_options = "";
         kb_rules = "";
 
         # Touchpad
