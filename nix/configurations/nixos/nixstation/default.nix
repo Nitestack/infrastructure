@@ -38,7 +38,9 @@ in
     protonvpn-cli
 
     # Apps
-    bottles
+    (bottles.override {
+      removeWarningPopup = true;
+    })
     endeavour
     ente-auth
     protonmail-desktop
