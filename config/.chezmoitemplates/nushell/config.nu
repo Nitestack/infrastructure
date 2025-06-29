@@ -56,6 +56,10 @@ alias "vimdiff" = nvim -d
 alias "proton-mail" = XDG_SESSION_TYPE=x11 proton-mail
 # {{ end }}
 
+# {{ if lookPath "nix-shell" }} Only for NixOS Desktop
+alias "nix-shell" = nix-shell --run nu
+# {{ end }}
+
 # {{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "rpi") }}
 def duc [] { docker compose pull; docker compose up -d; docker image prune }
 # {{ end }}
