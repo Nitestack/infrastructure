@@ -72,20 +72,8 @@ in
       };
 
       # Input
-      input = {
-        # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
-        kb_layout = "eu";
-        kb_variant = "";
-        kb_model = "";
-        kb_options = "";
-        kb_rules = "";
-
-        # Touchpad
-        # https://wiki.hyprland.org/Configuring/Variables/#touchpad
-        touchpad = {
-          natural_scroll = true; # Inverts scrolling direction. When enabled, scrolling moves content directly, rather than manipulating a scrollbar
-        };
-      };
+      # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
+      input.kb_layout = "eu";
 
       # Gestures
       gestures = {
