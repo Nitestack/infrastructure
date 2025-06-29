@@ -65,6 +65,5 @@ in
     easyeffects.enable = true;
     mpris-proxy.enable = true;
     nextcloud-client.enable = true;
-    swww.enable = true;
   };
 }

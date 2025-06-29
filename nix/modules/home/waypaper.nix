@@ -6,15 +6,20 @@ let
   wallpapers_dir = "${../../images/wallpapers}";
 in
 {
-  home.packages = with pkgs; [ waypaper ];
+  home.packages = with pkgs; [
+    waypaper
+    mpvpaper
+  ];
+  services.swww.enable = true;
+
   xdg.configFile."waypaper/config.ini".source = (pkgs.formats.ini { }).generate "config.ini" {
     Settings = {
       language = "en";
       folder = "${../../images/wallpapers}";
       monitors = "All";
-      wallpaper = "${wallpapers_dir}/black-hole.png";
+      wallpaper = "${wallpapers_dir}/dark-galaxy.mp4";
       show_path_in_tooltip = false;
-      backend = "swww";
+      backend = "mpvpaper";
       fill = "fill";
       sort = "name";
       color = theme.variables.accentBgColor;
