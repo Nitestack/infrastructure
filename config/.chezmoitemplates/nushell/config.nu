@@ -56,10 +56,6 @@ alias "vimdiff" = nvim -d
 alias "proton-mail" = XDG_SESSION_TYPE=x11 proton-mail
 # {{ end }}
 
-# {{ if lookPath "nix-shell" }} Only for NixOS Desktop
-alias "nix-shell" = nix-shell --run nu
-# {{ end }}
-
 # {{ if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "rpi") }}
 def duc [] { docker compose pull; docker compose up -d; docker image prune }
 # {{ end }}
@@ -80,5 +76,9 @@ alias "lt" = eza -T
 source $"($nu.default-config-dir)/.carapace.nu" # Carapace
 source $"($nu.default-config-dir)/.oh-my-posh.nu" # Oh My Posh
 source $"($nu.default-config-dir)/.zoxide.nu" # Zoxide
+
+# {{ if lookPath "nix-your-shell" }} Only for Nix
+source $"($nu.default-config-dir)/.nix-your-shell.nu" # Nix Your Shell
+# {{ end }}
 
 fastfetch

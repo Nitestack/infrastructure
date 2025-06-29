@@ -34,6 +34,7 @@ in
 
     # Shared across all shells
     packages = with pkgs; [
+      nix-your-shell
       oh-my-posh
       vivid
       zoxide
