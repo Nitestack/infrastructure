@@ -30,6 +30,11 @@ blocks:
         properties:
           folder_separator_icon: "/"
           style: full
+      - type: nix-shell
+        style: plain
+        foreground: "#5277C3"
+        background: transparent
+        template: '{{ if ne .Type "unknown" }} (Nix Shell){{ end }}'
       - type: git
         style: plain
         foreground: "#F3C267"
