@@ -41,8 +41,9 @@ in
       home = config.home.homeDirectory;
     in
     [
-      "file://${config.xdg.userDirs.documents}"
       "file://${home}/Studium"
+      "file://${home}/Games"
+      "file://${config.xdg.userDirs.documents}"
       "file://${config.xdg.userDirs.pictures}"
       "file://${config.xdg.userDirs.videos}"
       "file://${config.xdg.userDirs.download}"
