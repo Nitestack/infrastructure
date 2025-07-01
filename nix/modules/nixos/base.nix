@@ -92,6 +92,7 @@ in
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
+    gnupg.agent.enable = true;
     tmux.enable = true;
     zsh.enable = true;
   };

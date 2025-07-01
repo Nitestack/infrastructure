@@ -5,6 +5,11 @@
 [user]
   name = "{{- .name -}}"
   email = "{{- .email -}}"
+  signingkey = "{{- .email -}}"
+[commit]
+  gpgsign = true
+[tag]
+  gpgsign = true
 [core]
 {{- if ne .chezmoi.os "windows" }}
   editor = "nvim"
