@@ -10,8 +10,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "catppuccin";
         repo = "bat";
-        rev = "d3feec47b16a8e99eabb34cdfbaa115541d374fc";
-        sha256 = "1g73x0p8pbzb8d1g1x1fwhwf05sj3nzhbhb65811752p5178fh5k";
+        rev = "6810349b28055dce54076712fc05fc68da4b8ec0";
+        sha256 = "1y5sfi7jfr97z1g6vm2mzbsw59j1jizwlmbadvmx842m0i5ak5ll";
       };
       file = "themes/Catppuccin Mocha.tmTheme";
     };
