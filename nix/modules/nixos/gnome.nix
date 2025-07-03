@@ -4,10 +4,7 @@
 { pkgs, ... }:
 {
   services = {
-    xserver = {
-      enable = true;
-      excludePackages = with pkgs; [ xterm ];
-    };
+    xserver.enable = true;
     desktopManager.gnome.enable = true;
     displayManager.gdm.enable = true;
   };

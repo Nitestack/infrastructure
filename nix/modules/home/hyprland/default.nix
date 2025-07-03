@@ -120,4 +120,6 @@ in
     categories = [ "X-Preferences" ];
     terminal = false;
   };
+
+  services.polkit-gnome.enable = true;
 }
