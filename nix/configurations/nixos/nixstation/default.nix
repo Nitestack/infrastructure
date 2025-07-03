@@ -76,6 +76,7 @@ in
   services = {
     blueman.enable = true;
     playerctld.enable = true;
+    xserver.enable = true;
   };
 
   # Bluetooth

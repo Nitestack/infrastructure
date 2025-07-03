@@ -31,6 +31,10 @@ in
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
+    git = {
+      enable = true;
+      prompt.enable = true;
+    };
     gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
     java.enable = true;
     neovim = {

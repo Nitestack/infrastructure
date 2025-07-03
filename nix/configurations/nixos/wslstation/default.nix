@@ -4,7 +4,6 @@
 {
   flake,
   config,
-  pkgs,
   ...
 }:
 let
@@ -33,4 +32,5 @@ in
 
   # Configuration
   nixpkgs.hostPlatform = "x86_64-linux";
+  networking.hostname = "wslstation";
 }

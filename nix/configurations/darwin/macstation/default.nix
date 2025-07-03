@@ -4,6 +4,7 @@
 {
   flake,
   config,
+  pkgs,
   ...
 }:
 let
@@ -48,4 +49,9 @@ in
       "zen-browser"
     ];
   };
+
+  # INFO: any package that hasn't a `programs` or `services` entry on Nix Darwin (look at `nixos/linux-only.nix`)
+  environment.systemPackages = with pkgs; [
+    git
+  ];
 }

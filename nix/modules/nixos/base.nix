@@ -58,7 +58,6 @@ in
     caddy
     chezmoi
     curl
-    git
     python3
     wget
 
