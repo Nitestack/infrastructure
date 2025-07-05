@@ -55,8 +55,6 @@ in
 
         "suppressevent maximize, class:.*"
         "immediate,class:(steam_app)" # Tearing
-
-        "workspace 4 silent, class:^(vesktop)$"
       ];
       workspace = (
         builtins.concatLists (
