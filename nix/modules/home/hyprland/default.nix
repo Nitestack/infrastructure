@@ -4,10 +4,12 @@
 {
   flake,
   pkgs,
+  meta,
   ...
 }:
 let
   inherit (flake) inputs;
+  inherit (meta) monitors;
 in
 {
   imports =
@@ -60,10 +62,14 @@ in
       # ── Config ────────────────────────────────────────────────────────────
 
       # Monitors
-      monitor = [
-        "DP-1, 1920x1080@144, 0x0, 1"
-        # "DP-2, 1920x1080@144, 1920x0, 1" # In case of a second monitor
-      ];
+      monitor = map (
+        m:
+        let
+          mode = "${m.resolution}@${toString m.refreshRate}";
+          position = "${toString m.position.x}x${toString m.position.y}";
+        in
+        "${m.name}, ${mode}, ${position}, ${toString m.scale}"
+      ) monitors;
 
       # General
       general = {
