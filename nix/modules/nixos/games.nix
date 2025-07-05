@@ -16,4 +16,14 @@
     prismlauncher
     ryubing
   ];
+
+  # Roblox
+  services.flatpak.packages = [ "org.vinegarhq.Sober" ];
+  services.flatpak.overrides."org.vinegarhq.Sober".Context = {
+    filesystems = [
+      "xdg-run/app/com.discordapp.Discord:create"
+      "xdg-run/discord-ipc-0"
+    ];
+    devices = [ "input" ];
+  };
 }
