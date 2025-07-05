@@ -22,6 +22,7 @@ in
     self.nixosModules.audio
     self.nixosModules.backlight
     self.nixosModules.boot
+    self.nixosModules.flatpak
     self.nixosModules.games
     self.nixosModules.gnome
     self.nixosModules.hyprland

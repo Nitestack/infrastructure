@@ -29,6 +29,8 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     # ── Software Inputs ───────────────────────────────────────────────────
+    # Flatpak
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
