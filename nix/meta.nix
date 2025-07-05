@@ -55,4 +55,24 @@
       variant = "mocha";
     };
   };
+  monitors = [
+    {
+      name = "DP-1";
+      resolution = "1920x1080";
+      refreshRate = 144;
+      position = {
+        x = 0;
+        y = 0;
+      };
+    }
+    {
+      name = "HDMI-A-1";
+      resolution = "1920x1080";
+      refreshRate = 200;
+      position = {
+        x = 1920;
+        y = 0;
+      };
+    }
+  ];
 }

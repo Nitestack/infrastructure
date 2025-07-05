@@ -4,7 +4,7 @@
   ...
 }:
 let
-  inherit (lib) mkOption;
+  inherit (lib.options) mkOption;
   inherit (lib.types)
     submodule
     str
@@ -15,6 +15,9 @@ let
 
   mkStringOption = mkOption {
     type = str;
+  };
+  mkIntOption = mkOption {
+    type = int;
   };
   mkPackageOption = mkOption {
     type = package;
@@ -106,6 +109,30 @@ in
                 package = mkPackageOption;
               };
             };
+          };
+          monitors = mkOption {
+            type = listOf (submodule {
+              options = {
+                name = mkStringOption;
+                resolution = mkStringOption;
+                refreshRate = mkIntOption;
+                position = mkOption {
+                  type = submodule {
+                    options = {
+                      x = mkIntOption;
+                      y = mkOption {
+                        type = int;
+                        default = 0;
+                      };
+                    };
+                  };
+                };
+                scale = mkOption {
+                  type = int;
+                  default = 1;
+                };
+              };
+            });
           };
         };
       };
