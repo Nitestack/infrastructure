@@ -17,6 +17,8 @@ let
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   proton-mail = "${pkgs.protonmail-desktop}/bin/proton-mail";
+  steam = "${pkgs.steam}/bin/steam";
+  stremio = "${pkgs.stremio}/bin/stremio";
   spotify = "${config.programs.spicetify.spicedSpotify}/bin/spotify";
   vesktop = "${pkgs.vesktop}/bin/vesktop";
   waypaper = "${pkgs.waypaper}/bin/waypaper";
@@ -34,12 +36,17 @@ in
       "${wl-paste} --type image --watch ${cliphist} store"
       "${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size} &"
 
-      "[workspace 1 silent] ${zen}"
-      # "[workspace 2 silent] ${wezterm} -e tmux"
-      "[workspace 2 silent] ${ghostty} -e tmux"
-      "[workspace 3 silent] ${proton-mail}"
-      "[workspace 4 silent] ${vesktop}"
-      "[workspace 5 silent] ${spotify}"
+      # left monitor
+      "[workspace 1 silent] ${vesktop}"
+      "[workspace 2 silent] ${spotify}"
+      "[workspace 3 silent] ${stremio}"
+      "[workspace 4 silent] ${steam}"
+
+      # right monitor
+      "[workspace 6 silent] ${zen}"
+      # "[workspace 7 silent] ${wezterm} -e tmux"
+      "[workspace 7 silent] ${ghostty} -e tmux"
+      "[workspace 8 silent] ${proton-mail}"
     ];
   };
 }
