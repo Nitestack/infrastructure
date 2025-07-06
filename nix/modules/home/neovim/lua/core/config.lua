@@ -88,6 +88,7 @@ M.plugins = {
     "ini",
     "tmux",
     "xml",
+    "desktop",
   },
   linting = {
     linters_by_ft = {},
