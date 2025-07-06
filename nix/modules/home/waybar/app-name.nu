@@ -1,5 +1,9 @@
 #!/usr/bin/env nu
 
+def normalize_name [name: string] {
+    $name | split row '.' | last | str downcase
+}
+
 def get_app_name [class_name: string] {
     let xdg_dirs = if ($env.XDG_DATA_DIRS? | is-not-empty) {
         $env.XDG_DATA_DIRS | split row ':'
@@ -22,22 +26,28 @@ def get_app_name [class_name: string] {
             let desktop_files = try { glob $desktop_pattern } catch { continue }
 
             for desktop_file in $desktop_files {
-                if ($desktop_file | path exists) {
-                    let content = try { open $desktop_file } catch { continue }
+                let content = try { open $desktop_file } catch { continue }
 
-                    let matches = (
-                        (($desktop_file | path basename | str replace ".desktop" "") == ($class_name | str downcase)) or
-                        ($content | str contains $"StartupWMClass=($class_name)") or
-                        ($content | lines | any {|line|
-                            ($line | str starts-with "Exec=") and ($line | str contains $class_name)
-                        })
-                    )
+                let desktop_filename = $desktop_file | path basename | str replace ".desktop" ""
 
-                    if $matches {
-                        let name_line = $content | lines | where ($it | str starts-with "Name=") | first
-                        if ($name_line | is-not-empty) {
-                            return ($name_line | str replace "Name=" "")
-                        }
+                let wmclass_line = $content | lines | where ($it | str starts-with "StartupWMClass=")
+                let wmclass = if ($wmclass_line | is-not-empty) {
+                    $wmclass_line | first | str replace "StartupWMClass=" ""
+                } else {
+                    ""
+                }
+
+                let matches = (
+                    (($desktop_filename | str downcase) == ($class_name | str downcase)) or # Desktop File Match
+                    (($wmclass | str downcase) == ($class_name | str downcase)) or # StartupWMClass Match
+                    ($desktop_filename | str downcase | str contains (normalize_name $class_name | str downcase)) or # Partial Desktop File Match
+                    ($wmclass | str downcase | str contains (normalize_name $class_name | str downcase)) # Partial StartupWMClass Match
+                )
+
+                if $matches {
+                    let name_line = $content | lines | where ($it | str starts-with "Name=") | first
+                    if ($name_line | is-not-empty) {
+                        return ($name_line | str replace "Name=" "")
                     }
                 }
             }

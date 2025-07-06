@@ -35,10 +35,7 @@ in
   home.packages = with pkgs; [ socat ];
   programs.waybar = {
     enable = true;
-    systemd = {
-      enable = true;
-      target = "hyprland-session.target";
-    };
+    systemd.enable = true;
     settings =
       let
         spacing = 12;
@@ -126,7 +123,7 @@ in
             format-ethernet = "󰈀";
             format-wifi = "󰖩";
             format-disconnected = "<span color='${errorColor}'>󰖪</span>";
-            tooltip-format = "<tt>{gwaddr}</tt>";
+            tooltip-format = "<tt>{ipaddr}</tt>";
             tooltip-format-wifi = "<b>{essid}</b> ({frequency} GHz)\n<tt>{gwaddr}</tt>";
             tooltip-format-disconnected = "Disconnected";
           };
