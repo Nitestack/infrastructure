@@ -33,7 +33,6 @@ def get_app_name [class_name: string] {
                         })
                     )
 
-
                     if $matches {
                         let name_line = $content | lines | where ($it | str starts-with "Name=") | first
                         if ($name_line | is-not-empty) {
@@ -56,6 +55,51 @@ def output_json [app_name: string] {
     print ($json_output | to json --raw)
 }
 
+def get_monitor_active_workspace [monitor_name: string] {
+    try {
+        let monitors = hyprctl monitors -j | from json
+        let monitor = $monitors | where name == $monitor_name | first
+        return $monitor.activeWorkspace.id
+    } catch {
+        return (-1);
+    }
+}
+
+def get_window_workspace [window_address: string] {
+    try {
+        let clients = hyprctl clients -j | from json
+        let window = $clients | where address == $window_address | first
+        return $window.workspace.id
+    } catch {
+        return (-1);
+    }
+}
+
+def get_active_window_for_monitor [monitor_name: string] {
+    try {
+        let monitor = hyprctl monitors -j | from json | where name == $monitor_name | first
+
+        let workspace = hyprctl workspaces -j | from json | where id == $monitor.activeWorkspace.id | first
+
+        if ($workspace.windows > 0) {
+            let window_class = if ($workspace.lastwindow? | is-not-empty) {
+                let clients = hyprctl clients -j | from json
+                let window = $clients | where address == $workspace.lastwindow | first
+                $window.class
+            } else {
+                ""
+            }
+
+            if ($window_class | is-not-empty) {
+                return (get_app_name $window_class)
+            }
+        }
+        return "Desktop"
+    } catch {
+        return "Desktop"
+    }
+}
+
 def handle_event [event: string] {
     let parts = $event | split row ">>"
     if ($parts | length) >= 2 {
@@ -67,20 +111,26 @@ def handle_event [event: string] {
                 if ($event_data | length) >= 1 {
                     let window_class = $event_data.0
                     if ($window_class | is-not-empty) {
-                        let app_name = get_app_name $window_class
-                        output_json $app_name
+                        let active_window = try {
+                            hyprctl activewindow -j | from json
+                        } catch {
+                            return
+                        }
+
+                        let window_workspace = $active_window.workspace.id
+                        let our_workspace = get_monitor_active_workspace $env.WAYBAR_OUTPUT_NAME
+
+                        if $window_workspace == $our_workspace {
+                            let app_name = get_app_name $window_class
+                            output_json $app_name
+                        }
                     } else {
                         output_json "Desktop"
                     }
                 }
             }
-            "focusedmon" => {
-                let current_info = try {
-                    hyprctl activewindow -j | from json | select class
-                } catch {
-                    { class: "Desktop" }
-                }
-                let app_name = get_app_name $current_info.class
+            "movewindow" => {
+                let app_name = get_active_window_for_monitor $env.WAYBAR_OUTPUT_NAME
                 output_json $app_name
             }
             _ => {}
@@ -89,15 +139,7 @@ def handle_event [event: string] {
 }
 
 def main [] {
-    let current_info = try {
-        hyprctl activewindow -j | from json | select class
-    } catch {
-        {
-            class: "Desktop"
-        }
-    }
-
-    let app_name = get_app_name $current_info.class
+    let app_name = get_active_window_for_monitor $env.WAYBAR_OUTPUT_NAME
     output_json $app_name
 
     socat -U - $"UNIX-CONNECT:($env.XDG_RUNTIME_DIR)/hypr/($env.HYPRLAND_INSTANCE_SIGNATURE)/.socket2.sock" | lines | each { |event| handle_event $event }
