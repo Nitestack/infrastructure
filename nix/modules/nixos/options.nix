@@ -11,6 +11,7 @@ let
     package
     listOf
     int
+    nullOr
     ;
 
   mkStringOption = mkOption {
@@ -130,6 +131,14 @@ in
                 scale = mkOption {
                   type = int;
                   default = 1;
+                };
+                backlight = mkOption {
+                  type = nullOr (submodule {
+                    options = {
+                      i2cBus = mkStringOption;
+                      busName = mkStringOption;
+                    };
+                  });
                 };
               };
             });
