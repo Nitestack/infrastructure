@@ -4,7 +4,17 @@ def normalize_name [name: string] {
     $name | split row '.' | last | str downcase
 }
 
-def get_app_name [class_name: string] {
+def get_app_name [class_name: string, window_title?: string] {
+    if ($class_name | str starts-with "steam_app_") {
+        if ($window_title | is-not-empty) {
+            let game_name = $window_title | split row " - " | first | split row " | " | first | split row " – " | first
+            return $game_name
+        } else {
+            return $class_name
+        }
+    }
+
+    # Original desktop file search logic for non-Steam apps
     let xdg_dirs = if ($env.XDG_DATA_DIRS? | is-not-empty) {
         $env.XDG_DATA_DIRS | split row ':'
     } else {
@@ -92,16 +102,15 @@ def get_active_window_for_monitor [monitor_name: string] {
         let workspace = hyprctl workspaces -j | from json | where id == $monitor.activeWorkspace.id | first
 
         if ($workspace.windows > 0) {
-            let window_class = if ($workspace.lastwindow? | is-not-empty) {
+            if ($workspace.lastwindow? | is-not-empty) {
                 let clients = hyprctl clients -j | from json
                 let window = $clients | where address == $workspace.lastwindow | first
-                $window.class
-            } else {
-                ""
-            }
+                let window_class = $window.class
+                let window_title = $window.title
 
-            if ($window_class | is-not-empty) {
-                return (get_app_name $window_class)
+                if ($window_class | is-not-empty) {
+                    return (get_app_name $window_class $window_title)
+                }
             }
         }
         return "Desktop"
@@ -118,8 +127,10 @@ def handle_event [event: string] {
         match $event_type {
             "activewindow" => {
                 let event_data = $parts.1 | split row ","
-                if ($event_data | length) >= 1 {
+                if ($event_data | length) >= 2 {
                     let window_class = $event_data.0
+                    let window_title = $event_data.1
+
                     if ($window_class | is-not-empty) {
                         let active_window = try {
                             hyprctl activewindow -j | from json
@@ -131,7 +142,7 @@ def handle_event [event: string] {
                         let our_workspace = get_monitor_active_workspace $env.WAYBAR_OUTPUT_NAME
 
                         if $window_workspace == $our_workspace {
-                            let app_name = get_app_name $window_class
+                            let app_name = get_app_name $window_class $window_title
                             output_json $app_name
                         }
                     } else {
