@@ -72,6 +72,7 @@ in
             return-type = "json";
             hide-empty-text = true;
             format = "{text}";
+            tooltip-format = "{alt}";
           };
           privacy = {
             icon-spacing = spacing;
