@@ -14,13 +14,4 @@ final: prev: {
       };
     });
   };
-  gns3-gui = prev.gns3-gui.overrideAttrs (oldAttrs: rec {
-    version = "2.2.54";
-    src = prev.fetchFromGitHub {
-      owner = "GNS3";
-      repo = "gns3-gui";
-      rev = "refs/tags/v${version}";
-      hash = "sha256-rR7hrNX7BE86x51yaqvTKGfcc8ESnniFNOZ8Bu1Yzuc=";
-    };
-  });
 }
