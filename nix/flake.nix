@@ -2,7 +2,7 @@
 # │ Nix Flake                                                │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  description = "Nix Configuration for NixOS Desktop and NixOS WSL";
+  description = "Nix Configuration for NixOS (including WSL) and macOS";
 
   # ── Inputs ────────────────────────────────────────────────────────────
   inputs = {
