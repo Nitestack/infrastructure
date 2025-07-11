@@ -2,6 +2,7 @@
 # │ Hyprland                                                 │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  config,
   flake,
   pkgs,
   meta,
@@ -31,34 +32,11 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # package = null;
+    # package = null; # Hyprsunset depends on `hyprctl` from this option
     portalPackage = null;
-    systemd = {
-      enable = true;
-      variables = [ "--all" ];
-    };
+    systemd.enable = false; # disable systemd integration as it conflicts with uwsm
 
     settings = {
-      # ── Environment Variables ─────────────────────────────────────────────
-      env = [
-        # Toolkit Backend Variables
-        "CLUTTER_BACKEND,wayland" # Clutter package already has wayland enabled, this variable will force Clutter applications to try and use the Wayland backend
-        "GDK_BACKEND,wayland,x11,*" # GTK: Use wayland if available. If not: try x11, then any other GDK backend.
-        "SDL_VIDEODRIVER,wayland" # Run SDL2 applications on Wayland. Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
-
-        # XDG Specifications
-        "XDG_CURRENT_DESKTOP,Hyprland"
-        "XDG_SESSION_TYPE,wayland"
-        "XDG_SESSION_DESKTOP,Hyprland"
-
-        # Qt Variables
-        "QT_AUTO_SCREEN_SCALE_FACTOR,1" # Enables automatic scaling, based on the monitor’s pixel density
-        "QT_QPA_PLATFORM,wayland;xcb" # Tell Qt applications to use the Wayland backend, and fall back to x11 if Wayland is unavailable
-        "QT_WAYLAND_DISABLE_WINDOWDECORATION,1" # Disables window decorations on Qt applications
-        "QT_QPA_PLATFORMTHEME,qt6ct" # Tells Qt based applications to pick your theme from qt6ct, use with Kvantum.
-        "QT_STYLE_OVERRIDE,kvantum"
-      ];
-
       # ── Config ────────────────────────────────────────────────────────────
 
       # Monitors
@@ -118,6 +96,23 @@ in
     };
   };
 
+  home.sessionVariables = {
+    # Toolkit Backend Variables
+    CLUTTER_BACKEND = "wayland";
+    GDK_BACKEND = "wayland,x11,*";
+    SDL_VIDEODRIVER = "wayland";
+
+    # Qt Variables
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+  };
+
+  xdg.configFile."uwsm/env".source =
+    "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+
+  services.polkit-gnome.enable = true;
+
   xdg.desktopEntries."org.gnome.Settings" = {
     name = "Settings";
     comment = "Gnome Control Center";
@@ -126,6 +121,4 @@ in
     categories = [ "X-Preferences" ];
     terminal = false;
   };
-
-  services.polkit-gnome.enable = true;
 }

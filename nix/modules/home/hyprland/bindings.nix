@@ -12,6 +12,8 @@ let
 in
 let
   # Bins
+  uwsm-app = "${pkgs.uwsm}/bin/uwsm app --";
+
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
@@ -60,15 +62,15 @@ in
     "$mmb" = "mouse:274"; # Middle mouse button
     bindd =
       [
-        # "SUPER, Slash, Open Terminal, exec, ${wezterm} -e tmux"
-        "SUPER, Slash, Open Terminal, exec, ${ghostty} -e tmux"
-        "SUPER, E, Open File Manager, exec, ${nautilus} --new-window"
-        "SUPER, W, Open Browser, exec, ${zen}"
-        "CTRL SHIFT, Escape, Open System Monitor, exec, ${gnome-system-monitor}"
+        # "SUPER, Slash, Open Terminal, exec, ${uwsm-app} ${wezterm} -e tmux"
+        "SUPER, Slash, Open Terminal, exec, ${uwsm-app} ${ghostty} -e tmux"
+        "SUPER, E, Open File Manager, exec, ${uwsm-app} org.gnome.Nautilus.desktop"
+        "SUPER, W, Open Browser, exec, ${uwsm-app} zen.desktop"
+        "CTRL SHIFT, Escape, Open System Monitor, exec, ${uwsm-app} org.gnome.SystemMonitor.desktop"
 
-        "SUPER, V, Open Clipboard History, exec, ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
-        ", Print, Take Screenshot (Select Area), exec, ${grimblast} --notify --freeze copysave area ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
-        "SUPER, Print, Take Fullscreen Screenshot, exec, ${grimblast} --notify --freeze copysave screen ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
+        "SUPER, V, Open Clipboard History, exec, ${uwsm-app} ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
+        ", Print, Take Screenshot (Select Area), exec, ${uwsm-app} ${grimblast} --notify --freeze copysave area ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
+        "SUPER, Print, Take Fullscreen Screenshot, exec, ${uwsm-app} ${grimblast} --notify --freeze copysave screen ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
 
         "SUPER, H, Move Focus to Left Window, movefocus, l"
         "SUPER, L, Move Focus to Right Window, movefocus, r"
@@ -89,7 +91,7 @@ in
         "SUPER, P, Toggle Focused Window's Pseudo Mode, pseudo"
         "SUPER, R, Toggle Split Orientation, togglesplit"
         "SUPER, T, Toggle Active Window Floating, togglefloating"
-        "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${hyprctl} dispatch workspaceopt allfloat"
+        "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${uwsm-app} ${hyprctl} dispatch workspaceopt allfloat"
       ]
       ++ (builtins.concatLists (
         builtins.genList (
@@ -116,7 +118,7 @@ in
         "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
       ];
     binddr = [
-      "ALT, space, Toggle App Launcher, exec, pkill rofi || ${rofi} -show drun"
+      "ALT, space, Toggle App Launcher, exec, pkill rofi || ${uwsm-app} ${rofi} -show drun -run-command \"uwsm app -- {cmd}\""
     ];
     bindde = [
       "SUPER ALT, H, Move Window Left, movewindow, l"
@@ -125,19 +127,19 @@ in
       "SUPER ALT, J, Move Window Downwards, movewindow, d"
     ];
     binddl = [
-      ", XF86AudioPlay, Play/Pause, exec, ${playerctl} play-pause"
-      ", XF86AudioPause, Play/Pause, exec, ${playerctl} play-pause"
-      ", XF86AudioNext, Skip to Next Track, exec, ${playerctl} next"
-      ", XF86AudioPrev, Return to Previous Track, exec, ${playerctl} previous"
+      ", XF86AudioPlay, Play/Pause, exec, ${uwsm-app} ${playerctl} play-pause"
+      ", XF86AudioPause, Play/Pause, exec, ${uwsm-app} ${playerctl} play-pause"
+      ", XF86AudioNext, Skip to Next Track, exec, ${uwsm-app} ${playerctl} next"
+      ", XF86AudioPrev, Return to Previous Track, exec, ${uwsm-app} ${playerctl} previous"
     ];
     binddel = [
-      ", XF86AudioRaiseVolume, Increase Volume, exec, ${swayosd-client} --output-volume +2"
-      ", XF86AudioLowerVolume, Decrease Volume, exec, ${swayosd-client} --output-volume -2"
-      ", XF86AudioMute, Mute/Unmute Volume, exec, ${swayosd-client} --output-volume mute-toggle"
-      ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${swayosd-client} --input-volume mute-toggle"
+      ", XF86AudioRaiseVolume, Increase Volume, exec, ${uwsm-app} ${swayosd-client} --output-volume +2"
+      ", XF86AudioLowerVolume, Decrease Volume, exec, ${uwsm-app} ${swayosd-client} --output-volume -2"
+      ", XF86AudioMute, Mute/Unmute Volume, exec, ${uwsm-app} ${swayosd-client} --output-volume mute-toggle"
+      ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${uwsm-app} ${swayosd-client} --input-volume mute-toggle"
 
-      ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${swayosd-client} --brightness raise"
-      ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${swayosd-client} --brightness lower"
+      ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${uwsm-app} ${swayosd-client} --brightness raise"
+      ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${uwsm-app} ${swayosd-client} --brightness lower"
     ];
     binddm = [
       "SUPER, $rmb, Resize Window, resizewindow"
