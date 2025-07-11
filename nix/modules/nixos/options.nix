@@ -11,6 +11,7 @@ let
     package
     listOf
     int
+    bool
     nullOr
     ;
 
@@ -131,6 +132,10 @@ in
                 scale = mkOption {
                   type = int;
                   default = 1;
+                };
+                isDefault = mkOption {
+                  type = bool;
+                  default = false;
                 };
                 backlight = mkOption {
                   type = nullOr (submodule {
