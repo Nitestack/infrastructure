@@ -64,11 +64,11 @@
         x = 0;
         y = 0;
       };
+      isDefault = true;
       backlight = {
         i2cBus = "i2c-6";
         busName = "AMDGPU DM aux hw bus 0"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-6/name
       };
-      vrr.enable = true;
     }
     {
       name = "HDMI-A-1";

@@ -2,6 +2,7 @@
 # │ Hyprland                                                 │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  lib,
   config,
   flake,
   pkgs,
@@ -53,45 +54,52 @@ in
       general = {
         resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
         allow_tearing = true; # master switch for allowing tearing to occur
+
+        # Snap
+        snap = {
+          enabled = true;
+        };
       };
 
       # Input
-      # https://wiki.hyprland.org/Configuring/Variables/#xkb-settings
       input.kb_layout = "eu";
 
-      # Gestures
-      gestures = {
-        workspace_swipe = true; # enable workspace swipe gesture on touchpad
-      };
-
       # Miscellaneous
-      # https://wiki.hyprland.org/Configuring/Variables/#misc
       misc = {
         disable_hyprland_logo = true; # disables the random Hyprland logo / anime girl background
         disable_splash_rendering = true; # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
         force_default_wallpaper = 0; # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
         vrr = 2; # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
         animate_manual_resizes = true; # If true, will animate manual window resizes/moves
+        focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
         enable_swallow = true; # Enable window swallowing
       };
 
+      # Binds
+      binds = {
+        allow_pin_fullscreen = true;
+      };
+
       # XWayland
-      # https://wiki.hyprland.org/Configuring/Variables/#xwayland
       xwayland = {
         force_zero_scaling = true; # forces a scale of 1 on xwayland windows on scaled displays
       };
 
-      # Dwindle
-      # https://wiki.hyprland.org/Configuring/Dwindle-Layout
-      dwindle = {
-        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to SUPER + P in the keybinds section below
-        preserve_split = true;
+      # Cursor
+      cursor = {
+        default_monitor = (lib.findFirst (monitor: monitor.isDefault) null monitors).name;
       };
 
       # Ecosystem
       ecosystem = {
         no_update_news = true;
         no_donation_nag = true;
+      };
+
+      # Dwindle
+      dwindle = {
+        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to SUPER + P in the keybinds section below
+        preserve_split = true;
       };
     };
   };
