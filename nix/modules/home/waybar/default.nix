@@ -5,6 +5,7 @@
   pkgs,
   meta,
   theme,
+  osConfig,
   ...
 }:
 let
@@ -12,7 +13,7 @@ let
 
   blueman-manager = "${pkgs.blueman}/bin/blueman-manager";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
@@ -89,10 +90,13 @@ in
             format = " {icon} ";
             format-icons = {
               active = "";
+              urgent = "";
+              special = "󰓏";
+              empty = "";
               default = "";
             };
-            on-scroll-up = "${hyprctl} dispatch workspace e+1";
-            on-scroll-down = "${hyprctl} dispatch workspace e-1";
+            on-scroll-up = "${hyprctl} dispatch split-cycleworkspaces next";
+            on-scroll-down = "${hyprctl} dispatch split-cycleworkspaces prev";
           };
           tray = {
             inherit spacing;
