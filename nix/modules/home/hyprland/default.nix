@@ -12,7 +12,7 @@
 }:
 let
   inherit (flake) inputs;
-  inherit (meta) monitors;
+  inherit (meta) monitors maxRefreshRate;
 in
 {
   imports =
@@ -122,6 +122,13 @@ in
 
   xdg.configFile."uwsm/env".source =
     "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+
+  xdg.configFile."hypr/xdph.conf".text = ''
+    screencopy {
+      max_fps = ${toString maxRefreshRate}
+      allow_token_by_default = true
+    }
+  '';
 
   services.polkit-gnome.enable = true;
 

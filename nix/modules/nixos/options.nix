@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   ...
 }:
 let
@@ -147,6 +148,13 @@ in
                 };
               };
             });
+          };
+          maxRefreshRate = lib.mkOption {
+            type = int;
+            default = builtins.foldl' (
+              max: monitor: if monitor.refreshRate > max then monitor.refreshRate else max
+            ) 0 config.meta.monitors;
+            readOnly = true;
           };
         };
       };
