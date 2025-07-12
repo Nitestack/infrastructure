@@ -45,7 +45,7 @@ in
       "[workspace 8 silent] ${uwsm-app} proton-mail.desktop"
     ];
     # Stick to the workspaces
-    windowrulev2 = [
+    windowrule = [
       "workspace 1 silent, class:^(vesktop)$"
       "workspace 4 silent, class:^(steam)$"
     ];

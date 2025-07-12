@@ -13,13 +13,15 @@ in
       floatByExactTitle = regex: "float, title:^(${regex})$";
       floatByClass = regex: "float, class:^(${regex})(.*)$";
       floatByExactClass = regex: "float, class:^(${regex})$";
+      fullscreenByClass = regex: "fullscreen, class:^(${regex})(.*)$";
+      fullscreenByExactClass = regex: "fullscreen, class:^(${regex})$";
 
       gap =
         config.wayland.windowManager.hyprland.settings.general.gaps_out
         + config.wayland.windowManager.hyprland.settings.general.border_size;
     in
     {
-      windowrulev2 = [
+      windowrule = [
         (floatByExactClass "confirm")
         (floatByExactClass "file_progress")
         (floatByExactClass "dialog")
@@ -54,7 +56,17 @@ in
         (centerByTitle "Save As")
 
         "suppressevent maximize, class:.*"
-        "immediate,class:(steam_app)" # Tearing
+
+        # Tearing
+        "immediate, class:^(steam_app_)(.*)$"
+        "immediate, class:^(Ryujinx)$, title:^Ryujinx .* - .*"
+        "immediate, class:^(org.vinegarhq.Sober)$"
+        "immediate, class:^(Minecraft)(.*)$"
+
+        (fullscreenByClass "steam_app_")
+        (fullscreenByExactClass "Ryujinx")
+        (fullscreenByExactClass "org.vinegarhq.Sober")
+        (fullscreenByClass "Minecraft")
       ];
       workspace = (
         builtins.concatLists (
