@@ -34,7 +34,6 @@ in
         (floatByExactClass "waypaper")
 
         (floatByClass "xdg-desktop-portal")
-        (floatByClass "xdg-desktop-portal-gnome")
         (floatByClass ".blueman-manager")
 
         "dimaround, class:^(gcr-prompter)$"

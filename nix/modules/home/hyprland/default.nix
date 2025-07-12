@@ -34,8 +34,8 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    package = osConfig.programs.hyprland.package;
-    portalPackage = osConfig.programs.hyprland.portalPackage;
+    package = osConfig.programs.hyprland.package; # `hyprsunset` depends on this package, otherwise set to `null` to let NixOS handle the Hyprland package
+    portalPackage = null; # let NixOS system handle portals
     systemd.enable = false; # disable systemd integration as it conflicts with uwsm
     plugins = [
       inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
@@ -120,24 +120,28 @@ in
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
 
-  xdg.configFile."uwsm/env".source =
-    "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+  xdg = {
+    configFile = {
+      "uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+      "hypr/xdph.conf".text = ''
+        screencopy {
+          max_fps = ${toString maxRefreshRate}
+          allow_token_by_default = true
+        }
+      '';
+    };
+    desktopEntries."org.gnome.Settings" = {
+      name = "Settings";
+      comment = "Gnome Control Center";
+      icon = "org.gnome.Settings";
+      exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
+      categories = [ "X-Preferences" ];
+      terminal = false;
+    };
+  };
 
-  xdg.configFile."hypr/xdph.conf".text = ''
-    screencopy {
-      max_fps = ${toString maxRefreshRate}
-      allow_token_by_default = true
-    }
-  '';
-
-  services.polkit-gnome.enable = true;
-
-  xdg.desktopEntries."org.gnome.Settings" = {
-    name = "Settings";
-    comment = "Gnome Control Center";
-    icon = "org.gnome.Settings";
-    exec = "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
-    categories = [ "X-Preferences" ];
-    terminal = false;
+  services = {
+    polkit-gnome.enable = true;
+    gnome-keyring.enable = true;
   };
 }
