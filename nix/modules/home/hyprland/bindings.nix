@@ -15,7 +15,6 @@ let
   # Bins
   uwsm-app = "${pkgs.uwsm}/bin/uwsm app --";
 
-  cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   grimblast = "${inputs.hyprland-contrib.packages.${pkgs.system}.grimblast}/bin/grimblast";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
@@ -24,33 +23,8 @@ let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   swayosd-client = "${pkgs.swayosd}/bin/swayosd-client --monitor \"$(${hyprctl} monitors -j | ${jq} -r '.[] | select(.focused == true).name')\"";
-  wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
 
-  cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
-    #!/usr/bin/env bash
-
-    tmp_dir="/tmp/cliphist"
-    rm -rf "$tmp_dir"
-
-    if [[ -n "$1" ]]; then
-      ${cliphist} decode <<<"$1" | ${wl-copy}
-      exit
-    fi
-
-    mkdir -p "$tmp_dir"
-
-    read -r -d \'\' prog <<EOF
-    /^[0-9]+\s<meta http-equiv=/ { next }
-    match(\$0, /^([0-9]+)\s(\[\[\s)?binary.*(jpg|jpeg|png|bmp)/, grp) {
-      system("echo " grp[1] "\\\\\t | ${cliphist} decode >$tmp_dir/"grp[1]"."grp[3])
-      print \$0"\0icon\x1f$tmp_dir/"grp[1]"."grp[3]
-      next
-    }
-    1
-    EOF
-    ${cliphist} list | ${pkgs.gawk}/bin/gawk "$prog"
-  '';
   screenshots_dir = "${config.xdg.userDirs.pictures}/Screenshots";
 in
 {
@@ -67,7 +41,6 @@ in
         "SUPER, W, Open Browser, exec, ${uwsm-app} zen.desktop"
         "CTRL SHIFT, Escape, Open System Monitor, exec, ${uwsm-app} org.gnome.SystemMonitor.desktop"
 
-        "SUPER, V, Open Clipboard History, exec, ${uwsm-app} ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
         ", Print, Take Screenshot (Select Area), exec, ${uwsm-app} ${grimblast} --notify --freeze copysave area ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
         "SUPER, Print, Take Fullscreen Screenshot, exec, ${uwsm-app} ${grimblast} --notify --freeze copysave screen ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
         "SUPER SHIFT, C, Launch Colorpicker, exec, ${uwsm-app} ${hyprpicker} -a"
