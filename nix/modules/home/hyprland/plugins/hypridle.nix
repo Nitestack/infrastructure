@@ -1,10 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Hypridle                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, ... }:
+{ pkgs, osConfig, ... }:
 let
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
   loginctl = "${pkgs.systemd}/bin/loginctl";
 in
