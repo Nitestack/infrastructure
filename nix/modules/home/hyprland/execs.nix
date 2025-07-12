@@ -4,6 +4,7 @@
 {
   pkgs,
   meta,
+  osConfig,
   ...
 }:
 let
@@ -16,7 +17,7 @@ let
 
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   waypaper = "${pkgs.waypaper}/bin/waypaper";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
   wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";

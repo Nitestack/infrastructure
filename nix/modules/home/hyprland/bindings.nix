@@ -5,6 +5,7 @@
   flake,
   pkgs,
   config,
+  osConfig,
   ...
 }:
 let
@@ -17,7 +18,7 @@ let
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   grimblast = "${inputs.hyprland-contrib.packages.${pkgs.system}.grimblast}/bin/grimblast";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
   jq = "${pkgs.jq}/bin/jq";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
@@ -95,34 +96,29 @@ in
         builtins.genList (
           i:
           let
-            wsNo = i + 1;
-            wsIndex = if wsNo == 10 then 0 else wsNo;
+            wsNo = toString (i + 1);
           in
           [
-            "SUPER, ${toString wsIndex}, Switch to Workspace ${toString wsNo}, workspace, ${toString wsNo}"
-            "SUPER SHIFT, ${toString wsIndex}, Move Active Window to Workspace ${toString wsNo}, movetoworkspace, ${toString wsNo}"
+            "SUPER, ${wsNo}, Switch to Workspace ${wsNo}, split-workspace, ${wsNo}"
+            "SUPER SHIFT, ${wsNo}, Move Active Window to Workspace ${wsNo}, split-movetoworkspace, ${wsNo}"
           ]
-        ) 10
+        ) 5
       ))
       ++ [
-        "SUPER CTRL, H, Switch to Previous Workspace, workspace, e-1"
-        "SUPER CTRL, L, Switch to Next Workspace, workspace, e+1"
-        "SUPER, mouse_down, Switch to Previous Workspace, workspace, e+1"
-        "SUPER, mouse_up, Switch to Next Workspace, workspace, e-1"
-        "SUPER SHIFT, H, Move Active Window to Previous Workspace, movetoworkspace, e-1"
-        "SUPER SHIFT, L, Move Active Window to Next Workspace, movetoworkspace, e+1"
+        "SUPER CTRL, H, Switch to Previous Workspace, split-cycleworkspaces, prev"
+        "SUPER CTRL, L, Switch to Next Workspace, split-cycleworkspaces, next"
+        "SUPER, mouse_down, Switch to Previous Workspace, split-cycleworkspaces, prev"
+        "SUPER, mouse_up, Switch to Next Workspace, split-cycleworkspaces, next"
+        "SUPER SHIFT, H, Move Active Window to Previous Workspace, split-movetoworkspace, -1"
+        "SUPER SHIFT, L, Move Active Window to Next Workspace, split-movetoworkspace, +1"
+        "SUPER CTRL SHIFT, h, Move Workspace to Previous Monitor, split-changemonitor, prev"
+        "SUPER CTRL SHIFT, l, Move Workspace to Next Monitor, split-changemonitor, next"
 
         "SUPER, S, Toggle Scratchpad, togglespecialworkspace, magic"
         "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
       ];
     binddr = [
-      "ALT, space, Toggle App Launcher, exec, pkill rofi || ${uwsm-app} ${rofi} -show drun -run-command \"uwsm app -- {cmd}\""
-    ];
-    bindde = [
-      "SUPER ALT, H, Move Window Left, movewindow, l"
-      "SUPER ALT, L, Move Window Right, movewindow, r"
-      "SUPER ALT, K, Move Window Upwards, movewindow, u"
-      "SUPER ALT, J, Move Window Downwards, movewindow, d"
+      "ALT, space, Toggle App Launcher, exec, pkill rofi || ${uwsm-app} ${rofi} -show drun -run-command \"${uwsm-app} {cmd}\""
     ];
     binddl = [
       ", XF86AudioPlay, Play/Pause, exec, ${uwsm-app} ${playerctl} play-pause"

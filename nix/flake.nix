@@ -31,6 +31,8 @@
     # ── Software Inputs ───────────────────────────────────────────────────
     # Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    # Hyprland
+    hyprland.url = "github:hyprwm/Hyprland";
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
@@ -40,6 +42,11 @@
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # split-monitor-workspaces
+    split-monitor-workspaces = {
+      url = "github:Duckonaut/split-monitor-workspaces";
+      inputs.hyprland.follows = "hyprland";
     };
     # Tmux SessionX
     tmux-sessionx.url = "github:omerxx/tmux-sessionx";

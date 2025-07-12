@@ -7,6 +7,7 @@
   flake,
   pkgs,
   meta,
+  osConfig,
   ...
 }:
 let
@@ -33,9 +34,12 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # package = null; # Hyprsunset depends on `hyprctl` from this option
-    portalPackage = null;
+    package = osConfig.programs.hyprland.package;
+    portalPackage = osConfig.programs.hyprland.portalPackage;
     systemd.enable = false; # disable systemd integration as it conflicts with uwsm
+    plugins = [
+      inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+    ];
 
     settings = {
       # ── Config ────────────────────────────────────────────────────────────
@@ -94,6 +98,12 @@ in
       ecosystem = {
         no_update_news = true;
         no_donation_nag = true;
+      };
+
+      # ── Plugins ───────────────────────────────────────────────────────────
+      # split-monitor-workspaces
+      plugin = {
+        split-monitor-workspaces.count = 5;
       };
     };
   };
