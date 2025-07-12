@@ -16,6 +16,7 @@ in
     self.homeModules.linux-only
     self.homeModules.gui-only
 
+    self.homeModules.clipse
     self.homeModules.ghostty
     self.homeModules.hyprland
     self.homeModules.rofi
@@ -61,7 +62,6 @@ in
 
   # ── Services ──────────────────────────────────────────────────────────
   services = {
-    cliphist.enable = true;
     easyeffects.enable = true;
     mpris-proxy.enable = true;
     nextcloud-client.enable = true;

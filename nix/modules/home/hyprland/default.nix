@@ -27,7 +27,6 @@ in
     inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
     pkgs.hyprcursor
     pkgs.hyprpicker
-    pkgs.wl-clip-persist
     pkgs.wl-clipboard
   ];
 

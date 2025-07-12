@@ -15,21 +15,15 @@ let
   uwsm-background-service = "${pkgs.uwsm}/bin/uwsm app -t service -s b --";
   uwsm-session-service = "${pkgs.uwsm}/bin/uwsm app -t service -s s --";
 
-  cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   waypaper = "${pkgs.waypaper}/bin/waypaper";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
-  wl-clip-persist = "${pkgs.wl-clip-persist}/bin/wl-clip-persist";
-  wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
 in
 {
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       "${uwsm-background-service} ${waypaper} --restore"
-      "${uwsm-background-service} ${wl-clip-persist} --clipboard regular"
-      "${uwsm-background-service} ${wl-paste} --type text --watch ${cliphist} store"
-      "${uwsm-background-service} ${wl-paste} --type image --watch ${cliphist} store"
 
       "${uwsm-session-service} ${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size} &"
 
