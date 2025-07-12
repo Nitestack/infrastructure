@@ -15,6 +15,7 @@ in
       floatByExactClass = regex: "float, class:^(${regex})$";
       fullscreenByClass = regex: "fullscreen, class:^(${regex})(.*)$";
       fullscreenByExactClass = regex: "fullscreen, class:^(${regex})$";
+      noscreenshareByExactClass = regex: "noscreenshare, class:^(${regex})$";
 
       gap =
         config.wayland.windowManager.hyprland.settings.general.gaps_out
@@ -56,7 +57,12 @@ in
 
         "suppressevent maximize, class:.*"
 
-        # Tearing
+        (noscreenshareByExactClass "Bitwarden")
+        (noscreenshareByExactClass "io.ente.auth")
+        "noscreenshare, class:^(zen)$, title:^Extension: .* - Bitwarden .*"
+        "noscreenshare, class:^(zen)$, title:^Ente Auth .*"
+
+        # Game Settings
         "immediate, class:^(steam_app_)(.*)$"
         "immediate, class:^(Ryujinx)$, title:^Ryujinx .* - .*"
         "immediate, class:^(org.vinegarhq.Sober)$"
@@ -66,6 +72,8 @@ in
         (fullscreenByExactClass "Ryujinx")
         (fullscreenByExactClass "org.vinegarhq.Sober")
         (fullscreenByClass "Minecraft")
+
+        "idleinhibit focus, class:^(Ryujinx)$"
       ];
       workspace = (
         builtins.concatLists (

@@ -64,7 +64,6 @@
         x = 0;
         y = 0;
       };
-      isDefault = true;
       backlight = {
         i2cBus = "i2c-6";
         busName = "AMDGPU DM aux hw bus 0"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-6/name
@@ -78,6 +77,7 @@
         x = 1920;
         y = 0;
       };
+      isDefault = true;
       backlight = {
         i2cBus = "i2c-5";
         busName = "AMDGPU DM i2c hw bus 3"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-7/name
