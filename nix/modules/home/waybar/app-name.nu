@@ -5,9 +5,19 @@ def normalize_name [name: string] {
 }
 
 def get_app_name [class_name: string, window_title?: string] {
+    # Handle Steam Games
     if ($class_name | str starts-with "steam_app_") {
         if ($window_title | is-not-empty) {
             let game_name = $window_title | split row " - " | first | split row " | " | first | split row " – " | first
+            return $game_name
+        } else {
+            return $class_name
+        }
+    }
+    # Handle Ryujinx
+    if ($class_name == "Ryujinx") {
+        if (($window_title | is-not-empty) and ($window_title | str contains " - ")) {
+            let game_name = $window_title | split row " - " | get 1 | split row " v" | first
             return $game_name
         } else {
             return $class_name
