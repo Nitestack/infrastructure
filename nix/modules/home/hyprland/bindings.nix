@@ -88,7 +88,6 @@ in
         "SUPER, Q, Close Active Window, killactive"
         "SUPER, C, Center Window, centerwindow, 1" # `1` respects the monitor reserved area
 
-        "SUPER, P, Toggle Focused Window's Pseudo Mode, pseudo"
         "SUPER, R, Toggle Split Orientation, togglesplit"
         "SUPER, T, Toggle Active Window Floating, togglefloating"
         "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${uwsm-app} ${hyprctl} dispatch workspaceopt allfloat"
