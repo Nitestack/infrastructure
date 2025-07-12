@@ -16,17 +16,15 @@ let
 
   cliphist = "${pkgs.cliphist}/bin/cliphist";
   ghostty = "${pkgs.ghostty}/bin/ghostty";
-  gnome-system-monitor = "${pkgs.gnome-system-monitor}/bin/gnome-system-monitor";
   grimblast = "${inputs.hyprland-contrib.packages.${pkgs.system}.grimblast}/bin/grimblast";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
   jq = "${pkgs.jq}/bin/jq";
-  nautilus = "${pkgs.nautilus}/bin/nautilus";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   swayosd-client = "${pkgs.swayosd}/bin/swayosd-client --monitor \"$(${hyprctl} monitors -j | ${jq} -r '.[] | select(.focused == true).name')\"";
   wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
   # wezterm = "${pkgs.wezterm}/bin/wezterm";
-  zen = "${inputs.zen-browser.packages.${pkgs.system}.default}/bin/zen";
 
   cliphist-rofi-img = pkgs.writeShellScriptBin "cliphist-rofi-img" ''
     #!/usr/bin/env bash
@@ -71,6 +69,7 @@ in
         "SUPER, V, Open Clipboard History, exec, ${uwsm-app} ${rofi} -modi clipboard:${cliphist-rofi-img}/bin/cliphist-rofi-img -show clipboard -show-icons"
         ", Print, Take Screenshot (Select Area), exec, ${uwsm-app} ${grimblast} --notify --freeze copysave area ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
         "SUPER, Print, Take Fullscreen Screenshot, exec, ${uwsm-app} ${grimblast} --notify --freeze copysave screen ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"
+        "SUPER SHIFT, C, Launch Colorpicker, exec, ${uwsm-app} ${hyprpicker} -a"
 
         "SUPER, H, Move Focus to Left Window, movefocus, l"
         "SUPER, L, Move Focus to Right Window, movefocus, r"
