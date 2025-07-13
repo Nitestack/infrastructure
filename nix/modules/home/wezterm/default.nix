@@ -3,7 +3,7 @@
 # ╰──────────────────────────────────────────────────────────╯
 { meta, pkgs, ... }:
 let
-  inherit (meta) font;
+  inherit (meta) font maxRefreshRate;
 in
 {
   programs.wezterm = {
@@ -30,6 +30,8 @@ in
           }),
         },
       }
+      config.animation_fps = ${toString maxRefreshRate}
+      config.max_fps = ${toString maxRefreshRate}
 
       require("config.appearance").setup(config)
       require("config.general").setup(config)

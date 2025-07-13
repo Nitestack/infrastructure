@@ -1,8 +1,14 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Waypaper                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, theme, ... }:
+{
+  pkgs,
+  theme,
+  meta,
+  ...
+}:
 let
+  inherit (meta) maxRefreshRate;
   wallpapers_dir = "${../../images/wallpapers}";
 in
 {
@@ -33,7 +39,7 @@ in
       swww_transition_step = 90;
       swww_transition_angle = 0;
       swww_transition_duration = 2;
-      swww_transition_fps = 144;
+      swww_transition_fps = maxRefreshRate;
       use_xdg_state = false;
     };
   };

@@ -14,10 +14,6 @@ function M.setup(config)
   -- ── Colors ──────────────────────────────────────────────────────────
   config.color_scheme = "Catppuccin Mocha"
 
-  -- ── Rendering ───────────────────────────────────────────────────────
-  config.animation_fps = 144
-  config.max_fps = 144
-
   config.underline_thickness = 3
   config.cursor_thickness = 4
   config.underline_position = -6
