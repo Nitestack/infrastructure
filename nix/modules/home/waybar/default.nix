@@ -15,6 +15,7 @@ let
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
+  swaync-client = "${pkgs.swaynotificationcenter}/bin/swaync-client";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
   inherit (theme.variables)
@@ -60,6 +61,7 @@ in
             "bluetooth"
             "group/group-network"
             "wireplumber"
+            "custom/swaync"
             "clock"
             "group/group-power"
           ];
@@ -151,6 +153,26 @@ in
               " "
             ];
             on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          };
+          "custom/swaync" = {
+            tooltip = false;
+            exec = "${swaync-client} -swb";
+            format = "{icon}";
+            format-icons = {
+              dnd-inhibited-notification = "󰂛<span foreground='red'><sup></sup></span>";
+              dnd-notification = "󰂛<span foreground='red'><sup></sup></span>";
+              inhibited-notification = "󱏧<span foreground='red'><sup></sup></span>";
+              notification = "󰂚<span foreground='red'><sup></sup></span>";
+
+              dnd-inhibited-none = "󰂛";
+              dnd-none = "󰂛";
+              inhibited-none = "󱏧";
+              none = "󰂚";
+            };
+            return-type = "json";
+            on-click = "${swaync-client} -t -sw";
+            on-click-right = "${swaync-client} -d -sw";
+            escape = true;
           };
           clock = {
             format = "{:%a %b %d %R}";
