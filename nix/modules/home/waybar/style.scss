@@ -1,0 +1,110 @@
+* {
+  font-family: $font-sans, $font-nerd-propo;
+  font-size: 13pt;
+  min-height: 0;
+}
+
+#waybar {
+  border-radius: 1rem;
+  background: $bg-color;
+  color: $text-color;
+}
+
+/* Common Module Styles */
+.module,
+#privacy {
+  background-color: $bg-color;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+
+/* Modules with Background */
+#custom-mpris,
+#workspaces,
+#tray,
+#privacy,
+#group-network:hover,
+#group-power:hover {
+  border-radius: 1rem;
+  background-color: $secondary-color;
+}
+
+/*
+ * ── Group Styles ──────────────────────────────────────────────────────
+ */
+
+/* Left Items */
+#network,
+#custom-lock {
+  margin-left: 0.5rem;
+}
+
+/* All Modules */
+#network,
+network.download,
+network.upload,
+#custom-shutdown,
+#custom-lock,
+#custom-suspend,
+#custom-reboot {
+  background-color: transparent;
+}
+
+/*
+ * ── Top Bar ───────────────────────────────────────────────────────────
+ */
+
+/* Logo */
+#custom-logo {
+  margin-left: 0.5rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  font-size: 16pt;
+}
+
+/* Active App */
+#custom-window {
+  font-weight: bold;
+}
+
+/* MPRIS */
+#custom-mpris.spotify {
+  color: #1ed760;
+}
+#custom-mpris.youtube {
+  color: #cd201f;
+}
+#custom-mpris.firefox,
+#custom-mpris.default {
+  color: $primary-color;
+}
+#custom-mpris.paused {
+  color: $text-color;
+}
+
+/* Workspaces */
+#workspaces {
+  padding: 0.5rem 0;
+}
+#workspaces button {
+  color: transparent;
+  background-color: $primary-color;
+  border-radius: 1.25rem;
+  padding: 0;
+  margin: 0 0.5rem;
+  min-width: 1.25rem;
+}
+#workspaces button.active,
+#workspaces button:hover {
+  min-width: 3rem;
+}
+
+/* Privacy */
+#privacy-item.screenshare {
+  color: $warning-color;
+}
+#privacy-item.audio-in {
+  color: $error-color;
+}

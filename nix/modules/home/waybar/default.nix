@@ -89,14 +89,7 @@ in
             on-click = "${playerctl} play-pause";
           };
           "hyprland/workspaces" = {
-            format = " {icon} ";
-            format-icons = {
-              active = "";
-              urgent = "";
-              special = "󰓏";
-              empty = "";
-              default = "";
-            };
+            format = "<tt><small>{name}</small></tt>";
             on-scroll-up = "${hyprctl} dispatch split-cycleworkspaces next";
             on-scroll-down = "${hyprctl} dispatch split-cycleworkspaces prev";
           };
@@ -221,103 +214,18 @@ in
           };
         }
       ];
-    style = ''
-      * {
-        font-family: "${font.sans.name}", "${font.nerd.propoName}";
-        font-size: 13pt;
-        min-height: 0;
-      }
-
-      #waybar {
-        border-radius: 1rem;
-        background: ${bgColor};
-        color: ${textColor};
-      }
-
-      /* Common Module Styles */
-      .module, #privacy {
-        background-color: ${bgColor};
-        padding: 0.25rem 0.5rem;
-        margin-right: 0.5rem;
-        margin-top: 0.1rem;
-        margin-bottom: 0.1rem;
-      }
-
-      /* Modules with Background */
-      #custom-mpris, #workspaces, #tray, #privacy, #group-network:hover, #group-power:hover {
-        border-radius: 1rem;
-        background-color: ${secondaryColor};
-      }
-
-      /*
-      * ── Group Styles ──────────────────────────────────────────────────────
-      */
-
-      /* Left Items */
-      #network, #custom-lock {
-        margin-left: 0.5rem;
-      }
-
-      /* All Modules */
-      #network, network.download, network.upload, #custom-shutdown, #custom-lock, #custom-suspend, #custom-reboot {
-        background-color: transparent;
-      }
-
-      /*
-      * ── Top Bar ───────────────────────────────────────────────────────────
-      */
-
-      /* Logo */
-      #custom-logo {
-        margin-left: 0.5rem;
-        padding-top: 0.1rem;
-        padding-bottom: 0.1rem;
-        font-size: 16pt;
-      }
-
-      /* Active App */
-      #custom-window {
-        font-weight: bold;
-      }
-
-      /* MPRIS */
-      #custom-mpris.spotify {
-        color: #1ED760;
-      }
-      #custom-mpris.youtube {
-        color: #CD201F;
-      }
-      #custom-mpris.firefox, #custom-mpris.default {
-        color: ${primaryColor};
-      }
-      #custom-mpris.paused {
-        color: ${textColor};
-      }
-
-      /* Workspaces */
-      #workspaces {
-        padding: 0;
-      }
-      #workspaces button {
-        border-radius: 1rem;
-        padding: 0.1rem;
-      }
-      #workspaces button.active {
-        color: ${primaryColor};
-        border-radius: 1rem;
-      }
-      #workspaces button:hover {
-        color: ${primaryColor};
-        border-radius: 1rem;
-      }
-
-      /* Privacy */
-      #privacy-item.screenshare {
-        color: ${warningColor};
-      }
-      #privacy-item.audio-in {
-        color: ${errorColor};
-      }
-    '';
+    style = pkgs.lib.scss.compileToCss {
+      src = ./style.scss;
+      variables = {
+        bg-color = bgColor;
+        text-color = textColor;
+        primary-color = primaryColor;
+        secondary-color = secondaryColor;
+        warning-color = warningColor;
+        error-color = errorColor;
+        font-sans = font.sans.name;
+        font-nerd-propo = font.nerd.propoName;
+      };
+    };
   };
 }

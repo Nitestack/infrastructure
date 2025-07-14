@@ -14,4 +14,10 @@ final: prev: {
       };
     });
   };
+  lib = prev.lib // {
+    scss = import ../lib/scss.nix {
+      pkgs = final;
+      lib = prev.lib;
+    };
+  };
 }
