@@ -1,23 +1,16 @@
 :root {
-  /* font, change to 'gg sans' for default discord font*/
-  /* --font: ""; */
-
-  /* accent colors */
-  --accent-1: hsl(217, 92%, 76%); /* links */
-  --accent-2: hsl(217, 92%, 76%); /* general unread/mention elements */
-  --accent-3: hsl(217, 92%, 76%); /* accent buttons */
-  --accent-4: hsl(217, 70%, 68%); /* accent buttons when hovered */
-  --accent-5: hsl(217, 55%, 57%); /* accent buttons when clicked */
-  --mention: hsla(217, 70%, 66%, 0.1); /* mentions & mention messages */
-  --mention-hover: hsla(
-    217,
-    70%,
-    66%,
-    0.05
-  ); /* mentions & mention messages when hovered */
+  --accent-1: var(--blue-1); /* links and other accent text */
+  --accent-2: var(--blue-2); /* small accent elements */
+  --accent-3: var(--blue-3); /* accent buttons */
+  --accent-4: var(--blue-4); /* accent buttons when hovered */
+  --accent-5: var(--blue-5); /* accent buttons when clicked */
 }
 
 body {
-  --dms-icon: default;
-  --dms-background: off;
+  /* font, change to 'gg sans' for default discord font*/
+  --font: "SF Pro Text";
+  --code-font: "SFMono Nerd Font";
+
+  --custom-dms-icon: off;
+  --custom-dms-background: off;
 }
