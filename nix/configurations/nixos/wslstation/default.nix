@@ -23,6 +23,8 @@ in
     defaultUser = meta.username;
     docker-desktop.enable = true;
     startMenuLaunchers = true;
+    useWindowsDriver = true;
+    wslConf.network.hostname = "wslstation";
   };
 
   # ── Home Manager ──────────────────────────────────────────────────────
@@ -32,5 +34,4 @@ in
 
   # Configuration
   nixpkgs.hostPlatform = "x86_64-linux";
-  networking.hostname = "wslstation";
 }
