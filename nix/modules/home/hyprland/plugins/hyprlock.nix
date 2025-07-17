@@ -112,8 +112,9 @@ in
         outer_color = "rgba(242, 243, 244, 0.25)";
         inner_color = "rgba(242, 243, 244, 0.25)";
         font_color = "rgba(242, 243, 244, 0.75)";
+        font_family = font.sans.name;
         fade_on_empty = false;
-        placeholder_text = ""; # Text rendered in the input box when it's empty.
+        placeholder_text = "Enter Password"; # Text rendered in the input box when it's empty.
         hide_input = false;
         check_color = "rgba(204, 136, 34, 0)";
         fail_color = "rgba(204, 34, 34, 0)"; # if authentication failed, changes outer_color and fail message color
@@ -176,8 +177,8 @@ in
           text = "cmd[update:1000] echo \"$(LC_TIME=\"en_US.UTF-8\" date +\"%A, %B %-d\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 20;
-          font_family = "${font.sans.name} Bold";
-          position = "0, 400";
+          font_family = "${font.sans.titleName} Bold";
+          position = "0, 435";
           halign = "center";
           valign = "center";
         }
@@ -186,8 +187,8 @@ in
           text = "cmd[update:1000] echo \"\$(date +\"%-H:%M\")\"";
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 93;
-          font_family = "${font.sans.name} Bold";
-          position = "0, 253";
+          font_family = "${font.sans.titleName} Bold";
+          position = "0, 350";
           halign = "center";
           valign = "center";
         }
@@ -197,17 +198,7 @@ in
           color = "rgba(242, 243, 244, 0.75)";
           font_size = 12;
           font_family = "${font.sans.name} Bold";
-          position = "0, -407";
-          halign = "center";
-          valign = "center";
-        }
-        {
-          monitor = "";
-          text = "Enter Password";
-          color = "rgba(242, 243, 244, 0.75)";
-          font_size = 10;
-          font_family = font.sans.name;
-          position = "0, -440";
+          position = "0, -435";
           halign = "center";
           valign = "center";
         }
@@ -224,7 +215,7 @@ in
         rotate = 0;
         reload_time = -1;
         reload_cmd = "";
-        position = "0, -350";
+        position = "0, -375";
         halign = "center";
         valign = "center";
       };
