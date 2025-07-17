@@ -13,10 +13,9 @@ in
       font-family = [
         font.nerd.name
         font.emoji.name
-        "Symbols Nerd Font"
       ];
-      font-family-italic = font.nerd.italic.name;
-      font-size = 14;
+      font-family-italic = "${font.nerd.name} Italic";
+      font-feature = [ "ss01" ];
       adjust-cell-height = "50%";
       adjust-cursor-height = "50%";
       window-padding-x = 0;

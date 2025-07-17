@@ -53,6 +53,5 @@ apps:
     - "9NKSQGP7F2NH" # WhatsApp Desktop
     - "Zen-Team.Zen-Browser"
   manual:
-    - "CommitMono Nerd Font"
+    - "0xProto Nerd Font"
     - "Iosevka Nerd Font"
-    - "VictorMono Nerd Font"

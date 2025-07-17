@@ -10,19 +10,12 @@
       package = pkgs.quicksand;
     };
     nerd = {
-      name = "CommitMono Nerd Font";
-      monoName = "CommitMono Nerd Font Mono";
-      propoName = "CommitMono Nerd Font Propo";
-      italic = {
-        name = "VictorMono NF";
-        monoName = "VictorMono NFM";
-        propoName = "VictorMono NFP";
-      };
+      name = "0xProto Nerd Font";
+      monoName = "0xProto Nerd Font Mono";
+      propoName = "0xProto Nerd Font Propo";
       packages = with pkgs.nerd-fonts; [
-        commit-mono
-        victor-mono
+        _0xproto
         iosevka
-        symbols-only
       ];
     };
     emoji = {

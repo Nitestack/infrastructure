@@ -17,14 +17,13 @@ in
       config.font = wezterm.font_with_fallback({
         "${font.nerd.name}",
         "Iosevka Nerd Font",
-        "Symbols Nerd Font",
         "${font.emoji.name}",
       })
       config.font_rules = {
         {
           italic = true,
           font = wezterm.font({
-            family = "${font.nerd.italic.name}",
+            family = "${font.nerd.name}",
             style = "Italic",
             weight = "DemiBold",
           }),

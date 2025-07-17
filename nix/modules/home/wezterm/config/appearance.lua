@@ -8,6 +8,7 @@ local M = {}
 function M.setup(config)
   -- ── Font ────────────────────────────────────────────────────────────
   config.font_size = 14
+  config.harfbuzz_features = { "ss01" }
   config.command_palette_font_size = 14
   config.line_height = 1.5
 
