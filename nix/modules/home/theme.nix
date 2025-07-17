@@ -34,7 +34,9 @@ in
     inherit cursorTheme iconTheme;
     enable = true;
     theme = gtkTheme;
-    font = font.sans;
+    font = {
+      inherit (font.sans) name package;
+    };
   };
   qt = {
     enable = true;
@@ -51,7 +53,7 @@ in
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      serif = [ font.sans.name ];
+      serif = [ font.serif.name ];
       sansSerif = [ font.sans.name ];
       monospace = [
         font.nerd.name
@@ -77,11 +79,15 @@ in
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
           clock-format = "24h";
-          document-font-name = font.sans.name;
+          document-font-name = font.serif.name;
           font-antialiasing = "rgba";
           font-hinting = "full";
           monospace-font-name = font.nerd.monoName;
           show-battery-percentage = true;
+        };
+        "org/gnome/desktop/wm/preferences" = {
+          titlebar-uses-system-font = false;
+          titlebar-font = font.sans.titleName;
         };
         "org/gnome/nautilus/preferences" = {
           default-folder-viewer = "icon-view";

@@ -23,6 +23,7 @@ in
     # Fonts
     [
       font.sans.package
+      font.serif.package
       font.emoji.package
     ]
     ++ font.nerd.packages
