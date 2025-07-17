@@ -2,9 +2,11 @@
   lib,
   pkgs,
   config,
+  flake,
   ...
 }:
 let
+  inherit (flake) inputs;
   inherit (lib.options) mkOption;
   inherit (lib.types)
     submodule
@@ -37,6 +39,18 @@ in
             type = submodule {
               options = {
                 sans = mkOption {
+                  type = submodule {
+                    options = {
+                      name = mkStringOption;
+                      titleName = mkOption {
+                        type = str;
+                        default = config.meta.font.sans.name;
+                      };
+                      package = mkPackageOption;
+                    };
+                  };
+                };
+                serif = mkOption {
                   type = submodule {
                     options = {
                       name = mkStringOption;
@@ -156,8 +170,11 @@ in
   };
   config = {
     meta = import ../../meta.nix {
-      pkgs = pkgs;
+      inherit pkgs inputs;
     };
     theme = builtins.fromJSON (builtins.readFile ../../theme.json);
+    lib = import ../../lib {
+      inherit pkgs lib;
+    };
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   # User Info
   username = "nhan";
@@ -6,8 +6,13 @@
   # Fonts
   font = {
     sans = {
-      name = "Quicksand";
-      package = pkgs.quicksand;
+      name = "SF Pro Text";
+      titleName = "SF Pro Display";
+      package = inputs.apple-fonts.packages.${pkgs.system}.sf-pro;
+    };
+    serif = {
+      name = "New York";
+      package = inputs.apple-fonts.packages.${pkgs.system}.ny;
     };
     nerd = {
       name = "0xProto Nerd Font";

@@ -29,6 +29,8 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     # ── Software Inputs ───────────────────────────────────────────────────
+    # Apple Fonts
+    apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
     # Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     # Hyprland
