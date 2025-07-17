@@ -47,6 +47,42 @@ M.auto_cmds = {
       end,
     },
   },
+  -- Close editor with `q`
+  {
+    "BufEnter",
+    {
+      callback = function()
+        local wins = vim.api.nvim_tabpage_list_wins(0)
+        if #wins <= 1 then
+          return
+        end
+        local sidebar_fts = {
+          noice = true,
+          ["smear-cursor"] = true,
+          snacks_layout_box = true,
+          snacks_notif = true,
+          snacks_picker_input = true,
+          snacks_picker_list = true,
+          trouble = true,
+        }
+        for _, winid in ipairs(wins) do
+          if vim.api.nvim_win_is_valid(winid) then
+            local bufnr = vim.api.nvim_win_get_buf(winid)
+            local filetype = vim.bo[bufnr].filetype
+            -- If any visible windows are not sidebars, early return
+            if filetype ~= "" and not sidebar_fts[filetype] then
+              return
+            end
+          end
+        end
+        if #vim.api.nvim_list_tabpages() > 1 then
+          vim.cmd.tabclose()
+        else
+          vim.cmd.qall()
+        end
+      end,
+    },
+  },
   -- Nushell Integration
   {
     "OptionSet",
