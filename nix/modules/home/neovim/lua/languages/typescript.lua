@@ -38,6 +38,7 @@ local tsserver_settings = {
 return utils.plugin.get_language_spec({
   lsp = {
     servers = {
+      angularls = {},
       vtsls = {
         settings = {
           typescript = tsserver_settings,
@@ -49,8 +50,17 @@ return utils.plugin.get_language_spec({
         },
       },
     },
+    setup = {
+      angularls = function()
+        LazyVim.lsp.on_attach(function(client)
+          --HACK: disable angular renaming capability due to duplicate rename popping up
+          client.server_capabilities.renameProvider = false
+        end, "angularls")
+      end,
+    },
   },
   treesitter = {
+    "angular",
     "javascript",
     "jsdoc",
   },
@@ -73,8 +83,29 @@ return utils.plugin.get_language_spec({
   },
   plugins = utils.plugin.with_extensions({
     { import = "lazyvim.plugins.extras.lang.typescript" },
-    { import = "lazyvim.plugins.extras.lang.angular" },
     { import = "lazyvim.plugins.extras.lang.prisma" },
+    {
+      "nvim-treesitter/nvim-treesitter",
+      opts = function()
+        vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+          pattern = { "*.component.html", "*.container.html" },
+          callback = function()
+            vim.treesitter.start(nil, "angular")
+          end,
+        })
+      end,
+    },
+    {
+      "neovim/nvim-lspconfig",
+      opts = function(_, opts)
+        LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
+          {
+            name = "@angular/language-server",
+            enableForWorkspaceTypeScriptVersions = true,
+          },
+        })
+      end,
+    },
     {
       "vuki656/package-info.nvim",
       dependencies = {
