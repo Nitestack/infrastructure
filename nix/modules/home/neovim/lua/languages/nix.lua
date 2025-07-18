@@ -2,20 +2,42 @@
 -- │ Nix                                                     │
 -- ╰─────────────────────────────────────────────────────────╯
 
+local nix_flake_root = "~/.dotfiles/nix"
+
 return utils.plugin.get_language_spec({
+  treesitter = "nix",
   lsp = {
     servers = {
-      nil_ls = {
-        enabled = false,
-      },
       nixd = {
         settings = {
           nixd = {
+            nixpkgs = {
+              expr = "(builtins.getFlake (toString ~/.dotfiles/nix)).inputs.nixpkgs",
+            },
             formatting = {
               command = { "nixfmt" },
             },
+            options = {
+              nixos = {
+                expr = "(builtins.getFlake (toString " .. nix_flake_root .. ")).nixosConfigurations.nixstation.options",
+              },
+              ["nix-darwin"] = {
+                expr = "(builtins.getFlake (toString "
+                  .. nix_flake_root
+                  .. ")).darwinConfigurations.macstation.options.wsl",
+              },
+              ["nix-wsl"] = {
+                expr = "(builtins.getFlake (toString " .. nix_flake_root .. ")).nixosConfigurations.wslstation.options",
+              },
+              ["home-manager"] = {
+                expr = "(builtins.getFlake (toString "
+                  .. nix_flake_root
+                  .. ")).nixosConfigurations.nixstation.options.home-manager.users.type.getSubOptions []",
+              },
+            },
           },
         },
+        cmd = { "nixd", "--semantic-tokens=true" },
       },
     },
   },
@@ -23,8 +45,5 @@ return utils.plugin.get_language_spec({
     linters_by_ft = {
       ["nix"] = { "nix" },
     },
-  },
-  plugins = {
-    { import = "lazyvim.plugins.extras.lang.nix" },
   },
 })
