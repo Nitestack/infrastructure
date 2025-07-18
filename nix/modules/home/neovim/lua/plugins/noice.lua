@@ -28,6 +28,9 @@ return utils.plugin.with_extensions({
           },
         },
       })
+      opts.lsp = opts.lsp or {}
+      opts.lsp.hover = opts.lsp.hover or {}
+      opts.lsp.hover.silent = true
 
       -- Presets
       opts.presets = opts.presets or {}
