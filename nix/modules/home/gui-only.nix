@@ -15,7 +15,6 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     self.homeModules.spicetify
-    self.homeModules.wezterm
   ];
 
   # ── Programs ──────────────────────────────────────────────────────────

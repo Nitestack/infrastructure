@@ -18,7 +18,6 @@ let
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   waypaper = "${pkgs.waypaper}/bin/waypaper";
-  # wezterm = "${pkgs.wezterm}/bin/wezterm";
 in
 {
   wayland.windowManager.hyprland.settings = {
@@ -35,7 +34,6 @@ in
 
       # right monitor
       "[workspace 1 silent] ${uwsm-app} zen.desktop"
-      # "[workspace 2 silent] ${uwsm-app} ${wezterm} -e tmux"
       "[workspace 2 silent] ${uwsm-app} ${ghostty} -e tmux"
       "[workspace 3 silent] ${uwsm-app} proton-mail.desktop"
     ];
