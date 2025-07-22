@@ -1,10 +1,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Window and Workspace Rules                               │
 # ╰──────────────────────────────────────────────────────────╯
-{ config, meta, ... }:
-let
-  inherit (meta) monitors;
-in
+{ config, ... }:
 {
   wayland.windowManager.hyprland.settings =
     let
@@ -75,22 +72,5 @@ in
 
         "idleinhibit focus, class:^(Ryujinx)$"
       ];
-      workspace = (
-        builtins.concatLists (
-          builtins.genList (
-            i:
-            let
-              wsNo = i + 1;
-              isMultipleMonitors = (builtins.length monitors) > 1;
-              monitor = (builtins.elemAt monitors (if isMultipleMonitors && wsNo > 5 then 1 else 0)).name;
-            in
-            [
-              "${toString wsNo}, monitor:${monitor}, default:${
-                if wsNo == 1 || (isMultipleMonitors && wsNo == 6) then "true" else "false"
-              }"
-            ]
-          ) 10
-        )
-      );
     };
 }
