@@ -36,6 +36,7 @@ in
   };
 
   system = {
+    primaryUser = meta.username;
     configurationRevision = self.rev or self.dirtyRev or null;
     stateVersion = 6;
   };
