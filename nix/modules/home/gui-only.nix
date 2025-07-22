@@ -14,6 +14,7 @@ in
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
+    self.homeModules.ghostty
     self.homeModules.spicetify
   ];
 

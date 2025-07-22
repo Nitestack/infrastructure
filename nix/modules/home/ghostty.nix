@@ -1,13 +1,19 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Ghostty                                                  │
 # ╰──────────────────────────────────────────────────────────╯
-{ meta, pkgs, ... }:
+{
+  meta,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (meta) font;
 in
 {
   programs.ghostty = {
     enable = true;
+    package = lib.mkIf pkgs.stdenv.isDarwin null; # NOTE: `ghostty` package is broken on macOS
     settings = {
       theme = "catppuccin-mocha";
       font-family = font.nerd.name;

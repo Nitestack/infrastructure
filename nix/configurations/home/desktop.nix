@@ -17,7 +17,6 @@ in
     self.homeModules.gui-only
 
     self.homeModules.clipse
-    self.homeModules.ghostty
     self.homeModules.hyprland
     self.homeModules.rofi
     self.homeModules.swaync
