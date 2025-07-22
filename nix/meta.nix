@@ -55,7 +55,7 @@
   };
   monitors = [
     {
-      name = "DP-1";
+      name = "DP-2";
       resolution = "1920x1080";
       refreshRate = 144;
       position = {
@@ -63,12 +63,12 @@
         y = 0;
       };
       backlight = {
-        i2cBus = "i2c-6";
-        busName = "AMDGPU DM aux hw bus 0"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-6/name
+        i2cBus = "i2c-7";
+        busName = "AMDGPU DM aux hw bus 1"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-7/name
       };
     }
     {
-      name = "HDMI-A-1";
+      name = "DP-1";
       resolution = "1920x1080";
       refreshRate = 200;
       position = {
@@ -77,8 +77,8 @@
       };
       isDefault = true;
       backlight = {
-        i2cBus = "i2c-5";
-        busName = "AMDGPU DM i2c hw bus 3"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-7/name
+        i2cBus = "i2c-6";
+        busName = "AMDGPU DM aux hw bus 0"; # 1rep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-6/name
       };
     }
   ];
