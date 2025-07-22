@@ -10,12 +10,9 @@ in
     enable = true;
     settings = {
       theme = "catppuccin-mocha";
-      font-family = [
-        font.nerd.name
-        font.emoji.name
-      ];
+      font-family = font.nerd.name;
       font-family-italic = "${font.nerd.name} Italic";
-      font-feature = [ "ss01" ];
+      font-feature = "ss01";
       adjust-cell-height = "50%";
       adjust-cursor-height = "50%";
       window-padding-x = 0;

@@ -17,7 +17,6 @@ in
       config.font = wezterm.font_with_fallback({
         "${font.nerd.name}",
         "Iosevka Nerd Font",
-        "${font.emoji.name}",
       })
       config.font_rules = {
         {
