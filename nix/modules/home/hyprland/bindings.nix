@@ -23,7 +23,6 @@ let
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
   swayosd-client = "${pkgs.swayosd}/bin/swayosd-client --monitor \"$(${hyprctl} monitors -j | ${jq} -r '.[] | select(.focused == true).name')\"";
-  # wezterm = "${pkgs.wezterm}/bin/wezterm";
 
   screenshots_dir = "${config.xdg.userDirs.pictures}/Screenshots";
 in
@@ -35,7 +34,6 @@ in
     "$mmb" = "mouse:274"; # Middle mouse button
     bindd =
       [
-        # "SUPER, Slash, Open Terminal, exec, ${uwsm-app} ${wezterm} -e tmux"
         "SUPER, Slash, Open Terminal, exec, ${uwsm-app} ${ghostty} -e tmux"
         "SUPER, E, Open File Manager, exec, ${uwsm-app} org.gnome.Nautilus.desktop"
         "SUPER, W, Open Browser, exec, ${uwsm-app} zen.desktop"

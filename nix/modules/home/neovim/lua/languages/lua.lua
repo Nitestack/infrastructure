@@ -55,8 +55,6 @@ return utils.plugin.get_language_spec({
       ---@param opts lazydev.Config
       opts = function(_, opts)
         opts.library = vim.list_extend(opts.library or {}, {
-          { path = "wezterm-types", mods = { "wezterm" } },
-          { path = "smart-splits.nvim/plugin", words = { "SmartSplitsWeztermConfig" } },
           { path = "lazy.nvim", words = { "LazySpec", "LazyPluginSpec" } },
         })
       end,
