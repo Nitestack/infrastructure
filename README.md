@@ -70,8 +70,7 @@ Ensure you have the latest version of [macOS](https://apple.com/macos) and [Nix]
 Install `Nix` with the [Nix Installer from Determinate Systems](https://determinate.systems):
 
 ```sh
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
-  sh -s -- install
+curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 ```
 
 ### Windows
@@ -101,7 +100,7 @@ Please reboot the system and then continue with the [Final Steps](#final-steps).
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles/nix#macstation"
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles/nix#macstation"
 ```
 
 Please reboot the system and then continue with the [Final Steps](#final-steps).
