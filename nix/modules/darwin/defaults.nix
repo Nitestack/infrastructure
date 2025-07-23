@@ -20,9 +20,10 @@
       location = "~/Pictures/Screenshots";
     };
     trackpad.Clicking = true; # enable tap to click
+    LaunchServices.LSQuarantine = false; # turn off the "Application Downloaded from Internet" quarantine warning
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
-      AppleKeyboardUIMode = 3; # keyboard control behavior
+      AppleKeyboardUIMode = 2; # enable moving focus with Tab and Shift Tab (`2` on macOS Sonoma or later, `3` on older versions)
       ApplePressAndHoldEnabled = false; # disable the press-and-hold feature
       AppleScrollerPagingBehavior = true; # jump to the spot that’s clicked on the scroll bar
       AppleShowAllExtensions = true; # show all file extensions in Finder
