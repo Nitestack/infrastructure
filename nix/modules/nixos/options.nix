@@ -148,6 +148,7 @@ in
                     options = {
                       i2cBus = mkStringOption;
                       busName = mkStringOption;
+                      device = mkStringOption;
                     };
                   });
                 };

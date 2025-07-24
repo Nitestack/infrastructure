@@ -64,6 +64,7 @@
       };
       backlight = {
         i2cBus = "i2c-7";
+        device = "ddcci7";
         busName = "AMDGPU DM aux hw bus 1"; # grep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-7/name
       };
     }
@@ -78,6 +79,7 @@
       isDefault = true;
       backlight = {
         i2cBus = "i2c-6";
+        device = "ddcci6";
         busName = "AMDGPU DM aux hw bus 0"; # 1rep -r "AMDGPU DM aux hw bus" /sys/bus/i2c/devices/i2c-6/name
       };
     }
