@@ -102,7 +102,10 @@ in
       # ── Plugins ───────────────────────────────────────────────────────────
       # split-monitor-workspaces
       plugin = {
-        split-monitor-workspaces.count = 5;
+        split-monitor-workspaces = {
+          keep_focused = 1;
+          count = 5;
+        };
       };
     };
   };
