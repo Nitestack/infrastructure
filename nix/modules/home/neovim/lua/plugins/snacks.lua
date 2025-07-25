@@ -17,7 +17,7 @@ return utils.plugin.with_extensions({
       },
       -- Image
       image = {
-        enabled = true,
+        enabled = not utils.is_wsl(),
         math = {
           typst = {
             tpl = [[
