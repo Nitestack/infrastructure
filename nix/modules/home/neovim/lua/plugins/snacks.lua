@@ -69,6 +69,8 @@ return utils.plugin.with_extensions({
   },
 }, {
   catppuccin = {
-    snacks = true,
+    snacks = {
+      enabled = true,
+    },
   },
 })
