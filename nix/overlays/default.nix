@@ -14,6 +14,15 @@ final: prev: {
       };
     });
   };
+  whitesur-icon-theme = prev.whitesur-icon-theme.overrideAttrs (oldAttrs: {
+    version = "2025-07-23";
+    src = prev.fetchFromGitHub {
+      owner = "vinceliuice";
+      repo = "WhiteSur-icon-theme";
+      rev = "v${oldAttrs.version}";
+      hash = "sha256-spTmS9Cn/HAnbgf6HppwME63cxWEbcKwWYMMj8ajFyY=";
+    };
+  });
   lib = prev.lib // {
     scss = import ../lib/scss.nix {
       pkgs = final;
