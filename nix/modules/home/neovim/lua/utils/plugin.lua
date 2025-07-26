@@ -127,10 +127,11 @@ function M.get_language_spec(config)
 end
 
 ---@module "which-key"
+---@module "catppuccin"
 
 ---@class utils.plugin.extension_config
 ---@field lualine? string|string[]
----@field catppuccin? table<string, boolean|table>
+---@field catppuccin? CtpIntegrations
 ---@field which_key? wk.Spec
 
 ---@param plugins LazyPluginSpec[]
