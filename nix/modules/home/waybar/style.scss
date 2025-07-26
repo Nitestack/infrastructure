@@ -6,15 +6,16 @@
 
 #waybar {
   border-radius: 1rem;
-  background: $bg-color;
+  background: transparent;
   color: $text-color;
 }
 
 /* Common Module Styles */
 .module,
 #privacy {
+  border-radius: 1rem;
   background-color: $bg-color;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   margin-right: 0.5rem;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
@@ -24,32 +25,8 @@
 #custom-mpris,
 #workspaces,
 #tray,
-#privacy,
-#group-network:hover,
-#group-power:hover {
-  border-radius: 1rem;
+#privacy {
   background-color: $secondary-color;
-}
-
-/*
- * ── Group Styles ──────────────────────────────────────────────────────
- */
-
-/* Left Items */
-#network,
-#custom-lock {
-  margin-left: 0.5rem;
-}
-
-/* All Modules */
-#network,
-network.download,
-network.upload,
-#custom-shutdown,
-#custom-lock,
-#custom-suspend,
-#custom-reboot {
-  background-color: transparent;
 }
 
 /*
@@ -59,14 +36,8 @@ network.upload,
 /* Logo */
 #custom-logo {
   margin-left: 0.5rem;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
+  padding: 0.1rem 0.5rem;
   font-size: 16pt;
-}
-
-/* Active App */
-#custom-window {
-  font-weight: bold;
 }
 
 /* MPRIS */
