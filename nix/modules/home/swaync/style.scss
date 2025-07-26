@@ -1,0 +1,73 @@
+:root {
+  --cc-bg: alpha(#{$bg-color}, 0.9);
+  --noti-border-color: #{$border-color};
+  --noti-bg: 24, 24, 37;
+  --noti-bg-alpha: 0.9;
+  --noti-bg-darker: #{$bg-darker};
+  --noti-bg-hover: #{$border-color};
+  --noti-bg-focus: rgba(137, 180, 250, 0.3);
+  --noti-close-bg: #{$border-color};
+  --noti-close-bg-hover: #{$error-color};
+  --text-color: #{$text-color};
+  --text-color-disabled: #a6adc8;
+  --bg-selected: #{$primary-color};
+}
+
+$nerd-icon-size: 1.25rem;
+
+* {
+  font-family: "#{$font-sans}", "#{$font-nerd-propo}";
+}
+
+button:hover {
+  transition: background-color 0.15s ease-in-out;
+}
+
+// ── Control Center ──────────────────────────────────────────────────
+.control-center {
+  border: 2px solid $primary-color;
+  border-radius: #{$window-border-radius}px;
+  padding: 8px;
+}
+
+// ── Slider ──────────────────────────────────────────────────────────
+.widget-backlight label,
+.widget-slider label,
+.widget-volume label {
+  font-size: $nerd-icon-size;
+}
+.widget-volume,
+.widget-slider,
+.widget-backlight,
+.widget-buttons-grid {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $border-color;
+}
+
+// ── Icon Button ─────────────────────────────────────────────────────
+.widget-title > button,
+.widget-buttons-grid flowboxchild > button {
+  padding: 0;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  font-size: $nerd-icon-size;
+}
+
+// ── Title Clear Button ──────────────────────────────────────────────
+.widget-title > button:hover {
+  background: $error-color;
+}
+
+// ── Buttons Grid ────────────────────────────────────────────────────
+.widget-buttons-grid flowboxchild > button {
+  &:hover:not(:checked) {
+    background-color: lighter(#2f2f3e);
+  }
+}
+
+// ── MPRIS ───────────────────────────────────────────────────────────
+.widget-mpris .widget-mpris-player {
+  margin: 0;
+  box-shadow: none;
+  border: 1px solid $border-color;
+}
