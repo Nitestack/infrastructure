@@ -22,6 +22,7 @@ let
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   rofi = "${pkgs.rofi-wayland}/bin/rofi";
+  rofimoji = "${pkgs.rofimoji}/bin/rofimoji";
 
   backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
   screenshot = import ../scripts/screenshots.nix { inherit config inputs pkgs; };
@@ -91,6 +92,7 @@ in
     ];
     binddr = [
       "ALT, space, Toggle App Launcher, exec, pkill rofi || ${uwsm-app} ${rofi} -show drun -run-command \"${uwsm-app} {cmd}\""
+      "SUPER, period, Toggle Emoji Picker, exec, pkill rofi || ${uwsm-app} ${rofimoji}"
     ];
     binddl = [
       ", XF86AudioPlay, Play/Pause, exec, ${uwsm-app} ${playerctl} play-pause"
