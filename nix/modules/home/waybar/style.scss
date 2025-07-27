@@ -41,48 +41,51 @@
 }
 
 /* MPRIS */
-#custom-mpris.spotify {
-  color: #1ed760;
-}
-#custom-mpris.youtube {
-  color: #cd201f;
-}
-#custom-mpris.firefox,
-#custom-mpris.default {
-  color: $primary-color;
-}
-#custom-mpris.paused {
-  color: $text-color;
+#custom-mpris {
+  transition: all 0.1s ease-in-out;
+  &.spotify {
+    color: #1ed760;
+  }
+  &.youtube {
+    color: #cd201f;
+  }
+  &.firefox,
+  &.default {
+    color: $primary-color;
+  }
+  &.paused {
+    color: $text-color;
+  }
 }
 
 /* Workspaces */
 #workspaces {
   padding: 0.5rem 0;
-}
 
-#workspaces button {
-  color: transparent;
-  background-color: $primary-color;
-  border-radius: 50%;
-  padding: 0;
-  margin: 0 0.5rem;
-  min-width: 1.25rem;
-  min-height: 1.25rem;
-  transition:
-    min-width 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6),
-    border-radius 0.5s ease-out;
-}
+  & button {
+    color: transparent;
+    background-color: $primary-color;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0 0.5rem;
+    min-width: 1.25rem;
+    min-height: 1.25rem;
+    transition: all 0.25s ease-in-out;
 
-#workspaces button.active,
-#workspaces button:hover {
-  min-width: 3.5rem;
-  border-radius: 1rem;
+    &.active,
+    &:hover {
+      min-width: 3.5rem;
+      border-radius: 1rem;
+    }
+  }
 }
 
 /* Privacy */
-#privacy-item.screenshare {
-  color: $warning-color;
-}
-#privacy-item.audio-in {
-  color: $error-color;
+#privacy-item {
+  &.screenshare {
+    color: $warning-color;
+  }
+  &.audio-in {
+    color: $error-color;
+  }
 }
