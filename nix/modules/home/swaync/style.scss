@@ -23,6 +23,15 @@ button:hover {
   transition: background-color 0.15s ease-in-out;
 }
 
+.widget-volume,
+.widget-slider,
+.widget-backlight,
+.widget-buttons-grid,
+.widget-menubar {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $border-color;
+}
+
 // ── Control Center ──────────────────────────────────────────────────
 .control-center {
   border: 2px solid $primary-color;
@@ -35,13 +44,6 @@ button:hover {
 .widget-slider label,
 .widget-volume label {
   font-size: $nerd-icon-size;
-}
-.widget-volume,
-.widget-slider,
-.widget-backlight,
-.widget-buttons-grid {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid $border-color;
 }
 
 // ── Icon Button ─────────────────────────────────────────────────────
@@ -62,6 +64,37 @@ button:hover {
 .widget-buttons-grid flowboxchild > button {
   &:hover:not(:checked) {
     background-color: lighter(#2f2f3e);
+  }
+}
+
+// Menubar
+.widget-menubar {
+  margin: 8px;
+  border-radius: 12px;
+
+  & > .menu-button-bar {
+    & > .start {
+      margin-left: 0;
+    }
+    & > .end {
+      margin-right: 0;
+    }
+
+    & > .widget-menubar-container button {
+      margin: 4px;
+    }
+  }
+  & revealer {
+    margin-top: 0;
+
+    & > box {
+      margin-top: 8px;
+    }
+
+    & button {
+      margin-right: 0;
+      margin-left: 0;
+    }
   }
 }
 
