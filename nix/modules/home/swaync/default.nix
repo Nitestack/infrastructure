@@ -7,26 +7,25 @@
   theme,
   lib,
   config,
+  flake,
   ...
 }:
 let
+  inherit (flake) inputs;
   inherit (meta) font monitors;
 
   bluetoothctl = "${pkgs.bluez}/bin/bluetoothctl";
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+  hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
   nmcli = "${pkgs.networkmanager}/bin/nmcli";
   swaync-client = "${pkgs.swaynotificationcenter}/bin/swaync-client";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
 
-  monitor-backlight = pkgs.writeShellScriptBin "monitor-backlight" ''
-    #!/usr/bin/env bash
+  backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
+  screenshot = import ../scripts/screenshots.nix { inherit config inputs pkgs; };
+  audio = import ../scripts/audio.nix { inherit pkgs; };
 
-    DEVICES=(${lib.escapeShellArgs (map (monitor: monitor.backlight.device) monitors)})
-
-    for device in "''${DEVICES[@]}"; do
-      ${brightnessctl} --device $device set $1
-    done
-  '';
+  close-swaync-cmd = cmd: "${swaync-client} -cp; sleep 1; ${cmd}";
 
   inherit (config.wayland.windowManager.hyprland.settings.general) gaps_out;
 in
@@ -46,42 +45,21 @@ in
         };
       };
       widgets = [
-        "buttons-grid#power"
-        "mpris"
-        "buttons-grid#controls"
+        "menubar"
+        "buttons-grid"
         "volume"
         "slider#backlight"
         "title"
         "notifications"
+        "mpris"
       ];
       widget-config = {
-        "buttons-grid#power" = {
-          buttons-per-row = 4;
-          actions = [
-            {
-              label = "";
-              command = "systemctl poweroff";
-            }
-            {
-              label = "";
-              command = "systemctl reboot";
-            }
-            {
-              label = "";
-              command = "loginctl lock-session";
-            }
-            {
-              label = "";
-              command = "systemctl suspend";
-            }
-          ];
-        };
         mpris = {
           loop-carousel = true;
           blacklist = [ "org.mpris.MediaPlayer2.playerctld" ]; # NOTE: fixes duplicate entries
         };
-        "buttons-grid#controls" = {
-          buttons-per-row = 6;
+        "buttons-grid" = {
+          buttons-per-row = 4;
           actions = [
             {
               label = "󰖩";
@@ -104,22 +82,72 @@ in
             {
               label = "󰍬";
               type = "toggle";
-              command = "${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+              command = audio.input.toggle-mute { osd = false; };
               update-command = "${wpctl} get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q MUTED && echo false || echo true";
             }
             {
               label = "󰕾";
               type = "toggle";
-              command = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+              command = audio.output.toggle-mute { osd = false; };
               update-command = "${wpctl} get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED && echo false || echo true";
             }
             {
-              label = "󰤄";
+              label = "󰂛";
               type = "toggle";
               command = "[[ $SWAYNC_TOGGLE_STATE == true ]] && ${swaync-client} -dn || ${swaync-client} -df";
               update-command = "${swaync-client} -D";
             }
+            {
+              label = "󰴱";
+              command = "${hyprpicker} -a";
+            }
           ];
+        };
+        "menubar" = {
+          "menu#screenshot" = {
+            label = "󰄀 Screenshot";
+            position = "left";
+            actions = [
+              {
+                label = "󱣴 Window";
+                command = close-swaync-cmd screenshot.active-window;
+              }
+              {
+                label = "󰩬 Area";
+                command = close-swaync-cmd screenshot.area-select;
+              }
+              {
+                label = "󰍹 Screen";
+                command = close-swaync-cmd screenshot.active-monitor;
+              }
+              {
+                label = "󰍺 All Screens";
+                command = close-swaync-cmd screenshot.all-monitors;
+              }
+            ];
+          };
+          "menu#power" = {
+            label = " Power Menu";
+            position = "right";
+            actions = [
+              {
+                label = " Shutdown";
+                command = "systemctl poweroff";
+              }
+              {
+                label = " Reboot";
+                command = "systemctl reboot";
+              }
+              {
+                label = " Lock";
+                command = "loginctl lock-session";
+              }
+              {
+                label = " Suspend";
+                command = "systemctl suspend";
+              }
+            ];
+          };
         };
         volume = {
           label = "󰕾";
@@ -127,7 +155,10 @@ in
         };
         "slider#backlight" = {
           label = "󰃞";
-          cmd_setter = "${monitor-backlight}/bin/monitor-backlight $value";
+          cmd_setter = backlight.set {
+            osd = false;
+            value = "$value";
+          };
           cmd_getter = "${brightnessctl} --device ${
             (lib.findFirst (monitor: monitor.isDefault) null monitors).backlight.device
           } get";
@@ -138,7 +169,6 @@ in
           value_scale = 0;
         };
         title = {
-          text = "󰂚 Notifications";
           button-text = "󰩹";
         };
         notifications = {
