@@ -17,13 +17,12 @@ let
 
   ghostty = "${pkgs.ghostty}/bin/ghostty";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
-  waypaper = "${pkgs.waypaper}/bin/waypaper";
+  mpvpaper = "${pkgs.mpvpaper}/bin/mpvpaper";
 in
 {
   wayland.windowManager.hyprland.settings = {
     exec-once = [
-      "${uwsm-background-service} ${waypaper} --restore"
-
+      "${uwsm-background-service} ${mpvpaper} ALL ${../../../images/wallpapers/dark-galaxy.mp4}"
       "${uwsm-session-service} ${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size} &"
 
       # left monitor
