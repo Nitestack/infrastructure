@@ -20,6 +20,7 @@ in
     self.homeModules.hyprland
     self.homeModules.rofi
     self.homeModules.swaync
+    self.homeModules.swayosd
     self.homeModules.theme
     self.homeModules.waybar
     self.homeModules.waypaper

@@ -27,7 +27,6 @@ let
   screenshots_dir = "${config.xdg.userDirs.pictures}/Screenshots";
 in
 {
-  services.swayosd.enable = true;
   wayland.windowManager.hyprland.settings = {
     "$lmb" = "mouse:272"; # Left mouse button
     "$rmb" = "mouse:273"; # Right mouse button
