@@ -38,12 +38,22 @@ let
       percent="$(${brightnessctl} --device ${default-device} get)"
       progress="$(echo "scale=2; $percent / 100" | bc -l)"
 
+      if [ $((percent)) -eq 100 ]; then
+        icon_name="display-brightness-high-symbolic"
+      elif [ $((percent)) -ge 50 ]; then
+        icon_name="display-brightness-medium-symbolic"
+      elif [ $((percent)) -eq 0 ]; then
+        icon_name="display-brightness-off-symbolic"
+      else
+        icon_name="display-brightness-low-symbolic"
+      fi
+
       if [ "$percent" == "0" ]; then
         progress="0.001"
       fi
 
       ${swayosd-client} \
-        --custom-icon="display-brightness-symbolic" \
+        --custom-icon="$icon_name" \
         --custom-progress="$progress" \
         --custom-progress-text="$percent%"
     fi

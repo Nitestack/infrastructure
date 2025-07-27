@@ -21,12 +21,22 @@ let
       percent="$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2 * 100)}')"
       progress="$(echo "scale=2; $percent / 100" | bc -l)"
 
+      if [ $((percent)) -eq 100 ]; then
+        icon_name="sink-volume-high-symbolic"
+      elif [ $((percent)) -ge 50 ]; then
+        icon_name="sink-volume-medium-symbolic"
+      elif [ $((percent)) -eq 0 ]; then
+        icon_name="sink-volume-muted-symbolic"
+      else
+        icon_name="sink-volume-low-symbolic"
+      fi
+
       if [ "$percent" == "0" ]; then
         progress="0.001"
       fi
 
       ${swayosd-client} \
-        --custom-icon="sink-volume-high-symbolic" \
+        --custom-icon="$icon_name" \
         --custom-progress="$progress" \
         --custom-progress-text="$percent%"
     fi
