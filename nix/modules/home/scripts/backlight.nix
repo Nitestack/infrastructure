@@ -14,6 +14,14 @@ let
   monitor-backlight = pkgs.writeShellScriptBin "monitor-backlight" ''
     #!/usr/bin/env bash
 
+    LOCK_DIR="/tmp/monitor-backlight.lock"
+
+    if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+        exit 1
+    fi
+
+    trap 'rmdir "$LOCK_DIR"' EXIT
+
     SHOW_OSD=false
     if [ "$1" = "--osd" ]; then
         SHOW_OSD=true
@@ -21,8 +29,10 @@ let
     fi
 
     ${lib.concatStringsSep "\n" (
-      map (monitor: "${brightnessctl} --device ${monitor.backlight.device} set $1") monitors
+      map (monitor: "${brightnessctl} --device ${monitor.backlight.device} set $1 &") monitors
     )}
+
+    wait
 
     if [ "$SHOW_OSD" = true ]; then
       percent="$(${brightnessctl} --device ${default-device} get)"
