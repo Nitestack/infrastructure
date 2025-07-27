@@ -1,0 +1,15 @@
+window#osd {
+  font-family: "#{$font-nerd-propo}";
+
+  #container {
+    margin: 8px;
+  }
+
+  image {
+    -gtk-icon-transform: scale(0.75);
+  }
+
+  progressbar {
+    min-width: 120px;
+  }
+}
