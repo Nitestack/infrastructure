@@ -35,9 +35,6 @@ in
 
   # Packages
   environment.systemPackages = with pkgs; [
-    # Packages
-    protonvpn-cli
-
     # Apps
     (bottles.override {
       removeWarningPopup = true;
@@ -51,19 +48,6 @@ in
 
     # NixOS
     gnome-system-monitor
-  ];
-
-  # Proton VPN
-  security.sudo.extraRules = [
-    {
-      users = [ meta.username ];
-      commands = [
-        {
-          command = "${pkgs.protonvpn-cli}/bin/protonvpn";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
   ];
 
   # Virtualization
