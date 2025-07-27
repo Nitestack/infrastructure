@@ -29,7 +29,6 @@
         (floatByExactClass "org.gnome.SystemMonitor")
         (floatByExactClass "org.gnome.Settings")
         (floatByExactClass "dconf-editor")
-        (floatByExactClass "waypaper")
 
         (floatByClass "xdg-desktop-portal")
         (floatByClass ".blueman-manager")

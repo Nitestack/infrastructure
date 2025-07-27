@@ -23,7 +23,6 @@ in
     self.homeModules.swayosd
     self.homeModules.theme
     self.homeModules.waybar
-    self.homeModules.waypaper
     self.homeModules.zen-browser
   ];
 
