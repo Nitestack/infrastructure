@@ -33,6 +33,7 @@ in
       all_subfolders = false;
       show_hidden = false;
       show_gifs_only = false;
+      zen_mode = "false";
       post_command = "";
       number_of_columns = 3;
       swww_transition_type = "any";
@@ -40,6 +41,8 @@ in
       swww_transition_angle = 0;
       swww_transition_duration = 2;
       swww_transition_fps = maxRefreshRate;
+      mpvpaper_sound = false;
+      mpvpaper_options = "";
       use_xdg_state = false;
     };
   };
