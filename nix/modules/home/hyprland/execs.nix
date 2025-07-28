@@ -22,7 +22,7 @@ in
 {
   wayland.windowManager.hyprland.settings = {
     exec-once = [
-      "${uwsm-background-service} ${mpvpaper} ALL ${../../../images/wallpapers/dark-galaxy.mp4}"
+      "${uwsm-background-service} ${mpvpaper} -o \"no-audio loop-file\" ALL ${../../../images/wallpapers/dark-galaxy.mp4}"
       "${uwsm-session-service} ${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size} &"
 
       # left monitor
