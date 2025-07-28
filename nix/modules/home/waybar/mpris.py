@@ -18,7 +18,7 @@ STATUS_ICONS = {
 }
 
 REFRESH_INTERVAL = 0.5
-MAX_LEN = 46
+MAX_LEN = 45
 
 
 def run_cmd(cmd, default=""):
