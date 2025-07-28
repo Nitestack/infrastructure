@@ -13,28 +13,6 @@ let
   user_avatar = ../../../../images/user-avatar.png;
 
   scripts = {
-    battery-status = pkgs.writeShellScriptBin "battery-status" ''
-      #!/usr/bin/env bash
-
-      status="$(cat /sys/class/power_supply/BAT1/status)"
-      level="$(cat /sys/class/power_supply/BAT1/capacity)"
-
-      if [[ ("$status" == "Discharging") || ("$status" == "Full") ]]; then
-        if [[ "$level" -eq "0" ]]; then
-          printf " "
-        elif [[ ("$level" -ge "0") && ("$level" -le "25") ]]; then
-          printf " "
-        elif [[ ("$level" -ge "25") && ("$level" -le "50") ]]; then
-          printf " "
-        elif [[ ("$level" -ge "50") && ("$level" -le "75") ]]; then
-          printf " "
-        elif [[ ("$level" -ge "75") && ("$level" -le "100") ]]; then
-          printf " "
-        fi
-      elif [[ "$status" == "Charging" ]]; then
-        printf " "
-      fi
-    '';
     layout-status = pkgs.writeShellScriptBin "layout-status" ''
       #!/usr/bin/env bash
 
@@ -119,7 +97,6 @@ in
         check_color = "rgba(204, 136, 34, 0)";
         fail_color = "rgba(204, 34, 34, 0)"; # if authentication failed, changes outer_color and fail message color
         fail_text = "$FAIL <b>($ATTEMPTS)</b>"; # can be set to empty
-        fail_transition = 300; # transition time in ms between normal outer_color and fail_color
         capslock_color = -1;
         numlock_color = -1;
         bothlock_color = -1; # when both locks are active. -1 means don't change outer color (same for above)
@@ -149,16 +126,6 @@ in
           font_size = 15;
           font_family = font.nerd.propoName;
           position = "920, 507";
-          halign = "center";
-          valign = "center";
-        }
-        {
-          monitor = "";
-          text = "cmd[update:1000] echo \"$(${scripts.battery-status}/bin/battery-status)\"";
-          color = "rgba(242, 243, 244, 0.75)";
-          font_size = 18;
-          font_family = font.nerd.propoName;
-          position = "863, 505";
           halign = "center";
           valign = "center";
         }
