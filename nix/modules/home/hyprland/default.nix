@@ -29,6 +29,7 @@ in
     pkgs.hyprpicker
     pkgs.wl-clipboard
     pkgs.rofimoji
+    pkgs.mpvpaper
   ];
 
   wayland.windowManager.hyprland = {
