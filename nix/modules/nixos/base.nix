@@ -72,7 +72,7 @@ in
     # Nix
     nix-flake-update
     nix-prefetch-git
-    nixfmt-rfc-style
+    nixfmt
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────

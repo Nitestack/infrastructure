@@ -55,7 +55,7 @@
     gofumpt
     gotools
     prettierd
-    nixfmt-rfc-style
+    nixfmt
     nufmt
     shfmt
     stylua
