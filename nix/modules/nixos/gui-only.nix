@@ -10,7 +10,7 @@
   environment.systemPackages = with pkgs; [
     # Apps
     bitwarden-desktop
-    google-chrome
+    musescore
     signal-desktop-bin
     vesktop
   ];
