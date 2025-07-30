@@ -1,7 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Audio                                                    │
 # ╰──────────────────────────────────────────────────────────╯
+{ pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [ pwvucontrol ];
+
   services.pipewire = {
     enable = true;
     audio.enable = true;
