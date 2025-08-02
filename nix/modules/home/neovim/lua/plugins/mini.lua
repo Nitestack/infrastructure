@@ -35,28 +35,6 @@ return utils.plugin.with_extensions({
         },
       },
     }),
-    opts = function(_, opts)
-      core.auto_cmds({
-        {
-          "User",
-          {
-            pattern = "MiniFilesWindowOpen",
-            callback = function(args)
-              local win_id = args.data.win_id
-
-              vim.api.nvim_win_set_config(win_id, { border = "rounded" })
-            end,
-          },
-        },
-      })
-
-      opts.content = opts.content or {}
-      opts.content.prefix = function(fs_entry)
-        local category = fs_entry.fs_type == "directory" and "directory" or "file"
-        local icon, hl = require("mini.icons").get(category, utils.resolve_chezmoi_name(category, fs_entry.name))
-        return icon .. " ", hl
-      end
-    end,
   },
   { import = "lazyvim.plugins.extras.editor.mini-move" },
   {
@@ -76,6 +54,11 @@ return utils.plugin.with_extensions({
   },
   { import = "lazyvim.plugins.extras.coding.mini-surround" },
 }, {
+  catppuccin = {
+    mini = {
+      enabled = true,
+    },
+  },
   which_key = {
     { "gs", group = "Surround", mode = { "n", "x" } },
   },

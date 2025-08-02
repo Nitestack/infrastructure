@@ -117,16 +117,6 @@ return utils.plugin.with_extensions({
     end,
   },
   {
-    "rcarriga/nvim-dap-ui",
-    ---@module "dapui"
-    ---@type dapui.Config
-    opts = {
-      floating = {
-        border = "rounded",
-      },
-    },
-  },
-  {
     "theHamsta/nvim-dap-virtual-text",
     cmd = {
       "DapVirtualTextEnable",

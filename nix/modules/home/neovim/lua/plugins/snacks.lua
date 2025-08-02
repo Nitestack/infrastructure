@@ -61,10 +61,6 @@ return utils.plugin.with_extensions({
           style = "float",
         },
       },
-      -- Window
-      win = {
-        border = "rounded",
-      },
     },
   },
 }, {

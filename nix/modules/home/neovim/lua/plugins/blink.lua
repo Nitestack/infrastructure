@@ -1,23 +1,25 @@
 ---@type LazyPluginSpec
-return {
-  "saghen/blink.cmp",
-  opts = {
-    completion = {
-      menu = {
-        winhighlight = "Normal:Normal,PmenuExtra:Normal",
-        border = "rounded",
+return utils.plugin.with_extensions({
+  {
+    "saghen/blink.cmp",
+    opts = {
+      keymap = {
+        preset = "default",
       },
-    },
-    keymap = {
-      preset = "default",
-    },
-    cmdline = {
-      enabled = true,
-      completion = {
-        menu = {
-          auto_show = true,
+      cmdline = {
+        enabled = true,
+        completion = {
+          menu = {
+            auto_show = true,
+          },
         },
       },
     },
   },
-}
+}, {
+  catppuccin = {
+    blink_cmp = {
+      style = "solid",
+    },
+  },
+})
