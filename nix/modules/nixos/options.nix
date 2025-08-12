@@ -166,7 +166,7 @@ in
       };
     };
     theme = mkOption {
-      type = (pkgs.formats.json { }).type;
+      inherit (pkgs.formats.json { }) type;
     };
   };
   config = {

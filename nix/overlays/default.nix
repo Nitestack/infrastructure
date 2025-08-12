@@ -1,8 +1,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Overlays                                                 │
 # ╰──────────────────────────────────────────────────────────╯
-{ ... }:
-final: prev: {
+_: final: prev: {
   tmuxPlugins = prev.tmuxPlugins // {
     tokyo-night-tmux = prev.tmuxPlugins.tokyo-night-tmux.overrideAttrs (oldAttrs: {
       version = "1.6.5";
@@ -25,8 +24,8 @@ final: prev: {
   });
   lib = prev.lib // {
     scss = import ../lib/scss.nix {
+      inherit (prev) lib;
       pkgs = final;
-      lib = prev.lib;
     };
   };
 }

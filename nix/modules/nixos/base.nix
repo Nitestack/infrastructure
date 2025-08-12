@@ -85,7 +85,7 @@ in
 
   # ── Users ─────────────────────────────────────────────────────────────
   users.users.${meta.username} = {
-    description = meta.description;
+    inherit (meta) description;
     home = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${meta.username}";
   };
 

@@ -33,9 +33,10 @@ in
   ];
 
   wayland.windowManager.hyprland = {
+    inherit (osConfig.programs.hyprland) package; # `hyprsunset` depends on this package, otherwise set to `null` to let NixOS handle the Hyprland package
+
     enable = true;
     xwayland.enable = true;
-    package = osConfig.programs.hyprland.package; # `hyprsunset` depends on this package, otherwise set to `null` to let NixOS handle the Hyprland package
     portalPackage = null; # let NixOS system handle portals
     systemd.enable = false; # disable systemd integration as it conflicts with uwsm
     plugins = [

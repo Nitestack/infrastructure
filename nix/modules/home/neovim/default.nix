@@ -10,9 +10,11 @@
     vimAlias = true;
     vimdiffAlias = true;
   };
-  xdg.configFile."nvim/after".source = ./after;
-  xdg.configFile."nvim/lua".source = ./lua;
-  xdg.configFile."nvim/init.lua".source = ./init.lua;
+  xdg.configFile = {
+    "nvim/after".source = ./after;
+    "nvim/lua".source = ./lua;
+    "nvim/init.lua".source = ./init.lua;
+  };
 
   home.packages = with pkgs; [
     # NOTE: LSP's (# pnpm add -g @prisma/language-server cssmodules-language-server markdown-toc)
@@ -48,6 +50,7 @@
     ruff
     selene
     shellcheck
+    statix
 
     # Formatters
     bibtex-tidy

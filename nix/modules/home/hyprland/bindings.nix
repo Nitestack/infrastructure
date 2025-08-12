@@ -12,8 +12,7 @@
 }:
 let
   inherit (flake) inputs;
-in
-let
+
   # Bins
   uwsm-app = "${pkgs.uwsm}/bin/uwsm app --";
 
