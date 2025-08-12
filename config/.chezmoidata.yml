@@ -9,18 +9,6 @@ packages:
     winget:
       - "twpayne.chezmoi"
       - "Git.Git"
-      - "Nushell.Nushell"
-
-  winget:
-    - "sharkdp.bat"
-    - "rsteube.Carapace"
-    - "dandavison.delta"
-    - "eza-community.eza"
-    - "Fastfetch-cli.Fastfetch"
-    - "JesseDuffield.lazygit"
-    - "JanDeDobbeleer.OhMyPosh"
-    - "sharkdp.vivid"
-    - "ajeetdsouza.zoxide"
 apps:
   work:
     winget:

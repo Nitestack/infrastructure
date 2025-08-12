@@ -48,9 +48,7 @@
   };
   home = {
     packages = with pkgs; [ delta ];
-    shellAliases = {
-      lg = "lazygit";
-    };
+    shellAliases.lg = "lazygit";
   };
   # handled by chezmoi
   xdg.configFile."git/config".enable = false;

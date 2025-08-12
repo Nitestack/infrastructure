@@ -22,11 +22,6 @@ AppData
 Library
 {{ end }}
 
-# Ignore on Windows
-{{ if eq .chezmoi.os "windows" }}
-.config/nushell
-{{ end }}
-
 # Ignore on Linux environments without GUI
 {{ if or .is_wsl .is_pi }}
 .config/vesktop
