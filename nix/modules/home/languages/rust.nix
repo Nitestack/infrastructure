@@ -14,5 +14,6 @@
     sessionPath = [
       "${config.home.homeDirectory}/.cargo/bin"
     ];
+    sessionVariables.RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
   };
 }
