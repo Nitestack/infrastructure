@@ -35,6 +35,14 @@ in
         options = {
           username = mkStringOption;
           description = mkStringOption;
+          git = mkOption {
+            type = submodule {
+              options = {
+                userName = mkStringOption;
+                userEmail = mkStringOption;
+              };
+            };
+          };
           font = mkOption {
             type = submodule {
               options = {

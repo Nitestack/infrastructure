@@ -3,6 +3,10 @@
   # User Info
   username = "nhan";
   description = "Nhan Pham";
+  git = {
+    userName = "Nitestack";
+    userEmail = "code@npham.de";
+  };
   # Fonts
   font = {
     sans = {

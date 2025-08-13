@@ -6,7 +6,6 @@
 {{ if ne .chezmoi.os "windows" }}
 .chezmoiscripts/windows/**
 
-.ssh
 AppData
 
 .wslconfig
@@ -26,8 +25,3 @@ Library
 {{ if or .is_wsl .is_pi }}
 .config/vesktop
 {{ end }}
-
-# Ignore on Work Environment
-# {{ if eq .hosttype "work" }}
-.ssh
-# {{ end }}

@@ -1,26 +1,7 @@
-{{- $name := promptStringOnce . "name" "Name" "Nitestack" -}}
-{{- $email := promptStringOnce . "email" "Email Address" "code@npham.de" -}}
-{{- $hosttype := promptChoiceOnce . "host-type" "Host Type" (list "personal" "work") "personal" -}}
 # ╭──────────────────────────────────────────────────────────╮
 # │ Chezmoi Config                                           │
 # ╰──────────────────────────────────────────────────────────╯
 
-data:
-  name: {{ $name | quote }}
-  email: {{ $email | quote }}
-  hosttype: {{ $hosttype | quote }}
-  # do not override the WSL check
-{{- if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
-  is_wsl: true
-{{- else }}
-  is_wsl: false
-{{- end }}
-  # do not override the Raspberry Pi OS check
-{{- if and (eq .chezmoi.os "linux") (.chezmoi.kernel.osrelease | lower | contains "rpi") }}
-  is_pi: true
-{{- else }}
-  is_pi: false
-{{- end }}
 sourceDir: {{ .chezmoi.workingTree | quote }}
 diff:
   exclude:
