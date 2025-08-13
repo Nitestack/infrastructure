@@ -17,6 +17,7 @@ in
     self.homeModules.direnv
     self.homeModules.eza
     self.homeModules.git
+    self.homeModules.lazygit
     self.homeModules.neovim
     self.homeModules.nh
     self.homeModules.nushell
