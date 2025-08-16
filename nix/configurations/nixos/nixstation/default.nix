@@ -41,6 +41,7 @@ in
     })
     endeavour
     ente-auth
+    obsidian
     protonmail-desktop
     protonvpn-gui
     stremio

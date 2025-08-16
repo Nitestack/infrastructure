@@ -45,8 +45,12 @@ in
   homebrew = {
     casks = [
       "ente-auth"
-      "nextcloud"
       "ghostty"
+      "nextcloud"
+      "obsidian"
+      "proton-mail"
+      "protonvpn"
+      "stremio"
       "zen-browser"
     ];
   };
@@ -54,5 +58,6 @@ in
   # INFO: any package that hasn't a `programs` or `services` entry on Nix Darwin (look at `nixos/linux-only.nix`)
   environment.systemPackages = with pkgs; [
     git
+    whatsapp-for-mac
   ];
 }
