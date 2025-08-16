@@ -17,11 +17,9 @@ in
   ];
 
   home.packages = with pkgs; [
-    alt-tab-macos
     aldente
     iina
     maccy
     raycast
-    rectangle
   ];
 }
