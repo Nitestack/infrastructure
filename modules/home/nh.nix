@@ -19,7 +19,7 @@ let
       host="nixstation"
     fi
 
-    ${nh} os $action ~/.dotfiles/nix -H $host -- $@
+    ${nh} os $action ~/.dotfiles -H $host -- $@
   ''}/bin/nix-rebuild";
   nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
     #!/usr/bin/env bash
@@ -39,7 +39,7 @@ let
   darwin-switch = pkgs.writeShellScriptBin "darwin-switch" ''
     #!/usr/bin/env bash
 
-    ${nh} darwin switch ~/.dotfiles/nix -H macstation -- $@
+    ${nh} darwin switch ~/.dotfiles -H macstation -- $@
   '';
 in
 {

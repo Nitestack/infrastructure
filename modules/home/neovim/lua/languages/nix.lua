@@ -2,7 +2,7 @@
 -- │ Nix                                                     │
 -- ╰─────────────────────────────────────────────────────────╯
 
-local nix_flake_root = "~/.dotfiles/nix"
+local nix_flake_root = "~/.dotfiles"
 
 return utils.plugin.get_language_spec({
   treesitter = "nix",
@@ -12,7 +12,7 @@ return utils.plugin.get_language_spec({
         settings = {
           nixd = {
             nixpkgs = {
-              expr = "(builtins.getFlake (toString ~/.dotfiles/nix)).inputs.nixpkgs",
+              expr = "(builtins.getFlake (toString ~/.dotfiles)).inputs.nixpkgs",
             },
             formatting = {
               command = { "nixfmt" },
