@@ -56,7 +56,6 @@ in
   environment.systemPackages = with pkgs; [
     # Essential
     caddy
-    chezmoi
     curl
     python3
     wget

@@ -2,10 +2,10 @@
 <h1>
   Unified ~/.dotfiles&nbsp;📂
   <br/>
-  For NixOS, macOS (with nix-darwin), Windows (and NixOS WSL)
+  For NixOS (including WSL) and macOS (with nix-darwin)
   <br/>
   <sup>
-    <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a>, <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a>, <a href="https://nushell.sh">Nushell</a> and <a href="https://chezmoi.io" target="_blank">chezmoi</a></sub>
+    <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a> and <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a></sub>
   </sup>
 </h1>
 
@@ -17,19 +17,16 @@
 
 ![image](https://github.com/user-attachments/assets/911a04ec-8da9-4ade-9780-99c5069d554f)
 
-_A unified, declarative dotfiles setup leveraging, [Nix](https://nixos.org), [Home Manager](https://nix-community.github.io/home-manager), [nix-darwin](https://github.com/nix-darwin/nix-darwin) and [chezmoi](https://chezmoi.io) to provide consistent shell environments across [NixOS](https://nixos.org), [macOS](https://apple.com/macos) and [Windows](https://microsoft.com/windows) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)). This repository uses [Nushell](https://nushell.sh) as the primary shell._
+_A unified, declarative dotfiles setup leveraging [Nix](https://nixos.org), [Home Manager](https://nix-community.github.io/home-manager) and [nix-darwin](https://github.com/nix-darwin/nix-darwin) to provide consistent shell environments across [NixOS](https://nixos.org) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)) and [macOS](https://apple.com/macos)._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
 </p>
 </div>
 
-> [!WARNING]
-> This repository is primarily intended for NixOS, NixOS WSL and macOS. While I could have included more features on Windows, they may not perform as well as they do on NixOS (WSL). Tools like Neovim and others are technically functional on Windows, but they are slower. As a result, I've excluded them on Windows. If you want to use these tools on Windows, I recommend using NixOS WSL, it's just a better developer experience.
-
 ## ⚙️ Requirements
 
-Ensure you have [`nu`](https://nushell.sh), [`git`](https://git-scm.com) and [`chezmoi`](https://chezmoi.io) available when needed in the installation section.
+Ensure you have [`nu`](https://nushell.sh) and [`git`](https://git-scm.com) available when needed in the installation section.
 
 ### NixOS
 
@@ -73,10 +70,6 @@ Install `Nix` with the [Nix Installer from Determinate Systems](https://determin
 curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 ```
 
-### Windows
-
-Ensure you have the latest version of [Windows](https://www.microsoft.com/software-download) installed.
-
 ## 🏁 Getting Started
 
 Clone the dotfiles repository:
@@ -93,7 +86,7 @@ Before continuing with the installation, initialize the Nix system:
 sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation"
 ```
 
-Please reboot the system and then continue with the [Final Steps](#final-steps).
+Please reboot the system.
 
 ### macOS
 
@@ -103,7 +96,7 @@ Before continuing with the installation, initialize the Nix system:
 sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles/nix#macstation"
 ```
 
-Please reboot the system and then continue with the [Final Steps](#final-steps).
+Please reboot the system.
 
 ### WSL (NixOS)
 
@@ -121,19 +114,7 @@ wsl -d NixOS --user root exit
 wsl -t NixOS
 ```
 
-Restart WSL and then continue with the [Final Steps](#final-steps).
-
-### Windows
-
-Continue with the [Final Steps](#final-steps).
-
-### Final Steps
-
-Initialize chezmoi:
-
-```nu
-chezmoi init --source=~/.dotfiles --apply
-```
+Restart WSL.
 
 ## 📝 License
 
