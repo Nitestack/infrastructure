@@ -2,7 +2,7 @@
 -- │ Nix                                                     │
 -- ╰─────────────────────────────────────────────────────────╯
 
-local nix_flake_root = "~/.dotfiles"
+local nix_flake_root = "~/nix-config"
 
 return utils.plugin.get_language_spec({
   treesitter = "nix",

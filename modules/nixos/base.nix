@@ -16,7 +16,7 @@ let
   nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
     #!/usr/bin/env bash
 
-    nix flake update --commit-lock-file --flake ~/.dotfiles $@
+    nix flake update --commit-lock-file --flake ~/nix-config $@
   '';
 in
 {

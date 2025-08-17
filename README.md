@@ -10,9 +10,9 @@
   </sup>
 </h2>
 
-![Latest commit](https://img.shields.io/github/last-commit/Nitestack/dotfiles?style=for-the-badge)
-![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
-![Github Created At](https://img.shields.io/github/created-at/Nitestack/dotfiles?style=for-the-badge)
+![Latest commit](https://img.shields.io/github/last-commit/Nitestack/nix-config?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/nix-config?style=for-the-badge)
+![Github Created At](https://img.shields.io/github/created-at/Nitestack/nix-config?style=for-the-badge)
 
 [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [License](#-license)
 
@@ -73,10 +73,10 @@ curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 
 ## 🏁 Getting Started
 
-Clone the dotfiles repository:
+Clone the repository:
 
 ```nu
-git clone https://github.com/Nitestack/dotfiles.git ~/.dotfiles
+git clone https://github.com/Nitestack/nix-config.git
 ```
 
 ### NixOS
@@ -84,7 +84,7 @@ git clone https://github.com/Nitestack/dotfiles.git ~/.dotfiles
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nixos-rebuild boot --flake ~/.dotfiles#nixstation
+sudo nixos-rebuild boot --flake ~/nix-config#nixstation
 ```
 
 Please reboot the system.
@@ -94,7 +94,7 @@ Please reboot the system.
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/.dotfiles#macstation
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/nix-config#macstation
 ```
 
 Please reboot the system.
@@ -104,7 +104,7 @@ Please reboot the system.
 Initialize the Nix system inside of NixOS-WSL:
 
 ```sh
-sudo nixos-rebuild boot --flake ~/.dotfiles#wslstation
+sudo nixos-rebuild boot --flake ~/nix-config#wslstation
 ```
 
 Execute the following commands on Windows to correctly apply the custom username:

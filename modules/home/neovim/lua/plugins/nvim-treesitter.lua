@@ -7,13 +7,7 @@ return utils.plugin.with_extensions({
     },
     opts = function(_, opts)
       opts.highlight = opts.highlight or {}
-      -- disable highlighting in chezmoi templates
       opts.highlight.disable = function(_lang, buf)
-        -- check if 'filetype' option includes 'chezmoitmpl'
-        if string.find(vim.bo.filetype, "chezmoitmpl") then
-          return true
-        end
-
         -- check for file size
         local max_filesize = 100 * 1024 -- 100 KB
         local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
