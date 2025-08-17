@@ -10,18 +10,3 @@ AppData
 
 .wslconfig
 {{ end }}
-
-# Linux only
-{{ if ne .chezmoi.os "linux" }}
-.config/vesktop
-{{ end }}
-
-# macOS only
-{{ if ne .chezmoi.os "darwin" }}
-Library
-{{ end }}
-
-# Ignore on Linux environments without GUI
-{{ if or .is_wsl .is_pi }}
-.config/vesktop
-{{ end }}

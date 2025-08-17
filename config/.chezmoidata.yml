@@ -9,6 +9,7 @@ packages:
     winget:
       - "twpayne.chezmoi"
       - "Git.Git"
+      - "Nushell.Nushell"
 apps:
   work:
     winget:
