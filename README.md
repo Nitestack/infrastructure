@@ -1,13 +1,14 @@
 <div align="center">
 <h1>
-  Unified ~/.dotfiles&nbsp;📂
-  <br/>
+  📂 Cross-Platform Nix Configuration
+</h1>
+<h2>
   For NixOS (including WSL) and macOS (with nix-darwin)
   <br/>
   <sup>
     <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a> and <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a></sub>
   </sup>
-</h1>
+</h2>
 
 ![Latest commit](https://img.shields.io/github/last-commit/Nitestack/dotfiles?style=for-the-badge)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/dotfiles?style=for-the-badge)
@@ -15,9 +16,9 @@
 
 [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [License](#-license)
 
-![image](https://github.com/user-attachments/assets/911a04ec-8da9-4ade-9780-99c5069d554f)
+![NixOS](https://github.com/user-attachments/assets/9a244fe9-b5a2-415d-9414-c246b36f51e7)
 
-_A unified, declarative dotfiles setup leveraging [Nix](https://nixos.org), [Home Manager](https://nix-community.github.io/home-manager) and [nix-darwin](https://github.com/nix-darwin/nix-darwin) to provide consistent shell environments across [NixOS](https://nixos.org) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)) and [macOS](https://apple.com/macos)._
+_A comprehensive, cross-platform [Nix](https://nixos.org) configuration repository managing system settings and user environments across multiple operating systems. This repository provides reproducible, declarative configurations for [NixOS](https://nixos.org) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)) and [macOS](https://apple.com/macos)._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
@@ -26,7 +27,7 @@ _A unified, declarative dotfiles setup leveraging [Nix](https://nixos.org), [Hom
 
 ## ⚙️ Requirements
 
-Ensure you have [`nu`](https://nushell.sh) and [`git`](https://git-scm.com) available when needed in the installation section.
+Ensure you have [`git`](https://git-scm.com) available when needed in the installation section.
 
 ### NixOS
 
@@ -83,7 +84,7 @@ git clone https://github.com/Nitestack/dotfiles.git ~/.dotfiles
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nixos-rebuild boot --flake "$HOME/.dotfiles#nixstation"
+sudo nixos-rebuild boot --flake ~/.dotfiles#nixstation
 ```
 
 Please reboot the system.
@@ -93,7 +94,7 @@ Please reboot the system.
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles#macstation"
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/.dotfiles#macstation
 ```
 
 Please reboot the system.
@@ -103,7 +104,7 @@ Please reboot the system.
 Initialize the Nix system inside of NixOS-WSL:
 
 ```sh
-sudo nixos-rebuild boot --flake "$HOME/.dotfiles#wslstation"
+sudo nixos-rebuild boot --flake ~/.dotfiles#wslstation
 ```
 
 Execute the following commands on Windows to correctly apply the custom username:
