@@ -83,7 +83,7 @@ git clone https://github.com/Nitestack/dotfiles.git ~/.dotfiles
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#nixstation"
+sudo nixos-rebuild boot --flake "$HOME/.dotfiles#nixstation"
 ```
 
 Please reboot the system.
@@ -93,7 +93,7 @@ Please reboot the system.
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles/nix#macstation"
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake "$HOME/.dotfiles#macstation"
 ```
 
 Please reboot the system.
@@ -103,7 +103,7 @@ Please reboot the system.
 Initialize the Nix system inside of NixOS-WSL:
 
 ```sh
-sudo nixos-rebuild boot --flake "$HOME/.dotfiles/nix#wslstation"
+sudo nixos-rebuild boot --flake "$HOME/.dotfiles#wslstation"
 ```
 
 Execute the following commands on Windows to correctly apply the custom username:
