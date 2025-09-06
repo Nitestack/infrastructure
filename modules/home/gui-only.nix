@@ -34,6 +34,7 @@ in
 
   programs = {
     cava.enable = true;
+    chromium.enable = true;
     vscode.enable = true;
   };
 }
