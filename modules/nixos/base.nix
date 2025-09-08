@@ -63,6 +63,7 @@ in
     # Packages
     ansible
     duf
+    lefthook
     ncdu
     openssl
     tree
