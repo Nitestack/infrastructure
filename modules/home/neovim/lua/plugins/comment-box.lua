@@ -39,6 +39,6 @@ return utils.plugin.with_extensions({
   },
 }, {
   which_key = {
-    { "<leader>h", group = "Headers", mode = { "n", "v" } },
+    { "<leader>h", group = "headers", mode = { "n", "v" } },
   },
 })

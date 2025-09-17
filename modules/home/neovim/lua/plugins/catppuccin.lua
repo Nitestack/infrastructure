@@ -25,6 +25,9 @@ return {
       operators = {},
     },
     integrations = {
+      blink_cmp = {
+        style = "solid",
+      },
       flash = true,
       gitsigns = true,
       grug_far = true,
@@ -46,6 +49,7 @@ return {
         inlay_hints = { background = true },
       },
       semantic_tokens = true,
+      which_key = true,
     },
   },
 }

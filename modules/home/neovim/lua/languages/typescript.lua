@@ -84,6 +84,7 @@ return utils.plugin.get_language_spec({
   plugins = utils.plugin.with_extensions({
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.lang.prisma" },
+    { import = "lazyvim.plugins.extras.linting.eslint" },
     {
       "nvim-treesitter/nvim-treesitter",
       opts = function()
@@ -171,7 +172,7 @@ return utils.plugin.get_language_spec({
     },
   }, {
     which_key = {
-      { "<leader>n", group = "Node.js" },
+      { "<leader>n", group = "node.js" },
     },
   }),
 })

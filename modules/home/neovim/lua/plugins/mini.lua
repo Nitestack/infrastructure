@@ -1,7 +1,7 @@
 return utils.plugin.with_extensions({
   { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
   {
-    "echasnovski/mini.hipatterns",
+    "nvim-mini/mini.hipatterns",
     opts = {
       tailwind = {
         enabled = false,
@@ -10,8 +10,7 @@ return utils.plugin.with_extensions({
   },
   { import = "lazyvim.plugins.extras.editor.mini-files" },
   {
-    "echasnovski/mini.files",
-    dependencies = "echasnovski/mini.icons",
+    "nvim-mini/mini.files",
     keys = core.lazy_map({
       n = {
         ["<leader>e"] = {
@@ -38,7 +37,7 @@ return utils.plugin.with_extensions({
   },
   { import = "lazyvim.plugins.extras.editor.mini-move" },
   {
-    "echasnovski/mini.move",
+    "nvim-mini/mini.move",
     keys = core.lazy_map({
       i = {
         ["<M-j>"] = {
@@ -58,8 +57,5 @@ return utils.plugin.with_extensions({
     mini = {
       enabled = true,
     },
-  },
-  which_key = {
-    { "gs", group = "Surround", mode = { "n", "x" } },
   },
 })

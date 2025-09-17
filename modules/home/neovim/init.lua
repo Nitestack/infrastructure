@@ -2,20 +2,6 @@
 -- │ Neovim Config                                           │
 -- ╰─────────────────────────────────────────────────────────╯
 
-if vim.loader then
-  vim.loader.enable()
-end
-
--- Ensure Neovim version is atleast 0.10
-if vim.fn.has("nvim-0.10") == 0 then
-  vim.api.nvim_echo({
-    { "Configuration requires Neovim >= 0.10.0\n", "ErrorMsg" },
-    { "Press any key to exit", "MoreMsg" },
-  }, true, {})
-  vim.fn.getchar()
-  vim.cmd.quit()
-end
-
 -- ── Globals ─────────────────────────────────────────────────────────
 ---@class utils
 _G.utils = require("utils")
@@ -95,33 +81,6 @@ require("lazy").setup({
         "tutor",
         "zipPlugin",
       },
-    },
-  },
-})
-
--- ── Auto session ────────────────────────────────────────────────────
-core.auto_cmds({
-  {
-    "User",
-    {
-      group = "persistence",
-      pattern = "VeryLazy",
-      callback = function()
-        local persistence = require("persistence")
-        if vim.fn.argc() == 0 and not vim.g.started_with_stdin then
-          -- Close all windows and reopen last session for neovim
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            local config = vim.api.nvim_win_get_config(win)
-            if config.relative ~= "" then
-              vim.api.nvim_win_close(win, false)
-            end
-          end
-          persistence.load()
-        else
-          persistence.stop()
-        end
-      end,
-      nested = true,
     },
   },
 })

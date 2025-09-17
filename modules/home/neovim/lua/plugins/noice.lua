@@ -41,7 +41,4 @@ return utils.plugin.with_extensions({
   catppuccin = {
     noice = true,
   },
-  which_key = {
-    { "<leader>sn", group = "Noice", mode = { "n", "s" } },
-  },
 })
