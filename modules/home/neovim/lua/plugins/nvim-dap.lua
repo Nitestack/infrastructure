@@ -136,7 +136,4 @@ return utils.plugin.with_extensions({
     dap = true,
     dap_ui = true,
   },
-  which_key = {
-    { "<leader>d", group = "Debug", mode = { "n", "v" } },
-  },
 })

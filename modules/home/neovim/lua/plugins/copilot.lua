@@ -1,4 +1,5 @@
-return utils.plugin.with_extensions({
+---@type LazyPluginSpec
+return {
   { import = "lazyvim.plugins.extras.ai.copilot" },
   {
     "zbirenbaum/copilot.lua",
@@ -8,8 +9,4 @@ return utils.plugin.with_extensions({
       panel = { enabled = false },
     },
   },
-}, {
-  which_key = {
-    { "<leader>a", group = "AI" },
-  },
-})
+}

@@ -4,10 +4,4 @@ return utils.plugin.with_extensions({
   catppuccin = {
     neotest = true,
   },
-  which_key = {
-    {
-      "<leader>t",
-      group = "Neotest",
-    },
-  },
 })
