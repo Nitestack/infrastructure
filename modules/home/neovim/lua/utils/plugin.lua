@@ -17,8 +17,8 @@ local M = {}
 ---@field plugins? LazyPluginSpec[]
 
 ---@class utils.plugin.language_config.lsp
----@field servers? table<string, table>
----@field setup? table<string, fun(server:string, opts:table):boolean?>
+---@field servers? table<string, vim.lsp.Config|{enabled?:boolean}|boolean>
+---@field setup? table<string, fun(server:string, opts:vim.lsp.Config):boolean?>
 
 ---@module "conform"
 
@@ -26,11 +26,15 @@ local M = {}
 ---@field formatters_by_ft? table<string, conform.FiletypeFormatter>
 ---@field formatters? table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
 
+---@module "lint"
+
 ---@class utils.plugin.language_config.linter
 ---@field linters_by_ft? table<string, string[]>
----@field linters? table<string,table>
+---@field linters? table<string, lint.Linter|fun():lint.Linter>
 
----@alias utils.plugin.language_config.test.adapters table<string, any>
+---@module "neotest"
+
+---@alias utils.plugin.language_config.test.adapters neotest.Adapter[]
 
 ---@class utils.plugin.language_config.test
 ---@field dependencies? string|string[]|LazyPluginSpec[]
