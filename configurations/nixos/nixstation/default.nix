@@ -44,7 +44,7 @@ in
     obsidian
     protonmail-desktop
     protonvpn-gui
-    stremio
+    # stremio # WARNING: broken; wait until Stremio package with the new `stremio-linux-shell` comes out
     wasistlos
 
     # NixOS
