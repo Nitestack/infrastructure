@@ -20,7 +20,7 @@ let
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
-  rofi = "${pkgs.rofi-wayland}/bin/rofi";
+  rofi = "${pkgs.rofi}/bin/rofi";
   rofimoji = "${pkgs.rofimoji}/bin/rofimoji";
 
   backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };

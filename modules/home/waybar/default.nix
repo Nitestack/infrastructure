@@ -11,7 +11,7 @@
 let
   inherit (meta) font;
 
-  rofi = "${pkgs.rofi-wayland}/bin/rofi";
+  rofi = "${pkgs.rofi}/bin/rofi";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   swaync-client = "${pkgs.swaynotificationcenter}/bin/swaync-client";

@@ -2,7 +2,6 @@
 # │ Rofi                                                     │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  pkgs,
   config,
   meta,
   theme,
@@ -14,7 +13,6 @@ in
 {
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
     extraConfig = {
       modi = "drun,run,filebrowser";
       show-icons = true;
