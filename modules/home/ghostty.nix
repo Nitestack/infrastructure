@@ -15,7 +15,7 @@ in
     enable = true;
     package = lib.mkIf pkgs.stdenv.isDarwin null; # NOTE: `ghostty` package is broken on macOS
     settings = {
-      theme = "catppuccin-mocha";
+      theme = "Catppuccin Mocha";
       font-family = font.nerd.name;
       font-family-italic = "${font.nerd.name} Italic";
       font-feature = "ss01";
