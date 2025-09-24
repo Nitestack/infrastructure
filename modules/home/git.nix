@@ -59,7 +59,15 @@ in
     };
     ssh = {
       enable = true;
-      addKeysToAgent = "yes";
+      matchBlocks = {
+        "*" = {
+          addKeysToAgent = "yes";
+        };
+        "raspberrypi" = {
+          hostname = "npham.de";
+          user = meta.username;
+        };
+      };
     };
   };
 }
