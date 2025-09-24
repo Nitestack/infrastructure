@@ -66,6 +66,7 @@ in
     lefthook
     ncdu
     openssl
+    rclone
     tree
     unzip
 
