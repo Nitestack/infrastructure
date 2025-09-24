@@ -21,7 +21,7 @@
     angular-language-server
     ansible-language-server
     bash-language-server
-    dockerfile-language-server-nodejs
+    dockerfile-language-server
     docker-compose-language-service
     emmet-language-server
     gopls
