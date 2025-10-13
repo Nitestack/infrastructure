@@ -17,10 +17,10 @@
   };
 
   home.packages = with pkgs; [
-    # NOTE: LSP's (# pnpm add -g @prisma/language-server cssmodules-language-server markdown-toc)
+    # NOTE: LSP's (# pnpm add -g @ansible/ansible-language-server cssmodules-language-server markdown-toc)
     angular-language-server
-    ansible-language-server
     bash-language-server
+    copilot-language-server
     dockerfile-language-server
     docker-compose-language-service
     emmet-language-server
@@ -29,6 +29,7 @@
     marksman
     nixd
     nushell
+    prisma-language-server
     pyright
     rust-analyzer
     tailwindcss-language-server
@@ -64,7 +65,9 @@
     stylua
 
     gcc
+    gemini-cli-bin
     ghostscript
+    github-copilot-cli
     imagemagick
     tree-sitter
     typst
