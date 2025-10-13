@@ -46,11 +46,10 @@ in
           # Modules
           modules-left = [
             "custom/logo"
-            "custom/window"
-            "custom/mpris"
+            "hyprland/workspaces"
           ];
           modules-center = [
-            "hyprland/workspaces"
+            "custom/mpris"
           ];
           modules-right = [
             "tray"
@@ -62,13 +61,6 @@ in
             format = "<span color='#5277C3'></span>";
             tooltip = false;
             on-click = "pkill rofi || ${rofi} -show drun";
-          };
-          "custom/window" = {
-            exec = "nu ${./app-name.nu}";
-            return-type = "json";
-            hide-empty-text = true;
-            format = "{text}";
-            tooltip-format = "{alt}";
           };
           privacy = {
             icon-spacing = spacing;
