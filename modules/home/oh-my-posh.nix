@@ -20,7 +20,6 @@
               style = "plain";
               foreground_templates = [
                 "{{ if eq .OS \"nixos\" }}#5277C3{{ end }}"
-                "{{ if eq .OS \"windows\" }}#00ACEE{{ end }}"
                 "{{ if eq .OS \"raspbian\" }}#C51D4A{{ end }}"
               ];
               background = "transparent";
