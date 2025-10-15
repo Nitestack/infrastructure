@@ -76,7 +76,7 @@ curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 Clone the repository:
 
 ```nu
-git clone https://github.com/Nitestack/nix-config.git
+git clone https://git.npham.de/Nitestack/nix-config.git
 ```
 
 ### NixOS
