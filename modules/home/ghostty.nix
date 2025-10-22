@@ -13,7 +13,7 @@ in
 {
   programs.ghostty = {
     enable = true;
-    package = lib.mkIf pkgs.stdenv.isDarwin null; # NOTE: `ghostty` package is broken on macOS
+    package = lib.mkIf pkgs.stdenv.isDarwin pkgs.ghostty-bin;
     settings = {
       theme = "Catppuccin Mocha";
       font-family = font.nerd.name;
