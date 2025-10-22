@@ -19,15 +19,13 @@ in
 {
   programs = {
     git = {
-      inherit (git) userName userEmail;
-
       enable = true;
-      signing = {
-        key = git.userEmail;
-        format = "openpgp";
-        signByDefault = true;
-      };
-      extraConfig = {
+      settings = {
+        alias.count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #";
+        user = {
+          name = git.userName;
+          email = git.userEmail;
+        };
         core = {
           editor = "nvim";
           longpaths = true;
@@ -42,20 +40,25 @@ in
         push.autoSetupRemote = true;
         init.defaultBranch = "main";
       };
-      delta = {
-        enable = true;
-        options = {
-          dark = true;
-          features = "catppuccin-mocha";
-          line-numbers = true;
-          navigate = true;
-          side-by-side = true;
-        };
+      signing = {
+        key = git.userEmail;
+        format = "openpgp";
+        signByDefault = true;
       };
-      aliases.count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #";
       includes = [
         { path = "${catppuccin-repo}/catppuccin.gitconfig"; }
       ];
+    };
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        dark = true;
+        features = "catppuccin-mocha";
+        line-numbers = true;
+        navigate = true;
+        side-by-side = true;
+      };
     };
     ssh = {
       enable = true;
