@@ -41,9 +41,4 @@ return utils.plugin.get_language_spec({
       },
     },
   },
-  linter = {
-    linters_by_ft = {
-      ["nix"] = { "statix" },
-    },
-  },
 })
