@@ -21,12 +21,11 @@ in
       enabledExtensions = with spicePkgs.extensions; [
         adblock
         autoSkipVideo
-        # beautifulLyrics
+        beautifulLyrics
         listPlaylistsWithSong
         shuffle
       ];
       enabledCustomApps = with spicePkgs.apps; [
-        lyricsPlus
         marketplace
       ];
       # nix eval --impure --json --expr 'builtins.attrNames ((builtins.getFlake "github:Gerg-L/spicetify-nix").legacyPackages.x86_64-linux.snippets)'
