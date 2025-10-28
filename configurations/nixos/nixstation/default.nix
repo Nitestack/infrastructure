@@ -22,6 +22,7 @@ in
     self.nixosModules.audio
     self.nixosModules.backlight
     self.nixosModules.boot
+    self.nixosModules.dank-material-shell
     self.nixosModules.flatpak
     self.nixosModules.games
     self.nixosModules.gnome
@@ -46,9 +47,6 @@ in
     protonvpn-gui
     # stremio # WARNING: broken; wait until Stremio package with the new `stremio-linux-shell` comes out
     wasistlos
-
-    # NixOS
-    gnome-system-monitor
   ];
 
   # Virtualization

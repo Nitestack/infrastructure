@@ -6,19 +6,14 @@ let
   inherit (flake) inputs;
 in
 {
-  programs = {
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-      withUWSM = true;
-    };
-    hyprlock.enable = true;
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+    withUWSM = true;
   };
 
   xdg.portal.xdgOpenUsePortal = true;
-
-  security.pam.services.hyprlock = { };
 
   # Use Wayland (Electron)
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

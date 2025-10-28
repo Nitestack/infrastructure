@@ -16,13 +16,9 @@ in
     self.homeModules.linux-only
     self.homeModules.gui-only
 
-    self.homeModules.clipse
+    self.homeModules.dank-material-shell
     self.homeModules.hyprland
-    self.homeModules.rofi
-    self.homeModules.swaync
-    self.homeModules.swayosd
     self.homeModules.theme
-    self.homeModules.waybar
     self.homeModules.zen-browser
   ];
 

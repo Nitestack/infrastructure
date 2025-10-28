@@ -1,20 +1,23 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ SwayOSD                                                  │
+# │ Dank Material Shell                                      │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, meta, ... }:
+{
+  flake,
+  config,
+  ...
+}:
 let
-  inherit (meta) font;
-
-  styles = pkgs.lib.scss.compileToCss {
-    src = ./style.scss;
-    variables = {
-      font-nerd-propo = font.nerd.propoName;
-    };
-  };
+  inherit (flake) inputs;
+  inherit (config) meta;
 in
 {
-  services.swayosd = {
+  imports = [
+    inputs.dankMaterialShell.nixosModules.greeter
+  ];
+
+  programs.dankMaterialShell.greeter = {
     enable = true;
-    stylePath = styles;
+    compositor.name = "hyprland";
+    configHome = config.users.users.${meta.username}.home;
   };
 }
