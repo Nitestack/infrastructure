@@ -15,7 +15,7 @@
       package = inputs.apple-fonts.packages.${pkgs.system}.sf-pro;
     };
     serif = {
-      name = "New York";
+      name = "New York Medium";
       package = inputs.apple-fonts.packages.${pkgs.system}.ny;
     };
     nerd = {
