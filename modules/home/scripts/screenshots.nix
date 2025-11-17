@@ -9,7 +9,7 @@ let
   grimblast-cmd =
     target:
     "${
-      inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+      inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
     }/bin/grimblast --notify --freeze copysave ${target} ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png";
 in
 {

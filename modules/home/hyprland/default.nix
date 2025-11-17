@@ -29,7 +29,7 @@ in
     portalPackage = null; # let NixOS system handle portals
     systemd.enable = false; # disable systemd integration as it conflicts with uwsm
     plugins = [
-      inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+      inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
     ];
 
     settings = {

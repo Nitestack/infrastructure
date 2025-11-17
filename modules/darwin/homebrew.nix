@@ -18,7 +18,7 @@ in
 
   nix-homebrew = {
     enable = true;
-    enableRosetta = pkgs.system == "aarch64-darwin";
+    enableRosetta = pkgs.stdenv.hostPlatform.system == "aarch64-darwin";
     user = meta.username;
     taps = {
       "homebrew/homebrew-core" = inputs.homebrew-core;

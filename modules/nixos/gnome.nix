@@ -16,9 +16,7 @@
     gnome-text-editor
     gnome-characters
     gnome-console
-    # gnome-contacts
     gnome-logs
-    # gnome-maps
     gnome-music
     gnome-system-monitor
     gnome-weather
@@ -34,6 +32,7 @@
 
     # Disabling programs
     geary
+    orca
     seahorse
   ];
 }

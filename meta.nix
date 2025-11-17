@@ -12,11 +12,11 @@
     sans = {
       name = "SF Pro Text";
       titleName = "SF Pro Display";
-      package = inputs.apple-fonts.packages.${pkgs.system}.sf-pro;
+      package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.sf-pro;
     };
     serif = {
       name = "New York Medium";
-      package = inputs.apple-fonts.packages.${pkgs.system}.ny;
+      package = inputs.apple-fonts.packages.${pkgs.stdenv.hostPlatform.system}.ny;
     };
     nerd = {
       name = "0xProto Nerd Font";

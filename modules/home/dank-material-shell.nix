@@ -11,7 +11,7 @@ let
 
   uwsm = "${pkgs.uwsm}/bin/uwsm app --";
 
-  dms = "${inputs.dms-cli.packages.${pkgs.system}.default}/bin/dms";
+  dms = "${inputs.dankMaterialShell.packages.${pkgs.stdenv.hostPlatform.system}.dmsCli}/bin/dms";
 in
 {
   imports = [
@@ -20,11 +20,12 @@ in
 
   programs.dankMaterialShell = {
     enable = true;
-    enableSystemd = true;
+    systemd.enable = true;
     enableSystemMonitoring = true;
     enableClipboard = true;
     enableBrightnessControl = true;
     enableColorPicker = true;
+    enableDynamicTheming = true;
     enableAudioWavelength = true;
     enableCalendarEvents = true;
     enableSystemSound = true;

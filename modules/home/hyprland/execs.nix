@@ -37,8 +37,9 @@ in
     ];
     # Stick to the workspaces
     windowrule = [
-      "workspace 6 silent, class:^(vesktop)$"
-      "workspace 9 silent, class:^(steam)$"
+      "workspace 6 silent, match:class ^(vesktop)$"
+      "workspace 7 silent, match:class ^(spotify)$"
+      "workspace 9 silent, match:class ^(steam)$"
     ];
   };
 }

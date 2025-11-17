@@ -5,7 +5,7 @@
 let
   inherit (flake) inputs;
 
-  zen-package = inputs.zen-browser.packages.${pkgs.system}.default;
+  zen-package = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
 {
   home = {

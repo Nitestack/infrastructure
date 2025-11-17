@@ -5,14 +5,14 @@
 {
   wayland.windowManager.hyprland.settings =
     let
-      floatByTitle = regex: "float, title:^(${regex})(.*)$";
-      centerByTitle = regex: "center, title:^(${regex})(.*)$";
-      floatByExactTitle = regex: "float, title:^(${regex})$";
-      floatByClass = regex: "float, class:^(${regex})(.*)$";
-      floatByExactClass = regex: "float, class:^(${regex})$";
-      fullscreenByClass = regex: "fullscreen, class:^(${regex})(.*)$";
-      fullscreenByExactClass = regex: "fullscreen, class:^(${regex})$";
-      noscreenshareByExactClass = regex: "noscreenshare, class:^(${regex})$";
+      floatByTitle = regex: "float on, match:title ^(${regex})(.*)$";
+      centerByTitle = regex: "center on, match:title ^(${regex})(.*)$";
+      floatByExactTitle = regex: "float on, match:title ^(${regex})$";
+      floatByClass = regex: "float on, match:class ^(${regex})(.*)$";
+      floatByExactClass = regex: "float on, match:class ^(${regex})$";
+      fullscreenByClass = regex: "fullscreen on, match:class ^(${regex})(.*)$";
+      fullscreenByExactClass = regex: "fullscreen on, match:class ^(${regex})$";
+      noscreenshareByExactClass = regex: "no_screen_share on, match:class ^(${regex})$";
 
       gap =
         config.wayland.windowManager.hyprland.settings.general.gaps_out
@@ -33,14 +33,14 @@
         (floatByClass "xdg-desktop-portal")
         (floatByClass ".blueman-manager")
 
-        "dimaround, class:^(gcr-prompter)$"
+        "dim_around on, match:class ^(gcr-prompter)$"
 
         # Picture-in-Picture
         (floatByExactTitle "[Pp]icture)[ -]in[ -]([Pp]icture")
-        "keepaspectratio, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
-        "size 25% 25%, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
-        "move 100%-w-${toString gap} 100%-w-${toString gap}, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
-        "pin, title:^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "keep_aspect_ratio on, match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "size 25% 25%, match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "move (window_w-${toString gap}) (window_w-${toString gap}), match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        "pin on, match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
 
         (floatByTitle "Open File")
         (floatByTitle "Open Folder")
@@ -51,25 +51,25 @@
         (floatByTitle "Save As")
         (centerByTitle "Save As")
 
-        "suppressevent maximize, class:.*"
+        "suppress_event maximize, match:class .*"
 
         (noscreenshareByExactClass "Bitwarden")
         (noscreenshareByExactClass "io.ente.auth")
-        "noscreenshare, class:^(zen)$, title:^Extension: .* - Bitwarden .*"
-        "noscreenshare, class:^(zen)$, title:^Ente Auth .*"
+        "no_screen_share on, match:class ^(zen)$, match:title ^Extension: .* - Bitwarden .*"
+        "no_screen_share on, match:class ^(zen)$, match:title ^Ente Auth .*"
 
         # Game Settings
-        "immediate, class:^(steam_app_)(.*)$"
-        "immediate, class:^(Ryujinx)$, title:^Ryujinx .* - .*"
-        "immediate, class:^(org.vinegarhq.Sober)$"
-        "immediate, class:^(Minecraft)(.*)$"
+        "immediate on, match:class ^(steam_app_)(.*)$"
+        "immediate on, match:class ^(Ryujinx)$, match:title ^Ryujinx .* - .*"
+        "immediate on, match:class ^(org.vinegarhq.Sober)$"
+        "immediate on, match:class ^(Minecraft)(.*)$"
 
         (fullscreenByClass "steam_app_")
         (fullscreenByExactClass "Ryujinx")
         (fullscreenByExactClass "org.vinegarhq.Sober")
         (fullscreenByClass "Minecraft")
 
-        "idleinhibit focus, class:^(Ryujinx)$"
+        "idle_inhibit focus, match:class ^(Ryujinx)$"
       ];
     };
 }
