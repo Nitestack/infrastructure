@@ -11,7 +11,7 @@ let
 
   uwsm = "${pkgs.uwsm}/bin/uwsm app --";
 
-  dms = "${inputs.dankMaterialShell.packages.${pkgs.stdenv.hostPlatform.system}.dmsCli}/bin/dms";
+  dms = "${inputs.dankMaterialShell.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
 in
 {
   imports = [
