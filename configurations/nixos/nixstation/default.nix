@@ -42,7 +42,10 @@ in
     })
     endeavour
     ente-auth
+    feishin
     obsidian
+    mpv
+    pear-desktop
     protonmail-desktop
     protonvpn-gui
     # stremio # WARNING: broken; wait until Stremio package with the new `stremio-linux-shell` comes out
