@@ -16,7 +16,7 @@
 
 [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [License](#-license)
 
-![NixOS](https://github.com/user-attachments/assets/9a244fe9-b5a2-415d-9414-c246b36f51e7)
+![NixOS](https://github.com/user-attachments/assets/e3e520d4-79e7-48d9-b744-5f0f5cec378a)
 
 _A comprehensive, cross-platform [Nix](https://nixos.org) configuration repository managing system settings and user environments across multiple operating systems. This repository provides reproducible, declarative configurations for [NixOS](https://nixos.org) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)) and [macOS](https://apple.com/macos)._
 
