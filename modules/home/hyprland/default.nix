@@ -25,7 +25,6 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     package = null;
-    xwayland.enable = true;
     portalPackage = null; # let NixOS system handle portals
     systemd.enable = false; # disable systemd integration as it conflicts with uwsm
     plugins = [

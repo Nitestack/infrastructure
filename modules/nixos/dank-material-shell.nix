@@ -12,10 +12,10 @@ let
 in
 {
   imports = [
-    inputs.dankMaterialShell.nixosModules.greeter
+    inputs.dms.nixosModules.greeter
   ];
 
-  programs.dankMaterialShell.greeter = {
+  programs.dank-material-shell.greeter = {
     enable = true;
     compositor.name = "hyprland";
     configHome = config.users.users.${meta.username}.home;

@@ -11,24 +11,20 @@ let
 
   uwsm = "${pkgs.uwsm}/bin/uwsm app --";
 
-  dms = "${inputs.dankMaterialShell.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
+  dms = "${inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
 in
 {
   imports = [
-    inputs.dankMaterialShell.homeModules.dankMaterialShell.default
+    inputs.dms.homeModules.dank-material-shell
   ];
 
-  programs.dankMaterialShell = {
+  programs.dank-material-shell = {
     enable = true;
     systemd.enable = true;
     enableSystemMonitoring = true;
-    enableClipboard = true;
-    enableBrightnessControl = true;
-    enableColorPicker = true;
     enableDynamicTheming = true;
     enableAudioWavelength = true;
     enableCalendarEvents = true;
-    enableSystemSound = true;
   };
   wayland.windowManager.hyprland.settings = {
     bindd = [

@@ -11,7 +11,7 @@ let
   inherit (flake) inputs;
 
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-  dms = "${inputs.dankMaterialShell.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
+  dms = "${inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
   hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
 in
 {
