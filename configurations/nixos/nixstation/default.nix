@@ -27,6 +27,7 @@ in
     self.nixosModules.games
     self.nixosModules.gnome
     self.nixosModules.hyprland
+    self.nixosModules.stremio
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
@@ -43,12 +44,11 @@ in
     endeavour
     ente-auth
     feishin
+    mpv # feishin dependency
     obsidian
-    mpv
     pear-desktop
     protonmail-desktop
     protonvpn-gui
-    # stremio # WARNING: broken; wait until Stremio package with the new `stremio-linux-shell` comes out
     wasistlos
   ];
 
