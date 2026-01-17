@@ -63,6 +63,7 @@ in
     # Packages
     ansible
     duf
+    ffmpeg
     lefthook
     ncdu
     openssl
