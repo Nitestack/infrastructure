@@ -44,6 +44,7 @@ in
     endeavour
     ente-auth
     feishin
+    flacon
     mpv # feishin dependency
     obsidian
     pear-desktop
