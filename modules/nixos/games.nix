@@ -13,6 +13,7 @@
 
   environment.systemPackages = with pkgs; [
     heroic
+    owmods-gui
     prismlauncher
     ryubing
   ];
