@@ -24,6 +24,7 @@
         (floatByExactClass "file_progress")
         (floatByExactClass "dialog")
         (floatByExactClass "org.gnome.Calculator")
+        (floatByExactClass "org.gnome.Decibels")
         (floatByExactClass "org.gnome.FileRoller")
         (floatByExactClass "org.gnome.Nautilus")
         (floatByExactClass "org.gnome.SystemMonitor")
