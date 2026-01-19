@@ -47,7 +47,6 @@ in
     flacon
     mpv # feishin dependency
     obsidian
-    pear-desktop
     protonmail-desktop
     protonvpn-gui
     wasistlos

@@ -26,7 +26,7 @@ in
 
       # left monitor
       "[workspace 6 silent] ${uwsm} vesktop.desktop"
-      "[workspace 7 silent] ${uwsm} com.github.th_ch.youtube_music.desktop"
+      "[workspace 7 silent] ${uwsm} spotify.desktop"
       # "[workspace 8 silent] ${uwsm} smartcode-stremio.desktop" # nixpkgs version
       "[workspace 8 silent] ${uwsm} com.stremio.Stremio.desktop" # Flathub version
       "[workspace 9 silent] ${uwsm} steam.desktop"
@@ -39,7 +39,7 @@ in
     # Stick to the workspaces
     windowrule = [
       "workspace 6 silent, match:class ^(vesktop)$"
-      "workspace 7 silent, match:class ^(com.github.th_ch.youtube_music)$"
+      "workspace 7 silent, match:class ^(spotify)$"
       "workspace 9 silent, match:class ^(steam)$"
     ];
   };
