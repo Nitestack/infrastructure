@@ -38,6 +38,7 @@ in
   # Packages
   environment.systemPackages = with pkgs; [
     # Apps
+    anki
     (bottles.override {
       removeWarningPopup = true;
     })
@@ -45,10 +46,12 @@ in
     ente-auth
     feishin
     flacon
+    kid3
     mpv # feishin dependency
     obsidian
     protonmail-desktop
     protonvpn-gui
+    spek
     wasistlos
   ];
 
