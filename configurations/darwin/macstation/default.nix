@@ -47,8 +47,6 @@ in
       "ente-auth"
       "ghostty"
       "nextcloud"
-      "obsidian"
-      "proton-mail"
       "protonvpn"
       "stremio"
       "zen-browser"
