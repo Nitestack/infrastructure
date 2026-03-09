@@ -16,7 +16,7 @@
     musescore
     obsidian
     protonmail-desktop
-    signal-desktop-bin
+    signal-desktop
     spek
     vesktop
   ];
