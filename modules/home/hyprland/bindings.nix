@@ -5,7 +5,6 @@
   flake,
   pkgs,
   config,
-  osConfig,
   lib,
   meta,
   ...
@@ -17,7 +16,6 @@ let
   uwsm = "${pkgs.uwsm}/bin/uwsm app --";
 
   ghostty = "${pkgs.ghostty}/bin/ghostty";
-  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
   hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
 
   backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
@@ -55,9 +53,7 @@ in
       "SUPER, Q, Close Active Window, killactive"
       "SUPER, C, Center Window, centerwindow, 1" # `1` respects the monitor reserved area
 
-      "SUPER, R, Toggle Split Orientation, togglesplit"
       "SUPER, T, Toggle Active Window Floating, togglefloating"
-      "SUPER SHIFT, T, Toggle All Windows Floating, exec, ${uwsm} ${hyprctl} dispatch workspaceopt allfloat"
     ]
     ++ (builtins.concatLists (
       builtins.genList (
