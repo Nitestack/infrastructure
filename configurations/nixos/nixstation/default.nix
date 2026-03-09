@@ -27,7 +27,6 @@ in
     self.nixosModules.games
     self.nixosModules.gnome
     self.nixosModules.hyprland
-    self.nixosModules.stremio
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
@@ -47,6 +46,7 @@ in
     kid3
     mpv # feishin dependency
     protonvpn-gui
+    stremio-linux-shell
     wasistlos
   ];
 

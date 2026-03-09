@@ -27,8 +27,7 @@ in
       # left monitor
       "[workspace 6 silent] ${uwsm} vesktop.desktop"
       "[workspace 7 silent] ${uwsm} spotify.desktop"
-      # "[workspace 8 silent] ${uwsm} smartcode-stremio.desktop" # nixpkgs version
-      "[workspace 8 silent] ${uwsm} com.stremio.Stremio.desktop" # Flathub version
+      "[workspace 8 silent] ${uwsm} com.stremio.Stremio.desktop"
 
       # right monitor
       "[workspace 1 silent] ${uwsm} zen.desktop"
