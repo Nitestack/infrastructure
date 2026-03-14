@@ -9,7 +9,7 @@
 ---@field lazyvim LazyVimOptions
 
 ---@class core.config.ui
----@field theme "catppuccin"
+---@field theme "catppuccin-nvim"
 ---@field logo string Generate ANSI art with: https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow
 
 ---@module "conform"
@@ -25,7 +25,7 @@ local M = {
 }
 
 M.ui = {
-  theme = "catppuccin",
+  theme = "catppuccin-nvim",
   -- stylua: ignore
   logo = [[
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
