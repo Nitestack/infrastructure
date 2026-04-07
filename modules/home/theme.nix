@@ -33,6 +33,7 @@ in
   gtk = {
     inherit cursorTheme iconTheme;
     enable = true;
+    colorScheme = "dark";
     theme = gtkTheme;
     font = {
       inherit (font.sans) name package;
@@ -77,7 +78,6 @@ in
       in
       {
         "org/gnome/desktop/interface" = {
-          color-scheme = "prefer-dark";
           clock-format = "24h";
           document-font-name = font.serif.name;
           font-antialiasing = "rgba";
