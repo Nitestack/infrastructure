@@ -46,7 +46,7 @@ in
     kid3
     lutris
     mpv # feishin dependency
-    protonvpn-gui
+    proton-vpn
     stremio-linux-shell
     wasistlos
   ];

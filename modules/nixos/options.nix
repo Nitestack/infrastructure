@@ -182,8 +182,5 @@ in
       inherit pkgs inputs;
     };
     theme = builtins.fromJSON (builtins.readFile ../../theme.json);
-    lib = import ../../lib {
-      inherit pkgs lib;
-    };
   };
 }

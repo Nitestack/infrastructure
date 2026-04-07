@@ -34,8 +34,10 @@
   };
   # Themes
   gtkTheme = {
-    name = "Catppuccin-GTK-Dark";
+    name = "Catppuccin-GTK-Blue-Dark-Compact";
     package = pkgs.magnetic-catppuccin-gtk.override {
+      accent = [ "blue" ];
+      size = "compact";
       tweaks = [ "macos" ];
     };
   };
