@@ -44,6 +44,7 @@ in
     ente-auth
     flacon
     kid3
+    lutris
     mpv # feishin dependency
     protonvpn-gui
     stremio-linux-shell
