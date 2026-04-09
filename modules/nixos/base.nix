@@ -62,9 +62,9 @@ in
 
     # Packages
     ansible
+    devenv
     duf
     ffmpeg
-    lefthook
     ncdu
     openssl
     rclone
