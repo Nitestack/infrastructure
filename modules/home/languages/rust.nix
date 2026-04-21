@@ -10,6 +10,12 @@
       rust-analyzer
       rustc
       rustfmt
+      bacon
+
+      cargo-watch
+      cargo-expand
+
+      sea-orm-cli
     ];
     sessionPath = [
       "${config.home.homeDirectory}/.cargo/bin"
