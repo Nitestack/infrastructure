@@ -13,14 +13,25 @@
 let
   inherit (flake) inputs;
   inherit (meta) monitors maxRefreshRate;
+  dirEntries = builtins.readDir ./.;
+  autoImports = builtins.map (name: ./${name}) (
+    builtins.filter (
+      name: name != "default.nix" && dirEntries.${name} == "regular" && lib.hasSuffix ".nix" name
+    ) (builtins.attrNames dirEntries)
+  );
+  defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
+  defaultMonitorCount = builtins.length defaultMonitors;
+  defaultMonitor = if defaultMonitorCount == 1 then builtins.head defaultMonitors else null;
 in
 {
-  imports =
-    with builtins;
-    map (fn: ./${fn}) (filter (fn: fn != "default.nix") (attrNames (readDir ./.)))
-    ++ [
-      ./plugins
-    ];
+  imports = autoImports ++ [ ./plugins ];
+
+  assertions = [
+    {
+      assertion = defaultMonitorCount == 1;
+      message = "Expected exactly one monitor with `isDefault = true` in `meta.monitors`.";
+    }
+  ];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -81,7 +92,7 @@ in
 
       # Cursor
       cursor = {
-        default_monitor = (lib.findFirst (monitor: monitor.isDefault) null monitors).name;
+        default_monitor = if defaultMonitor != null then defaultMonitor.name else "";
       };
 
       # Ecosystem

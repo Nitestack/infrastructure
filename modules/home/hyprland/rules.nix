@@ -17,6 +17,7 @@
       gap =
         config.wayland.windowManager.hyprland.settings.general.gaps_out
         + config.wayland.windowManager.hyprland.settings.general.border_size;
+      pipTitleRegex = "([Pp]icture)[ -]in[ -]([Pp]icture)";
     in
     {
       windowrule = [
@@ -37,11 +38,11 @@
         "dim_around on, match:class ^(gcr-prompter)$"
 
         # Picture-in-Picture
-        (floatByExactTitle "[Pp]icture)[ -]in[ -]([Pp]icture")
-        "keep_aspect_ratio on, match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
-        "size 25% 25%, match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
-        "move (window_w-${toString gap}) (window_w-${toString gap}), match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
-        "pin on, match:title ^([Pp]icture)[ -]in[ -]([Pp]icture)$"
+        (floatByExactTitle pipTitleRegex)
+        "keep_aspect_ratio on, match:title ^${pipTitleRegex}$"
+        "size 25% 25%, match:title ^${pipTitleRegex}$"
+        "move (window_w-${toString gap}) (window_h-${toString gap}), match:title ^${pipTitleRegex}$"
+        "pin on, match:title ^${pipTitleRegex}$"
 
         (floatByTitle "Open File")
         (floatByTitle "Open Folder")

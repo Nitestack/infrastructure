@@ -14,7 +14,6 @@ in
 {
   imports = [
     self.nixosModules.base
-    self.nixosModules.gui-only
 
     self.darwinModules.defaults
     self.darwinModules.homebrew

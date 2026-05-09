@@ -17,7 +17,6 @@ in
 
     self.nixosModules.base
     self.nixosModules.linux-only
-    self.nixosModules.gui-only
 
     self.nixosModules.audio
     self.nixosModules.backlight
@@ -37,18 +36,18 @@ in
   # Packages
   environment.systemPackages = with pkgs; [
     # Apps
-    (bottles.override {
-      removeWarningPopup = true;
-    })
+    # (bottles.override {
+    #   removeWarningPopup = true;
+    # })
     endeavour
     ente-auth
     flacon
+    karere
     kid3
-    lutris
+    # lutris
     mpv # feishin dependency
     proton-vpn
     stremio-linux-shell
-    wasistlos
   ];
 
   # Virtualization

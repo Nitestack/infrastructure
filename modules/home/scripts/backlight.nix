@@ -10,7 +10,16 @@ let
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   swayosd-client = "${pkgs.swayosd}/bin/swayosd-client";
 
-  default-device = (lib.findFirst (monitor: monitor.isDefault) null monitors).backlight.device;
+  defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
+  defaultMonitorCount = builtins.length defaultMonitors;
+  defaultMonitor = if defaultMonitorCount == 1 then builtins.head defaultMonitors else null;
+  backlightMonitors = builtins.filter (monitor: monitor.backlight != null) monitors;
+
+  default-device =
+    if defaultMonitor != null && defaultMonitor.backlight != null then
+      defaultMonitor.backlight.device
+    else
+      "";
   monitor-backlight = pkgs.writeShellScriptBin "monitor-backlight" ''
     #!/usr/bin/env bash
 
@@ -29,7 +38,7 @@ let
     fi
 
     ${lib.concatStringsSep "\n" (
-      map (monitor: "${brightnessctl} --device ${monitor.backlight.device} set $1 &") monitors
+      map (monitor: "${brightnessctl} --device ${monitor.backlight.device} set $1 &") backlightMonitors
     )}
 
     wait
@@ -59,6 +68,15 @@ let
     fi
   '';
 in
+assert lib.assertMsg (
+  defaultMonitorCount == 1
+) "Expected exactly one monitor with `isDefault = true` in `meta.monitors`.";
+assert lib.assertMsg (
+  builtins.length backlightMonitors > 0
+) "Backlight script requires at least one monitor with `backlight` configured.";
+assert lib.assertMsg (
+  defaultMonitor == null || defaultMonitor.backlight != null
+) "The default monitor in `meta.monitors` must define `backlight`.";
 {
   increase = { osd }: "${monitor-backlight}/bin/monitor-backlight ${if osd then "--osd " else ""}5%+";
   decrease = { osd }: "${monitor-backlight}/bin/monitor-backlight ${if osd then "--osd " else ""}5%-";

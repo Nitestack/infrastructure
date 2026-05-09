@@ -12,7 +12,7 @@ return utils.plugin.get_language_spec({
         settings = {
           nixd = {
             nixpkgs = {
-              expr = "(builtins.getFlake (toString ~/.dotfiles)).inputs.nixpkgs",
+              expr = "(builtins.getFlake (toString " .. nix_flake_root .. ")).inputs.nixpkgs",
             },
             formatting = {
               command = { "nixfmt" },
@@ -24,7 +24,7 @@ return utils.plugin.get_language_spec({
               ["nix-darwin"] = {
                 expr = "(builtins.getFlake (toString "
                   .. nix_flake_root
-                  .. ")).darwinConfigurations.macstation.options.wsl",
+                  .. ")).darwinConfigurations.macstation.options",
               },
               ["nix-wsl"] = {
                 expr = "(builtins.getFlake (toString " .. nix_flake_root .. ")).nixosConfigurations.wslstation.options",

@@ -29,7 +29,16 @@ in
     ++ font.nerd.packages
     # Apps
     ++ (with pkgs; [
-      pairdrop
+      anki
+      bitwarden-desktop
+      feishin
+      localsend
+      musescore
+      obsidian
+      protonmail-desktop
+      signal-desktop
+      spek
+      vesktop
     ]);
 
   programs = {
