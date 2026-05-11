@@ -11,6 +11,4 @@ in
     self.homeModules.base
     self.homeModules.linux-only
   ];
-
-  programs.zathura.enable = true;
 }
