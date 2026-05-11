@@ -17,14 +17,17 @@
   };
 
   home.packages = with pkgs; [
-    # NOTE: LSP's (# pnpm add -g @ansible/ansible-language-server cssmodules-language-server markdown-toc)
+    # NOTE: LSP's (# pnpm add -g cssmodules-language-server)
     angular-language-server
+    ansible-language-server
+    astro-language-server
     bash-language-server
     copilot-language-server
     dockerfile-language-server
     docker-compose-language-service
     emmet-language-server
     lua-language-server
+    markdown-toc
     marksman
     nixd
     nushell

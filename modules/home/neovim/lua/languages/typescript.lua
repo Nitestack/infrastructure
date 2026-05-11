@@ -39,6 +39,7 @@ return utils.plugin.get_language_spec({
   lsp = {
     servers = {
       angularls = {},
+      astro = {},
       vtsls = {
         settings = {
           typescript = tsserver_settings,
@@ -61,6 +62,7 @@ return utils.plugin.get_language_spec({
   },
   treesitter = {
     "angular",
+    "astro",
     "javascript",
     "jsdoc",
   },
@@ -71,6 +73,7 @@ return utils.plugin.get_language_spec({
       ["typescript"] = { "prettierd" },
       ["typescriptreact"] = { "prettierd" },
       ["htmlangular"] = { "prettierd" },
+      ["astro"] = { "prettierd" },
     },
   },
   linter = {
@@ -102,6 +105,10 @@ return utils.plugin.get_language_spec({
         LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
           {
             name = "@angular/language-server",
+            enableForWorkspaceTypeScriptVersions = true,
+          },
+          {
+            name = "@astrojs/ts-plugin",
             enableForWorkspaceTypeScriptVersions = true,
           },
         })
