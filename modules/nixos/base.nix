@@ -13,11 +13,10 @@ let
   inherit (inputs) self;
   inherit (config) meta theme;
 
-  nix-flake-update = pkgs.writeShellScriptBin "nix-flake-update" ''
-    #!/usr/bin/env bash
-
-    nix flake update --commit-lock-file --flake ~/nix-config $@
-  '';
+  nix-flake-update = pkgs.writeShellApplication {
+    name = "nix-flake-update";
+    text = ''nix flake update --commit-lock-file --flake ~/nix-config "$@"'';
+  };
 in
 {
   # ── Imports ───────────────────────────────────────────────────────────
@@ -93,7 +92,13 @@ in
 
   # ── Programs ──────────────────────────────────────────────────────────
   programs = {
-    gnupg.agent.enable = true;
+    gnupg.agent = {
+      enable = true;
+      settings = {
+        default-cache-ttl = 86400;
+        max-cache-ttl = 86400;
+      };
+    };
     tmux.enable = true;
     zsh.enable = true;
   };
