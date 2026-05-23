@@ -14,6 +14,7 @@ let
     package
     listOf
     int
+    float
     bool
     nullOr
     ;
@@ -26,6 +27,14 @@ let
   };
   mkPackageOption = mkOption {
     type = package;
+  };
+  mkThemeOption = mkOption {
+    type = submodule {
+      options = {
+        name = mkStringOption;
+        package = mkPackageOption;
+      };
+    };
   };
 in
 {
@@ -90,14 +99,7 @@ in
               };
             };
           };
-          gtkTheme = mkOption {
-            type = submodule {
-              options = {
-                name = mkStringOption;
-                package = mkPackageOption;
-              };
-            };
-          };
+          gtkTheme = mkThemeOption;
           cursorTheme = mkOption {
             type = submodule {
               options = {
@@ -110,23 +112,10 @@ in
               };
             };
           };
-          iconTheme = mkOption {
-            type = submodule {
-              options = {
-                name = mkStringOption;
-                package = mkPackageOption;
-              };
-            };
-          };
-          kvantumTheme = mkOption {
-            type = submodule {
-              options = {
-                name = mkStringOption;
-                package = mkPackageOption;
-              };
-            };
-          };
+          iconTheme = mkThemeOption;
+          kvantumTheme = mkThemeOption;
           monitors = mkOption {
+            default = [ ];
             type = listOf (submodule {
               options = {
                 name = mkStringOption;
@@ -144,8 +133,8 @@ in
                   };
                 };
                 scale = mkOption {
-                  type = int;
-                  default = 1;
+                  type = float;
+                  default = 1.0;
                 };
                 isDefault = mkOption {
                   type = bool;
@@ -159,6 +148,7 @@ in
                       device = mkStringOption;
                     };
                   });
+                  default = null;
                 };
               };
             });
