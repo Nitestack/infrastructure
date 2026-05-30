@@ -36,6 +36,7 @@
       highlight_resolved_externals = lib.hm.nushell.mkNushellInline "not (sys host | get kernel_version | str contains \"microsoft-standard-WSL2\")";
     };
     environmentVariables = {
+      DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
       PROMPT_INDICATOR_VI_NORMAL = "";
       PROMPT_INDICATOR_VI_INSERT = "";
       LS_COLORS = "(${pkgs.vivid}/bin/vivid generate catppuccin-mocha)";
