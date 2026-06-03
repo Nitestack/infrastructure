@@ -23,6 +23,7 @@ in
     self.nixosModules.backlight
     self.nixosModules.boot
     self.nixosModules.dank-material-shell
+    self.nixosModules.davinci-resolve
     self.nixosModules.flatpak
     self.nixosModules.games
     self.nixosModules.gnome
