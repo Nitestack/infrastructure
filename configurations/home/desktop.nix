@@ -26,9 +26,6 @@ in
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
-    extraConfig = {
-      SCREENSHOTS = "${config.xdg.userDirs.pictures}/Screenshots";
-    };
   };
 
   # Nautilus

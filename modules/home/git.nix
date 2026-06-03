@@ -62,9 +62,11 @@ in
     };
     ssh = {
       enable = true;
-      matchBlocks = {
+      settings = {
         "*" = {
-          addKeysToAgent = "yes";
+          ForwardAgent = "no";
+          HashKnownHosts = "no";
+          AddKeysToAgent = "yes";
         };
         "raspberrypi" = {
           hostname = "npham.de";
