@@ -7,7 +7,7 @@ let
   rgba = color: builtins.replaceStrings [ "#" ] [ "" ] "rgba(${color}ff)";
 in
 {
-  wayland.windowManager.hyprland.settings = {
+  wayland.windowManager.hyprland.settings.config = {
     # General
     general = {
       gaps_in = 4; # gaps between windows, also supports css style gaps (top, right, bottom, left -> 5,10,15,20)

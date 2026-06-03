@@ -20,77 +20,115 @@ let
 
   backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
   screenshot = import ../scripts/screenshots.nix { inherit config inputs pkgs; };
+
+  mkBind = keys: desc: luaDispatcher: flags: {
+    _args = [
+      keys
+      (lib.generators.mkLuaInline luaDispatcher)
+    ]
+    ++ lib.optional (flags != { } || desc != "") (
+      flags // lib.optionalAttrs (desc != "") { description = desc; }
+    );
+  };
 in
 {
-  wayland.windowManager.hyprland.settings = {
-    "$lmb" = "mouse:272"; # Left mouse button
-    "$rmb" = "mouse:273"; # Right mouse button
-    "$mmb" = "mouse:274"; # Middle mouse button
-    bindd = [
-      "SUPER, Slash, Open Terminal, exec, ${uwsm} ${ghostty} -e tmux"
-      "SUPER, E, Open File Manager, exec, ${uwsm} org.gnome.Nautilus.desktop"
-      "SUPER, W, Open Browser, exec, ${uwsm} zen.desktop"
+  wayland.windowManager.hyprland.settings =
+    let
+      lmb = "mouse:272"; # Left mouse button
+      rmb = "mouse:273"; # Right mouse button
+      # mmb = "mouse:274"; # Middle mouse button
+    in
+    {
+      bind = [
+        # --- Applications ---
+        (mkBind "SUPER + Slash" "Open Terminal" "hl.dsp.exec_cmd(\"${uwsm} ${ghostty} -e tmux\")" { })
+        (mkBind "SUPER + E" "Open File Manager" "hl.dsp.exec_cmd(\"${uwsm} org.gnome.Nautilus.desktop\")"
+          { }
+        )
+        (mkBind "SUPER + W" "Open Browser" "hl.dsp.exec_cmd(\"${uwsm} zen.desktop\")" { })
 
-      ", Print, Take Screenshot (Select Area), exec, ${uwsm} ${screenshot.area-select}"
-      "SUPER, Print, Take Screenshot (All Monitors), exec, ${uwsm} ${screenshot.all-monitors}"
-      "ALT, Print, Take Screenshot (Active Window), exec, ${uwsm} ${screenshot.active-window}"
-      "CTRL, Print, Take Screenshot (Active Monitor), exec, ${uwsm} ${screenshot.active-monitor}"
-      "SUPER SHIFT, C, Launch Colorpicker, exec, ${uwsm} ${hyprpicker} -a"
+        # --- Screenshots ---
+        (mkBind "Print" "Take Screenshot (Select Area)"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.area-select}\")"
+          { }
+        )
+        (mkBind "SUPER + Print" "Take Screenshot (All Monitors)"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.all-monitors}\")"
+          { }
+        )
+        (mkBind "ALT + Print" "Take Screenshot (Active Window)"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.active-window}\")"
+          { }
+        )
+        (mkBind "CTRL + Print" "Take Screenshot (Active Monitor)"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.active-monitor}\")"
+          { }
+        )
+        (mkBind "SUPER + SHIFT + C" "Launch Colorpicker" "hl.dsp.exec_cmd(\"${uwsm} ${hyprpicker} -a\")"
+          { }
+        )
 
-      "SUPER, H, Move Focus to Left Window, movefocus, l"
-      "SUPER, L, Move Focus to Right Window, movefocus, r"
-      "SUPER, K, Move Focus to Upper Window, movefocus, u"
-      "SUPER, J, Move Focus to Lower Window, movefocus, d"
+        # --- Focus ---
+        (mkBind "SUPER + H" "Move Focus to Left Window" "hl.dsp.focus({ direction = \"l\" })" { })
+        (mkBind "SUPER + L" "Move Focus to Right Window" "hl.dsp.focus({ direction = \"r\" })" { })
+        (mkBind "SUPER + K" "Move Focus to Upper Window" "hl.dsp.focus({ direction = \"u\" })" { })
+        (mkBind "SUPER + J" "Move Focus to Lower Window" "hl.dsp.focus({ direction = \"d\" })" { })
 
-      "SUPER, F, Toggle Fullscreen, fullscreen, 0"
-      "SUPER, M, Maximize/Restore Window, fullscreen, 1"
+        # --- Window State ---
+        (mkBind "SUPER + F" "Toggle Fullscreen" "hl.dsp.window.fullscreen({ mode = \"fullscreen\" })" { })
+        (mkBind "SUPER + M" "Maximize/Restore Window" "hl.dsp.window.fullscreen({ mode = \"maximized\" })"
+          { }
+        )
 
-      "SUPER ALT, H, Move Window Left, movewindow, l"
-      "SUPER ALT, L, Move Window Right, movewindow, r"
-      "SUPER ALT, K, Move Window Upwards, movewindow, u"
-      "SUPER ALT, J, Move Window Downwards, movewindow, d"
+        # --- Move Window ---
+        (mkBind "SUPER + ALT + H" "Move Window Left" "hl.dsp.window.move({ direction = \"l\" })" { })
+        (mkBind "SUPER + ALT + L" "Move Window Right" "hl.dsp.window.move({ direction = \"r\" })" { })
+        (mkBind "SUPER + ALT + K" "Move Window Upwards" "hl.dsp.window.move({ direction = \"u\" })" { })
+        (mkBind "SUPER + ALT + J" "Move Window Downwards" "hl.dsp.window.move({ direction = \"d\" })" { })
 
-      "SUPER, Q, Close Active Window, killactive"
-      "SUPER, C, Center Window, centerwindow, 1" # `1` respects the monitor reserved area
+        # --- Window Actions ---
+        (mkBind "SUPER + Q" "Close Active Window" "hl.dsp.window.close()" { })
+        (mkBind "SUPER + C" "Center Window" "hl.dsp.window.center()" { })
+        (mkBind "SUPER + T" "Toggle Active Window Floating" "hl.dsp.window.float({ action = \"toggle\" })"
+          { }
+        )
+      ]
+      ++ [
+        (mkBind "SUPER + CTRL + SHIFT + h" "Move Workspace to Previous Monitor"
+          "hl.dsp.window.move({ direction = \"left\" })"
+          { }
+        )
+        (mkBind "SUPER + CTRL + SHIFT + l" "Move Workspace to Next Monitor"
+          "hl.dsp.window.move({ direction = \"right\" })"
+          { }
+        )
 
-      "SUPER, T, Toggle Active Window Floating, togglefloating"
-    ]
-    ++ (builtins.concatLists (
-      builtins.genList (
-        i:
-        let
-          wsNo = toString (i + 1);
-        in
-        [
-          "SUPER, ${wsNo}, Switch to Workspace ${wsNo}, split-workspace, ${wsNo}"
-          "SUPER SHIFT, ${wsNo}, Move Active Window to Workspace ${wsNo}, split-movetoworkspace, ${wsNo}"
-        ]
-      ) 5
-    ))
-    ++ [
-      "SUPER CTRL, H, Switch to Previous Workspace, split-cycleworkspaces, prev"
-      "SUPER CTRL, L, Switch to Next Workspace, split-cycleworkspaces, next"
-      "SUPER, mouse_down, Switch to Previous Workspace, split-cycleworkspaces, prev"
-      "SUPER, mouse_up, Switch to Next Workspace, split-cycleworkspaces, next"
-      "SUPER SHIFT, H, Move Active Window to Previous Workspace, split-movetoworkspace, -1"
-      "SUPER SHIFT, L, Move Active Window to Next Workspace, split-movetoworkspace, +1"
-      "SUPER CTRL SHIFT, h, Move Workspace to Previous Monitor, split-changemonitor, prev"
-      "SUPER CTRL SHIFT, l, Move Workspace to Next Monitor, split-changemonitor, next"
+        # --- Scratchpad ---
+        (mkBind "SUPER + S" "Toggle Scratchpad" "hl.dsp.workspace.toggle_special(\"magic\")" { })
+        (mkBind "SUPER + SHIFT + S" "Move Active Window to Scratchpad"
+          "hl.dsp.window.move({ workspace = \"special:magic\" })"
+          { }
+        )
 
-      "SUPER, S, Toggle Scratchpad, togglespecialworkspace, magic"
-      "SUPER SHIFT, S, Move Active Window to Scratchpad, movetoworkspace, special:magic"
-    ];
-    binddel = [
-      ", XF86MonBrightnessUp, Increase Screen Brightness, exec, ${uwsm} ${
-        backlight.increase { osd = true; }
-      }"
-      ", XF86MonBrightnessDown, Decrease Screen Brightness, exec, ${uwsm} ${
-        backlight.decrease { osd = true; }
-      }"
-    ];
-    binddm = [
-      "SUPER, $rmb, Resize Window, resizewindow"
-      "SUPER, $lmb, Move Window, movewindow"
-    ];
-  };
+        # --- Hardware Controls ---
+        (mkBind "XF86MonBrightnessUp" "Increase Screen Brightness"
+          "hl.dsp.exec_cmd(\"${uwsm} ${backlight.increase { osd = true; }}\")"
+          {
+            locked = true;
+            repeating = true;
+          }
+        )
+        (mkBind "XF86MonBrightnessDown" "Decrease Screen Brightness"
+          "hl.dsp.exec_cmd(\"${uwsm} ${backlight.decrease { osd = true; }}\")"
+          {
+            locked = true;
+            repeating = true;
+          }
+        )
+
+        # --- Mouse Controls ---
+        (mkBind "SUPER + ${rmb}" "Resize Window" "hl.dsp.window.resize()" { mouse = true; })
+        (mkBind "SUPER + ${lmb}" "Move Window" "hl.dsp.window.drag()" { mouse = true; })
+      ];
+    };
 }

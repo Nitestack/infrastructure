@@ -7,14 +7,13 @@
   flake,
   pkgs,
   meta,
-  osConfig,
   ...
 }:
 let
   inherit (flake) inputs;
   inherit (meta) monitors maxRefreshRate;
   dirEntries = builtins.readDir ./.;
-  autoImports = builtins.map (name: ./${name}) (
+  autoImports = map (name: ./${name}) (
     builtins.filter (
       name: name != "default.nix" && dirEntries.${name} == "regular" && lib.hasSuffix ".nix" name
     ) (builtins.attrNames dirEntries)
@@ -22,6 +21,8 @@ let
   defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
   defaultMonitorCount = builtins.length defaultMonitors;
   defaultMonitor = if defaultMonitorCount == 1 then builtins.head defaultMonitors else null;
+
+  smw-pkg = inputs.split-monitor-workspaces;
 in
 {
   imports = autoImports ++ [ ./plugins ];
@@ -38,78 +39,95 @@ in
     package = null;
     portalPackage = null; # let NixOS system handle portals
     systemd.enable = false; # disable systemd integration as it conflicts with uwsm
-    plugins = [
-      inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
-    ];
 
     settings = {
       # ── Config ────────────────────────────────────────────────────────────
 
       # Monitors
-      monitor = map (
-        m:
-        let
-          mode = "${m.resolution}@${toString m.refreshRate}";
-          position = "${toString m.position.x}x${toString m.position.y}";
-        in
-        "${m.name}, ${mode}, ${position}, ${toString m.scale}"
-      ) monitors;
+      monitor = map (m: {
+        output = m.name;
+        mode = "${m.resolution}@${toString m.refreshRate}";
+        position = "${toString m.position.x}x${toString m.position.y}";
+        scale = m.scale;
+      }) monitors;
 
-      # General
-      general = {
-        resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
-        allow_tearing = true; # master switch for allowing tearing to occur
+      # Configuration
+      config = {
+        # General
+        general = {
+          resize_on_border = true; # enables resizing windows by clicking and dragging on borders and gaps
+          allow_tearing = true; # master switch for allowing tearing to occur
 
-        # Snap
-        snap = {
-          enabled = true;
+          # Snap
+          snap = {
+            enabled = true;
+          };
         };
-      };
 
-      # Input
-      input.kb_layout = "eu";
+        # Input
+        input.kb_layout = "eu";
 
-      # Miscellaneous
-      misc = {
-        disable_hyprland_logo = true; # disables the random Hyprland logo / anime girl background
-        disable_splash_rendering = true; # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
-        force_default_wallpaper = 0; # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
-        vrr = 2; # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
-        animate_manual_resizes = true; # If true, will animate manual window resizes/moves
-        focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
-        enable_swallow = true; # Enable window swallowing
-      };
+        # Miscellaneous
+        misc = {
+          disable_hyprland_logo = true; # disables the random Hyprland logo / anime girl background
+          disable_splash_rendering = true; # disables the Hyprland splash rendering. (requires a monitor reload to take effect)
+          force_default_wallpaper = 0; # Enforce any of the 3 default wallpapers. Setting this to 0 or 1 disables the anime background. -1 means “random”
+          vrr = 2; # controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only
+          animate_manual_resizes = true; # If true, will animate manual window resizes/moves
+          focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
+          enable_swallow = true; # Enable window swallowing
+        };
 
-      # Binds
-      binds = {
-        allow_pin_fullscreen = true;
-      };
+        # Binds
+        binds = {
+          allow_pin_fullscreen = true;
+        };
 
-      # XWayland
-      xwayland = {
-        force_zero_scaling = true; # forces a scale of 1 on xwayland windows on scaled displays
-      };
+        # XWayland
+        xwayland = {
+          force_zero_scaling = true; # forces a scale of 1 on xwayland windows on scaled displays
+        };
 
-      # Cursor
-      cursor = {
-        default_monitor = if defaultMonitor != null then defaultMonitor.name else "";
-      };
+        # Cursor
+        cursor = {
+          default_monitor = if defaultMonitor != null then defaultMonitor.name else "";
+        };
 
-      # Ecosystem
-      ecosystem = {
-        no_update_news = true;
-        no_donation_nag = true;
-      };
-
-      # ── Plugins ───────────────────────────────────────────────────────────
-      # split-monitor-workspaces
-      plugin = {
-        split-monitor-workspaces = {
-          keep_focused = 1;
-          count = 5;
+        # Ecosystem
+        ecosystem = {
+          no_update_news = true;
+          no_donation_nag = true;
         };
       };
     };
+
+    extraConfig = ''
+      package.path = package.path .. ";${smw-pkg}/lua/?.lua;${smw-pkg}/lua/?/init.lua"
+      package.cpath = package.cpath .. ";${smw-pkg}/?.so"
+
+      local smw = require("split-monitor-workspaces")
+
+      smw.setup({
+          workspace_count = 5,
+      })
+
+      local mainMod = "SUPER"
+      for i = 1, smw.get_amount_of_workspaces() do
+          local n = tostring(i)
+
+          hl.bind(mainMod .. " + " .. n, smw.workspace(n))
+          hl.bind(mainMod .. " + SHIFT + " .. n, smw.move_to_workspace_silent(n))
+      end
+
+      hl.bind("SUPER + CTRL + H", smw.cycle_workspaces("prev"))
+      hl.bind("SUPER + CTRL + L", smw.cycle_workspaces("next"))
+
+      hl.bind("SUPER + mouse_down", smw.cycle_workspaces("prev"))
+      hl.bind("SUPER + mouse_up", smw.cycle_workspaces("next"))
+
+      hl.bind("SUPER + SHIFT + H", smw.move_to_workspace_silent("-1"))
+      hl.bind("SUPER + SHIFT + L", smw.move_to_workspace_silent("+1"))
+    '';
   };
 
   home.sessionVariables = {

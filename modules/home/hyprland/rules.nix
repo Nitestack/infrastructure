@@ -5,22 +5,46 @@
 {
   wayland.windowManager.hyprland.settings =
     let
-      floatByTitle = regex: "float on, match:title ^(${regex})(.*)$";
-      centerByTitle = regex: "center on, match:title ^(${regex})(.*)$";
-      floatByExactTitle = regex: "float on, match:title ^(${regex})$";
-      floatByClass = regex: "float on, match:class ^(${regex})(.*)$";
-      floatByExactClass = regex: "float on, match:class ^(${regex})$";
-      fullscreenByClass = regex: "fullscreen on, match:class ^(${regex})(.*)$";
-      fullscreenByExactClass = regex: "fullscreen on, match:class ^(${regex})$";
-      noscreenshareByExactClass = regex: "no_screen_share on, match:class ^(${regex})$";
+      floatByTitle = regex: {
+        match.title = "^(${regex})(.*)$";
+        float = true;
+      };
+      centerByTitle = regex: {
+        match.title = "^(${regex})(.*)$";
+        center = true;
+      };
+      floatByExactTitle = regex: {
+        match.title = "^(${regex})$";
+        float = true;
+      };
+      floatByClass = regex: {
+        match.class = "^(${regex})(.*)$";
+        float = true;
+      };
+      floatByExactClass = regex: {
+        match.class = "^(${regex})$";
+        float = true;
+      };
+      fullscreenByClass = regex: {
+        match.class = "^(${regex})(.*)$";
+        fullscreen = true;
+      };
+      fullscreenByExactClass = regex: {
+        match.class = "^(${regex})$";
+        fullscreen = true;
+      };
+      noscreenshareByExactClass = regex: {
+        match.class = "^(${regex})$";
+        no_screen_share = true;
+      };
 
       gap =
-        config.wayland.windowManager.hyprland.settings.general.gaps_out
-        + config.wayland.windowManager.hyprland.settings.general.border_size;
+        config.wayland.windowManager.hyprland.settings.config.general.gaps_out
+        + config.wayland.windowManager.hyprland.settings.config.general.border_size;
       pipTitleRegex = "([Pp]icture)[ -]in[ -]([Pp]icture)";
     in
     {
-      windowrule = [
+      window_rule = [
         (floatByExactClass "confirm")
         (floatByExactClass "file_progress")
         (floatByExactClass "dialog")
@@ -35,14 +59,35 @@
         (floatByClass "xdg-desktop-portal")
         (floatByClass ".blueman-manager")
 
-        "dim_around on, match:class ^(gcr-prompter)$"
+        {
+          match.class = "^(gcr-prompter)$";
+          dim_around = true;
+        }
 
         # Picture-in-Picture
         (floatByExactTitle pipTitleRegex)
-        "keep_aspect_ratio on, match:title ^${pipTitleRegex}$"
-        "size 25% 25%, match:title ^${pipTitleRegex}$"
-        "move (window_w-${toString gap}) (window_h-${toString gap}), match:title ^${pipTitleRegex}$"
-        "pin on, match:title ^${pipTitleRegex}$"
+        {
+          match.title = "^${pipTitleRegex}$";
+          keep_aspect_ratio = true;
+        }
+        {
+          match.title = "^${pipTitleRegex}$";
+          size = [
+            "25%"
+            "25%"
+          ];
+        }
+        {
+          match.title = "^${pipTitleRegex}$";
+          move = [
+            "window_w-${toString gap}"
+            "window_h-${toString gap}"
+          ];
+        }
+        {
+          match.title = "^${pipTitleRegex}$";
+          pin = true;
+        }
 
         (floatByTitle "Open File")
         (floatByTitle "Open Folder")
@@ -53,25 +98,58 @@
         (floatByTitle "Save As")
         (centerByTitle "Save As")
 
-        "suppress_event maximize, match:class .*"
+        {
+          match.class = ".*";
+          suppress_event = "maximize";
+        }
 
         (noscreenshareByExactClass "Bitwarden")
         (noscreenshareByExactClass "io.ente.auth")
-        "no_screen_share on, match:class ^(zen)$, match:title ^Extension: .* - Bitwarden .*"
-        "no_screen_share on, match:class ^(zen)$, match:title ^Ente Auth .*"
+        {
+          match = {
+            class = "^(zen)$";
+            title = "^Extension: .* - Bitwarden .*";
+          };
+          no_screen_share = true;
+        }
+        {
+          match = {
+            class = "^(zen)$";
+            title = "^Ente Auth .*";
+          };
+          no_screen_share = true;
+        }
 
         # Game Settings
-        "immediate on, match:class ^(steam_app_)(.*)$"
-        "immediate on, match:class ^(Ryujinx)$, match:title ^Ryujinx .* - .*"
-        "immediate on, match:class ^(org.vinegarhq.Sober)$"
-        "immediate on, match:class ^(Minecraft)(.*)$"
+        {
+          match.class = "^(steam_app_)(.*)$";
+          immediate = true;
+        }
+        {
+          match = {
+            class = "^(Ryujinx)$";
+            title = "^Ryujinx .* - .*";
+          };
+          immediate = true;
+        }
+        {
+          match.class = "^(org.vinegarhq.Sober)$";
+          immediate = true;
+        }
+        {
+          match.class = "^(Minecraft)(.*)$";
+          immediate = true;
+        }
 
         (fullscreenByClass "steam_app_")
         (fullscreenByExactClass "Ryujinx")
         (fullscreenByExactClass "org.vinegarhq.Sober")
         (fullscreenByClass "Minecraft")
 
-        "idle_inhibit focus, match:class ^(Ryujinx)$"
+        {
+          match.class = "^(Ryujinx)$";
+          idle_inhibit = "focus";
+        }
       ];
     };
 }

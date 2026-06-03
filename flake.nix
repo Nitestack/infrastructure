@@ -52,8 +52,8 @@
     };
     # split-monitor-workspaces
     split-monitor-workspaces = {
-      url = "github:Duckonaut/split-monitor-workspaces";
-      inputs.hyprland.follows = "hyprland";
+      url = "github:zjeffer/split-monitor-workspaces";
+      flake = false;
     };
     # Tmux SessionX
     tmux-sessionx.url = "github:omerxx/tmux-sessionx";
