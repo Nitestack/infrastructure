@@ -662,21 +662,6 @@
         "type": "github"
       }
     },
-    "nix-filter": {
-      "locked": {
-        "lastModified": 1693833173,
-        "narHash": "sha256-hlMABKrGbEiJD5dwUSfnw1CQ3bG7KKwDV+Nx3bEZd7U=",
-        "owner": "numtide",
-        "repo": "nix-filter",
-        "rev": "ac030bd9ba98e318e1f4c4328d60766ade8ebe8b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "nix-filter",
-        "type": "github"
-      }
-    },
     "nix-flatpak": {
       "locked": {
         "lastModified": 1767983141,
@@ -1022,22 +1007,17 @@
       }
     },
     "split-monitor-workspaces": {
-      "inputs": {
-        "hyprland": [
-          "hyprland"
-        ],
-        "nix-filter": "nix-filter"
-      },
+      "flake": false,
       "locked": {
-        "lastModified": 1779529142,
-        "narHash": "sha256-WapOPISVhAg2OJkf9NnttOGf86h9vycTZEQym2wFn70=",
-        "owner": "Duckonaut",
+        "lastModified": 1780344895,
+        "narHash": "sha256-jnCF4+i/WITrySyR8U3yklZpijtZmjACoV7GVG8RnKc=",
+        "owner": "zjeffer",
         "repo": "split-monitor-workspaces",
-        "rev": "9652f128003e0109f875c5c64db11e8c2d22b7f3",
+        "rev": "6cff8cfffecf4729d1f5bacf82d96c5987f230f3",
         "type": "github"
       },
       "original": {
-        "owner": "Duckonaut",
+        "owner": "zjeffer",
         "repo": "split-monitor-workspaces",
         "type": "github"
       }

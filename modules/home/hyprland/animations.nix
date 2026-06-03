@@ -2,35 +2,111 @@
 # │ Animations                                               │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  wayland.windowManager.hyprland.settings.animations = {
-    enabled = true;
-    bezier = [
-      "expressiveFastSpatial, 0.42, 1.67, 0.21, 0.90"
-      "expressiveSlowSpatial, 0.39, 1.29, 0.35, 0.98"
-      "expressiveDefaultSpatial, 0.38, 1.21, 0.22, 1.00"
-      "emphasizedDecel, 0.05, 0.7, 0.1, 1"
-      "emphasizedAccel, 0.3, 0, 0.8, 0.15"
-      "standardDecel, 0, 0, 0, 1"
-      "menu_decel, 0.1, 1, 0, 1"
-      "menu_accel, 0.52, 0.03, 0.72, 0.08"
+  wayland.windowManager.hyprland.settings = {
+    config.animations.enabled = true;
+
+    curve = [
+      {
+        _args = [
+          "emphasizedDecel"
+          {
+            type = "bezier";
+            points = [
+              [
+                0.05
+                0.7
+              ]
+              [
+                0.1
+                1.0
+              ]
+            ];
+          }
+        ];
+      }
+      {
+        _args = [
+          "emphasizedAccel"
+          {
+            type = "bezier";
+            points = [
+              [
+                0.3
+                0.0
+              ]
+              [
+                0.8
+                0.15
+              ]
+            ];
+          }
+        ];
+      }
+      {
+        _args = [
+          "menu_decel"
+          {
+            type = "bezier";
+            points = [
+              [
+                0.1
+                1.0
+              ]
+              [
+                0.0
+                1.0
+              ]
+            ];
+          }
+        ];
+      }
+      {
+        _args = [
+          "menu_accel"
+          {
+            type = "bezier";
+            points = [
+              [
+                0.52
+                0.03
+              ]
+              [
+                0.72
+                0.08
+              ]
+            ];
+          }
+        ];
+      }
     ];
-    animation = [
-      # windows
-      "windowsIn, 1, 3, emphasizedDecel, popin 80%"
-      "windowsOut, 1, 2, emphasizedDecel, popin 90%"
-      "windowsMove, 1, 3, emphasizedDecel, slide"
-      "border, 1, 10, emphasizedDecel"
-      # layers
-      "layersIn, 1, 2.7, emphasizedDecel, popin 93%"
-      "layersOut, 1, 2.4, menu_accel, popin 94%"
-      # fade
-      "fadeLayersIn, 1, 0.5, menu_decel"
-      "fadeLayersOut, 1, 2.7, menu_accel"
-      # workspaces
-      "workspaces, 1, 7, menu_decel, slide"
-      ## specialWorkspace
-      "specialWorkspaceIn, 1, 2.8, emphasizedDecel, slidevert"
-      "specialWorkspaceOut, 1, 1.2, emphasizedAccel, slidevert"
-    ];
+
+    animation =
+      let
+        anim = leaf: speed: bezier: style: {
+          inherit leaf speed bezier;
+          enabled = true;
+          inherit style;
+        };
+        animSimple = leaf: speed: bezier: {
+          inherit leaf speed bezier;
+          enabled = true;
+        };
+      in
+      [
+        (anim "windowsIn" 3 "emphasizedDecel" "popin 80%")
+        (anim "windowsOut" 2 "emphasizedDecel" "popin 90%")
+        (anim "windowsMove" 3 "emphasizedDecel" "slide")
+        (animSimple "border" 10 "emphasizedDecel")
+
+        (anim "layersIn" 2.7 "emphasizedDecel" "popin 93%")
+        (anim "layersOut" 2.4 "menu_accel" "popin 94%")
+
+        (animSimple "fadeLayersIn" 0.5 "menu_decel")
+        (animSimple "fadeLayersOut" 2.7 "menu_accel")
+
+        (anim "workspaces" 7 "menu_decel" "slide")
+        (anim "specialWorkspaceIn" 2.8 "emphasizedDecel" "slidevert")
+        (anim "specialWorkspaceOut" 1.2 "emphasizedAccel" "slidevert")
+      ];
   };
 }

@@ -4,6 +4,7 @@
 {
   flake,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -12,6 +13,16 @@ let
   uwsm = "${pkgs.uwsm}/bin/uwsm app --";
 
   dms = "${inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
+
+  mkBind = keys: desc: luaDispatcher: flags: {
+    _args = [
+      keys
+      (lib.generators.mkLuaInline luaDispatcher)
+    ]
+    ++ lib.optional (flags != { } || desc != "") (
+      flags // lib.optionalAttrs (desc != "") { description = desc; }
+    );
+  };
 in
 {
   imports = [
@@ -26,25 +37,72 @@ in
     enableAudioWavelength = true;
     enableCalendarEvents = true;
   };
-  wayland.windowManager.hyprland.settings = {
-    bindd = [
-      "ALT, space, Toggle App Launcher, exec, ${uwsm} ${dms} ipc call spotlight toggle"
-      "SUPER, V, Toggle Clipboard History, exec, ${uwsm} ${dms} ipc call clipboard toggle"
-      "SUPER, TAB, Toggle Overview, exec, ${uwsm} ${dms} ipc call hypr toggleOverview"
-      "CTRL SHIFT, Escape, Toggle System Monitor, exec, ${uwsm} ${dms} ipc call processlist toggle"
-      "CTRL SHIFT, Delete, Toggle Power Menu, exec, ${uwsm} ${dms} ipc call powermenu toggle"
-    ];
-    binddl = [
-      ", XF86AudioPlay, Play/Pause, exec, ${uwsm} ${dms} ipc call mpris playPause"
-      ", XF86AudioPause, Play/Pause, exec, ${uwsm} ${dms} ipc call mpris playPause"
-      ", XF86AudioNext, Skip to Next Track, exec, ${uwsm} ${dms} ipc call mpris next"
-      ", XF86AudioPrev, Return to Previous Track, exec, ${uwsm} ${dms} ipc call mpris previous"
-    ];
-    binddel = [
-      ", XF86AudioRaiseVolume, Increase Volume, exec, ${uwsm} ${dms} ipc call audio increment 2"
-      ", XF86AudioLowerVolume, Decrease Volume, exec, ${uwsm} ${dms} ipc call audio decrement 2"
-      ", XF86AudioMute, Mute/Unmute Volume, exec, ${uwsm} ${dms} ipc call audio mute"
-      ", XF86AudioMicMute, Mute/Unmute Microphone, exec, ${uwsm} ${dms} ipc call audio micmute"
-    ];
-  };
+  wayland.windowManager.hyprland.settings.bind = [
+    (mkBind "ALT + space" "Toggle App Launcher"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call spotlight toggle\")"
+      { }
+    )
+    (mkBind "SUPER + V" "Toggle Clipboard History"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call clipboard toggle\")"
+      { }
+    )
+    (mkBind "SUPER + TAB" "Toggle Overview"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call hypr toggleOverview\")"
+      { }
+    )
+    (mkBind "CTRL + SHIFT + Escape" "Toggle System Monitor"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call processlist toggle\")"
+      { }
+    )
+    (mkBind "CTRL + SHIFT + Delete" "Toggle Power Menu"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call powermenu toggle\")"
+      { }
+    )
+
+    # --- Media Controls (previously binddl - locked) ---
+    (mkBind "XF86AudioPlay" "Play/Pause" "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris playPause\")"
+      { locked = true; }
+    )
+    (mkBind "XF86AudioPause" "Play/Pause" "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris playPause\")"
+      { locked = true; }
+    )
+    (mkBind "XF86AudioNext" "Skip to Next Track"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris next\")"
+      { locked = true; }
+    )
+    (mkBind "XF86AudioPrev" "Return to Previous Track"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris previous\")"
+      { locked = true; }
+    )
+
+    # --- Volume Controls (previously binddel - locked & repeating) ---
+    (mkBind "XF86AudioRaiseVolume" "Increase Volume"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio increment 2\")"
+      {
+        locked = true;
+        repeating = true;
+      }
+    )
+    (mkBind "XF86AudioLowerVolume" "Decrease Volume"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio decrement 2\")"
+      {
+        locked = true;
+        repeating = true;
+      }
+    )
+    (mkBind "XF86AudioMute" "Mute/Unmute Volume"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio mute\")"
+      {
+        locked = true;
+        repeating = true;
+      }
+    )
+    (mkBind "XF86AudioMicMute" "Mute/Unmute Microphone"
+      "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio micmute\")"
+      {
+        locked = true;
+        repeating = true;
+      }
+    )
+  ];
 }

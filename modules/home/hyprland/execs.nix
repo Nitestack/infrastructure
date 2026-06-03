@@ -5,6 +5,7 @@
   pkgs,
   meta,
   osConfig,
+  lib,
   ...
 }:
 let
@@ -20,24 +21,37 @@ let
 in
 {
   wayland.windowManager.hyprland.settings = {
-    exec-once = [
-      "${uwsm} ${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size} &"
-      "${uwsm} ${wl-paste} --watch ${cliphist} store &"
+    on = {
+      _args = [
+        "hyprland.start"
+        (lib.generators.mkLuaInline ''
+          function()
+            hl.exec_cmd("${uwsm} ${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size}")
+            hl.exec_cmd("${uwsm} ${wl-paste} --watch ${cliphist} store")
 
-      # left monitor
-      "[workspace 6 silent] ${uwsm} vesktop.desktop"
-      "[workspace 7 silent] ${uwsm} spotify.desktop"
-      "[workspace 8 silent] ${uwsm} com.stremio.Stremio.desktop"
+            -- left monitor
+            hl.exec_cmd("${uwsm} vesktop.desktop", { workspace = "6" })
+            hl.exec_cmd("${uwsm} spotify.desktop", { workspace = "7" })
+            hl.exec_cmd("${uwsm} com.stremio.Stremio.desktop", { workspace = "8" })
 
-      # right monitor
-      "[workspace 1 silent] ${uwsm} zen.desktop"
-      "[workspace 2 silent] ${uwsm} ${ghostty} -e tmux"
-      "[workspace 3 silent] ${uwsm} proton-mail.desktop"
-    ];
+            -- right monitor
+            hl.exec_cmd("${uwsm} zen.desktop", { workspace = "1" })
+            hl.exec_cmd("${uwsm} ${ghostty} -e tmux", { workspace = "2" })
+            hl.exec_cmd("${uwsm} proton-mail.desktop", { workspace = "3" })
+          end
+        '')
+      ];
+    };
     # Stick to the workspaces
-    windowrule = [
-      "workspace 6 silent, match:class ^(vesktop)$"
-      "workspace 7 silent, match:class ^(spotify)$"
+    window_rule = [
+      {
+        match.class = "^(vesktop)$";
+        workspace = "6 silent";
+      }
+      {
+        match.class = "^(spotify)$";
+        workspace = "7 silent";
+      }
     ];
   };
 }
