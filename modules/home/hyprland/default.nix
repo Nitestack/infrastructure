@@ -109,6 +109,7 @@ in
 
       smw.setup({
           workspace_count = 5,
+          enable_wrapping = false,
       })
 
       local mainMod = "SUPER"
@@ -116,17 +117,17 @@ in
           local n = tostring(i)
 
           hl.bind(mainMod .. " + " .. n, smw.workspace(n))
-          hl.bind(mainMod .. " + SHIFT + " .. n, smw.move_to_workspace_silent(n))
+          hl.bind(mainMod .. " + SHIFT + " .. n, smw.move_to_workspace(n))
       end
 
       hl.bind("SUPER + CTRL + H", smw.cycle_workspaces("prev"))
       hl.bind("SUPER + CTRL + L", smw.cycle_workspaces("next"))
 
-      hl.bind("SUPER + mouse_down", smw.cycle_workspaces("prev"))
-      hl.bind("SUPER + mouse_up", smw.cycle_workspaces("next"))
+      hl.bind("SUPER + mouse_up", smw.cycle_workspaces("prev"))
+      hl.bind("SUPER + mouse_down", smw.cycle_workspaces("next"))
 
-      hl.bind("SUPER + SHIFT + H", smw.move_to_workspace_silent("-1"))
-      hl.bind("SUPER + SHIFT + L", smw.move_to_workspace_silent("+1"))
+      hl.bind("SUPER + SHIFT + H", smw.move_to_workspace("-1"))
+      hl.bind("SUPER + SHIFT + L", smw.move_to_workspace("+1"))
     '';
   };
 
