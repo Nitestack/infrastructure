@@ -35,7 +35,7 @@ in
   wayland.windowManager.hyprland.settings =
     let
       lmb = "mouse:272"; # Left mouse button
-      rmb = "mouse:273"; # Right mouse button
+      # rmb = "mouse:273"; # Right mouse button
       # mmb = "mouse:274"; # Middle mouse button
     in
     {
@@ -127,7 +127,6 @@ in
         )
 
         # --- Mouse Controls ---
-        (mkBind "SUPER + ${rmb}" "Resize Window" "hl.dsp.window.resize()" { mouse = true; })
         (mkBind "SUPER + ${lmb}" "Move Window" "hl.dsp.window.drag()" { mouse = true; })
       ];
     };
