@@ -44,6 +44,24 @@
       }
       {
         _args = [
+          "standardDecel"
+          {
+            type = "bezier";
+            points = [
+              [
+                0
+                0
+              ]
+              [
+                0
+                1
+              ]
+            ];
+          }
+        ];
+      }
+      {
+        _args = [
           "menu_decel"
           {
             type = "bezier";
@@ -78,6 +96,24 @@
           }
         ];
       }
+      {
+        _args = [
+          "stall"
+          {
+            type = "bezier";
+            points = [
+              [
+                1
+                (-0.1)
+              ]
+              [
+                0.7
+                0.85
+              ]
+            ];
+          }
+        ];
+      }
     ];
 
     animation =
@@ -94,7 +130,9 @@
       in
       [
         (anim "windowsIn" 3 "emphasizedDecel" "popin 80%")
+        (animSimple "fadeIn" 3 "emphasizedDecel")
         (anim "windowsOut" 2 "emphasizedDecel" "popin 90%")
+        (animSimple "fadeOut" 2 "emphasizedDecel")
         (anim "windowsMove" 3 "emphasizedDecel" "slide")
         (animSimple "border" 10 "emphasizedDecel")
 
@@ -102,11 +140,13 @@
         (anim "layersOut" 2.4 "menu_accel" "popin 94%")
 
         (animSimple "fadeLayersIn" 0.5 "menu_decel")
-        (animSimple "fadeLayersOut" 2.7 "menu_accel")
+        (animSimple "fadeLayersOut" 2.7 "stall")
 
         (anim "workspaces" 7 "menu_decel" "slide")
         (anim "specialWorkspaceIn" 2.8 "emphasizedDecel" "slidevert")
         (anim "specialWorkspaceOut" 1.2 "emphasizedAccel" "slidevert")
+
+        (animSimple "zoomFactor" 3 "standardDecel")
       ];
   };
 }
