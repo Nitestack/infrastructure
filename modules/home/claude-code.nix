@@ -25,6 +25,7 @@ in
       env = {
         CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS = "1";
       };
+      model = "sonnet[1m]";
       statusLine = {
         type = "command";
         command = "bash \"${caveman-plugin}/src/hooks/caveman-statusline.sh\"";
