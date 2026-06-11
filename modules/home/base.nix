@@ -13,6 +13,7 @@ in
 {
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
+    self.homeModules.ai
     self.homeModules.bat
     self.homeModules.direnv
     self.homeModules.eza
