@@ -10,7 +10,5 @@ in
   imports = [
     self.homeModules.base
     self.homeModules.linux-only
-
-    self.homeModules.claude-code
   ];
 }

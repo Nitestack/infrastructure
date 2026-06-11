@@ -29,8 +29,15 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     # ── Software Inputs ───────────────────────────────────────────────────
+    # agent-skills-nix
+    agent-skills.url = "github:Kyure-A/agent-skills-nix";
     # Apple Fonts
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
+    # caveman
+    caveman = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
     # Dank Material Shell
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
