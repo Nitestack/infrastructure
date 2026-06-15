@@ -103,6 +103,9 @@ in
     zsh.enable = true;
   };
 
+  # ── Services ──────────────────────────────────────────────────────────
+  services.envfs.enable = true;
+
   # ── Localization ──────────────────────────────────────────────────────
   time.timeZone = "Europe/Berlin";
 }
