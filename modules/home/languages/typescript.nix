@@ -9,7 +9,6 @@ in
   home = {
     packages = with pkgs; [
       deno
-      nodejs
       pnpm
       prisma
       prisma-engines
@@ -27,4 +26,6 @@ in
     };
     sessionPath = [ PNPM_HOME ];
   };
+
+  programs.npm.enable = true;
 }
