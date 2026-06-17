@@ -5,6 +5,7 @@
   flake,
   pkgs,
   meta,
+  config,
   ...
 }:
 let
@@ -41,6 +42,9 @@ in
       cp = "cp -iv";
       mv = "mv -iv";
     };
+    sessionPath = [
+      "${config.home.homeDirectory}/.local/bin"
+    ];
   };
 
   xdg.enable = true;
