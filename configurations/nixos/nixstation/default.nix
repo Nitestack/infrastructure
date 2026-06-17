@@ -28,6 +28,7 @@ in
     self.nixosModules.games
     self.nixosModules.gnome
     self.nixosModules.hyprland
+    self.nixosModules.logiops
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
