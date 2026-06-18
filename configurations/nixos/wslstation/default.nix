@@ -22,6 +22,7 @@ in
     enable = true;
     defaultUser = meta.username;
     docker-desktop.enable = true;
+    ssh-agent.enable = true;
     startMenuLaunchers = true;
     useWindowsDriver = true;
     wslConf.network.hostname = "wslstation";
