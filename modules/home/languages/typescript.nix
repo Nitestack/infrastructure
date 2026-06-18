@@ -4,6 +4,8 @@
 { pkgs, config, ... }:
 let
   PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
+
+  npmPrefix = config.programs.npm.settings.prefix;
 in
 {
   home = {
@@ -24,7 +26,10 @@ in
       PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
       PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
     };
-    sessionPath = [ PNPM_HOME ];
+    sessionPath = [
+      PNPM_HOME
+      "${npmPrefix}/bin"
+    ];
   };
 
   programs.npm.enable = true;
