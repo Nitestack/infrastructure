@@ -57,5 +57,6 @@ in
     easyeffects.enable = true;
     mpris-proxy.enable = true;
     nextcloud-client.enable = true;
+    ssh-agent.enable = true;
   };
 }
