@@ -1,0 +1,19 @@
+name: Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Check formatting
+        run: nix fmt -- --check
+      - name: Check flake evaluation
+        run: nix flake check --no-build --no-write-lock-file

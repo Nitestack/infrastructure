@@ -1,8 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NixOS Base Configuration                                 │
+# │ AI Profile                                               │
 # ╰──────────────────────────────────────────────────────────╯
-_: {
+{ flake, ... }:
+let
+  inherit (flake.inputs) self;
+in
+{
   imports = [
-    ../shared/system/base.nix
+    self.homeModules.ai
   ];
 }

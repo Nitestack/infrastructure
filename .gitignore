@@ -1,1 +1,7 @@
 result
+result-*
+.worktrees/
+worktrees/
+
+# Machine-local assets. Keep large personal images outside the tracked flake.
+images/local/

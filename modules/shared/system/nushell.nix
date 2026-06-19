@@ -1,8 +1,13 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NixOS Base Configuration                                 │
+# │ Shared Nushell System Configuration                      │
 # ╰──────────────────────────────────────────────────────────╯
-_: {
-  imports = [
-    ../shared/system/base.nix
-  ];
+{ pkgs, ... }:
+{
+  environment = {
+    systemPackages = with pkgs; [ nushell ];
+    shells = [
+      "/run/current-system/sw/bin/nu"
+      "${pkgs.nushell}/bin/nu"
+    ];
+  };
 }

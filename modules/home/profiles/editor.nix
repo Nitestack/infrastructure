@@ -1,8 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NixOS Base Configuration                                 │
+# │ Editor Profile                                           │
 # ╰──────────────────────────────────────────────────────────╯
-_: {
+{ flake, ... }:
+let
+  inherit (flake.inputs) self;
+in
+{
   imports = [
-    ../shared/system/base.nix
+    self.homeModules.neovim
   ];
 }
