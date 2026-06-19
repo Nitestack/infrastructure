@@ -16,6 +16,7 @@ in
     self.homeModules.linux-only
     self.homeModules.gui-only
 
+    self.homeModules.codex
     self.homeModules.dank-material-shell
     self.homeModules.hyprland
     self.homeModules.theme
