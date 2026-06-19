@@ -13,7 +13,7 @@ let
 in
 {
   imports = [
-    self.nixosModules.base
+    self.darwinModules.base
 
     self.darwinModules.defaults
     self.darwinModules.homebrew
@@ -25,6 +25,9 @@ in
   };
 
   # Configuration
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-39.8.10"
+  ];
   nixpkgs.hostPlatform = "x86_64-darwin";
   networking.hostName = "macstation";
 

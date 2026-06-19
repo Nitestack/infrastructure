@@ -43,7 +43,7 @@ in
 
   programs = {
     cava.enable = true;
-    chromium.enable = true;
+    chromium.enable = !pkgs.stdenv.isDarwin;
     vscode.enable = true;
   };
 }
