@@ -14,7 +14,6 @@ in
       pnpm
       prisma
       prisma-engines
-      yarn
 
       npkill
     ];
@@ -27,7 +26,7 @@ in
       PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
     };
     sessionPath = [
-      PNPM_HOME
+      "${PNPM_HOME}/bin"
       "${npmPrefix}/bin"
     ];
   };
