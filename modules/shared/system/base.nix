@@ -65,6 +65,7 @@ in
     unzip
 
     nix-flake-update
+    git-lfs
     nix-prefetch-git
     nixfmt
   ];
