@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "darwin-skill": {
+      "source": "alchaincyf/darwin-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "6bbcda37608812c7420c99f4fbb6d00cd0b6322e0f300db359926bf498e170c4"
+    },
+    "nix-best-practices": {
+      "source": "0xbigboss/claude-code",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/nix-best-practices/SKILL.md",
+      "computedHash": "f6d14bf40d4b505dd50cb389711eae74bc1459740adb27f4641cd75c21042311"
+    },
+    "nixos-best-practices": {
+      "source": "lihaoze123/my-skills",
+      "sourceType": "github",
+      "skillPath": "skills/nixos-best-practices/SKILL.md",
+      "computedHash": "eef05314101f6ba0ce1b6743eed54432912af05d643e433c101a524f6adf6615"
+    }
+  }
+}

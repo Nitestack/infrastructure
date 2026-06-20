@@ -16,4 +16,7 @@ jobs:
       - name: Check formatting
         run: nix fmt -- --check
       - name: Check flake evaluation
-        run: nix flake check --no-build --no-write-lock-file
+        run: |
+          nix eval .#nixosConfigurations.nixstation.config.system.build.toplevel.drvPath --no-write-lock-file
+          nix eval .#nixosConfigurations.wslstation.config.system.build.toplevel.drvPath --no-write-lock-file
+          nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-write-lock-file
