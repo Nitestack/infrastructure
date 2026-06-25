@@ -89,6 +89,16 @@ sudo nixos-rebuild boot --flake ~/nix-config#nixstation
 
 Please reboot the system.
 
+### Server (NixOS)
+
+Before continuing with the installation, initialize the Nix system:
+
+```sh
+sudo nixos-rebuild boot --flake ~/nix-config#homestation
+```
+
+Please reboot the system.
+
 ### macOS
 
 Before continuing with the installation, initialize the Nix system:
