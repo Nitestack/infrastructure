@@ -13,7 +13,8 @@ in
   # ── Imports ───────────────────────────────────────────────────────────
   imports = [
     self.homeModules.base
-    self.homeModules.linux-only
+    self.homeModules.bare-metal-only
+    self.homeModules.interactive-only
     self.homeModules.gui-only
 
     self.homeModules.codex
@@ -22,6 +23,8 @@ in
     self.homeModules.theme
     self.homeModules.zen-browser
   ];
+
+  home.shellAliases.proton-mail = "XDG_SESSION_TYPE=x11 proton-mail";
 
   # Configuration
   xdg.userDirs = {
@@ -58,6 +61,5 @@ in
     easyeffects.enable = true;
     mpris-proxy.enable = true;
     nextcloud-client.enable = true;
-    ssh-agent.enable = true;
   };
 }

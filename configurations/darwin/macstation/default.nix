@@ -14,6 +14,7 @@ in
 {
   imports = [
     self.darwinModules.base
+    self.darwinModules.interactive-only
 
     self.darwinModules.defaults
     self.darwinModules.homebrew
@@ -58,6 +59,7 @@ in
   # INFO: any package that hasn't a `programs` or `services` entry on Nix Darwin (look at `nixos/linux-only.nix`)
   environment.systemPackages = with pkgs; [
     git
+    git-lfs
     whatsapp-for-mac
   ];
 }

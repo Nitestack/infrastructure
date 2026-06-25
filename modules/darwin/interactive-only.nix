@@ -1,12 +1,8 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Editor Profile                                           │
+# │ Interactive Only Configuration                           │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, ... }:
-let
-  inherit (flake.inputs) self;
-in
 {
   imports = [
-    self.homeModules.neovim
+    ../shared/system/interactive-only.nix
   ];
 }

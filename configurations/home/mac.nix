@@ -14,6 +14,7 @@ in
   imports = [
     self.homeModules.base
     self.homeModules.gui-only
+    self.homeModules.interactive-only
   ];
 
   home.packages = with pkgs; [

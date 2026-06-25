@@ -1,8 +1,13 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ NixOS Shared Options                                     │
+# │ Interactive Only Configuration                           │
 # ╰──────────────────────────────────────────────────────────╯
-_: {
-  imports = [
-    ../shared/system/options.nix
+{ pkgs, ... }: {
+  environment.systemPackages = with pkgs; [
+    caddy
+    python3
+
+    ansible
+    ffmpeg
+    rclone
   ];
 }

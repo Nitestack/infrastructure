@@ -1,6 +1,21 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Linux Home Manager Configuration                         │
+# │ Interactive Only Home Manager Configuration              │
 # ╰──────────────────────────────────────────────────────────╯
-_: {
-  programs.zathura.enable = true;
+{
+  flake,
+  ...
+}:
+let
+  inherit (flake.inputs) self;
+in
+{
+  imports = [
+    self.homeModules.ai
+    self.homeModules.languages
+  ];
+
+  programs = {
+    java.enable = true;
+    zathura.enable = true;
+  };
 }
