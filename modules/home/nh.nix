@@ -16,7 +16,7 @@ let
     if uname -r | grep -qEi 'microsoft'; then
       host="wslstation"
     else
-      host="nixstation"
+      host="$(hostname)"
     fi
 
     ${nh} os $action ~/nix-config -H $host -- $@
