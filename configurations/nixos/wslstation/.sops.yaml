@@ -1,0 +1,10 @@
+keys:
+  - &admin_nhan 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
+  - &wslstation_ssh age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+      - pgp:
+          - *admin_nhan
+        age:
+          - *wslstation_ssh

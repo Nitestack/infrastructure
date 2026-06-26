@@ -27,6 +27,11 @@
     nixos-unified.url = "github:srid/nixos-unified";
     # Flake Parts
     flake-parts.url = "github:hercules-ci/flake-parts";
+    # sops-nix
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # ── Software Inputs ───────────────────────────────────────────────────
     # agent-skills-nix

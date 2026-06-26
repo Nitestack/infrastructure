@@ -14,6 +14,7 @@ in
 {
   imports = [
     inputs.nixos-wsl.nixosModules.default
+    ./sops.nix
 
     self.nixosModules.base
     self.nixosModules.interactive-only
@@ -26,6 +27,10 @@ in
     startMenuLaunchers = true;
     useWindowsDriver = true;
     wslConf.network.hostname = "wslstation";
+  };
+
+  wslstation.anthropic = {
+    profile = "adp";
   };
 
   # ── Home Manager ──────────────────────────────────────────────────────
