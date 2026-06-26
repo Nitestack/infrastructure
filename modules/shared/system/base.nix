@@ -42,6 +42,7 @@ in
           "root"
           (if pkgs.stdenv.isDarwin then meta.username else "@wheel")
         ];
+        auto-optimise-store = true;
       };
       channel.enable = false;
       registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
@@ -56,7 +57,6 @@ in
     curl
     wget
 
-    devenv
     duf
     ncdu
     openssl
