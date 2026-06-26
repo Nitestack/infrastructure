@@ -2,14 +2,15 @@
 # │ Nh                                                       │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  config,
+  lib,
   pkgs,
   ...
 }:
 let
-  nh = "${pkgs.nh}/bin/nh";
-
-  nix-rebuild = "${pkgs.writeShellScriptBin "nix-rebuild" ''
-    #!/usr/bin/env bash
+  nh = lib.getExe pkgs.nh;
+  flakeDir = "${config.home.homeDirectory}/nix-config";
+  nix-rebuild = pkgs.writeShellScriptBin "nix-rebuild" ''
     action="$1"
     shift
 
@@ -19,43 +20,31 @@ let
       host="$(hostname)"
     fi
 
-    ${nh} os $action ~/nix-config -H $host -- $@
-  ''}/bin/nix-rebuild";
-  nix-switch = pkgs.writeShellScriptBin "nix-switch" ''
-    #!/usr/bin/env bash
-
-    ${nix-rebuild} switch $@
+    exec ${nh} os "$action" -H "$host" -- "$@"
   '';
-  nix-boot = pkgs.writeShellScriptBin "nix-boot" ''
-    #!/usr/bin/env bash
 
-    ${nix-rebuild} boot $@
-  '';
-  nix-test = pkgs.writeShellScriptBin "nix-test" ''
-    #!/usr/bin/env bash
+  mkRebuildAction =
+    action:
+    pkgs.writeShellScriptBin "nix-${action}" ''
+      exec ${lib.getExe nix-rebuild} ${action} "$@"
+    '';
 
-    ${nix-rebuild} test $@
-  '';
   darwin-switch = pkgs.writeShellScriptBin "darwin-switch" ''
-    #!/usr/bin/env bash
-
-    ${nh} darwin switch ~/nix-config -H macstation -- $@
+    exec ${nh} darwin switch -H macstation -- "$@"
   '';
+
+  linuxPackages = map mkRebuildAction [
+    "switch"
+    "boot"
+    "test"
+  ];
 in
 {
   programs.nh = {
     enable = true;
+    flake = flakeDir;
     clean.enable = true;
   };
-  home.packages =
-    if pkgs.stdenv.isDarwin then
-      [
-        darwin-switch
-      ]
-    else
-      [
-        nix-switch
-        nix-boot
-        nix-test
-      ];
+
+  home.packages = if pkgs.stdenv.isDarwin then [ darwin-switch ] else linuxPackages;
 }
