@@ -18,13 +18,9 @@ in
     resizeAmount = 5;
 
     extraConfig =
-      let
-        nushell = "${pkgs.nushell}/bin/nu";
-      in
       ''
         # Options
         set -as terminal-features "$TERM:RGB" # 24-bit color
-        set -g default-shell ${nushell}
 
         set -g renumber-windows on # Renumber windows when a window is closed
         set -g detach-on-destroy off # Don't exit from tmux when closing a session
