@@ -6,6 +6,29 @@ let
   inherit (flake) inputs;
   inherit (inputs) self;
   commonSettings = import ./_settings.nix;
+
+  # FHS environment so Pi's npm install scripts find standard tools
+  # (make, gcc, python, jq, etc.) without whack-a-mole extraPackages.
+  pi-fhs = pkgs.buildFHSEnv {
+    name = "pi";
+    targetPkgs = _pkgs: with pkgs; [
+      gnumake
+      gcc
+      binutils
+      pkg-config
+      (python3.withPackages (ps: [ ps.pyyaml ]))
+      jq
+      nodejs
+      bash
+      coreutils
+      findutils
+      gnused
+      gnugrep
+      git
+      curl
+    ];
+    runScript = "${pkgs.pi-coding-agent}/bin/pi";
+  };
 in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
@@ -20,14 +43,7 @@ in
 
   programs.pi-coding-agent = {
     enable = true;
-
-    extraPackages = [
-      pkgs.nodejs
-      pkgs.gnumake
-      pkgs.gcc
-      pkgs.jq
-      (pkgs.python3.withPackages (ps: [ ps.pyyaml ]))
-    ];
+    package = pi-fhs;
 
     settings = commonSettings // {
       defaultProvider = "codex";
