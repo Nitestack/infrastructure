@@ -26,6 +26,7 @@ in
       pkgs.gnumake
       pkgs.gcc
       pkgs.jq
+      (pkgs.python3.withPackages (ps: [ ps.pyyaml ]))
     ];
 
     settings = commonSettings // {
