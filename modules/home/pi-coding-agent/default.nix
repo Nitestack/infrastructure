@@ -21,7 +21,11 @@ in
   programs.pi-coding-agent = {
     enable = true;
 
-    extraPackages = [ pkgs.nodejs ];
+    extraPackages = [
+      pkgs.nodejs
+      pkgs.gnumake
+      pkgs.gcc
+    ];
 
     settings = commonSettings // {
       defaultProvider = "codex";
