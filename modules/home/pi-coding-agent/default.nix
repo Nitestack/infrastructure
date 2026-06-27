@@ -25,6 +25,7 @@ in
       pkgs.nodejs
       pkgs.gnumake
       pkgs.gcc
+      pkgs.jq
     ];
 
     settings = commonSettings // {
