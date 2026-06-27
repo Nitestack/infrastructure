@@ -27,6 +27,10 @@
     "npm:pi-catppuccin-tui"
     "npm:pi-catppuccin-footer"
     "npm:@juicesharp/rpiv-pi"
-    "npm:bigpowers"
+    "npm:@tintinweb/pi-subagents"
+    "npm:@juicesharp/rpiv-i18n"
+    "npm:@juicesharp/rpiv-web-tools"
+    "npm:@juicesharp/rpiv-args"
+    "npm:@juicesharp/rpiv-workflow"
   ];
 }

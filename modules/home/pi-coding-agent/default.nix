@@ -1,7 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Pi Coding Agent                                          │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, config, flake, ... }:
+{
+  pkgs,
+  config,
+  flake,
+  ...
+}:
 let
   inherit (flake) inputs;
   inherit (inputs) self;
@@ -11,22 +16,22 @@ let
   # (make, gcc, python, jq, etc.) without whack-a-mole extraPackages.
   pi-fhs = pkgs.buildFHSEnv {
     name = "pi";
-    targetPkgs = _pkgs: with pkgs; [
-      gnumake
-      gcc
-      binutils
-      pkg-config
-      (python3.withPackages (ps: [ ps.pyyaml ]))
-      jq
-      nodejs
-      bash
-      coreutils
-      findutils
-      gnused
-      gnugrep
-      git
-      curl
-    ];
+    targetPkgs =
+      _pkgs: with pkgs; [
+        gnumake
+        gcc
+        binutils
+        pkg-config
+        jq
+        nodejs
+        bash
+        coreutils
+        findutils
+        gnused
+        gnugrep
+        git
+        curl
+      ];
     runScript = "${pkgs.pi-coding-agent}/bin/pi";
   };
 in
