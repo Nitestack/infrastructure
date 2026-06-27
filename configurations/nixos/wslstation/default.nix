@@ -30,12 +30,15 @@ in
   };
 
   wslstation.anthropic = {
-    profile = "adp";
+    profile = "swtb";
   };
 
   # ── Home Manager ──────────────────────────────────────────────────────
   home-manager.users.${meta.username} = {
-    imports = [ (self + /configurations/home/wsl.nix) ];
+    imports = [
+      (self + /configurations/home/wsl.nix)
+      (self + /modules/home/pi-coding-agent/work-hub.nix)
+    ];
   };
 
   # Configuration

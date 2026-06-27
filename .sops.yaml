@@ -1,0 +1,8 @@
+creation_rules:
+  # Shared secrets — encrypted with GPG (user's personal key, decrypted at user level)
+  - path_regex: modules/secrets/.*
+    pgp: 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
+
+  # wslstation-only secrets
+  - path_regex: configurations/nixos/wslstation/secrets/.*
+    age: age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6

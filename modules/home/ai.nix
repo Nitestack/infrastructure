@@ -4,6 +4,7 @@
 { pkgs, flake, ... }:
 let
   inherit (flake) inputs;
+  inherit (inputs) self;
 
   superpowers-plugin = pkgs.fetchFromGitHub {
     owner = "obra";
@@ -15,6 +16,8 @@ in
 {
   imports = [
     inputs.agent-skills.homeManagerModules.default
+
+    self.homeModules.pi-coding-agent
   ];
   programs = {
     agent-skills = {
@@ -26,6 +29,7 @@ in
       skills.enableAll = true;
       targets.claude.enable = true;
       targets.codex.enable = true;
+      targets.agents.enable = true;
     };
     claude-code = {
       enable = true;
@@ -45,14 +49,14 @@ in
         superpowers-plugin
       ];
     };
-    codex = {
-      enable = true;
-      settings = {
-        commit_attribution = "";
-        approval_policy = "never";
-        sandbox_mode = "workspace-write";
-        personality = "pragmatic";
-      };
-    };
+    # codex = {
+    #   enable = true;
+    #   settings = {
+    #     commit_attribution = "";
+    #     approval_policy = "never";
+    #     sandbox_mode = "workspace-write";
+    #     personality = "pragmatic";
+    #   };
+    # };
   };
 }
