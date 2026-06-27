@@ -15,9 +15,7 @@
   };
   packages = [
     "npm:@hypabolic/pi-hypa"
-    "npm:pi-lean-ctx"
     "npm:pi-hermes-memory"
-    "npm:pi-web-access"
     "npm:pi-lens"
     "npm:pi-simplify"
     "npm:@plannotator/pi-extension"

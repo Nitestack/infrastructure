@@ -73,9 +73,6 @@ in
       Save project decisions, architecture notes, and preferences to pi-hermes-memory.
       Retrieve relevant memories at the start of each session.
 
-      ## Web & Research
-      Use pi-web-access for documentation, API references, and research needs.
-
       ## Code Quality
       Run pi-simplify after significant changes. Use pi-lens diagnostics proactively.
       Use plannotator for large plans or PR reviews.
