@@ -1,7 +1,7 @@
 # Common pi-coding-agent settings shared by all hosts.
 # Does NOT include defaultProvider — set that per-host.
 {
-  theme = "catppuccin-mocha";
+  theme = "catppuccin-tui-mocha";
   quietStartup = true;
   compaction = {
     enabled = true;
@@ -25,7 +25,6 @@
     "npm:@juicesharp/rpiv-btw"
     "npm:@ayulab/pi-rewind"
     "npm:pi-catppuccin-tui"
-    "npm:pi-catppuccin-footer"
     "npm:@juicesharp/rpiv-pi"
     "npm:@tintinweb/pi-subagents"
     "npm:@juicesharp/rpiv-i18n"
