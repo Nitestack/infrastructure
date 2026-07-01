@@ -10,9 +10,12 @@ in
     # lib.mkForce wins over default.nix's normal-priority settings,
     # replacing defaultProvider = "codex" with "work-hub" while
     # preserving all common settings via the shared helper.
-    settings = lib.mkForce (commonSettings // {
-      defaultProvider = "work-hub";
-    });
+    settings = lib.mkForce (
+      commonSettings
+      // {
+        defaultProvider = "work-hub";
+      }
+    );
 
     models = {
       providers = {
