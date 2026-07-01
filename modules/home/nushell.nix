@@ -68,11 +68,13 @@
     };
     # Start Nushell for normal interactive Zsh sessions,
     # while keeping Zsh as the actual login shell.
-    zsh.initContent = lib.mkAfter ''
+    zsh.initContent = lib.mkOrder 500 ''
       if [[ -o interactive ]] \
-        && [[ -z "$NO_NU" ]] \
-        && [[ "$TERM" != "dumb" ]]; then
-        exec ${pkgs.nushell}/bin/nu
+        && [[ -t 0 ]] \
+        && [[ -t 1 ]] \
+        && [[ -z "''${NO_NU:-}" ]] \
+        && [[ "''${TERM:-}" != "dumb" ]]; then
+        exec ${lib.getExe pkgs.nushell}
       fi
     '';
   };
