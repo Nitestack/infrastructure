@@ -4,6 +4,7 @@
 {
   flake,
   config,
+  pkgs,
   ...
 }:
 let
@@ -23,6 +24,10 @@ in
     enable = true;
     defaultUser = meta.username;
     docker-desktop.enable = true;
+    # NOTE: with a Docker Desktop update, this suddenly must be set
+    extraBin = [
+      { src = "${pkgs.coreutils}/bin/mv"; }
+    ];
     ssh-agent.enable = true;
     startMenuLaunchers = true;
     useWindowsDriver = true;
