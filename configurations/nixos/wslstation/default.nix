@@ -34,7 +34,7 @@ in
     wslConf.network.hostname = "wslstation";
   };
 
-  wslstation.anthropic = {
+  wslstation.aihub = {
     profile = "swtb";
   };
 

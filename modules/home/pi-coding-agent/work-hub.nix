@@ -21,8 +21,8 @@ in
       providers = {
         "work-hub" = {
           api = "anthropic-messages";
-          baseUrl = "!cat /run/secrets/anthropic-base-url";
-          apiKey = "!cat /run/secrets/anthropic/swtb";
+          baseUrl = "!sh -lc 'base_url=\"\${AIHUB_BASE_URL:-}\"; test -n \"$base_url\" || { echo \"AIHUB_BASE_URL is required; use aihub pi <profile> (recommended), aihub shell <profile>, eval \\\"\\$(aihub env --format sh <profile>)\\\" in sh/zsh, or aihub env --format json <profile> | from json | load-env in nu.\" >&2; exit 1; }; printf %s \"$base_url\"'";
+          apiKey = "!sh -lc 'api_key=\"\${AIHUB_API_KEY:-}\"; test -n \"$api_key\" || { echo \"AIHUB_API_KEY is required; use aihub pi <profile> (recommended), aihub shell <profile>, eval \\\"\\$(aihub env --format sh <profile>)\\\" in sh/zsh, or aihub env --format json <profile> | from json | load-env in nu.\" >&2; exit 1; }; printf %s \"$api_key\"'";
           models = [ ];
         };
       };
