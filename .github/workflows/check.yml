@@ -19,4 +19,5 @@ jobs:
         run: |
           nix eval .#nixosConfigurations.nixstation.config.system.build.toplevel.drvPath --no-write-lock-file
           nix eval .#nixosConfigurations.wslstation.config.system.build.toplevel.drvPath --no-write-lock-file
+          nix eval .#nixosConfigurations.homestation.config.system.build.toplevel.drvPath --no-write-lock-file
           nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-write-lock-file
