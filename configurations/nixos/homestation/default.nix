@@ -40,6 +40,11 @@ in
     };
   };
 
+  # systemd
+  systemd.tmpfiles.rules = [
+    "f /home/${meta.username}/.hushlogin 0644 ${meta.username} users -"
+  ];
+
   # Packages
   environment.systemPackages = with pkgs; [
     ghostty.terminfo
