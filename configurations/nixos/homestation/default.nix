@@ -51,7 +51,7 @@ in
       enable = true;
       certificateFile = config.sops.secrets."cloudflared/certificate".path;
       tunnels = {
-        "a8eb8211-a5d1-409c-be37-ca2f3346d711" = {
+        "f4320d83-db5c-4280-808f-93822cd737c5" = {
           credentialsFile = config.sops.secrets."cloudflared/credentials".path;
           default = "http_status:404";
         };
