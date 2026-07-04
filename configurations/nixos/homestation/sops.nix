@@ -5,7 +5,8 @@
 }:
 let
   inherit (flake) inputs;
-  secretsFile = ./secrets/cloudflared.yaml;
+  inherit (inputs) self;
+  secretsFile = self + /secrets/hosts/homestation/cloudflared.yaml;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
