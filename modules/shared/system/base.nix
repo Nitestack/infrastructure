@@ -60,6 +60,7 @@ in
     duf
     ncdu
     openssl
+    sops
     tree
     unzip
 
