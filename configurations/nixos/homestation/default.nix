@@ -17,6 +17,7 @@ in
 
     self.nixosModules.base
     self.nixosModules.bare-metal-only
+    ./sops.nix
   ];
 
   # ── Networking ────────────────────────────────────────────────────────
@@ -37,6 +38,24 @@ in
         "--all"
         "--filter=until=720h"
       ];
+    };
+  };
+
+  # Services
+  services = {
+    caddy = {
+      enable = true;
+      openFirewall = true;
+    };
+    cloudflared = {
+      enable = true;
+      certificateFile = config.sops.secrets."cloudflared/certificate".path;
+      tunnels = {
+        "a8eb8211-a5d1-409c-be37-ca2f3346d711" = {
+          credentialsFile = config.sops.secrets."cloudflared/credentials".path;
+          default = "http_status:404";
+        };
+      };
     };
   };
 

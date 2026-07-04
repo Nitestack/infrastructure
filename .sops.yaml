@@ -6,3 +6,11 @@ creation_rules:
   # wslstation-only secrets
   - path_regex: configurations/nixos/wslstation/secrets/.*
     age: age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6
+
+  # homestation-only secrets
+  - path_regex: configurations/nixos/homestation/secrets/.*
+    key_groups:
+      - pgp:
+          - 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
+        age:
+          - age1jrffh0x49q62pvk5z666yy03spps0v4tctacfckdytl4enh94c8q3ypt2w
