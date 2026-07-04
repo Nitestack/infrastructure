@@ -27,6 +27,19 @@ in
     imports = [ (self + /configurations/home/server.nix) ];
   };
 
+  # Virtualization
+  virtualisation = {
+    oci-containers.backend = "docker";
+    docker.autoPrune = {
+      enable = true;
+      randomizedDelaySec = "1h";
+      flags = [
+        "--all"
+        "--filter=until=720h"
+      ];
+    };
+  };
+
   # Packages
   environment.systemPackages = with pkgs; [
     ghostty.terminfo

@@ -111,7 +111,14 @@ in
     virt-manager.enable = true;
   };
 
-  virtualisation.libvirtd.enable = true;
+  # Virtualization
+  virtualisation = {
+    libvirtd.enable = true;
+    docker.autoPrune.flags = [
+      "--all"
+      "--filter=until=168h"
+    ];
+  };
 
   services = {
     blueman.enable = true;

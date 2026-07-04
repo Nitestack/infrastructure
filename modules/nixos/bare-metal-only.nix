@@ -29,7 +29,10 @@ in
   };
 
   # Virtualization
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
 
   # Networking
   networking.networkmanager.enable = true;
