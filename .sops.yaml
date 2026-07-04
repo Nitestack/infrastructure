@@ -1,16 +1,22 @@
+keys:
+  - &admin_nhan 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
+  - &wslstation_ssh age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6
+  - &homestation_ssh age1jrffh0x49q62pvk5z666yy03spps0v4tctacfckdytl4enh94c8q3ypt2w
+
 creation_rules:
-  # Shared secrets — encrypted with GPG (user's personal key, decrypted at user level)
-  - path_regex: modules/secrets/.*
-    pgp: 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
+  - path_regex: secrets/shared/.*
+    pgp: *admin_nhan
 
-  # wslstation-only secrets
-  - path_regex: configurations/nixos/wslstation/secrets/.*
-    age: age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6
-
-  # homestation-only secrets
-  - path_regex: configurations/nixos/homestation/secrets/.*
+  - path_regex: secrets/hosts/wslstation/.*
     key_groups:
       - pgp:
-          - 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
+          - *admin_nhan
         age:
-          - age1jrffh0x49q62pvk5z666yy03spps0v4tctacfckdytl4enh94c8q3ypt2w
+          - *wslstation_ssh
+
+  - path_regex: secrets/hosts/homestation/.*
+    key_groups:
+      - pgp:
+          - *admin_nhan
+        age:
+          - *homestation_ssh
