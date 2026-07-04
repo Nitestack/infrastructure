@@ -1,18 +1,18 @@
 This directory is for `wslstation` secrets only.
 
-The default ai hub profile is selected in [default.nix](/home/nhan/nix-config/configurations/nixos/wslstation/default.nix:1) through `wslstation.aihub.profile`.
+The WSL Home Manager config reads `aix` credentials from `/run/secrets/aix/*` and configures `programs.aix` directly.
 
 Create the encrypted secrets file from this directory so `sops` picks up the local [.sops.yaml](/home/nhan/nix-config/configurations/nixos/wslstation/.sops.yaml:1):
 
 ```bash
 cd /home/nhan/nix-config/configurations/nixos/wslstation
-nix shell nixpkgs#sops -c sops secrets/aihub.yaml
+nix shell nixpkgs#sops -c sops secrets/aix.yaml
 ```
 
 Use this YAML shape:
 
 ```yaml
-aihub:
+aix:
   base_url: https://example.invalid
   p:
     label: Personal

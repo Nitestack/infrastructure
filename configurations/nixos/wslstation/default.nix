@@ -34,15 +34,10 @@ in
     wslConf.network.hostname = "wslstation";
   };
 
-  wslstation.aihub = {
-    profile = "swtb";
-  };
-
   # ── Home Manager ──────────────────────────────────────────────────────
   home-manager.users.${meta.username} = {
     imports = [
       (self + /configurations/home/wsl.nix)
-      (self + /modules/home/pi-coding-agent/work-hub.nix)
     ];
   };
 

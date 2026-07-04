@@ -13,6 +13,6 @@ in
   imports = [
     self.homeModules.base
     self.homeModules.interactive-only
-    self.homeModules.aihub
+    self.homeModules.aix
   ];
 }

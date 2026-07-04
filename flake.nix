@@ -36,6 +36,8 @@
     # ── Software Inputs ───────────────────────────────────────────────────
     # agent-skills-nix
     agent-skills.url = "github:Kyure-A/agent-skills-nix";
+    # aix
+    aix.url = "github:Nitestack/aix";
     # Apple Fonts
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
     # caveman
