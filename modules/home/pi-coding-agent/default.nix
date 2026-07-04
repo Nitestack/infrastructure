@@ -42,7 +42,7 @@ in
     gnupg.home = "${config.home.homeDirectory}/.gnupg";
     gnupg.sshKeyPaths = [ ];
     secrets.nim-api-key = {
-      sopsFile = self + /modules/secrets/nim.yaml;
+      sopsFile = self + /secrets/shared/nim.yaml;
     };
   };
 

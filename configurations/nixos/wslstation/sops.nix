@@ -6,6 +6,7 @@
 }:
 let
   inherit (flake) inputs;
+  inherit (inputs) self;
 
   aixProfiles = [
     "p"
@@ -13,7 +14,7 @@ let
     "swtb"
     "p-t"
   ];
-  secretsFile = ./secrets/aix.yaml;
+  secretsFile = self + /secrets/hosts/wslstation/aix.yaml;
   mkProfileSecret =
     profile:
     lib.nameValuePair "aix/${profile}" {
