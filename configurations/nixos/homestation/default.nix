@@ -4,6 +4,7 @@
 {
   flake,
   config,
+  pkgs,
   ...
 }:
 let
@@ -25,6 +26,11 @@ in
   home-manager.users.${meta.username} = {
     imports = [ (self + /configurations/home/server.nix) ];
   };
+
+  # Packages
+  environment.systemPackages = with pkgs; [
+    ghostty.terminfo
+  ];
 
   # Allowed SSH clients
   users.users.${meta.username}.openssh.authorizedKeys.keys = [
