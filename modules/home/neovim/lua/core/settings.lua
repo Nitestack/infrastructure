@@ -73,6 +73,11 @@ function M.run()
       cache_enabled = 0,
     }
   end
+
+  -- Setup SSH clipboard
+  if vim.env.SSH_TTY then
+    vim.g.clipboard = "osc52"
+  end
 end
 
 return M
