@@ -1,32 +1,34 @@
 {
   flake,
+  osConfig,
   ...
 }:
 let
   inherit (flake.inputs) aix;
+  sopsPath = name: osConfig.sops.secrets.${name}.path;
 in
 {
   imports = [ aix.homeManagerModules.aix ];
 
   programs.aix = {
     enable = true;
-    endpoint.baseUrl.file = "/run/secrets/aix/base-url";
+    endpoint.baseUrl.file = sopsPath "aix/base-url";
     profiles = {
       p = {
-        label.file = "/run/secrets/aix/p-label";
-        apiKey.file = "/run/secrets/aix/p";
+        label.file = sopsPath "aix/p-label";
+        apiKey.file = sopsPath "aix/p";
       };
       adp = {
-        label.file = "/run/secrets/aix/adp-label";
-        apiKey.file = "/run/secrets/aix/adp";
+        label.file = sopsPath "aix/adp-label";
+        apiKey.file = sopsPath "aix/adp";
       };
       swtb = {
-        label.file = "/run/secrets/aix/swtb-label";
-        apiKey.file = "/run/secrets/aix/swtb";
+        label.file = sopsPath "aix/swtb-label";
+        apiKey.file = sopsPath "aix/swtb";
       };
       "p-t" = {
-        label.file = "/run/secrets/aix/p-t-label";
-        apiKey.file = "/run/secrets/aix/p-t";
+        label.file = sopsPath "aix/p-t-label";
+        apiKey.file = sopsPath "aix/p-t";
       };
     };
   };
