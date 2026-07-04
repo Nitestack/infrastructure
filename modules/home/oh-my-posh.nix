@@ -37,21 +37,28 @@
               };
             }
             {
+              type = "session";
+              style = "plain";
+              foreground = "yellow";
+              background = "transparent";
+              template = "{{ if .SSHSession }} (SSH){{ end }}";
+            }
+            {
               type = "nix-shell";
               style = "plain";
-              foreground = "#5277C3";
+              foreground = "blue";
               background = "transparent";
               template = "{{ if ne .Type \"unknown\" }} (Nix Shell){{ end }}";
             }
             {
               type = "git";
               style = "plain";
-              foreground = "#F3C267";
+              foreground = "yellow";
               foreground_templates = [
-                "{{ if or (.Working.Changed) (.Staging.Changed) }}#FF9248{{ end }}"
-                "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ff4500{{ end }}"
-                "{{ if gt .Ahead 0 }}#B388FF{{ end }}"
-                "{{ if gt .Behind 0 }}#B388FF{{ end }}"
+                "{{ if or (.Working.Changed) (.Staging.Changed) }}#fab387{{ end }}"
+                "{{ if and (gt .Ahead 0) (gt .Behind 0) }}red{{ end }}"
+                "{{ if gt .Ahead 0 }}#cba6f7{{ end }}"
+                "{{ if gt .Behind 0 }}#cba6f7{{ end }}"
               ];
               background = "transparent";
               properties = {
