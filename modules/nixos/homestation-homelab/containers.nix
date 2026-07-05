@@ -23,7 +23,21 @@ let
     enabledContainersForApp
     ;
 
-  volumeToString = volume: "${volume.source}:${volume.target}${optionalString volume.readOnly ":ro"}";
+  resolveVolumeSource =
+    appName: volume:
+    if volume.library != null then
+      cfg.libraries.${volume.library}.path
+    else if volume.source != null && !lib.hasPrefix "/" volume.source then
+      "${cfg.dataDir}/${appName}/${volume.source}"
+    else
+      volume.source;
+
+  volumeToString =
+    appName: volume:
+    let
+      source = resolveVolumeSource appName volume;
+    in
+    "${source}:${volume.target}${optionalString volume.readOnly ":ro"}";
 
   listenerToPort =
     listener:
@@ -50,7 +64,7 @@ let
       autoStart = container.docker.autoStart;
       environment = container.env;
       environmentFiles = container.environmentFiles;
-      volumes = map volumeToString container.volumes;
+      volumes = map (volumeToString appName) container.volumes;
       ports = map listenerToPort (attrValues container.listeners);
       dependsOn = map (dep: containerAttrName appName dep enabledDeps.${dep}) enabledDependencyNames;
       inherit networks;
