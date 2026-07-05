@@ -17,6 +17,7 @@ in
 
     self.nixosModules.base
     self.nixosModules.bare-metal-only
+    self.nixosModules.homestation-homelab
     ./sops.nix
   ];
 
@@ -41,20 +42,30 @@ in
     };
   };
 
-  # Services
-  services = {
-    caddy = {
-      enable = true;
-      openFirewall = true;
+  homestation.homelab = {
+    enable = true;
+    domain = "npham.de";
+    lanAddress = "192.168.178.20";
+
+    services.whoami = {
+      enable = false;
+      image = "traefik/whoami:latest";
+      expose = {
+        mode = "private";
+        host = "whoami.npham.de";
+        port = 80;
+      };
     };
-    cloudflared = {
-      enable = true;
-      certificateFile = config.sops.secrets."cloudflared/certificate".path;
-      tunnels = {
-        "f4320d83-db5c-4280-808f-93822cd737c5" = {
-          credentialsFile = config.sops.secrets."cloudflared/credentials".path;
-          default = "http_status:404";
-        };
+  };
+
+  # Services
+  services.cloudflared = {
+    enable = true;
+    certificateFile = config.sops.secrets."cloudflared/certificate".path;
+    tunnels = {
+      "f4320d83-db5c-4280-808f-93822cd737c5" = {
+        credentialsFile = config.sops.secrets."cloudflared/credentials".path;
+        default = "http_status:404";
       };
     };
   };
