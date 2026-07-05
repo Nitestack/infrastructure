@@ -168,8 +168,7 @@ joins `edgeNetwork.name`. Extra networks from `networks` are appended.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `expose.mode` | enum | `"none"` | How to expose the service (see modes below) |
-| `expose.host` | string\|null | `null` | Hostname for this service. If it contains no dots and `domain` is set, treated as a subdomain (e.g. `"myapp"` → `"myapp.example.com"`). A value with dots is used as-is. |
-| `expose.apexDomain` | bool | `false` | Use the bare `domain` as the hostname (e.g. `example.com`). Takes precedence over `expose.host`. |
+| `expose.host` | string\|null | `null` | Hostname for this service. `"@"` = apex domain (e.g. `example.com`). No dots → subdomain (e.g. `"myapp"` → `"myapp.example.com"`). Contains dots → used as-is. `null` = no host. |
 | `expose.protocol` | enum | `"http"` | `"http"` or `"https"` — affects Caddy upstream scheme |
 | `expose.port` | int\|null | `null` | Container port Caddy reverse-proxies to |
 
@@ -181,9 +180,9 @@ joins `edgeNetwork.name`. Extra networks from `networks` are appended.
 | `"private"` | LAN DNS A record → `lanAddress` + Caddy reverse proxy |
 | `"public"` | LAN DNS A record + Caddy + internet access via `cloudflared.wildcardIngress` |
 
-**Host resolution (`expose.host` / `expose.apexDomain`):**
-- `apexDomain = true` → bare domain (`domain`), e.g. `example.com`
-- `host = null` → no host; exposure requires a host or `apexDomain`
+**Host resolution (`expose.host`):**
+- `host = "@"` → bare domain (apex), e.g. `example.com`
+- `host = null` → no host; exposure requires a host to be set
 - `host = "myapp"` (no dots, domain set) → `myapp.domain`
 - `host = "custom.example.org"` (contains a dot) → `custom.example.org`
 
@@ -351,6 +350,9 @@ dependsOn = [ "db" ];
 |--------|------|---------|-------------|
 | `docker.name` | string\|null | `null` | Override the generated container name (default: `<appName>-<containerName>`) |
 | `docker.autoStart` | bool | `true` | Start container on boot |
+| `docker.restartPolicy` | enum | `"unless-stopped"` | Docker restart policy: `"no"`, `"on-failure"`, `"always"`, `"unless-stopped"` |
+| `docker.resources.cpu` | float\|null | `null` | CPU limit in cores (e.g. `0.5`). `null` = no limit |
+| `docker.resources.memory` | string\|null | `null` | Memory limit (e.g. `"512m"`, `"2g"`). `null` = no limit |
 | `docker.labels` | attrs of string | `{}` | Docker labels |
 | `docker.extraOptions` | list of string | `[]` | Raw `docker run` flags |
 
