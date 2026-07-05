@@ -22,9 +22,10 @@ let
     name: builtins.hasAttr name config.virtualisation.oci-containers.containers
   ) (enabledServiceNames ++ caddyNames);
 
-  generatedServiceNames = map (
-    name: "${config.virtualisation.oci-containers.containers.${name}.serviceName}.service"
+  generatedServiceAttrs = map (
+    name: config.virtualisation.oci-containers.containers.${name}.serviceName
   ) generatedContainerNames;
+  generatedUnitNames = map (name: "${name}.service") generatedServiceAttrs;
 in
 {
   config = mkIf cfg.enable {
@@ -32,7 +33,7 @@ in
       homelab-network = {
         description = "Create homelab Docker network";
         wantedBy = [ "multi-user.target" ];
-        before = generatedServiceNames;
+        before = generatedUnitNames;
         path = [ pkgs.docker ];
         serviceConfig = {
           Type = "oneshot";
@@ -44,7 +45,7 @@ in
         '';
       };
     }
-    // genAttrs generatedServiceNames (_: {
+    // genAttrs generatedServiceAttrs (_: {
       requires = [ "homelab-network.service" ];
       after = [ "homelab-network.service" ];
     });

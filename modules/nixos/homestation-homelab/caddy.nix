@@ -23,6 +23,9 @@ let
     && service.expose.protocol == "http"
   ) cfg.services;
 
+  hasHttpServices = enabledHttpServices != { };
+  runCaddy = cfg.caddy.enable && (cfg.caddy.enableWithoutServices || hasHttpServices);
+
   indentLines =
     prefix: text:
     concatStringsSep "\n" (
@@ -32,13 +35,13 @@ let
     );
 
   mkReverseProxy =
-    service:
+    name: service:
     let
       upstream =
         if service.caddy.upstream != null then
           service.caddy.upstream
         else
-          "${service.containerName}:${toString service.expose.port}";
+          "${name}:${toString service.expose.port}";
       proxyExtra = indentLines "    " service.caddy.reverseProxyExtraConfig;
     in
     if service.caddy.reverseProxyExtraConfig == "" then
@@ -50,10 +53,10 @@ let
         }
       '';
 
-  mkVirtualHost = _: service: ''
+  mkVirtualHost = name: service: ''
     ${service.expose.host} {
     ${indentLines "  " service.caddy.extraConfig}
-    ${mkReverseProxy service}
+    ${mkReverseProxy name service}
     }
   '';
 
@@ -63,7 +66,12 @@ let
   '';
 in
 {
-  config = mkIf (cfg.enable && cfg.caddy.enable) {
+  config = mkIf (cfg.enable && runCaddy) {
+    networking.firewall = mkIf cfg.caddy.openFirewall {
+      allowedTCPPorts = cfg.caddy.firewall.allowedTCPPorts;
+      allowedUDPPorts = cfg.caddy.firewall.allowedUDPPorts;
+    };
+
     virtualisation.oci-containers.containers.${cfg.caddy.containerName} = {
       image = cfg.caddy.image;
       autoStart = true;

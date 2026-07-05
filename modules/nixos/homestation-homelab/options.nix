@@ -225,6 +225,10 @@ in
         type = types.bool;
         default = true;
       };
+      enableWithoutServices = mkOption {
+        type = types.bool;
+        default = false;
+      };
       image = mkOption {
         type = types.str;
         default = "caddy:latest";
@@ -240,6 +244,21 @@ in
           "443:443"
           "443:443/udp"
         ];
+      };
+      openFirewall = mkOption {
+        type = types.bool;
+        default = true;
+      };
+      firewall.allowedTCPPorts = mkOption {
+        type = types.listOf port;
+        default = [
+          80
+          443
+        ];
+      };
+      firewall.allowedUDPPorts = mkOption {
+        type = types.listOf port;
+        default = [ 443 ];
       };
       environment = mkOption {
         type = types.attrsOf types.str;
