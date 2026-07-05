@@ -31,3 +31,15 @@ Recent history uses Conventional Commit style, for example `feat(codex): add Cod
 
 ## Asset & Configuration Tips
 Binary assets in `images/` are Git LFS tracked. Keep large personal or machine-local files out of the repo; use ignored paths such as `images/local/` when needed. Never commit unrelated local changes from another device or workflow.
+
+## Documentation Sync Rules
+
+`docs/homelab-services.md` is the reference for the `homestation-homelab` NixOS module
+(`modules/nixos/homestation-homelab/`). **Any time you modify the module API** — adding,
+renaming, or removing options in `options.nix`, changing validation rules in
+`validation.nix`, or altering networking/Caddy/DNS behaviour — update the corresponding
+sections in `docs/homelab-services.md`:
+
+- Option tables under the affected heading (global, app, container, caddy, dns, etc.)
+- The Validation section if assertions change
+- Any recipe that relied on removed or renamed options
