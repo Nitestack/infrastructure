@@ -5,41 +5,51 @@
 }:
 let
   inherit (lib)
+    concatMap
     filterAttrs
-    mapAttrs'
     mkIf
     mkMerge
     nameValuePair
     ;
 
   cfg = config.homestation.homelab;
+  homelab-lib = import ./lib.nix { inherit cfg lib; };
+  inherit (homelab-lib) effectiveHost enabledApps enabledContainersForApp;
 
-  servicesWithGeneratedDns = filterAttrs (
-    _: service:
-    service.enable
-    && service.dns.enable
-    && service.expose.host != null
-    && (service.expose.mode == "private" || service.expose.mode == "public")
-  ) cfg.services;
-
-  generatedRecords = mapAttrs' (
-    name: service:
-    nameValuePair service.expose.host {
-      type = "A";
-      value = cfg.lanAddress;
-      visibility = if service.expose.mode == "public" then "public" else "lan";
-      source = name;
-    }
-  ) servicesWithGeneratedDns;
-
-  serviceRecords = mapAttrs' (name: service: nameValuePair name service.dns.records) (
-    filterAttrs (_: service: service.enable) cfg.services
+  generatedRecords = builtins.listToAttrs (
+    concatMap (
+      appName:
+      let
+        containers = filterAttrs (
+          _: container:
+          container.enable
+          && container.edge.enable
+          && container.dns.enable
+          && effectiveHost container != null
+          && container.expose.mode == "private"
+        ) enabledApps.${appName}.containers;
+      in
+      map (
+        containerName:
+        nameValuePair (effectiveHost containers.${containerName}) {
+          type = "A";
+          value = cfg.lanAddress;
+          visibility = "lan";
+        }
+      ) (builtins.attrNames containers)
+    ) (builtins.attrNames enabledApps)
   );
+
+  containerRecords = concatMap (
+    appName:
+    let
+      containers = enabledContainersForApp appName;
+    in
+    map (containerName: containers.${containerName}.dns.records) (builtins.attrNames containers)
+  ) (builtins.attrNames enabledApps);
 in
 {
   config = mkIf cfg.enable {
-    homestation.homelab.dns.records = mkMerge (
-      [ generatedRecords ] ++ builtins.attrValues serviceRecords
-    );
+    homestation.homelab.dns.records = mkMerge ([ generatedRecords ] ++ containerRecords);
   };
 }

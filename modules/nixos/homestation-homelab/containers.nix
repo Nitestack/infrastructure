@@ -6,53 +6,73 @@
 let
   inherit (lib)
     attrValues
-    filterAttrs
-    mapAttrs
+    concatMap
+    listToAttrs
     mkIf
+    nameValuePair
     optionalAttrs
     optionalString
     ;
 
   cfg = config.homestation.homelab;
-
-  enabledServices = filterAttrs (_: service: service.enable) cfg.services;
+  homelab-lib = import ./lib.nix { inherit cfg lib; };
+  inherit (homelab-lib) appNetworkName containerAttrName enabledApps enabledContainersForApp;
 
   volumeToString = volume: "${volume.source}:${volume.target}${optionalString volume.readOnly ":ro"}";
 
   listenerToPort =
     listener:
     let
-      bind = if listener.bind == null then cfg.lanAddress else listener.bind;
+      prefix = optionalString (listener.bind != null) "${listener.bind}:";
       suffix = optionalString (listener.protocol != "tcp") "/${listener.protocol}";
     in
-    "${bind}:${toString listener.hostPort}:${toString listener.containerPort}${suffix}";
+    "${prefix}${toString listener.hostPort}:${toString listener.containerPort}${suffix}";
 
-  serviceToContainer =
-    _: service:
+  containerToOci =
+    appName: containerName: container:
     let
-      networks = if service.networks == [ ] then [ cfg.network.name ] else service.networks;
+      enabledDeps = enabledContainersForApp appName;
+      enabledDependencyNames = builtins.filter (dep: builtins.hasAttr dep enabledDeps) container.dependsOn;
+      networks = lib.optional (builtins.length (builtins.attrNames enabledDeps) > 1) (appNetworkName appName)
+        ++ lib.optional container.edge.enable cfg.edgeNetwork.name
+        ++ container.networks;
     in
     {
-      image = service.image;
-      autoStart = service.container.autoStart;
-      environment = service.env;
-      environmentFiles = service.environmentFiles;
-      volumes = map volumeToString service.volumes;
-      ports = map listenerToPort (attrValues service.listeners);
-      dependsOn = service.dependsOn;
+      image = container.image;
+      autoStart = container.docker.autoStart;
+      environment = container.env;
+      environmentFiles = container.environmentFiles;
+      volumes = map volumeToString container.volumes;
+      ports = map listenerToPort (attrValues container.listeners);
+      dependsOn = map (dep: containerAttrName appName dep enabledDeps.${dep}) enabledDependencyNames;
       inherit networks;
-      labels = service.container.labels;
-      extraOptions = service.container.extraOptions;
+      labels = container.docker.labels;
+      extraOptions = container.docker.extraOptions;
     }
-    // optionalAttrs (service.command != null) {
-      cmd = service.command;
+    // optionalAttrs (container.command != null) {
+      cmd = container.command;
     }
-    // optionalAttrs (service.entrypoint != null) {
-      entrypoint = service.entrypoint;
+    // optionalAttrs (container.entrypoint != null) {
+      entrypoint = container.entrypoint;
     };
+
+  enabledContainers = listToAttrs (
+    concatMap (
+      appName:
+      let
+        containers = enabledContainersForApp appName;
+      in
+      map (
+        containerName:
+        nameValuePair (containerAttrName appName containerName containers.${containerName}) (
+          containerToOci appName containerName containers.${containerName}
+        )
+      ) (builtins.attrNames containers)
+    ) (builtins.attrNames enabledApps)
+  );
 in
 {
   config = mkIf cfg.enable {
-    virtualisation.oci-containers.containers = mapAttrs serviceToContainer enabledServices;
+    virtualisation.oci-containers.containers = enabledContainers;
   };
 }

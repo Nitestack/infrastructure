@@ -8,18 +8,17 @@ let
     attrNames
     attrValues
     concatLists
+    concatMap
     concatStringsSep
     filter
-    filterAttrs
     foldl'
-    mapAttrsToList
     mkIf
     unique
     ;
 
   cfg = config.homestation.homelab;
-
-  enabledServices = filterAttrs (_: service: service.enable) cfg.services;
+  homelab-lib = import ./lib.nix { inherit cfg lib; };
+  inherit (homelab-lib) containerAttrName effectiveHost enabledApps enabledContainersForApp;
 
   duplicates =
     values:
@@ -34,67 +33,148 @@ let
     in
     filter (value: counts.${value} > 1) (unique values);
 
-  enabledServiceNames = attrNames enabledServices;
+  enabledContainers = concatMap (
+    appName:
+    map (containerName: {
+      inherit appName containerName;
+      container = enabledApps.${appName}.containers.${containerName};
+    }) (attrNames (enabledContainersForApp appName))
+  ) (attrNames enabledApps);
 
-  exposedServices = filterAttrs (_: service: service.expose.mode != "none") enabledServices;
+  generatedContainerNames = map (
+    item: containerAttrName item.appName item.containerName item.container
+  ) enabledContainers;
+  duplicateContainerNames = duplicates generatedContainerNames;
 
-  exposedHosts = map (service: service.expose.host) (
-    attrValues (filterAttrs (_: service: service.expose.host != null) exposedServices)
+  exposedContainers = filter (item: item.container.expose.mode != "none") enabledContainers;
+
+  exposedHosts = map (item: effectiveHost item.container) (
+    filter (item: effectiveHost item.container != null) exposedContainers
   );
 
   duplicateHosts = duplicates exposedHosts;
 
-  listenerKeys = concatLists (
-    mapAttrsToList (
-      _: service:
+  normalizeBind =
+    bind:
+    if
+      builtins.elem bind [
+        "*"
+        "0.0.0.0"
+        "::"
+      ]
+    then
+      "*"
+    else
+      bind;
+
+  listenerEntries = concatLists (
+    map (
+      item:
       map (
         listener:
         let
-          bind =
-            if listener.bind == null then
-              if cfg.lanAddress == null then "<lanAddress>" else cfg.lanAddress
-            else
-              listener.bind;
+          bind = if listener.bind != null then normalizeBind listener.bind else "*";
         in
-        "${bind}:${toString listener.hostPort}/${listener.protocol}"
-      ) (attrValues service.listeners)
-    ) enabledServices
+        {
+          inherit bind;
+          portProtocol = "${toString listener.hostPort}/${listener.protocol}";
+        }
+      ) (attrValues item.container.listeners)
+    ) enabledContainers
   );
 
+  listenerKeys = map (listener: "${listener.bind}:${listener.portProtocol}") listenerEntries;
   duplicateListeners = duplicates listenerKeys;
-
-  serviceAssertions = concatLists (
-    mapAttrsToList (name: service: [
-      {
-        assertion = service.expose.mode == "none" || service.expose.host != null;
-        message = "homestation.homelab.services.${name} is exposed but has no expose.host.";
-      }
-      {
-        assertion = !service.caddy.enable || service.expose.host != null;
-        message = "homestation.homelab.services.${name} enables Caddy but has no expose.host.";
-      }
-      {
-        assertion = !service.caddy.enable || service.expose.port != null;
-        message = "homestation.homelab.services.${name} enables Caddy but has no expose.port.";
-      }
-      {
-        assertion = service.expose.mode != "private" || cfg.lanAddress != null;
-        message = "homestation.homelab.services.${name} is private but homestation.homelab.lanAddress is null.";
-      }
-      {
-        assertion = builtins.all (
-          dependency: builtins.elem dependency enabledServiceNames
-        ) service.dependsOn;
-        message = "homestation.homelab.services.${name} depends on an unknown or disabled service.";
-      }
-      {
-        assertion = builtins.all (
-          listener: listener.exposure != "lan" || listener.bind != null || cfg.lanAddress != null
-        ) (attrValues service.listeners);
-        message = "homestation.homelab.services.${name} has a LAN listener but no listener.bind or homestation.homelab.lanAddress.";
-      }
-    ]) enabledServices
+  listenerPortProtocols = unique (map (listener: listener.portProtocol) listenerEntries);
+  wildcardConflicts = map (portProtocol: "*:${portProtocol}") (
+    filter (
+      portProtocol:
+      let
+        matchingListeners = filter (listener: listener.portProtocol == portProtocol) listenerEntries;
+      in
+      builtins.length matchingListeners > 1
+      && builtins.any (listener: listener.bind == "*") matchingListeners
+    ) listenerPortProtocols
   );
+  listenerConflicts = unique (duplicateListeners ++ wildcardConflicts);
+
+  autoDnsKeys = map (item: effectiveHost item.container) (
+    filter (
+      item:
+      item.container.edge.enable
+      && item.container.dns.enable
+      && item.container.expose.mode == "private"
+      && effectiveHost item.container != null
+    ) enabledContainers
+  );
+
+  containerDnsRecordKeys = concatLists (
+    map (item: attrNames item.container.dns.records) enabledContainers
+  );
+
+  conflictingDnsKeys = filter (key: builtins.elem key containerDnsRecordKeys) autoDnsKeys;
+
+  containerAssertions = concatMap (
+    item:
+    let
+      path = "homestation.homelab.apps.${item.appName}.containers.${item.containerName}";
+      container = item.container;
+      enabledContainerNames = attrNames (enabledContainersForApp item.appName);
+      host = effectiveHost container;
+    in
+    [
+      {
+        assertion = container.expose.mode == "none" || host != null;
+        message = "${path} is exposed but has no expose.host or derivable expose.subdomain.";
+      }
+      {
+        assertion =
+          container.expose.mode != "tunnel"
+          || (
+            cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && config.services.cloudflared.enable
+          );
+        message = "${path} uses expose.mode = \"tunnel\", but homestation.homelab.cloudflared is disabled, tunnelId is null, or services.cloudflared.enable is false.";
+      }
+      {
+        assertion = !container.caddy.enable || container.edge.enable;
+        message = "${path} enables Caddy but edge.enable is false.";
+      }
+      {
+        assertion = !container.caddy.enable || host != null;
+        message = "${path} enables Caddy but has no expose.host or derivable expose.subdomain.";
+      }
+      {
+        assertion = !container.caddy.enable || container.expose.port != null;
+        message = "${path} enables Caddy but has no expose.port.";
+      }
+      {
+        assertion =
+          !container.caddy.enable
+          || container.expose.protocol != "https"
+          || container.caddy.upstream != null
+          || container.caddy.reverseProxyExtraConfig != "";
+        message = "${path} uses expose.protocol = \"https\" — set caddy.upstream or configure TLS transport via caddy.reverseProxyExtraConfig.";
+      }
+      {
+        assertion = !container.dns.enable || container.expose.mode != "private" || cfg.lanAddress != null;
+        message = "${path} generates private DNS but homestation.homelab.lanAddress is null.";
+      }
+      {
+        assertion = builtins.all (
+          dependency: builtins.elem dependency enabledContainerNames
+        ) container.dependsOn;
+        message = "${path} depends on an unknown or disabled container in app ${item.appName}.";
+      }
+      {
+        assertion = builtins.all (
+          volume:
+          !(volume.hostPath.enable || lib.hasPrefix "${cfg.dataDir}/" volume.source)
+          || lib.hasPrefix "/" volume.source
+        ) container.volumes;
+        message = "${path} has a managed volume source that is not an absolute path.";
+      }
+    ]
+  ) enabledContainers;
 in
 {
   config = mkIf cfg.enable {
@@ -104,7 +184,7 @@ in
         message = "homestation.homelab requires virtualisation.oci-containers.backend = \"docker\".";
       }
       {
-        assertion = !config.services.caddy.enable;
+        assertion = !cfg.caddy.enable || !config.services.caddy.enable;
         message = "homestation.homelab generates its own Caddy OCI container, so native services.caddy.enable must be false.";
       }
       {
@@ -112,14 +192,22 @@ in
         message = "homestation.homelab has duplicate exposed hostnames: ${concatStringsSep ", " duplicateHosts}.";
       }
       {
-        assertion = duplicateListeners == [ ];
-        message = "homestation.homelab has duplicate host listeners: ${concatStringsSep ", " duplicateListeners}.";
+        assertion = listenerConflicts == [ ];
+        message = "homestation.homelab has duplicate host listeners: ${concatStringsSep ", " listenerConflicts}.";
       }
       {
-        assertion = !cfg.caddy.enable || cfg.caddy.containerName != "";
-        message = "homestation.homelab.caddy.containerName must not be empty.";
+        assertion = duplicateContainerNames == [ ];
+        message = "homestation.homelab has duplicate generated container names: ${concatStringsSep ", " duplicateContainerNames}.";
+      }
+      {
+        assertion = cfg.network.prefix != "";
+        message = "homestation.homelab.network.prefix must not be empty (would produce Docker network names with a leading dash).";
+      }
+      {
+        assertion = conflictingDnsKeys == [ ];
+        message = "homestation.homelab auto-generated DNS keys conflict with container dns.records: ${concatStringsSep ", " conflictingDnsKeys}.";
       }
     ]
-    ++ serviceAssertions;
+    ++ containerAssertions;
   };
 }

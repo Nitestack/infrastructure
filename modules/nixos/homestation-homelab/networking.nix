@@ -7,25 +7,44 @@
 let
   inherit (lib)
     attrNames
+    concatMap
     filter
-    filterAttrs
     genAttrs
     mkIf
     optional
     ;
 
   cfg = config.homestation.homelab;
+  homelab-lib = import ./lib.nix { inherit cfg lib; };
+  inherit (homelab-lib) appNetworkName containerAttrName enabledApps enabledContainersForApp;
 
-  enabledServiceNames = attrNames (filterAttrs (_: service: service.enable) cfg.services);
-  caddyNames = optional cfg.caddy.enable cfg.caddy.containerName;
+  enabledAppNames = filter (
+    appName: enabledContainersForApp appName != { }
+  ) (attrNames enabledApps);
+
+  enabledContainerNames = concatMap (
+    appName:
+    let
+      containers = enabledContainersForApp appName;
+    in
+    map (containerName: containerAttrName appName containerName containers.${containerName}) (
+      attrNames containers
+    )
+  ) enabledAppNames;
+
+  caddyNames = optional cfg.caddy.enable "homelab-caddy";
   generatedContainerNames = filter (
     name: builtins.hasAttr name config.virtualisation.oci-containers.containers
-  ) (enabledServiceNames ++ caddyNames);
+  ) (enabledContainerNames ++ caddyNames);
 
   generatedServiceAttrs = map (
     name: config.virtualisation.oci-containers.containers.${name}.serviceName
   ) generatedContainerNames;
   generatedUnitNames = map (name: "${name}.service") generatedServiceAttrs;
+  multiContainerAppNames = filter (
+    appName: builtins.length (attrNames (enabledContainersForApp appName)) > 1
+  ) enabledAppNames;
+  generatedNetworkNames = [ cfg.edgeNetwork.name ] ++ map appNetworkName multiContainerAppNames;
 in
 {
   config = mkIf cfg.enable {
@@ -33,6 +52,14 @@ in
       homelab-network = {
         description = "Create homelab Docker network";
         wantedBy = [ "multi-user.target" ];
+        after = [
+          "docker.service"
+          "docker.socket"
+        ];
+        requires = [
+          "docker.service"
+          "docker.socket"
+        ];
         before = generatedUnitNames;
         path = [ pkgs.docker ];
         serviceConfig = {
@@ -40,8 +67,12 @@ in
           RemainAfterExit = true;
         };
         script = ''
-          docker network inspect ${cfg.network.name} >/dev/null 2>&1 || \
-            docker network create ${cfg.network.name}
+          ${lib.concatMapStringsSep "\n" (network: ''
+            if ! docker network inspect ${lib.escapeShellArg network} >/dev/null 2>&1; then
+              docker network create ${lib.escapeShellArg network} >/dev/null || \
+                docker network inspect ${lib.escapeShellArg network} >/dev/null
+            fi
+          '') generatedNetworkNames}
         '';
       };
     }

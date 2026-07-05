@@ -8,16 +8,44 @@ let
 
   port = types.ints.between 1 65535;
 
-  volumeType = types.submodule {
-    options = {
-      source = mkOption { type = types.str; };
-      target = mkOption { type = types.str; };
-      readOnly = mkOption {
-        type = types.bool;
-        default = false;
+  volumeType = types.submodule (
+    { config, ... }:
+    {
+      options = {
+        source = mkOption { type = types.str; };
+        target = mkOption { type = types.str; };
+        readOnly = mkOption {
+          type = types.bool;
+          default = false;
+        };
+        hostPath = {
+          enable = mkOption {
+            type = types.bool;
+            default = false;
+          };
+          type = mkOption {
+            type = types.enum [
+              "directory"
+              "file"
+            ];
+            default = "directory";
+          };
+          user = mkOption {
+            type = types.str;
+            default = "root";
+          };
+          group = mkOption {
+            type = types.str;
+            default = "root";
+          };
+          mode = mkOption {
+            type = types.str;
+            default = if config.hostPath.type == "file" then "0644" else "0755";
+          };
+        };
       };
-    };
-  };
+    }
+  );
 
   listenerType = types.submodule {
     options = {
@@ -33,13 +61,6 @@ let
       bind = mkOption {
         type = types.nullOr types.str;
         default = null;
-      };
-      exposure = mkOption {
-        type = types.enum [
-          "lan"
-          "public"
-        ];
-        default = "lan";
       };
     };
   };
@@ -62,25 +83,16 @@ let
         ];
         default = "lan";
       };
-      source = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-      };
     };
   };
 
-  serviceType =
-    { name, config, ... }:
+  containerType =
+    { config, ... }:
     {
       options = {
-        enable = mkEnableOption "homelab service";
+        enable = mkEnableOption "homelab app container";
 
         image = mkOption { type = types.str; };
-
-        containerName = mkOption {
-          type = types.str;
-          default = name;
-        };
 
         command = mkOption {
           type = types.nullOr (types.listOf types.str);
@@ -88,7 +100,7 @@ let
         };
 
         entrypoint = mkOption {
-          type = types.nullOr (types.listOf types.str);
+          type = types.nullOr types.str;
           default = null;
         };
 
@@ -112,6 +124,11 @@ let
           default = [ ];
         };
 
+        edge.enable = mkOption {
+          type = types.bool;
+          default = false;
+        };
+
         expose = {
           mode = mkOption {
             type = types.enum [
@@ -123,6 +140,10 @@ let
             default = "none";
           };
           host = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+          };
+          subdomain = mkOption {
             type = types.nullOr types.str;
             default = null;
           };
@@ -152,7 +173,7 @@ let
         caddy = {
           enable = mkOption {
             type = types.bool;
-            default = config.expose.mode != "none" && config.expose.protocol == "http";
+            default = config.edge.enable && config.expose.mode != "none" && config.expose.protocol == "http";
           };
           extraConfig = mkOption {
             type = types.lines;
@@ -171,7 +192,7 @@ let
         dns = {
           enable = mkOption {
             type = types.bool;
-            default = config.expose.mode == "private" || config.expose.mode == "public";
+            default = config.edge.enable && config.expose.mode == "private";
           };
           records = mkOption {
             type = types.attrsOf dnsRecordType;
@@ -179,7 +200,11 @@ let
           };
         };
 
-        container = {
+        docker = {
+          name = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+          };
           autoStart = mkOption {
             type = types.bool;
             default = true;
@@ -195,6 +220,19 @@ let
         };
       };
     };
+
+  appType = types.submodule {
+    options = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+      };
+      containers = mkOption {
+        type = types.attrsOf (types.submodule containerType);
+        default = { };
+      };
+    };
+  };
 in
 {
   options.homestation.homelab = {
@@ -215,9 +253,25 @@ in
       default = "/var/lib/homelab";
     };
 
-    network.name = mkOption {
+    network.prefix = mkOption {
       type = types.str;
       default = "homelab";
+    };
+
+    edgeNetwork.name = mkOption {
+      type = types.str;
+      default = "homelab-edge";
+    };
+
+    cloudflared = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+      };
+      tunnelId = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
     };
 
     caddy = {
@@ -233,10 +287,6 @@ in
         type = types.str;
         default = "caddy:latest";
       };
-      containerName = mkOption {
-        type = types.str;
-        default = "homelab-caddy";
-      };
       ports = mkOption {
         type = types.listOf types.str;
         default = [
@@ -248,17 +298,6 @@ in
       openFirewall = mkOption {
         type = types.bool;
         default = true;
-      };
-      firewall.allowedTCPPorts = mkOption {
-        type = types.listOf port;
-        default = [
-          80
-          443
-        ];
-      };
-      firewall.allowedUDPPorts = mkOption {
-        type = types.listOf port;
-        default = [ 443 ];
       };
       environment = mkOption {
         type = types.attrsOf types.str;
@@ -278,8 +317,8 @@ in
       };
     };
 
-    services = mkOption {
-      type = types.attrsOf (types.submodule serviceType);
+    apps = mkOption {
+      type = types.attrsOf appType;
       default = { };
     };
 

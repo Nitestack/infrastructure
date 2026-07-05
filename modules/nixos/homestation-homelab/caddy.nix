@@ -6,45 +6,63 @@
 }:
 let
   inherit (lib)
+    concatMap
     concatStringsSep
-    filterAttrs
-    mapAttrsToList
     mkIf
-    optionalString
+    nameValuePair
     ;
 
   cfg = config.homestation.homelab;
+  homelab-lib = import ./lib.nix { inherit cfg lib; };
+  inherit (homelab-lib) containerAttrName effectiveHost enabledApps;
 
-  enabledHttpServices = filterAttrs (
-    _: service:
-    service.enable
-    && service.caddy.enable
-    && service.expose.mode != "none"
-    && service.expose.protocol == "http"
-  ) cfg.services;
+  exposedHttpContainers = builtins.listToAttrs (
+    concatMap (
+      appName:
+      let
+        app = enabledApps.${appName};
+        containers = lib.filterAttrs (
+          _: container:
+          container.enable
+          && container.edge.enable
+          && container.caddy.enable
+          && container.expose.mode != "none"
+          && effectiveHost container != null
+        ) app.containers;
+      in
+      map (
+        containerName:
+        nameValuePair (containerAttrName appName containerName containers.${containerName}) {
+          container = containers.${containerName};
+          host = effectiveHost containers.${containerName};
+        }
+      ) (builtins.attrNames containers)
+    ) (builtins.attrNames enabledApps)
+  );
 
-  hasHttpServices = enabledHttpServices != { };
+  hasHttpServices = exposedHttpContainers != { };
   runCaddy = cfg.caddy.enable && (cfg.caddy.enableWithoutServices || hasHttpServices);
 
   indentLines =
     prefix: text:
     concatStringsSep "\n" (
-      map (line: optionalString (line != "") prefix + line) (
-        builtins.filter (line: line != "") (lib.splitString "\n" text)
-      )
+      map (line: prefix + line) (builtins.filter (line: line != "") (lib.splitString "\n" text))
     );
 
   mkReverseProxy =
-    name: service:
+    name: site:
     let
+      inherit (site) container;
       upstream =
-        if service.caddy.upstream != null then
-          service.caddy.upstream
+        if container.caddy.upstream != null then
+          container.caddy.upstream
+        else if container.expose.protocol == "https" then
+          "https://${name}:${toString container.expose.port}"
         else
-          "${name}:${toString service.expose.port}";
-      proxyExtra = indentLines "    " service.caddy.reverseProxyExtraConfig;
+          "${name}:${toString container.expose.port}";
+      proxyExtra = indentLines "    " container.caddy.reverseProxyExtraConfig;
     in
-    if service.caddy.reverseProxyExtraConfig == "" then
+    if container.caddy.reverseProxyExtraConfig == "" then
       "  reverse_proxy ${upstream}"
     else
       ''
@@ -53,26 +71,40 @@ let
         }
       '';
 
-  mkVirtualHost = name: service: ''
-    ${service.expose.host} {
-    ${indentLines "  " service.caddy.extraConfig}
-    ${mkReverseProxy name service}
+  mkVirtualHost = name: site: ''
+    ${site.host} {
+    ${indentLines "  " site.container.caddy.extraConfig}
+    ${mkReverseProxy name site}
     }
   '';
 
   caddyfile = pkgs.writeText "homelab-Caddyfile" ''
     ${cfg.caddy.globalConfig}
-    ${concatStringsSep "\n" (mapAttrsToList mkVirtualHost enabledHttpServices)}
+    ${concatStringsSep "\n" (lib.mapAttrsToList mkVirtualHost exposedHttpContainers)}
   '';
+
+  parsePort =
+    portStr:
+    let
+      protoParts = lib.splitString "/" portStr;
+      proto = if lib.length protoParts > 1 then lib.last protoParts else "tcp";
+      segments = lib.splitString ":" (lib.head protoParts);
+      hostPort = lib.toInt (lib.elemAt segments (lib.length segments - 2));
+    in
+    { inherit proto hostPort; };
+
+  parsedPorts = map parsePort cfg.caddy.ports;
+  firewallTCPPorts = lib.unique (map (e: e.hostPort) (lib.filter (e: e.proto == "tcp") parsedPorts));
+  firewallUDPPorts = lib.unique (map (e: e.hostPort) (lib.filter (e: e.proto == "udp") parsedPorts));
 in
 {
   config = mkIf (cfg.enable && runCaddy) {
     networking.firewall = mkIf cfg.caddy.openFirewall {
-      allowedTCPPorts = cfg.caddy.firewall.allowedTCPPorts;
-      allowedUDPPorts = cfg.caddy.firewall.allowedUDPPorts;
+      allowedTCPPorts = firewallTCPPorts;
+      allowedUDPPorts = firewallUDPPorts;
     };
 
-    virtualisation.oci-containers.containers.${cfg.caddy.containerName} = {
+    virtualisation.oci-containers.containers."homelab-caddy" = {
       image = cfg.caddy.image;
       autoStart = true;
       ports = cfg.caddy.ports;
@@ -84,8 +116,7 @@ in
         "${cfg.dataDir}/caddy/config:/config"
       ]
       ++ cfg.caddy.extraVolumes;
-      networks = [ cfg.network.name ];
-      dependsOn = builtins.attrNames enabledHttpServices;
+      networks = [ cfg.edgeNetwork.name ];
     };
   };
 }
