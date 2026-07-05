@@ -18,12 +18,10 @@ let
       { };
 in
 {
-  config = mkIf (
-    cfg.enable
-    && cfg.cloudflared.enable
-    && cfg.cloudflared.tunnelId != null
-    && wildcardEntries != { }
-  ) {
-    services.cloudflared.tunnels.${cfg.cloudflared.tunnelId}.ingress = wildcardEntries;
-  };
+  config =
+    mkIf
+      (cfg.enable && cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && wildcardEntries != { })
+      {
+        services.cloudflared.tunnels.${cfg.cloudflared.tunnelId}.ingress = wildcardEntries;
+      };
 }
