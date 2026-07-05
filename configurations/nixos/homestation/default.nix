@@ -46,10 +46,12 @@ in
     enable = true;
     domain = "npham.de";
     lanAddress = "192.168.178.20";
+    cloudflared.tunnelId = "f4320d83-db5c-4280-808f-93822cd737c5";
 
-    services.whoami = {
+    apps.whoami.containers.web = {
       enable = false;
       image = "traefik/whoami:latest";
+      edge.enable = true;
       expose = {
         mode = "private";
         host = "whoami.npham.de";
