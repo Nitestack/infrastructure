@@ -170,10 +170,13 @@ let
           host = mkOption {
             type = types.nullOr types.nonEmptyStr;
             default = null;
-          };
-          apexDomain = mkOption {
-            type = types.bool;
-            default = false;
+            description = ''
+              Hostname for this service. Special values:
+                "@"        → bare domain (apex), e.g. example.com
+                "myapp"    → subdomain, e.g. myapp.example.com (when domain is set)
+                "a.b.com"  → used as-is (contains a dot)
+              null means no host; exposure requires a host to be set.
+            '';
           };
           protocol = mkOption {
             type = types.enum [
@@ -204,7 +207,7 @@ let
             default =
               config.edge.enable
               && config.expose.mode != "none"
-              && (config.expose.apexDomain || config.expose.host != null)
+              && config.expose.host != null
               && config.expose.port != null;
           };
           extraConfig = mkOption {
@@ -224,9 +227,7 @@ let
         dns = {
           enable = mkOption {
             type = types.bool;
-            default =
-              config.edge.enable
-              && (config.expose.mode == "private" || config.expose.mode == "public");
+            default = config.edge.enable && (config.expose.mode == "private" || config.expose.mode == "public");
           };
           records = mkOption {
             type = types.attrsOf dnsRecordType;
@@ -242,6 +243,25 @@ let
           autoStart = mkOption {
             type = types.bool;
             default = true;
+          };
+          restartPolicy = mkOption {
+            type = types.enum [
+              "no"
+              "on-failure"
+              "always"
+              "unless-stopped"
+            ];
+            default = "unless-stopped";
+          };
+          resources = {
+            cpu = mkOption {
+              type = types.nullOr types.float;
+              default = null;
+            };
+            memory = mkOption {
+              type = types.nullOr types.nonEmptyStr;
+              default = null;
+            };
           };
           labels = mkOption {
             type = types.attrsOf types.str;

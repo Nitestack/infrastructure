@@ -143,8 +143,8 @@ let
     in
     [
       {
-        assertion = container.expose.mode == "none" || container.expose.apexDomain || host != null;
-        message = "${path} is exposed but neither expose.host nor expose.apexDomain is set.";
+        assertion = container.expose.mode == "none" || host != null;
+        message = "${path} is exposed but expose.host is not set (use \"@\" for the apex domain).";
       }
       {
         assertion = container.expose.mode != "public" || cfg.cloudflared.wildcardIngress;

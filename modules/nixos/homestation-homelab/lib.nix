@@ -16,7 +16,7 @@ in
 
   effectiveHost =
     container:
-    if container.expose.apexDomain then
+    if container.expose.host == "@" then
       cfg.domain
     else if container.expose.host == null then
       null
