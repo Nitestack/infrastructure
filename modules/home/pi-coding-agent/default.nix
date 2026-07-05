@@ -48,7 +48,7 @@ in
 
   programs.pi-coding-agent = {
     enable = true;
-    package = pi-fhs;
+    package = if pkgs.stdenv.isLinux then pi-fhs else pkgs.pi-coding-agent;
 
     settings = commonSettings // {
       defaultProvider = "codex";
