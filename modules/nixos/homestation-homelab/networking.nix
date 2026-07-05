@@ -23,7 +23,7 @@ let
   ) (enabledServiceNames ++ caddyNames);
 
   generatedServiceNames = map (
-    name: config.virtualisation.oci-containers.containers.${name}.serviceName
+    name: "${config.virtualisation.oci-containers.containers.${name}.serviceName}.service"
   ) generatedContainerNames;
 in
 {
