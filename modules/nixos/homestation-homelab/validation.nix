@@ -119,6 +119,21 @@ let
 
   conflictingDnsKeys = filter (key: builtins.elem key containerDnsRecordKeys) autoDnsKeys;
 
+  unknownLibraries = unique (
+    concatLists (
+      map (
+        item:
+        concatMap (
+          volume:
+          if volume.library != null && !builtins.hasAttr volume.library cfg.libraries then
+            [ volume.library ]
+          else
+            [ ]
+        ) item.container.volumes
+      ) enabledContainers
+    )
+  );
+
   containerAssertions = concatMap (
     item:
     let
@@ -172,11 +187,16 @@ let
       }
       {
         assertion = builtins.all (
-          volume:
-          !(volume.hostPath.enable || lib.hasPrefix "${cfg.dataDir}/" volume.source)
-          || lib.hasPrefix "/" volume.source
+          volume: (volume.source != null) != (volume.library != null)
         ) container.volumes;
-        message = "${path} has a managed volume source that is not an absolute path.";
+        message = "${path} has a volume with both or neither 'source' and 'library' set (exactly one is required).";
+      }
+      {
+        assertion = builtins.all (
+          volume:
+          volume.source == null || lib.hasPrefix "/" volume.source || !lib.hasPrefix ".." volume.source
+        ) container.volumes;
+        message = "${path} has a relative volume source that escapes the app data directory (starts with '..').";
       }
     ]
   ) enabledContainers;
@@ -211,6 +231,10 @@ in
       {
         assertion = conflictingDnsKeys == [ ];
         message = "homestation.homelab auto-generated DNS keys conflict with container dns.records: ${concatStringsSep ", " conflictingDnsKeys}.";
+      }
+      {
+        assertion = unknownLibraries == [ ];
+        message = "homestation.homelab has volumes referencing unknown libraries: ${concatStringsSep ", " unknownLibraries}.";
       }
     ]
     ++ containerAssertions;

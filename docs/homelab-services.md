@@ -27,11 +27,8 @@ homestation.homelab = {
       subdomain = "myapp";   # resolves to myapp.example.com
       port = 8080;
     };
-    volumes = [{
-      source = "/var/lib/homelab/myapp";
-      target = "/data";
-      hostPath.enable = true;
-    }];
+    # relative source → auto-resolves to /var/lib/homelab/myapp/data
+    volumes = [{ source = "data"; target = "/data"; }];
   };
 };
 ```
@@ -71,6 +68,7 @@ The module then generates:
 | `domain` | string\|null | `null` | Base domain (e.g. `"example.com"`) used for subdomain derivation |
 | `lanAddress` | string\|null | `null` | LAN IP of this host; required for private DNS records |
 | `dataDir` | string | `"/var/lib/homelab"` | Root directory for all persistent service data |
+| `libraries` | attrs of libraryType | `{}` | Named shared host paths (music library, etc.) mountable by any container |
 | `network.prefix` | string | `"homelab"` | Prefix for Docker network names (must be non-empty) |
 | `edgeNetwork.name` | string | `"homelab-edge"` | Name of the shared edge Docker network (Caddy + edge containers) |
 
@@ -94,6 +92,27 @@ The module then generates:
 | `caddy.environmentFiles` | list of path | `[]` | Secret env files for Caddy (e.g. for ACME credentials) |
 | `caddy.globalConfig` | lines | `""` | Content prepended to the generated Caddyfile (global block) |
 | `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for the Caddy container |
+
+### `libraries` sub-options
+
+Libraries are named host paths that can be volume-mounted into any container using
+`library = "<name>"` instead of `source`. Useful for shared media, book, or data
+collections that multiple services need to access.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `libraries.<name>.path` | string | — | Absolute host path of the shared directory (required) |
+| `libraries.<name>.create` | bool | `false` | Auto-create via systemd-tmpfiles if the path doesn't exist |
+| `libraries.<name>.user` | string | `"root"` | Owner user (only used when `create = true`) |
+| `libraries.<name>.group` | string | `"root"` | Owner group (only used when `create = true`) |
+| `libraries.<name>.mode` | string | `"0755"` | Permissions (only used when `create = true`) |
+
+```nix
+homestation.homelab.libraries = {
+  music = { path = "/srv/music"; };           # pre-existing mount, no auto-create
+  books = { path = "/srv/books"; create = true; user = "1000"; group = "1000"; };
+};
+```
 
 ### `dns.records` (manual records)
 
@@ -255,31 +274,68 @@ combination on overlapping interfaces.
 
 ### Volumes
 
+Each volume entry requires exactly one of `source` or `library` — not both, not neither.
+
+**`source` — host path (absolute or relative):**
+
 ```nix
 volumes = [
+  # Relative source: auto-resolves to ${dataDir}/<appName>/config
+  # Directory is created automatically — no hostPath.enable needed.
   {
-    source = "${config.homestation.homelab.dataDir}/myapp/config";
+    source = "config";
     target = "/config";
-    readOnly = false;       # default
-    hostPath = {
-      enable = true;        # auto-create via systemd-tmpfiles
-      type = "directory";   # "directory" | "file"
-      user = "root";
-      group = "root";
-      mode = "0755";
-    };
   }
+
+  # Relative source with custom permissions
+  {
+    source = "data";
+    target = "/data";
+    hostPath.user = "1000";
+    hostPath.group = "1000";
+    hostPath.mode = "0750";
+  }
+
+  # Absolute source — requires hostPath.enable = true to auto-create
   {
     source = "/etc/localtime";
     target = "/etc/localtime";
     readOnly = true;
   }
+
+  # Absolute source within dataDir, auto-created
+  {
+    source = "/var/lib/homelab/myapp/uploads";
+    target = "/uploads";
+    hostPath.enable = true;
+    hostPath.type = "directory";
+    hostPath.user = "root";
+    hostPath.group = "root";
+    hostPath.mode = "0755";
+  }
 ];
 ```
 
-When `hostPath.enable = true`, the module generates a systemd-tmpfiles rule to
-create the path with the given ownership and permissions before the container
-starts. Source paths must be absolute.
+Relative sources are always managed (directory created via systemd-tmpfiles).
+Per-app base directories (`${dataDir}/<appName>`) are created automatically
+whenever any container in the app has a relative-source volume.
+
+**`library` — shared named path:**
+
+```nix
+volumes = [
+  # Mounts the host path from homestation.homelab.libraries.music
+  {
+    library = "music";
+    target = "/music";
+    readOnly = true;
+  }
+];
+```
+
+Library volumes reference paths declared in `homestation.homelab.libraries`.
+The host path is resolved at eval time; no tmpfiles rule is generated unless
+`libraries.<name>.create = true`.
 
 ### Container Dependencies
 
@@ -346,7 +402,9 @@ The module catches configuration errors at `nix eval` time:
 - `expose.protocol = "https"` without a `caddy.upstream` or `reverseProxyExtraConfig`
 - `dns.enable = true` with `expose.mode = "private"` but no `lanAddress`
 - `dependsOn` referencing unknown containers in the app
-- Volume sources that are not absolute paths
+- Volume with both `source` and `library` set, or neither set
+- Relative `source` that starts with `..` (would escape the app data directory)
+- `library` referencing a name not declared in `homestation.homelab.libraries`
 - Auto-generated DNS keys conflicting with explicit `dns.records` keys
 - OCI backend must be `"docker"` (`virtualisation.oci-containers.backend`)
 - Native `services.caddy.enable` must be `false` (conflicts with the generated container)
@@ -408,28 +466,49 @@ apps.nextcloud = {
       POSTGRES_HOST = "nextcloud-db";
       POSTGRES_DB = "nextcloud";
     };
-    volumes = [{
-      source = "${config.homestation.homelab.dataDir}/nextcloud/html";
-      target = "/var/www/html";
-      hostPath.enable = true;
-    }];
+    # relative → /var/lib/homelab/nextcloud/html, auto-created
+    volumes = [{ source = "html"; target = "/var/www/html"; }];
   };
 
   containers.db = {
     enable = true;
     image = "postgres:16";
     environmentFiles = [ config.sops.secrets."nextcloud/db-env".path ];
-    volumes = [{
-      source = "${config.homestation.homelab.dataDir}/nextcloud/db";
-      target = "/var/lib/postgresql/data";
-      hostPath.enable = true;
-    }];
+    volumes = [{ source = "db"; target = "/var/lib/postgresql/data"; }];
   };
 };
 ```
 
 Both containers share the auto-created `homelab-nextcloud` Docker network.
 `nextcloud-web` also joins the edge network. `nextcloud-db` is isolated.
+
+### Shared library mounts (music, books, etc.)
+
+```nix
+homestation.homelab = {
+  libraries.music = { path = "/srv/music"; };
+
+  apps.navidrome.containers.server = {
+    enable = true;
+    image = "deluan/navidrome:latest";
+    edge.enable = true;
+    expose = { mode = "private"; subdomain = "music"; port = 4533; };
+    volumes = [
+      { source = "data"; target = "/data"; }           # /var/lib/homelab/navidrome/data
+      { library = "music"; target = "/music"; readOnly = true; }
+    ];
+  };
+
+  apps.beets.containers.server = {
+    enable = true;
+    image = "lscr.io/linuxserver/beets:latest";
+    volumes = [
+      { source = "config"; target = "/config"; }
+      { library = "music"; target = "/music"; }        # same library, read-write for tagging
+    ];
+  };
+};
+```
 
 ### Direct port binding (no reverse proxy)
 
@@ -442,11 +521,7 @@ apps.minecraft.containers.server = {
     containerPort = 25565;
     hostPort = 25565;
   };
-  volumes = [{
-    source = "${config.homestation.homelab.dataDir}/minecraft";
-    target = "/data";
-    hostPath.enable = true;
-  }];
+  volumes = [{ source = "data"; target = "/data"; }];
 };
 ```
 

@@ -8,11 +8,40 @@ let
 
   port = types.ints.between 1 65535;
 
+  libraryType = types.submodule {
+    options = {
+      path = mkOption { type = types.str; };
+      create = mkOption {
+        type = types.bool;
+        default = false;
+      };
+      user = mkOption {
+        type = types.str;
+        default = "root";
+      };
+      group = mkOption {
+        type = types.str;
+        default = "root";
+      };
+      mode = mkOption {
+        type = types.str;
+        default = "0755";
+      };
+    };
+  };
+
   volumeType = types.submodule (
     { config, ... }:
     {
       options = {
-        source = mkOption { type = types.str; };
+        source = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        library = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
         target = mkOption { type = types.str; };
         readOnly = mkOption {
           type = types.bool;
@@ -315,6 +344,11 @@ in
         type = types.listOf types.str;
         default = [ ];
       };
+    };
+
+    libraries = mkOption {
+      type = types.attrsOf libraryType;
+      default = { };
     };
 
     apps = mkOption {
