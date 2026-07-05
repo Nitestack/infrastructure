@@ -26,7 +26,7 @@ let
           && container.edge.enable
           && container.dns.enable
           && effectiveHost container != null
-          && container.expose.mode == "private"
+          && (container.expose.mode == "private" || container.expose.mode == "public")
         ) enabledApps.${appName}.containers;
       in
       map (

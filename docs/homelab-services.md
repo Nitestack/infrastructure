@@ -21,10 +21,9 @@ homestation.homelab = {
 
   apps.myapp.containers.web = {
     image = "myimage:latest";
-    edge.enable = true;
     expose = {
       mode = "private";
-      subdomain = "myapp";   # resolves to myapp.example.com
+      host = "myapp";        # resolves to myapp.example.com (no dots → subdomain)
       port = 8080;
     };
     # relative source → auto-resolves to /var/lib/homelab/myapp/data
@@ -77,7 +76,8 @@ The module then generates:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `cloudflared.enable` | bool | `true` | Enable the Cloudflare tunnel integration |
-| `cloudflared.tunnelId` | string\|null | `null` | Cloudflare tunnel UUID; required for `expose.mode = "tunnel"` |
+| `cloudflared.tunnelId` | string\|null | `null` | Cloudflare tunnel UUID; required when `wildcardIngress = true` |
+| `cloudflared.wildcardIngress` | bool | `false` | Generate a single `*.domain` + `domain → http://localhost:80` ingress rule. All internet routing is handled by Caddy from there. Required for `expose.mode = "public"`. |
 
 ### `caddy` sub-options
 
@@ -156,7 +156,7 @@ homestation.homelab.dns.records = {
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `edge.enable` | bool | `false` | Attach this container to the shared edge network so Caddy can reach it |
+| `edge.enable` | bool | auto | Attach this container to the shared edge network so Caddy can reach it. Auto-enabled when `expose.mode != "none"` |
 | `networks` | list of string | `[]` | Additional Docker networks to join beyond the auto-assigned ones |
 
 **Automatic networks:** A container is placed on the app's isolated network
@@ -168,8 +168,8 @@ joins `edgeNetwork.name`. Extra networks from `networks` are appended.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `expose.mode` | enum | `"none"` | How to expose the service (see modes below) |
-| `expose.host` | string\|null | `null` | Explicit hostname (e.g. `"svc.example.com"`) |
-| `expose.subdomain` | string\|null | `null` | Derive host as `<subdomain>.<domain>`; `""` means bare domain |
+| `expose.host` | string\|null | `null` | Hostname for this service. If it contains no dots and `domain` is set, treated as a subdomain (e.g. `"myapp"` → `"myapp.example.com"`). A value with dots is used as-is. |
+| `expose.apexDomain` | bool | `false` | Use the bare `domain` as the hostname (e.g. `example.com`). Takes precedence over `expose.host`. |
 | `expose.protocol` | enum | `"http"` | `"http"` or `"https"` — affects Caddy upstream scheme |
 | `expose.port` | int\|null | `null` | Container port Caddy reverse-proxies to |
 
@@ -179,20 +179,19 @@ joins `edgeNetwork.name`. Extra networks from `networks` are appended.
 |------|--------|
 | `"none"` | No ingress; container is internal only |
 | `"private"` | LAN DNS A record → `lanAddress` + Caddy reverse proxy |
-| `"public"` | Same as `"private"` but also registered for internet access |
-| `"tunnel"` | Cloudflare tunnel ingress only (no LAN DNS, no direct Caddy port) |
+| `"public"` | LAN DNS A record + Caddy + internet access via `cloudflared.wildcardIngress` |
 
-**Host resolution order:**
-1. `expose.host` if set
-2. `expose.subdomain + "." + domain` if both are non-null
-3. `domain` if `expose.subdomain == ""`
-4. `null` (no host; exposure requires a host)
+**Host resolution (`expose.host` / `expose.apexDomain`):**
+- `apexDomain = true` → bare domain (`domain`), e.g. `example.com`
+- `host = null` → no host; exposure requires a host or `apexDomain`
+- `host = "myapp"` (no dots, domain set) → `myapp.domain`
+- `host = "custom.example.org"` (contains a dot) → `custom.example.org`
 
 ### Caddy Reverse Proxy
 
 These options control the generated Caddyfile block for this container.
 `caddy.enable` auto-enables when `edge.enable = true`, `expose.mode != "none"`,
-and `expose.protocol == "http"`.
+a host is configured, and `expose.port` is set — for both `http` and `https` protocols.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -254,19 +253,19 @@ dns.records = {
 Direct host port bindings, independent of reverse proxy exposure:
 
 ```nix
-listeners = {
-  smtp = {
-    protocol = "tcp";        # "tcp" | "udp"
+listeners = [
+  {
+    protocol = "tcp";        # "tcp" | "udp" (default: "tcp")
     containerPort = 25;
     hostPort = 25;
     bind = null;             # null = all interfaces; or specific IP
-  };
-  dns-udp = {
+  }
+  {
     protocol = "udp";
     containerPort = 53;
     hostPort = 53;
-  };
-};
+  }
+];
 ```
 
 The module validates that no two containers bind the same `hostPort/protocol`
@@ -396,8 +395,9 @@ The module catches configuration errors at `nix eval` time:
 - Duplicate container names (across all apps)
 - Duplicate exposed hostnames
 - Duplicate or conflicting host port listeners
-- `expose.mode != "none"` without a resolvable hostname
-- `expose.mode = "tunnel"` without `cloudflared.enable` and a valid `tunnelId`
+- `expose.mode != "none"` without `expose.host` or `expose.apexDomain` set
+- `expose.mode = "public"` without `cloudflared.wildcardIngress = true`
+- `cloudflared.wildcardIngress = true` without `cloudflared.enable`, `tunnelId`, and `domain` set
 - `caddy.enable = true` without `edge.enable`, `expose.host`, or `expose.port`
 - `expose.protocol = "https"` without a `caddy.upstream` or `reverseProxyExtraConfig`
 - `dns.enable = true` with `expose.mode = "private"` but no `lanAddress`
@@ -419,31 +419,36 @@ The module catches configuration errors at `nix eval` time:
 apps.myapp.containers.web = {
   enable = true;
   image = "myimage:1.0";
-  edge.enable = true;
   expose = {
     mode = "private";
-    subdomain = "myapp";
+    host = "myapp";   # resolves to myapp.example.com
     port = 3000;
   };
 };
 ```
 
 Creates:
-- Docker container `myapp-web` on `homelab-edge`
+- Docker container `myapp-web` on `homelab-edge` (auto-joined because `expose.mode != "none"`)
 - Caddy virtual host `myapp.example.com → myapp-web:3000`
 - DNS A record `myapp.example.com → lanAddress`
 
-### Public service via Cloudflare tunnel
+### Public service via Cloudflare wildcard tunnel
 
 ```nix
-apps.myapp.containers.web = {
-  enable = true;
-  image = "myimage:1.0";
-  edge.enable = true;
-  expose = {
-    mode = "tunnel";
-    subdomain = "myapp";
-    port = 3000;
+homestation.homelab = {
+  cloudflared = {
+    tunnelId = "<your-tunnel-uuid>";
+    wildcardIngress = true;   # one *.example.com → Caddy rule covers all public services
+  };
+
+  apps.myapp.containers.web = {
+    enable = true;
+    image = "myimage:1.0";
+    expose = {
+      mode = "public";   # LAN DNS + Caddy + internet via wildcard tunnel
+      host = "myapp";
+      port = 3000;
+    };
   };
 };
 ```
@@ -455,10 +460,9 @@ apps.nextcloud = {
   containers.web = {
     enable = true;
     image = "nextcloud:latest";
-    edge.enable = true;
     expose = {
       mode = "private";
-      subdomain = "cloud";
+      host = "cloud";
       port = 80;
     };
     dependsOn = [ "db" ];
@@ -491,8 +495,7 @@ homestation.homelab = {
   apps.navidrome.containers.server = {
     enable = true;
     image = "deluan/navidrome:latest";
-    edge.enable = true;
-    expose = { mode = "private"; subdomain = "music"; port = 4533; };
+    expose = { mode = "private"; host = "music"; port = 4533; };
     volumes = [
       { source = "data"; target = "/data"; }           # /var/lib/homelab/navidrome/data
       { library = "music"; target = "/music"; readOnly = true; }
@@ -517,10 +520,10 @@ apps.minecraft.containers.server = {
   enable = true;
   image = "itzg/minecraft-server:latest";
   env.EULA = "TRUE";
-  listeners.game = {
+  listeners = [{
     containerPort = 25565;
     hostPort = 25565;
-  };
+  }];
   volumes = [{ source = "data"; target = "/data"; }];
 };
 ```
@@ -565,10 +568,9 @@ virtualisation.docker.enable = true;   # or enable via the module that does this
 services.caddy.enable = false;          # must NOT be enabled (module runs Caddy in Docker)
 ```
 
-For `expose.mode = "tunnel"`:
+For `cloudflared.wildcardIngress = true`:
 ```nix
 services.cloudflared.enable = true;
-services.cloudflared.tunnelId = "...";
 services.cloudflared.tunnels."<tunnelId>".credentialsFile = ...;
 ```
 

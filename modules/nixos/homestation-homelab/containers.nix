@@ -5,7 +5,6 @@
 }:
 let
   inherit (lib)
-    attrValues
     concatMap
     listToAttrs
     mkIf
@@ -65,7 +64,7 @@ let
       environment = container.env;
       environmentFiles = container.environmentFiles;
       volumes = map (volumeToString appName) container.volumes;
-      ports = map listenerToPort (attrValues container.listeners);
+      ports = map listenerToPort container.listeners;
       dependsOn = map (dep: containerAttrName appName dep enabledDeps.${dep}) enabledDependencyNames;
       inherit networks;
       labels = container.docker.labels;

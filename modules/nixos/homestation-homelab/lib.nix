@@ -16,13 +16,14 @@ in
 
   effectiveHost =
     container:
-    if container.expose.host != null then
+    if container.expose.apexDomain then
+      cfg.domain
+    else if container.expose.host == null then
+      null
+    else if lib.hasInfix "." container.expose.host then
       container.expose.host
-    else if container.expose.subdomain != null && cfg.domain != null then
-      if container.expose.subdomain == "" then
-        cfg.domain
-      else
-        "${container.expose.subdomain}.${cfg.domain}"
+    else if cfg.domain != null then
+      "${container.expose.host}.${cfg.domain}"
     else
-      null;
+      container.expose.host;
 }
