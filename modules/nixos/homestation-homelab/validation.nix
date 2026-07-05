@@ -6,7 +6,6 @@
 let
   inherit (lib)
     attrNames
-    attrValues
     concatLists
     concatMap
     concatStringsSep
@@ -84,7 +83,7 @@ let
           inherit bind;
           portProtocol = "${toString listener.hostPort}/${listener.protocol}";
         }
-      ) (attrValues item.container.listeners)
+      ) item.container.listeners
     ) enabledContainers
   );
 
@@ -108,7 +107,7 @@ let
       item:
       item.container.edge.enable
       && item.container.dns.enable
-      && item.container.expose.mode == "private"
+      && (item.container.expose.mode == "private" || item.container.expose.mode == "public")
       && effectiveHost item.container != null
     ) enabledContainers
   );
@@ -144,16 +143,12 @@ let
     in
     [
       {
-        assertion = container.expose.mode == "none" || host != null;
-        message = "${path} is exposed but has no expose.host or derivable expose.subdomain.";
+        assertion = container.expose.mode == "none" || container.expose.apexDomain || host != null;
+        message = "${path} is exposed but neither expose.host nor expose.apexDomain is set.";
       }
       {
-        assertion =
-          container.expose.mode != "tunnel"
-          || (
-            cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && config.services.cloudflared.enable
-          );
-        message = "${path} uses expose.mode = \"tunnel\", but homestation.homelab.cloudflared is disabled, tunnelId is null, or services.cloudflared.enable is false.";
+        assertion = container.expose.mode != "public" || cfg.cloudflared.wildcardIngress;
+        message = "${path} uses expose.mode = \"public\" but cloudflared.wildcardIngress is false — public services require the wildcard tunnel to be enabled.";
       }
       {
         assertion = !container.caddy.enable || container.edge.enable;
@@ -161,7 +156,7 @@ let
       }
       {
         assertion = !container.caddy.enable || host != null;
-        message = "${path} enables Caddy but has no expose.host or derivable expose.subdomain.";
+        message = "${path} enables Caddy but expose.host is not set.";
       }
       {
         assertion = !container.caddy.enable || container.expose.port != null;
@@ -227,6 +222,12 @@ in
       {
         assertion = cfg.network.prefix != "";
         message = "homestation.homelab.network.prefix must not be empty (would produce Docker network names with a leading dash).";
+      }
+      {
+        assertion =
+          !cfg.cloudflared.wildcardIngress
+          || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && cfg.domain != null);
+        message = "homestation.homelab.cloudflared.wildcardIngress requires cloudflared.enable, cloudflared.tunnelId, and domain to be set.";
       }
       {
         assertion = conflictingDnsKeys == [ ];

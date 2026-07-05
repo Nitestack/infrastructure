@@ -155,7 +155,7 @@ let
 
         edge.enable = mkOption {
           type = types.bool;
-          default = false;
+          default = config.expose.mode != "none";
         };
 
         expose = {
@@ -164,17 +164,16 @@ let
               "none"
               "private"
               "public"
-              "tunnel"
             ];
             default = "none";
           };
           host = mkOption {
-            type = types.nullOr types.str;
+            type = types.nullOr types.nonEmptyStr;
             default = null;
           };
-          subdomain = mkOption {
-            type = types.nullOr types.str;
-            default = null;
+          apexDomain = mkOption {
+            type = types.bool;
+            default = false;
           };
           protocol = mkOption {
             type = types.enum [
@@ -190,8 +189,8 @@ let
         };
 
         listeners = mkOption {
-          type = types.attrsOf listenerType;
-          default = { };
+          type = types.listOf listenerType;
+          default = [ ];
         };
 
         dependsOn = mkOption {
@@ -202,7 +201,11 @@ let
         caddy = {
           enable = mkOption {
             type = types.bool;
-            default = config.edge.enable && config.expose.mode != "none" && config.expose.protocol == "http";
+            default =
+              config.edge.enable
+              && config.expose.mode != "none"
+              && (config.expose.apexDomain || config.expose.host != null)
+              && config.expose.port != null;
           };
           extraConfig = mkOption {
             type = types.lines;
@@ -221,7 +224,9 @@ let
         dns = {
           enable = mkOption {
             type = types.bool;
-            default = config.edge.enable && config.expose.mode == "private";
+            default =
+              config.edge.enable
+              && (config.expose.mode == "private" || config.expose.mode == "public");
           };
           records = mkOption {
             type = types.attrsOf dnsRecordType;
@@ -300,6 +305,10 @@ in
       tunnelId = mkOption {
         type = types.nullOr types.str;
         default = null;
+      };
+      wildcardIngress = mkOption {
+        type = types.bool;
+        default = false;
       };
     };
 
