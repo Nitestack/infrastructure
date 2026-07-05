@@ -57,10 +57,18 @@ let
         lib.optional (builtins.length (builtins.attrNames enabledDeps) > 1) (appNetworkName appName)
         ++ lib.optional container.edge.enable cfg.edgeNetwork.name
         ++ container.networks;
+      resourceOptions =
+        lib.optional (
+          container.docker.resources.cpu != null
+        ) "--cpus=${toString container.docker.resources.cpu}"
+        ++ lib.optional (
+          container.docker.resources.memory != null
+        ) "--memory=${container.docker.resources.memory}";
     in
     {
       image = container.image;
       autoStart = container.docker.autoStart;
+      restartPolicy = container.docker.restartPolicy;
       environment = container.env;
       environmentFiles = container.environmentFiles;
       volumes = map (volumeToString appName) container.volumes;
@@ -68,7 +76,7 @@ let
       dependsOn = map (dep: containerAttrName appName dep enabledDeps.${dep}) enabledDependencyNames;
       inherit networks;
       labels = container.docker.labels;
-      extraOptions = container.docker.extraOptions;
+      extraOptions = resourceOptions ++ container.docker.extraOptions;
     }
     // optionalAttrs (container.command != null) {
       cmd = container.command;
