@@ -18,7 +18,12 @@ let
 
   cfg = config.homestation.homelab;
   homelab-lib = import ./lib.nix { inherit cfg lib; };
-  inherit (homelab-lib) containerAttrName effectiveHost enabledApps enabledContainersForApp;
+  inherit (homelab-lib)
+    containerAttrName
+    effectiveHost
+    enabledApps
+    enabledContainersForApp
+    ;
 
   duplicates =
     values:

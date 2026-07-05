@@ -16,7 +16,12 @@ let
 
   cfg = config.homestation.homelab;
   homelab-lib = import ./lib.nix { inherit cfg lib; };
-  inherit (homelab-lib) appNetworkName containerAttrName enabledApps enabledContainersForApp;
+  inherit (homelab-lib)
+    appNetworkName
+    containerAttrName
+    enabledApps
+    enabledContainersForApp
+    ;
 
   volumeToString = volume: "${volume.source}:${volume.target}${optionalString volume.readOnly ":ro"}";
 
@@ -32,8 +37,11 @@ let
     appName: containerName: container:
     let
       enabledDeps = enabledContainersForApp appName;
-      enabledDependencyNames = builtins.filter (dep: builtins.hasAttr dep enabledDeps) container.dependsOn;
-      networks = lib.optional (builtins.length (builtins.attrNames enabledDeps) > 1) (appNetworkName appName)
+      enabledDependencyNames = builtins.filter (
+        dep: builtins.hasAttr dep enabledDeps
+      ) container.dependsOn;
+      networks =
+        lib.optional (builtins.length (builtins.attrNames enabledDeps) > 1) (appNetworkName appName)
         ++ lib.optional container.edge.enable cfg.edgeNetwork.name
         ++ container.networks;
     in

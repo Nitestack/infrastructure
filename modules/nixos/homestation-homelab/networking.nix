@@ -16,11 +16,14 @@ let
 
   cfg = config.homestation.homelab;
   homelab-lib = import ./lib.nix { inherit cfg lib; };
-  inherit (homelab-lib) appNetworkName containerAttrName enabledApps enabledContainersForApp;
+  inherit (homelab-lib)
+    appNetworkName
+    containerAttrName
+    enabledApps
+    enabledContainersForApp
+    ;
 
-  enabledAppNames = filter (
-    appName: enabledContainersForApp appName != { }
-  ) (attrNames enabledApps);
+  enabledAppNames = filter (appName: enabledContainersForApp appName != { }) (attrNames enabledApps);
 
   enabledContainerNames = concatMap (
     appName:

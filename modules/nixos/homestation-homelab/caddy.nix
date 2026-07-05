@@ -91,7 +91,9 @@ let
       segments = lib.splitString ":" (lib.head protoParts);
       hostPort = lib.toInt (lib.elemAt segments (lib.length segments - 2));
     in
-    { inherit proto hostPort; };
+    {
+      inherit proto hostPort;
+    };
 
   parsedPorts = map parsePort cfg.caddy.ports;
   firewallTCPPorts = lib.unique (map (e: e.hostPort) (lib.filter (e: e.proto == "tcp") parsedPorts));
