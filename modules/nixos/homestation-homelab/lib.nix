@@ -1,18 +1,37 @@
 { cfg, lib }:
 let
-  enabledApps = lib.filterAttrs (_: app: app.enable) cfg.apps;
+  normalizeContainerName = name: lib.replaceStrings [ "_" ] [ "-" ] name;
+
+  normalizedApps = lib.mapAttrs (
+    _: app:
+    app
+    // {
+      containers =
+        if app.container != null then app.containers // { main = app.container; } else app.containers;
+    }
+  ) cfg.apps;
+
+  appContainers = appName: normalizedApps.${appName}.containers;
+
+  enabledApps = lib.filterAttrs (_: app: app.enable) normalizedApps;
 in
 {
-  inherit enabledApps;
+  inherit enabledApps normalizedApps;
+  inherit appContainers;
 
   enabledContainersForApp =
-    appName: lib.filterAttrs (_: container: container.enable) enabledApps.${appName}.containers;
+    appName: lib.filterAttrs (_: container: container.enable) (appContainers appName);
 
   appNetworkName = appName: "${cfg.network.prefix}-${appName}";
 
   containerAttrName =
     appName: containerName: container:
-    if container.docker.name != null then container.docker.name else "${appName}-${containerName}";
+    if container.name != null then
+      container.name
+    else if builtins.length (builtins.attrNames (appContainers appName)) == 1 then
+      normalizeContainerName appName
+    else
+      "${normalizeContainerName appName}-${normalizeContainerName containerName}";
 
   effectiveHost =
     container:

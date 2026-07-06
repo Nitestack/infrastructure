@@ -1,7 +1,20 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
-  domain = config.homestation.homelab.domain;
+  cfg = config.homestation.homelab;
+  homelab-lib = import ../../../../modules/nixos/homestation-homelab/lib.nix {
+    inherit cfg lib;
+  };
+  inherit (homelab-lib) effectiveHost;
+
+  adguardHome = cfg.apps.adguard-home.container;
+  itTools = cfg.apps.it-tools.container;
+  domain = cfg.domain;
   mkUrl = host: "https://${host}.${domain}";
+  containerUrl = container: "https://${effectiveHost container}";
 in
 {
   homestation.homelab.apps.glance.container = {
@@ -15,7 +28,7 @@ in
     };
 
     environment = {
-      ADGUARD_HOME_URL = mkUrl "dns";
+      ADGUARD_HOME_URL = containerUrl adguardHome;
       ADVENTURE_LOG_URL = mkUrl "travel";
       BESZEL_URL = mkUrl "status";
       CALIBRE_WEB_AUTOMATED_URL = mkUrl "lib";
@@ -25,7 +38,7 @@ in
       GLANCE_URL = mkUrl "dash";
       GROCY_URL = mkUrl "house";
       IMMICH_URL = mkUrl "media";
-      IT_TOOLS_URL = mkUrl "it";
+      IT_TOOLS_URL = containerUrl itTools;
       NAVIDROME_URL = mkUrl "music";
       NEXTCLOUD_URL = mkUrl "cloud";
       POCKET_ID_URL = mkUrl "id";

@@ -8,20 +8,19 @@ let
     attrNames
     concatMap
     filter
-    filterAttrs
     hasPrefix
     mkIf
     unique
     ;
 
   cfg = config.homestation.homelab;
-
-  enabledApps = filterAttrs (_: app: app.enable) cfg.apps;
+  homelab-lib = import ./lib.nix { inherit cfg lib; };
+  inherit (homelab-lib) enabledApps enabledContainersForApp;
 
   enabledContainersWithApp = concatMap (
     appName:
     let
-      containers = filterAttrs (_: container: container.enable) enabledApps.${appName}.containers;
+      containers = enabledContainersForApp appName;
     in
     map (containerName: {
       inherit appName;

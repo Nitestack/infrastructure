@@ -6,26 +6,41 @@
 let
   inherit (flake) inputs;
   inherit (inputs) self;
-  secretsFile = self + /secrets/hosts/homestation/cloudflared.yaml;
+  infraSecretsFile = self + /secrets/hosts/homestation/infra.yaml;
+  glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
+  beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
+  vaultwardenSecretsFile = self + /secrets/hosts/homestation/vaultwarden.yaml;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   config.sops = {
-    defaultSopsFile = secretsFile;
     defaultSopsFormat = "yaml";
     age.sshKeyPaths = [ "/home/${config.meta.username}/.ssh/id_ed25519" ];
 
     secrets."cloudflared/credentials" = {
+      sopsFile = infraSecretsFile;
       key = "cloudflared/credentials";
       mode = "0400";
     };
     secrets."cloudflared/certificate" = {
+      sopsFile = infraSecretsFile;
       key = "cloudflared/certificate";
       mode = "0400";
     };
     secrets."glance/env" = {
+      sopsFile = glanceSecretsFile;
       key = "glance/env";
+      mode = "0400";
+    };
+    secrets."beszel/env" = {
+      sopsFile = beszelSecretsFile;
+      key = "beszel/env";
+      mode = "0400";
+    };
+    secrets."vaultwarden/env" = {
+      sopsFile = vaultwardenSecretsFile;
+      key = "vaultwarden/env";
       mode = "0400";
     };
   };

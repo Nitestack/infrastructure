@@ -20,8 +20,11 @@ in
     self.nixosModules.homestation-homelab
     ./sops.nix
     ./homelab/adguard-home.nix
+    ./homelab/beszel.nix
+    ./homelab/freshrss.nix
     ./homelab/glance.nix
     ./homelab/it-tools.nix
+    ./homelab/vaultwarden.nix
   ];
 
   # ── Networking ────────────────────────────────────────────────────────
@@ -49,6 +52,13 @@ in
     enable = true;
     domain = "npham.de";
     lanAddress = "192.168.178.20";
+    smtp = {
+      host = "smtp.protonmail.ch";
+      port = 587;
+      security = "starttls";
+      from = "noreply@npham.de";
+      username = "noreply@npham.de";
+    };
     cloudflared.tunnelId = "f4320d83-db5c-4280-808f-93822cd737c5";
     cloudflared.wildcardIngress = true;
   };

@@ -123,7 +123,7 @@ let
 
         image = mkOption { type = types.str; };
 
-        command = mkOption {
+        cmd = mkOption {
           type = types.nullOr (types.listOf types.str);
           default = null;
         };
@@ -133,7 +133,7 @@ let
           default = null;
         };
 
-        env = mkOption {
+        environment = mkOption {
           type = types.attrsOf types.str;
           default = { };
         };
@@ -235,42 +235,45 @@ let
           };
         };
 
-        docker = {
-          name = mkOption {
-            type = types.nullOr types.str;
+        name = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+
+        autoStart = mkOption {
+          type = types.bool;
+          default = true;
+        };
+
+        restartPolicy = mkOption {
+          type = types.enum [
+            "no"
+            "on-failure"
+            "always"
+            "unless-stopped"
+          ];
+          default = "unless-stopped";
+        };
+
+        resources = {
+          cpu = mkOption {
+            type = types.nullOr types.float;
             default = null;
           };
-          autoStart = mkOption {
-            type = types.bool;
-            default = true;
+          memory = mkOption {
+            type = types.nullOr types.nonEmptyStr;
+            default = null;
           };
-          restartPolicy = mkOption {
-            type = types.enum [
-              "no"
-              "on-failure"
-              "always"
-              "unless-stopped"
-            ];
-            default = "unless-stopped";
-          };
-          resources = {
-            cpu = mkOption {
-              type = types.nullOr types.float;
-              default = null;
-            };
-            memory = mkOption {
-              type = types.nullOr types.nonEmptyStr;
-              default = null;
-            };
-          };
-          labels = mkOption {
-            type = types.attrsOf types.str;
-            default = { };
-          };
-          extraOptions = mkOption {
-            type = types.listOf types.str;
-            default = [ ];
-          };
+        };
+
+        labels = mkOption {
+          type = types.attrsOf types.str;
+          default = { };
+        };
+
+        extraOptions = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
         };
       };
     };
@@ -280,6 +283,10 @@ let
       enable = mkOption {
         type = types.bool;
         default = true;
+      };
+      container = mkOption {
+        type = types.nullOr (types.submodule containerType);
+        default = null;
       };
       containers = mkOption {
         type = types.attrsOf (types.submodule containerType);
@@ -372,6 +379,38 @@ in
       extraVolumes = mkOption {
         type = types.listOf types.str;
         default = [ ];
+      };
+    };
+
+    smtp = {
+      host = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "SMTP host shared by homelab apps. Keep passwords in app-specific environmentFiles.";
+      };
+      port = mkOption {
+        type = types.nullOr port;
+        default = null;
+        description = "SMTP port shared by homelab apps.";
+      };
+      security = mkOption {
+        type = types.enum [
+          "starttls"
+          "force_tls"
+          "off"
+        ];
+        default = "starttls";
+        description = "SMTP transport mode shared by homelab apps.";
+      };
+      from = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Default sender address for homelab apps that send mail.";
+      };
+      username = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "SMTP username shared by homelab apps. Keep passwords in app-specific environmentFiles.";
       };
     };
 

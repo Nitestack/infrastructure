@@ -24,6 +24,10 @@ let
     enabledContainersForApp
     ;
 
+  mixedContainerForms = filter (
+    appName: cfg.apps.${appName}.container != null && cfg.apps.${appName}.containers != { }
+  ) (attrNames cfg.apps);
+
   duplicates =
     values:
     let
@@ -200,6 +204,20 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
+        assertion =
+          let
+            configured = [
+              (cfg.smtp.host != null)
+              (cfg.smtp.port != null)
+              (cfg.smtp.from != null)
+              (cfg.smtp.username != null)
+            ];
+            enabledCount = builtins.length (builtins.filter (x: x) configured);
+          in
+          enabledCount == 0 || enabledCount == 4;
+        message = "homestation.homelab.smtp requires host, port, from, and username to be set together.";
+      }
+      {
         assertion = config.virtualisation.oci-containers.backend == "docker";
         message = "homestation.homelab requires virtualisation.oci-containers.backend = \"docker\".";
       }
@@ -236,6 +254,10 @@ in
       {
         assertion = unknownLibraries == [ ];
         message = "homestation.homelab has volumes referencing unknown libraries: ${concatStringsSep ", " unknownLibraries}.";
+      }
+      {
+        assertion = mixedContainerForms == [ ];
+        message = "homestation.homelab apps cannot define both 'container' and 'containers': ${concatStringsSep ", " mixedContainerForms}.";
       }
     ]
     ++ containerAssertions;

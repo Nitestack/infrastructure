@@ -19,7 +19,7 @@ homestation.homelab = {
   lanAddress = "192.168.1.10";
   cloudflared.tunnelId = "<your-tunnel-uuid>";
 
-  apps.myapp.containers.web = {
+  apps.myapp.container = {
     image = "myimage:latest";
     expose = {
       mode = "private";
@@ -36,19 +36,23 @@ homestation.homelab = {
 
 ## Conceptual Model
 
-Services are organized in a two-level hierarchy:
+Services are organized by app, with an optional container grouping when an app
+needs more than one OCI container:
 
 ```
 homestation.homelab
 └── apps
     └── <appName>          (logical grouping, e.g. "nextcloud")
+        ├── container      (single-container shorthand)
         └── containers
-            └── <containerName>   (individual container, e.g. "web", "db")
+            └── <containerName>   (multi-container form, e.g. "web", "db")
 ```
 
 Each **app** is a named group of containers that share an isolated Docker
-network. Each **container** maps to one OCI container and carries all its own
-networking, ingress, volume, and DNS configuration.
+network. Most apps can use the `container` shorthand. Apps with sidecars, DBs,
+or other multiple services can use `containers.<name>`. Each container maps to
+one OCI container and carries all its own networking, ingress, volume, and DNS
+configuration.
 
 The module then generates:
 - `virtualisation.oci-containers.containers.*` entries for each enabled container
@@ -93,6 +97,19 @@ The module then generates:
 | `caddy.globalConfig` | lines | `""` | Content prepended to the generated Caddyfile (global block) |
 | `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for the Caddy container |
 
+### `smtp` sub-options
+
+These defaults are shared by homelab apps that send email. Keep passwords in
+app-specific secret env files referenced through `environmentFiles`.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `smtp.host` | string\|null | `null` | Shared SMTP hostname |
+| `smtp.port` | int\|null | `null` | Shared SMTP port |
+| `smtp.security` | enum | `"starttls"` | Shared SMTP transport mode: `"starttls"`, `"force_tls"`, or `"off"` |
+| `smtp.from` | string\|null | `null` | Default sender address |
+| `smtp.username` | string\|null | `null` | Shared SMTP username |
+
 ### `libraries` sub-options
 
 Libraries are named host paths that can be volume-mounted into any container using
@@ -135,11 +152,14 @@ homestation.homelab.dns.records = {
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enable` | bool | `true` | Enable or disable all containers in this app |
+| `container` | containerType\|null | `null` | Single-container shorthand; normalized internally to `containers.main` |
 | `containers` | attrs of containerType | `{}` | Container definitions for this app |
+
+Do not set both `container` and `containers` on the same app.
 
 ---
 
-## Container Options (`apps.<appName>.containers.<containerName>.*`)
+## Container Options (`apps.<appName>.container.*` or `apps.<appName>.containers.<containerName>.*`)
 
 ### Basic
 
@@ -147,9 +167,9 @@ homestation.homelab.dns.records = {
 |--------|------|---------|-------------|
 | `enable` | bool | `false` | Enable this container (must be explicitly set to `true`) |
 | `image` | string | — | Docker image (required) |
-| `command` | list of string\|null | `null` | Override the container command |
+| `cmd` | list of string\|null | `null` | Override the container command |
 | `entrypoint` | string\|null | `null` | Override the container entrypoint |
-| `env` | attrs of string | `{}` | Environment variables |
+| `environment` | attrs of string | `{}` | Environment variables |
 | `environmentFiles` | list of path | `[]` | Paths to env files (e.g. from sops-nix) |
 
 ### Edge / Networking
@@ -348,17 +368,18 @@ dependsOn = [ "db" ];
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `docker.name` | string\|null | `null` | Override the generated container name (default: `<appName>-<containerName>`) |
-| `docker.autoStart` | bool | `true` | Start container on boot |
-| `docker.restartPolicy` | enum | `"unless-stopped"` | Docker restart policy: `"no"`, `"on-failure"`, `"always"`, `"unless-stopped"` |
-| `docker.resources.cpu` | float\|null | `null` | CPU limit in cores (e.g. `0.5`). `null` = no limit |
-| `docker.resources.memory` | string\|null | `null` | Memory limit (e.g. `"512m"`, `"2g"`). `null` = no limit |
-| `docker.labels` | attrs of string | `{}` | Docker labels |
-| `docker.extraOptions` | list of string | `[]` | Raw `docker run` flags |
+| `name` | string\|null | `null` | Override the generated container name |
+| `autoStart` | bool | `true` | Start container on boot |
+| `restartPolicy` | enum | `"unless-stopped"` | Docker restart policy: `"no"`, `"on-failure"`, `"always"`, `"unless-stopped"` |
+| `resources.cpu` | float\|null | `null` | CPU limit in cores (e.g. `0.5`). `null` = no limit |
+| `resources.memory` | string\|null | `null` | Memory limit (e.g. `"512m"`, `"2g"`). `null` = no limit |
+| `labels` | attrs of string | `{}` | Docker labels |
+| `extraOptions` | list of string | `[]` | Raw `docker run` flags |
 
-**Container naming:** By default the container is named `<appName>-<containerName>`.
-Override with `docker.name` if needed, but take care: duplicate names across apps
-will be caught by validation.
+**Container naming:** By default, single-container apps are named from the app
+key, and multi-container apps use `<appName>-<containerName>`. In both cases,
+underscores are normalized to hyphens. Override with `name` if needed, but take
+care: duplicate names across apps will be caught by validation.
 
 ---
 
@@ -395,8 +416,10 @@ Internet
 The module catches configuration errors at `nix eval` time:
 
 - Duplicate container names (across all apps)
+- App defining both `container` and `containers`
 - Duplicate exposed hostnames
 - Duplicate or conflicting host port listeners
+- Partial shared SMTP configuration; `smtp.host`, `smtp.port`, `smtp.from`, and `smtp.username` must be set together if any are set
 - `expose.mode != "none"` without `expose.host` or `expose.apexDomain` set
 - `expose.mode = "public"` without `cloudflared.wildcardIngress = true`
 - `cloudflared.wildcardIngress = true` without `cloudflared.enable`, `tunnelId`, and `domain` set
@@ -468,7 +491,7 @@ apps.nextcloud = {
       port = 80;
     };
     dependsOn = [ "db" ];
-    env = {
+    environment = {
       POSTGRES_HOST = "nextcloud-db";
       POSTGRES_DB = "nextcloud";
     };
@@ -521,7 +544,7 @@ homestation.homelab = {
 apps.minecraft.containers.server = {
   enable = true;
   image = "itzg/minecraft-server:latest";
-  env.EULA = "TRUE";
+  environment.EULA = "TRUE";
   listeners = [{
     containerPort = 25565;
     hostPort = 25565;

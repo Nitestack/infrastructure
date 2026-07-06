@@ -58,28 +58,24 @@ let
         ++ lib.optional container.edge.enable cfg.edgeNetwork.name
         ++ container.networks;
       resourceOptions =
-        lib.optional (
-          container.docker.resources.cpu != null
-        ) "--cpus=${toString container.docker.resources.cpu}"
-        ++ lib.optional (
-          container.docker.resources.memory != null
-        ) "--memory=${container.docker.resources.memory}";
+        lib.optional (container.resources.cpu != null) "--cpus=${toString container.resources.cpu}"
+        ++ lib.optional (container.resources.memory != null) "--memory=${container.resources.memory}";
+      restartOptions = [ "--restart=${container.restartPolicy}" ];
     in
     {
       image = container.image;
-      autoStart = container.docker.autoStart;
-      restartPolicy = container.docker.restartPolicy;
-      environment = container.env;
+      autoStart = container.autoStart;
+      environment = container.environment;
       environmentFiles = container.environmentFiles;
       volumes = map (volumeToString appName) container.volumes;
       ports = map listenerToPort container.listeners;
       dependsOn = map (dep: containerAttrName appName dep enabledDeps.${dep}) enabledDependencyNames;
       inherit networks;
-      labels = container.docker.labels;
-      extraOptions = resourceOptions ++ container.docker.extraOptions;
+      labels = container.labels;
+      extraOptions = restartOptions ++ resourceOptions ++ container.extraOptions;
     }
-    // optionalAttrs (container.command != null) {
-      cmd = container.command;
+    // optionalAttrs (container.cmd != null) {
+      cmd = container.cmd;
     }
     // optionalAttrs (container.entrypoint != null) {
       entrypoint = container.entrypoint;
