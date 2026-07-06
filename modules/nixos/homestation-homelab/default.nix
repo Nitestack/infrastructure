@@ -1,6 +1,7 @@
 {
   imports = [
     ./options.nix
+    ./normalize.nix
     ./validation.nix
     ./networking.nix
     ./state.nix
