@@ -1,0 +1,77 @@
+# ── Global Options ────────────────────────────────────────────────────
+directory: /music/mainstream
+library: /config/mainstream.db
+
+import:
+  move: yes
+  resume: ask
+  languages: en de
+
+match:
+  preferred:
+    countries: [ "US", "GB|UK", "XW", "CA", "AU", "DE" ]
+    media: [ "CD", "Digital Media|File" ]
+    original_year: yes
+  distance_weights:
+    year: 0.5
+    country: 0.0
+
+paths:
+  default: "%the{$albumartist}/$album%aunique{}/$track $title"
+  singleton: Singles/%the{$artist}/$title
+  comp: Compilations/$album%aunique{}/$track $title
+
+# ── Plugins ───────────────────────────────────────────────────────────
+plugins:
+  # Autotagger
+  - fromfilename
+  - musicbrainz
+  # Metadata
+  - edit
+  - embedart
+  - fetchart
+  - ftintitle
+  - lastgenre
+  - lyrics
+  - mbsync
+  - scrub
+  # Path Formats
+  - the
+  # Miscellaneous
+  - duplicates
+  - info
+  - missing
+  - web
+
+embedart:
+  maxwidth: 1000
+
+fetchart:
+  cautious: yes
+  enforce_ratio: yes
+  minwidth: 500
+  sources:
+    - filesystem
+    - fanarttv
+    - itunes
+    - coverart
+    - lastfm
+    - amazon
+  lastfm_key: "@LASTFM_KEY@"
+
+ftintitle:
+  format: (feat. {0})
+  keep_in_artist: yes
+
+lastgenre:
+  force: yes
+  keep_existing: no
+  canonical: yes
+
+lyrics:
+  synced: yes
+  sources: [ lrclib ]
+
+# ── UI ───────────────────────────────────────────────────────────────
+ui:
+  color: yes

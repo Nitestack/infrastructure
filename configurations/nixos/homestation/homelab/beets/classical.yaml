@@ -1,0 +1,85 @@
+# ── Global Options ────────────────────────────────────────────────────
+include: config.yaml
+
+directory: /music/classical
+library: /config/classical.db
+
+original_date: yes
+
+import:
+  set_fields:
+    genre: Classical
+
+match:
+  preferred:
+    countries: [ "DE", "GB|UK", "FR", "NL", "XE", "AT", "IT", "US", "XW" ]
+    original_year: no
+  distance_weights:
+    composer: 2.5
+    label: 1.5
+    year: 0.8
+
+item_fields:
+  top_composer: |
+    import re
+    if 'parent_composer' in globals() and parent_composer:
+        return parent_composer
+    elif 'composer' in globals() and composer:
+        return composer
+    elif albumartist:
+        name = re.split(r';|\s-\s', albumartist)[0].strip()
+        return name
+    elif artist:
+        return re.split(r';|\s-\s', artist)[0].strip()
+    else:
+        return "Unknown Artist"
+
+paths:
+  default: $top_composer/$album%aunique{}/$track $title
+  singleton: Singles/$top_composer/$title
+
+# ── Plugins ───────────────────────────────────────────────────────────
+plugins:
+  # Autotagger
+  - fromfilename
+  - musicbrainz
+  # Metadata
+  - edit
+  - embedart
+  - fetchart
+  - mbsync
+  - parentwork
+  - scrub
+  # Path Formats
+  - inline
+  # Miscellaneous
+  - duplicates
+  - info
+  - missing
+  - web
+
+fetchart:
+  minwidth: 400
+  enforce_ratio: no
+  sources:
+    - filesystem
+    - coverart
+    - amazon
+    - itunes
+    - lastfm
+    - fanarttv
+
+ftintitle:
+  auto: no
+
+lastgenre:
+  auto: no
+
+lyrics:
+  auto: no
+
+musicbrainz:
+  search_limit: 20
+
+parentwork:
+  auto: yes

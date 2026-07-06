@@ -52,7 +52,7 @@ in
       ZEROBYTE_URL = mkUrl "backup";
     };
 
-    environmentFiles = [ config.sops.secrets."glance/env".path ];
+    environmentFiles = [ config.sops.templates."glance.env".path ];
 
     volumes = [
       {

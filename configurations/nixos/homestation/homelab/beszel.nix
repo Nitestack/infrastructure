@@ -20,9 +20,10 @@ in
 
       environment = {
         APP_URL = "https://status.${cfg.domain}";
+        DISABLE_PASSWORD_AUTH = "true";
       };
 
-      environmentFiles = [ config.sops.secrets."beszel/env".path ];
+      environmentFiles = [ config.sops.templates."beszel.env".path ];
 
       volumes = [
         {
@@ -46,7 +47,7 @@ in
         HUB_URL = "https://status.${cfg.domain}";
       };
 
-      environmentFiles = [ config.sops.secrets."beszel/env".path ];
+      environmentFiles = [ config.sops.templates."beszel.env".path ];
 
       volumes = [
         {

@@ -18,12 +18,16 @@ in
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.homestation-homelab
+    ./rendered-files.nix
     ./sops.nix
     ./homelab/adguard-home.nix
+    ./homelab/beets.nix
     ./homelab/beszel.nix
     ./homelab/freshrss.nix
     ./homelab/glance.nix
     ./homelab/it-tools.nix
+    ./homelab/navidrome.nix
+    ./homelab/pocket-id.nix
     ./homelab/vaultwarden.nix
   ];
 
@@ -52,6 +56,7 @@ in
     enable = true;
     domain = "npham.de";
     lanAddress = "192.168.178.20";
+    libraries.music.path = "/mnt/data/music";
     smtp = {
       host = "smtp.protonmail.ch";
       port = 587;
