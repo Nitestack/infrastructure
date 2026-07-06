@@ -19,6 +19,9 @@ in
     self.nixosModules.bare-metal-only
     self.nixosModules.homestation-homelab
     ./sops.nix
+    ./homelab/adguard-home.nix
+    ./homelab/glance.nix
+    ./homelab/it-tools.nix
   ];
 
   # ── Networking ────────────────────────────────────────────────────────
@@ -47,17 +50,7 @@ in
     domain = "npham.de";
     lanAddress = "192.168.178.20";
     cloudflared.tunnelId = "f4320d83-db5c-4280-808f-93822cd737c5";
-
-    apps.whoami.containers.web = {
-      enable = false;
-      image = "traefik/whoami:latest";
-      edge.enable = true;
-      expose = {
-        mode = "private";
-        host = "whoami.npham.de";
-        port = 80;
-      };
-    };
+    cloudflared.wildcardIngress = true;
   };
 
   # Services
