@@ -29,6 +29,7 @@ in
     ./homelab/navidrome.nix
     ./homelab/pocket-id.nix
     ./homelab/vaultwarden.nix
+    ./tailscale.nix
   ];
 
   # ── Networking ────────────────────────────────────────────────────────

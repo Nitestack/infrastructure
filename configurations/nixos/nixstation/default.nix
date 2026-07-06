@@ -123,6 +123,10 @@ in
   services = {
     blueman.enable = true;
     playerctld.enable = true;
+    tailscale = {
+      useRoutingFeatures = "client";
+      extraSetFlags = [ "--accept-routes" ];
+    };
     xserver = {
       enable = true;
       excludePackages = [ pkgs.xterm ];

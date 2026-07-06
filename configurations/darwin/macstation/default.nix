@@ -60,6 +60,7 @@ in
   environment.systemPackages = with pkgs; [
     git
     git-lfs
+    tailscale-gui
     whatsapp-for-mac
   ];
 }
