@@ -24,5 +24,9 @@ in
       key = "cloudflared/certificate";
       mode = "0400";
     };
+    secrets."glance/env" = {
+      key = "glance/env";
+      mode = "0400";
+    };
   };
 }
