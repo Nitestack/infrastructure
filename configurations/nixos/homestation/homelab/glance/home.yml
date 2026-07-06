@@ -1,0 +1,389 @@
+- name: Dashboard
+  hide-desktop-navigation: true
+  columns:
+    - size: small
+      widgets:
+        - type: bookmarks
+          hide-header: true
+          groups:
+            - title: Services
+              links:
+                - title: Cloudflare
+                  url: https://dash.cloudflare.com
+                  icon: di:cloudflare
+                - title: Cloudflare Zero Trust
+                  url: https://one.dash.cloudflare.com
+                  icon: di:cloudflare-zero-trust
+                - title: FRITZ!Box
+                  url: http://192.168.178.1
+                  icon: di:fritzbox
+                - title: Namecheap
+                  url: https://ap.www.namecheap.com/
+                  icon: di:namecheap
+            - title: Documentation
+              links:
+                - title: Ansible
+                  url: https://docs.ansible.com
+                  icon: si:ansible
+                - title: AdGuard Home
+                  url: https://adguard-dns.io/kb
+                  icon: di:adguard-home
+                - title: AdventureLog
+                  url: https://adventurelog.app/docs/intro/adventurelog_overview.html
+                  icon: di:adventure-log
+                - title: beets
+                  url: https://beets.readthedocs.io
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/beets.webp
+                - title: Beszel
+                  url: https://beszel.dev/guide
+                  icon: di:beszel
+                - title: Caddy
+                  url: https://caddyserver.com/docs
+                  icon: di:caddy
+                - title: Calibre Web Automated
+                  url: https://github.com/crocodilestick/Calibre-Web-Automated/wiki
+                  icon: di:calibre-web
+                - title: Cloudflared
+                  url: https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel
+                  icon: di:cloudflare
+                - title: Ente
+                  url: https://help.ente.io
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/ente-auth.webp
+                - title: FlareSolverr
+                  url: https://github.com/FlareSolverr/FlareSolverr
+                  icon: di:flaresolverr
+                - title: FreshRSS
+                  url: https://freshrss.github.io/FreshRSS/en
+                  icon: di:freshrss
+                - title: Ghostfolio
+                  url: https://github.com/ghostfolio/ghostfolio
+                  icon: di:ghostfolio
+                - title: Glance
+                  url: https://github.com/glanceapp/glance/blob/main/docs/configuration.md
+                  icon: di:glance
+                - title: Grocy
+                  url: https://github.com/grocy/grocy
+                  icon: di:grocy
+                - title: Immich
+                  url: https://immich.app/docs
+                  icon: di:immich
+                - title: Navidrome
+                  url: https://navidrome.org/docs
+                  icon: di:navidrome
+                - title: Nextcloud
+                  url: https://github.com/nextcloud/all-in-one
+                  icon: di:nextcloud
+                - title: Pocket ID
+                  url: https://pocket-id.org/docs
+                  icon: di:pocket-id
+                - title: Real-Debrid Torrent Client
+                  url: https://github.com/rogerfar/rdt-client
+                  icon: di:real-debrid
+                - title: Servarr
+                  url: https://wiki.servarr.com
+                  icon: di:servarr
+                - title: Shelfmark
+                  url: https://github.com/calibrain/shelfmark
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/shelfmark.webp
+                - title: Vaultwarden
+                  url: https://github.com/dani-garcia/vaultwarden/wiki
+                  icon: si:vaultwarden
+                - title: Wealthfolio
+                  url: https://wealthfolio.app/docs/introduction
+                  icon: sh:wealthfolio
+                - title: wger
+                  url: https://wger.readthedocs.io
+                  icon: di:wger
+                - title: Yamtrack
+                  url: https://github.com/FuzzyGrim/Yamtrack/wiki
+                  icon: di:yamtrack
+                - title: Zerobyte
+                  url: https://github.com/nicotsx/zerobyte
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/zerobyte.webp
+            - title: Selfhosted
+              links:
+                - title: Awesome Selfhosted
+                  url: https://awesome-selfhosted.net
+                  icon: https://awesome-selfhosted.net/_static/logo.svg
+                - title: Awesome Sysadmin
+                  url: https://github.com/awesome-foss/awesome-sysadmin
+                  icon: https://avatars.githubusercontent.com/u/20512645
+                - title: Awesome *Arr
+                  url: https://ravencentric.cc/awesome-arr
+                  icon: di:github
+                - title: selfh.st
+                  url: https://selfh.st
+                  icon: di:selfh-st
+            - title: Repositories
+              links:
+                - title: Raspberry Pi 5
+                  url: https://github.com/Nitestack/raspberry-pi-5
+                  icon: di:github
+
+    - size: full
+      widgets:
+        - type: docker-containers
+          hide-header: true
+          containers:
+            adguard-home:
+              name: AdGuard Home
+              icon: di:adguard-home
+              url: ${ADGUARD_HOME_URL}
+              description: Network-wide Ad Blocker
+            adventurelog-frontend:
+              name: AdventureLog
+              icon: di:adventure-log
+              url: ${ADVENTURE_LOG_URL}
+              description: Travel Tracker
+              id: adventurelog
+            adventurelog-backend:
+              name: Backend
+              parent: adventurelog
+            adventurelog-db:
+              name: PostGIS
+              parent: adventurelog
+            beets:
+              name: beets
+              icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/beets.webp
+              description: Music Manager
+            beszel:
+              name: Beszel
+              icon: di:beszel
+              url: ${BESZEL_URL}
+              description: Server Monitoring
+              id: beszel
+            beszel-agent:
+              name: Agent
+              parent: beszel
+            caddy:
+              name: Caddy
+              icon: di:caddy
+              description: HTTPS Server
+            calibre-web-automated:
+              name: Calibre Web Automated
+              icon: di:calibre-web
+              url: ${CALIBRE_WEB_AUTOMATED_URL}
+              description: eBook Manager
+            cloudflared:
+              name: Cloudflared
+              icon: di:cloudflare
+              description: Cloudflare Tunnel
+            ente-web:
+              name: Ente Auth
+              icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/ente-auth.webp
+              url: ${ENTE_AUTH_URL}
+              description: Two-factor Authenticator
+              id: ente
+            ente-museum:
+              name: Museum (API Server)
+              parent: ente
+            ente-postgres:
+              name: PostgreSQL
+              parent: ente
+            flaresolverr:
+              name: FlareSolverr
+              parent: prowlarr
+            freshrss:
+              name: FreshRSS
+              icon: di:freshrss
+              url: ${FRESHRSS_URL}
+              description: Feed Aggregator
+            ghostfolio:
+              name: Ghostfolio
+              icon: di:ghostfolio
+              url: ${GHOSTFOLIO_URL}
+              description: Wealth Manager
+              id: ghostfolio
+            ghostfolio-postgres:
+              name: PostgreSQL
+              parent: ghostfolio
+            ghostfolio-redis:
+              name: Redis
+              parent: ghostfolio
+            glance:
+              name: Glance
+              icon: di:glance
+              url: ${GLANCE_URL}
+              description: Dashboard
+            grocy:
+              name: Grocy
+              icon: di:grocy
+              url: ${GROCY_URL}
+              description: Groceries & Household Manager
+            immich_server:
+              name: Immich
+              icon: di:immich
+              url: ${IMMICH_URL}
+              description: Photo & Video Manager
+              id: immich
+            immich_machine_learning:
+              name: Machine Learning
+              parent: immich
+            immich_redis:
+              name: Valkey
+              parent: immich
+            immich_postgres:
+              name: PostgreSQL
+              parent: immich
+            it-tools:
+              name: IT Tools
+              icon: di:it-tools
+              url: ${IT_TOOLS_URL}
+              description: Developer Tools
+            navidrome:
+              name: Navidrome
+              icon: di:navidrome
+              url: ${NAVIDROME_URL}
+              description: Music Server
+            nextcloud-aio-nextcloud:
+              name: NextCloud
+              icon: di:nextcloud
+              url: ${NEXTCLOUD_URL}
+              description: Cloud
+              id: nextcloud
+            nextcloud-aio-mastercontainer:
+              name: All-in-One
+              parent: nextcloud
+            nextcloud-aio-apache:
+              name: Apache
+              parent: nextcloud
+            nextcloud-aio-database:
+              name: Database
+              parent: nextcloud
+            nextcloud-aio-notify-push:
+              name: Notify Push
+              parent: nextcloud
+            nextcloud-aio-redis:
+              name: Redis
+              parent: nextcloud
+            nextcloud-aio-collabora:
+              name: Collabora
+              parent: nextcloud
+            nextcloud-aio-imaginary:
+              name: Imaginary
+              parent: nextcloud
+            nextcloud-aio-whiteboard:
+              name: Whiteboard
+              parent: nextcloud
+            nextcloud-aio-borgbackup:
+              hide: true
+            nextcloud-aio-watchtower:
+              hide: true
+            pocket-id:
+              name: Pocket ID
+              icon: di:pocket-id
+              url: ${POCKET_ID_URL}
+              description: OIDC Provider
+            prowlarr:
+              name: Prowlarr
+              icon: di:prowlarr
+              url: ${PROWLARR_URL}
+              description: Indexer Manager
+              id: prowlarr
+            rdtclient:
+              name: Real-Debrid Torrent Client
+              icon: di:real-debrid
+              url: ${RDTCLIENT_URL}
+              description: Torrent Client
+            shelfmark:
+              name: Shelfmark
+              icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/shelfmark.webp
+              url: ${SHELFMARK_URL}
+              description: Book Downloader
+            vaultwarden:
+              name: Vaultwarden
+              icon: si:vaultwarden
+              url: ${VAULTWARDEN_URL}
+              description: Password Manager
+            wealthfolio:
+              name: Wealthfolio
+              icon: sh:wealthfolio
+              url: ${WEALTHFOLIO_URL}
+              description: Investment Tracker
+            wger-web:
+              name: wger
+              icon: di:wger
+              url: ${WGER_URL}
+              description: Fitness Tracker
+              id: wger
+            wger-postgres:
+              name: PostgreSQL
+              parent: wger
+            wger-redis:
+              name: Redis
+              parent: wger
+            wger-celery-worker:
+              name: Celery Worker
+              parent: wger
+            wger-celery-beat:
+              name: Celery Beat
+              parent: wger
+            yamtrack:
+              name: Yamtrack
+              icon: di:yamtrack
+              url: ${YAMTRACK_URL}
+              description: Media Tracker
+              id: yamtrack
+            yamtrack-redis:
+              name: Redis
+              parent: yamtrack
+            zerobyte:
+              name: Zerobyte
+              icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/zerobyte.webp
+              url: ${ZEROBYTE_URL}
+              description: Backup Manager
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: selfhosted
+            - type: reddit
+              subreddit: sysadmin
+            - type: reddit
+              subreddit: homelab
+            - type: hacker-news
+            - type: lobsters
+
+        - type: videos
+          channels:
+            - UCZNhwA1B5YqiY1nLzmM0ZRg # Christian Lempa
+            - UCgdTVe88YVSrOZ9qKumhULQ # Hardware Haven
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+            - UC9x0AN7BWHpCDHSm9NiJFJQ # NetworkChuck
+            - UCjSEJkpGbcZhvo0lr-44X_w # TechHut
+            - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
+            - UCsnGwSIHyoYN0kiINAGUKxg # Wolfgang's Channel
+
+    - size: small
+      widgets:
+        - type: releases
+          token: ${GITHUB_API_TOKEN}
+          show-source-icon: true
+          collapse-after: -1
+          limit: 26
+          repositories:
+            - AdguardTeam/AdGuardHome
+            - seanmorley15/AdventureLog
+            - beetbox/beets
+            - henrygd/beszel
+            - caddyserver/caddy
+            - crocodilestick/Calibre-Web-Automated
+            - cloudflare/cloudflared
+            - ente-io/ente
+            - FlareSolverr/FlareSolverr
+            - FreshRSS/FreshRSS
+            - ghostfolio/ghostfolio
+            - glanceapp/glance
+            - grocy/grocy
+            - immich-app/immich
+            - CorentinTh/it-tools
+            - navidrome/navidrome
+            - nextcloud/all-in-one
+            - pocket-id/pocket-id
+            - Prowlarr/Prowlarr
+            - rogerfar/rdt-client
+            - calibrain/shelfmark
+            - dani-garcia/vaultwarden
+            - wealthfolio/wealthfolio
+            - wger-project/wger
+            - FuzzyGrim/Yamtrack
+            - nicotsx/zerobyte
