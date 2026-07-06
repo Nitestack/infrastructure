@@ -30,7 +30,223 @@ let
     };
   };
 
-  volumeType = types.submodule (
+  volumeType = types.submodule {
+    options = {
+      type = mkOption {
+        type = types.enum [
+          "bind"
+          "library"
+          "volume"
+        ];
+        default = "bind";
+      };
+      source = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      name = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      target = mkOption { type = types.str; };
+      readOnly = mkOption {
+        type = types.bool;
+        default = false;
+      };
+      external = mkOption {
+        type = types.bool;
+        default = false;
+      };
+      hostPath = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+        };
+        type = mkOption {
+          type = types.enum [
+            "directory"
+            "file"
+          ];
+          default = "directory";
+        };
+        user = mkOption {
+          type = types.str;
+          default = "root";
+        };
+        group = mkOption {
+          type = types.str;
+          default = "root";
+        };
+        mode = mkOption {
+          type = types.str;
+          default = "0755";
+        };
+      };
+    };
+  };
+
+  routeType = types.submodule {
+    options = {
+      match.path = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+      };
+      match.not.path = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+      };
+      upstream.service = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      proxy.headers.request = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+      };
+      proxy.transport.http = mkOption {
+        type = types.attrsOf types.bool;
+        default = { };
+      };
+      requestBody.maxSize = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      encode = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+      };
+      extraConfig = mkOption {
+        type = types.lines;
+        default = "";
+      };
+    };
+  };
+
+  serviceType = types.submodule {
+    options = {
+      enable = mkEnableOption "homelab app service";
+      image = mkOption { type = types.str; };
+      port = mkOption {
+        type = types.nullOr port;
+        default = null;
+      };
+      command = mkOption {
+        type = types.nullOr (types.listOf types.str);
+        default = null;
+      };
+      entrypoint = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      volumes = mkOption {
+        type = types.listOf volumeType;
+        default = [ ];
+      };
+      healthcheck = {
+        test = mkOption {
+          type = types.nullOr (types.listOf types.str);
+          default = null;
+        };
+        interval = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        timeout = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        retries = mkOption {
+          type = types.nullOr types.int;
+          default = null;
+        };
+        startPeriod = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+      };
+      dependsOn = mkOption {
+        type = types.attrsOf (
+          types.submodule {
+            options.condition = mkOption {
+              type = types.enum [
+                "service_started"
+                "service_healthy"
+                "service_completed_successfully"
+              ];
+              default = "service_started";
+            };
+          }
+        );
+        default = { };
+      };
+      runtime = {
+        user = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        workingDir = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        init = mkOption {
+          type = types.bool;
+          default = false;
+        };
+        tmpfs = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+        tty = mkOption {
+          type = types.bool;
+          default = false;
+        };
+        stopGracePeriod = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        stopSignal = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+      };
+      privileges = {
+        networkMode = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        privileged = mkOption {
+          type = types.bool;
+          default = false;
+        };
+        devices = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+        capabilities.add = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+        capabilities.drop = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+        dns = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+        extraHosts = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+        sysctls = mkOption {
+          type = types.attrsOf types.str;
+          default = { };
+        };
+      };
+    };
+  };
+
+  legacyVolumeType = types.submodule (
     { config, ... }:
     {
       options = {
@@ -144,7 +360,7 @@ let
         };
 
         volumes = mkOption {
-          type = types.listOf volumeType;
+          type = types.listOf legacyVolumeType;
           default = [ ];
         };
 
@@ -284,13 +500,52 @@ let
         type = types.bool;
         default = true;
       };
+      expose = {
+        mode = mkOption {
+          type = types.enum [
+            "none"
+            "private"
+            "public"
+          ];
+          default = "none";
+        };
+        host = mkOption {
+          type = types.nullOr types.nonEmptyStr;
+          default = null;
+        };
+        service = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+        };
+        protocol = mkOption {
+          type = types.enum [
+            "http"
+            "https"
+          ];
+          default = "http";
+        };
+      };
+      routes = mkOption {
+        type = types.listOf routeType;
+        default = [ ];
+      };
+      services = mkOption {
+        type = types.attrsOf serviceType;
+        default = { };
+      };
+
+      # Temporary compatibility for the existing OCI-based callers and modules.
       container = mkOption {
         type = types.nullOr (types.submodule containerType);
         default = null;
+        visible = false;
+        internal = true;
       };
       containers = mkOption {
         type = types.attrsOf (types.submodule containerType);
         default = { };
+        visible = false;
+        internal = true;
       };
     };
   };
