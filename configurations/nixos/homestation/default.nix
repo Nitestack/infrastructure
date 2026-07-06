@@ -23,11 +23,13 @@ in
     ./homelab/adguard-home.nix
     ./homelab/beets.nix
     ./homelab/beszel.nix
+    ./homelab/calibre-web-automated.nix
     ./homelab/freshrss.nix
     ./homelab/glance.nix
     ./homelab/it-tools.nix
     ./homelab/navidrome.nix
     ./homelab/pocket-id.nix
+    ./homelab/shelfmark.nix
     ./homelab/vaultwarden.nix
     ./tailscale.nix
   ];
