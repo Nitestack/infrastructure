@@ -54,6 +54,10 @@ let
         message = "homestation.homelab.apps.${appName}.expose.host must be set when expose.mode != \"none\".";
       }
       {
+        assertion = app.expose.mode != "public" || cfg.cloudflared.wildcardIngress;
+        message = "homestation.homelab.apps.${appName} uses expose.mode = \"public\" but cloudflared.wildcardIngress is false.";
+      }
+      {
         assertion = routes != [ ] || app.expose.mode == "none";
         message = "homestation.homelab.apps.${appName} is exposed but has no resolved routes.";
       }

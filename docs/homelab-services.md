@@ -275,8 +275,7 @@ Use `hostPath` when the module should manage metadata for bind mounts.
 
 ## Validation
 
-The public schema currently enforces these constraints directly in
-`options.nix`:
+The public schema in `options.nix` enforces these constraints:
 
 - Ports are limited to `1..65535`.
 - `expose.mode` is one of `"none"`, `"private"`, or `"public"`.
@@ -286,9 +285,24 @@ The public schema currently enforces these constraints directly in
 - DNS record `type` is limited to `"A"`, `"AAAA"`, or `"CNAME"`.
 - DNS record `visibility` is limited to `"lan"` or `"public"`.
 
-Any additional runtime assertions in the rest of the module should be updated to
-target the `services` API rather than the removed `container` /
-`containers` compatibility surface.
+At evaluation time, `validation.nix` adds runtime assertions against the
+normalized app/service graph:
+
+- Exposed apps must resolve an effective host and at least one route.
+- Apps without explicit `routes` must set `expose.service`.
+- `expose.service` must reference an enabled service in the same app.
+- `expose.mode = "public"` requires
+  `homestation.homelab.cloudflared.wildcardIngress = true`.
+- Every resolved route must target an enabled service with a defined `port`.
+- `services.<name>.dependsOn` may only reference enabled services in the same
+  app.
+- `services.<name>.volumes` must use a valid `type/source/name` combination.
+- Exposed hostnames must be globally unique.
+- `cloudflared.wildcardIngress` also requires `cloudflared.enable`,
+  `cloudflared.tunnelId`, and `domain` to be set.
+
+These runtime checks now target the `services` API rather than the removed
+`container` / `containers` compatibility surface.
 
 ---
 
