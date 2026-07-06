@@ -8,6 +8,7 @@ let
   pocketIdSecretsFile = self + /secrets/hosts/homestation/pocket-id.yaml;
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
+  shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -96,6 +97,16 @@ in
       key = "lastfm/secret";
       mode = "0400";
     };
+    secrets."hardcover/api-key" = {
+      sopsFile = infraSecretsFile;
+      key = "hardcover/api-key";
+      mode = "0400";
+    };
+    secrets."shelfmark/prowlarr-api-key" = {
+      sopsFile = shelfmarkSecretsFile;
+      key = "prowlarr/api-key";
+      mode = "0400";
+    };
     templates."vaultwarden-smtp.env" = {
       content = ''
         SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
@@ -132,6 +143,20 @@ in
       content = ''
         ND_LASTFM_APIKEY=${config.sops.placeholder."navidrome/lastfm-key"}
         ND_LASTFM_SECRET=${config.sops.placeholder."navidrome/lastfm-secret"}
+      '';
+      mode = "0400";
+    };
+    templates."calibre-web-automated.env" = {
+      content = ''
+        HARDCOVER_TOKEN=${config.sops.placeholder."hardcover/api-key"}
+      '';
+      mode = "0400";
+    };
+    templates."shelfmark.env" = {
+      content = ''
+        EMAIL_SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
+        PROWLARR_API_KEY=${config.sops.placeholder."shelfmark/prowlarr-api-key"}
+        HARDCOVER_API_KEY=${config.sops.placeholder."hardcover/api-key"}
       '';
       mode = "0400";
     };
