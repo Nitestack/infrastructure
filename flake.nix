@@ -27,6 +27,11 @@
     nixos-unified.url = "github:srid/nixos-unified";
     # Flake Parts
     flake-parts.url = "github:hercules-ci/flake-parts";
+    # Arion
+    arion = {
+      url = "github:hercules-ci/arion";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # sops-nix
     sops-nix = {
       url = "github:Mic92/sops-nix";

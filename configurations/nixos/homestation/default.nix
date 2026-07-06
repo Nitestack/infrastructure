@@ -15,6 +15,7 @@ in
   imports = [
     ./hardware-configuration.nix
 
+    flake.inputs.arion.nixosModules.arion
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.homestation-homelab
@@ -44,7 +45,7 @@ in
 
   # Virtualization
   virtualisation = {
-    oci-containers.backend = "docker";
+    arion.backend = "docker";
     docker.autoPrune = {
       enable = true;
       randomizedDelaySec = "1h";
