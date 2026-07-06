@@ -27,7 +27,9 @@ in
       SMTP_USERNAME = smtp.username;
     };
 
-    environmentFiles = [ config.sops.secrets."vaultwarden/env".path ];
+    environmentFiles = [
+      config.sops.templates."vaultwarden-smtp.env".path
+    ];
 
     volumes = [
       {

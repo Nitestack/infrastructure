@@ -9,7 +9,6 @@ let
   infraSecretsFile = self + /secrets/hosts/homestation/infra.yaml;
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
-  vaultwardenSecretsFile = self + /secrets/hosts/homestation/vaultwarden.yaml;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -28,6 +27,11 @@ in
       key = "cloudflared/certificate";
       mode = "0400";
     };
+    secrets."smtp/password" = {
+      sopsFile = infraSecretsFile;
+      key = "smtp/password";
+      mode = "0400";
+    };
     secrets."glance/env" = {
       sopsFile = glanceSecretsFile;
       key = "glance/env";
@@ -38,9 +42,10 @@ in
       key = "beszel/env";
       mode = "0400";
     };
-    secrets."vaultwarden/env" = {
-      sopsFile = vaultwardenSecretsFile;
-      key = "vaultwarden/env";
+    templates."vaultwarden-smtp.env" = {
+      content = ''
+        SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
+      '';
       mode = "0400";
     };
   };
