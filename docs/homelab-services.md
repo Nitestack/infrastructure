@@ -1,33 +1,49 @@
 # Homelab Service Module
 
-The `homestation-homelab` NixOS module provides a declarative abstraction for
-running containerized services on the homestation host. It manages Docker
-networks, Caddy reverse proxy config, Cloudflare tunnel ingress, and local DNS
-records — all derived from a single unified service definition.
+The `homestation-homelab` module exposes a service-oriented API for declaring
+homelab apps, their container workloads, and app-level ingress rules.
 
 Module source: `modules/nixos/homestation-homelab/`
+
+This document reflects the public option schema defined in
+`modules/nixos/homestation-homelab/options.nix`.
 
 ---
 
 ## Quick Start
 
 ```nix
-# configurations/nixos/homestation/default.nix
 homestation.homelab = {
   enable = true;
   domain = "example.com";
   lanAddress = "192.168.1.10";
-  cloudflared.tunnelId = "<your-tunnel-uuid>";
 
-  apps.myapp.container = {
-    image = "myimage:latest";
+  apps.paperless = {
     expose = {
       mode = "private";
-      host = "myapp";        # resolves to myapp.example.com (no dots → subdomain)
-      port = 8080;
+      host = "paperless";
+      service = "web";
+      protocol = "http";
     };
-    # relative source → auto-resolves to /var/lib/homelab/myapp/data
-    volumes = [{ source = "data"; target = "/data"; }];
+
+    routes = [
+      {
+        upstream.service = "web";
+      }
+    ];
+
+    services.web = {
+      enable = true;
+      image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
+      port = 8000;
+      volumes = [
+        {
+          type = "bind";
+          source = "data";
+          target = "/usr/src/paperless/data";
+        }
+      ];
+    };
   };
 };
 ```
@@ -36,30 +52,25 @@ homestation.homelab = {
 
 ## Conceptual Model
 
-Services are organized by app, with an optional container grouping when an app
-needs more than one OCI container:
-
-```
+```text
 homestation.homelab
-└── apps
-    └── <appName>          (logical grouping, e.g. "nextcloud")
-        ├── container      (single-container shorthand)
-        └── containers
-            └── <containerName>   (multi-container form, e.g. "web", "db")
+`-- apps
+    `-- <appName>
+        |-- expose
+        |-- routes
+        `-- services
+            `-- <serviceName>
 ```
 
-Each **app** is a named group of containers that share an isolated Docker
-network. Most apps can use the `container` shorthand. Apps with sidecars, DBs,
-or other multiple services can use `containers.<name>`. Each container maps to
-one OCI container and carries all its own networking, ingress, volume, and DNS
-configuration.
+- An **app** is the public unit of configuration.
+- An app can define one or more **services** under `services.<name>`.
+- App-level `expose` selects whether the app is private, public, or internal.
+- App-level `routes` describe how inbound traffic reaches services.
+- Each service maps closely to one Arion/Docker Compose service stanza.
 
-The module then generates:
-- `virtualisation.oci-containers.containers.*` entries for each enabled container
-- A Caddy OCI container with an auto-built Caddyfile for HTTP reverse proxying
-- Cloudflare tunnel ingress rules for public exposure
-- Adguard/local DNS A records for private LAN exposure
-- systemd-tmpfiles rules to pre-create host paths for volumes
+`services` is the only supported workload form. The temporary
+`apps.<app>.container` and `apps.<app>.containers` compatibility paths were
+removed.
 
 ---
 
@@ -68,542 +79,300 @@ The module then generates:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enable` | bool | `false` | Master switch for the module |
-| `domain` | string\|null | `null` | Base domain (e.g. `"example.com"`) used for subdomain derivation |
-| `lanAddress` | string\|null | `null` | LAN IP of this host; required for private DNS records |
-| `dataDir` | string | `"/var/lib/homelab"` | Root directory for all persistent service data |
-| `libraries` | attrs of libraryType | `{}` | Named shared host paths (music library, etc.) mountable by any container |
-| `network.prefix` | string | `"homelab"` | Prefix for Docker network names (must be non-empty) |
-| `edgeNetwork.name` | string | `"homelab-edge"` | Name of the shared edge Docker network (Caddy + edge containers) |
+| `domain` | string\|null | `null` | Base domain used for host derivation |
+| `lanAddress` | string\|null | `null` | LAN IP used for private DNS/ingress |
+| `dataDir` | string | `"/var/lib/homelab"` | Base directory for persistent app data |
+| `network.prefix` | string | `"homelab"` | Prefix used when generating network names |
+| `edgeNetwork.name` | string | `"homelab-edge"` | Shared edge network name |
+| `libraries` | attrs of libraryType | `{}` | Named shared host paths mountable from services |
+| `apps` | attrs of appType | `{}` | App definitions |
+| `dns.records` | attrs of dnsRecordType | `{}` | Extra manual DNS records |
 
-### `cloudflared` sub-options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `cloudflared.enable` | bool | `true` | Enable the Cloudflare tunnel integration |
-| `cloudflared.tunnelId` | string\|null | `null` | Cloudflare tunnel UUID; required when `wildcardIngress = true` |
-| `cloudflared.wildcardIngress` | bool | `false` | Generate a single `*.domain` + `domain → http://localhost:80` ingress rule. All internet routing is handled by Caddy from there. Required for `expose.mode = "public"`. |
-
-### `caddy` sub-options
+### `cloudflared.*`
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `caddy.enable` | bool | `true` | Enable the Caddy reverse proxy container |
-| `caddy.enableWithoutServices` | bool | `false` | Start Caddy even if no containers need it |
-| `caddy.image` | string | `"caddy:latest"` | Docker image for Caddy |
-| `caddy.ports` | list of string | `["80:80", "443:443", "443:443/udp"]` | Host port mappings for the Caddy container |
-| `caddy.openFirewall` | bool | `true` | Open firewall for Caddy's host ports |
-| `caddy.environment` | attrs of string | `{}` | Environment variables passed to Caddy |
-| `caddy.environmentFiles` | list of path | `[]` | Secret env files for Caddy (e.g. for ACME credentials) |
-| `caddy.globalConfig` | lines | `""` | Content prepended to the generated Caddyfile (global block) |
-| `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for the Caddy container |
+| `cloudflared.enable` | bool | `true` | Enable Cloudflare tunnel integration |
+| `cloudflared.tunnelId` | string\|null | `null` | Tunnel UUID |
+| `cloudflared.wildcardIngress` | bool | `false` | Enable wildcard ingress generation |
 
-### `smtp` sub-options
-
-These defaults are shared by homelab apps that send email. Keep passwords in
-app-specific secret env files referenced through `environmentFiles`.
+### `caddy.*`
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `smtp.host` | string\|null | `null` | Shared SMTP hostname |
+| `caddy.enable` | bool | `true` | Enable generated Caddy integration |
+| `caddy.enableWithoutServices` | bool | `false` | Run Caddy even with no routed services |
+| `caddy.image` | string | `"caddy:latest"` | Caddy image |
+| `caddy.ports` | list of string | `["80:80" "443:443" "443:443/udp"]` | Port mappings for Caddy |
+| `caddy.openFirewall` | bool | `true` | Open firewall for Caddy ports |
+| `caddy.environment` | attrs of string | `{}` | Environment variables for Caddy |
+| `caddy.environmentFiles` | list of path | `[]` | Environment files for Caddy |
+| `caddy.globalConfig` | lines | `""` | Content prepended to the generated Caddyfile |
+| `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for Caddy |
+
+### `smtp.*`
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `smtp.host` | string\|null | `null` | Shared SMTP host |
 | `smtp.port` | int\|null | `null` | Shared SMTP port |
-| `smtp.security` | enum | `"starttls"` | Shared SMTP transport mode: `"starttls"`, `"force_tls"`, or `"off"` |
+| `smtp.security` | enum | `"starttls"` | Shared SMTP mode: `"starttls"`, `"force_tls"`, or `"off"` |
 | `smtp.from` | string\|null | `null` | Default sender address |
 | `smtp.username` | string\|null | `null` | Shared SMTP username |
 
-### `libraries` sub-options
-
-Libraries are named host paths that can be volume-mounted into any container using
-`library = "<name>"` instead of `source`. Useful for shared media, book, or data
-collections that multiple services need to access.
+### `libraries.<name>.*`
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `libraries.<name>.path` | string | — | Absolute host path of the shared directory (required) |
-| `libraries.<name>.create` | bool | `false` | Auto-create via systemd-tmpfiles if the path doesn't exist |
-| `libraries.<name>.user` | string | `"root"` | Owner user (only used when `create = true`) |
-| `libraries.<name>.group` | string | `"root"` | Owner group (only used when `create = true`) |
-| `libraries.<name>.mode` | string | `"0755"` | Permissions (only used when `create = true`) |
+| `path` | string | none | Absolute host path |
+| `create` | bool | `false` | Create the path via tmpfiles |
+| `user` | string | `"root"` | Owner when `create = true` |
+| `group` | string | `"root"` | Group when `create = true` |
+| `mode` | string | `"0755"` | Permissions when `create = true` |
 
-```nix
-homestation.homelab.libraries = {
-  music = { path = "/srv/music"; };           # pre-existing mount, no auto-create
-  books = { path = "/srv/books"; create = true; user = "1000"; group = "1000"; };
-};
-```
-
-### `dns.records` (manual records)
-
-Manually add DNS records outside of any container definition:
-
-```nix
-homestation.homelab.dns.records = {
-  "nas.example.com" = {
-    type = "A";
-    value = "192.168.1.20";
-    visibility = "lan";  # "lan" | "public"
-  };
-};
-```
-
----
-
-## App Options (`apps.<appName>.*`)
+### `dns.records.<name>.*`
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `enable` | bool | `true` | Enable or disable all containers in this app |
-| `container` | containerType\|null | `null` | Single-container shorthand; normalized internally to `containers.main` |
-| `containers` | attrs of containerType | `{}` | Container definitions for this app |
-
-Do not set both `container` and `containers` on the same app.
+| `type` | enum | `"A"` | DNS record type: `"A"`, `"AAAA"`, or `"CNAME"` |
+| `value` | string | none | DNS record value |
+| `visibility` | enum | `"lan"` | Record visibility: `"lan"` or `"public"` |
 
 ---
 
-## Container Options (`apps.<appName>.container.*` or `apps.<appName>.containers.<containerName>.*`)
+## App Options (`apps.<app>.*`)
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `enable` | bool | `true` | Enable or disable the app |
+| `expose.mode` | enum | `"none"` | Exposure mode: `"none"`, `"private"`, or `"public"` |
+| `expose.host` | string\|null | `null` | Hostname or subdomain for the app |
+| `expose.service` | string\|null | `null` | Service name used as the default upstream target |
+| `expose.protocol` | enum | `"http"` | Upstream protocol: `"http"` or `"https"` |
+| `routes` | list of routeType | `[]` | Ordered ingress routes for the app |
+| `services` | attrs of serviceType | `{}` | Workloads that belong to the app |
+
+### App Exposure
+
+- `mode = "none"` keeps the app internal.
+- `mode = "private"` is for LAN-only ingress.
+- `mode = "public"` is for internet-facing ingress.
+- `host = null` means the app has no hostname.
+- `service` should name a member of `services`.
+
+### App Routes (`apps.<app>.routes`)
+
+Each route can refine matching and upstream behavior:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `match.path` | list of string | `[]` | Path matchers |
+| `match.not.path` | list of string | `[]` | Excluded path matchers |
+| `upstream.service` | string\|null | `null` | Service selected for this route |
+| `proxy.headers.request` | attrs of string | `{}` | Request headers to set on the proxy |
+| `proxy.transport.http` | attrs of bool | `{}` | HTTP transport flags |
+| `requestBody.maxSize` | string\|null | `null` | Max request body size |
+| `encode` | list of string | `[]` | Encoders to enable |
+| `extraConfig` | lines | `""` | Extra route-level config |
+
+---
+
+## Service Options (`apps.<app>.services.<service>.*`)
 
 ### Basic
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `enable` | bool | `false` | Enable this container (must be explicitly set to `true`) |
-| `image` | string | — | Docker image (required) |
-| `cmd` | list of string\|null | `null` | Override the container command |
-| `entrypoint` | string\|null | `null` | Override the container entrypoint |
-| `environment` | attrs of string | `{}` | Environment variables |
-| `environmentFiles` | list of path | `[]` | Paths to env files (e.g. from sops-nix) |
+| `enable` | bool | `false` | Enable the service |
+| `image` | string | none | Container image |
+| `port` | int\|null | `null` | Primary service port |
+| `command` | list of string\|null | `null` | Override the service command |
+| `entrypoint` | string\|null | `null` | Override the service entrypoint |
+| `volumes` | list of volumeType | `[]` | Volume mounts |
 
-### Edge / Networking
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `edge.enable` | bool | auto | Attach this container to the shared edge network so Caddy can reach it. Auto-enabled when `expose.mode != "none"` |
-| `networks` | list of string | `[]` | Additional Docker networks to join beyond the auto-assigned ones |
-
-**Automatic networks:** A container is placed on the app's isolated network
-when its app has more than one container. If `edge.enable = true`, it also
-joins `edgeNetwork.name`. Extra networks from `networks` are appended.
-
-### Exposure / Ingress
+### Healthcheck
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `expose.mode` | enum | `"none"` | How to expose the service (see modes below) |
-| `expose.host` | string\|null | `null` | Hostname for this service. `"@"` = apex domain (e.g. `example.com`). No dots → subdomain (e.g. `"myapp"` → `"myapp.example.com"`). Contains dots → used as-is. `null` = no host. |
-| `expose.protocol` | enum | `"http"` | `"http"` or `"https"` — affects Caddy upstream scheme |
-| `expose.port` | int\|null | `null` | Container port Caddy reverse-proxies to |
+| `healthcheck.test` | list of string\|null | `null` | Healthcheck command |
+| `healthcheck.interval` | string\|null | `null` | Healthcheck interval |
+| `healthcheck.timeout` | string\|null | `null` | Healthcheck timeout |
+| `healthcheck.retries` | int\|null | `null` | Retry count |
+| `healthcheck.startPeriod` | string\|null | `null` | Startup grace period |
 
-**Exposure modes:**
+### Dependencies
 
-| Mode | Effect |
-|------|--------|
-| `"none"` | No ingress; container is internal only |
-| `"private"` | LAN DNS A record → `lanAddress` + Caddy reverse proxy |
-| `"public"` | LAN DNS A record + Caddy + internet access via `cloudflared.wildcardIngress` |
-
-**Host resolution (`expose.host`):**
-- `host = "@"` → bare domain (apex), e.g. `example.com`
-- `host = null` → no host; exposure requires a host to be set
-- `host = "myapp"` (no dots, domain set) → `myapp.domain`
-- `host = "custom.example.org"` (contains a dot) → `custom.example.org`
-
-### Caddy Reverse Proxy
-
-These options control the generated Caddyfile block for this container.
-`caddy.enable` auto-enables when `edge.enable = true`, `expose.mode != "none"`,
-a host is configured, and `expose.port` is set — for both `http` and `https` protocols.
+`dependsOn` is an attribute set keyed by dependency service name.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `caddy.enable` | bool | auto | Enable Caddy virtual host for this container |
-| `caddy.extraConfig` | lines | `""` | Arbitrary Caddy directives inside the virtual host block |
-| `caddy.reverseProxyExtraConfig` | lines | `""` | Directives inside the `reverse_proxy` block (e.g. for health checks or TLS transport) |
-| `caddy.upstream` | string\|null | `null` | Override the upstream address (default: `<container-name>:<expose.port>`) |
+| `dependsOn` | attrs of submodule | `{}` | Dependency map |
+| `dependsOn.<service>.condition` | enum | `"service_started"` | Dependency condition |
 
-The generated Caddyfile block looks like:
+Allowed `condition` values:
 
-```caddy
-myapp.example.com {
-  <caddy.extraConfig>
-  reverse_proxy myapp-web:8080 {
-    <caddy.reverseProxyExtraConfig>
-  }
-}
-```
+- `"service_started"`
+- `"service_healthy"`
+- `"service_completed_successfully"`
 
-For **HTTPS upstreams**, set `expose.protocol = "https"` and either provide a
-custom `caddy.upstream` or configure TLS transport via
-`caddy.reverseProxyExtraConfig`:
-
-```nix
-caddy = {
-  reverseProxyExtraConfig = ''
-    transport http {
-      tls
-      tls_insecure_skip_verify
-    }
-  '';
-};
-```
-
-### DNS Records
-
-Private DNS is auto-enabled when `edge.enable = true` and `expose.mode =
-"private"`. It creates an A record pointing `expose.host` → `lanAddress`.
+### Runtime
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `dns.enable` | bool | auto | Enable auto-generated DNS A record |
-| `dns.records` | attrs of dnsRecordType | `{}` | Extra DNS records for this container |
+| `runtime.user` | string\|null | `null` | Container user |
+| `runtime.workingDir` | string\|null | `null` | Working directory |
+| `runtime.init` | bool | `false` | Run with an init process |
+| `runtime.tmpfs` | list of string | `[]` | Tmpfs mounts |
+| `runtime.tty` | bool | `false` | Allocate a TTY |
+| `runtime.stopGracePeriod` | string\|null | `null` | Grace period before forced stop |
+| `runtime.stopSignal` | string\|null | `null` | Stop signal |
 
-Custom records per container:
-
-```nix
-dns.records = {
-  "alias.example.com" = {
-    type = "CNAME";
-    value = "myapp.example.com";
-    visibility = "lan";
-  };
-};
-```
-
-### Port Listeners (Host Port Mappings)
-
-Direct host port bindings, independent of reverse proxy exposure:
-
-```nix
-listeners = [
-  {
-    protocol = "tcp";        # "tcp" | "udp" (default: "tcp")
-    containerPort = 25;
-    hostPort = 25;
-    bind = null;             # null = all interfaces; or specific IP
-  }
-  {
-    protocol = "udp";
-    containerPort = 53;
-    hostPort = 53;
-  }
-];
-```
-
-The module validates that no two containers bind the same `hostPort/protocol`
-combination on overlapping interfaces.
-
-### Volumes
-
-Each volume entry requires exactly one of `source` or `library` — not both, not neither.
-
-**`source` — host path (absolute or relative):**
-
-```nix
-volumes = [
-  # Relative source: auto-resolves to ${dataDir}/<appName>/config
-  # Directory is created automatically — no hostPath.enable needed.
-  {
-    source = "config";
-    target = "/config";
-  }
-
-  # Relative source with custom permissions
-  {
-    source = "data";
-    target = "/data";
-    hostPath.user = "1000";
-    hostPath.group = "1000";
-    hostPath.mode = "0750";
-  }
-
-  # Absolute source — requires hostPath.enable = true to auto-create
-  {
-    source = "/etc/localtime";
-    target = "/etc/localtime";
-    readOnly = true;
-  }
-
-  # Absolute source within dataDir, auto-created
-  {
-    source = "/var/lib/homelab/myapp/uploads";
-    target = "/uploads";
-    hostPath.enable = true;
-    hostPath.type = "directory";
-    hostPath.user = "root";
-    hostPath.group = "root";
-    hostPath.mode = "0755";
-  }
-];
-```
-
-Relative sources are always managed (directory created via systemd-tmpfiles).
-Per-app base directories (`${dataDir}/<appName>`) are created automatically
-whenever any container in the app has a relative-source volume.
-
-**`library` — shared named path:**
-
-```nix
-volumes = [
-  # Mounts the host path from homestation.homelab.libraries.music
-  {
-    library = "music";
-    target = "/music";
-    readOnly = true;
-  }
-];
-```
-
-Library volumes reference paths declared in `homestation.homelab.libraries`.
-The host path is resolved at eval time; no tmpfiles rule is generated unless
-`libraries.<name>.create = true`.
-
-### Container Dependencies
-
-Order containers within the same app. Names must refer to other containers in
-the same app (enabled or not — the module filters to enabled ones at eval time).
-
-```nix
-dependsOn = [ "db" ];
-```
-
-### Docker-Specific Options
+### Privileges
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `name` | string\|null | `null` | Override the generated container name |
-| `autoStart` | bool | `true` | Start container on boot |
-| `restartPolicy` | enum | `"unless-stopped"` | Docker restart policy: `"no"`, `"on-failure"`, `"always"`, `"unless-stopped"` |
-| `resources.cpu` | float\|null | `null` | CPU limit in cores (e.g. `0.5`). `null` = no limit |
-| `resources.memory` | string\|null | `null` | Memory limit (e.g. `"512m"`, `"2g"`). `null` = no limit |
-| `labels` | attrs of string | `{}` | Docker labels |
-| `extraOptions` | list of string | `[]` | Raw `docker run` flags |
-
-**Container naming:** By default, single-container apps are named from the app
-key, and multi-container apps use `<appName>-<containerName>`. In both cases,
-underscores are normalized to hyphens. Override with `name` if needed, but take
-care: duplicate names across apps will be caught by validation.
+| `privileges.networkMode` | string\|null | `null` | Docker network mode |
+| `privileges.privileged` | bool | `false` | Run as privileged |
+| `privileges.devices` | list of string | `[]` | Extra device mappings |
+| `privileges.capabilities.add` | list of string | `[]` | Added Linux capabilities |
+| `privileges.capabilities.drop` | list of string | `[]` | Dropped Linux capabilities |
+| `privileges.dns` | list of string | `[]` | Custom DNS servers |
+| `privileges.extraHosts` | list of string | `[]` | Extra host mappings |
+| `privileges.sysctls` | attrs of string | `{}` | Kernel sysctls |
 
 ---
 
-## Networking Internals
+## Volume Options (`apps.<app>.services.<service>.volumes[]`)
 
-```
-Internet
-   │
-   ▼
-[Cloudflare Tunnel]  ← tunnel mode services
-   │
-   ▼
-[Caddy container]  ← on homelab-edge network
-   │
-   ├── myapp-web        (edge.enable = true → also on homelab-edge)
-   └── otherapp-web
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `type` | enum | `"bind"` | Volume kind: `"bind"`, `"library"`, or `"volume"` |
+| `source` | string\|null | `null` | Bind source path |
+| `name` | string\|null | `null` | Named volume or library name |
+| `target` | string | none | Mount target inside the container |
+| `readOnly` | bool | `false` | Mount read-only |
+| `external` | bool | `false` | Treat named volume as external |
 
-[homelab-myapp network]  ← multi-container app isolation
-   ├── myapp-web
-   └── myapp-db         (only on app network, not edge)
-```
+### `hostPath.*`
 
-- **Single-container apps** are placed only on the edge network (if `edge.enable`).
-- **Multi-container apps** automatically get an isolated `{prefix}-{appName}` network
-  for inter-container communication.
-- The Caddy container is always on `edgeNetwork.name`.
-- Containers with `edge.enable = true` join `edgeNetwork.name`, making them
-  reachable by Caddy by their generated name.
+Use `hostPath` when the module should manage metadata for bind mounts.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `hostPath.enable` | bool | `false` | Manage the host path |
+| `hostPath.type` | enum | `"directory"` | Managed host path type |
+| `hostPath.user` | string | `"root"` | Owner of the managed path |
+| `hostPath.group` | string | `"root"` | Group of the managed path |
+| `hostPath.mode` | string | `"0755"` | Permissions of the managed path |
+
+### Volume Kinds
+
+- `type = "bind"` uses `source` as a host path.
+- `type = "library"` uses `name` to reference `homestation.homelab.libraries.<name>`.
+- `type = "volume"` uses `name` as the Docker/Arion volume name.
 
 ---
 
 ## Validation
 
-The module catches configuration errors at `nix eval` time:
+The public schema currently enforces these constraints directly in
+`options.nix`:
 
-- Duplicate container names (across all apps)
-- App defining both `container` and `containers`
-- Duplicate exposed hostnames
-- Duplicate or conflicting host port listeners
-- Partial shared SMTP configuration; `smtp.host`, `smtp.port`, `smtp.from`, and `smtp.username` must be set together if any are set
-- `expose.mode != "none"` without `expose.host` or `expose.apexDomain` set
-- `expose.mode = "public"` without `cloudflared.wildcardIngress = true`
-- `cloudflared.wildcardIngress = true` without `cloudflared.enable`, `tunnelId`, and `domain` set
-- `caddy.enable = true` without `edge.enable`, `expose.host`, or `expose.port`
-- `expose.protocol = "https"` without a `caddy.upstream` or `reverseProxyExtraConfig`
-- `dns.enable = true` with `expose.mode = "private"` but no `lanAddress`
-- `dependsOn` referencing unknown containers in the app
-- Volume with both `source` and `library` set, or neither set
-- Relative `source` that starts with `..` (would escape the app data directory)
-- `library` referencing a name not declared in `homestation.homelab.libraries`
-- Auto-generated DNS keys conflicting with explicit `dns.records` keys
-- OCI backend must be `"docker"` (`virtualisation.oci-containers.backend`)
-- Native `services.caddy.enable` must be `false` (conflicts with the generated container)
+- Ports are limited to `1..65535`.
+- `expose.mode` is one of `"none"`, `"private"`, or `"public"`.
+- `expose.protocol` is one of `"http"` or `"https"`.
+- `dependsOn.<service>.condition` is limited to the supported dependency modes.
+- Volume `type` is limited to `"bind"`, `"library"`, or `"volume"`.
+- DNS record `type` is limited to `"A"`, `"AAAA"`, or `"CNAME"`.
+- DNS record `visibility` is limited to `"lan"` or `"public"`.
+
+Any additional runtime assertions in the rest of the module should be updated to
+target the `services` API rather than the removed `container` /
+`containers` compatibility surface.
 
 ---
 
 ## Recipes
 
-### Minimal private service
+### Single-service app
 
 ```nix
-apps.myapp.containers.web = {
-  enable = true;
-  image = "myimage:1.0";
+apps.whoami = {
   expose = {
     mode = "private";
-    host = "myapp";   # resolves to myapp.example.com
-    port = 3000;
+    host = "whoami";
+    service = "web";
+  };
+
+  routes = [{ upstream.service = "web"; }];
+
+  services.web = {
+    enable = true;
+    image = "traefik/whoami:latest";
+    port = 80;
   };
 };
 ```
 
-Creates:
-- Docker container `myapp-web` on `homelab-edge` (auto-joined because `expose.mode != "none"`)
-- Caddy virtual host `myapp.example.com → myapp-web:3000`
-- DNS A record `myapp.example.com → lanAddress`
-
-### Public service via Cloudflare wildcard tunnel
+### Multi-service app
 
 ```nix
-homestation.homelab = {
-  cloudflared = {
-    tunnelId = "<your-tunnel-uuid>";
-    wildcardIngress = true;   # one *.example.com → Caddy rule covers all public services
+apps.paperless = {
+  expose = {
+    mode = "private";
+    host = "paperless";
+    service = "web";
   };
 
-  apps.myapp.containers.web = {
+  routes = [{ upstream.service = "web"; }];
+
+  services.web = {
     enable = true;
-    image = "myimage:1.0";
-    expose = {
-      mode = "public";   # LAN DNS + Caddy + internet via wildcard tunnel
-      host = "myapp";
-      port = 3000;
-    };
+    image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
+    port = 8000;
+    dependsOn.redis.condition = "service_started";
+    dependsOn.db.condition = "service_started";
+  };
+
+  services.redis = {
+    enable = true;
+    image = "docker.io/library/redis:7";
+  };
+
+  services.db = {
+    enable = true;
+    image = "docker.io/library/postgres:16";
+    healthcheck.test = [ "CMD-SHELL" "pg_isready -U postgres" ];
   };
 };
 ```
 
-### Multi-container app (app + database)
+### Library-backed mount
 
 ```nix
-apps.nextcloud = {
-  containers.web = {
-    enable = true;
-    image = "nextcloud:latest";
-    expose = {
-      mode = "private";
-      host = "cloud";
-      port = 80;
-    };
-    dependsOn = [ "db" ];
-    environment = {
-      POSTGRES_HOST = "nextcloud-db";
-      POSTGRES_DB = "nextcloud";
-    };
-    # relative → /var/lib/homelab/nextcloud/html, auto-created
-    volumes = [{ source = "html"; target = "/var/www/html"; }];
-  };
-
-  containers.db = {
-    enable = true;
-    image = "postgres:16";
-    environmentFiles = [ config.sops.secrets."nextcloud/db-env".path ];
-    volumes = [{ source = "db"; target = "/var/lib/postgresql/data"; }];
-  };
+homestation.homelab.libraries.media = {
+  path = "/srv/media";
 };
-```
 
-Both containers share the auto-created `homelab-nextcloud` Docker network.
-`nextcloud-web` also joins the edge network. `nextcloud-db` is isolated.
-
-### Shared library mounts (music, books, etc.)
-
-```nix
-homestation.homelab = {
-  libraries.music = { path = "/srv/music"; };
-
-  apps.navidrome.containers.server = {
-    enable = true;
-    image = "deluan/navidrome:latest";
-    expose = { mode = "private"; host = "music"; port = 4533; };
-    volumes = [
-      { source = "data"; target = "/data"; }           # /var/lib/homelab/navidrome/data
-      { library = "music"; target = "/music"; readOnly = true; }
-    ];
-  };
-
-  apps.beets.containers.server = {
-    enable = true;
-    image = "lscr.io/linuxserver/beets:latest";
-    volumes = [
-      { source = "config"; target = "/config"; }
-      { library = "music"; target = "/music"; }        # same library, read-write for tagging
-    ];
-  };
-};
-```
-
-### Direct port binding (no reverse proxy)
-
-```nix
-apps.minecraft.containers.server = {
+homestation.homelab.apps.navidrome.services.server = {
   enable = true;
-  image = "itzg/minecraft-server:latest";
-  environment.EULA = "TRUE";
-  listeners = [{
-    containerPort = 25565;
-    hostPort = 25565;
-  }];
-  volumes = [{ source = "data"; target = "/data"; }];
-};
-```
-
-### Custom Caddy config (rate limiting, headers, etc.)
-
-```nix
-caddy.extraConfig = ''
-  header X-Frame-Options SAMEORIGIN
-  rate_limit {
-    zone dynamic {
-      key {remote_host}
-      events 100
-      window 1m
+  image = "deluan/navidrome:latest";
+  port = 4533;
+  volumes = [
+    {
+      type = "library";
+      name = "media";
+      target = "/music";
+      readOnly = true;
     }
-  }
-'';
-```
-
-### HTTPS upstream (container speaks TLS)
-
-```nix
-expose.protocol = "https";
-expose.port = 8443;
-caddy.reverseProxyExtraConfig = ''
-  transport http {
-    tls
-    tls_insecure_skip_verify
-  }
-'';
-```
-
----
-
-## Prerequisites
-
-The following must be configured on the host before enabling this module:
-
-```nix
-virtualisation.oci-containers.backend = "docker";
-virtualisation.docker.enable = true;   # or enable via the module that does this
-services.caddy.enable = false;          # must NOT be enabled (module runs Caddy in Docker)
-```
-
-For `cloudflared.wildcardIngress = true`:
-```nix
-services.cloudflared.enable = true;
-services.cloudflared.tunnels."<tunnelId>".credentialsFile = ...;
+  ];
+};
 ```
 
 ---
 
 ## Maintenance Note
 
-> **When the `homestation-homelab` module API changes** (options added, renamed,
-> or removed in `modules/nixos/homestation-homelab/options.nix`), update this
-> document to reflect the new API. Keep the option tables, validation section,
-> and recipes in sync. See AGENTS.md for the reminder.
+When `modules/nixos/homestation-homelab/options.nix` changes, update this
+document in the same patch. Keep the app, service, route, volume, and
+validation sections aligned with the module API.

@@ -33,3 +33,24 @@ Self-review:
 - Public option surface for new work is present under `apps -> expose/routes/services`.
 - `default.nix` was intentionally not switched to nonexistent future modules.
 - Known follow-up for later tasks: remove the temporary legacy compatibility declarations once backend readers stop depending on them.
+
+Fix wave (post-review):
+
+Status: completed.
+
+Changes made:
+- Removed the temporary legacy `apps.<app>.container` and `apps.<app>.containers` compatibility declarations from `modules/nixos/homestation-homelab/options.nix`.
+- Deleted the now-unused legacy container/volume helper schemas that only existed to support those hidden compatibility paths.
+- Rewrote `docs/homelab-services.md` to describe the approved public API only:
+  - `apps.<app>.services.<service>`
+  - app-level `apps.<app>.expose`
+  - app-level `apps.<app>.routes`
+
+Validation run:
+- `nix eval .#nixosConfigurations.homestation.options.homestation.homelab --json --no-write-lock-file`
+- Result: passed
+- Notes: command emitted the existing dirty-tree warning for `/home/nhan/nix-config`, then returned the homelab option tree successfully.
+
+Self-review:
+- The option schema no longer exposes any container-form compatibility layer.
+- The homelab docs no longer instruct callers to use `container` or `containers`.
