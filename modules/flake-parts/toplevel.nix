@@ -14,6 +14,11 @@
       ...
     }:
     let
+      homelabArionRegressions = import ../../checks/homelab-arion-regressions.nix {
+        inherit inputs pkgs;
+        system = pkgs.stdenv.hostPlatform.system;
+      };
+
       formatNixFiles = ''
         args=("$@")
         find . \
@@ -48,6 +53,8 @@
           nix flake check --no-build --no-write-lock-file
         '';
       };
+
+      checks.homelab-arion-regressions = homelabArionRegressions;
 
       apps.check = {
         type = "app";
