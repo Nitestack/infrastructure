@@ -118,6 +118,9 @@ let
     // optionalAttrs (service.entrypoint != null) {
       entrypoint = service.entrypoint;
     }
+    // optionalAttrs (service ? ports && service.ports != [ ]) {
+      ports = service.ports;
+    }
     // optionalAttrs (service.port != null) {
       expose = [ (toString service.port) ];
     }

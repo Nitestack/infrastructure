@@ -46,6 +46,7 @@ in
   # Virtualization
   virtualisation = {
     arion.backend = "docker";
+    oci-containers.backend = "docker";
     docker.autoPrune = {
       enable = true;
       randomizedDelaySec = "1h";
