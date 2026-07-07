@@ -4,8 +4,6 @@
 }:
 let
   username = config.meta.username;
-  userUid = config.users.users.${username}.uid;
-  userGid = config.ids.gids.users;
   renderedConfigName = "beets-config.yaml";
   renderedConfigPath = config.sops.templates.${renderedConfigName}.path;
 in
@@ -21,11 +19,7 @@ in
     enable = true;
     image = "linuxserver/beets:2.12.0@sha256:9d7953d6afc7469e6314c25d9952374338de792171857dc5ff6dc482d488c658";
 
-    environment = {
-      PUID = if userUid != null then toString userUid else "1000";
-      PGID = toString userGid;
-      TZ = config.time.timeZone;
-    };
+    helpers.linuxserver = true;
 
     volumes = [
       {

@@ -18,6 +18,9 @@ let
 
   cfg = config.homestation.homelab;
   internal = cfg._internal;
+  username = config.meta.username;
+  userUid = config.users.users.${username}.uid;
+  userGid = config.ids.gids.users;
 
   resolveBindSource =
     appName: volume:
@@ -117,9 +120,24 @@ let
       ) acc service.volumes
     ) { } (builtins.attrValues (internal.enabledServicesForApp appName));
 
+  helperEnvironment =
+    service:
+    let
+      wantsIdentity = service.helpers.linuxserver || service.helpers.identity;
+      wantsTimezone = service.helpers.linuxserver || service.helpers.timezone;
+    in
+    optionalAttrs wantsIdentity {
+      PUID = if userUid != null then toString userUid else "1000";
+      PGID = toString userGid;
+    }
+    // optionalAttrs wantsTimezone {
+      TZ = config.time.timeZone;
+    };
+
   serviceToArion =
     appName: serviceName: service:
     let
+      environment = helperEnvironment service // service.environment;
       networks =
         optional (service.privileges.networkMode == null) "default"
         ++ optional (serviceNeedsEdgeNetwork appName serviceName) cfg.edgeNetwork.name
@@ -134,8 +152,8 @@ let
       capabilities = capabilitiesToArion service;
       restart = service.restart;
     }
-    // optionalAttrs (service ? environment && service.environment != { }) {
-      environment = service.environment;
+    // optionalAttrs (environment != { }) {
+      inherit environment;
     }
     // optionalAttrs (service.labels != { }) {
       labels = service.labels;

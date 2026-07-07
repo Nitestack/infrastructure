@@ -205,6 +205,9 @@ Each route can refine matching and upstream behavior:
 | `command` | list of string\|null | `null` | Override the service command |
 | `entrypoint` | string\|null | `null` | Override the service entrypoint |
 | `environment` | attrs of string | `{}` | Environment variables |
+| `helpers.linuxserver` | bool | `false` | Inject LinuxServer-style defaults: `PUID`, `PGID`, and `TZ` |
+| `helpers.identity` | bool | `false` | Inject `PUID` and `PGID` derived from the host's primary user defaults |
+| `helpers.timezone` | bool | `false` | Inject `TZ` from `config.time.timeZone` |
 | `environmentFiles` | list of path | `[]` | Environment files |
 | `volumes` | list of volumeType | `[]` | Volume mounts |
 | `ports` | list of string | `[]` | Published Docker/Arion ports |
@@ -212,6 +215,31 @@ Each route can refine matching and upstream behavior:
 | `restart` | enum | `"unless-stopped"` | Container restart policy |
 | `labels` | attrs of string | `{}` | Container labels |
 | `extraServiceConfig` | attrs | `{}` | Raw attrs merged last into the Arion service definition. Escape hatch for compose options not covered by the typed API (e.g. `security_opt`). Values here override typed options |
+
+### Helpers
+
+`helpers` is a typed convenience layer for common container environment defaults:
+
+- `helpers.linuxserver = true` injects `PUID`, `PGID`, and `TZ`
+- `helpers.identity = true` injects `PUID` and `PGID`
+- `helpers.timezone = true` injects `TZ`
+
+These toggles are additive only. If multiple helpers are enabled, their values
+are unioned together. Explicit values in `environment` still win on key
+conflicts, which keeps the helper API simple while preserving a manual escape
+hatch.
+
+Injected values come from the host:
+
+- `PUID` uses `config.users.users.${config.meta.username}.uid`, falling back to `"1000"` when unset
+- `PGID` uses `config.ids.gids.users`
+- `TZ` uses `config.time.timeZone`
+
+```nix
+services.web.helpers.identity = true;    # PUID + PGID
+services.web.helpers.timezone = true;    # TZ only
+services.web.helpers.linuxserver = true; # PUID + PGID + TZ
+```
 
 ### Healthcheck
 
@@ -406,6 +434,7 @@ apps.whoami = {
     enable = true;
     image = "traefik/whoami:latest";
     port = 80;
+    helpers.timezone = true;
   };
 };
 ```
@@ -426,6 +455,7 @@ apps.paperless = {
     enable = true;
     image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
     port = 8000;
+    helpers.identity = true;
     dependsOn.redis = {};
     dependsOn.db.condition = "service_healthy";
   };

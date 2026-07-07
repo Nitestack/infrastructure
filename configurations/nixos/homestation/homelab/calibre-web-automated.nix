@@ -4,8 +4,6 @@
 }:
 let
   username = config.meta.username;
-  userUid = config.users.users.${username}.uid;
-  userGid = config.ids.gids.users;
 in
 {
   homestation.homelab.apps.calibre-web-automated = {
@@ -20,10 +18,9 @@ in
       image = "crocodilestick/calibre-web-automated:v4.0.6@sha256:c31a738b6d5ec6982c050063dd3f063b6943eb1051fc81144789f840d9093a8d";
       port = 8083;
 
+      helpers.linuxserver = true;
+
       environment = {
-        PUID = if userUid != null then toString userUid else "1000";
-        PGID = toString userGid;
-        TZ = config.time.timeZone;
         TRUSTED_PROXY_COUNT = "2";
       };
 
