@@ -6,7 +6,6 @@
 let
   inherit (lib)
     mkIf
-    mkMerge
     nameValuePair
     ;
 
@@ -26,15 +25,15 @@ let
       (
         lib.filter (
           appName:
-          internal.enabledApps.${appName}.expose.mode != "none" && internal.effectiveHost appName != null
+          cfg.lanAddress != null
+          && internal.enabledApps.${appName}.expose.mode != "none"
+          && internal.effectiveHost appName != null
         ) (builtins.attrNames internal.enabledApps)
       )
   );
 in
 {
   config = mkIf cfg.enable {
-    homestation.homelab.dns.records = mkMerge [
-      (lib.mkOptionDefault generatedRecords)
-    ];
+    homestation.homelab.dns.records = lib.mapAttrs (_: record: lib.mkDefault record) generatedRecords;
   };
 }

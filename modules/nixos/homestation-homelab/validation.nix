@@ -17,6 +17,10 @@ let
   cfg = config.homestation.homelab;
   internal = cfg._internal;
 
+  invalidAppNames = filter (
+    appName: builtins.match "[a-zA-Z0-9_-]+" appName == null
+  ) (attrNames cfg.apps);
+
   duplicates =
     values:
     let
@@ -39,6 +43,19 @@ let
     )
   );
 
+  duplicateProjectNames = duplicates (map internal.appProjectName (attrNames internal.enabledApps));
+
+  duplicateContainerNames = duplicates (
+    concatMap (
+      appName:
+      map (
+        serviceName:
+        internal.serviceContainerName appName serviceName
+          (internal.enabledServicesForApp appName).${serviceName}
+      ) (attrNames (internal.enabledServicesForApp appName))
+    ) (attrNames internal.enabledApps)
+  );
+
   appAssertions = concatMap (
     appName:
     let
@@ -51,6 +68,10 @@ let
       {
         assertion = app.expose.mode == "none" || internal.effectiveHost appName != null;
         message = "homestation.homelab.apps.${appName}.expose.host must be set when expose.mode != \"none\".";
+      }
+      {
+        assertion = app.expose.mode == "none" || cfg.lanAddress != null;
+        message = "homestation.homelab.apps.${appName} uses expose.mode = \"${app.expose.mode}\" but lanAddress is not set — LAN address resolution and Caddy ingress require it.";
       }
       {
         assertion = app.expose.mode != "public" || cfg.cloudflared.wildcardIngress;
@@ -116,6 +137,26 @@ let
           ) service.volumes;
           message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes has an invalid type/source/name combination.";
         }
+        {
+          assertion = builtins.all (
+            volume:
+            volume.type != "bind"
+            || volume.source == null
+            || lib.hasPrefix "/" volume.source
+            || (!lib.hasPrefix ".." volume.source && !lib.hasInfix "/.." volume.source)
+          ) service.volumes;
+          message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes contains a relative bind source that escapes the app data directory.";
+        }
+        {
+          assertion =
+            let
+              overlap = builtins.filter (
+                cap: builtins.elem cap service.privileges.capabilities.drop
+              ) service.privileges.capabilities.add;
+            in
+            overlap == [ ];
+          message = "homestation.homelab.apps.${appName}.services.${serviceName} has the same capability in both privileges.capabilities.add and .drop.";
+        }
       ]
     ) (attrNames services)
   ) (attrNames internal.enabledApps);
@@ -138,8 +179,12 @@ in
         message = "homestation.homelab.smtp requires host, port, from, and username to be set together.";
       }
       {
-        assertion = config.virtualisation.oci-containers.backend == "docker";
-        message = "homestation.homelab requires virtualisation.oci-containers.backend = \"docker\".";
+        assertion = config.virtualisation.arion.backend == "docker";
+        message = "homestation.homelab requires virtualisation.arion.backend = \"docker\".";
+      }
+      {
+        assertion = invalidAppNames == [ ];
+        message = "homestation.homelab.apps: app names must only contain letters, digits, hyphens, and underscores: ${concatStringsSep ", " invalidAppNames}.";
       }
       {
         assertion = !cfg.caddy.enable || !config.services.caddy.enable;
@@ -148,6 +193,14 @@ in
       {
         assertion = duplicateHosts == [ ];
         message = "homestation.homelab has duplicate exposed hostnames: ${concatStringsSep ", " duplicateHosts}.";
+      }
+      {
+        assertion = duplicateProjectNames == [ ];
+        message = "homestation.homelab has duplicate generated Arion project names after normalization: ${concatStringsSep ", " duplicateProjectNames}.";
+      }
+      {
+        assertion = duplicateContainerNames == [ ];
+        message = "homestation.homelab has duplicate generated container names after normalization: ${concatStringsSep ", " duplicateContainerNames}.";
       }
       {
         assertion = cfg.network.prefix != "";

@@ -21,7 +21,12 @@ let
 
   resolveBindSource =
     appName: volume:
-    if hasPrefix "/" volume.source then volume.source else "${cfg.dataDir}/${appName}/${volume.source}";
+    if volume.source == null then
+      throw "bind volume for app '${appName}' has null source (validation should have caught this)"
+    else if hasPrefix "/" volume.source then
+      volume.source
+    else
+      "${cfg.dataDir}/${appName}/${volume.source}";
 
   volumeToCompose =
     appName: volume:
@@ -90,6 +95,24 @@ let
         };
       };
 
+  namedVolumesForApp =
+    appName:
+    lib.foldl' (
+      acc: service:
+      lib.foldl' (
+        volumeAcc: volume:
+        if volume.type == "volume" then
+          volumeAcc
+          // {
+            ${volume.name} = optionalAttrs volume.external {
+              external = true;
+            };
+          }
+        else
+          volumeAcc
+      ) acc service.volumes
+    ) { } (builtins.attrValues (internal.enabledServicesForApp appName));
+
   serviceToArion =
     appName: serviceName: service:
     let
@@ -105,9 +128,13 @@ let
       depends_on = mapAttrs (_: dep: { condition = dep.condition; }) service.dependsOn;
       healthcheck = healthcheckToArion service.healthcheck;
       capabilities = capabilitiesToArion service;
+      restart = service.restartPolicy;
     }
     // optionalAttrs (service ? environment && service.environment != { }) {
       environment = service.environment;
+    }
+    // optionalAttrs (service.labels != { }) {
+      labels = service.labels;
     }
     // optionalAttrs (service ? environmentFiles && service.environmentFiles != [ ]) {
       env_file = map toString service.environmentFiles;
@@ -175,6 +202,7 @@ in
             service = serviceToArion appName serviceName service;
           }) (internal.enabledServicesForApp appName);
           networks = edgeNetworkAttrs appName;
+          docker-compose.volumes = namedVolumesForApp appName;
         };
       }
     ) internal.enabledApps;
