@@ -153,6 +153,23 @@ let
         type = types.attrsOf types.str;
         default = { };
       };
+      helpers = {
+        linuxserver = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Inject LinuxServer-style defaults into the service environment: PUID, PGID, and TZ.";
+        };
+        identity = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Inject PUID and PGID derived from the host's primary user defaults.";
+        };
+        timezone = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Inject TZ from config.time.timeZone.";
+        };
+      };
       environmentFiles = mkOption {
         type = types.listOf types.path;
         default = [ ];

@@ -6,8 +6,6 @@
 let
   cfg = config.homestation.homelab;
   username = config.meta.username;
-  userUid = config.users.users.${username}.uid;
-  userGid = config.ids.gids.users;
   homelab-lib = import ../../../../modules/nixos/homestation-homelab/lib.nix {
     inherit cfg lib;
   };
@@ -28,11 +26,11 @@ in
       image = "ghcr.io/calibrain/shelfmark:v1.3.0@sha256:22ca17919d5f663fd1b88f84c3ffd96339dc3aa60b9b3257726f3b7e6510412a";
       port = 8084;
 
+      helpers.identity = true;
+
       environment = {
         DOCKERMODE = "true";
         ONBOARDING = "false";
-        PUID = if userUid != null then toString userUid else "1000";
-        PGID = toString userGid;
         CALIBRE_WEB_URL = "https://${homelab-lib.effectiveHost calibreWebAutomated}";
         BOOK_LANGUAGE = "en,de";
         SEARCH_MODE = "universal";
