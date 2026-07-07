@@ -25,19 +25,17 @@ in
     lib.mkIf (cfg.domain != null && cfg.lanAddress != null)
       ''
         dns.${cfg.domain} {
-          reverse_proxy ${cfg.lanAddress}:3000
+          reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
         }
       '';
 
   services.adguardhome = {
     enable = true;
     mutableSettings = false;
-    host = if cfg.lanAddress != null then cfg.lanAddress else "0.0.0.0";
-    port = 3000;
     openFirewall = true;
     settings = {
       dns = {
-        bind_hosts = lib.optional (cfg.lanAddress != null) cfg.lanAddress;
+        bind_hosts = (lib.optional (cfg.lanAddress != null) cfg.lanAddress) ++ [ "::" ];
         port = 53;
         bootstrap_dns = [
           "1.1.1.1"
