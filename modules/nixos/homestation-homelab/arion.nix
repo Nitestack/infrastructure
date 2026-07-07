@@ -145,7 +145,7 @@ let
     in
     {
       image = service.image;
-      container_name = internal.serviceContainerName appName serviceName service;
+      container_name = internal.serviceContainerName appName (internal.enabledServicesForApp appName) serviceName;
       volumes = map (volumeToCompose appName) service.volumes;
       depends_on = mapAttrs (_: dep: { condition = dep.condition; }) service.dependsOn;
       healthcheck = healthcheckToArion service.healthcheck;

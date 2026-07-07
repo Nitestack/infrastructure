@@ -62,8 +62,9 @@ let
     appName: route:
     let
       app = internal.enabledApps.${appName};
-      service = (internal.enabledServicesForApp appName).${route.upstream.service};
-      upstreamHost = internal.serviceContainerName appName route.upstream.service service;
+      enabledServices = internal.enabledServicesForApp appName;
+      service = enabledServices.${route.upstream.service};
+      upstreamHost = internal.serviceContainerName appName enabledServices route.upstream.service;
       upstream =
         if app.expose.protocol == "https" then
           "https://${upstreamHost}:${toString service.port}"

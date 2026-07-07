@@ -4,6 +4,10 @@
 }:
 let
   cfg = config.homestation.homelab;
+  smtpTls =
+    if cfg.smtp.security == "force_tls" then "tls"
+    else if cfg.smtp.security == "off" then "none"
+    else cfg.smtp.security;
 in
 {
   homestation.homelab.apps.pocket-id = {
@@ -30,7 +34,7 @@ in
         SMTP_PORT = toString cfg.smtp.port;
         SMTP_FROM = cfg.smtp.from;
         SMTP_USER = cfg.smtp.username;
-        SMTP_TLS = cfg.smtp.security;
+        SMTP_TLS = smtpTls;
         EMAIL_API_KEY_EXPIRATION_ENABLED = "true";
       };
 

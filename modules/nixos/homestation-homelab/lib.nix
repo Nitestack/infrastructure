@@ -6,9 +6,14 @@ in
   appProjectName = appName: "${cfg.network.prefix}-${normalizeName appName}";
 
   serviceContainerName =
-    appName: serviceName: service:
+    appName: services: serviceName:
+    let
+      service = services.${serviceName};
+    in
     if service ? containerName && service.containerName != null then
       service.containerName
+    else if builtins.length (builtins.attrNames services) == 1 then
+      normalizeName appName
     else
       "${normalizeName appName}-${normalizeName serviceName}";
 
