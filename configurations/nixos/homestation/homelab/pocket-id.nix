@@ -5,9 +5,12 @@
 let
   cfg = config.homestation.homelab;
   smtpTls =
-    if cfg.smtp.security == "force_tls" then "tls"
-    else if cfg.smtp.security == "off" then "none"
-    else cfg.smtp.security;
+    if cfg.smtp.security == "force_tls" then
+      "tls"
+    else if cfg.smtp.security == "off" then
+      "none"
+    else
+      cfg.smtp.security;
 in
 {
   homestation.homelab.apps.pocket-id = {
