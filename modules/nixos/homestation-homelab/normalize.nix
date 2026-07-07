@@ -58,7 +58,9 @@ in
       let
         app = enabledApps.${appName};
       in
-      if app.routes != [ ] then app.routes else defaultRouteForApp appName;
+      if app.expose.mode == "none" then [ ]
+      else if app.routes != [ ] then app.routes
+      else defaultRouteForApp appName;
     serviceContainerName = homelabLib.serviceContainerName;
     appProjectName = homelabLib.appProjectName;
   };
