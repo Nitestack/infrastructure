@@ -61,6 +61,7 @@ let
         enable = mkOption {
           type = types.bool;
           default = false;
+          description = "Only applies to absolute bind sources (source starting with /). Set to true to have the module create and manage the host path via tmpfiles. Relative bind sources are always auto-created; use hostPath.user/group/mode directly to control ownership without setting this.";
         };
         type = mkOption {
           type = types.enum [
@@ -220,6 +221,7 @@ let
         tty = mkOption {
           type = types.bool;
           default = false;
+          description = "Allocate a pseudo-TTY for the container. Only needed when the process checks isatty() and refuses to start or misbehaves without a terminal. Rarely required for server workloads.";
         };
         stopGracePeriod = mkOption {
           type = types.nullOr types.str;
@@ -339,6 +341,7 @@ let
             "https"
           ];
           default = "http";
+          description = "Protocol Caddy uses when proxying to this service's container. Use \"https\" only when the container itself speaks TLS; \"http\" covers nearly all homelab services.";
         };
       };
       routes = mkOption {

@@ -11,17 +11,30 @@ let
   enabledServicesForApp =
     appName: lib.filterAttrs (_: service: service.enable) enabledApps.${appName}.services;
 
-  defaultRouteForApp =
+  effectiveExposeService =
     appName:
     let
       app = enabledApps.${appName};
+      svcNames = lib.attrNames (enabledServicesForApp appName);
     in
-    lib.optional (app.expose.service != null) {
+    if app.expose.service != null then
+      app.expose.service
+    else if lib.length svcNames == 1 then
+      lib.head svcNames
+    else
+      null;
+
+  defaultRouteForApp =
+    appName:
+    let
+      svc = effectiveExposeService appName;
+    in
+    lib.optional (svc != null) {
       match = {
         path = [ ];
         not.path = [ ];
       };
-      upstream.service = app.expose.service;
+      upstream.service = svc;
       proxy.headers.request = { };
       proxy.transport.http = { };
       requestBody.maxSize = null;
@@ -38,6 +51,7 @@ in
   config.homestation.homelab._internal = {
     inherit enabledApps enabledServicesForApp;
     effectiveHost = appName: homelabLib.effectiveHost enabledApps.${appName};
+    inherit effectiveExposeService;
     defaultRouteForApp = defaultRouteForApp;
     resolvedRoutesForApp =
       appName:

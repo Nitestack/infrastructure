@@ -82,8 +82,8 @@ let
         message = "homestation.homelab.apps.${appName} is exposed but has no resolved routes.";
       }
       {
-        assertion = app.expose.mode == "none" || app.routes != [ ] || app.expose.service != null;
-        message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when routes are not declared.";
+        assertion = app.expose.mode == "none" || app.routes != [ ] || internal.effectiveExposeService appName != null;
+        message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when routes are not declared and the app has multiple services.";
       }
       {
         assertion = app.expose.service == null || builtins.elem app.expose.service serviceNames;
@@ -146,6 +146,17 @@ let
             || (!lib.hasPrefix ".." volume.source && !lib.hasInfix "/.." volume.source)
           ) service.volumes;
           message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes contains a relative bind source that escapes the app data directory.";
+        }
+        {
+          assertion = builtins.all (
+            volume:
+            volume.type != "bind"
+            || volume.source == null
+            || !(lib.hasPrefix "/" volume.source)
+            || volume.hostPath.enable
+            || (volume.hostPath.user == "root" && volume.hostPath.group == "root" && volume.hostPath.mode == "0755")
+          ) service.volumes;
+          message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes has an absolute bind source with hostPath ownership settings but hostPath.enable = false — the settings will have no effect.";
         }
         {
           assertion =

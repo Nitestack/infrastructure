@@ -98,7 +98,7 @@ AdGuard Home `filtering.rewrites` automatically.
 |--------|------|---------|-------------|
 | `cloudflared.enable` | bool | `true` | Enable Cloudflare tunnel integration |
 | `cloudflared.tunnelId` | string\|null | `null` | Tunnel UUID |
-| `cloudflared.wildcardIngress` | bool | `false` | Enable wildcard ingress generation |
+| `cloudflared.wildcardIngress` | bool | auto | Auto-enabled when any app uses `expose.mode = "public"`; set to `false` to override |
 
 ### `caddy.*`
 
@@ -152,8 +152,8 @@ AdGuard Home `filtering.rewrites` automatically.
 | `enable` | bool | `true` | Enable or disable the app |
 | `expose.mode` | enum | `"none"` | Exposure mode: `"none"`, `"private"`, or `"public"` |
 | `expose.host` | string\|null | `null` | Hostname or subdomain for the app |
-| `expose.service` | string\|null | `null` | Service name used as the default upstream target |
-| `expose.protocol` | enum | `"http"` | Upstream protocol: `"http"` or `"https"` |
+| `expose.service` | string\|null | auto | Default upstream target; auto-derived when the app has exactly one service |
+| `expose.protocol` | enum | `"http"` | Protocol Caddy uses when proxying *to* the container. Use `"https"` only when the container itself speaks TLS; `"http"` covers nearly all homelab services |
 | `routes` | list of routeType | `[]` | Ordered ingress routes for the app |
 | `services` | attrs of serviceType | `{}` | Workloads that belong to the app |
 
@@ -163,7 +163,7 @@ AdGuard Home `filtering.rewrites` automatically.
 - `mode = "private"` is for LAN-only ingress.
 - `mode = "public"` is for internet-facing ingress.
 - `host = null` means the app has no hostname.
-- `service` should name a member of `services`.
+- `service` should name a member of `services`. When the app has exactly one service and no explicit `routes`, `expose.service` is auto-derived and can be omitted.
 
 ### App Routes (`apps.<app>.routes`)
 
@@ -233,7 +233,7 @@ Allowed `condition` values:
 | `runtime.user` | string\|null | `null` | Container user |
 | `runtime.workingDir` | string\|null | `null` | Working directory |
 | `runtime.tmpfs` | list of string | `[]` | Tmpfs mounts |
-| `runtime.tty` | bool | `false` | Allocate a TTY |
+| `runtime.tty` | bool | `false` | Allocate a pseudo-TTY. Only needed when the process checks `isatty()` and refuses to start or misbehaves without a terminal. Rarely required for server workloads |
 | `runtime.stopGracePeriod` | string\|null | `null` | Grace period before forced stop |
 | `runtime.stopSignal` | string\|null | `null` | Stop signal |
 
@@ -265,11 +265,11 @@ Allowed `condition` values:
 
 ### `hostPath.*`
 
-Use `hostPath` when the module should manage metadata for bind mounts.
+Controls host-side directory creation for bind mounts.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `hostPath.enable` | bool | `false` | Manage the host path |
+| `hostPath.enable` | bool | `false` | Only for absolute bind sources: enable host path creation and ownership management via tmpfiles. Relative sources are always auto-created; set `hostPath.user/group/mode` directly without enabling this |
 | `hostPath.type` | enum | `"directory"` | Managed host path type |
 | `hostPath.user` | string | `"root"` | Owner of the managed path |
 | `hostPath.group` | string | `"root"` | Group of the managed path |
@@ -282,6 +282,40 @@ Use `hostPath` when the module should manage metadata for bind mounts.
 - `type = "volume"` uses `name` as the Docker/Arion volume name and emits a
   named compose volume definition.
 - `external = true` marks that named compose volume as external.
+
+### Volume Patterns
+
+**Shared host path across multiple apps** — declare a library and reference it by name. Change the path in one place:
+
+```nix
+homestation.homelab.libraries.media = { path = "/srv/media"; };
+
+apps.navidrome.services.server.volumes = [{ type = "library"; name = "media"; target = "/music"; readOnly = true; }];
+apps.jellyfin.services.server.volumes  = [{ type = "library"; name = "media"; target = "/media"; readOnly = true; }];
+```
+
+**App-private managed path** — use a relative `source`. The module automatically creates `$dataDir/<app>/<source>`. Set `hostPath.user/group` when the container runs as a non-root user:
+
+```nix
+services.web.volumes = [{
+  type   = "bind";
+  source = "data";        # → /var/lib/homelab/myapp/data, created automatically
+  target = "/app/data";
+  hostPath.user  = "1000";
+  hostPath.group = "1000";
+}];
+```
+
+**Pre-existing absolute path** — use an absolute `source`. The module leaves the host path alone unless you opt in with `hostPath.enable = true`. Setting `hostPath.user/group/mode` without enabling this has no effect and is caught at evaluation time:
+
+```nix
+services.web.volumes = [{
+  type   = "bind";
+  source = "/mnt/external-disk/data";
+  target = "/app/data";
+  # hostPath.enable = true;   # add when you want the module to create/chown the path
+}];
+```
 
 ---
 
