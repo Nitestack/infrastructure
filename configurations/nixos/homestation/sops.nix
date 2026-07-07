@@ -129,6 +129,11 @@ in
       key = "ente/jwt-secret";
       mode = "0400";
     };
+    secrets."immich/db-password" = {
+      sopsFile = infraSecretsFile;
+      key = "immich/db-password";
+      mode = "0400";
+    };
     secrets."yamtrack/secret-key" = {
       sopsFile = yamtrackSecretsFile;
       key = "secret-key";
@@ -216,6 +221,15 @@ in
     templates."ente.env" = {
       content = ''
         POSTGRES_PASSWORD=${config.sops.placeholder."ente/db-password"}
+      '';
+      mode = "0400";
+    };
+    templates."immich.env" = {
+      content = ''
+        IMMICH_VERSION=v2.7.5
+        DB_PASSWORD=${config.sops.placeholder."immich/db-password"}
+        DB_USERNAME=postgres
+        DB_DATABASE_NAME=immich
       '';
       mode = "0400";
     };

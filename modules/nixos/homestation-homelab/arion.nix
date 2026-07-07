@@ -195,8 +195,7 @@ let
       // optionalAttrs (cfg.logging.options != { }) {
         options = cfg.logging.options;
       };
-    }
-    // service.extraServiceConfig;
+    };
 in
 {
   config = mkIf cfg.enable {
@@ -205,9 +204,15 @@ in
       nameValuePair (internal.appProjectName appName) {
         settings = {
           project.name = internal.appProjectName appName;
-          services = mapAttrs (serviceName: service: {
-            service = serviceToArion appName serviceName service;
-          }) (internal.enabledServicesForApp appName);
+          services = mapAttrs (
+            serviceName: service:
+            {
+              service = serviceToArion appName serviceName service;
+            }
+            // optionalAttrs (service.extraServiceConfig != { }) {
+              out.service = service.extraServiceConfig;
+            }
+          ) (internal.enabledServicesForApp appName);
           networks = edgeNetworkAttrs appName;
           docker-compose.volumes = namedVolumesForApp appName;
         };
