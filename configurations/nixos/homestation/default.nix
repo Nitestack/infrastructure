@@ -32,6 +32,7 @@ in
     ./homelab/pocket-id.nix
     ./homelab/shelfmark.nix
     ./homelab/vaultwarden.nix
+    ./homelab/wealthfolio.nix
     ./homelab/yamtrack.nix
     ./tailscale.nix
   ];

@@ -9,6 +9,7 @@ let
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
+  wealthfolioSecretsFile = self + /secrets/hosts/homestation/wealthfolio.yaml;
   yamtrackSecretsFile = self + /secrets/hosts/homestation/yamtrack.yaml;
 in
 {
@@ -123,6 +124,16 @@ in
       key = "prowlarr/api-key";
       mode = "0400";
     };
+    secrets."wealthfolio/secret-key" = {
+      sopsFile = wealthfolioSecretsFile;
+      key = "secret-key";
+      mode = "0400";
+    };
+    secrets."wealthfolio/password-hash" = {
+      sopsFile = wealthfolioSecretsFile;
+      key = "password-hash";
+      mode = "0400";
+    };
     templates."vaultwarden-smtp.env" = {
       content = ''
         SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
@@ -173,6 +184,13 @@ in
         EMAIL_SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
         PROWLARR_API_KEY=${config.sops.placeholder."shelfmark/prowlarr-api-key"}
         HARDCOVER_API_KEY=${config.sops.placeholder."hardcover/api-key"}
+      '';
+      mode = "0400";
+    };
+    templates."wealthfolio.env" = {
+      content = ''
+        WF_SECRET_KEY=${config.sops.placeholder."wealthfolio/secret-key"}
+        WF_AUTH_PASSWORD_HASH=${config.sops.placeholder."wealthfolio/password-hash"}
       '';
       mode = "0400";
     };
