@@ -1,31 +1,52 @@
 {
-  homestation.homelab.apps.adguard-home = {
-    expose = {
-      mode = "private";
-      host = "dns";
-      service = "web";
-    };
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.homestation.homelab;
+  dnsHost = if cfg.domain != null then "dns.${cfg.domain}" else "dns";
+in
+{
+  homestation.homelab.dns.records = lib.mkIf (cfg.lanAddress != null) (
+    builtins.listToAttrs [
+      {
+        name = dnsHost;
+        value = {
+          type = "A";
+          value = cfg.lanAddress;
+          visibility = "lan";
+        };
+      }
+    ]
+  );
 
-    services.web = {
-      enable = true;
-      image = "adguard/adguardhome:v0.107.77@sha256:e6f2b8bcda06064ab055b44933a4f0e983c35558b9cdb8d2e7ab1efcee36d890";
-      port = 80;
-      ports = [
-        "53:53"
-        "53:53/udp"
-      ];
-      volumes = [
-        {
-          type = "bind";
-          source = "data";
-          target = "/opt/adguardhome/work";
-        }
-        {
-          type = "bind";
-          source = "config";
-          target = "/opt/adguardhome/conf";
-        }
-      ];
+  homestation.homelab.caddy.extraSiteBlocks = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) ''
+    dns.${cfg.domain} {
+      reverse_proxy ${cfg.lanAddress}:3000
+    }
+  '';
+
+  services.adguardhome = {
+    enable = true;
+    mutableSettings = false;
+    host = if cfg.lanAddress != null then cfg.lanAddress else "0.0.0.0";
+    port = 3000;
+    openFirewall = true;
+    settings = {
+      dns = {
+        bind_hosts = lib.optional (cfg.lanAddress != null) cfg.lanAddress;
+        port = 53;
+        bootstrap_dns = [
+          "1.1.1.1"
+          "1.0.0.1"
+        ];
+      };
     };
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
   };
 }
