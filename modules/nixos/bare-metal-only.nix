@@ -38,5 +38,8 @@ in
   };
 
   # Networking
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager.enable = true;
+    nftables.enable = true;
+  };
 }
