@@ -17,9 +17,9 @@ let
   cfg = config.homestation.homelab;
   internal = cfg._internal;
 
-  invalidAppNames = filter (
-    appName: builtins.match "[a-zA-Z0-9_-]+" appName == null
-  ) (attrNames cfg.apps);
+  invalidAppNames = filter (appName: builtins.match "[a-zA-Z0-9_-]+" appName == null) (
+    attrNames cfg.apps
+  );
 
   duplicates =
     values:
@@ -82,7 +82,8 @@ let
         message = "homestation.homelab.apps.${appName} is exposed but has no resolved routes.";
       }
       {
-        assertion = app.expose.mode == "none" || app.routes != [ ] || internal.effectiveExposeService appName != null;
+        assertion =
+          app.expose.mode == "none" || app.routes != [ ] || internal.effectiveExposeService appName != null;
         message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when routes are not declared and the app has multiple services.";
       }
       {
@@ -154,7 +155,9 @@ let
             || volume.source == null
             || !(lib.hasPrefix "/" volume.source)
             || volume.hostPath.enable
-            || (volume.hostPath.user == "root" && volume.hostPath.group == "root" && volume.hostPath.mode == "0755")
+            || (
+              volume.hostPath.user == "root" && volume.hostPath.group == "root" && volume.hostPath.mode == "0755"
+            )
           ) service.volumes;
           message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes has an absolute bind source with hostPath ownership settings but hostPath.enable = false — the settings will have no effect.";
         }

@@ -36,7 +36,7 @@ let
         apps.demo.services.web = {
           enable = true;
           image = "demo:latest";
-          restartPolicy = "always";
+          restart = "always";
           labels.foo = "bar";
           volumes = [
             {

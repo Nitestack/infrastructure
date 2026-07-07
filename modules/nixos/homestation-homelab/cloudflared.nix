@@ -4,7 +4,12 @@
   ...
 }:
 let
-  inherit (lib) filter mkIf mkMerge mkDefault;
+  inherit (lib)
+    filter
+    mkIf
+    mkMerge
+    mkDefault
+    ;
 
   cfg = config.homestation.homelab;
   internal = cfg._internal;
@@ -34,6 +39,7 @@ in
       (cfg.enable && cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && wildcardEntries != { })
       {
         services.cloudflared.tunnels.${cfg.cloudflared.tunnelId}.ingress = wildcardEntries;
-      })
+      }
+    )
   ];
 }

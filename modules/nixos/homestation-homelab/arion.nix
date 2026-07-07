@@ -104,9 +104,13 @@ let
         if volume.type == "volume" then
           volumeAcc
           // {
-            ${volume.name} = optionalAttrs volume.external {
-              external = true;
-            };
+            ${volume.name} =
+              optionalAttrs volume.external {
+                external = true;
+              }
+              // optionalAttrs (volume.dockerName != null) {
+                name = volume.dockerName;
+              };
           }
         else
           volumeAcc
@@ -128,7 +132,7 @@ let
       depends_on = mapAttrs (_: dep: { condition = dep.condition; }) service.dependsOn;
       healthcheck = healthcheckToArion service.healthcheck;
       capabilities = capabilitiesToArion service;
-      restart = service.restartPolicy;
+      restart = service.restart;
     }
     // optionalAttrs (service ? environment && service.environment != { }) {
       environment = service.environment;
@@ -154,21 +158,6 @@ let
     // optionalAttrs (service.runtime.user != null) {
       user = service.runtime.user;
     }
-    // optionalAttrs (service.runtime.workingDir != null) {
-      working_dir = service.runtime.workingDir;
-    }
-    // optionalAttrs (service.runtime.tmpfs != [ ]) {
-      tmpfs = service.runtime.tmpfs;
-    }
-    // optionalAttrs service.runtime.tty {
-      tty = true;
-    }
-    // optionalAttrs (service.runtime.stopGracePeriod != null) {
-      stop_grace_period = service.runtime.stopGracePeriod;
-    }
-    // optionalAttrs (service.runtime.stopSignal != null) {
-      stop_signal = service.runtime.stopSignal;
-    }
     // optionalAttrs (service.privileges.networkMode != null) {
       network_mode = service.privileges.networkMode;
     }
@@ -178,18 +167,18 @@ let
     // optionalAttrs (service.privileges.devices != [ ]) {
       devices = service.privileges.devices;
     }
-    // optionalAttrs (service.privileges.dns != [ ]) {
-      dns = service.privileges.dns;
-    }
-    // optionalAttrs (service.privileges.extraHosts != [ ]) {
-      extra_hosts = service.privileges.extraHosts;
-    }
-    // optionalAttrs (service.privileges.sysctls != { }) {
-      sysctls = service.privileges.sysctls;
-    }
     // optionalAttrs (networks != [ ]) {
       inherit networks;
-    };
+    }
+    // optionalAttrs (cfg.logging.driver != null) {
+      logging = {
+        driver = cfg.logging.driver;
+      }
+      // optionalAttrs (cfg.logging.options != { }) {
+        options = cfg.logging.options;
+      };
+    }
+    // service.extraServiceConfig;
 in
 {
   config = mkIf cfg.enable {

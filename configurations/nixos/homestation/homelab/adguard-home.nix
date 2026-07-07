@@ -21,11 +21,13 @@ in
     ]
   );
 
-  homestation.homelab.caddy.extraSiteBlocks = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) ''
-    dns.${cfg.domain} {
-      reverse_proxy ${cfg.lanAddress}:3000
-    }
-  '';
+  homestation.homelab.caddy.extraSiteBlocks =
+    lib.mkIf (cfg.domain != null && cfg.lanAddress != null)
+      ''
+        dns.${cfg.domain} {
+          reverse_proxy ${cfg.lanAddress}:3000
+        }
+      '';
 
   services.adguardhome = {
     enable = true;

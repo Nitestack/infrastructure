@@ -57,6 +57,11 @@ let
         type = types.bool;
         default = false;
       };
+      dockerName = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Override the Docker volume name emitted in the compose volumes section. When null, Docker prefixes the volume key with the project name. Set this to pin the exact Docker volume name (e.g. when a container requires a specific volume name).";
+      };
       hostPath = {
         enable = mkOption {
           type = types.bool;
@@ -126,6 +131,11 @@ let
   serviceType = types.submodule {
     options = {
       enable = mkEnableOption "homelab app service";
+      containerName = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Override the generated container name. When null, the name is derived from the app and service names. Only set this when a container requires a fixed, externally-known name (e.g. Nextcloud AIO).";
+      };
       image = mkOption { type = types.str; };
       port = mkOption {
         type = types.nullOr port;
@@ -196,7 +206,7 @@ let
         );
         default = { };
       };
-      restartPolicy = mkOption {
+      restart = mkOption {
         type = types.enum [
           "no"
           "on-failure"
@@ -207,27 +217,6 @@ let
       };
       runtime = {
         user = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-        };
-        workingDir = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-        };
-        tmpfs = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-        };
-        tty = mkOption {
-          type = types.bool;
-          default = false;
-          description = "Allocate a pseudo-TTY for the container. Only needed when the process checks isatty() and refuses to start or misbehaves without a terminal. Rarely required for server workloads.";
-        };
-        stopGracePeriod = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-        };
-        stopSignal = mkOption {
           type = types.nullOr types.str;
           default = null;
         };
@@ -253,40 +242,15 @@ let
           type = types.listOf types.str;
           default = [ ];
         };
-        dns = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-        };
-        extraHosts = mkOption {
-          type = types.listOf types.str;
-          default = [ ];
-        };
-        sysctls = mkOption {
-          type = types.attrsOf types.str;
-          default = { };
-        };
       };
       labels = mkOption {
         type = types.attrsOf types.str;
         default = { };
       };
-    };
-  };
-
-  listenerType = types.submodule {
-    options = {
-      protocol = mkOption {
-        type = types.enum [
-          "tcp"
-          "udp"
-        ];
-        default = "tcp";
-      };
-      containerPort = mkOption { type = port; };
-      hostPort = mkOption { type = port; };
-      bind = mkOption {
-        type = types.nullOr types.str;
-        default = null;
+      extraServiceConfig = mkOption {
+        type = types.attrsOf types.anything;
+        default = { };
+        description = "Raw attrs merged last into the Arion service definition. Use as an escape hatch for compose options not covered by the typed API (e.g. security_opt). Values here override typed options.";
       };
     };
   };
@@ -475,6 +439,19 @@ in
         type = types.nullOr types.str;
         default = null;
         description = "SMTP username shared by homelab apps. Keep passwords in app-specific environmentFiles.";
+      };
+    };
+
+    logging = {
+      driver = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Default logging driver applied to every generated service. Set to \"journald\" on NixOS for zero-config log rotation via the host journal. Null means Docker's default (json-file, no size limits). Per-service override via extraServiceConfig.logging.";
+      };
+      options = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+        description = "Driver-specific logging options applied globally (e.g. max-size, max-file for json-file driver). Unused when driver is null.";
       };
     };
 
