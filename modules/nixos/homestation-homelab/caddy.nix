@@ -160,7 +160,7 @@ let
 in
 {
   config = mkIf (cfg.enable && runCaddy) {
-    systemd.services.${config.virtualisation.oci-containers.containers."homelab-caddy".serviceName} = {
+    systemd.services.${config.virtualisation.oci-containers.containers."caddy".serviceName} = {
       requires = [ "homelab-network.service" ];
       after = [ "homelab-network.service" ];
     };
@@ -170,7 +170,7 @@ in
       allowedUDPPorts = firewallUDPPorts;
     };
 
-    virtualisation.oci-containers.containers."homelab-caddy" = {
+    virtualisation.oci-containers.containers."caddy" = {
       image = cfg.caddy.image;
       autoStart = true;
       ports = cfg.caddy.ports;

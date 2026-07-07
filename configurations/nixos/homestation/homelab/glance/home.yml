@@ -146,7 +146,7 @@
             beszel-agent:
               name: Agent
               parent: beszel
-            homelab-caddy:
+            caddy:
               name: Caddy
               icon: di:caddy
               description: HTTPS Server

@@ -172,12 +172,12 @@ let
   goodVolumes = goodProject.settings."docker-compose".volumes;
   goodNetworkService = goodConfig.config.systemd.services.homelab-network or null;
   caddyVolumes =
-    caddyTransportConfig.config.virtualisation.oci-containers.containers."homelab-caddy".volumes;
+    caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".volumes;
   caddyfileMount = builtins.head caddyVolumes;
   caddyfilePath = builtins.head (lib.splitString ":" caddyfileMount);
   caddyfileText = builtins.readFile caddyfilePath;
   caddyServiceName =
-    caddyTransportConfig.config.virtualisation.oci-containers.containers."homelab-caddy".serviceName;
+    caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".serviceName;
   caddyUnit = caddyTransportConfig.config.systemd.services.${caddyServiceName};
   arionUnit = caddyTransportConfig.config.systemd.services."arion-homelab-demo";
 in
