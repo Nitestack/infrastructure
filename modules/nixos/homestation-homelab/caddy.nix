@@ -73,9 +73,7 @@ let
         mapAttrsToList (name: value: "  header_up ${name} ${value}") route.proxy.headers.request
       );
       transportConfig = concatStringsSep "\n" (
-        mapAttrsToList (
-          name: value: "    ${name} ${if value then "true" else "false"}"
-        ) route.proxy.transport.http
+        mapAttrsToList (name: value: if value then "    ${name}" else "") route.proxy.transport.http
       );
     in
     if route.proxy.headers.request == { } && route.proxy.transport.http == { } then
@@ -140,6 +138,7 @@ let
   caddyfile = pkgs.writeText "homelab-Caddyfile" ''
     ${cfg.caddy.globalConfig}
     ${concatStringsSep "\n" (map mkVirtualHost exposedAppNames)}
+    ${cfg.caddy.extraSiteBlocks}
   '';
 
   parsePort =
@@ -160,6 +159,11 @@ let
 in
 {
   config = mkIf (cfg.enable && runCaddy) {
+    systemd.services.${config.virtualisation.oci-containers.containers."homelab-caddy".serviceName} = {
+      requires = [ "homelab-network.service" ];
+      after = [ "homelab-network.service" ];
+    };
+
     networking.firewall = mkIf cfg.caddy.openFirewall {
       allowedTCPPorts = firewallTCPPorts;
       allowedUDPPorts = firewallUDPPorts;

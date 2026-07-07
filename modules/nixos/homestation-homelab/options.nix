@@ -204,16 +204,6 @@ let
         ];
         default = "unless-stopped";
       };
-      resources = {
-        cpu = mkOption {
-          type = types.nullOr types.float;
-          default = null;
-        };
-        memory = mkOption {
-          type = types.nullOr types.nonEmptyStr;
-          default = null;
-        };
-      };
       runtime = {
         user = mkOption {
           type = types.nullOr types.str;
@@ -222,10 +212,6 @@ let
         workingDir = mkOption {
           type = types.nullOr types.str;
           default = null;
-        };
-        init = mkOption {
-          type = types.bool;
-          default = false;
         };
         tmpfs = mkOption {
           type = types.listOf types.str;
@@ -281,10 +267,6 @@ let
       labels = mkOption {
         type = types.attrsOf types.str;
         default = { };
-      };
-      extraOptions = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
       };
     };
   };
@@ -448,6 +430,10 @@ in
         default = [ ];
       };
       globalConfig = mkOption {
+        type = types.lines;
+        default = "";
+      };
+      extraSiteBlocks = mkOption {
         type = types.lines;
         default = "";
       };
