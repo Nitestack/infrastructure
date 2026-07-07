@@ -9,6 +9,7 @@ let
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
+  yamtrackSecretsFile = self + /secrets/hosts/homestation/yamtrack.yaml;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -102,6 +103,21 @@ in
       key = "hardcover/api-key";
       mode = "0400";
     };
+    secrets."yamtrack/secret-key" = {
+      sopsFile = yamtrackSecretsFile;
+      key = "secret-key";
+      mode = "0400";
+    };
+    secrets."yamtrack/oidc-client-id" = {
+      sopsFile = yamtrackSecretsFile;
+      key = "oidc-client-id";
+      mode = "0400";
+    };
+    secrets."yamtrack/oidc-client-secret" = {
+      sopsFile = yamtrackSecretsFile;
+      key = "oidc-client-secret";
+      mode = "0400";
+    };
     secrets."shelfmark/prowlarr-api-key" = {
       sopsFile = shelfmarkSecretsFile;
       key = "prowlarr/api-key";
@@ -157,6 +173,17 @@ in
         EMAIL_SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
         PROWLARR_API_KEY=${config.sops.placeholder."shelfmark/prowlarr-api-key"}
         HARDCOVER_API_KEY=${config.sops.placeholder."hardcover/api-key"}
+      '';
+      mode = "0400";
+    };
+    templates."yamtrack.env" = {
+      content = ''
+        SECRET=${config.sops.placeholder."yamtrack/secret-key"}
+        SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocketid","name":"Pocket ID","client_id":"${
+          config.sops.placeholder."yamtrack/oidc-client-id"
+        }","secret":"${
+          config.sops.placeholder."yamtrack/oidc-client-secret"
+        }","settings":{"server_url":"https://id.${config.homestation.homelab.domain}/.well-known/openid-configuration"}}]}}
       '';
       mode = "0400";
     };
