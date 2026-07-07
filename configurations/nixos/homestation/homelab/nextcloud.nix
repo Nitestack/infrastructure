@@ -50,6 +50,10 @@ in
 
     services.master = {
       enable = true;
+      # Intentionally unpinned: AIO reads its own image tag at runtime to derive the channel
+      # for all child images it spawns, and its bundled watchtower self-updates the
+      # mastercontainer. Pinning a digest breaks both mechanisms. See:
+      # https://github.com/nextcloud/all-in-one#how-to-properly-update-nextcloud-all-in-one
       image = "ghcr.io/nextcloud-releases/all-in-one:latest";
       containerName = "nextcloud-aio-mastercontainer";
       port = 11000;

@@ -45,6 +45,7 @@ in
         PROWLARR_URL = "https://index.${cfg.domain}";
         PROWLARR_TORRENT_CLIENT = "qbittorrent";
         QBITTORRENT_URL = "https://magnets.${cfg.domain}";
+        QBITTORRENT_DOWNLOAD_DIR = "/data/downloads";
         HARDCOVER_ENABLED = "true";
       };
 
@@ -64,9 +65,11 @@ in
           hostPath.group = "users";
         }
         {
+          # Target must match rdtclient's internal container path (/data/downloads) so that
+          # shelfmark can resolve the exact paths rdtclient reports for completed downloads.
           type = "bind";
           source = "${cfg.dataDir}/rdtclient/downloads";
-          target = "${cfg.dataDir}/rdtclient/downloads";
+          target = "/data/downloads";
         }
       ];
 

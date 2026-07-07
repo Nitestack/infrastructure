@@ -86,6 +86,8 @@ in
           readOnly = true;
         }
         {
+          # USB-to-NVMe adapter (secondary storage); /mnt/backup must be mounted before the
+          # agent container starts. Exposed to beszel for disk usage tracking.
           type = "bind";
           source = "/mnt/backup/.beszel";
           target = "/extra-filesystems/sda__Backup";

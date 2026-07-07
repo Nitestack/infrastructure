@@ -21,6 +21,8 @@ in
       dependsOn.server.condition = "service_started";
 
       environment = {
+        # Upstream explicitly sets port 8000 (gunicorn direct) for SSR server-to-server calls,
+        # bypassing nginx. Per .env.example: "PLEASE DON'T CHANGE :)"
         PUBLIC_SERVER_URL = "http://server:8000";
         ORIGIN = "https://travel.${cfg.domain}";
         BODY_SIZE_LIMIT = "Infinity";
