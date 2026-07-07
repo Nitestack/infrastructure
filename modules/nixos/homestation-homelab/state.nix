@@ -14,48 +14,48 @@ let
     ;
 
   cfg = config.homestation.homelab;
-  homelab-lib = import ./lib.nix { inherit cfg lib; };
-  inherit (homelab-lib) enabledApps enabledContainersForApp;
+  internal = cfg._internal;
 
-  enabledContainersWithApp = concatMap (
+  enabledServicesWithApp = concatMap (
     appName:
     let
-      containers = enabledContainersForApp appName;
+      services = internal.enabledServicesForApp appName;
     in
-    map (containerName: {
+    map (serviceName: {
       inherit appName;
-      container = containers.${containerName};
-    }) (attrNames containers)
-  ) (attrNames enabledApps);
+      service = services.${serviceName};
+    }) (attrNames services)
+  ) (attrNames internal.enabledApps);
 
-  isRelativeSource = volume: volume.source != null && !hasPrefix "/" volume.source;
+  isRelativeBindSource =
+    volume: volume.type == "bind" && volume.source != null && !hasPrefix "/" volume.source;
 
-  # A volume that needs a tmpfiles rule: explicit hostPath.enable, OR an implicit relative source
+  # A volume that needs a tmpfiles rule: explicit hostPath.enable, OR an implicit relative bind source
   needsTmpfiles =
-    volume: volume.library == null && (volume.hostPath.enable || isRelativeSource volume);
+    volume: volume.type == "bind" && (volume.hostPath.enable || isRelativeBindSource volume);
 
-  resolveSource =
+  resolveBindSource =
     appName: volume:
-    if isRelativeSource volume then "${cfg.dataDir}/${appName}/${volume.source}" else volume.source;
+    if isRelativeBindSource volume then "${cfg.dataDir}/${appName}/${volume.source}" else volume.source;
 
   volumeRules = concatMap (
-    { appName, container }:
+    { appName, service }:
     map (
       volume:
       let
         entryType = if volume.hostPath.type == "file" then "f" else "d";
-        source = resolveSource appName volume;
+        source = resolveBindSource appName volume;
       in
       "${entryType} ${source} ${volume.hostPath.mode} ${volume.hostPath.user} ${volume.hostPath.group} -"
-    ) (filter needsTmpfiles container.volumes)
-  ) enabledContainersWithApp;
+    ) (filter needsTmpfiles service.volumes)
+  ) enabledServicesWithApp;
 
-  # Per-app base dirs — created whenever an app has at least one relative-source volume
+  # Per-app base dirs — created whenever an app has at least one relative bind-source volume
   appsWithRelativeVolumes = unique (
     concatMap (
-      { appName, container }:
-      if builtins.any isRelativeSource container.volumes then [ appName ] else [ ]
-    ) enabledContainersWithApp
+      { appName, service }:
+      if builtins.any isRelativeBindSource service.volumes then [ appName ] else [ ]
+    ) enabledServicesWithApp
   );
 
   appBaseDirRules = map (

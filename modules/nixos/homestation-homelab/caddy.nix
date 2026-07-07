@@ -6,41 +6,25 @@
 }:
 let
   inherit (lib)
-    concatMap
     concatStringsSep
+    filter
+    imap0
+    mapAttrsToList
     mkIf
-    nameValuePair
+    optionalString
     ;
 
   cfg = config.homestation.homelab;
-  homelab-lib = import ./lib.nix { inherit cfg lib; };
-  inherit (homelab-lib) containerAttrName effectiveHost enabledApps;
+  internal = cfg._internal;
 
-  exposedHttpContainers = builtins.listToAttrs (
-    concatMap (
-      appName:
-      let
-        app = enabledApps.${appName};
-        containers = lib.filterAttrs (
-          _: container:
-          container.enable
-          && container.edge.enable
-          && container.caddy.enable
-          && container.expose.mode != "none"
-          && effectiveHost container != null
-        ) app.containers;
-      in
-      map (
-        containerName:
-        nameValuePair (containerAttrName appName containerName containers.${containerName}) {
-          container = containers.${containerName};
-          host = effectiveHost containers.${containerName};
-        }
-      ) (builtins.attrNames containers)
-    ) (builtins.attrNames enabledApps)
-  );
+  exposedAppNames = filter (
+    appName:
+    internal.enabledApps.${appName}.expose.mode != "none"
+    && internal.effectiveHost appName != null
+    && internal.resolvedRoutesForApp appName != [ ]
+  ) (builtins.attrNames internal.enabledApps);
 
-  hasHttpServices = exposedHttpContainers != { };
+  hasHttpServices = exposedAppNames != [ ];
   runCaddy = cfg.caddy.enable && (cfg.caddy.enableWithoutServices || hasHttpServices);
 
   indentLines =
@@ -49,38 +33,113 @@ let
       map (line: prefix + line) (builtins.filter (line: line != "") (lib.splitString "\n" text))
     );
 
-  mkReverseProxy =
-    name: site:
+  mkMatcher =
+    appName: routeIndex: route:
     let
-      inherit (site) container;
-      upstream =
-        if container.caddy.upstream != null then
-          container.caddy.upstream
-        else if container.expose.protocol == "https" then
-          "https://${name}:${toString container.expose.port}"
-        else
-          "${name}:${toString container.expose.port}";
-      proxyExtra = indentLines "    " container.caddy.reverseProxyExtraConfig;
+      matcherName = "route-${lib.replaceStrings [ "_" ] [ "-" ] appName}-${toString routeIndex}";
+      hasMatcher = route.match.path != [ ] || route.match.not.path != [ ];
+      matcherBody = concatStringsSep "\n" (
+        lib.optional (route.match.path != [ ]) "path ${concatStringsSep " " route.match.path}"
+        ++ lib.optional (
+          route.match.not.path != [ ]
+        ) "not path ${concatStringsSep " " route.match.not.path}"
+      );
     in
-    if container.caddy.reverseProxyExtraConfig == "" then
-      "  reverse_proxy ${upstream}"
+    {
+      inherit hasMatcher matcherName;
+      block =
+        if hasMatcher then
+          ''
+            @${matcherName} {
+              ${matcherBody}
+            }
+          ''
+        else
+          "";
+    };
+
+  mkReverseProxy =
+    appName: route:
+    let
+      app = internal.enabledApps.${appName};
+      service = (internal.enabledServicesForApp appName).${route.upstream.service};
+      upstreamHost = internal.serviceContainerName appName route.upstream.service service;
+      upstream =
+        if app.expose.protocol == "https" then
+          "https://${upstreamHost}:${toString service.port}"
+        else
+          "${upstreamHost}:${toString service.port}";
+      proxyHeaders = concatStringsSep "\n" (
+        mapAttrsToList (name: value: "  header_up ${name} ${value}") route.proxy.headers.request
+      );
+      transportConfig = concatStringsSep "\n" (
+        mapAttrsToList (
+          name: value: "    ${name} ${if value then "true" else "false"}"
+        ) route.proxy.transport.http
+      );
+    in
+    if route.proxy.headers.request == { } && route.proxy.transport.http == { } then
+      "reverse_proxy ${upstream}"
     else
       ''
         reverse_proxy ${upstream} {
-        ${proxyExtra}
+        ${optionalString (route.proxy.headers.request != { }) proxyHeaders}
+        ${optionalString (route.proxy.transport.http != { }) ''
+            transport http {
+          ${transportConfig}
+            }
+        ''}
         }
       '';
 
-  mkVirtualHost = name: site: ''
-    ${site.host} {
-    ${indentLines "  " site.container.caddy.extraConfig}
-    ${mkReverseProxy name site}
+  mkRoute =
+    appName: routeIndex: route:
+    let
+      matcher = mkMatcher appName routeIndex route;
+      body = concatStringsSep "\n" (
+        lib.optional (route.requestBody.maxSize != null) ''
+          request_body {
+            max_size ${route.requestBody.maxSize}
+          }
+        ''
+        ++ lib.optional (route.encode != [ ]) "encode ${concatStringsSep " " route.encode}"
+        ++ [ (mkReverseProxy appName route) ]
+        ++ lib.optional (route.extraConfig != "") route.extraConfig
+      );
+    in
+    concatStringsSep "\n" (
+      lib.optional matcher.hasMatcher matcher.block
+      ++ [
+        (
+          if matcher.hasMatcher then
+            ''
+              handle @${matcher.matcherName} {
+              ${indentLines "  " body}
+              }
+            ''
+          else
+            ''
+              handle {
+              ${indentLines "  " body}
+              }
+            ''
+        )
+      ]
+    );
+
+  mkVirtualHost = appName: ''
+    ${internal.effectiveHost appName} {
+    ${concatStringsSep "\n" (
+      imap0 (routeIndex: route: indentLines "  " (mkRoute appName routeIndex route)) (
+        internal.resolvedRoutesForApp appName
+      )
+    )}
     }
   '';
 
   caddyfile = pkgs.writeText "homelab-Caddyfile" ''
     ${cfg.caddy.globalConfig}
-    ${concatStringsSep "\n" (lib.mapAttrsToList mkVirtualHost exposedHttpContainers)}
+    ${concatStringsSep "\n" (map mkVirtualHost exposedAppNames)}
   '';
 
   parsePort =

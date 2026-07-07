@@ -188,7 +188,21 @@ Each route can refine matching and upstream behavior:
 | `port` | int\|null | `null` | Primary service port |
 | `command` | list of string\|null | `null` | Override the service command |
 | `entrypoint` | string\|null | `null` | Override the service entrypoint |
+| `environment` | attrs of string | `{}` | Environment variables |
+| `environmentFiles` | list of path | `[]` | Environment files |
 | `volumes` | list of volumeType | `[]` | Volume mounts |
+| `ports` | list of string | `[]` | Published Docker/Arion ports |
+| `networks` | list of string | `[]` | Additional Docker networks |
+| `restartPolicy` | enum | `"unless-stopped"` | Container restart policy |
+| `labels` | attrs of string | `{}` | Container labels |
+| `extraOptions` | list of string | `[]` | Extra backend-specific options |
+
+### Resources
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `resources.cpu` | float\|null | `null` | CPU limit hint |
+| `resources.memory` | string\|null | `null` | Memory limit hint |
 
 ### Healthcheck
 
@@ -289,7 +303,7 @@ At evaluation time, `validation.nix` adds runtime assertions against the
 normalized app/service graph:
 
 - Exposed apps must resolve an effective host and at least one route.
-- Apps without explicit `routes` must set `expose.service`.
+- Exposed apps without explicit `routes` must set `expose.service`.
 - `expose.service` must reference an enabled service in the same app.
 - `expose.mode = "public"` requires
   `homestation.homelab.cloudflared.wildcardIngress = true`.

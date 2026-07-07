@@ -34,8 +34,7 @@ let
     map internal.effectiveHost (
       filter (
         appName:
-        internal.enabledApps.${appName}.expose.mode != "none"
-        && internal.effectiveHost appName != null
+        internal.enabledApps.${appName}.expose.mode != "none" && internal.effectiveHost appName != null
       ) (attrNames internal.enabledApps)
     )
   );
@@ -62,8 +61,8 @@ let
         message = "homestation.homelab.apps.${appName} is exposed but has no resolved routes.";
       }
       {
-        assertion = app.routes != [ ] || app.expose.service != null;
-        message = "homestation.homelab.apps.${appName}.expose.service is required when routes are not declared.";
+        assertion = app.expose.mode == "none" || app.routes != [ ] || app.expose.service != null;
+        message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when routes are not declared.";
       }
       {
         assertion = app.expose.service == null || builtins.elem app.expose.service serviceNames;
@@ -77,16 +76,13 @@ let
     let
       services = internal.enabledServicesForApp appName;
     in
-    lib.imap0 (
-      index: route: {
-        assertion =
-          route.upstream.service != null
-          && builtins.hasAttr route.upstream.service services
-          && services.${route.upstream.service}.port != null;
-        message =
-          "homestation.homelab.apps.${appName}.routes.${toString index} must reference an enabled service with a defined port.";
-      }
-    ) (internal.resolvedRoutesForApp appName)
+    lib.imap0 (index: route: {
+      assertion =
+        route.upstream.service != null
+        && builtins.hasAttr route.upstream.service services
+        && services.${route.upstream.service}.port != null;
+      message = "homestation.homelab.apps.${appName}.routes.${toString index} must reference an enabled service with a defined port.";
+    }) (internal.resolvedRoutesForApp appName)
   ) (attrNames internal.enabledApps);
 
   serviceAssertions = concatMap (

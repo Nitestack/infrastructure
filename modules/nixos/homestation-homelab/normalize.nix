@@ -9,8 +9,7 @@ let
   enabledApps = lib.filterAttrs (_: app: app.enable) cfg.apps;
 
   enabledServicesForApp =
-    appName:
-    lib.filterAttrs (_: service: service.enable) enabledApps.${appName}.services;
+    appName: lib.filterAttrs (_: service: service.enable) enabledApps.${appName}.services;
 
   defaultRouteForApp =
     appName:

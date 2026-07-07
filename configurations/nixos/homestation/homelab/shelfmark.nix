@@ -11,21 +11,22 @@ let
   homelab-lib = import ../../../../modules/nixos/homestation-homelab/lib.nix {
     inherit cfg lib;
   };
-  calibreWebAutomated = cfg.apps.calibre-web-automated.container;
+  calibreWebAutomated = cfg.apps.calibre-web-automated;
 in
 {
   homestation.homelab.apps.shelfmark = {
     enable = calibreWebAutomated.enable;
 
-    container = {
+    expose = {
+      mode = "public";
+      host = "books";
+      service = "web";
+    };
+
+    services.web = {
       enable = true;
       image = "ghcr.io/calibrain/shelfmark:v1.3.0@sha256:22ca17919d5f663fd1b88f84c3ffd96339dc3aa60b9b3257726f3b7e6510412a";
-
-      expose = {
-        mode = "public";
-        host = "books";
-        port = 8084;
-      };
+      port = 8084;
 
       environment = {
         DOCKERMODE = "true";
@@ -53,16 +54,19 @@ in
 
       volumes = [
         {
+          type = "bind";
           source = "${cfg.dataDir}/calibre-web-automated/upload";
           target = "/books";
         }
         {
+          type = "bind";
           source = "config";
           target = "/config";
           hostPath.user = username;
           hostPath.group = "users";
         }
         {
+          type = "bind";
           source = "/mnt/data/rdtclient/downloads";
           target = "/mnt/data/rdtclient/downloads";
         }

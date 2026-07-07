@@ -25,7 +25,8 @@ in
       "${normalizeName appName}-${normalizeName containerName}";
 
   serviceContainerName =
-    appName: serviceName: _service: "${normalizeName appName}-${normalizeName serviceName}";
+    appName: serviceName: _service:
+    "${normalizeName appName}-${normalizeName serviceName}";
 
   effectiveHost =
     app:

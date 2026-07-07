@@ -138,8 +138,24 @@ let
         type = types.nullOr types.str;
         default = null;
       };
+      environment = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+      };
+      environmentFiles = mkOption {
+        type = types.listOf types.path;
+        default = [ ];
+      };
       volumes = mkOption {
         type = types.listOf volumeType;
+        default = [ ];
+      };
+      ports = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+      };
+      networks = mkOption {
+        type = types.listOf types.str;
         default = [ ];
       };
       healthcheck = {
@@ -178,6 +194,25 @@ let
           }
         );
         default = { };
+      };
+      restartPolicy = mkOption {
+        type = types.enum [
+          "no"
+          "on-failure"
+          "always"
+          "unless-stopped"
+        ];
+        default = "unless-stopped";
+      };
+      resources = {
+        cpu = mkOption {
+          type = types.nullOr types.float;
+          default = null;
+        };
+        memory = mkOption {
+          type = types.nullOr types.nonEmptyStr;
+          default = null;
+        };
       };
       runtime = {
         user = mkOption {
@@ -242,6 +277,14 @@ let
           type = types.attrsOf types.str;
           default = { };
         };
+      };
+      labels = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+      };
+      extraOptions = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
       };
     };
   };
