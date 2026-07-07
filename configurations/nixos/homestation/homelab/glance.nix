@@ -10,11 +10,17 @@ let
   };
   inherit (homelab-lib) effectiveHost;
 
-  adguardHome = cfg.apps.adguard-home;
   itTools = cfg.apps.it-tools;
   domain = cfg.domain;
   mkUrl = host: "https://${host}.${domain}";
   appUrl = app: "https://${effectiveHost app}";
+  adguardHomeUrl =
+    if domain != null then
+      "https://dns.${domain}"
+    else if cfg.lanAddress != null then
+      "http://${cfg.lanAddress}:3000"
+    else
+      "http://dns:3000";
 in
 {
   homestation.homelab.apps.glance = {
@@ -30,7 +36,7 @@ in
       port = 8080;
 
       environment = {
-        ADGUARD_HOME_URL = appUrl adguardHome;
+        ADGUARD_HOME_URL = adguardHomeUrl;
         ADVENTURE_LOG_URL = mkUrl "travel";
         BESZEL_URL = mkUrl "status";
         CALIBRE_WEB_AUTOMATED_URL = mkUrl "lib";
