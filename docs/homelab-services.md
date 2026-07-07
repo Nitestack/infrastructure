@@ -26,12 +26,6 @@ homestation.homelab = {
       protocol = "http";
     };
 
-    routes = [
-      {
-        upstream.service = "web";
-      }
-    ];
-
     services.web = {
       enable = true;
       image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
@@ -82,8 +76,10 @@ removed.
 | `domain` | string\|null | `null` | Base domain used for host derivation |
 | `lanAddress` | string\|null | `null` | LAN IP used for generated LAN DNS A records for exposed apps |
 | `dataDir` | string | `"/var/lib/homelab"` | Base directory for persistent app data |
-| `network.prefix` | string | `"homelab"` | Prefix used when generating network names |
-| `edgeNetwork.name` | string | `"homelab-edge"` | Shared edge network name |
+| `network.prefix` | string | `"homelab"` | Prefix for Arion project names (`<prefix>-<appName>`) and the per-app Docker networks those projects create |
+| `edgeNetwork.name` | string | `"homelab-edge"` | Name of the external Docker network Caddy is attached to. Services are automatically joined to this network when they are an upstream for an exposed app |
+| `logging.driver` | string\|null | `null` | Default logging driver for every service. Set to `"journald"` on NixOS for host-managed log rotation. Per-service override via `extraServiceConfig.logging` |
+| `logging.options` | attrs of string | `{}` | Driver-specific options (e.g. `max-size`, `max-file` for `json-file`). Ignored when `logging.driver` is null |
 | `libraries` | attrs of libraryType | `{}` | Named shared host paths mountable from services |
 | `apps` | attrs of appType | `{}` | App definitions |
 | `dns.records` | attrs of dnsRecordType | `{}` | Extra manual DNS records |
@@ -125,6 +121,17 @@ AdGuard Home `filtering.rewrites` automatically.
 | `smtp.from` | string\|null | `null` | Default sender address |
 | `smtp.username` | string\|null | `null` | Shared SMTP username |
 
+These are a shared reference registry — the module does not inject SMTP values into service environments automatically. Each app that needs SMTP must wire the values itself, for example:
+
+```nix
+services.web.environment = {
+  SMTP_HOST = config.homestation.homelab.smtp.host;
+  SMTP_PORT = toString config.homestation.homelab.smtp.port;
+};
+```
+
+Keep passwords out of `environment`; pass them via `environmentFiles` instead.
+
 ### `libraries.<name>.*`
 
 | Option | Type | Default | Description |
@@ -153,8 +160,8 @@ AdGuard Home `filtering.rewrites` automatically.
 | `expose.mode` | enum | `"none"` | Exposure mode: `"none"`, `"private"`, or `"public"` |
 | `expose.host` | string\|null | `null` | Hostname or subdomain for the app |
 | `expose.service` | string\|null | auto | Default upstream target; auto-derived when the app has exactly one service |
-| `expose.protocol` | enum | `"http"` | Protocol Caddy uses when proxying *to* the container. Use `"https"` only when the container itself speaks TLS; `"http"` covers nearly all homelab services |
-| `routes` | list of routeType | `[]` | Ordered ingress routes for the app |
+| `expose.protocol` | enum | `"http"` | Protocol Caddy uses when proxying *to* the container (backend leg only — Caddy always terminates TLS publicly). Use `"https"` only when the container itself speaks TLS; `"http"` covers nearly all homelab services |
+| `routes` | list of routeType | `[]` | Ordered ingress routes for the app. When empty, a catch-all route is auto-derived from `expose.service` |
 | `services` | attrs of serviceType | `{}` | Workloads that belong to the app |
 
 ### App Exposure
@@ -163,7 +170,10 @@ AdGuard Home `filtering.rewrites` automatically.
 - `mode = "private"` is for LAN-only ingress.
 - `mode = "public"` is for internet-facing ingress.
 - `host = null` means the app has no hostname.
-- `service` should name a member of `services`. When the app has exactly one service and no explicit `routes`, `expose.service` is auto-derived and can be omitted.
+- `service` should name a member of `services`. When the app has exactly one service, `expose.service` is auto-derived and can be omitted.
+- When `routes` is empty, a single catch-all route is generated automatically from `expose.service`. Declare `routes` explicitly only when you need path matchers, multiple upstreams, or per-route proxy settings.
+
+**Host resolution:** A plain label is expanded to `<host>.<domain>` (e.g. `host = "paperless"` with `domain = "home.example.com"` yields `paperless.home.example.com`). If `host` already contains a `.` it is used as a fully-qualified domain name without modification. The special value `"@"` resolves to the bare `domain`, useful for apex-domain services.
 
 ### App Routes (`apps.<app>.routes`)
 
@@ -189,6 +199,7 @@ Each route can refine matching and upstream behavior:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enable` | bool | `false` | Enable the service |
+| `containerName` | string\|null | `null` | Override the generated container name. Only set when a container requires a fixed externally-known name (e.g. Nextcloud AIO). User-specified names are included in the global uniqueness check |
 | `image` | string | none | Container image |
 | `port` | int\|null | `null` | Primary service port |
 | `command` | list of string\|null | `null` | Override the service command |
@@ -198,8 +209,9 @@ Each route can refine matching and upstream behavior:
 | `volumes` | list of volumeType | `[]` | Volume mounts |
 | `ports` | list of string | `[]` | Published Docker/Arion ports |
 | `networks` | list of string | `[]` | Additional Docker networks |
-| `restartPolicy` | enum | `"unless-stopped"` | Container restart policy |
+| `restart` | enum | `"unless-stopped"` | Container restart policy |
 | `labels` | attrs of string | `{}` | Container labels |
+| `extraServiceConfig` | attrs | `{}` | Raw attrs merged last into the Arion service definition. Escape hatch for compose options not covered by the typed API (e.g. `security_opt`). Values here override typed options |
 
 ### Healthcheck
 
@@ -226,16 +238,20 @@ Allowed `condition` values:
 - `"service_healthy"`
 - `"service_completed_successfully"`
 
+Because `condition` defaults to `"service_started"`, you can omit it when that condition is sufficient:
+
+```nix
+dependsOn.redis = {};          # equivalent to dependsOn.redis.condition = "service_started"
+dependsOn.db.condition = "service_healthy";
+```
+
 ### Runtime
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `runtime.user` | string\|null | `null` | Container user |
-| `runtime.workingDir` | string\|null | `null` | Working directory |
-| `runtime.tmpfs` | list of string | `[]` | Tmpfs mounts |
-| `runtime.tty` | bool | `false` | Allocate a pseudo-TTY. Only needed when the process checks `isatty()` and refuses to start or misbehaves without a terminal. Rarely required for server workloads |
-| `runtime.stopGracePeriod` | string\|null | `null` | Grace period before forced stop |
-| `runtime.stopSignal` | string\|null | `null` | Stop signal |
+
+For other runtime options (`working_dir`, `tmpfs`, `tty`, `init`, `stop_grace_period`, `stop_signal`, etc.) use `extraServiceConfig`.
 
 ### Privileges
 
@@ -246,9 +262,22 @@ Allowed `condition` values:
 | `privileges.devices` | list of string | `[]` | Extra device mappings |
 | `privileges.capabilities.add` | list of string | `[]` | Added Linux capabilities |
 | `privileges.capabilities.drop` | list of string | `[]` | Dropped Linux capabilities |
-| `privileges.dns` | list of string | `[]` | Custom DNS servers |
-| `privileges.extraHosts` | list of string | `[]` | Extra host mappings |
-| `privileges.sysctls` | attrs of string | `{}` | Kernel sysctls |
+
+For other privilege options (`dns`, `extra_hosts`, `sysctls`, etc.) use `extraServiceConfig`.
+
+### Inter-service Networking
+
+Services within the same app share the Arion/Compose project default network. They can reach each other using the service key as a DNS name — the key under `services.<name>`, not the container name.
+
+```nix
+# services.web can connect to "db:5432" and "redis:6379"
+services.web.environment = {
+  DATABASE_URL = "postgres://db:5432/app";
+  REDIS_URL    = "redis://redis:6379";
+};
+```
+
+Services in different apps are isolated by default. Cross-app communication requires either publishing ports (`services.<name>.ports`) or placing both apps on a shared external Docker network via `services.<name>.networks`.
 
 ---
 
@@ -262,6 +291,7 @@ Allowed `condition` values:
 | `target` | string | none | Mount target inside the container |
 | `readOnly` | bool | `false` | Mount read-only |
 | `external` | bool | `false` | Treat named volume as external |
+| `dockerName` | string\|null | `null` | Pin the Docker-level volume name by emitting `name:` in the compose volumes section. Without this, Docker prefixes the volume key with the project name. Use when a container requires an exact volume name (e.g. Nextcloud AIO's `nextcloud_aio_mastercontainer`) |
 
 ### `hostPath.*`
 
@@ -335,7 +365,7 @@ At evaluation time, `validation.nix` adds runtime assertions against the
 normalized app/service graph:
 
 - Exposed apps must resolve an effective host and at least one route.
-- Exposed apps without explicit `routes` must set `expose.service`.
+- When `routes` is empty, a catch-all route is auto-derived from `expose.service`; if neither `expose.service` nor a single-service default is resolvable, evaluation fails.
 - `expose.service` must reference an enabled service in the same app.
 - `expose.mode = "public"` requires
   `homestation.homelab.cloudflared.wildcardIngress = true`.
@@ -367,10 +397,10 @@ apps.whoami = {
   expose = {
     mode = "private";
     host = "whoami";
-    service = "web";
+    # service omitted — auto-derived from the single service below
   };
 
-  routes = [{ upstream.service = "web"; }];
+  # routes omitted — auto-derived from expose.service
 
   services.web = {
     enable = true;
@@ -390,14 +420,14 @@ apps.paperless = {
     service = "web";
   };
 
-  routes = [{ upstream.service = "web"; }];
+  # routes omitted — auto-derived from expose.service
 
   services.web = {
     enable = true;
     image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
     port = 8000;
-    dependsOn.redis.condition = "service_started";
-    dependsOn.db.condition = "service_started";
+    dependsOn.redis = {};
+    dependsOn.db.condition = "service_healthy";
   };
 
   services.redis = {
