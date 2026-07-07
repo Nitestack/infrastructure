@@ -17,7 +17,6 @@ in
       enable = true;
       image = "wealthfolio/wealthfolio:3.5.2@sha256:a830fdcf8294f1a7ae224eaf680b86007331c2fd3a739f1349681388e00d2c30";
       port = 8088;
-      restart = "always";
 
       environment = {
         WF_LISTEN_ADDR = "0.0.0.0:8088";
