@@ -1,0 +1,19 @@
+jwt:
+  secret: "@JWT_SECRET@"
+
+db:
+  host: "postgres"
+  port: 5432
+  name: "ente_db"
+  user: "pguser"
+  password: "@POSTGRES_PASSWORD@"
+
+internal:
+  disable-registration: true
+
+smtp:
+  host: "@SMTP_HOST@"
+  port: @SMTP_PORT@
+  username: "@SMTP_USERNAME@"
+  password: "@SMTP_PASSWORD@"
+  email: "@SMTP_EMAIL@"

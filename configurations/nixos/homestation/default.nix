@@ -26,6 +26,7 @@ in
     ./homelab/beets.nix
     ./homelab/beszel.nix
     ./homelab/calibre-web-automated.nix
+    ./homelab/ente.nix
     ./homelab/freshrss.nix
     ./homelab/glance.nix
     ./homelab/it-tools.nix

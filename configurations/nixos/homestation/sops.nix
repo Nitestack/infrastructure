@@ -119,6 +119,16 @@ in
       key = "hardcover/api-key";
       mode = "0400";
     };
+    secrets."ente/db-password" = {
+      sopsFile = infraSecretsFile;
+      key = "ente/db-password";
+      mode = "0400";
+    };
+    secrets."ente/jwt-secret" = {
+      sopsFile = infraSecretsFile;
+      key = "ente/jwt-secret";
+      mode = "0400";
+    };
     secrets."yamtrack/secret-key" = {
       sopsFile = yamtrackSecretsFile;
       key = "secret-key";
@@ -200,6 +210,12 @@ in
     templates."calibre-web-automated.env" = {
       content = ''
         HARDCOVER_TOKEN=${config.sops.placeholder."hardcover/api-key"}
+      '';
+      mode = "0400";
+    };
+    templates."ente.env" = {
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."ente/db-password"}
       '';
       mode = "0400";
     };
