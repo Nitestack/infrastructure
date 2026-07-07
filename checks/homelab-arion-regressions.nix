@@ -171,8 +171,7 @@ let
   goodService = goodProject.settings.services.web.service;
   goodVolumes = goodProject.settings."docker-compose".volumes;
   goodNetworkService = goodConfig.config.systemd.services.homelab-network or null;
-  caddyVolumes =
-    caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".volumes;
+  caddyVolumes = caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".volumes;
   caddyfileMount = builtins.head caddyVolumes;
   caddyfilePath = builtins.head (lib.splitString ":" caddyfileMount);
   caddyfileText = builtins.readFile caddyfilePath;
