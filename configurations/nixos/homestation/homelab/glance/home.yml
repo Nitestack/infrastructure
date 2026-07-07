@@ -55,15 +55,9 @@
                 - title: FreshRSS
                   url: https://freshrss.github.io/FreshRSS/en
                   icon: di:freshrss
-                - title: Ghostfolio
-                  url: https://github.com/ghostfolio/ghostfolio
-                  icon: di:ghostfolio
                 - title: Glance
                   url: https://github.com/glanceapp/glance/blob/main/docs/configuration.md
                   icon: di:glance
-                - title: Grocy
-                  url: https://github.com/grocy/grocy
-                  icon: di:grocy
                 - title: Immich
                   url: https://immich.app/docs
                   icon: di:immich
@@ -91,9 +85,6 @@
                 - title: Wealthfolio
                   url: https://wealthfolio.app/docs/introduction
                   icon: sh:wealthfolio
-                - title: wger
-                  url: https://wger.readthedocs.io
-                  icon: di:wger
                 - title: Yamtrack
                   url: https://github.com/FuzzyGrim/Yamtrack/wiki
                   icon: di:yamtrack
@@ -146,7 +137,7 @@
               name: beets
               icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/beets.webp
               description: Music Manager
-            beszel:
+            beszel-hub:
               name: Beszel
               icon: di:beszel
               url: ${BESZEL_URL}
@@ -155,7 +146,7 @@
             beszel-agent:
               name: Agent
               parent: beszel
-            caddy:
+            homelab-caddy:
               name: Caddy
               icon: di:caddy
               description: HTTPS Server
@@ -164,10 +155,6 @@
               icon: di:calibre-web
               url: ${CALIBRE_WEB_AUTOMATED_URL}
               description: eBook Manager
-            cloudflared:
-              name: Cloudflared
-              icon: di:cloudflare
-              description: Cloudflare Tunnel
             ente-web:
               name: Ente Auth
               icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/ente-auth.webp
@@ -180,7 +167,7 @@
             ente-postgres:
               name: PostgreSQL
               parent: ente
-            flaresolverr:
+            prowlarr-flaresolverr:
               name: FlareSolverr
               parent: prowlarr
             freshrss:
@@ -188,28 +175,11 @@
               icon: di:freshrss
               url: ${FRESHRSS_URL}
               description: Feed Aggregator
-            ghostfolio:
-              name: Ghostfolio
-              icon: di:ghostfolio
-              url: ${GHOSTFOLIO_URL}
-              description: Wealth Manager
-              id: ghostfolio
-            ghostfolio-postgres:
-              name: PostgreSQL
-              parent: ghostfolio
-            ghostfolio-redis:
-              name: Redis
-              parent: ghostfolio
             glance:
               name: Glance
               icon: di:glance
               url: ${GLANCE_URL}
               description: Dashboard
-            grocy:
-              name: Grocy
-              icon: di:grocy
-              url: ${GROCY_URL}
-              description: Groceries & Household Manager
             immich_server:
               name: Immich
               icon: di:immich
@@ -274,7 +244,7 @@
               icon: di:pocket-id
               url: ${POCKET_ID_URL}
               description: OIDC Provider
-            prowlarr:
+            prowlarr-web:
               name: Prowlarr
               icon: di:prowlarr
               url: ${PROWLARR_URL}
@@ -300,25 +270,7 @@
               icon: sh:wealthfolio
               url: ${WEALTHFOLIO_URL}
               description: Investment Tracker
-            wger-web:
-              name: wger
-              icon: di:wger
-              url: ${WGER_URL}
-              description: Fitness Tracker
-              id: wger
-            wger-postgres:
-              name: PostgreSQL
-              parent: wger
-            wger-redis:
-              name: Redis
-              parent: wger
-            wger-celery-worker:
-              name: Celery Worker
-              parent: wger
-            wger-celery-beat:
-              name: Celery Beat
-              parent: wger
-            yamtrack:
+            yamtrack-web:
               name: Yamtrack
               icon: di:yamtrack
               url: ${YAMTRACK_URL}
@@ -371,9 +323,7 @@
             - ente-io/ente
             - FlareSolverr/FlareSolverr
             - FreshRSS/FreshRSS
-            - ghostfolio/ghostfolio
             - glanceapp/glance
-            - grocy/grocy
             - immich-app/immich
             - CorentinTh/it-tools
             - navidrome/navidrome
@@ -384,6 +334,5 @@
             - calibrain/shelfmark
             - dani-garcia/vaultwarden
             - wealthfolio/wealthfolio
-            - wger-project/wger
             - FuzzyGrim/Yamtrack
             - nicotsx/zerobyte

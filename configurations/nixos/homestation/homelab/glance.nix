@@ -42,9 +42,7 @@ in
         CALIBRE_WEB_AUTOMATED_URL = mkUrl "lib";
         ENTE_AUTH_URL = mkUrl "2fa";
         FRESHRSS_URL = mkUrl "feed";
-        GHOSTFOLIO_URL = mkUrl "wealth";
         GLANCE_URL = mkUrl "dash";
-        GROCY_URL = mkUrl "house";
         IMMICH_URL = mkUrl "media";
         IT_TOOLS_URL = appUrl itTools;
         NAVIDROME_URL = mkUrl "music";
@@ -55,7 +53,6 @@ in
         SHELFMARK_URL = mkUrl "books";
         VAULTWARDEN_URL = mkUrl "vault";
         WEALTHFOLIO_URL = mkUrl "wealth";
-        WGER_URL = mkUrl "health";
         YAMTRACK_URL = mkUrl "track";
         ZEROBYTE_URL = mkUrl "backup";
       };

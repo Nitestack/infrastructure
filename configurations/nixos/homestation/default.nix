@@ -32,6 +32,7 @@ in
     ./homelab/immich.nix
     ./homelab/it-tools.nix
     ./homelab/navidrome.nix
+    ./homelab/nextcloud.nix
     ./homelab/pocket-id.nix
     ./homelab/prowlarr.nix
     ./homelab/rdtclient.nix

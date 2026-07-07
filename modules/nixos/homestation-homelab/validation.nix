@@ -48,11 +48,10 @@ let
   duplicateContainerNames = duplicates (
     concatMap (
       appName:
-      map (
-        serviceName:
-        internal.serviceContainerName appName serviceName
-          (internal.enabledServicesForApp appName).${serviceName}
-      ) (attrNames (internal.enabledServicesForApp appName))
+      let enabledServices = internal.enabledServicesForApp appName;
+      in map (
+        serviceName: internal.serviceContainerName appName enabledServices serviceName
+      ) (attrNames enabledServices)
     ) (attrNames internal.enabledApps)
   );
 

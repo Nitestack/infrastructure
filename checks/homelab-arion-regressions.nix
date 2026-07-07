@@ -183,6 +183,7 @@ let
 in
 assert goodService.restart == "always";
 assert goodService.labels.foo == "bar";
+assert goodService.container_name == "demo";
 assert goodVolumes."demo-data".external == true;
 assert goodNetworkService != null;
 assert lib.hasInfix "docker network create homelab-edge" goodNetworkService.script;
