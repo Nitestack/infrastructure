@@ -54,6 +54,13 @@
         '';
       };
 
+      devShells.default = pkgs.mkShell {
+        packages = [ pkgs.nixfmt ];
+        shellHook = ''
+          git config core.hooksPath .githooks
+        '';
+      };
+
       checks.homelab-arion-regressions = homelabArionRegressions;
 
       apps.check = {

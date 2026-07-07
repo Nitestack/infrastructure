@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+nix_files=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.nix$' || true)
+[ -z "$nix_files" ] && exit 0
+
+echo "Formatting Nix files..."
+echo "$nix_files" | xargs nixfmt
+echo "$nix_files" | xargs git add
