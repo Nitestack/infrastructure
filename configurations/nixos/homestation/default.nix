@@ -30,6 +30,7 @@ in
     ./homelab/it-tools.nix
     ./homelab/navidrome.nix
     ./homelab/pocket-id.nix
+    ./homelab/prowlarr.nix
     ./homelab/rdtclient.nix
     ./homelab/shelfmark.nix
     ./homelab/vaultwarden.nix
