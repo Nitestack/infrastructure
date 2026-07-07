@@ -29,6 +29,7 @@ in
     ./homelab/ente.nix
     ./homelab/freshrss.nix
     ./homelab/glance.nix
+    ./homelab/immich.nix
     ./homelab/it-tools.nix
     ./homelab/navidrome.nix
     ./homelab/pocket-id.nix
