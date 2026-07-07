@@ -37,7 +37,7 @@ in
         POSTGRES_USER = "adventure";
       };
 
-      environmentFiles = [ config.sops.templates."adventure-log.env".path ];
+      environmentFiles = [ config.sops.templates."adventure-log-db.env".path ];
 
       volumes = [
         {
@@ -76,7 +76,7 @@ in
         DEFAULT_FROM_EMAIL = cfg.smtp.from;
       };
 
-      environmentFiles = [ config.sops.templates."adventure-log.env".path ];
+      environmentFiles = [ config.sops.templates."adventure-log-server.env".path ];
 
       volumes = [
         {

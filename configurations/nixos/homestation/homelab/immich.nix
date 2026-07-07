@@ -24,8 +24,11 @@ in
         database.condition = "service_started";
       };
 
+      helpers.timezone = true;
+
       environment = {
-        TZ = config.time.timeZone;
+        DB_USERNAME = "postgres";
+        DB_DATABASE_NAME = "immich";
       };
 
       environmentFiles = [ config.sops.templates."immich.env".path ];
@@ -50,11 +53,7 @@ in
       image = "ghcr.io/immich-app/immich-machine-learning:v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3";
       containerName = "immich_machine_learning";
 
-      environment = {
-        TZ = config.time.timeZone;
-      };
-
-      environmentFiles = [ config.sops.templates."immich.env".path ];
+      helpers.timezone = true;
 
       volumes = [
         {
@@ -85,6 +84,8 @@ in
 
       environment = {
         POSTGRES_INITDB_ARGS = "--data-checksums";
+        DB_USERNAME = "postgres";
+        DB_DATABASE_NAME = "immich";
       };
 
       environmentFiles = [ config.sops.templates."immich.env".path ];

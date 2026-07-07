@@ -23,7 +23,7 @@ in
         DISABLE_PASSWORD_AUTH = "true";
       };
 
-      environmentFiles = [ config.sops.templates."beszel.env".path ];
+      environmentFiles = [ config.sops.templates."beszel-hub.env".path ];
 
       volumes = [
         {
@@ -60,7 +60,7 @@ in
         HUB_URL = "https://status.${cfg.domain}";
       };
 
-      environmentFiles = [ config.sops.templates."beszel.env".path ];
+      environmentFiles = [ config.sops.templates."beszel-agent.env".path ];
 
       volumes = [
         {

@@ -4,10 +4,13 @@ let
   inherit (inputs) self;
 
   infraSecretsFile = self + /secrets/hosts/homestation/infra.yaml;
+  adventureLogSecretsFile = self + /secrets/hosts/homestation/adventure-log.yaml;
   beetsSecretsFile = self + /secrets/hosts/homestation/beets.yaml;
-  pocketIdSecretsFile = self + /secrets/hosts/homestation/pocket-id.yaml;
-  glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
+  enteSecretsFile = self + /secrets/hosts/homestation/ente.yaml;
+  glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
+  immichSecretsFile = self + /secrets/hosts/homestation/immich.yaml;
+  pocketIdSecretsFile = self + /secrets/hosts/homestation/pocket-id.yaml;
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
   wealthfolioSecretsFile = self + /secrets/hosts/homestation/wealthfolio.yaml;
   yamtrackSecretsFile = self + /secrets/hosts/homestation/yamtrack.yaml;
@@ -90,18 +93,18 @@ in
       mode = "0400";
     };
     secrets."adventure-log/db-password" = {
-      sopsFile = infraSecretsFile;
-      key = "adventure-log/db-password";
+      sopsFile = adventureLogSecretsFile;
+      key = "db-password";
       mode = "0400";
     };
     secrets."adventure-log/secret-key" = {
-      sopsFile = infraSecretsFile;
-      key = "adventure-log/secret-key";
+      sopsFile = adventureLogSecretsFile;
+      key = "secret-key";
       mode = "0400";
     };
     secrets."adventure-log/admin-password" = {
-      sopsFile = infraSecretsFile;
-      key = "adventure-log/admin-password";
+      sopsFile = adventureLogSecretsFile;
+      key = "admin-password";
       mode = "0400";
     };
     secrets."navidrome/lastfm-key" = {
@@ -120,18 +123,18 @@ in
       mode = "0400";
     };
     secrets."ente/db-password" = {
-      sopsFile = infraSecretsFile;
-      key = "ente/db-password";
+      sopsFile = enteSecretsFile;
+      key = "db-password";
       mode = "0400";
     };
     secrets."ente/jwt-secret" = {
-      sopsFile = infraSecretsFile;
-      key = "ente/jwt-secret";
+      sopsFile = enteSecretsFile;
+      key = "jwt-secret";
       mode = "0400";
     };
     secrets."immich/db-password" = {
-      sopsFile = infraSecretsFile;
-      key = "immich/db-password";
+      sopsFile = immichSecretsFile;
+      key = "db-password";
       mode = "0400";
     };
     secrets."yamtrack/secret-key" = {
@@ -187,16 +190,27 @@ in
       '';
       mode = "0400";
     };
-    templates."beszel.env" = {
+    templates."beszel-hub.env" = {
       content = ''
         USER_EMAIL=${config.sops.placeholder."beszel/email"}
         USER_PASSWORD=${config.sops.placeholder."beszel/password"}
+      '';
+      mode = "0400";
+    };
+    templates."beszel-agent.env" = {
+      content = ''
         TOKEN=${config.sops.placeholder."beszel/agent-token"}
         KEY=${config.sops.placeholder."beszel/agent-key"}
       '';
       mode = "0400";
     };
-    templates."adventure-log.env" = {
+    templates."adventure-log-db.env" = {
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
+      '';
+      mode = "0400";
+    };
+    templates."adventure-log-server.env" = {
       content = ''
         POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
         SECRET_KEY=${config.sops.placeholder."adventure-log/secret-key"}
@@ -226,10 +240,7 @@ in
     };
     templates."immich.env" = {
       content = ''
-        IMMICH_VERSION=v2.7.5
         DB_PASSWORD=${config.sops.placeholder."immich/db-password"}
-        DB_USERNAME=postgres
-        DB_DATABASE_NAME=immich
       '';
       mode = "0400";
     };
