@@ -89,6 +89,21 @@ in
       key = "agent-key";
       mode = "0400";
     };
+    secrets."adventure-log/db-password" = {
+      sopsFile = infraSecretsFile;
+      key = "adventure-log/db-password";
+      mode = "0400";
+    };
+    secrets."adventure-log/secret-key" = {
+      sopsFile = infraSecretsFile;
+      key = "adventure-log/secret-key";
+      mode = "0400";
+    };
+    secrets."adventure-log/admin-password" = {
+      sopsFile = infraSecretsFile;
+      key = "adventure-log/admin-password";
+      mode = "0400";
+    };
     secrets."navidrome/lastfm-key" = {
       sopsFile = infraSecretsFile;
       key = "lastfm/key";
@@ -163,6 +178,15 @@ in
         USER_PASSWORD=${config.sops.placeholder."beszel/password"}
         TOKEN=${config.sops.placeholder."beszel/agent-token"}
         KEY=${config.sops.placeholder."beszel/agent-key"}
+      '';
+      mode = "0400";
+    };
+    templates."adventure-log.env" = {
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
+        SECRET_KEY=${config.sops.placeholder."adventure-log/secret-key"}
+        DJANGO_ADMIN_PASSWORD=${config.sops.placeholder."adventure-log/admin-password"}
+        EMAIL_HOST_PASSWORD=${config.sops.placeholder."smtp/password"}
       '';
       mode = "0400";
     };

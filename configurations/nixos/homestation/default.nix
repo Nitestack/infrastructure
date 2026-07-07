@@ -22,6 +22,7 @@ in
     ./rendered-files.nix
     ./sops.nix
     ./homelab/adguard-home.nix
+    ./homelab/adventure-log.nix
     ./homelab/beets.nix
     ./homelab/beszel.nix
     ./homelab/calibre-web-automated.nix
