@@ -80,13 +80,17 @@ removed.
 |--------|------|---------|-------------|
 | `enable` | bool | `false` | Master switch for the module |
 | `domain` | string\|null | `null` | Base domain used for host derivation |
-| `lanAddress` | string\|null | `null` | LAN IP used for private DNS/ingress |
+| `lanAddress` | string\|null | `null` | LAN IP used for generated LAN DNS A records for exposed apps |
 | `dataDir` | string | `"/var/lib/homelab"` | Base directory for persistent app data |
 | `network.prefix` | string | `"homelab"` | Prefix used when generating network names |
 | `edgeNetwork.name` | string | `"homelab-edge"` | Shared edge network name |
 | `libraries` | attrs of libraryType | `{}` | Named shared host paths mountable from services |
 | `apps` | attrs of appType | `{}` | App definitions |
 | `dns.records` | attrs of dnsRecordType | `{}` | Extra manual DNS records |
+
+When native `services.adguardhome.enable = true` is also set on the host, all
+LAN-visible records from `homestation.homelab.dns.records` are rendered into
+AdGuard Home `filtering.rewrites` automatically.
 
 ### `cloudflared.*`
 
@@ -108,6 +112,7 @@ removed.
 | `caddy.environment` | attrs of string | `{}` | Environment variables for Caddy |
 | `caddy.environmentFiles` | list of path | `[]` | Environment files for Caddy |
 | `caddy.globalConfig` | lines | `""` | Content prepended to the generated Caddyfile |
+| `caddy.extraSiteBlocks` | lines | `""` | Extra site blocks appended after generated virtual hosts in the Caddyfile |
 | `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for Caddy |
 
 ### `smtp.*`
@@ -195,14 +200,6 @@ Each route can refine matching and upstream behavior:
 | `networks` | list of string | `[]` | Additional Docker networks |
 | `restartPolicy` | enum | `"unless-stopped"` | Container restart policy |
 | `labels` | attrs of string | `{}` | Container labels |
-| `extraOptions` | list of string | `[]` | Extra backend-specific options |
-
-### Resources
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `resources.cpu` | float\|null | `null` | CPU limit hint |
-| `resources.memory` | string\|null | `null` | Memory limit hint |
 
 ### Healthcheck
 
@@ -235,7 +232,6 @@ Allowed `condition` values:
 |--------|------|---------|-------------|
 | `runtime.user` | string\|null | `null` | Container user |
 | `runtime.workingDir` | string\|null | `null` | Working directory |
-| `runtime.init` | bool | `false` | Run with an init process |
 | `runtime.tmpfs` | list of string | `[]` | Tmpfs mounts |
 | `runtime.tty` | bool | `false` | Allocate a TTY |
 | `runtime.stopGracePeriod` | string\|null | `null` | Grace period before forced stop |
@@ -283,7 +279,9 @@ Use `hostPath` when the module should manage metadata for bind mounts.
 
 - `type = "bind"` uses `source` as a host path.
 - `type = "library"` uses `name` to reference `homestation.homelab.libraries.<name>`.
-- `type = "volume"` uses `name` as the Docker/Arion volume name.
+- `type = "volume"` uses `name` as the Docker/Arion volume name and emits a
+  named compose volume definition.
+- `external = true` marks that named compose volume as external.
 
 ---
 
@@ -311,7 +309,13 @@ normalized app/service graph:
 - `services.<name>.dependsOn` may only reference enabled services in the same
   app.
 - `services.<name>.volumes` must use a valid `type/source/name` combination.
+- Relative bind sources may not start with `..`; escaping the app data
+  directory is rejected at evaluation time.
 - Exposed hostnames must be globally unique.
+- Generated Arion project names must remain unique after `_` to `-`
+  normalization.
+- Generated container names must remain unique after `_` to `-`
+  normalization.
 - `cloudflared.wildcardIngress` also requires `cloudflared.enable`,
   `cloudflared.tunnelId`, and `domain` to be set.
 
