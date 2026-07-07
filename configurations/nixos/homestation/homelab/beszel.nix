@@ -37,6 +37,18 @@ in
           target = "/beszel_socket";
         }
       ];
+
+      healthcheck = {
+        test = [
+          "CMD"
+          "/beszel"
+          "health"
+          "--url"
+          "http://localhost:8090"
+        ];
+        interval = "120s";
+        startPeriod = "5s";
+      };
     };
 
     services.agent = {
@@ -75,27 +87,29 @@ in
         }
         {
           type = "bind";
-          source = "/.beszel";
-          target = "/extra-filesystems/nvme0n1__Data";
-          readOnly = true;
-        }
-        {
-          type = "bind";
           source = "/mnt/backup/.beszel";
-          target = "/extra-filesystems/nvme1n1__Backup";
+          target = "/extra-filesystems/sda__Backup";
           readOnly = true;
         }
       ];
 
       privileges.networkMode = "host";
       privileges.devices = [
-        "/dev/nvme0:/dev/nvme0"
-        "/dev/nvme1:/dev/nvme1"
+        "/dev/sda:/dev/sda"
       ];
       privileges.capabilities.add = [
         "SYS_RAWIO"
         "SYS_ADMIN"
       ];
+
+      healthcheck = {
+        test = [
+          "CMD"
+          "/agent"
+          "health"
+        ];
+        interval = "120s";
+      };
     };
   };
 }

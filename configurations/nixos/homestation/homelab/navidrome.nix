@@ -2,6 +2,12 @@
   config,
   ...
 }:
+let
+  username = config.meta.username;
+  userUid = config.users.users.${username}.uid;
+  userGid = config.ids.gids.users;
+  effectiveUid = if userUid != null then toString userUid else "1000";
+in
 {
   homestation.homelab.apps.navidrome = {
     expose = {
@@ -14,6 +20,7 @@
       enable = true;
       image = "deluan/navidrome:0.62.0@sha256:c4b5cb36a790b3eb63ca6a68bbe2fe149c2d7fa2e586f7a480e61db630e6664b";
       port = 4533;
+      runtime.user = "${effectiveUid}:${toString userGid}";
 
       environment = {
         ND_DEEZER_LANGUAGE = "en,de";

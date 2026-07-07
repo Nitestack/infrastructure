@@ -45,6 +45,18 @@ in
           target = "/app/data";
         }
       ];
+
+      healthcheck = {
+        test = [
+          "CMD"
+          "/app/pocket-id"
+          "healthcheck"
+        ];
+        interval = "1m30s";
+        timeout = "5s";
+        retries = 2;
+        startPeriod = "10s";
+      };
     };
   };
 }

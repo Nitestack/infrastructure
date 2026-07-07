@@ -3,6 +3,7 @@
   ...
 }:
 let
+  cfg = config.homestation.homelab;
   username = config.meta.username;
   renderedConfigName = "beets-config.yaml";
   renderedConfigPath = config.sops.templates.${renderedConfigName}.path;
@@ -36,7 +37,7 @@ in
       }
       {
         type = "bind";
-        source = "/mnt/data/rdtclient/downloads";
+        source = "${cfg.dataDir}/rdtclient/downloads";
         target = "/downloads";
       }
       {

@@ -65,10 +65,22 @@ in
         }
         {
           type = "bind";
-          source = "/mnt/data/rdtclient/downloads";
-          target = "/mnt/data/rdtclient/downloads";
+          source = "${cfg.dataDir}/rdtclient/downloads";
+          target = "${cfg.dataDir}/rdtclient/downloads";
         }
       ];
+
+      healthcheck = {
+        test = [
+          "CMD"
+          "curl"
+          "-sf"
+          "http://localhost:8084/api/health"
+        ];
+        interval = "30s";
+        timeout = "30s";
+        retries = 3;
+      };
     };
   };
 }
