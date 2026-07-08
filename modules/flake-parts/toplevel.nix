@@ -55,7 +55,10 @@
       };
 
       devShells.default = pkgs.mkShell {
-        packages = [ pkgs.nixfmt ];
+        packages = [
+          pkgs.nixfmt
+          pkgs.opentofu
+        ];
         shellHook = ''
           git config core.hooksPath .githooks
         '';
