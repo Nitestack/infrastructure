@@ -146,7 +146,12 @@ let
         caddy.extraSiteBlocks = ''
           @dns host dns.example.test
           handle @dns {
-            reverse_proxy 127.0.0.1:1234
+            handle @from-tunnel {
+              respond 403
+            }
+            handle {
+              reverse_proxy 127.0.0.1:1234
+            }
           }
         '';
         apps.demo = {
@@ -180,6 +185,30 @@ let
             enable = true;
             image = "demo:latest";
             port = 80;
+          };
+        };
+        apps.demo_private = {
+          expose = {
+            mode = "private";
+            host = "private1";
+            service = "web";
+          };
+          services.web = {
+            enable = true;
+            image = "demo:latest";
+            port = 8080;
+          };
+        };
+        apps.demo_foreign_private = {
+          expose = {
+            mode = "private";
+            host = "foreign.other.test";
+            service = "web";
+          };
+          services.web = {
+            enable = true;
+            image = "demo:latest";
+            port = 9090;
           };
         };
       };
@@ -226,6 +255,28 @@ assert
   cloudflaredIngress."*.example.test".originRequest.originServerName == "_cloudflared.example.test";
 assert
   cloudflaredIngress."example.test".originRequest.originServerName == "_cloudflared.example.test";
+# @from-tunnel is defined exactly once in the wildcard block, shared by every private route in it
+assert
+  lib.length (lib.splitString "@from-tunnel {\n    header Cf-Connecting-Ip *\n  }" wildcardSection)
+  == 2;
+# a private app in the wildcard block gets wrapped: tunnel-origin requests hit "respond 403"
+assert lib.hasInfix
+  "@demo-private host private1.example.test\n  handle @demo-private {\n  handle @from-tunnel {\n    respond 403\n  }\n  handle {\n"
+  wildcardSection;
+# a public app in the same wildcard block is untouched: no @from-tunnel guard wraps its handle
+assert lib.hasInfix "handle @demo {\n    handle {\n" wildcardSection;
+assert !lib.hasInfix "handle @demo {\n  handle @from-tunnel" wildcardSection;
+# an extraSiteBlocks caller can reference the shared @from-tunnel matcher directly
+assert lib.hasInfix
+  "@dns host dns.example.test\n  handle @dns {\n    handle @from-tunnel {\n      respond 403\n    }\n    handle {\n"
+  wildcardSection;
+# an app with a foreign/apex host lives in its own top-level block with its own @from-tunnel
+assert lib.hasInfix
+  "foreign.other.test {\n@from-tunnel {\n  header Cf-Connecting-Ip *\n}\nhandle @from-tunnel {\n  respond 403\n}\nhandle {\n"
+  caddyfileText;
+# a public apex app is untouched: no @from-tunnel guard wraps its handle
+assert lib.hasInfix "example.test {\n  handle {\n    reverse_proxy demo-apex:80\n  }\n}"
+  caddyfileText;
 pkgs.runCommand "homelab-arion-regressions" { } ''
   touch "$out"
 ''
