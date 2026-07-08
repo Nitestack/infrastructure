@@ -5,8 +5,7 @@
 locals {
   domain    = "npham.de"
   tunnel_id = "f4320d83-db5c-4280-808f-93822cd737c5"
-  # Filled in during Task 4 by looking up the real zone ID via the Cloudflare API.
-  zone_id = "REPLACE_WITH_ZONE_ID"
+  zone_id   = "9691fb68dda1b46eaac63b8f8af58328" # npham.de
 }
 
 # Routes all *.npham.de traffic into the Cloudflare Tunnel that cloudflared
