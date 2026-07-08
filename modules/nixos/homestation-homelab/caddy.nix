@@ -24,9 +24,6 @@ let
     && internal.resolvedRoutesForApp appName != [ ]
   ) (builtins.attrNames internal.enabledApps);
 
-  hasHttpServices = exposedAppNames != [ ];
-  runCaddy = cfg.caddy.enable && (cfg.caddy.enableWithoutServices || hasHttpServices);
-
   indentLines =
     prefix: text:
     concatStringsSep "\n" (
@@ -159,7 +156,7 @@ let
   firewallUDPPorts = lib.unique (map (e: e.hostPort) (lib.filter (e: e.proto == "udp") parsedPorts));
 in
 {
-  config = mkIf (cfg.enable && runCaddy) {
+  config = mkIf (cfg.enable && cfg.caddy.enable) {
     systemd.services.${config.virtualisation.oci-containers.containers."caddy".serviceName} = {
       requires = [ "homelab-network.service" ];
       after = [ "homelab-network.service" ];

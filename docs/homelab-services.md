@@ -101,7 +101,6 @@ AdGuard Home `filtering.rewrites` automatically.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `caddy.enable` | bool | `true` | Enable generated Caddy integration |
-| `caddy.enableWithoutServices` | bool | `false` | Run Caddy even with no routed services |
 | `caddy.image` | string | `"caddy:latest"` | Caddy image |
 | `caddy.ports` | list of string | `["80:80" "443:443" "443:443/udp"]` | Port mappings for Caddy |
 | `caddy.openFirewall` | bool | `true` | Open firewall for Caddy ports |

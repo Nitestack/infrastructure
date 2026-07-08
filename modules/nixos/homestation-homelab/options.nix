@@ -385,10 +385,6 @@ in
         type = types.bool;
         default = true;
       };
-      enableWithoutServices = mkOption {
-        type = types.bool;
-        default = false;
-      };
       image = mkOption {
         type = types.str;
         default = "caddy:latest";
