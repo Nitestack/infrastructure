@@ -27,7 +27,6 @@ in
     expose = {
       mode = "public";
       host = "dash";
-      service = "web";
     };
 
     services.web = {

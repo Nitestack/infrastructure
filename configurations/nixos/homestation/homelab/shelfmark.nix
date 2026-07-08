@@ -18,7 +18,6 @@ in
     expose = {
       mode = "public";
       host = "books";
-      service = "web";
     };
 
     services.web = {

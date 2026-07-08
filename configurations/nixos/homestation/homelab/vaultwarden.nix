@@ -11,7 +11,6 @@ in
     expose = {
       mode = "public";
       host = "vault";
-      service = "web";
     };
 
     services.web = {

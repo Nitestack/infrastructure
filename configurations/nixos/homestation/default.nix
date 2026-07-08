@@ -78,7 +78,6 @@ in
       username = "noreply@npham.de";
     };
     cloudflared.tunnelId = "f4320d83-db5c-4280-808f-93822cd737c5";
-    cloudflared.wildcardIngress = true;
   };
 
   # Services

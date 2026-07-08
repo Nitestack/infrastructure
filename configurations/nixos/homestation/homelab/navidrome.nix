@@ -13,7 +13,6 @@ in
     expose = {
       mode = "public";
       host = "music";
-      service = "web";
     };
 
     services.web = {

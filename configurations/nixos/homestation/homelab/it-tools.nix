@@ -3,7 +3,6 @@
     expose = {
       mode = "public";
       host = "it";
-      service = "web";
     };
 
     services.web = {

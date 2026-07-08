@@ -7,7 +7,6 @@
     expose = {
       mode = "public";
       host = "feed";
-      service = "web";
     };
 
     services.web = {

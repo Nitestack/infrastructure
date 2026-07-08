@@ -6,7 +6,6 @@
     expose = {
       mode = "public";
       host = "magnets";
-      service = "web";
     };
 
     services.web = {
