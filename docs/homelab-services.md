@@ -101,14 +101,25 @@ AdGuard Home `filtering.rewrites` automatically.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `caddy.enable` | bool | `true` | Enable generated Caddy integration |
-| `caddy.image` | string | `"caddy:latest"` | Caddy image |
+| `caddy.image` | string | `caddybuilds/caddy-cloudflare` (pinned) | Caddy image — defaults to a build with the `caddy-dns/cloudflare` plugin |
 | `caddy.ports` | list of string | `["80:80" "443:443" "443:443/udp"]` | Port mappings for Caddy |
 | `caddy.openFirewall` | bool | `true` | Open firewall for Caddy ports |
 | `caddy.environment` | attrs of string | `{}` | Environment variables for Caddy |
-| `caddy.environmentFiles` | list of path | `[]` | Environment files for Caddy |
-| `caddy.globalConfig` | lines | `""` | Content prepended to the generated Caddyfile |
+| `caddy.environmentFiles` | list of path | `[config.sops.templates."caddy.env".path]` | Environment files for Caddy |
+| `caddy.globalConfig` | lines | `acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}` | Content prepended to the generated Caddyfile |
 | `caddy.extraSiteBlocks` | lines | `""` | Extra site blocks appended after generated virtual hosts in the Caddyfile |
 | `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for Caddy |
+
+By default, `modules/nixos/homestation-homelab/caddy.nix` configures automatic
+HTTPS via a Cloudflare **DNS-01** challenge (`acme_dns cloudflare`), not
+HTTP-01/TLS-ALPN-01. DNS-01 only needs API access to the DNS zone, not a
+publicly reachable hostname, so every generated per-app site block gets a
+real Let's Encrypt certificate whether it's reached through the Cloudflare
+Tunnel, the LAN, or Tailnet. This requires a `caddy/cloudflare-api-token`
+sops secret (`Zone:DNS:Edit` scope) and its `caddy.env` template to be
+declared on any host using this module (see `configurations/nixos/homestation/sops.nix`
+for the pattern) — override `caddy.image`/`globalConfig`/`environmentFiles`
+with `lib.mkForce` if a host doesn't want this default.
 
 ### `smtp.*`
 

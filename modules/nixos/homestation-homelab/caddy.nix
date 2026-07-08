@@ -157,6 +157,23 @@ let
 in
 {
   config = mkIf (cfg.enable && cfg.caddy.enable) {
+    homestation.homelab.caddy = {
+      # pre-built Caddy image with the caddy-dns/cloudflare plugin, so
+      # automatic HTTPS works via DNS-01 for hostnames that are only
+      # privately resolvable (LAN/Tailnet), not just publicly reachable ones
+      image = lib.mkDefault "caddybuilds/caddy-cloudflare:2.11.4@sha256:62639363ceb043393da9c3895d7c97a9a49ccf840bea0cc7e6479465d12ade96";
+      globalConfig = lib.mkDefault ''
+        {
+          acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        }
+      '';
+      environmentFiles = lib.mkDefault (
+        lib.optional (
+          config ? sops && config.sops.templates ? "caddy.env"
+        ) config.sops.templates."caddy.env".path
+      );
+    };
+
     systemd.services.${config.virtualisation.oci-containers.containers."caddy".serviceName} = {
       requires = [ "homelab-network.service" ];
       after = [ "homelab-network.service" ];

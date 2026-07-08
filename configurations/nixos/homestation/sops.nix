@@ -37,6 +37,11 @@ in
       key = "smtp/password";
       mode = "0400";
     };
+    secrets."caddy/cloudflare-api-token" = {
+      sopsFile = infraSecretsFile;
+      key = "cloudflare/api-token";
+      mode = "0400";
+    };
     secrets."pocket-id/encryption-key" = {
       sopsFile = pocketIdSecretsFile;
       key = "encryption-key";
@@ -165,6 +170,12 @@ in
     secrets."wealthfolio/password-hash" = {
       sopsFile = wealthfolioSecretsFile;
       key = "password-hash";
+      mode = "0400";
+    };
+    templates."caddy.env" = {
+      content = ''
+        CLOUDFLARE_API_TOKEN=${config.sops.placeholder."caddy/cloudflare-api-token"}
+      '';
       mode = "0400";
     };
     templates."vaultwarden-smtp.env" = {
