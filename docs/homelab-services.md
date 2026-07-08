@@ -96,6 +96,14 @@ AdGuard Home `filtering.rewrites` automatically.
 | `cloudflared.tunnelId` | string\|null | `null` | Tunnel UUID |
 | `cloudflared.wildcardIngress` | bool | auto | Auto-enabled when any app uses `expose.mode = "public"`; set to `false` to override |
 
+When wildcard ingress is enabled, the module generates a tunnel route for
+`*.${domain}` targeting the local Caddy instance over `https://localhost:443`
+with TLS verification disabled for that loopback hop. The apex `domain` is
+only added when some public app explicitly resolves to the apex (for example
+`host = "@"`). This avoids assuming the tunnel owns the root domain when the
+apex is managed elsewhere, while still avoiding redirect loops with Caddy's
+automatic HTTPS.
+
 ### `caddy.*`
 
 | Option | Type | Default | Description |
