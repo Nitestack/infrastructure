@@ -28,7 +28,8 @@ in
   homestation.homelab.caddy.extraSiteBlocks =
     lib.mkIf (cfg.domain != null && cfg.lanAddress != null)
       ''
-        dns.${cfg.domain} {
+        @dns host dns.${cfg.domain}
+        handle @dns {
           reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
         }
       '';

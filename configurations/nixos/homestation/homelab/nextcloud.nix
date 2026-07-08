@@ -23,7 +23,8 @@ in
   };
 
   homestation.homelab.caddy.extraSiteBlocks = lib.mkIf (cfg.domain != null) ''
-    ${nextcloudAioHost} {
+    @nextcloud-aio host ${nextcloudAioHost}
+    handle @nextcloud-aio {
       reverse_proxy https://nextcloud-aio-mastercontainer:8080 {
         transport http {
           tls_insecure_skip_verify
