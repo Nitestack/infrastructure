@@ -51,7 +51,7 @@ in
 
     services.web = {
       enable = true;
-      image = "ghcr.io/ente-io/web:latest@sha256:94d76dae2ec6e767a86fa93da4c23243cd93f27295e82c51205bc137a4204dab";
+      image = "ghcr.io/ente/web:latest@sha256:a0bc969c02cc563037a7e3ac1b0ad6def906164674b332380324d35a3d9bc853";
       containerName = "ente-web";
       port = 3003;
 
@@ -62,7 +62,7 @@ in
 
     services.museum = {
       enable = true;
-      image = "ghcr.io/ente-io/server:latest@sha256:c56831e83306988b2f5ee30eee20194d6b8f848a9cc4f4afa75931722ac1086b";
+      image = "ghcr.io/ente/server:latest@sha256:4dd5747b3322e81edfe2b482443b444068f2033ab488bf4566bbe00fa3c685e7";
       containerName = "ente-museum";
       port = 8080;
       networks = [ cfg.edgeNetwork.name ];
