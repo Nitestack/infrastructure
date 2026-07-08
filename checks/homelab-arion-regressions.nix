@@ -147,7 +147,7 @@ let
           @dns host dns.example.test
           handle @dns {
             handle @from-tunnel {
-              respond 403
+              error 403
             }
             handle {
               reverse_proxy 127.0.0.1:1234
@@ -215,6 +215,41 @@ let
     }
   ];
 
+  # a config with a hand-authored extraSiteBlocks caller but zero declarative
+  # private apps: the forbidden-page import/passthrough must still be wired,
+  # since extraSiteBlocks content may reference `error 403` on its own
+  extraSiteBlocksOnlyConfig = mkSystem [
+    {
+      homestation.homelab = {
+        enable = true;
+        domain = "example.test";
+        lanAddress = "127.0.0.1";
+        caddy.extraSiteBlocks = ''
+          @dns host dns.example.test
+          handle @dns {
+            handle @from-tunnel {
+              error 403
+            }
+            handle {
+              reverse_proxy 127.0.0.1:1234
+            }
+          }
+        '';
+        apps.demo = {
+          expose = {
+            mode = "public";
+            host = "demo";
+          };
+          services.web = {
+            enable = true;
+            image = "demo:latest";
+            port = 80;
+          };
+        };
+      };
+    }
+  ];
+
   goodProject = goodConfig.config.virtualisation.arion.projects."homelab-demo";
   goodService = goodProject.settings.services.web.service;
   goodVolumes = goodProject.settings."docker-compose".volumes;
@@ -226,6 +261,11 @@ let
   forbiddenMount = builtins.elemAt caddyVolumes 1;
   forbiddenPath = builtins.head (lib.splitString ":" forbiddenMount);
   wildcardSection = lib.head (lib.splitString "\nexample.test {\n" caddyfileText);
+  extraSiteBlocksOnlyCaddyVolumes =
+    extraSiteBlocksOnlyConfig.config.virtualisation.oci-containers.containers."caddy".volumes;
+  extraSiteBlocksOnlyCaddyfileText = builtins.readFile (
+    builtins.head (lib.splitString ":" (builtins.head extraSiteBlocksOnlyCaddyVolumes))
+  );
   caddyServiceName =
     caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".serviceName;
   caddyUnit = caddyTransportConfig.config.systemd.services.${caddyServiceName};
@@ -275,10 +315,15 @@ assert lib.hasInfix
   "import forbidden_403\nhandle /__403-assets__/* {\n  root * /srv/errors\n  file_server\n}\n  @demo host demo.example.test"
   wildcardSection;
 # an extraSiteBlocks caller can reference the shared @from-tunnel matcher directly
-# (hand-authored extraSiteBlocks content is untouched by the error-page wiring)
+# and use `error 403` itself to opt into the same styled error page
 assert lib.hasInfix
-  "@dns host dns.example.test\n  handle @dns {\n    handle @from-tunnel {\n      respond 403\n    }\n    handle {\n"
+  "@dns host dns.example.test\n  handle @dns {\n    handle @from-tunnel {\n      error 403\n    }\n    handle {\n"
   wildcardSection;
+# extraSiteBlocks alone (no declarative private app) still gets the forbidden-page
+# import and font passthrough wired into the wildcard block
+assert lib.hasInfix "import forbidden_403" extraSiteBlocksOnlyCaddyfileText;
+assert lib.hasInfix "handle /__403-assets__/* {\n  root * /srv/errors\n  file_server\n}"
+  extraSiteBlocksOnlyCaddyfileText;
 # an app with a foreign/apex host lives in its own top-level block with its own @from-tunnel,
 # its own forbidden-page import, and its own font passthrough
 assert lib.hasInfix

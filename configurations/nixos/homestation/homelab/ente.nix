@@ -40,7 +40,7 @@ in
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
       handle @from-tunnel {
-        respond 403
+        error 403
       }
       handle {
         reverse_proxy ente-museum:8080

@@ -31,7 +31,7 @@ in
         @dns host dns.${cfg.domain}
         handle @dns {
           handle @from-tunnel {
-            respond 403
+            error 403
           }
           handle {
             reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}

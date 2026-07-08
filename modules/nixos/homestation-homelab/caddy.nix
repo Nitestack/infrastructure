@@ -208,9 +208,14 @@ let
       }
     '';
 
+  # extraSiteBlocks is hand-authored Caddy config from other modules (e.g. a
+  # DNS or media-server passthrough), so it may reference `import
+  # forbidden_403`/`error 403` itself even when no declarative app is private
+  wildcardNeedsForbidden = any isPrivateApp wildcardAppNames || cfg.caddy.extraSiteBlocks != "";
+
   wildcardBlockBody = concatStringsSep "\n" (
-    lib.optional (any isPrivateApp wildcardAppNames) "import forbidden_403"
-    ++ lib.optional (any isPrivateApp wildcardAppNames) forbiddenAssetsHandle
+    lib.optional wildcardNeedsForbidden "import forbidden_403"
+    ++ lib.optional wildcardNeedsForbidden forbiddenAssetsHandle
     ++ map (appName: indentLines "  " (mkAppHandle appName)) wildcardAppNames
     ++ lib.optional (cfg.caddy.extraSiteBlocks != "") (indentLines "  " cfg.caddy.extraSiteBlocks)
   );
