@@ -24,6 +24,16 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
+  fileSystems."/mnt/backup" =
+    { device = "/dev/disk/by-uuid/14a51fa1-1d8e-40ca-a899-03e3696ae8db";
+      fsType = "ext4";
+      options = [
+        "nofail"
+        "x-systemd.automount"
+        "x-systemd.idle-timeout=10min"
+      ];
+    };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/f80ca95c-2157-4f37-bd3a-96d6d20b3a87"; }
     ];
