@@ -17,6 +17,7 @@ let
   rewrites = mapAttrsToList (domain: record: {
     inherit domain;
     answer = record.value;
+    enabled = true;
   }) lanRecords;
 in
 {
