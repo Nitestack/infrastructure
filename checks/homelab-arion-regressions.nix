@@ -142,6 +142,7 @@ let
         domain = "example.test";
         lanAddress = "127.0.0.1";
         cloudflared.wildcardIngress = true;
+        cloudflared.tunnelId = "test-tunnel";
         caddy.extraSiteBlocks = ''
           @dns host dns.example.test
           handle @dns {
@@ -198,6 +199,7 @@ let
     caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".serviceName;
   caddyUnit = caddyTransportConfig.config.systemd.services.${caddyServiceName};
   arionUnit = caddyTransportConfig.config.systemd.services."arion-homelab-demo";
+  cloudflaredIngress = caddyTransportConfig.config.services.cloudflared.tunnels."test-tunnel".ingress;
 in
 assert goodService.restart == "always";
 assert goodService.labels.foo == "bar";
@@ -220,6 +222,10 @@ assert lib.hasInfix "@dns host dns.example.test" wildcardSection;
 assert lib.hasInfix "handle @dns {" wildcardSection;
 assert lib.hasInfix "\nexample.test {\n" caddyfileText;
 assert !lib.hasInfix "@demo_apex host" caddyfileText;
+assert
+  cloudflaredIngress."*.example.test".originRequest.originServerName == "_cloudflared.example.test";
+assert
+  cloudflaredIngress."example.test".originRequest.originServerName == "_cloudflared.example.test";
 pkgs.runCommand "homelab-arion-regressions" { } ''
   touch "$out"
 ''
