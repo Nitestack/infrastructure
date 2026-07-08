@@ -142,6 +142,12 @@ let
         domain = "example.test";
         lanAddress = "127.0.0.1";
         cloudflared.wildcardIngress = true;
+        caddy.extraSiteBlocks = ''
+          @dns host dns.example.test
+          handle @dns {
+            reverse_proxy 127.0.0.1:1234
+          }
+        '';
         apps.demo = {
           expose = {
             mode = "public";
@@ -163,6 +169,18 @@ let
             port = 443;
           };
         };
+        apps.demo_apex = {
+          expose = {
+            mode = "public";
+            host = "@";
+            service = "web";
+          };
+          services.web = {
+            enable = true;
+            image = "demo:latest";
+            port = 80;
+          };
+        };
       };
     }
   ];
@@ -175,6 +193,7 @@ let
   caddyfileMount = builtins.head caddyVolumes;
   caddyfilePath = builtins.head (lib.splitString ":" caddyfileMount);
   caddyfileText = builtins.readFile caddyfilePath;
+  wildcardSection = lib.head (lib.splitString "\nexample.test {\n" caddyfileText);
   caddyServiceName =
     caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".serviceName;
   caddyUnit = caddyTransportConfig.config.systemd.services.${caddyServiceName};
@@ -194,6 +213,13 @@ assert !duplicateServiceNamesEval.success;
 assert lib.hasInfix "tls_insecure_skip_verify\n" caddyfileText;
 assert !lib.hasInfix "tls true" caddyfileText;
 assert !lib.hasInfix "tls_insecure_skip_verify true" caddyfileText;
+assert lib.hasInfix "*.example.test {" caddyfileText;
+assert lib.hasInfix "@demo host demo.example.test" wildcardSection;
+assert lib.hasInfix "handle @demo {" wildcardSection;
+assert lib.hasInfix "@dns host dns.example.test" wildcardSection;
+assert lib.hasInfix "handle @dns {" wildcardSection;
+assert lib.hasInfix "\nexample.test {\n" caddyfileText;
+assert !lib.hasInfix "@demo_apex host" caddyfileText;
 pkgs.runCommand "homelab-arion-regressions" { } ''
   touch "$out"
 ''

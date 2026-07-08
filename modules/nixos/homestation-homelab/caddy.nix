@@ -24,6 +24,23 @@ let
     && internal.resolvedRoutesForApp appName != [ ]
   ) (builtins.attrNames internal.enabledApps);
 
+  # Eligible for the shared *.${cfg.domain} wildcard block: hosts that are
+  # exactly one label under cfg.domain. A Let's Encrypt wildcard cert never
+  # covers the bare apex (expose.host = "@") or a fully custom foreign host
+  # (expose.host containing a dot), so those keep their own top-level block.
+  isWildcardHost =
+    host:
+    cfg.domain != null
+    && host != null
+    && host != cfg.domain
+    && lib.hasSuffix ".${cfg.domain}" host
+    && lib.length (lib.splitString "." host) == lib.length (lib.splitString "." cfg.domain) + 1;
+
+  wildcardAppNames = filter (
+    appName: isWildcardHost (internal.effectiveHost appName)
+  ) exposedAppNames;
+  otherAppNames = filter (appName: !isWildcardHost (internal.effectiveHost appName)) exposedAppNames;
+
   indentLines =
     prefix: text:
     concatStringsSep "\n" (
@@ -123,20 +140,51 @@ let
       ]
     );
 
-  mkVirtualHost = appName: ''
-    ${internal.effectiveHost appName} {
-    ${concatStringsSep "\n" (
+  appBody =
+    appName:
+    concatStringsSep "\n" (
       imap0 (routeIndex: route: indentLines "  " (mkRoute appName routeIndex route)) (
         internal.resolvedRoutesForApp appName
       )
-    )}
+    );
+
+  mkVirtualHost = appName: ''
+    ${internal.effectiveHost appName} {
+    ${appBody appName}
     }
   '';
 
+  mkAppHandle =
+    appName:
+    let
+      matcherName = lib.replaceStrings [ "_" ] [ "-" ] appName;
+    in
+    ''
+      @${matcherName} host ${internal.effectiveHost appName}
+      handle @${matcherName} {
+      ${appBody appName}
+      }
+    '';
+
+  wildcardBlockBody = concatStringsSep "\n" (
+    map (appName: indentLines "  " (mkAppHandle appName)) wildcardAppNames
+    ++ lib.optional (cfg.caddy.extraSiteBlocks != "") (indentLines "  " cfg.caddy.extraSiteBlocks)
+  );
+
+  wildcardBlock =
+    if cfg.domain != null && (wildcardAppNames != [ ] || cfg.caddy.extraSiteBlocks != "") then
+      ''
+        *.${cfg.domain} {
+        ${wildcardBlockBody}
+        }
+      ''
+    else
+      "";
+
   caddyfile = pkgs.writeText "homelab-Caddyfile" ''
     ${cfg.caddy.globalConfig}
-    ${concatStringsSep "\n" (map mkVirtualHost exposedAppNames)}
-    ${cfg.caddy.extraSiteBlocks}
+    ${wildcardBlock}
+    ${concatStringsSep "\n" (map mkVirtualHost otherAppNames)}
   '';
 
   parsePort =
