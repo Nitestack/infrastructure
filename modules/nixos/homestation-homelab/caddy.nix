@@ -41,6 +41,8 @@ let
   ) exposedAppNames;
   otherAppNames = filter (appName: !isWildcardHost (internal.effectiveHost appName)) exposedAppNames;
 
+  isPrivateApp = appName: internal.enabledApps.${appName}.expose.mode == "private";
+
   indentLines =
     prefix: text:
     concatStringsSep "\n" (
@@ -148,21 +150,52 @@ let
       )
     );
 
-  mkVirtualHost = appName: ''
-    ${internal.effectiveHost appName} {
-    ${appBody appName}
-    }
-  '';
+  mkVirtualHost =
+    appName:
+    let
+      guardedBody =
+        if isPrivateApp appName then
+          ''
+            @from-tunnel {
+              header Cf-Connecting-Ip *
+            }
+            handle @from-tunnel {
+              respond 403
+            }
+            handle {
+            ${appBody appName}
+            }
+          ''
+        else
+          appBody appName;
+    in
+    ''
+      ${internal.effectiveHost appName} {
+      ${guardedBody}
+      }
+    '';
 
   mkAppHandle =
     appName:
     let
       matcherName = lib.replaceStrings [ "_" ] [ "-" ] appName;
+      guardedBody =
+        if isPrivateApp appName then
+          ''
+            handle @from-tunnel {
+              respond 403
+            }
+            handle {
+            ${appBody appName}
+            }
+          ''
+        else
+          appBody appName;
     in
     ''
       @${matcherName} host ${internal.effectiveHost appName}
       handle @${matcherName} {
-      ${appBody appName}
+      ${guardedBody}
       }
     '';
 
@@ -175,6 +208,9 @@ let
     if cfg.domain != null && (wildcardAppNames != [ ] || cfg.caddy.extraSiteBlocks != "") then
       ''
         *.${cfg.domain} {
+          @from-tunnel {
+            header Cf-Connecting-Ip *
+          }
         ${wildcardBlockBody}
         }
       ''
