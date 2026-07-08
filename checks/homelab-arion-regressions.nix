@@ -223,6 +223,8 @@ let
   caddyfileMount = builtins.head caddyVolumes;
   caddyfilePath = builtins.head (lib.splitString ":" caddyfileMount);
   caddyfileText = builtins.readFile caddyfilePath;
+  forbiddenMount = builtins.elemAt caddyVolumes 1;
+  forbiddenPath = builtins.head (lib.splitString ":" forbiddenMount);
   wildcardSection = lib.head (lib.splitString "\nexample.test {\n" caddyfileText);
   caddyServiceName =
     caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".serviceName;
@@ -291,6 +293,12 @@ assert lib.hasInfix "example.test {\n  handle {\n    reverse_proxy demo-apex:80\
 assert lib.hasInfix
   "(forbidden_403) {\n  handle_errors 403 {\n    root * /srv/errors\n    rewrite * /403.html\n    file_server\n  }\n}"
   caddyfileText;
+# the error-page directory is bind-mounted read-only into the caddy container
+assert lib.hasSuffix ":/srv/errors:ro" forbiddenMount;
+# the mounted directory actually contains the error page and the self-hosted font,
+# at the exact paths the Caddyfile and the page's @font-face reference
+assert builtins.pathExists (forbiddenPath + "/403.html");
+assert builtins.pathExists (forbiddenPath + "/__403-assets__/inter-var.ttf");
 pkgs.runCommand "homelab-arion-regressions" { } ''
   touch "$out"
 ''
