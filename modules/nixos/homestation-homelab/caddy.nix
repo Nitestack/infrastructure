@@ -6,6 +6,7 @@
 }:
 let
   inherit (lib)
+    any
     concatStringsSep
     filter
     imap0
@@ -150,17 +151,25 @@ let
       )
     );
 
+  forbiddenAssetsHandle = ''
+    handle /__403-assets__/* {
+      root * /srv/errors
+      file_server
+    }'';
+
   mkVirtualHost =
     appName:
     let
       guardedBody =
         if isPrivateApp appName then
           ''
+            import forbidden_403
+            ${forbiddenAssetsHandle}
             @from-tunnel {
               header Cf-Connecting-Ip *
             }
             handle @from-tunnel {
-              respond 403
+              error 403
             }
             handle {
             ${appBody appName}
@@ -183,7 +192,7 @@ let
         if isPrivateApp appName then
           ''
             handle @from-tunnel {
-              respond 403
+              error 403
             }
             handle {
             ${appBody appName}
@@ -200,7 +209,9 @@ let
     '';
 
   wildcardBlockBody = concatStringsSep "\n" (
-    map (appName: indentLines "  " (mkAppHandle appName)) wildcardAppNames
+    lib.optional (any isPrivateApp wildcardAppNames) "import forbidden_403"
+    ++ lib.optional (any isPrivateApp wildcardAppNames) forbiddenAssetsHandle
+    ++ map (appName: indentLines "  " (mkAppHandle appName)) wildcardAppNames
     ++ lib.optional (cfg.caddy.extraSiteBlocks != "") (indentLines "  " cfg.caddy.extraSiteBlocks)
   );
 
@@ -217,8 +228,18 @@ let
     else
       "";
 
+  forbiddenSnippet = ''
+    (forbidden_403) {
+      handle_errors 403 {
+        root * /srv/errors
+        rewrite * /403.html
+        file_server
+      }
+    }'';
+
   caddyfile = pkgs.writeText "homelab-Caddyfile" ''
     ${cfg.caddy.globalConfig}
+    ${forbiddenSnippet}
     ${wildcardBlock}
     ${concatStringsSep "\n" (map mkVirtualHost otherAppNames)}
   '';

@@ -259,23 +259,37 @@ assert
 assert
   lib.length (lib.splitString "@from-tunnel {\n    header Cf-Connecting-Ip *\n  }" wildcardSection)
   == 2;
-# a private app in the wildcard block gets wrapped: tunnel-origin requests hit "respond 403"
+# a private app in the wildcard block gets wrapped: tunnel-origin requests hit "error 403"
 assert lib.hasInfix
-  "@demo-private host private1.example.test\n  handle @demo-private {\n  handle @from-tunnel {\n    respond 403\n  }\n  handle {\n"
+  "@demo-private host private1.example.test\n  handle @demo-private {\n  handle @from-tunnel {\n    error 403\n  }\n  handle {\n"
   wildcardSection;
 # a public app in the same wildcard block is untouched: no @from-tunnel guard wraps its handle
 assert lib.hasInfix "handle @demo {\n    handle {\n" wildcardSection;
 assert !lib.hasInfix "handle @demo {\n  handle @from-tunnel" wildcardSection;
+# the forbidden-page import and font passthrough are wired once for the wildcard block,
+# before the per-app handles, since at least one app in it (demo-private) is private
+assert lib.length (lib.splitString "import forbidden_403" wildcardSection) == 2;
+assert lib.hasInfix
+  "import forbidden_403\nhandle /__403-assets__/* {\n  root * /srv/errors\n  file_server\n}\n  @demo host demo.example.test"
+  wildcardSection;
 # an extraSiteBlocks caller can reference the shared @from-tunnel matcher directly
+# (hand-authored extraSiteBlocks content is untouched by the error-page wiring)
 assert lib.hasInfix
   "@dns host dns.example.test\n  handle @dns {\n    handle @from-tunnel {\n      respond 403\n    }\n    handle {\n"
   wildcardSection;
-# an app with a foreign/apex host lives in its own top-level block with its own @from-tunnel
+# an app with a foreign/apex host lives in its own top-level block with its own @from-tunnel,
+# its own forbidden-page import, and its own font passthrough
 assert lib.hasInfix
-  "foreign.other.test {\n@from-tunnel {\n  header Cf-Connecting-Ip *\n}\nhandle @from-tunnel {\n  respond 403\n}\nhandle {\n"
+  "foreign.other.test {\nimport forbidden_403\nhandle /__403-assets__/* {\n  root * /srv/errors\n  file_server\n}\n@from-tunnel {\n  header Cf-Connecting-Ip *\n}\nhandle @from-tunnel {\n  error 403\n}\nhandle {\n"
   caddyfileText;
-# a public apex app is untouched: no @from-tunnel guard wraps its handle
+# a public apex app is untouched: no @from-tunnel guard, forbidden-page import, or font
+# passthrough wraps its handle
 assert lib.hasInfix "example.test {\n  handle {\n    reverse_proxy demo-apex:80\n  }\n}"
+  caddyfileText;
+# the shared handle_errors snippet is defined once, before any site block, and preserves
+# the 403 status by rewriting to the mounted error page instead of responding directly
+assert lib.hasInfix
+  "(forbidden_403) {\n  handle_errors 403 {\n    root * /srv/errors\n    rewrite * /403.html\n    file_server\n  }\n}"
   caddyfileText;
 pkgs.runCommand "homelab-arion-regressions" { } ''
   touch "$out"
