@@ -1,0 +1,24 @@
+server:
+  proxied: true
+
+theme:
+  disable-picker: true
+  background-color: 240 21 15
+  contrast-multiplier: 1.2
+  primary-color: 217 92 83
+  positive-color: 115 54 76
+  negative-color: 347 70 65
+
+auth:
+  secret-key: ${GLANCE_SECRET}
+  users:
+    ${GLANCE_USER}:
+      password-hash: ${GLANCE_PASSWORD_HASH}
+
+branding:
+  logo-text: Dashboard
+  app-name: Dashboard
+  hide-footer: true
+
+pages:
+  - $include: home.yml

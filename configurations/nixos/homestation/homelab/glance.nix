@@ -55,8 +55,8 @@ in
       volumes = [
         {
           type = "bind";
-          source = "${./glance/home.yml}";
-          target = "/app/config/home.yml";
+          source = "${./glance}";
+          target = "/app/config";
           readOnly = true;
         }
         {
