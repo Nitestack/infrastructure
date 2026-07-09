@@ -6,10 +6,6 @@
 let
   cfg = config.homestation.homelab;
   dnsHost = if cfg.domain != null then "dns.${cfg.domain}" else "dns";
-  routerIds = [
-    "192.168.178.1"
-    "fd73:4cd4:b6c2:0:36e1:a9ff:feb4:31b8"
-  ];
 in
 {
   homestation.homelab.dns.records = lib.mkIf (cfg.lanAddress != null) (
@@ -37,13 +33,6 @@ in
     mutableSettings = false;
     openFirewall = true;
     settings = {
-      clients.persistent = [
-        {
-          name = "Router";
-          ids = routerIds;
-          tags = [ "device_other" ];
-        }
-      ];
       dns = {
         bind_hosts = (lib.optional (cfg.lanAddress != null) cfg.lanAddress) ++ [ "::" ];
         port = 53;
