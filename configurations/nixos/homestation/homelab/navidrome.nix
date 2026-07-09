@@ -9,7 +9,7 @@ let
   effectiveUid = if userUid != null then toString userUid else "1000";
 in
 {
-  homestation.homelab.apps.navidrome = {
+  homelab.apps.navidrome = {
     expose = {
       mode = "public";
       host = "music";

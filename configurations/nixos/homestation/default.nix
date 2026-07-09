@@ -18,7 +18,7 @@ in
     flake.inputs.arion.nixosModules.arion
     self.nixosModules.base
     self.nixosModules.bare-metal-only
-    self.nixosModules.homestation-homelab
+    self.nixosModules.homelab
     ./rendered-files.nix
     ./sops.nix
     ./homelab/adguard-home.nix
@@ -65,7 +65,7 @@ in
     };
   };
 
-  homestation.homelab = {
+  homelab = {
     enable = true;
     domain = "npham.de";
     lanAddress = "192.168.178.20";

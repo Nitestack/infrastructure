@@ -1,19 +1,19 @@
 # Homelab Service Module
 
-The `homestation-homelab` module is a small API for declaring self-hosted apps,
+The `homelab` module is a small API for declaring self-hosted apps,
 their container services, and how traffic reaches them.
 
-Module source: `modules/nixos/homestation-homelab/`
+Module source: `modules/nixos/homelab/`
 
 This document reflects the public option schema defined in
-`modules/nixos/homestation-homelab/options.nix`.
+`modules/nixos/homelab/options.nix`.
 
 ---
 
 ## Quick Start
 
 ```nix
-homestation.homelab = {
+homelab = {
   enable = true;
   domain = "example.com";
   lanAddress = "192.168.1.10";
@@ -47,7 +47,7 @@ homestation.homelab = {
 ## Conceptual Model
 
 ```text
-homestation.homelab
+homelab
 `-- apps
     `-- <appName>
         |-- expose
@@ -65,7 +65,7 @@ paths were removed.
 
 ---
 
-## Global Options (`homestation.homelab.*`)
+## Global Options (`homelab.*`)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -108,7 +108,7 @@ added only when some public app explicitly resolves to the apex, for example
 | `caddy.extraHosts` | lines | `""` | Extra hand-written Caddy host handling that should live next to the generated app hosts |
 | `caddy.extraVolumes` | list of string | `[]` | Extra bind mounts or named-volume mounts for the Caddy container |
 
-By default, `modules/nixos/homestation-homelab/caddy.nix` configures HTTPS via
+By default, `modules/nixos/homelab/caddy.nix` configures HTTPS via
 Cloudflare DNS-01 (`acme_dns cloudflare`). That means certificates are issued
 through DNS API access rather than public HTTP reachability, so generated hosts
 can work for LAN, Tailnet, and Tunnel access without changing the app API.
@@ -137,8 +137,8 @@ them in explicitly, for example:
 
 ```nix
 services.web.environment = {
-  SMTP_HOST = config.homestation.homelab.smtp.host;
-  SMTP_PORT = toString config.homestation.homelab.smtp.port;
+  SMTP_HOST = config.homelab.smtp.host;
+  SMTP_PORT = toString config.homelab.smtp.port;
 };
 ```
 
@@ -316,7 +316,7 @@ via `services.<name>.networks`.
 ### Volume Kinds
 
 - `type = "bind"` mounts a host path
-- `type = "library"` mounts a named shared path from `homestation.homelab.libraries`
+- `type = "library"` mounts a named shared path from `homelab.libraries`
 - `type = "volume"` creates or references a named Docker volume
 - `external = true` marks that named volume as pre-existing
 
@@ -325,7 +325,7 @@ via `services.<name>.networks`.
 **Shared host path across multiple apps**:
 
 ```nix
-homestation.homelab.libraries.media = { path = "/srv/media"; };
+homelab.libraries.media = { path = "/srv/media"; };
 
 apps.navidrome.services.server.volumes = [{ type = "library"; library = "media"; target = "/music"; readOnly = true; }];
 apps.jellyfin.services.server.volumes = [{ type = "library"; library = "media"; target = "/media"; readOnly = true; }];
@@ -448,11 +448,11 @@ apps.paperless = {
 ### Library-backed mount
 
 ```nix
-homestation.homelab.libraries.media = {
+homelab.libraries.media = {
   path = "/srv/media";
 };
 
-homestation.homelab.apps.navidrome.services.server = {
+homelab.apps.navidrome.services.server = {
   enable = true;
   image = "deluan/navidrome:latest";
   port = 4533;
@@ -471,6 +471,6 @@ homestation.homelab.apps.navidrome.services.server = {
 
 ## Maintenance Note
 
-When `modules/nixos/homestation-homelab/options.nix` changes, update this
+When `modules/nixos/homelab/options.nix` changes, update this
 document in the same patch. Keep the global, app, service, volume, and
 validation sections aligned with the module API.

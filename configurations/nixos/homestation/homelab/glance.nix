@@ -4,8 +4,8 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
-  homelab-lib = import ../../../../modules/nixos/homestation-homelab/lib.nix {
+  cfg = config.homelab;
+  homelab-lib = import ../../../../modules/nixos/homelab/lib.nix {
     inherit cfg lib;
   };
   inherit (homelab-lib) effectiveHost;
@@ -17,7 +17,7 @@ let
   adguardHomeUrl = "https://dns.${domain}";
 in
 {
-  homestation.homelab.apps.glance = {
+  homelab.apps.glance = {
     expose = {
       mode = "public";
       host = "dash";

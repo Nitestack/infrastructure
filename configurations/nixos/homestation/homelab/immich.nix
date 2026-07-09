@@ -3,10 +3,10 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
 in
 {
-  homestation.homelab.apps.immich = {
+  homelab.apps.immich = {
     expose = {
       mode = "public";
       host = "media";

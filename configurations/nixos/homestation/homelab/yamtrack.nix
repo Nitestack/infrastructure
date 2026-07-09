@@ -3,10 +3,10 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
 in
 {
-  homestation.homelab.apps.yamtrack = {
+  homelab.apps.yamtrack = {
     expose = {
       mode = "public";
       host = "track";

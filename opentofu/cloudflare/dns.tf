@@ -9,8 +9,8 @@ locals {
 }
 
 # Routes all *.npham.de traffic into the Cloudflare Tunnel that cloudflared
-# (managed natively by NixOS, see modules/nixos/homestation-homelab/cloudflared.nix)
-# terminates on homestation. Every homestation.homelab app with
+# (managed natively by NixOS, see modules/nixos/homelab/cloudflared.nix)
+# terminates on homestation. Every homelab app with
 # expose.mode = "public" is reachable through this single wildcard record.
 resource "cloudflare_dns_record" "tunnel_wildcard" {
   zone_id = local.zone_id

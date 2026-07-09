@@ -7,7 +7,7 @@ Manages Cloudflare-side edge state for homestation:
 
 Cloudflare Tunnel ingress is not managed in OpenTofu. Source of truth is NixOS:
 
-- generator: `modules/nixos/homestation-homelab/cloudflared.nix`
+- generator: `modules/nixos/homelab/cloudflared.nix`
 - host wiring: `configurations/nixos/homestation/default.nix`
 
 That NixOS config generates wildcard tunnel ingress to

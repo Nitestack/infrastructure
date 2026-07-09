@@ -11,7 +11,7 @@ let
     mkIf
     ;
 
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   networkUnitName = "container-edge-network";
 
   generatedUnitNames = map (projectName: "arion-${projectName}") (

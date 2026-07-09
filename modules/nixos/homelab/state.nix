@@ -13,7 +13,7 @@ let
     unique
     ;
 
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   internal = cfg._internal;
 
   enabledServicesWithApp = concatMap (

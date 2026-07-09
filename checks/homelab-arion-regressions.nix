@@ -23,7 +23,7 @@ let
       inherit system;
       modules = [
         inputs.arion.nixosModules.arion
-        ../modules/nixos/homestation-homelab
+        ../modules/nixos/homelab
         baseModule
       ]
       ++ extraModules;
@@ -31,7 +31,7 @@ let
 
   goodConfig = mkSystem [
     {
-      homestation.homelab = {
+      homelab = {
         enable = true;
         domain = "example.test";
         lanAddress = "127.0.0.1";
@@ -56,7 +56,7 @@ let
   badConfigEval = builtins.tryEval (
     (mkSystem [
       {
-        homestation.homelab = {
+        homelab = {
           enable = true;
           domain = "example.test";
           lanAddress = "127.0.0.1";
@@ -79,7 +79,7 @@ let
   missingDomainEval = builtins.tryEval (
     (mkSystem [
       {
-        homestation.homelab = {
+        homelab = {
           enable = true;
           lanAddress = "127.0.0.1";
         };
@@ -90,7 +90,7 @@ let
   missingLanAddressEval = builtins.tryEval (
     (mkSystem [
       {
-        homestation.homelab = {
+        homelab = {
           enable = true;
           domain = "example.test";
         };
@@ -101,7 +101,7 @@ let
   globalLoggingOverrideEval = builtins.tryEval (
     (mkSystem [
       {
-        homestation.homelab = {
+        homelab = {
           enable = true;
           domain = "example.test";
           lanAddress = "127.0.0.1";
@@ -114,7 +114,7 @@ let
   duplicateProjectNamesEval = builtins.tryEval (
     (mkSystem [
       {
-        homestation.homelab = {
+        homelab = {
           enable = true;
           domain = "example.test";
           lanAddress = "127.0.0.1";
@@ -150,7 +150,7 @@ let
   duplicateServiceNamesEval = builtins.tryEval (
     (mkSystem [
       {
-        homestation.homelab = {
+        homelab = {
           enable = true;
           domain = "example.test";
           lanAddress = "127.0.0.1";
@@ -178,7 +178,7 @@ let
 
   caddyTransportConfig = mkSystem [
     {
-      homestation.homelab = {
+      homelab = {
         enable = true;
         domain = "example.test";
         lanAddress = "127.0.0.1";
@@ -257,7 +257,7 @@ let
   firewallTCPPorts = caddyTransportConfig.config.networking.firewall.allowedTCPPorts;
   adguardRewrites = caddyTransportConfig.config.services.adguardhome.settings.filtering.rewrites;
   removedDnsRecordsOption =
-    !(lib.hasAttrByPath [ "homestation" "homelab" "dns" "records" ] caddyTransportConfig.options);
+    !(lib.hasAttrByPath [ "homelab" "dns" "records" ] caddyTransportConfig.options);
   cloudflareOpenTofuText = builtins.readFile ../opentofu/cloudflare/dns.tf;
   cloudflareOpenTofuReadme = builtins.readFile ../opentofu/cloudflare/README.md;
 in
@@ -299,7 +299,7 @@ assert lib.hasInfix "setting_id = \"always_use_https\"" cloudflareOpenTofuText;
 assert lib.hasInfix "value      = \"on\"" cloudflareOpenTofuText;
 assert lib.hasInfix "Cloudflare Tunnel ingress is not managed in OpenTofu."
   cloudflareOpenTofuReadme;
-assert lib.hasInfix "modules/nixos/homestation-homelab/cloudflared.nix" cloudflareOpenTofuReadme;
+assert lib.hasInfix "modules/nixos/homelab/cloudflared.nix" cloudflareOpenTofuReadme;
 assert lib.hasInfix "http://127.0.0.1:<caddy.tunnelPort>" cloudflareOpenTofuReadme;
 assert lib.hasSuffix ":/srv/errors:ro" forbiddenMount;
 pkgs.runCommand "homelab-arion-regressions" { } ''

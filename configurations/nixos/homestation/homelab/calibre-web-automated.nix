@@ -6,7 +6,7 @@ let
   username = config.meta.username;
 in
 {
-  homestation.homelab.apps.calibre-web-automated = {
+  homelab.apps.calibre-web-automated = {
     expose = {
       mode = "public";
       host = "lib";

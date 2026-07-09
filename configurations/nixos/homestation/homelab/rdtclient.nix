@@ -2,7 +2,7 @@
   ...
 }:
 {
-  homestation.homelab.apps.rdtclient = {
+  homelab.apps.rdtclient = {
     expose = {
       mode = "public";
       host = "magnets";

@@ -3,11 +3,11 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   smtp = cfg.smtp;
 in
 {
-  homestation.homelab.apps.vaultwarden = {
+  homelab.apps.vaultwarden = {
     expose = {
       mode = "public";
       host = "vault";

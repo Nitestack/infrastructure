@@ -3,11 +3,11 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   username = config.meta.username;
 in
 {
-  homestation.homelab.apps.wealthfolio = {
+  homelab.apps.wealthfolio = {
     expose = {
       mode = "public";
       host = "wealth";

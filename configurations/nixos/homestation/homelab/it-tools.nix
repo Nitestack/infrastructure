@@ -1,5 +1,5 @@
 {
-  homestation.homelab.apps.it-tools = {
+  homelab.apps.it-tools = {
     expose = {
       mode = "public";
       host = "it";

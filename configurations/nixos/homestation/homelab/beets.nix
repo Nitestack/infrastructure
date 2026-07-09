@@ -3,7 +3,7 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   username = config.meta.username;
   renderedConfigName = "beets-config.yaml";
   renderedConfigPath = config.sops.templates.${renderedConfigName}.path;
@@ -16,7 +16,7 @@ in
     };
   };
 
-  homestation.homelab.apps.beets.services.main = {
+  homelab.apps.beets.services.main = {
     enable = true;
     image = "linuxserver/beets:2.12.0@sha256:9d7953d6afc7469e6314c25d9952374338de792171857dc5ff6dc482d488c658";
 

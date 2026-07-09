@@ -4,15 +4,15 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   username = config.meta.username;
-  homelab-lib = import ../../../../modules/nixos/homestation-homelab/lib.nix {
+  homelab-lib = import ../../../../modules/nixos/homelab/lib.nix {
     inherit cfg lib;
   };
   calibreWebAutomated = cfg.apps.calibre-web-automated;
 in
 {
-  homestation.homelab.apps.shelfmark = {
+  homelab.apps.shelfmark = {
     enable = calibreWebAutomated.enable;
 
     expose = {

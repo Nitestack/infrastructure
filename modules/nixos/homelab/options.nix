@@ -248,8 +248,8 @@ let
   };
 in
 {
-  options.homestation.homelab = {
-    enable = mkEnableOption "homestation homelab service abstraction";
+  options.homelab = {
+    enable = mkEnableOption "homelab service abstraction";
 
     domain = mkOption {
       type = types.str;

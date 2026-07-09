@@ -9,7 +9,7 @@ let
     mkAfter
     ;
 
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
 in
 {
   config = mkIf (cfg.enable && config.services.adguardhome.enable) {

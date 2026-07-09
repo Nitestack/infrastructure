@@ -3,10 +3,10 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
 in
 {
-  homestation.homelab.apps."adventure-log" = {
+  homelab.apps."adventure-log" = {
     expose = {
       mode = "public";
       host = "travel";

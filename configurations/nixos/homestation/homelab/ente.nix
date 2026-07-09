@@ -3,7 +3,7 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   renderedMuseumConfigName = "ente-museum.yaml";
   renderedMuseumConfigPath = config.sops.templates.${renderedMuseumConfigName}.path;
   enteApiHost = "ente.${cfg.domain}";
@@ -22,14 +22,14 @@ in
     };
   };
 
-  homestation.homelab.caddy.extraHosts = ''
+  homelab.caddy.extraHosts = ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
       reverse_proxy ente-museum:8080
     }
   '';
 
-  homestation.homelab.apps.ente = {
+  homelab.apps.ente = {
     expose = {
       mode = "public";
       host = "2fa";

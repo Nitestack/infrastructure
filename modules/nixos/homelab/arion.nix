@@ -16,7 +16,7 @@ let
     optionalString
     ;
 
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   internal = cfg._internal;
   username = config.meta.username;
   userUid = config.users.users.${username}.uid;

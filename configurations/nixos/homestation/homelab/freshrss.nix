@@ -1,5 +1,5 @@
 {
-  homestation.homelab.apps.freshrss = {
+  homelab.apps.freshrss = {
     expose = {
       mode = "public";
       host = "feed";

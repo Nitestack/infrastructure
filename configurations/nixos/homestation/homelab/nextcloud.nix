@@ -3,7 +3,7 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   nextcloudHost = "cloud.${cfg.domain}";
   nextcloudAioHost = "nextcloud-aio.${cfg.domain}";
   nextcloudDataDir = "${cfg.dataDir}/nextcloud/data";
@@ -13,7 +13,7 @@ in
     "d ${nextcloudDataDir} 0755 root root -"
   ];
 
-  homestation.homelab.caddy.extraHosts = ''
+  homelab.caddy.extraHosts = ''
     @nextcloud-aio host ${nextcloudAioHost}
     handle @nextcloud-aio {
       reverse_proxy https://nextcloud-aio-mastercontainer:8080 {
@@ -24,7 +24,7 @@ in
     }
   '';
 
-  homestation.homelab.apps.nextcloud = {
+  homelab.apps.nextcloud = {
     expose = {
       mode = "public";
       host = "cloud";

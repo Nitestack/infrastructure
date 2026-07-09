@@ -3,7 +3,7 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   smtpTls =
     if cfg.smtp.security == "force_tls" then
       "tls"
@@ -13,7 +13,7 @@ let
       cfg.smtp.security;
 in
 {
-  homestation.homelab.apps.pocket-id = {
+  homelab.apps.pocket-id = {
     expose = {
       mode = "public";
       host = "id";

@@ -3,10 +3,10 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
 in
 {
-  homestation.homelab.caddy.extraHosts = ''
+  homelab.caddy.extraHosts = ''
     @dns host dns.${cfg.domain}
     handle @dns {
       reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}

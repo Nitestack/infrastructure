@@ -6,7 +6,7 @@ let
   username = config.meta.username;
 in
 {
-  homestation.homelab.apps.prowlarr = {
+  homelab.apps.prowlarr = {
     expose = {
       mode = "public";
       host = "index";

@@ -277,7 +277,7 @@ in
           config.sops.placeholder."yamtrack/oidc-client-id"
         }","secret":"${
           config.sops.placeholder."yamtrack/oidc-client-secret"
-        }","settings":{"server_url":"https://id.${config.homestation.homelab.domain}/.well-known/openid-configuration"}}]}}
+        }","settings":{"server_url":"https://id.${config.homelab.domain}/.well-known/openid-configuration"}}]}}
       '';
       mode = "0400";
     };

@@ -3,10 +3,10 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
 in
 {
-  homestation.homelab.apps.beszel = {
+  homelab.apps.beszel = {
     expose = {
       mode = "public";
       host = "status";

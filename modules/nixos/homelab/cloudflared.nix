@@ -9,7 +9,7 @@ let
     mkIf
     ;
 
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   internal = cfg._internal;
   wildcardIngress = builtins.any (app: app.expose.mode == "public") (
     builtins.attrValues internal.enabledApps

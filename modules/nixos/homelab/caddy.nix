@@ -12,7 +12,7 @@ let
     mkIf
     ;
 
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   internal = cfg._internal;
   networkUnitName = "container-edge-network";
   tunnelPort = cfg.caddy.tunnelPort;
@@ -407,7 +407,7 @@ let
 in
 {
   config = mkIf (cfg.enable && cfg.caddy.enable) {
-    homestation.homelab.caddy = {
+    homelab.caddy = {
       # pre-built Caddy image with the caddy-dns/cloudflare plugin, so
       # automatic HTTPS works via DNS-01 for hostnames that are only
       # privately resolvable (LAN/Tailnet), not just publicly reachable ones

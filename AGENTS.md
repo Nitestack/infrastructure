@@ -34,8 +34,8 @@ Binary assets in `images/` are Git LFS tracked. Keep large personal or machine-l
 
 ## Documentation Sync Rules
 
-`docs/homelab-services.md` is the reference for the `homestation-homelab` NixOS module
-(`modules/nixos/homestation-homelab/`). **Any time you modify the module API** — adding,
+`docs/homelab-services.md` is the reference for the `homelab` NixOS module
+(`modules/nixos/homelab/`). **Any time you modify the module API** — adding,
 renaming, or removing options in `options.nix`, changing validation rules in
 `validation.nix`, or altering networking/Caddy/DNS behaviour — update the corresponding
 sections in `docs/homelab-services.md`:

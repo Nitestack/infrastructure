@@ -4,7 +4,7 @@
   ...
 }:
 let
-  cfg = config.homestation.homelab;
+  cfg = config.homelab;
   homelabLib = import ./lib.nix { inherit cfg lib; };
   enabledApps = lib.filterAttrs (_: app: app.enable) cfg.apps;
 
@@ -26,12 +26,12 @@ let
 
 in
 {
-  options.homestation.homelab._internal = lib.mkOption {
+  options.homelab._internal = lib.mkOption {
     type = lib.types.attrs;
     readOnly = true;
   };
 
-  config.homestation.homelab._internal = {
+  config.homelab._internal = {
     inherit enabledApps enabledServicesForApp;
     effectiveHost = appName: homelabLib.effectiveHost enabledApps.${appName};
     inherit effectiveExposeService;
