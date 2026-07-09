@@ -4,6 +4,7 @@
 }:
 let
   cfg = config.homestation.homelab;
+  username = config.meta.username;
 in
 {
   homestation.homelab.apps.wealthfolio = {
@@ -14,7 +15,7 @@ in
 
     services.web = {
       enable = true;
-      image = "wealthfolio/wealthfolio:3.5.2@sha256:a830fdcf8294f1a7ae224eaf680b86007331c2fd3a739f1349681388e00d2c30";
+      image = "wealthfolio/wealthfolio:3.6.1@sha256:2819715df7057a46a29f30cd3c3e713df3bbe424b3a1bf7f2c92dc1dea1f84a6";
       port = 8088;
 
       environment = {
@@ -32,6 +33,8 @@ in
           type = "bind";
           source = "data";
           target = "/data";
+          owner = username;
+          group = "users";
         }
       ];
 

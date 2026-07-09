@@ -266,7 +266,7 @@ in
     templates."wealthfolio.env" = {
       content = ''
         WF_SECRET_KEY=${config.sops.placeholder."wealthfolio/secret-key"}
-        WF_AUTH_PASSWORD_HASH=${config.sops.placeholder."wealthfolio/password-hash"}
+        WF_AUTH_PASSWORD_HASH='${config.sops.placeholder."wealthfolio/password-hash"}'
       '';
       mode = "0400";
     };
