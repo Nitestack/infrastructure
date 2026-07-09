@@ -197,6 +197,7 @@ let
           };
         };
       };
+      services.adguardhome.enable = true;
     }
   ];
   goodProject = goodConfig.config.virtualisation.arion.projects.demo;
@@ -212,6 +213,9 @@ let
   arionUnit = caddyTransportConfig.config.systemd.services."arion-demo";
   cloudflaredIngress = caddyTransportConfig.config.services.cloudflared.tunnels."test-tunnel".ingress;
   firewallTCPPorts = caddyTransportConfig.config.networking.firewall.allowedTCPPorts;
+  adguardRewrites = caddyTransportConfig.config.services.adguardhome.settings.filtering.rewrites;
+  removedDnsRecordsOption =
+    !(lib.hasAttrByPath [ "homestation" "homelab" "dns" "records" ] caddyTransportConfig.options);
   cloudflareOpenTofuText = builtins.readFile ../opentofu/cloudflare/dns.tf;
   cloudflareOpenTofuReadme = builtins.readFile ../opentofu/cloudflare/README.md;
 in
@@ -232,6 +236,15 @@ assert cloudflaredIngress."*.example.test".originRequest.noTLSVerify == null;
 assert cloudflaredIngress."*.example.test".originRequest.originServerName == null;
 assert builtins.elem "127.0.0.1:8080:8080" caddyPorts;
 assert !builtins.elem 8080 firewallTCPPorts;
+assert
+  adguardRewrites == [
+    {
+      domain = "*.example.test";
+      answer = "127.0.0.1";
+      enabled = true;
+    }
+  ];
+assert removedDnsRecordsOption;
 assert !lib.hasInfix "https://localhost:443" cloudflareOpenTofuText;
 assert lib.hasInfix "content = \"\${local.tunnel_id}.cfargotunnel.com\"" cloudflareOpenTofuText;
 assert lib.hasInfix "resource \"cloudflare_zone_setting\" \"always_use_https\""

@@ -5,22 +5,8 @@
 }:
 let
   cfg = config.homestation.homelab;
-  dnsHost = if cfg.domain != null then "dns.${cfg.domain}" else "dns";
 in
 {
-  homestation.homelab.dns.records = lib.mkIf (cfg.lanAddress != null) (
-    builtins.listToAttrs [
-      {
-        name = dnsHost;
-        value = {
-          type = "A";
-          value = cfg.lanAddress;
-          visibility = "lan";
-        };
-      }
-    ]
-  );
-
   homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) ''
     @dns host dns.${cfg.domain}
     handle @dns {

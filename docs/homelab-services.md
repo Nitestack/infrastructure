@@ -78,11 +78,9 @@ paths were removed.
 | `logging.options` | attrs of string | `{}` | Driver-specific logging settings applied when `logging.driver` is set |
 | `libraries` | attrs of libraryType | `{}` | Named shared host paths that apps can mount by reference |
 | `apps` | attrs of appType | `{}` | App definitions |
-| `dns.records` | attrs of dnsRecordType | `{}` | Extra DNS records managed alongside generated app records |
 
 When native `services.adguardhome.enable = true` is also set on the host, all
-LAN-visible records from `homestation.homelab.dns.records` are rendered into
-AdGuard Home `filtering.rewrites` automatically.
+hosts matching `*.${domain}` are rewritten to `lanAddress` in AdGuard Home.
 
 ### `cloudflared.*`
 
@@ -153,14 +151,6 @@ Keep passwords out of `environment`; pass them via `environmentFiles` instead.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `path` | string | none | Absolute host path exposed as a reusable named library mount |
-
-### `dns.records.<name>.*`
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `type` | enum | `"A"` | Record type: `"A"`, `"AAAA"`, or `"CNAME"` |
-| `value` | string | none | Record target |
-| `visibility` | enum | `"lan"` | Whether the record is for LAN clients only or should also be treated as public |
 
 ---
 

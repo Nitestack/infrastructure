@@ -202,27 +202,6 @@ let
     };
   };
 
-  dnsRecordType = types.submodule {
-    options = {
-      type = mkOption {
-        type = types.enum [
-          "A"
-          "AAAA"
-          "CNAME"
-        ];
-        default = "A";
-      };
-      value = mkOption { type = types.str; };
-      visibility = mkOption {
-        type = types.enum [
-          "lan"
-          "public"
-        ];
-        default = "lan";
-      };
-    };
-  };
-
   appType = types.submodule {
     options = {
       enable = mkOption {
@@ -407,9 +386,5 @@ in
       default = { };
     };
 
-    dns.records = mkOption {
-      type = types.attrsOf dnsRecordType;
-      default = { };
-    };
   };
 }

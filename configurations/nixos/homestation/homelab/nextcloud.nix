@@ -14,14 +14,6 @@ in
     "d ${nextcloudDataDir} 0755 root root -"
   ];
 
-  homestation.homelab.dns.records = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) {
-    ${nextcloudAioHost} = {
-      type = "A";
-      value = cfg.lanAddress;
-      visibility = "lan";
-    };
-  };
-
   homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null) ''
     @nextcloud-aio host ${nextcloudAioHost}
     handle @nextcloud-aio {

@@ -23,19 +23,6 @@ in
     };
   };
 
-  homestation.homelab.dns.records = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) (
-    builtins.listToAttrs [
-      {
-        name = enteApiHost;
-        value = {
-          type = "A";
-          value = cfg.lanAddress;
-          visibility = "lan";
-        };
-      }
-    ]
-  );
-
   homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null) ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {

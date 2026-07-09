@@ -9,6 +9,5 @@
     ./arion.nix
     ./caddy.nix
     ./cloudflared.nix
-    ./dns.nix
   ];
 }
