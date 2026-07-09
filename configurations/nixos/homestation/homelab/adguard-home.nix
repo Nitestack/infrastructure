@@ -1,13 +1,12 @@
 {
   config,
-  lib,
   ...
 }:
 let
   cfg = config.homestation.homelab;
 in
 {
-  homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) ''
+  homestation.homelab.caddy.extraHosts = ''
     @dns host dns.${cfg.domain}
     handle @dns {
       reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
@@ -20,7 +19,10 @@ in
     openFirewall = true;
     settings = {
       dns = {
-        bind_hosts = (lib.optional (cfg.lanAddress != null) cfg.lanAddress) ++ [ "::" ];
+        bind_hosts = [
+          cfg.lanAddress
+          "::"
+        ];
         port = 53;
         bootstrap_dns = [
           "1.1.1.1"

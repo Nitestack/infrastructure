@@ -14,13 +14,7 @@ let
   domain = cfg.domain;
   mkUrl = host: "https://${host}.${domain}";
   appUrl = app: "https://${effectiveHost app}";
-  adguardHomeUrl =
-    if domain != null then
-      "https://dns.${domain}"
-    else if cfg.lanAddress != null then
-      "http://${cfg.lanAddress}:3000"
-    else
-      "http://dns:3000";
+  adguardHomeUrl = "https://dns.${domain}";
 in
 {
   homestation.homelab.apps.glance = {

@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   ...
 }:
 let
@@ -23,7 +22,7 @@ in
     };
   };
 
-  homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null) ''
+  homestation.homelab.caddy.extraHosts = ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
       reverse_proxy ente-museum:8080

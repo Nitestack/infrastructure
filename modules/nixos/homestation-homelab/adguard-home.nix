@@ -12,16 +12,13 @@ let
   cfg = config.homestation.homelab;
 in
 {
-  config =
-    mkIf
-      (cfg.enable && config.services.adguardhome.enable && cfg.domain != null && cfg.lanAddress != null)
+  config = mkIf (cfg.enable && config.services.adguardhome.enable) {
+    services.adguardhome.settings.filtering.rewrites = mkAfter [
       {
-        services.adguardhome.settings.filtering.rewrites = mkAfter [
-          {
-            domain = "*.${cfg.domain}";
-            answer = cfg.lanAddress;
-            enabled = true;
-          }
-        ];
-      };
+        domain = "*.${cfg.domain}";
+        answer = cfg.lanAddress;
+        enabled = true;
+      }
+    ];
+  };
 }

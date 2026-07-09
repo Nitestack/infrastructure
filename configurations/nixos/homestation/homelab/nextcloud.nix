@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   ...
 }:
 let
@@ -14,7 +13,7 @@ in
     "d ${nextcloudDataDir} 0755 root root -"
   ];
 
-  homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null) ''
+  homestation.homelab.caddy.extraHosts = ''
     @nextcloud-aio host ${nextcloudAioHost}
     handle @nextcloud-aio {
       reverse_proxy https://nextcloud-aio-mastercontainer:8080 {
