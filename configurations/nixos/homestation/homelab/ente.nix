@@ -39,12 +39,7 @@ in
   homestation.homelab.caddy.extraSiteBlocks = lib.mkIf (cfg.domain != null) ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
-      handle @from-tunnel {
-        error 403
-      }
-      handle {
-        reverse_proxy ente-museum:8080
-      }
+      reverse_proxy ente-museum:8080
     }
   '';
 

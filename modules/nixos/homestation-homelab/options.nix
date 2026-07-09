@@ -397,6 +397,10 @@ in
           "443:443/udp"
         ];
       };
+      tunnelPort = mkOption {
+        type = types.port;
+        default = 8080;
+      };
       openFirewall = mkOption {
         type = types.bool;
         default = true;

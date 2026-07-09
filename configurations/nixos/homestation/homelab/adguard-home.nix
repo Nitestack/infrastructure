@@ -30,12 +30,7 @@ in
       ''
         @dns host dns.${cfg.domain}
         handle @dns {
-          handle @from-tunnel {
-            error 403
-          }
-          handle {
-            reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
-          }
+          reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
         }
       '';
 

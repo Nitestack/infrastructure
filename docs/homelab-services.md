@@ -97,12 +97,11 @@ AdGuard Home `filtering.rewrites` automatically.
 | `cloudflared.wildcardIngress` | bool | auto | Auto-enabled when any app uses `expose.mode = "public"`; set to `false` to override |
 
 When wildcard ingress is enabled, the module generates a tunnel route for
-`*.${domain}` targeting the local Caddy instance over `https://localhost:443`
-with TLS verification disabled for that loopback hop. The apex `domain` is
-only added when some public app explicitly resolves to the apex (for example
-`host = "@"`). This avoids assuming the tunnel owns the root domain when the
-apex is managed elsewhere, while still avoiding redirect loops with Caddy's
-automatic HTTPS.
+`*.${domain}` targeting Caddy's internal tunnel listener over
+`http://127.0.0.1:<caddy.tunnelPort>`. The apex `domain` is only
+added when some public app explicitly resolves to the apex (for example
+`host = "@"`). Public apps are routed on both listeners; private apps stay
+reachable on local HTTPS but return `403` on the tunnel listener.
 
 ### `caddy.*`
 
@@ -111,11 +110,12 @@ automatic HTTPS.
 | `caddy.enable` | bool | `true` | Enable generated Caddy integration |
 | `caddy.image` | string | `caddybuilds/caddy-cloudflare` (pinned) | Caddy image — defaults to a build with the `caddy-dns/cloudflare` plugin |
 | `caddy.ports` | list of string | `["80:80" "443:443" "443:443/udp"]` | Port mappings for Caddy |
+| `caddy.tunnelPort` | port | `8080` | Internal plain-HTTP listener used only for Cloudflare Tunnel origin traffic; bound on loopback automatically as `127.0.0.1:<port>:<port>` |
 | `caddy.openFirewall` | bool | `true` | Open firewall for Caddy ports |
 | `caddy.environment` | attrs of string | `{}` | Environment variables for Caddy |
 | `caddy.environmentFiles` | list of path | `[config.sops.templates."caddy.env".path]` | Environment files for Caddy |
 | `caddy.globalConfig` | lines | `acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}` | Content prepended to the generated Caddyfile |
-| `caddy.extraSiteBlocks` | lines | `""` | Extra site blocks appended after generated virtual hosts in the Caddyfile |
+| `caddy.extraSiteBlocks` | lines | `""` | Extra site blocks appended inside the generated local wildcard HTTPS block |
 | `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for Caddy |
 
 By default, `modules/nixos/homestation-homelab/caddy.nix` configures automatic
@@ -128,6 +128,17 @@ sops secret (`Zone:DNS:Edit` scope) and its `caddy.env` template to be
 declared on any host using this module (see `configurations/nixos/homestation/sops.nix`
 for the pattern) — override `caddy.image`/`globalConfig`/`environmentFiles`
 with `lib.mkForce` if a host doesn't want this default.
+
+The generated Caddyfile now uses separate listeners:
+
+- `https://*.${domain}` for LAN/Tailnet/local clients, with the existing
+  wildcard TLS setup and normal automatic HTTP-to-HTTPS redirects.
+- `http://*.${domain}:<caddy.tunnelPort>` for Cloudflare Tunnel
+  origin traffic, with no internal HTTPS redirect and no header-based
+  Cloudflare detection.
+
+Unknown hosts abort on the local wildcard listener and return `403` on the
+tunnel listener.
 
 ### `smtp.*`
 

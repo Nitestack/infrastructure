@@ -17,6 +17,7 @@ let
 
   cfg = config.homestation.homelab;
   internal = cfg._internal;
+  tunnelPort = cfg.caddy.tunnelPort;
 
   exposedAppNames = filter (
     appName:
@@ -43,6 +44,7 @@ let
   otherAppNames = filter (appName: !isWildcardHost (internal.effectiveHost appName)) exposedAppNames;
 
   isPrivateApp = appName: internal.enabledApps.${appName}.expose.mode == "private";
+  needsForbiddenSnippet = any isPrivateApp exposedAppNames || cfg.caddy.extraSiteBlocks != "";
 
   indentLines =
     prefix: text:
@@ -151,51 +153,44 @@ let
       )
     );
 
+  forbiddenBody = ''
+    import forbidden_403
+    ${forbiddenAssetsHandle}
+    handle {
+      error 403
+    }
+  '';
+
   forbiddenAssetsHandle = ''
     handle /__403-assets__/* {
       root * /srv/errors
       file_server
     }'';
 
+  mkEntryPointAddress =
+    scheme: host:
+    if scheme == "http" then "http://${host}:${toString tunnelPort}" else "https://${host}";
+
   mkVirtualHost =
-    appName:
+    scheme: appName:
     let
-      guardedBody =
-        if isPrivateApp appName then
-          ''
-            import forbidden_403
-            ${forbiddenAssetsHandle}
-            @from-tunnel {
-              header Cf-Connecting-Ip *
-            }
-            handle @from-tunnel {
-              error 403
-            }
-            handle {
-            ${appBody appName}
-            }
-          ''
-        else
-          appBody appName;
+      body = if scheme == "http" && isPrivateApp appName then forbiddenBody else appBody appName;
     in
     ''
-      ${internal.effectiveHost appName} {
-      ${guardedBody}
+      ${mkEntryPointAddress scheme (internal.effectiveHost appName)} {
+      ${body}
       }
     '';
 
   mkAppHandle =
-    appName:
+    scheme: appName:
     let
       matcherName = lib.replaceStrings [ "_" ] [ "-" ] appName;
-      guardedBody =
-        if isPrivateApp appName then
+      body =
+        if scheme == "http" && isPrivateApp appName then
           ''
-            handle @from-tunnel {
-              error 403
-            }
             handle {
-            ${appBody appName}
+              error 403
             }
           ''
         else
@@ -204,30 +199,41 @@ let
     ''
       @${matcherName} host ${internal.effectiveHost appName}
       handle @${matcherName} {
-      ${guardedBody}
+      ${body}
       }
     '';
 
-  # extraSiteBlocks is hand-authored Caddy config from other modules (e.g. a
-  # DNS or media-server passthrough), so it may reference `import
-  # forbidden_403`/`error 403` itself even when no declarative app is private
-  wildcardNeedsForbidden = any isPrivateApp wildcardAppNames || cfg.caddy.extraSiteBlocks != "";
-
-  wildcardBlockBody = concatStringsSep "\n" (
-    lib.optional wildcardNeedsForbidden "import forbidden_403"
-    ++ lib.optional wildcardNeedsForbidden forbiddenAssetsHandle
-    ++ map (appName: indentLines "  " (mkAppHandle appName)) wildcardAppNames
-    ++ lib.optional (cfg.caddy.extraSiteBlocks != "") (indentLines "  " cfg.caddy.extraSiteBlocks)
-  );
-
-  wildcardBlock =
-    if cfg.domain != null && (wildcardAppNames != [ ] || cfg.caddy.extraSiteBlocks != "") then
+  mkWildcardBlock =
+    scheme:
+    let
+      includeExtraSiteBlocks = scheme == "https" && cfg.caddy.extraSiteBlocks != "";
+      body = concatStringsSep "\n" (
+        lib.optional needsForbiddenSnippet "import forbidden_403"
+        ++ lib.optional needsForbiddenSnippet forbiddenAssetsHandle
+        ++ map (appName: indentLines "  " (mkAppHandle scheme appName)) wildcardAppNames
+        ++ lib.optional includeExtraSiteBlocks (indentLines "  " cfg.caddy.extraSiteBlocks)
+        ++ [
+          (
+            if scheme == "http" then
+              ''
+                handle {
+                  error 403
+                }
+              ''
+            else
+              ''
+                handle {
+                  abort
+                }
+              ''
+          )
+        ]
+      );
+    in
+    if cfg.domain != null && (wildcardAppNames != [ ] || includeExtraSiteBlocks) then
       ''
-        *.${cfg.domain} {
-          @from-tunnel {
-            header Cf-Connecting-Ip *
-          }
-        ${wildcardBlockBody}
+        ${mkEntryPointAddress scheme "*.${cfg.domain}"} {
+        ${body}
         }
       ''
     else
@@ -435,8 +441,10 @@ let
   caddyfile = pkgs.writeText "homelab-Caddyfile" ''
     ${cfg.caddy.globalConfig}
     ${forbiddenSnippet}
-    ${wildcardBlock}
-    ${concatStringsSep "\n" (map mkVirtualHost otherAppNames)}
+    ${mkWildcardBlock "https"}
+    ${concatStringsSep "\n" (map (mkVirtualHost "https") otherAppNames)}
+    ${mkWildcardBlock "http"}
+    ${concatStringsSep "\n" (map (mkVirtualHost "http") otherAppNames)}
   '';
 
   parsePort =
@@ -445,15 +453,35 @@ let
       protoParts = lib.splitString "/" portStr;
       proto = if lib.length protoParts > 1 then lib.last protoParts else "tcp";
       segments = lib.splitString ":" (lib.head protoParts);
-      hostPort = lib.toInt (lib.elemAt segments (lib.length segments - 2));
+      hasHostAddress = lib.length segments >= 3;
+      hostAddress = if hasHostAddress then lib.elemAt segments (lib.length segments - 3) else null;
+      hostPort =
+        if lib.length segments >= 2 then
+          lib.toInt (lib.elemAt segments (lib.length segments - 2))
+        else
+          lib.toInt (lib.head segments);
     in
     {
-      inherit proto hostPort;
+      inherit proto hostPort hostAddress;
     };
 
-  parsedPorts = map parsePort cfg.caddy.ports;
-  firewallTCPPorts = lib.unique (map (e: e.hostPort) (lib.filter (e: e.proto == "tcp") parsedPorts));
-  firewallUDPPorts = lib.unique (map (e: e.hostPort) (lib.filter (e: e.proto == "udp") parsedPorts));
+  loopbackTunnelPortMapping = "127.0.0.1:${toString tunnelPort}:${toString tunnelPort}";
+  containerPorts = lib.unique ([ loopbackTunnelPortMapping ] ++ cfg.caddy.ports);
+  parsedPorts = map parsePort containerPorts;
+  externallyBoundPorts = lib.filter (
+    e:
+    e.hostAddress == null
+    || !(builtins.elem e.hostAddress [
+      "127.0.0.1"
+      "::1"
+    ])
+  ) parsedPorts;
+  firewallTCPPorts = lib.unique (
+    map (e: e.hostPort) (lib.filter (e: e.proto == "tcp") externallyBoundPorts)
+  );
+  firewallUDPPorts = lib.unique (
+    map (e: e.hostPort) (lib.filter (e: e.proto == "udp") externallyBoundPorts)
+  );
 in
 {
   config = mkIf (cfg.enable && cfg.caddy.enable) {
@@ -487,7 +515,7 @@ in
     virtualisation.oci-containers.containers."caddy" = {
       image = cfg.caddy.image;
       autoStart = true;
-      ports = cfg.caddy.ports;
+      ports = containerPorts;
       environment = cfg.caddy.environment;
       environmentFiles = cfg.caddy.environmentFiles;
       volumes = [

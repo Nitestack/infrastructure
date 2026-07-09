@@ -1,9 +1,17 @@
-# OpenTofu: Cloudflare DNS
+# OpenTofu: Cloudflare Edge
 
-Manages exactly one Cloudflare DNS record: the `*.npham.de` CNAME that routes
-public homelab traffic into the Cloudflare Tunnel. The tunnel itself is
-managed natively by NixOS (`modules/nixos/homestation-homelab/cloudflared.nix`),
-not by this config.
+Manages Cloudflare-side edge state for homestation:
+
+- `*.npham.de` proxied CNAME -> `f4320d83-db5c-4280-808f-93822cd737c5.cfargotunnel.com`
+- zone setting `always_use_https = on`
+
+Cloudflare Tunnel ingress is not managed in OpenTofu. Source of truth is NixOS:
+
+- generator: `modules/nixos/homestation-homelab/cloudflared.nix`
+- host wiring: `configurations/nixos/homestation/default.nix`
+
+That NixOS config generates wildcard tunnel ingress to
+`http://127.0.0.1:<caddy.tunnelPort>`, not `https://caddy:443`.
 
 See `docs/superpowers/specs/2026-07-08-opentofu-cloudflare-dns-design.md` for
 the full design and rationale.
@@ -34,18 +42,23 @@ tofu apply
 
 ## Looking up the zone ID or an existing record ID
 
-Needed only when re-bootstrapping on a new machine, or if `local.zone_id` in
-`dns.tf` ever needs to change:
+Needed only when re-bootstrapping on new machine, or if `local.zone_id` in
+`dns.tf` ever changes:
 
 ```sh
 # Zone ID
 curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
   "https://api.cloudflare.com/client/v4/zones?name=npham.de" | jq '.result[] | {id, name}'
 
-# Existing DNS record ID (for import)
+# Existing wildcard DNS record ID (for import)
 curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
   "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/dns_records?type=CNAME&name=*.npham.de" \
   | jq '.result[] | {id, name, content, proxied}'
+
+# Existing Always Use HTTPS zone setting
+curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/settings/always_use_https" \
+  | jq '.result | {id, value, editable}'
 ```
 
 ## Adopting an already-existing record
@@ -56,5 +69,6 @@ on a duplicate record:
 
 ```sh
 tofu import cloudflare_dns_record.tunnel_wildcard <ZONE_ID>/<RECORD_ID>
+tofu import cloudflare_zone_setting.always_use_https <ZONE_ID>/always_use_https
 tofu plan   # must show "No changes" before you apply
 ```
