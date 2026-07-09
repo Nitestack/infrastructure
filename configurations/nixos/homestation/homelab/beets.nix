@@ -20,19 +20,17 @@ in
     enable = true;
     image = "linuxserver/beets:2.12.0@sha256:9d7953d6afc7469e6314c25d9952374338de792171857dc5ff6dc482d488c658";
 
-    helpers.linuxserver = true;
-
     volumes = [
       {
         type = "bind";
         source = "config";
         target = "/config";
-        hostPath.user = username;
-        hostPath.group = "users";
+        owner = username;
+        group = "users";
       }
       {
         type = "library";
-        name = "music";
+        library = "music";
         target = "/music";
       }
       {

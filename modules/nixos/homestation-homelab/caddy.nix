@@ -9,10 +9,7 @@ let
     any
     concatStringsSep
     filter
-    imap0
-    mapAttrsToList
     mkIf
-    optionalString
     ;
 
   cfg = config.homestation.homelab;
@@ -23,7 +20,7 @@ let
     appName:
     internal.enabledApps.${appName}.expose.mode != "none"
     && internal.effectiveHost appName != null
-    && internal.resolvedRoutesForApp appName != [ ]
+    && internal.effectiveExposeService appName != null
   ) (builtins.attrNames internal.enabledApps);
 
   # Eligible for the shared *.${cfg.domain} wildcard block: hosts that are
@@ -52,105 +49,29 @@ let
       map (line: prefix + line) (builtins.filter (line: line != "") (lib.splitString "\n" text))
     );
 
-  mkMatcher =
-    appName: routeIndex: route:
-    let
-      matcherName = "route-${lib.replaceStrings [ "_" ] [ "-" ] appName}-${toString routeIndex}";
-      hasMatcher = route.match.path != [ ] || route.match.not.path != [ ];
-      matcherBody = concatStringsSep "\n" (
-        lib.optional (route.match.path != [ ]) "path ${concatStringsSep " " route.match.path}"
-        ++ lib.optional (
-          route.match.not.path != [ ]
-        ) "not path ${concatStringsSep " " route.match.not.path}"
-      );
-    in
-    {
-      inherit hasMatcher matcherName;
-      block =
-        if hasMatcher then
-          ''
-            @${matcherName} {
-              ${matcherBody}
-            }
-          ''
-        else
-          "";
-    };
-
   mkReverseProxy =
-    appName: route:
+    appName:
     let
       app = internal.enabledApps.${appName};
       enabledServices = internal.enabledServicesForApp appName;
-      service = enabledServices.${route.upstream.service};
-      upstreamHost = internal.serviceContainerName appName enabledServices route.upstream.service;
+      upstreamService = internal.effectiveExposeService appName;
+      service = enabledServices.${upstreamService};
+      upstreamHost = internal.serviceContainerName appName enabledServices upstreamService;
       upstream =
         if app.expose.protocol == "https" then
           "https://${upstreamHost}:${toString service.port}"
         else
           "${upstreamHost}:${toString service.port}";
-      proxyHeaders = concatStringsSep "\n" (
-        mapAttrsToList (name: value: "  header_up ${name} ${value}") route.proxy.headers.request
-      );
-      transportConfig = concatStringsSep "\n" (
-        mapAttrsToList (name: value: if value then "    ${name}" else "") route.proxy.transport.http
-      );
     in
-    if route.proxy.headers.request == { } && route.proxy.transport.http == { } then
-      "reverse_proxy ${upstream}"
-    else
-      ''
-        reverse_proxy ${upstream} {
-        ${optionalString (route.proxy.headers.request != { }) proxyHeaders}
-        ${optionalString (route.proxy.transport.http != { }) ''
-            transport http {
-          ${transportConfig}
-            }
-        ''}
-        }
-      '';
-
-  mkRoute =
-    appName: routeIndex: route:
-    let
-      matcher = mkMatcher appName routeIndex route;
-      body = concatStringsSep "\n" (
-        lib.optional (route.requestBody.maxSize != null) ''
-          request_body {
-            max_size ${route.requestBody.maxSize}
-          }
-        ''
-        ++ lib.optional (route.encode != [ ]) "encode ${concatStringsSep " " route.encode}"
-        ++ [ (mkReverseProxy appName route) ]
-        ++ lib.optional (route.extraConfig != "") route.extraConfig
-      );
-    in
-    concatStringsSep "\n" (
-      lib.optional matcher.hasMatcher matcher.block
-      ++ [
-        (
-          if matcher.hasMatcher then
-            ''
-              handle @${matcher.matcherName} {
-              ${indentLines "  " body}
-              }
-            ''
-          else
-            ''
-              handle {
-              ${indentLines "  " body}
-              }
-            ''
-        )
-      ]
-    );
+    "reverse_proxy ${upstream}";
 
   appBody =
     appName:
+    let
+      app = internal.enabledApps.${appName};
+    in
     concatStringsSep "\n" (
-      imap0 (routeIndex: route: indentLines "  " (mkRoute appName routeIndex route)) (
-        internal.resolvedRoutesForApp appName
-      )
+      lib.optional (app.expose.extraConfig != "") app.expose.extraConfig ++ [ (mkReverseProxy appName) ]
     );
 
   forbiddenBody = ''

@@ -42,7 +42,7 @@ in
         }
         {
           type = "library";
-          name = "music";
+          library = "music";
           target = "/music";
           readOnly = true;
         }

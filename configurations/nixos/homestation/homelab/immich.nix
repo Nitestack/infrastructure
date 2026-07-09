@@ -58,7 +58,7 @@ in
       volumes = [
         {
           type = "volume";
-          name = "model-cache";
+          volume = "model-cache";
           target = "/cache";
         }
       ];

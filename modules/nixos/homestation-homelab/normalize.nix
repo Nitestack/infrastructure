@@ -24,23 +24,6 @@ let
     else
       null;
 
-  defaultRouteForApp =
-    appName:
-    let
-      svc = effectiveExposeService appName;
-    in
-    lib.optional (svc != null) {
-      match = {
-        path = [ ];
-        not.path = [ ];
-      };
-      upstream.service = svc;
-      proxy.headers.request = { };
-      proxy.transport.http = { };
-      requestBody.maxSize = null;
-      encode = [ ];
-      extraConfig = "";
-    };
 in
 {
   options.homestation.homelab._internal = lib.mkOption {
@@ -52,18 +35,6 @@ in
     inherit enabledApps enabledServicesForApp;
     effectiveHost = appName: homelabLib.effectiveHost enabledApps.${appName};
     inherit effectiveExposeService;
-    defaultRouteForApp = defaultRouteForApp;
-    resolvedRoutesForApp =
-      appName:
-      let
-        app = enabledApps.${appName};
-      in
-      if app.expose.mode == "none" then
-        [ ]
-      else if app.routes != [ ] then
-        app.routes
-      else
-        defaultRouteForApp appName;
     serviceContainerName = homelabLib.serviceContainerName;
     appProjectName = homelabLib.appProjectName;
   };

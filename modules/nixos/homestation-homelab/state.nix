@@ -30,9 +30,7 @@ let
   isRelativeBindSource =
     volume: volume.type == "bind" && volume.source != null && !hasPrefix "/" volume.source;
 
-  # A volume that needs a tmpfiles rule: explicit hostPath.enable, OR an implicit relative bind source
-  needsTmpfiles =
-    volume: volume.type == "bind" && (volume.hostPath.enable || isRelativeBindSource volume);
+  needsTmpfiles = volume: volume.type == "bind" && isRelativeBindSource volume;
 
   resolveBindSource =
     appName: volume:
@@ -43,10 +41,9 @@ let
     map (
       volume:
       let
-        entryType = if volume.hostPath.type == "file" then "f" else "d";
         source = resolveBindSource appName volume;
       in
-      "${entryType} ${source} ${volume.hostPath.mode} ${volume.hostPath.user} ${volume.hostPath.group} -"
+      "d ${source} ${volume.mode} ${volume.owner} ${volume.group} -"
     ) (filter needsTmpfiles service.volumes)
   ) enabledServicesWithApp;
 
@@ -62,17 +59,6 @@ let
     appName: "d ${cfg.dataDir}/${appName} 0755 root root -"
   ) appsWithRelativeVolumes;
 
-  # Library dirs — only created when library.create = true
-  libraryRules = concatMap (
-    libraryName:
-    let
-      library = cfg.libraries.${libraryName};
-    in
-    if library.create then
-      [ "d ${library.path} ${library.mode} ${library.user} ${library.group} -" ]
-    else
-      [ ]
-  ) (attrNames cfg.libraries);
 in
 {
   config = mkIf cfg.enable {
@@ -85,7 +71,6 @@ in
       ]
       ++ appBaseDirRules
       ++ volumeRules
-      ++ libraryRules
     );
   };
 }

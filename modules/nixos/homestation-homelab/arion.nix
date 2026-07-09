@@ -38,26 +38,18 @@ let
         if volume.type == "bind" then
           resolveBindSource appName volume
         else if volume.type == "library" then
-          cfg.libraries.${volume.name}.path
+          cfg.libraries.${volume.library}.path
         else
-          volume.name;
+          volume.volume;
     in
     "${source}:${volume.target}${optionalString volume.readOnly ":ro"}";
 
   serviceNeedsEdgeNetwork =
     appName: serviceName:
     let
-      app = internal.enabledApps.${appName};
-      routes = internal.resolvedRoutesForApp appName;
+      upstreamService = internal.effectiveExposeService appName;
     in
-    (
-      app.expose.mode != "none"
-      && app.expose.service == serviceName
-      && internal.effectiveHost appName != null
-    )
-    || builtins.any (
-      route: route.upstream.service == serviceName && internal.effectiveHost appName != null
-    ) routes;
+    upstreamService == serviceName && internal.effectiveHost appName != null;
 
   healthcheckToArion =
     healthcheck:
@@ -107,7 +99,7 @@ let
         if volume.type == "volume" then
           volumeAcc
           // {
-            ${volume.name} =
+            ${volume.volume} =
               optionalAttrs volume.external {
                 external = true;
               }
@@ -123,8 +115,14 @@ let
   helperEnvironment =
     service:
     let
-      wantsIdentity = service.helpers.linuxserver || service.helpers.identity;
-      wantsTimezone = service.helpers.linuxserver || service.helpers.timezone;
+      isLinuxServerImage = builtins.any (prefix: hasPrefix prefix service.image) [
+        "docker.io/linuxserver/"
+        "ghcr.io/linuxserver/"
+        "linuxserver/"
+        "lscr.io/linuxserver/"
+      ];
+      wantsIdentity = isLinuxServerImage || service.helpers.identity;
+      wantsTimezone = isLinuxServerImage || service.helpers.timezone;
     in
     optionalAttrs wantsIdentity {
       PUID = if userUid != null then toString userUid else "1000";

@@ -3,7 +3,7 @@ let
   normalizeName = name: lib.replaceStrings [ "_" ] [ "-" ] name;
 in
 {
-  appProjectName = appName: "${cfg.network.prefix}-${normalizeName appName}";
+  appProjectName = appName: "homelab-${normalizeName appName}";
 
   serviceContainerName =
     appName: services: serviceName:

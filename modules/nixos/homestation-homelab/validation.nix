@@ -16,6 +16,9 @@ let
 
   cfg = config.homestation.homelab;
   internal = cfg._internal;
+  hasPublicApps = builtins.any (app: app.expose.mode == "public") (
+    builtins.attrValues internal.enabledApps
+  );
 
   invalidAppNames = filter (appName: builtins.match "[a-zA-Z0-9_-]+" appName == null) (
     attrNames cfg.apps
@@ -63,7 +66,6 @@ let
       app = internal.enabledApps.${appName};
       services = internal.enabledServicesForApp appName;
       serviceNames = attrNames services;
-      routes = internal.resolvedRoutesForApp appName;
     in
     [
       {
@@ -75,37 +77,25 @@ let
         message = "homestation.homelab.apps.${appName} uses expose.mode = \"${app.expose.mode}\" but lanAddress is not set — LAN address resolution and Caddy ingress require it.";
       }
       {
-        assertion = app.expose.mode != "public" || cfg.cloudflared.wildcardIngress;
-        message = "homestation.homelab.apps.${appName} uses expose.mode = \"public\" but cloudflared.wildcardIngress is false.";
-      }
-      {
-        assertion = routes != [ ] || app.expose.mode == "none";
-        message = "homestation.homelab.apps.${appName} is exposed but has no resolved routes.";
-      }
-      {
         assertion =
-          app.expose.mode == "none" || app.routes != [ ] || internal.effectiveExposeService appName != null;
-        message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when routes are not declared and the app has multiple services.";
+          app.expose.mode == "none"
+          || (
+            internal.effectiveExposeService appName != null
+            && services.${internal.effectiveExposeService appName}.port != null
+          );
+        message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when the app has multiple services, and the selected service must define a port.";
       }
       {
         assertion = app.expose.service == null || builtins.elem app.expose.service serviceNames;
         message = "homestation.homelab.apps.${appName}.expose.service must reference an enabled service in the same app.";
       }
+      {
+        assertion =
+          app.expose.mode != "public"
+          || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && cfg.domain != null);
+        message = "homestation.homelab.apps.${appName} uses expose.mode = \"public\" but cloudflared.enable, cloudflared.tunnelId, or domain is missing.";
+      }
     ]
-  ) (attrNames internal.enabledApps);
-
-  routeAssertions = concatMap (
-    appName:
-    let
-      services = internal.enabledServicesForApp appName;
-    in
-    lib.imap0 (index: route: {
-      assertion =
-        route.upstream.service != null
-        && builtins.hasAttr route.upstream.service services
-        && services.${route.upstream.service}.port != null;
-      message = "homestation.homelab.apps.${appName}.routes.${toString index} must reference an enabled service with a defined port.";
-    }) (internal.resolvedRoutesForApp appName)
   ) (attrNames internal.enabledApps);
 
   serviceAssertions = concatMap (
@@ -133,11 +123,13 @@ let
             ]
             && (
               (volume.type == "bind" && volume.source != null)
-              || (volume.type == "library" && volume.name != null && builtins.hasAttr volume.name cfg.libraries)
-              || (volume.type == "volume" && volume.name != null)
+              || (
+                volume.type == "library" && volume.library != null && builtins.hasAttr volume.library cfg.libraries
+              )
+              || (volume.type == "volume" && volume.volume != null)
             )
           ) service.volumes;
-          message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes has an invalid type/source/name combination.";
+          message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes has an invalid type/source/library/volume combination.";
         }
         {
           assertion = builtins.all (
@@ -154,13 +146,12 @@ let
             volume:
             volume.type != "bind"
             || volume.source == null
-            || !(lib.hasPrefix "/" volume.source)
-            || volume.hostPath.enable
             || (
-              volume.hostPath.user == "root" && volume.hostPath.group == "root" && volume.hostPath.mode == "0755"
+              !lib.hasPrefix "/" volume.source
+              || (volume.owner == "root" && volume.group == "root" && volume.mode == "0755")
             )
           ) service.volumes;
-          message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes has an absolute bind source with hostPath ownership settings but hostPath.enable = false — the settings will have no effect.";
+          message = "homestation.homelab.apps.${appName}.services.${serviceName}.volumes sets owner/group/mode on an absolute bind source, but only relative bind sources are managed by the module.";
         }
         {
           assertion =
@@ -218,18 +209,13 @@ in
         message = "homestation.homelab has duplicate generated container names after normalization: ${concatStringsSep ", " duplicateContainerNames}.";
       }
       {
-        assertion = cfg.network.prefix != "";
-        message = "homestation.homelab.network.prefix must not be empty (would produce Docker network names with a leading dash).";
-      }
-      {
         assertion =
-          !cfg.cloudflared.wildcardIngress
+          !hasPublicApps
           || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && cfg.domain != null);
-        message = "homestation.homelab.cloudflared.wildcardIngress requires cloudflared.enable, cloudflared.tunnelId, and domain to be set.";
+        message = "homestation.homelab public apps require cloudflared.enable, cloudflared.tunnelId, and domain to be set.";
       }
     ]
     ++ appAssertions
-    ++ routeAssertions
     ++ serviceAssertions;
   };
 }

@@ -60,8 +60,8 @@ in
           type = "bind";
           source = "config";
           target = "/config";
-          hostPath.user = username;
-          hostPath.group = "users";
+          owner = username;
+          group = "users";
         }
         {
           # Target must match rdtclient's internal container path (/data/downloads) so that

@@ -38,16 +38,10 @@ in
       mode = "public";
       host = "cloud";
       service = "master";
+      extraConfig = ''
+        header Strict-Transport-Security max-age=31536000;
+      '';
     };
-
-    routes = [
-      {
-        upstream.service = "master";
-        extraConfig = ''
-          header Strict-Transport-Security max-age=31536000;
-        '';
-      }
-    ];
 
     services.master = {
       enable = true;
@@ -70,7 +64,7 @@ in
       volumes = [
         {
           type = "volume";
-          name = "nextcloud_aio_mastercontainer";
+          volume = "nextcloud_aio_mastercontainer";
           dockerName = "nextcloud_aio_mastercontainer";
           target = "/mnt/docker-aio-config";
         }

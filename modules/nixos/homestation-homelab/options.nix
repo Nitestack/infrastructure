@@ -9,25 +9,7 @@ let
   port = types.ints.between 1 65535;
 
   libraryType = types.submodule {
-    options = {
-      path = mkOption { type = types.str; };
-      create = mkOption {
-        type = types.bool;
-        default = false;
-      };
-      user = mkOption {
-        type = types.str;
-        default = "root";
-      };
-      group = mkOption {
-        type = types.str;
-        default = "root";
-      };
-      mode = mkOption {
-        type = types.str;
-        default = "0755";
-      };
-    };
+    options.path = mkOption { type = types.str; };
   };
 
   volumeType = types.submodule {
@@ -44,14 +26,18 @@ let
         type = types.nullOr types.str;
         default = null;
       };
-      name = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-      };
       target = mkOption { type = types.str; };
       readOnly = mkOption {
         type = types.bool;
         default = false;
+      };
+      library = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+      volume = mkOption {
+        type = types.nullOr types.str;
+        default = null;
       };
       external = mkOption {
         type = types.bool;
@@ -62,68 +48,17 @@ let
         default = null;
         description = "Override the Docker volume name emitted in the compose volumes section. When null, Docker prefixes the volume key with the project name. Set this to pin the exact Docker volume name (e.g. when a container requires a specific volume name).";
       };
-      hostPath = {
-        enable = mkOption {
-          type = types.bool;
-          default = false;
-          description = "Only applies to absolute bind sources (source starting with /). Set to true to have the module create and manage the host path via tmpfiles. Relative bind sources are always auto-created; use hostPath.user/group/mode directly to control ownership without setting this.";
-        };
-        type = mkOption {
-          type = types.enum [
-            "directory"
-            "file"
-          ];
-          default = "directory";
-        };
-        user = mkOption {
-          type = types.str;
-          default = "root";
-        };
-        group = mkOption {
-          type = types.str;
-          default = "root";
-        };
-        mode = mkOption {
-          type = types.str;
-          default = "0755";
-        };
+      owner = mkOption {
+        type = types.str;
+        default = "root";
       };
-    };
-  };
-
-  routeType = types.submodule {
-    options = {
-      match.path = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
+      group = mkOption {
+        type = types.str;
+        default = "root";
       };
-      match.not.path = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-      };
-      upstream.service = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-      };
-      proxy.headers.request = mkOption {
-        type = types.attrsOf types.str;
-        default = { };
-      };
-      proxy.transport.http = mkOption {
-        type = types.attrsOf types.bool;
-        default = { };
-      };
-      requestBody.maxSize = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-      };
-      encode = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-      };
-      extraConfig = mkOption {
-        type = types.lines;
-        default = "";
+      mode = mkOption {
+        type = types.str;
+        default = "0755";
       };
     };
   };
@@ -154,11 +89,6 @@ let
         default = { };
       };
       helpers = {
-        linuxserver = mkOption {
-          type = types.bool;
-          default = false;
-          description = "Inject LinuxServer-style defaults into the service environment: PUID, PGID, and TZ.";
-        };
         identity = mkOption {
           type = types.bool;
           default = false;
@@ -324,10 +254,11 @@ let
           default = "http";
           description = "Protocol Caddy uses when proxying to this service's container. Use \"https\" only when the container itself speaks TLS; \"http\" covers nearly all homelab services.";
         };
-      };
-      routes = mkOption {
-        type = types.listOf routeType;
-        default = [ ];
+        extraConfig = mkOption {
+          type = types.lines;
+          default = "";
+          description = "Raw Caddy directives inserted into the generated app handle before reverse_proxy. Use this for per-app ingress tweaks without dropping to a full custom site block.";
+        };
       };
       services = mkOption {
         type = types.attrsOf serviceType;
@@ -355,11 +286,6 @@ in
       default = "/var/lib/homelab";
     };
 
-    network.prefix = mkOption {
-      type = types.str;
-      default = "homelab";
-    };
-
     edgeNetwork.name = mkOption {
       type = types.str;
       default = "homelab-edge";
@@ -373,10 +299,6 @@ in
       tunnelId = mkOption {
         type = types.nullOr types.str;
         default = null;
-      };
-      wildcardIngress = mkOption {
-        type = types.bool;
-        default = false;
       };
     };
 
