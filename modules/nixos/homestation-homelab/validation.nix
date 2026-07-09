@@ -73,10 +73,6 @@ let
         message = "homestation.homelab.apps.${appName}.expose.host must be set when expose.mode != \"none\".";
       }
       {
-        assertion = app.expose.mode == "none" || cfg.lanAddress != null;
-        message = "homestation.homelab.apps.${appName} uses expose.mode = \"${app.expose.mode}\" but lanAddress is not set — LAN address resolution and Caddy ingress require it.";
-      }
-      {
         assertion =
           app.expose.mode == "none"
           || (
@@ -91,9 +87,8 @@ let
       }
       {
         assertion =
-          app.expose.mode != "public"
-          || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && cfg.domain != null);
-        message = "homestation.homelab.apps.${appName} uses expose.mode = \"public\" but cloudflared.enable, cloudflared.tunnelId, or domain is missing.";
+          app.expose.mode != "public" || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null);
+        message = "homestation.homelab.apps.${appName} uses expose.mode = \"public\" but cloudflared.enable or cloudflared.tunnelId is missing.";
       }
     ]
   ) (attrNames internal.enabledApps);
@@ -171,6 +166,14 @@ in
   config = mkIf cfg.enable {
     assertions = [
       {
+        assertion = cfg.domain != "";
+        message = "homestation.homelab.domain must be set when homestation.homelab.enable = true.";
+      }
+      {
+        assertion = cfg.lanAddress != "";
+        message = "homestation.homelab.lanAddress must be set when homestation.homelab.enable = true.";
+      }
+      {
         assertion =
           let
             configured = [
@@ -209,10 +212,8 @@ in
         message = "homestation.homelab has duplicate generated container names after normalization: ${concatStringsSep ", " duplicateContainerNames}.";
       }
       {
-        assertion =
-          !hasPublicApps
-          || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null && cfg.domain != null);
-        message = "homestation.homelab public apps require cloudflared.enable, cloudflared.tunnelId, and domain to be set.";
+        assertion = !hasPublicApps || (cfg.cloudflared.enable && cfg.cloudflared.tunnelId != null);
+        message = "homestation.homelab public apps require cloudflared.enable and cloudflared.tunnelId to be set.";
       }
     ]
     ++ appAssertions

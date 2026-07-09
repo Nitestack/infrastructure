@@ -93,6 +93,12 @@ in
   };
 
   # systemd
+  services.journald.extraConfig = ''
+    SystemMaxUse=2G
+    SystemKeepFree=50G
+    MaxRetentionSec=30day
+  '';
+
   systemd.tmpfiles.rules = [
     "f /home/${meta.username}/.hushlogin 0644 ${meta.username} users -"
   ];

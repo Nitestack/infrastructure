@@ -30,8 +30,7 @@ let
   # (expose.host containing a dot), so those keep their own top-level block.
   isWildcardHost =
     host:
-    cfg.domain != null
-    && host != null
+    host != null
     && host != cfg.domain
     && lib.hasSuffix ".${cfg.domain}" host
     && lib.length (lib.splitString "." host) == lib.length (lib.splitString "." cfg.domain) + 1;
@@ -153,7 +152,7 @@ let
         ]
       );
     in
-    if cfg.domain != null && (wildcardAppNames != [ ] || includeExtraHosts) then
+    if wildcardAppNames != [ ] || includeExtraHosts then
       ''
         ${mkEntryPointAddress scheme "*.${cfg.domain}"} {
         ${body}

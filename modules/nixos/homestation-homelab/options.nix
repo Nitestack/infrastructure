@@ -252,13 +252,15 @@ in
     enable = mkEnableOption "homestation homelab service abstraction";
 
     domain = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+      type = types.str;
+      default = "";
+      description = "Base domain used to expand short host labels. Must be non-empty when the homelab module is enabled.";
     };
 
     lanAddress = mkOption {
-      type = types.nullOr types.str;
-      default = null;
+      type = types.str;
+      default = "";
+      description = "Host LAN IP used for local DNS and ingress. Must be non-empty when the homelab module is enabled.";
     };
 
     dataDir = mkOption {
@@ -360,19 +362,6 @@ in
         type = types.nullOr types.str;
         default = null;
         description = "SMTP username shared by homelab apps. Keep passwords in app-specific environmentFiles.";
-      };
-    };
-
-    logging = {
-      driver = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        description = "Default logging driver applied to every generated service. Set to \"journald\" on NixOS for zero-config log rotation via the host journal. Null means Docker's default (json-file, no size limits). Per-service override via extraServiceConfig.logging.";
-      };
-      options = mkOption {
-        type = types.attrsOf types.str;
-        default = { };
-        description = "Driver-specific logging options applied globally (e.g. max-size, max-file for json-file driver). Unused when driver is null.";
       };
     };
 

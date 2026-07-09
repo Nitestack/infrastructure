@@ -70,12 +70,10 @@ paths were removed.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enable` | bool | `false` | Turn the homelab API on for this host |
-| `domain` | string\|null | `null` | Base domain used to expand short host labels like `"paperless"` into full hostnames |
-| `lanAddress` | string\|null | `null` | Host LAN IP used when the module generates local DNS records for exposed apps |
+| `domain` | string | `""` | Base domain used to expand short host labels like `"paperless"` into full hostnames; required and non-empty when `enable = true` |
+| `lanAddress` | string | `""` | Host LAN IP used when the module generates local DNS records for exposed apps; required and non-empty when `enable = true` |
 | `dataDir` | string | `"/var/lib/homelab"` | Base directory for app-owned persistent data |
 | `ingressNetwork` | string | `"edge"` | Shared external Docker network used by Caddy and any exposed app backend |
-| `logging.driver` | string\|null | `null` | Default container logging backend for all generated services |
-| `logging.options` | attrs of string | `{}` | Driver-specific logging settings applied when `logging.driver` is set |
 | `libraries` | attrs of libraryType | `{}` | Named shared host paths that apps can mount by reference |
 | `apps` | attrs of appType | `{}` | App definitions |
 
@@ -377,11 +375,13 @@ The public schema in `options.nix` enforces these constraints:
 
 At evaluation time, `validation.nix` adds runtime assertions:
 
+- `domain` must be non-empty when the module is enabled
+- `lanAddress` must be non-empty when the module is enabled
 - Exposed apps must resolve an effective host
 - Exposed apps must resolve `expose.targetService`; when the app has exactly one enabled service, that service is auto-derived
 - The exposed target service must define a `port`
 - `expose.targetService` must reference an enabled service in the same app
-- `expose.mode = "public"` requires `cloudflared.enable`, `cloudflared.tunnelId`, and `domain`
+- `expose.mode = "public"` requires `cloudflared.enable` and `cloudflared.tunnelId`
 - `services.<name>.dependsOn` may only reference enabled services in the same app
 - `services.<name>.volumes` must use a valid `type/source/library/volume` combination
 - Relative bind sources may not escape the app data directory

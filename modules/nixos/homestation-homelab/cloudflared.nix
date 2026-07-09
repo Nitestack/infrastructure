@@ -18,16 +18,14 @@ let
     appName:
     internal.enabledApps.${appName}.expose.mode == "public" && internal.effectiveHost appName != null
   ) (builtins.attrNames internal.enabledApps);
-  exposeApex =
-    cfg.domain != null
-    && builtins.any (appName: internal.effectiveHost appName == cfg.domain) publicApps;
+  exposeApex = builtins.any (appName: internal.effectiveHost appName == cfg.domain) publicApps;
 
   originConfig = {
     service = "http://127.0.0.1:${toString cfg.caddy.tunnelPort}";
   };
 
   wildcardEntries =
-    if wildcardIngress && cfg.domain != null && publicApps != [ ] then
+    if wildcardIngress && publicApps != [ ] then
       {
         "*.${cfg.domain}" = originConfig;
       }

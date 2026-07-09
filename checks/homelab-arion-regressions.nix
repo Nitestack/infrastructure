@@ -33,6 +33,8 @@ let
     {
       homestation.homelab = {
         enable = true;
+        domain = "example.test";
+        lanAddress = "127.0.0.1";
         apps.demo.services.web = {
           enable = true;
           image = "demo:latest";
@@ -56,6 +58,8 @@ let
       {
         homestation.homelab = {
           enable = true;
+          domain = "example.test";
+          lanAddress = "127.0.0.1";
           apps.demo.services.web = {
             enable = true;
             image = "demo:latest";
@@ -72,11 +76,47 @@ let
     ]).config.system.build.toplevel.drvPath
   );
 
+  missingDomainEval = builtins.tryEval (
+    (mkSystem [
+      {
+        homestation.homelab = {
+          enable = true;
+          lanAddress = "127.0.0.1";
+        };
+      }
+    ]).config.system.build.toplevel.drvPath
+  );
+
+  missingLanAddressEval = builtins.tryEval (
+    (mkSystem [
+      {
+        homestation.homelab = {
+          enable = true;
+          domain = "example.test";
+        };
+      }
+    ]).config.system.build.toplevel.drvPath
+  );
+
+  globalLoggingOverrideEval = builtins.tryEval (
+    (mkSystem [
+      {
+        homestation.homelab = {
+          enable = true;
+          domain = "example.test";
+          lanAddress = "127.0.0.1";
+          logging.driver = "json-file";
+        };
+      }
+    ]).config.system.build.toplevel.drvPath
+  );
+
   duplicateProjectNamesEval = builtins.tryEval (
     (mkSystem [
       {
         homestation.homelab = {
           enable = true;
+          domain = "example.test";
           lanAddress = "127.0.0.1";
           apps."foo_bar" = {
             expose = {
@@ -112,6 +152,7 @@ let
       {
         homestation.homelab = {
           enable = true;
+          domain = "example.test";
           lanAddress = "127.0.0.1";
           apps.demo = {
             expose = {
@@ -202,6 +243,7 @@ let
   ];
   goodProject = goodConfig.config.virtualisation.arion.projects.demo;
   goodService = goodProject.settings.services.web.service;
+  goodComposeService = goodProject.settings.out.dockerComposeYamlAttrs.services.web;
   goodVolumes = goodProject.settings."docker-compose".volumes;
   goodNetworkService = goodConfig.config.systemd.services.container-edge-network or null;
   caddyVolumes = caddyTransportConfig.config.virtualisation.oci-containers.containers."caddy".volumes;
@@ -222,12 +264,16 @@ in
 assert goodService.restart == "always";
 assert goodService.labels.foo == "bar";
 assert goodService.container_name == "demo";
+assert goodComposeService.logging.driver == "journald";
 assert goodVolumes."demo-data".external == true;
 assert goodNetworkService != null;
 assert lib.hasInfix "docker network create edge" goodNetworkService.script;
 assert builtins.elem "container-edge-network.service" caddyUnit.requires;
 assert builtins.elem "container-edge-network.service" arionUnit.requires;
 assert !badConfigEval.success;
+assert !missingDomainEval.success;
+assert !missingLanAddressEval.success;
+assert !globalLoggingOverrideEval.success;
 assert !duplicateProjectNamesEval.success;
 assert !duplicateServiceNamesEval.success;
 assert cloudflaredIngress."*.example.test".service == "http://127.0.0.1:8080";

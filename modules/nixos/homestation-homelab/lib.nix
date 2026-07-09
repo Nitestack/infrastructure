@@ -25,8 +25,6 @@ in
       null
     else if lib.hasInfix "." app.expose.host then
       app.expose.host
-    else if cfg.domain != null then
-      "${app.expose.host}.${cfg.domain}"
     else
-      app.expose.host;
+      "${app.expose.host}.${cfg.domain}";
 }

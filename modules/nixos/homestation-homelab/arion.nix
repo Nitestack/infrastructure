@@ -188,14 +188,6 @@ let
     }
     // optionalAttrs (networks != [ ]) {
       inherit networks;
-    }
-    // optionalAttrs (cfg.logging.driver != null) {
-      logging = {
-        driver = cfg.logging.driver;
-      }
-      // optionalAttrs (cfg.logging.options != { }) {
-        options = cfg.logging.options;
-      };
     };
 in
 {
@@ -205,15 +197,13 @@ in
       nameValuePair (internal.appProjectName appName) {
         settings = {
           project.name = internal.appProjectName appName;
-          services = mapAttrs (
-            serviceName: service:
-            {
-              service = serviceToArion appName serviceName service;
+          services = mapAttrs (serviceName: service: {
+            service = serviceToArion appName serviceName service;
+            out.service = {
+              logging.driver = "journald";
             }
-            // optionalAttrs (service.extraServiceConfig != { }) {
-              out.service = service.extraServiceConfig;
-            }
-          ) (internal.enabledServicesForApp appName);
+            // service.extraServiceConfig;
+          }) (internal.enabledServicesForApp appName);
           networks = ingressNetworkAttrs appName;
           docker-compose.volumes = namedVolumesForApp appName;
         };
