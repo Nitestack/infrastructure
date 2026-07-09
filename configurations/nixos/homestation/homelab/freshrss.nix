@@ -1,8 +1,4 @@
 {
-  config,
-  ...
-}:
-{
   homestation.homelab.apps.freshrss = {
     expose = {
       mode = "public";
