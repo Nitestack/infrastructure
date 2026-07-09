@@ -83,11 +83,11 @@ let
             internal.effectiveExposeService appName != null
             && services.${internal.effectiveExposeService appName}.port != null
           );
-        message = "homestation.homelab.apps.${appName}.expose.service is required for exposed apps when the app has multiple services, and the selected service must define a port.";
+        message = "homestation.homelab.apps.${appName}.expose.targetService is required for exposed apps when the app has multiple services, and the selected service must define a port.";
       }
       {
-        assertion = app.expose.service == null || builtins.elem app.expose.service serviceNames;
-        message = "homestation.homelab.apps.${appName}.expose.service must reference an enabled service in the same app.";
+        assertion = app.expose.targetService == null || builtins.elem app.expose.targetService serviceNames;
+        message = "homestation.homelab.apps.${appName}.expose.targetService must reference an enabled service in the same app.";
       }
       {
         assertion =

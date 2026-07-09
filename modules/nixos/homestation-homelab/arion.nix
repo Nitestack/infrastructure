@@ -44,7 +44,7 @@ let
     in
     "${source}:${volume.target}${optionalString volume.readOnly ":ro"}";
 
-  serviceNeedsEdgeNetwork =
+  serviceNeedsIngressNetwork =
     appName: serviceName:
     let
       upstreamService = internal.effectiveExposeService appName;
@@ -78,14 +78,15 @@ let
       ++ map (name: nameValuePair name false) service.privileges.capabilities.drop
     );
 
-  edgeNetworkAttrs =
+  ingressNetworkAttrs =
     appName:
     let
       serviceNames = builtins.attrNames (internal.enabledServicesForApp appName);
     in
-    optionalAttrs (builtins.any (serviceName: serviceNeedsEdgeNetwork appName serviceName) serviceNames)
+    optionalAttrs
+      (builtins.any (serviceName: serviceNeedsIngressNetwork appName serviceName) serviceNames)
       {
-        "${cfg.edgeNetwork.name}" = {
+        "${cfg.ingressNetwork}" = {
           external = true;
         };
       };
@@ -103,8 +104,8 @@ let
               optionalAttrs volume.external {
                 external = true;
               }
-              // optionalAttrs (volume.dockerName != null) {
-                name = volume.dockerName;
+              // optionalAttrs (volume.engineName != null) {
+                name = volume.engineName;
               };
           }
         else
@@ -121,7 +122,7 @@ let
         "linuxserver/"
         "lscr.io/linuxserver/"
       ];
-      wantsIdentity = isLinuxServerImage || service.helpers.identity;
+      wantsIdentity = isLinuxServerImage || service.helpers.userIds;
       wantsTimezone = isLinuxServerImage || service.helpers.timezone;
     in
     optionalAttrs wantsIdentity {
@@ -138,7 +139,7 @@ let
       environment = helperEnvironment service // service.environment;
       networks =
         optional (service.privileges.networkMode == null) "default"
-        ++ optional (serviceNeedsEdgeNetwork appName serviceName) cfg.edgeNetwork.name
+        ++ optional (serviceNeedsIngressNetwork appName serviceName) cfg.ingressNetwork
         ++ lib.optionals (service ? networks) service.networks;
     in
     {
@@ -213,7 +214,7 @@ in
               out.service = service.extraServiceConfig;
             }
           ) (internal.enabledServicesForApp appName);
-          networks = edgeNetworkAttrs appName;
+          networks = ingressNetworkAttrs appName;
           docker-compose.volumes = namedVolumesForApp appName;
         };
       }

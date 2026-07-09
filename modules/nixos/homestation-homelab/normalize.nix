@@ -17,8 +17,8 @@ let
       app = enabledApps.${appName};
       svcNames = lib.attrNames (enabledServicesForApp appName);
     in
-    if app.expose.service != null then
-      app.expose.service
+    if app.expose.targetService != null then
+      app.expose.targetService
     else if lib.length svcNames == 1 then
       lib.head svcNames
     else

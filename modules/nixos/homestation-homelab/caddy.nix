@@ -14,6 +14,7 @@ let
 
   cfg = config.homestation.homelab;
   internal = cfg._internal;
+  networkUnitName = "container-edge-network";
   tunnelPort = cfg.caddy.tunnelPort;
 
   exposedAppNames = filter (
@@ -41,7 +42,7 @@ let
   otherAppNames = filter (appName: !isWildcardHost (internal.effectiveHost appName)) exposedAppNames;
 
   isPrivateApp = appName: internal.enabledApps.${appName}.expose.mode == "private";
-  needsForbiddenSnippet = any isPrivateApp exposedAppNames || cfg.caddy.extraSiteBlocks != "";
+  needsForbiddenSnippet = any isPrivateApp exposedAppNames || cfg.caddy.extraHosts != "";
 
   indentLines =
     prefix: text:
@@ -71,7 +72,8 @@ let
       app = internal.enabledApps.${appName};
     in
     concatStringsSep "\n" (
-      lib.optional (app.expose.extraConfig != "") app.expose.extraConfig ++ [ (mkReverseProxy appName) ]
+      lib.optional (app.expose.caddyDirectives != "") app.expose.caddyDirectives
+      ++ [ (mkReverseProxy appName) ]
     );
 
   forbiddenBody = ''
@@ -127,12 +129,12 @@ let
   mkWildcardBlock =
     scheme:
     let
-      includeExtraSiteBlocks = scheme == "https" && cfg.caddy.extraSiteBlocks != "";
+      includeExtraHosts = scheme == "https" && cfg.caddy.extraHosts != "";
       body = concatStringsSep "\n" (
         lib.optional needsForbiddenSnippet "import forbidden_403"
         ++ lib.optional needsForbiddenSnippet forbiddenAssetsHandle
         ++ map (appName: indentLines "  " (mkAppHandle scheme appName)) wildcardAppNames
-        ++ lib.optional includeExtraSiteBlocks (indentLines "  " cfg.caddy.extraSiteBlocks)
+        ++ lib.optional includeExtraHosts (indentLines "  " cfg.caddy.extraHosts)
         ++ [
           (
             if scheme == "http" then
@@ -151,7 +153,7 @@ let
         ]
       );
     in
-    if cfg.domain != null && (wildcardAppNames != [ ] || includeExtraSiteBlocks) then
+    if cfg.domain != null && (wildcardAppNames != [ ] || includeExtraHosts) then
       ''
         ${mkEntryPointAddress scheme "*.${cfg.domain}"} {
         ${body}
@@ -424,8 +426,8 @@ in
     };
 
     systemd.services.${config.virtualisation.oci-containers.containers."caddy".serviceName} = {
-      requires = [ "homelab-network.service" ];
-      after = [ "homelab-network.service" ];
+      requires = [ "${networkUnitName}.service" ];
+      after = [ "${networkUnitName}.service" ];
     };
 
     networking.firewall = mkIf cfg.caddy.openFirewall {
@@ -446,7 +448,7 @@ in
         "${cfg.dataDir}/caddy/config:/config"
       ]
       ++ cfg.caddy.extraVolumes;
-      networks = [ cfg.edgeNetwork.name ];
+      networks = [ cfg.ingressNetwork ];
     };
   };
 }

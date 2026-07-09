@@ -1,7 +1,7 @@
 # Homelab Service Module
 
-The `homestation-homelab` module exposes a service-oriented API for declaring
-homelab apps, their container workloads, and app-level ingress.
+The `homestation-homelab` module is a small API for declaring self-hosted apps,
+their container services, and how traffic reaches them.
 
 Module source: `modules/nixos/homestation-homelab/`
 
@@ -22,7 +22,7 @@ homestation.homelab = {
     expose = {
       mode = "private";
       host = "paperless";
-      service = "web";
+      targetService = "web";
       protocol = "http";
     };
 
@@ -55,14 +55,13 @@ homestation.homelab
             `-- <serviceName>
 ```
 
-- An **app** is the public unit of configuration.
-- An app can define one or more **services** under `services.<name>`.
-- App-level `expose` selects whether the app is private, public, or internal.
-- Each service maps closely to one Arion/Docker Compose service stanza.
+- An app is the unit a human thinks about: `paperless`, `nextcloud`, `immich`.
+- A service is one containerized part of that app: `web`, `db`, `redis`.
+- `expose` says whether the app gets a hostname and which service receives that traffic.
+- `services` is the only supported workload form.
 
-`services` is the only supported workload form. The temporary
-`apps.<app>.container` and `apps.<app>.containers` compatibility paths were
-removed.
+The older `apps.<app>.container` and `apps.<app>.containers` compatibility
+paths were removed.
 
 ---
 
@@ -70,16 +69,16 @@ removed.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `enable` | bool | `false` | Master switch for the module |
-| `domain` | string\|null | `null` | Base domain used for host derivation |
-| `lanAddress` | string\|null | `null` | LAN IP used for generated LAN DNS A records for exposed apps |
-| `dataDir` | string | `"/var/lib/homelab"` | Base directory for persistent app data |
-| `edgeNetwork.name` | string | `"homelab-edge"` | Name of the external Docker network Caddy is attached to. Services are automatically joined to this network when they are an upstream for an exposed app |
-| `logging.driver` | string\|null | `null` | Default logging driver for every service. Set to `"journald"` on NixOS for host-managed log rotation. Per-service override via `extraServiceConfig.logging` |
-| `logging.options` | attrs of string | `{}` | Driver-specific options (e.g. `max-size`, `max-file` for `json-file`). Ignored when `logging.driver` is null |
-| `libraries` | attrs of libraryType | `{}` | Named shared host paths mountable from services |
+| `enable` | bool | `false` | Turn the homelab API on for this host |
+| `domain` | string\|null | `null` | Base domain used to expand short host labels like `"paperless"` into full hostnames |
+| `lanAddress` | string\|null | `null` | Host LAN IP used when the module generates local DNS records for exposed apps |
+| `dataDir` | string | `"/var/lib/homelab"` | Base directory for app-owned persistent data |
+| `ingressNetwork` | string | `"edge"` | Shared external Docker network used by Caddy and any exposed app backend |
+| `logging.driver` | string\|null | `null` | Default container logging backend for all generated services |
+| `logging.options` | attrs of string | `{}` | Driver-specific logging settings applied when `logging.driver` is set |
+| `libraries` | attrs of libraryType | `{}` | Named shared host paths that apps can mount by reference |
 | `apps` | attrs of appType | `{}` | App definitions |
-| `dns.records` | attrs of dnsRecordType | `{}` | Extra manual DNS records |
+| `dns.records` | attrs of dnsRecordType | `{}` | Extra DNS records managed alongside generated app records |
 
 When native `services.adguardhome.enable = true` is also set on the host, all
 LAN-visible records from `homestation.homelab.dns.records` are rendered into
@@ -89,49 +88,39 @@ AdGuard Home `filtering.rewrites` automatically.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `cloudflared.enable` | bool | `true` | Enable Cloudflare tunnel integration |
+| `cloudflared.enable` | bool | `true` | Enable Cloudflare Tunnel integration for public apps |
 | `cloudflared.tunnelId` | string\|null | `null` | Tunnel UUID |
 
-When any app uses `expose.mode = "public"`, the module automatically generates a tunnel route for
-`*.${domain}` targeting Caddy's internal tunnel listener over
-`http://127.0.0.1:<caddy.tunnelPort>`. The apex `domain` is only
-added when some public app explicitly resolves to the apex (for example
-`host = "@"`). Public apps are routed on both listeners; private apps stay
-reachable on local HTTPS but return `403` on the tunnel listener.
+When any app uses `expose.mode = "public"`, the module automatically generates
+Cloudflare Tunnel ingress for `*.${domain}` and points it at Caddy's internal
+tunnel listener on `http://127.0.0.1:<caddy.tunnelPort>`. The apex `domain` is
+added only when some public app explicitly resolves to the apex, for example
+`host = "@"`.
 
 ### `caddy.*`
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `caddy.enable` | bool | `true` | Enable generated Caddy integration |
-| `caddy.image` | string | `caddybuilds/caddy-cloudflare` (pinned) | Caddy image — defaults to a build with the `caddy-dns/cloudflare` plugin |
-| `caddy.ports` | list of string | `["80:80" "443:443" "443:443/udp"]` | Port mappings for Caddy |
-| `caddy.tunnelPort` | port | `8080` | Internal plain-HTTP listener used only for Cloudflare Tunnel origin traffic; bound on loopback automatically as `127.0.0.1:<port>:<port>` |
-| `caddy.openFirewall` | bool | `true` | Open firewall for Caddy ports |
-| `caddy.environment` | attrs of string | `{}` | Environment variables for Caddy |
-| `caddy.environmentFiles` | list of path | `[config.sops.templates."caddy.env".path]` | Environment files for Caddy |
-| `caddy.globalConfig` | lines | `acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}` | Content prepended to the generated Caddyfile |
-| `caddy.extraSiteBlocks` | lines | `""` | Extra Caddy handle blocks appended inside the generated local wildcard HTTPS block |
-| `caddy.extraVolumes` | list of string | `[]` | Extra volume mounts for Caddy |
+| `caddy.enable` | bool | `true` | Enable generated Caddy ingress |
+| `caddy.image` | string | `caddybuilds/caddy-cloudflare` (pinned) | Caddy image; by default the module uses a build with the Cloudflare DNS plugin |
+| `caddy.ports` | list of string | `["80:80" "443:443" "443:443/udp"]` | Host port mappings for the Caddy container |
+| `caddy.tunnelPort` | port | `8080` | Loopback-only HTTP listener used as the Cloudflare Tunnel origin |
+| `caddy.openFirewall` | bool | `true` | Open the firewall for the externally bound Caddy ports |
+| `caddy.environment` | attrs of string | `{}` | Environment variables for the Caddy container |
+| `caddy.environmentFiles` | list of path | `[config.sops.templates."caddy.env".path]` | Environment files for the Caddy container |
+| `caddy.globalConfig` | lines | `acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}` | Raw global Caddy config prepended before generated hosts |
+| `caddy.extraHosts` | lines | `""` | Extra hand-written Caddy host handling that should live next to the generated app hosts |
+| `caddy.extraVolumes` | list of string | `[]` | Extra bind mounts or named-volume mounts for the Caddy container |
 
-By default, `modules/nixos/homestation-homelab/caddy.nix` configures automatic
-HTTPS via a Cloudflare **DNS-01** challenge (`acme_dns cloudflare`), not
-HTTP-01/TLS-ALPN-01. DNS-01 only needs API access to the DNS zone, not a
-publicly reachable hostname, so every generated per-app site block gets a
-real Let's Encrypt certificate whether it's reached through the Cloudflare
-Tunnel, the LAN, or Tailnet. This requires a `caddy/cloudflare-api-token`
-sops secret (`Zone:DNS:Edit` scope) and its `caddy.env` template to be
-declared on any host using this module (see `configurations/nixos/homestation/sops.nix`
-for the pattern) — override `caddy.image`/`globalConfig`/`environmentFiles`
-with `lib.mkForce` if a host doesn't want this default.
+By default, `modules/nixos/homestation-homelab/caddy.nix` configures HTTPS via
+Cloudflare DNS-01 (`acme_dns cloudflare`). That means certificates are issued
+through DNS API access rather than public HTTP reachability, so generated hosts
+can work for LAN, Tailnet, and Tunnel access without changing the app API.
 
-The generated Caddyfile now uses separate listeners:
+The generated Caddy config uses separate listeners:
 
-- `https://*.${domain}` for LAN/Tailnet/local clients, with the existing
-  wildcard TLS setup and normal automatic HTTP-to-HTTPS redirects.
-- `http://*.${domain}:<caddy.tunnelPort>` for Cloudflare Tunnel
-  origin traffic, with no internal HTTPS redirect and no header-based
-  Cloudflare detection.
+- `https://*.${domain}` for local clients
+- `http://*.${domain}:<caddy.tunnelPort>` for Cloudflare Tunnel origin traffic
 
 Unknown hosts abort on the local wildcard listener and return `403` on the
 tunnel listener.
@@ -140,13 +129,15 @@ tunnel listener.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `smtp.host` | string\|null | `null` | Shared SMTP host |
-| `smtp.port` | int\|null | `null` | Shared SMTP port |
-| `smtp.security` | enum | `"starttls"` | Shared SMTP mode: `"starttls"`, `"force_tls"`, or `"off"` |
-| `smtp.from` | string\|null | `null` | Default sender address |
-| `smtp.username` | string\|null | `null` | Shared SMTP username |
+| `smtp.host` | string\|null | `null` | Shared SMTP host reference |
+| `smtp.port` | int\|null | `null` | Shared SMTP port reference |
+| `smtp.security` | enum | `"starttls"` | Shared SMTP security mode: `"starttls"`, `"force_tls"`, or `"off"` |
+| `smtp.from` | string\|null | `null` | Default sender address for apps that send mail |
+| `smtp.username` | string\|null | `null` | Shared SMTP username reference |
 
-These are a shared reference registry — the module does not inject SMTP values into service environments automatically. Each app that needs SMTP must wire the values itself, for example:
+These options are only a shared registry. The module does not inject SMTP
+values into service environments automatically. Each app that needs SMTP wires
+them in explicitly, for example:
 
 ```nix
 services.web.environment = {
@@ -161,15 +152,15 @@ Keep passwords out of `environment`; pass them via `environmentFiles` instead.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `path` | string | none | Absolute host path |
+| `path` | string | none | Absolute host path exposed as a reusable named library mount |
 
 ### `dns.records.<name>.*`
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `type` | enum | `"A"` | DNS record type: `"A"`, `"AAAA"`, or `"CNAME"` |
-| `value` | string | none | DNS record value |
-| `visibility` | enum | `"lan"` | Record visibility: `"lan"` or `"public"` |
+| `type` | enum | `"A"` | Record type: `"A"`, `"AAAA"`, or `"CNAME"` |
+| `value` | string | none | Record target |
+| `visibility` | enum | `"lan"` | Whether the record is for LAN clients only or should also be treated as public |
 
 ---
 
@@ -178,23 +169,24 @@ Keep passwords out of `environment`; pass them via `environmentFiles` instead.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enable` | bool | `true` | Enable or disable the app |
-| `expose.mode` | enum | `"none"` | Exposure mode: `"none"`, `"private"`, or `"public"` |
-| `expose.host` | string\|null | `null` | Hostname or subdomain for the app |
-| `expose.service` | string\|null | auto | Default upstream target; auto-derived when the app has exactly one service |
-| `expose.protocol` | enum | `"http"` | Protocol Caddy uses when proxying *to* the container (backend leg only — Caddy always terminates TLS publicly). Use `"https"` only when the container itself speaks TLS; `"http"` covers nearly all homelab services |
-| `expose.extraConfig` | lines | `""` | Raw Caddy directives inserted into the generated app handle before `reverse_proxy` |
-| `services` | attrs of serviceType | `{}` | Workloads that belong to the app |
+| `expose.mode` | enum | `"none"` | Whether the app gets no ingress, private ingress, or public ingress |
+| `expose.host` | string\|null | `null` | Host label or full hostname for the app |
+| `expose.targetService` | string\|null | auto | Which service receives incoming traffic for this app |
+| `expose.protocol` | enum | `"http"` | Protocol Caddy uses when talking to the app backend |
+| `expose.caddyDirectives` | lines | `""` | Extra per-app Caddy directives inserted before `reverse_proxy` |
+| `services` | attrs of serviceType | `{}` | Services that make up the app |
 
 ### App Exposure
 
-- `mode = "none"` keeps the app internal.
-- `mode = "private"` is for LAN-only ingress.
-- `mode = "public"` is for internet-facing ingress.
-- `host = null` means the app has no hostname.
-- `service` should name a member of `services`. When the app has exactly one service, `expose.service` is auto-derived and can be omitted.
-- `extraConfig` lets you insert raw Caddy directives before the generated `reverse_proxy` for the app, which is useful for small per-app ingress tweaks like extra headers.
+- `mode = "none"` means the app stays internal.
+- `mode = "private"` means the app gets local ingress but is not published through Cloudflare Tunnel.
+- `mode = "public"` means the app gets both local ingress and Cloudflare Tunnel ingress.
+- `targetService` should name a member of `services`. If the app has exactly one enabled service, the module uses it automatically.
+- `caddyDirectives` is the small escape hatch for per-app Caddy tweaks such as extra headers or transport settings.
 
-**Host resolution:** A plain label is expanded to `<host>.<domain>` (e.g. `host = "paperless"` with `domain = "home.example.com"` yields `paperless.home.example.com`). If `host` already contains a `.` it is used as a fully-qualified domain name without modification. The special value `"@"` resolves to the bare `domain`, useful for apex-domain services.
+**Host resolution:** A plain label expands to `<host>.<domain>`. If `host`
+already contains a dot, it is treated as a fully qualified hostname. The
+special value `"@"` resolves to the bare `domain`.
 
 ---
 
@@ -205,34 +197,33 @@ Keep passwords out of `environment`; pass them via `environmentFiles` instead.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enable` | bool | `false` | Enable the service |
-| `containerName` | string\|null | `null` | Override the generated container name. Only set when a container requires a fixed externally-known name (e.g. Nextcloud AIO). User-specified names are included in the global uniqueness check |
+| `containerName` | string\|null | `null` | Override the generated container name when an app requires a fixed externally known name |
 | `image` | string | none | Container image |
-| `port` | int\|null | `null` | Primary service port |
-| `command` | list of string\|null | `null` | Override the service command |
-| `entrypoint` | string\|null | `null` | Override the service entrypoint |
+| `port` | int\|null | `null` | Main backend port used for app ingress when this service is the target service |
+| `command` | list of string\|null | `null` | Override the container command |
+| `entrypoint` | string\|null | `null` | Override the container entrypoint |
 | `environment` | attrs of string | `{}` | Environment variables |
-| `helpers.identity` | bool | `false` | Inject `PUID` and `PGID` derived from the host's primary user defaults |
+| `helpers.userIds` | bool | `false` | Inject `PUID` and `PGID` from the host defaults |
 | `helpers.timezone` | bool | `false` | Inject `TZ` from `config.time.timeZone` |
 | `environmentFiles` | list of path | `[]` | Environment files |
-| `volumes` | list of volumeType | `[]` | Volume mounts |
-| `ports` | list of string | `[]` | Published Docker/Arion ports |
-| `networks` | list of string | `[]` | Additional Docker networks |
+| `volumes` | list of volumeType | `[]` | Mounts for this service |
+| `ports` | list of string | `[]` | Published host ports |
+| `networks` | list of string | `[]` | Additional external Docker networks |
 | `restart` | enum | `"unless-stopped"` | Container restart policy |
 | `labels` | attrs of string | `{}` | Container labels |
-| `extraServiceConfig` | attrs | `{}` | Raw attrs merged last into the Arion service definition. Escape hatch for compose options not covered by the typed API (e.g. `security_opt`). Values here override typed options |
+| `extraServiceConfig` | attrs | `{}` | Last-resort escape hatch for compose options not covered by the typed API |
 
 ### Helpers
 
-`helpers` is a typed convenience layer for common container environment defaults:
+`helpers` exists for common environment values that many self-hosted containers
+expect:
 
-- `helpers.identity = true` injects `PUID` and `PGID`
+- `helpers.userIds = true` injects `PUID` and `PGID`
 - `helpers.timezone = true` injects `TZ`
-- LinuxServer images (`linuxserver/...`, `docker.io/linuxserver/...`, `lscr.io/linuxserver/...`, `ghcr.io/linuxserver/...`) automatically receive `PUID`, `PGID`, and `TZ`
+- LinuxServer images automatically receive `PUID`, `PGID`, and `TZ`
 
-These toggles are additive only. If multiple helpers are enabled, their values
-are unioned together. Explicit values in `environment` still win on key
-conflicts, which keeps the helper API simple while preserving a manual escape
-hatch.
+These toggles are additive. Explicit values in `environment` still win on key
+conflicts.
 
 Injected values come from the host:
 
@@ -241,7 +232,7 @@ Injected values come from the host:
 - `TZ` uses `config.time.timeZone`
 
 ```nix
-services.web.helpers.identity = true; # PUID + PGID
+services.web.helpers.userIds = true;  # PUID + PGID
 services.web.helpers.timezone = true; # TZ only
 ```
 
@@ -257,12 +248,12 @@ services.web.helpers.timezone = true; # TZ only
 
 ### Dependencies
 
-`dependsOn` is an attribute set keyed by dependency service name.
+`dependsOn` lets one service wait for another service in the same app.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `dependsOn` | attrs of submodule | `{}` | Dependency map |
-| `dependsOn.<service>.condition` | enum | `"service_started"` | Dependency condition |
+| `dependsOn` | attrs of submodule | `{}` | Dependency map keyed by service name |
+| `dependsOn.<service>.condition` | enum | `"service_started"` | Condition required before the dependent service starts |
 
 Allowed `condition` values:
 
@@ -270,10 +261,11 @@ Allowed `condition` values:
 - `"service_healthy"`
 - `"service_completed_successfully"`
 
-Because `condition` defaults to `"service_started"`, you can omit it when that condition is sufficient:
+Because `condition` defaults to `"service_started"`, you can omit it when that
+is enough:
 
 ```nix
-dependsOn.redis = {};          # equivalent to dependsOn.redis.condition = "service_started"
+dependsOn.redis = {};
 dependsOn.db.condition = "service_healthy";
 ```
 
@@ -281,35 +273,39 @@ dependsOn.db.condition = "service_healthy";
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `runtime.user` | string\|null | `null` | Container user |
+| `runtime.user` | string\|null | `null` | Container runtime user |
 
-For other runtime options (`working_dir`, `tmpfs`, `tty`, `init`, `stop_grace_period`, `stop_signal`, etc.) use `extraServiceConfig`.
+For other runtime options (`working_dir`, `tmpfs`, `tty`, `init`,
+`stop_grace_period`, `stop_signal`, etc.), use `extraServiceConfig`.
 
 ### Privileges
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `privileges.networkMode` | string\|null | `null` | Docker network mode |
-| `privileges.privileged` | bool | `false` | Run as privileged |
+| `privileges.networkMode` | string\|null | `null` | Docker network mode override |
+| `privileges.privileged` | bool | `false` | Run the container as privileged |
 | `privileges.devices` | list of string | `[]` | Extra device mappings |
-| `privileges.capabilities.add` | list of string | `[]` | Added Linux capabilities |
-| `privileges.capabilities.drop` | list of string | `[]` | Dropped Linux capabilities |
+| `privileges.capabilities.add` | list of string | `[]` | Linux capabilities to add |
+| `privileges.capabilities.drop` | list of string | `[]` | Linux capabilities to drop |
 
-For other privilege options (`dns`, `extra_hosts`, `sysctls`, etc.) use `extraServiceConfig`.
+For other privilege options (`dns`, `extra_hosts`, `sysctls`, etc.), use
+`extraServiceConfig`.
 
 ### Inter-service Networking
 
-Services within the same app share the Arion/Compose project default network. They can reach each other using the service key as a DNS name — the key under `services.<name>`, not the container name.
+Services within the same app can talk to each other on the default internal app
+network by using their service key as the hostname.
 
 ```nix
-# services.web can connect to "db:5432" and "redis:6379"
 services.web.environment = {
   DATABASE_URL = "postgres://db:5432/app";
-  REDIS_URL    = "redis://redis:6379";
+  REDIS_URL = "redis://redis:6379";
 };
 ```
 
-Services in different apps are isolated by default. Cross-app communication requires either publishing ports (`services.<name>.ports`) or placing both apps on a shared external Docker network via `services.<name>.networks`.
+Different apps are isolated by default. Cross-app communication requires either
+published ports (`services.<name>.ports`) or a shared external Docker network
+via `services.<name>.networks`.
 
 ---
 
@@ -317,58 +313,63 @@ Services in different apps are isolated by default. Cross-app communication requ
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `type` | enum | `"bind"` | Volume kind: `"bind"`, `"library"`, or `"volume"` |
-| `source` | string\|null | `null` | Bind source path |
-| `library` | string\|null | `null` | Library name when `type = "library"` |
-| `volume` | string\|null | `null` | Docker/Arion volume name when `type = "volume"` |
-| `target` | string | none | Mount target inside the container |
+| `type` | enum | `"bind"` | Mount kind: `"bind"`, `"library"`, or `"volume"` |
+| `source` | string\|null | `null` | Host path when `type = "bind"` |
+| `library` | string\|null | `null` | Library key when `type = "library"` |
+| `volume` | string\|null | `null` | Logical volume key when `type = "volume"` |
+| `target` | string | none | Mount point inside the container |
 | `readOnly` | bool | `false` | Mount read-only |
-| `external` | bool | `false` | Treat named volume as external |
-| `dockerName` | string\|null | `null` | Pin the Docker-level volume name by emitting `name:` in the compose volumes section. Without this, Docker prefixes the volume key with the project name. Use when a container requires an exact volume name (e.g. Nextcloud AIO's `nextcloud_aio_mastercontainer`) |
-| `owner` | string | `"root"` | Owner for managed relative bind sources |
-| `group` | string | `"root"` | Group for managed relative bind sources |
-| `mode` | string | `"0755"` | Permissions for managed relative bind sources |
+| `external` | bool | `false` | Treat a named volume as pre-existing |
+| `engineName` | string\|null | `null` | Exact engine-level name for a named volume when Docker's derived name is not acceptable |
+| `owner` | string | `"root"` | Owner for module-managed relative bind sources |
+| `group` | string | `"root"` | Group for module-managed relative bind sources |
+| `mode` | string | `"0755"` | Permissions for module-managed relative bind sources |
 
 ### Volume Kinds
 
-- `type = "bind"` uses `source` as a host path.
-- `type = "library"` uses `library` to reference `homestation.homelab.libraries.<name>`.
-- `type = "volume"` uses `volume` as the Docker/Arion volume name and emits a
-  named compose volume definition.
-- `external = true` marks that named compose volume as external.
+- `type = "bind"` mounts a host path
+- `type = "library"` mounts a named shared path from `homestation.homelab.libraries`
+- `type = "volume"` creates or references a named Docker volume
+- `external = true` marks that named volume as pre-existing
 
 ### Volume Patterns
 
-**Shared host path across multiple apps** — declare a library and reference it by name. Change the path in one place:
+**Shared host path across multiple apps**:
 
 ```nix
 homestation.homelab.libraries.media = { path = "/srv/media"; };
 
 apps.navidrome.services.server.volumes = [{ type = "library"; library = "media"; target = "/music"; readOnly = true; }];
-apps.jellyfin.services.server.volumes  = [{ type = "library"; library = "media"; target = "/media"; readOnly = true; }];
+apps.jellyfin.services.server.volumes = [{ type = "library"; library = "media"; target = "/media"; readOnly = true; }];
 ```
 
-**App-private managed path** — use a relative `source`. The module automatically creates `$dataDir/<app>/<source>`. Set `owner/group/mode` when the container runs as a non-root user:
+**App-private managed path**:
 
 ```nix
 services.web.volumes = [{
-  type   = "bind";
-  source = "data";        # → /var/lib/homelab/myapp/data, created automatically
+  type = "bind";
+  source = "data";
   target = "/app/data";
   owner = "1000";
   group = "1000";
 }];
 ```
 
-**Pre-existing absolute path** — use an absolute `source`. The module leaves the host path alone. Ownership and permissions are only managed for relative bind sources:
+A relative bind `source` like `"data"` becomes
+`$dataDir/<app>/<source>` automatically.
+
+**Pre-existing absolute path**:
 
 ```nix
 services.web.volumes = [{
-  type   = "bind";
+  type = "bind";
   source = "/mnt/external-disk/data";
   target = "/app/data";
 }];
 ```
+
+Absolute bind paths are left alone. Ownership and permissions are only managed
+for relative bind sources.
 
 ---
 
@@ -376,39 +377,28 @@ services.web.volumes = [{
 
 The public schema in `options.nix` enforces these constraints:
 
-- Ports are limited to `1..65535`.
-- `expose.mode` is one of `"none"`, `"private"`, or `"public"`.
-- `expose.protocol` is one of `"http"` or `"https"`.
-- `dependsOn.<service>.condition` is limited to the supported dependency modes.
-- Volume `type` is limited to `"bind"`, `"library"`, or `"volume"`.
-- DNS record `type` is limited to `"A"`, `"AAAA"`, or `"CNAME"`.
-- DNS record `visibility` is limited to `"lan"` or `"public"`.
+- Ports are limited to `1..65535`
+- `expose.mode` is one of `"none"`, `"private"`, or `"public"`
+- `expose.protocol` is one of `"http"` or `"https"`
+- `dependsOn.<service>.condition` is limited to the supported dependency modes
+- Volume `type` is limited to `"bind"`, `"library"`, or `"volume"`
+- DNS record `type` is limited to `"A"`, `"AAAA"`, or `"CNAME"`
+- DNS record `visibility` is limited to `"lan"` or `"public"`
 
-At evaluation time, `validation.nix` adds runtime assertions against the
-normalized app/service graph:
+At evaluation time, `validation.nix` adds runtime assertions:
 
-- Exposed apps must resolve an effective host.
-- Exposed apps must resolve `expose.service`; when the app has exactly one
-  enabled service, that service is auto-derived.
-- The exposed service must define a `port`.
-- `expose.service` must reference an enabled service in the same app.
-- `expose.mode = "public"` requires `cloudflared.enable`,
-  `cloudflared.tunnelId`, and `domain`.
-- `services.<name>.dependsOn` may only reference enabled services in the same
-  app.
-- `services.<name>.volumes` must use a valid `type/source/library/volume`
-  combination.
-- Relative bind sources may not start with `..`; escaping the app data
-  directory is rejected at evaluation time.
-- `owner/group/mode` may only be set on relative bind sources.
-- Exposed hostnames must be globally unique.
-- Generated Arion project names must remain unique after `_` to `-`
-  normalization.
-- Generated container names must remain unique after `_` to `-`
-  normalization.
-
-These runtime checks now target the `services` API rather than the removed
-`container` / `containers` compatibility surface.
+- Exposed apps must resolve an effective host
+- Exposed apps must resolve `expose.targetService`; when the app has exactly one enabled service, that service is auto-derived
+- The exposed target service must define a `port`
+- `expose.targetService` must reference an enabled service in the same app
+- `expose.mode = "public"` requires `cloudflared.enable`, `cloudflared.tunnelId`, and `domain`
+- `services.<name>.dependsOn` may only reference enabled services in the same app
+- `services.<name>.volumes` must use a valid `type/source/library/volume` combination
+- Relative bind sources may not escape the app data directory
+- `owner/group/mode` may only be set on relative bind sources
+- Exposed hostnames must be globally unique
+- Generated Arion project names must remain unique after `_` to `-` normalization
+- Generated container names must remain unique after `_` to `-` normalization
 
 ---
 
@@ -421,7 +411,7 @@ apps.whoami = {
   expose = {
     mode = "private";
     host = "whoami";
-    # service omitted — auto-derived from the single service below
+    # targetService omitted: auto-derived from the single enabled service
   };
 
   services.web = {
@@ -440,14 +430,14 @@ apps.paperless = {
   expose = {
     mode = "private";
     host = "paperless";
-    service = "web";
+    targetService = "web";
   };
 
   services.web = {
     enable = true;
     image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
     port = 8000;
-    helpers.identity = true;
+    helpers.userIds = true;
     dependsOn.redis = {};
     dependsOn.db.condition = "service_healthy";
   };
@@ -492,5 +482,5 @@ homestation.homelab.apps.navidrome.services.server = {
 ## Maintenance Note
 
 When `modules/nixos/homestation-homelab/options.nix` changes, update this
-document in the same patch. Keep the app, service, route, volume, and
+document in the same patch. Keep the global, app, service, volume, and
 validation sections aligned with the module API.

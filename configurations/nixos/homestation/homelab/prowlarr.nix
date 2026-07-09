@@ -10,7 +10,7 @@ in
     expose = {
       mode = "public";
       host = "index";
-      service = "web";
+      targetService = "web";
     };
 
     services.web = {

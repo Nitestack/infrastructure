@@ -22,7 +22,7 @@ in
     };
   };
 
-  homestation.homelab.caddy.extraSiteBlocks = lib.mkIf (cfg.domain != null) ''
+  homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null) ''
     @nextcloud-aio host ${nextcloudAioHost}
     handle @nextcloud-aio {
       reverse_proxy https://nextcloud-aio-mastercontainer:8080 {
@@ -37,8 +37,8 @@ in
     expose = {
       mode = "public";
       host = "cloud";
-      service = "master";
-      extraConfig = ''
+      targetService = "master";
+      caddyDirectives = ''
         header Strict-Transport-Security max-age=31536000;
       '';
     };
@@ -56,7 +56,7 @@ in
       environment = {
         APACHE_PORT = "11000";
         APACHE_IP_BINDING = "0.0.0.0";
-        APACHE_ADDITIONAL_NETWORK = cfg.edgeNetwork.name;
+        APACHE_ADDITIONAL_NETWORK = cfg.ingressNetwork;
         SKIP_DOMAIN_VALIDATION = "false";
         NEXTCLOUD_DATADIR = nextcloudDataDir;
       };
@@ -65,7 +65,7 @@ in
         {
           type = "volume";
           volume = "nextcloud_aio_mastercontainer";
-          dockerName = "nextcloud_aio_mastercontainer";
+          engineName = "nextcloud_aio_mastercontainer";
           target = "/mnt/docker-aio-config";
         }
         {

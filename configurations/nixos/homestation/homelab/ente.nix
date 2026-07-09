@@ -36,7 +36,7 @@ in
     ]
   );
 
-  homestation.homelab.caddy.extraSiteBlocks = lib.mkIf (cfg.domain != null) ''
+  homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null) ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
       reverse_proxy ente-museum:8080
@@ -47,7 +47,7 @@ in
     expose = {
       mode = "public";
       host = "2fa";
-      service = "web";
+      targetService = "web";
     };
 
     services.web = {
@@ -66,7 +66,7 @@ in
       image = "ghcr.io/ente/server:latest@sha256:4dd5747b3322e81edfe2b482443b444068f2033ab488bf4566bbe00fa3c685e7";
       containerName = "ente-museum";
       port = 8080;
-      networks = [ cfg.edgeNetwork.name ];
+      networks = [ cfg.ingressNetwork ];
 
       dependsOn.postgres.condition = "service_healthy";
 

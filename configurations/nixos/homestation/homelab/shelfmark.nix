@@ -25,7 +25,7 @@ in
       image = "ghcr.io/calibrain/shelfmark:v1.3.0@sha256:22ca17919d5f663fd1b88f84c3ffd96339dc3aa60b9b3257726f3b7e6510412a";
       port = 8084;
 
-      helpers.identity = true;
+      helpers.userIds = true;
 
       environment = {
         DOCKERMODE = "true";

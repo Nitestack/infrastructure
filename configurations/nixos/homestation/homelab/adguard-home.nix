@@ -25,14 +25,12 @@ in
     ]
   );
 
-  homestation.homelab.caddy.extraSiteBlocks =
-    lib.mkIf (cfg.domain != null && cfg.lanAddress != null)
-      ''
-        @dns host dns.${cfg.domain}
-        handle @dns {
-          reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
-        }
-      '';
+  homestation.homelab.caddy.extraHosts = lib.mkIf (cfg.domain != null && cfg.lanAddress != null) ''
+    @dns host dns.${cfg.domain}
+    handle @dns {
+      reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
+    }
+  '';
 
   services.adguardhome = {
     enable = true;

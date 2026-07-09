@@ -3,7 +3,7 @@ let
   normalizeName = name: lib.replaceStrings [ "_" ] [ "-" ] name;
 in
 {
-  appProjectName = appName: "homelab-${normalizeName appName}";
+  appProjectName = appName: normalizeName appName;
 
   serviceContainerName =
     appName: services: serviceName:

@@ -13,7 +13,7 @@
       image = "rogerfar/rdtclient:2.0.136@sha256:a05f0427946a4c3c64dc9d556c017f9a181acec320ecf218b6334a1066c11d1f";
       port = 6500;
 
-      helpers.identity = true;
+      helpers.userIds = true;
       helpers.timezone = true;
 
       volumes = [

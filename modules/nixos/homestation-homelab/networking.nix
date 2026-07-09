@@ -12,6 +12,7 @@ let
     ;
 
   cfg = config.homestation.homelab;
+  networkUnitName = "container-edge-network";
 
   generatedUnitNames = map (projectName: "arion-${projectName}") (
     attrNames config.virtualisation.arion.projects
@@ -20,7 +21,7 @@ in
 {
   config = mkIf (cfg.enable && generatedUnitNames != [ ]) {
     systemd.services = {
-      homelab-network = {
+      ${networkUnitName} = {
         description = "Create homelab Docker networks";
         wantedBy = [ "multi-user.target" ];
         after = [
@@ -38,16 +39,16 @@ in
           RemainAfterExit = true;
         };
         script = ''
-          if ! docker network inspect ${lib.escapeShellArg cfg.edgeNetwork.name} >/dev/null 2>&1; then
-            docker network create ${lib.escapeShellArg cfg.edgeNetwork.name} >/dev/null || \
-              docker network inspect ${lib.escapeShellArg cfg.edgeNetwork.name} >/dev/null
+          if ! docker network inspect ${lib.escapeShellArg cfg.ingressNetwork} >/dev/null 2>&1; then
+            docker network create ${lib.escapeShellArg cfg.ingressNetwork} >/dev/null || \
+              docker network inspect ${lib.escapeShellArg cfg.ingressNetwork} >/dev/null
           fi
         '';
       };
     }
     // genAttrs generatedUnitNames (_: {
-      requires = [ "homelab-network.service" ];
-      after = [ "homelab-network.service" ];
+      requires = [ "${networkUnitName}.service" ];
+      after = [ "${networkUnitName}.service" ];
     });
   };
 }

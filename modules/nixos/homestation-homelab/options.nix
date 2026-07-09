@@ -43,10 +43,10 @@ let
         type = types.bool;
         default = false;
       };
-      dockerName = mkOption {
+      engineName = mkOption {
         type = types.nullOr types.str;
         default = null;
-        description = "Override the Docker volume name emitted in the compose volumes section. When null, Docker prefixes the volume key with the project name. Set this to pin the exact Docker volume name (e.g. when a container requires a specific volume name).";
+        description = "Override the engine-level name for a named volume. When null, Docker derives the final name from the project and volume key. Set this only when a container expects an exact pre-known volume name.";
       };
       owner = mkOption {
         type = types.str;
@@ -89,7 +89,7 @@ let
         default = { };
       };
       helpers = {
-        identity = mkOption {
+        userIds = mkOption {
           type = types.bool;
           default = false;
           description = "Inject PUID and PGID derived from the host's primary user defaults.";
@@ -242,9 +242,10 @@ let
           type = types.nullOr types.nonEmptyStr;
           default = null;
         };
-        service = mkOption {
+        targetService = mkOption {
           type = types.nullOr types.str;
           default = null;
+          description = "Which service receives incoming traffic for this app. When null and the app has exactly one enabled service, that service is used automatically.";
         };
         protocol = mkOption {
           type = types.enum [
@@ -254,10 +255,10 @@ let
           default = "http";
           description = "Protocol Caddy uses when proxying to this service's container. Use \"https\" only when the container itself speaks TLS; \"http\" covers nearly all homelab services.";
         };
-        extraConfig = mkOption {
+        caddyDirectives = mkOption {
           type = types.lines;
           default = "";
-          description = "Raw Caddy directives inserted into the generated app handle before reverse_proxy. Use this for per-app ingress tweaks without dropping to a full custom site block.";
+          description = "Extra Caddy directives inserted into this app's generated proxy block before reverse_proxy. Use this for small per-app ingress tweaks without replacing the whole generated host handling.";
         };
       };
       services = mkOption {
@@ -286,9 +287,10 @@ in
       default = "/var/lib/homelab";
     };
 
-    edgeNetwork.name = mkOption {
+    ingressNetwork = mkOption {
       type = types.str;
-      default = "homelab-edge";
+      default = "edge";
+      description = "Name of the shared external Docker network used for ingress traffic between Caddy and exposed app backends.";
     };
 
     cloudflared = {
@@ -339,9 +341,10 @@ in
         type = types.lines;
         default = "";
       };
-      extraSiteBlocks = mkOption {
+      extraHosts = mkOption {
         type = types.lines;
         default = "";
+        description = "Extra hand-written Caddy host handling that should live alongside the generated app hosts.";
       };
       extraVolumes = mkOption {
         type = types.listOf types.str;
