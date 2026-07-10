@@ -62,13 +62,14 @@ in
           apiKey = "!cat ${config.sops.secrets.nim-api-key.path}";
           models = [
             { id = "nvidia/nemotron-3-ultra-550b-a55b"; }
-            { id = "z-ai/glm-5.1"; }
-            { id = "openai/gpt-oss-120b"; }
+            { id = "z-ai/glm-5.2"; }
+            { id = "minimaxai/minimax-m3"; }
+            { id = "stepfun-ai/step-3.7-flash"; }
+            { id = "mistralai/mistral-medium-3.5-128b"; }
             { id = "deepseek-ai/deepseek-v4-pro"; }
-            { id = "qwen/qwen3-next-80b-a3b-instruct"; }
-            { id = "moonshotai/kimi-k2.6"; }
             { id = "deepseek-ai/deepseek-v4-flash"; }
-            { id = "mistralai/mistral-small-4-119b-2603"; }
+            { id = "qwen/qwen3.5-122b-a10b"; }
+            { id = "openai/gpt-oss-120b"; }
           ];
         };
       };
