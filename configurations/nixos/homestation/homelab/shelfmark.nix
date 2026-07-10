@@ -1,14 +1,11 @@
 {
   config,
-  lib,
   ...
 }:
 let
   cfg = config.homelab;
   username = config.meta.username;
-  homelab-lib = import ../../../../modules/nixos/homelab/lib.nix {
-    inherit cfg lib;
-  };
+  inherit (cfg.lib) serviceUrl;
   calibreWebAutomated = cfg.apps.calibre-web-automated;
 in
 {
@@ -30,7 +27,7 @@ in
       environment = {
         DOCKERMODE = "true";
         ONBOARDING = "false";
-        CALIBRE_WEB_URL = "https://${homelab-lib.effectiveHost calibreWebAutomated}";
+        CALIBRE_WEB_URL = serviceUrl "calibre-web-automated" "web";
         BOOK_LANGUAGE = "en,de";
         SEARCH_MODE = "universal";
         METADATA_PROVIDER = "hardcover";
@@ -41,9 +38,9 @@ in
         EMAIL_SMTP_USERNAME = cfg.smtp.username;
         EMAIL_FROM = cfg.smtp.from;
         PROWLARR_ENABLED = "true";
-        PROWLARR_URL = "https://index.${cfg.domain}";
+        PROWLARR_URL = serviceUrl "prowlarr" "web";
         PROWLARR_TORRENT_CLIENT = "qbittorrent";
-        QBITTORRENT_URL = "https://magnets.${cfg.domain}";
+        QBITTORRENT_URL = serviceUrl "rdtclient" "web";
         QBITTORRENT_DOWNLOAD_DIR = "/data/downloads";
         HARDCOVER_ENABLED = "true";
       };
