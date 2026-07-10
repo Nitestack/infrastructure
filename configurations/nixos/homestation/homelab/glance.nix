@@ -1,19 +1,13 @@
 {
   config,
-  lib,
   ...
 }:
 let
   cfg = config.homelab;
-  homelab-lib = import ../../../../modules/nixos/homelab/lib.nix {
-    inherit cfg lib;
-  };
-  inherit (homelab-lib) effectiveHost;
+  inherit (cfg.lib) appUrl;
 
-  itTools = cfg.apps.it-tools;
   domain = cfg.domain;
   mkUrl = host: "https://${host}.${domain}";
-  appUrl = app: "https://${effectiveHost app}";
   adguardHomeUrl = "https://dns.${domain}";
 in
 {
@@ -30,23 +24,24 @@ in
 
       environment = {
         ADGUARD_HOME_URL = adguardHomeUrl;
-        ADVENTURE_LOG_URL = mkUrl "travel";
-        BESZEL_URL = mkUrl "status";
-        CALIBRE_WEB_AUTOMATED_URL = mkUrl "lib";
-        ENTE_AUTH_URL = mkUrl "2fa";
-        FRESHRSS_URL = mkUrl "feed";
-        GLANCE_URL = mkUrl "dash";
-        IMMICH_URL = mkUrl "media";
-        IT_TOOLS_URL = appUrl itTools;
-        NAVIDROME_URL = mkUrl "music";
-        NEXTCLOUD_URL = mkUrl "cloud";
-        POCKET_ID_URL = mkUrl "id";
-        PROWLARR_URL = mkUrl "index";
-        RDTCLIENT_URL = mkUrl "magnets";
-        SHELFMARK_URL = mkUrl "books";
-        VAULTWARDEN_URL = mkUrl "vault";
-        WEALTHFOLIO_URL = mkUrl "wealth";
-        YAMTRACK_URL = mkUrl "track";
+        ADVENTURE_LOG_URL = appUrl cfg.apps.adventure-log;
+        BESZEL_URL = appUrl cfg.apps.beszel;
+        CALIBRE_WEB_AUTOMATED_URL = appUrl cfg.apps.calibre-web-automated;
+        ENTE_AUTH_URL = appUrl cfg.apps.ente;
+        FRESHRSS_URL = appUrl cfg.apps.freshrss;
+        GLANCE_URL = appUrl cfg.apps.glance;
+        IMMICH_URL = appUrl cfg.apps.immich;
+        IT_TOOLS_URL = appUrl cfg.apps.it-tools;
+        NAVIDROME_URL = appUrl cfg.apps.navidrome;
+        NEXTCLOUD_URL = appUrl cfg.apps.nextcloud;
+        POCKET_ID_URL = appUrl cfg.apps.pocket-id;
+        PROWLARR_URL = appUrl cfg.apps.prowlarr;
+        RDTCLIENT_URL = appUrl cfg.apps.rdtclient;
+        SHELFMARK_URL = appUrl cfg.apps.shelfmark;
+        VAULTWARDEN_URL = appUrl cfg.apps.vaultwarden;
+        WEALTHFOLIO_URL = appUrl cfg.apps.wealthfolio;
+        YAMTRACK_URL = appUrl cfg.apps.yamtrack;
+        # No backing homelab.apps entry exists for this service; keep the manual host.
         ZEROBYTE_URL = mkUrl "backup";
       };
 
