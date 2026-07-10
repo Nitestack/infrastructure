@@ -58,6 +58,7 @@ in
       environment = {
         LISTEN = "/beszel_socket/beszel.sock";
         HUB_URL = "https://status.${cfg.domain}";
+        SENSORS = "-acpitz,nvme_sensor_*";
       };
 
       environmentFiles = [ config.sops.templates."beszel-agent.env".path ];
@@ -97,6 +98,7 @@ in
 
       privileges.networkMode = "host";
       privileges.devices = [
+        "/dev/nvme0:/dev/nvme0"
         "/dev/sda:/dev/sda"
       ];
       privileges.capabilities.add = [
