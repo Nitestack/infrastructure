@@ -1,17 +1,10 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ AI                                                       │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, flake, ... }:
+{ flake, ... }:
 let
   inherit (flake) inputs;
   inherit (inputs) self;
-
-  superpowers-plugin = pkgs.fetchFromGitHub {
-    owner = "obra";
-    repo = "superpowers";
-    rev = "6fd4507659784c351abbd2bc264c7162cfd386dc";
-    sha256 = "0fjbbnzsf3vk3wc64rpsqjry6sxzfvq07dy7phry8fyhfkq47w9z";
-  };
 in
 {
   imports = [
@@ -49,7 +42,7 @@ in
         };
       };
       plugins = [
-        superpowers-plugin
+        inputs.superpowers
       ];
     };
     # codex = {

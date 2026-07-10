@@ -4,8 +4,12 @@
 {
   lib,
   pkgs,
+  flake,
   ...
 }:
+let
+  inherit (flake) inputs;
+in
 {
   programs = {
     nushell = {
@@ -53,18 +57,9 @@
             XDG_DATA_DIRS = colon_conversion;
           };
       };
-      extraConfig =
-        let
-          catppuccin-repo = pkgs.fetchFromGitHub {
-            owner = "catppuccin";
-            repo = "nushell";
-            rev = "05987d258cb765a881ee1f2f2b65276c8b379658";
-            sha256 = "13a2am30w1v8lz7drc04z3762jrywdqflfbn446iab6slfpw23dm";
-          };
-        in
-        ''
-          source ${catppuccin-repo}/themes/catppuccin_mocha.nu
-        '';
+      extraConfig = ''
+        source ${inputs.catppuccin-nushell}/themes/catppuccin_mocha.nu
+      '';
     };
     # Start Nushell for normal interactive Zsh sessions,
     # while keeping Zsh as the actual login shell.

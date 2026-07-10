@@ -3,18 +3,12 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   meta,
-  pkgs,
+  flake,
   ...
 }:
 let
   inherit (meta) git;
-
-  catppuccin-repo = pkgs.fetchFromGitHub {
-    owner = "catppuccin";
-    repo = "delta";
-    rev = "7b06b1f174c03f53ff68da1ae1666ca3ef7683ad";
-    sha256 = "1qkqchyj4dn0w4wq5xhc86dpj0vlmn94n814nzzif8y7rj3g8w0w";
-  };
+  inherit (flake) inputs;
 in
 {
   programs = {
@@ -52,7 +46,7 @@ in
         signByDefault = true;
       };
       includes = [
-        { path = "${catppuccin-repo}/catppuccin.gitconfig"; }
+        { path = "${inputs.catppuccin-delta}/catppuccin.gitconfig"; }
       ];
     };
     delta = {

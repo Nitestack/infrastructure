@@ -164,6 +164,54 @@
         "type": "github"
       }
     },
+    "catppuccin-bat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1751237777,
+        "narHash": "sha256-lJapSgRVENTrbmpVyn+UQabC9fpV1G1e+CdlJ090uvg=",
+        "owner": "catppuccin",
+        "repo": "bat",
+        "rev": "6810349b28055dce54076712fc05fc68da4b8ec0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "bat",
+        "type": "github"
+      }
+    },
+    "catppuccin-delta": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780528848,
+        "narHash": "sha256-lztkxX9O41YossvRzpR7tqxMhDNT1Efy2JvkCwtsiXQ=",
+        "owner": "catppuccin",
+        "repo": "delta",
+        "rev": "011516f5d14f66b771b3e716f29c77231e008c74",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "delta",
+        "type": "github"
+      }
+    },
+    "catppuccin-nushell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1766570395,
+        "narHash": "sha256-124T2pCmwirl8eLAy3h1fDOQZJf//3KJ7GwIP+u6YQ4=",
+        "owner": "catppuccin",
+        "repo": "nushell",
+        "rev": "815dfc6ea61f2746ff27b54ef425cfeb7b51dda8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "nushell",
+        "type": "github"
+      }
+    },
     "caveman": {
       "flake": false,
       "locked": {
@@ -1115,6 +1163,9 @@
         "aix": "aix",
         "apple-fonts": "apple-fonts",
         "arion": "arion",
+        "catppuccin-bat": "catppuccin-bat",
+        "catppuccin-delta": "catppuccin-delta",
+        "catppuccin-nushell": "catppuccin-nushell",
         "caveman": "caveman",
         "codex-desktop-linux": "codex-desktop-linux",
         "dms": "dms",
@@ -1133,6 +1184,7 @@
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",
+        "superpowers": "superpowers",
         "tmux-sessionx": "tmux-sessionx",
         "zen-browser": "zen-browser"
       }
@@ -1275,6 +1327,22 @@
       "original": {
         "owner": "zjeffer",
         "repo": "split-monitor-workspaces",
+        "type": "github"
+      }
+    },
+    "superpowers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783029415,
+        "narHash": "sha256-kHdQ9e44doBk2yYW88tMSCqVG8ycYcvJSZlrIziXhpA=",
+        "owner": "obra",
+        "repo": "superpowers",
+        "rev": "d884ae04edebef577e82ff7c4e143debd0bbec99",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obra",
+        "repo": "superpowers",
         "type": "github"
       }
     },
