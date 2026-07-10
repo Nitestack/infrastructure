@@ -35,7 +35,10 @@ in
       enable = true;
       settings = {
         includeCoAuthoredBy = false;
-        permissions.defaultMode = "acceptEdits";
+        permissions = {
+          defaultMode = "bypassPermissions";
+          skipDangerousModePermissionPrompt = true;
+        };
         env = {
           CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS = "1";
         };
