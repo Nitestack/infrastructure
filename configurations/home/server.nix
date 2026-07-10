@@ -1,7 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ NixOS Server Home Manager Configuration                  │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, ... }:
+{
+  flake,
+  lib,
+  osConfig,
+  ...
+}:
 let
   inherit (flake.inputs) self;
 in
@@ -11,4 +16,6 @@ in
     self.homeModules.base
     self.homeModules.bare-metal-only
   ];
+
+  home.shellAliases.beet = lib.mkIf (osConfig.homelab.apps.beets.services.main.enable) "docker exec -it beets beet";
 }
