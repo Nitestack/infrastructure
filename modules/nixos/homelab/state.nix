@@ -9,6 +9,7 @@ let
     concatMap
     filter
     hasPrefix
+    mapAttrsToList
     mkIf
     unique
     ;
@@ -59,6 +60,10 @@ let
     appName: "d ${cfg.dataDir}/${appName} 0755 root root -"
   ) appsWithRelativeVolumes;
 
+  libraryRules = mapAttrsToList (
+    _: library: "d ${library.path} ${library.mode} ${library.owner} ${library.group} -"
+  ) cfg.libraries;
+
 in
 {
   config = mkIf cfg.enable {
@@ -71,6 +76,7 @@ in
       ]
       ++ appBaseDirRules
       ++ volumeRules
+      ++ libraryRules
     );
   };
 }

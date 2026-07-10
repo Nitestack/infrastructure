@@ -69,7 +69,11 @@ in
     enable = true;
     domain = "npham.de";
     lanAddress = "192.168.178.20";
-    libraries.music.path = "/mnt/data/music";
+    libraries.music = {
+      path = "/var/lib/homelab/music";
+      owner = meta.username;
+      group = "users";
+    };
     smtp = {
       host = "smtp.protonmail.ch";
       port = 587;

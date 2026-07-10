@@ -9,7 +9,21 @@ let
   port = types.ints.between 1 65535;
 
   libraryType = types.submodule {
-    options.path = mkOption { type = types.str; };
+    options = {
+      path = mkOption { type = types.str; };
+      owner = mkOption {
+        type = types.str;
+        default = "root";
+      };
+      group = mkOption {
+        type = types.str;
+        default = "root";
+      };
+      mode = mkOption {
+        type = types.str;
+        default = "0755";
+      };
+    };
   };
 
   volumeType = types.submodule {

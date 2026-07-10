@@ -14,6 +14,8 @@ in
     replacements = {
       "@LASTFM_KEY@" = config.sops.placeholder."beets/lastfm-key";
     };
+    owner = username;
+    group = "users";
   };
 
   homelab.apps.beets.services.main = {

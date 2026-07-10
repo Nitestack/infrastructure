@@ -25,6 +25,16 @@ let
         type = types.str;
         default = "0400";
       };
+
+      owner = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
+
+      group = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+      };
     };
   };
 in
@@ -38,6 +48,6 @@ in
     content =
       lib.replaceStrings (builtins.attrNames file.replacements) (builtins.attrValues file.replacements)
         (builtins.readFile file.source);
-    inherit (file) mode;
+    inherit (file) mode owner group;
   }) config.homestation.renderedFiles;
 }

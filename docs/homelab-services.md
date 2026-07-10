@@ -149,6 +149,12 @@ Keep passwords out of `environment`; pass them via `environmentFiles` instead.
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `path` | string | none | Absolute host path exposed as a reusable named library mount |
+| `owner` | string | `"root"` | Owner applied to the library path via `systemd.tmpfiles` |
+| `group` | string | `"root"` | Group applied to the library path via `systemd.tmpfiles` |
+| `mode` | string | `"0755"` | Permissions applied to the library path via `systemd.tmpfiles` |
+
+`owner`/`group`/`mode` are enforced on the library path itself on every
+activation, not recursively on existing contents underneath it.
 
 ---
 
