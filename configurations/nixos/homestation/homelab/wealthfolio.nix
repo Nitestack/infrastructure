@@ -5,6 +5,7 @@
 let
   cfg = config.homelab;
   username = config.meta.username;
+  inherit (cfg.lib) appUrl;
 in
 {
   homelab.apps.wealthfolio = {
@@ -21,7 +22,7 @@ in
       environment = {
         WF_LISTEN_ADDR = "0.0.0.0:8088";
         WF_DB_PATH = "/data/wealthfolio.db";
-        WF_CORS_ALLOW_ORIGINS = "https://wealth.${cfg.domain}";
+        WF_CORS_ALLOW_ORIGINS = appUrl cfg.apps.wealthfolio;
         WF_AUTH_TOKEN_TTL_MINUTES = "60";
         WF_REQUEST_TIMEOUT_MS = "30000";
       };

@@ -4,6 +4,7 @@
 }:
 let
   cfg = config.homelab;
+  inherit (cfg.lib) appUrl;
   smtpTls =
     if cfg.smtp.security == "force_tls" then
       "tls"
@@ -26,7 +27,7 @@ in
 
       environment = {
         ANALYTICS_DISABLED = "true";
-        APP_URL = "https://id.${cfg.domain}";
+        APP_URL = appUrl cfg.apps.pocket-id;
         TRUST_PROXY = "true";
         UI_CONFIG_DISABLED = "true";
         EMAILS_VERIFIED = "true";

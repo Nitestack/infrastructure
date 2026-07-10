@@ -5,6 +5,7 @@
 let
   cfg = config.homelab;
   smtp = cfg.smtp;
+  inherit (cfg.lib) appUrl;
 in
 {
   homelab.apps.vaultwarden = {
@@ -19,7 +20,7 @@ in
       port = 80;
 
       environment = {
-        DOMAIN = "https://vault.${cfg.domain}";
+        DOMAIN = appUrl cfg.apps.vaultwarden;
         SIGNUPS_ALLOWED = "false";
         SMTP_HOST = smtp.host;
         SMTP_PORT = toString smtp.port;

@@ -4,6 +4,7 @@
 }:
 let
   cfg = config.homelab;
+  inherit (cfg.lib) appUrl;
 in
 {
   homelab.apps.beszel = {
@@ -19,7 +20,7 @@ in
       port = 8090;
 
       environment = {
-        APP_URL = "https://status.${cfg.domain}";
+        APP_URL = appUrl cfg.apps.beszel;
         DISABLE_PASSWORD_AUTH = "true";
       };
 
@@ -57,7 +58,7 @@ in
 
       environment = {
         LISTEN = "/beszel_socket/beszel.sock";
-        HUB_URL = "https://status.${cfg.domain}";
+        HUB_URL = appUrl cfg.apps.beszel;
         SENSORS = "-acpitz,nvme_sensor_*";
       };
 

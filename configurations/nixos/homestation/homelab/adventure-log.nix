@@ -4,6 +4,7 @@
 }:
 let
   cfg = config.homelab;
+  inherit (cfg.lib) appUrl;
 in
 {
   homelab.apps."adventure-log" = {
@@ -24,7 +25,7 @@ in
         # Upstream explicitly sets port 8000 (gunicorn direct) for SSR server-to-server calls,
         # bypassing nginx. Per .env.example: "PLEASE DON'T CHANGE :)"
         PUBLIC_SERVER_URL = "http://server:8000";
-        ORIGIN = "https://travel.${cfg.domain}";
+        ORIGIN = appUrl cfg.apps.adventure-log;
         BODY_SIZE_LIMIT = "Infinity";
       };
     };
@@ -63,10 +64,10 @@ in
         POSTGRES_USER = "adventure";
         DJANGO_ADMIN_USERNAME = "admin";
         DJANGO_ADMIN_EMAIL = cfg.smtp.from;
-        PUBLIC_URL = "https://travel.${cfg.domain}";
-        CSRF_TRUSTED_ORIGINS = "https://travel.${cfg.domain}";
+        PUBLIC_URL = appUrl cfg.apps.adventure-log;
+        CSRF_TRUSTED_ORIGINS = appUrl cfg.apps.adventure-log;
         DEBUG = "False";
-        FRONTEND_URL = "https://travel.${cfg.domain}";
+        FRONTEND_URL = appUrl cfg.apps.adventure-log;
         DISABLE_REGISTRATION = "True";
         SOCIALACCOUNT_ALLOW_SIGNUP = "True";
         EMAIL_BACKEND = "email";

@@ -4,6 +4,7 @@
 }:
 let
   cfg = config.homelab;
+  inherit (cfg.lib) appUrl;
 in
 {
   homelab.apps.yamtrack = {
@@ -22,7 +23,7 @@ in
       helpers.timezone = true;
 
       environment = {
-        URLS = "https://track.${cfg.domain}";
+        URLS = appUrl cfg.apps.yamtrack;
         REGISTRATION = "False";
         TMDB_NSFW = "True";
         SOCIAL_PROVIDERS = "allauth.socialaccount.providers.openid_connect";

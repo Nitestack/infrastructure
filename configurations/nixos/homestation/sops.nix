@@ -1,7 +1,14 @@
-{ config, flake, ... }:
+{
+  config,
+  flake,
+  ...
+}:
 let
   inherit (flake) inputs;
   inherit (inputs) self;
+
+  cfg = config.homelab;
+  inherit (cfg.lib) appUrl;
 
   infraSecretsFile = self + /secrets/hosts/homestation/infra.yaml;
   adventureLogSecretsFile = self + /secrets/hosts/homestation/adventure-log.yaml;
@@ -277,7 +284,7 @@ in
           config.sops.placeholder."yamtrack/oidc-client-id"
         }","secret":"${
           config.sops.placeholder."yamtrack/oidc-client-secret"
-        }","settings":{"server_url":"https://id.${config.homelab.domain}/.well-known/openid-configuration"}}]}}
+        }","settings":{"server_url":"${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration"}}]}}
       '';
       mode = "0400";
     };
