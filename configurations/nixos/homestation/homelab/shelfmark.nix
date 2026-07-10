@@ -5,7 +5,7 @@
 let
   cfg = config.homelab;
   username = config.meta.username;
-  inherit (cfg.lib) serviceUrl;
+  inherit (cfg.lib) serviceUrl appUrl;
   calibreWebAutomated = cfg.apps.calibre-web-automated;
 in
 {
@@ -27,7 +27,7 @@ in
       environment = {
         DOCKERMODE = "true";
         ONBOARDING = "false";
-        CALIBRE_WEB_URL = serviceUrl "calibre-web-automated" "web";
+        CALIBRE_WEB_URL = appUrl cfg.apps.calibre-web-automated;
         BOOK_LANGUAGE = "en,de";
         SEARCH_MODE = "universal";
         METADATA_PROVIDER = "hardcover";
