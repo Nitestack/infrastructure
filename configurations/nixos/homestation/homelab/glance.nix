@@ -19,7 +19,7 @@ in
 
     services.web = {
       enable = true;
-      image = "glanceapp/glance:latest@sha256:32ab73d80f2b8b5fb0735b0431deb36b93fbb6b2fb43592449b0178c8b83e350";
+      image = "glanceapp/glance:v0.8.5@sha256:32ab73d80f2b8b5fb0735b0431deb36b93fbb6b2fb43592449b0178c8b83e350";
       port = 8080;
 
       environment = {
@@ -30,10 +30,12 @@ in
         ENTE_AUTH_URL = appUrl cfg.apps.ente;
         FRESHRSS_URL = appUrl cfg.apps.freshrss;
         GLANCE_URL = appUrl cfg.apps.glance;
-        IMMICH_URL = appUrl cfg.apps.immich;
+        # IMMICH_URL = appUrl cfg.apps.immich;
+        IMMICH_URL = "https://media.npham.de";
         IT_TOOLS_URL = appUrl cfg.apps.it-tools;
         NAVIDROME_URL = appUrl cfg.apps.navidrome;
-        NEXTCLOUD_URL = appUrl cfg.apps.nextcloud;
+        # NEXTCLOUD_URL = appUrl cfg.apps.nextcloud;
+        NEXTCLOUD_URL = "https://cloud.npham.de";
         POCKET_ID_URL = appUrl cfg.apps.pocket-id;
         PROWLARR_URL = appUrl cfg.apps.prowlarr;
         RDTCLIENT_URL = appUrl cfg.apps.rdtclient;

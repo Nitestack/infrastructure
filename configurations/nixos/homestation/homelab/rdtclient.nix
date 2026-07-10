@@ -10,7 +10,7 @@
 
     services.web = {
       enable = true;
-      image = "rogerfar/rdtclient:2.0.136@sha256:a05f0427946a4c3c64dc9d556c017f9a181acec320ecf218b6334a1066c11d1f";
+      image = "rogerfar/rdtclient:2.0.140@sha256:3f5f37783da704d50bcc6773ffa22eaed86fd4bfbd225a7929e181c6774ead29";
       port = 6500;
 
       helpers.userIds = true;
