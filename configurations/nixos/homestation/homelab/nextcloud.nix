@@ -4,7 +4,6 @@
 }:
 let
   cfg = config.homelab;
-  nextcloudHost = "cloud.${cfg.domain}";
   nextcloudAioHost = "nextcloud-aio.${cfg.domain}";
   nextcloudDataDir = "${cfg.dataDir}/nextcloud/data";
 in

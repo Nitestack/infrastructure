@@ -25,7 +25,7 @@ in
   homelab.caddy.extraHosts = ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
-      reverse_proxy ente-museum:8080
+      reverse_proxy ${cfg.lib.serviceUrl "ente" "museum"}
     }
   '';
 
