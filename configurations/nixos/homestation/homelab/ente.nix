@@ -49,7 +49,7 @@ in
 
     services.museum = {
       enable = true;
-      image = "ghcr.io/ente/server:latest@sha256:4dd5747b3322e81edfe2b482443b444068f2033ab488bf4566bbe00fa3c685e7";
+      image = "ghcr.io/ente/server:171e334ee4bd9c0ac3d9515fe072f65ce9ca5013@sha256:5018ec3558acec229cc621799d61b91841f5f27f70c1d066dc7c5983c531cf90";
       containerName = "ente-museum";
       port = 8080;
       networks = [ cfg.ingressNetwork ];
@@ -89,7 +89,7 @@ in
 
     services.postgres = {
       enable = true;
-      image = "postgres:15@sha256:3b0d656f5fff31c7d8a64f500a703dcf3f35e98ce78f602831a73059a5e6a012";
+      image = "postgres:15@sha256:bcab099bfaab33333a73a2ebe8c1d615c9f4c2402dd43452f989a36c6da9a5ba";
       containerName = "ente-postgres";
 
       environment = {
