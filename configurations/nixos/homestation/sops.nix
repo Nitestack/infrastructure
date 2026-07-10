@@ -169,6 +169,26 @@ in
       key = "prowlarr/api-key";
       mode = "0400";
     };
+    secrets."shelfmark/oidc-client-id" = {
+      sopsFile = shelfmarkSecretsFile;
+      key = "oidc-client-id";
+      mode = "0400";
+    };
+    secrets."shelfmark/oidc-client-secret" = {
+      sopsFile = shelfmarkSecretsFile;
+      key = "oidc-client-secret";
+      mode = "0400";
+    };
+    secrets."shelfmark/rdtclient-username" = {
+      sopsFile = shelfmarkSecretsFile;
+      key = "rdtclient/username";
+      mode = "0400";
+    };
+    secrets."shelfmark/rdtclient-password" = {
+      sopsFile = shelfmarkSecretsFile;
+      key = "rdtclient/password";
+      mode = "0400";
+    };
     secrets."wealthfolio/secret-key" = {
       sopsFile = wealthfolioSecretsFile;
       key = "secret-key";
@@ -267,6 +287,10 @@ in
         EMAIL_SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
         PROWLARR_API_KEY=${config.sops.placeholder."shelfmark/prowlarr-api-key"}
         HARDCOVER_API_KEY=${config.sops.placeholder."hardcover/api-key"}
+        OIDC_CLIENT_ID=${config.sops.placeholder."shelfmark/oidc-client-id"}
+        OIDC_CLIENT_SECRET=${config.sops.placeholder."shelfmark/oidc-client-secret"}
+        QBITTORRENT_USERNAME=${config.sops.placeholder."shelfmark/rdtclient-username"}
+        QBITTORRENT_PASSWORD=${config.sops.placeholder."shelfmark/rdtclient-password"}
       '';
       mode = "0400";
     };
