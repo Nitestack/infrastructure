@@ -45,6 +45,21 @@
     aix.url = "github:Nitestack/aix";
     # Apple Fonts
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
+    # Catppuccin Bat Theme
+    catppuccin-bat = {
+      url = "github:catppuccin/bat";
+      flake = false;
+    };
+    # Catppuccin Delta Theme
+    catppuccin-delta = {
+      url = "github:catppuccin/delta";
+      flake = false;
+    };
+    # Catppuccin Nushell Theme
+    catppuccin-nushell = {
+      url = "github:catppuccin/nushell";
+      flake = false;
+    };
     # caveman
     caveman = {
       url = "github:JuliusBrussee/caveman";
@@ -74,6 +89,11 @@
     # split-monitor-workspaces
     split-monitor-workspaces = {
       url = "github:zjeffer/split-monitor-workspaces";
+      flake = false;
+    };
+    # Superpowers Claude Plugin
+    superpowers = {
+      url = "github:obra/superpowers";
       flake = false;
     };
     # Tmux SessionX
