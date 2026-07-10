@@ -53,7 +53,7 @@ in
 
     services.agent = {
       enable = true;
-      image = "henrygd/beszel-agent:0.18.7-alpine@sha256:c6e925e00784b90eab68e2b813e4c722cf185f378d77e1129a97c064ca5fa7e4";
+      image = "henrygd/beszel-agent-intel:0.18.7@sha256:fa7dacb674eb2432d7e3cae43a512d639a4e7aa51cf2db9e140fba8a43bff5a2";
 
       environment = {
         LISTEN = "/beszel_socket/beszel.sock";
@@ -100,8 +100,10 @@ in
       privileges.devices = [
         "/dev/nvme0:/dev/nvme0"
         "/dev/sda:/dev/sda"
+        "/dev/dri/card0:/dev/dri/card0"
       ];
       privileges.capabilities.add = [
+        "CAP_PERFMON"
         "SYS_RAWIO"
         "SYS_ADMIN"
       ];
