@@ -31,6 +31,12 @@ in
     readOnly = true;
   };
 
+  options.homelab.lib = lib.mkOption {
+    type = lib.types.attrs;
+    readOnly = true;
+    description = "Homelab helper functions (appUrl, serviceUrl, effectiveHost, ...) for use in service definitions — avoids re-importing lib.nix by hand.";
+  };
+
   config.homelab._internal = {
     inherit enabledApps enabledServicesForApp;
     effectiveHost = appName: homelabLib.effectiveHost enabledApps.${appName};
@@ -38,4 +44,6 @@ in
     serviceContainerName = homelabLib.serviceContainerName;
     appProjectName = homelabLib.appProjectName;
   };
+
+  config.homelab.lib = homelabLib;
 }

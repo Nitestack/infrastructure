@@ -1,9 +1,6 @@
 { cfg, lib }:
 let
   normalizeName = name: lib.replaceStrings [ "_" ] [ "-" ] name;
-in
-{
-  appProjectName = appName: normalizeName appName;
 
   serviceContainerName =
     appName: services: serviceName:
@@ -27,4 +24,26 @@ in
       app.expose.host
     else
       "${app.expose.host}.${cfg.domain}";
+in
+{
+  appProjectName = appName: normalizeName appName;
+
+  inherit serviceContainerName;
+
+  # Internal Docker-network URL for direct service-to-service calls, bypassing
+  # the public host/reverse proxy. Mirrors the upstream Caddy builds internally
+  # (see mkReverseProxy in caddy.nix).
+  serviceUrl =
+    appName: serviceName:
+    let
+      services = cfg.apps.${appName}.services;
+    in
+    "http://${serviceContainerName appName services serviceName}:${
+      toString services.${serviceName}.port
+    }";
+
+  inherit effectiveHost;
+
+  # Public URL for a homelab app, derived from its own expose.host config.
+  appUrl = app: "https://${effectiveHost app}";
 }
