@@ -8,14 +8,15 @@
   ...
 }:
 let
-  inherit (flake.inputs) self;
+  inherit (flake) inputs;
+  inherit (inputs) self;
   inherit (config) meta;
 in
 {
   imports = [
     ./hardware-configuration.nix
 
-    flake.inputs.arion.nixosModules.arion
+    inputs.arion.nixosModules.arion
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.homelab
