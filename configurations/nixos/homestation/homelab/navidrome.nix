@@ -39,6 +39,8 @@ in
           type = "bind";
           source = "data";
           target = "/data";
+          owner = username;
+          group = "users";
         }
         {
           type = "library";
