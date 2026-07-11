@@ -240,6 +240,11 @@ let
           default = null;
           description = "Which service receives incoming traffic for this app. When null and the app has exactly one enabled service, that service is used automatically.";
         };
+        targetUpstream = mkOption {
+          type = types.nullOr types.nonEmptyStr;
+          default = null;
+          description = "Raw \"host:port\" Caddy reverse-proxies to verbatim, bypassing targetService and its port. Escape hatch for reaching containers this app doesn't itself declare as a service (e.g. sidecars spawned dynamically by another container). Takes precedence over targetService when set.";
+        };
         protocol = mkOption {
           type = types.enum [
             "http"

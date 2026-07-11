@@ -53,15 +53,18 @@ let
     appName:
     let
       app = internal.enabledApps.${appName};
-      enabledServices = internal.enabledServicesForApp appName;
-      upstreamService = internal.effectiveExposeService appName;
-      service = enabledServices.${upstreamService};
-      upstreamHost = internal.serviceContainerName appName enabledServices upstreamService;
-      upstream =
-        if app.expose.protocol == "https" then
-          "https://${upstreamHost}:${toString service.port}"
+      target =
+        if app.expose.targetUpstream != null then
+          app.expose.targetUpstream
         else
+          let
+            enabledServices = internal.enabledServicesForApp appName;
+            upstreamService = internal.effectiveExposeService appName;
+            service = enabledServices.${upstreamService};
+            upstreamHost = internal.serviceContainerName appName enabledServices upstreamService;
+          in
           "${upstreamHost}:${toString service.port}";
+      upstream = if app.expose.protocol == "https" then "https://${target}" else target;
     in
     "reverse_proxy ${upstream}";
 

@@ -27,7 +27,11 @@ in
     expose = {
       mode = "public";
       host = "cloud";
-      targetService = "master";
+      # The actual Nextcloud web server is nextcloud-aio-apache, spawned
+      # dynamically by the mastercontainer via the Docker socket rather than
+      # declared as a `services.*` entry here, so targetService can't address
+      # it — nothing ever listens on the mastercontainer's own APACHE_PORT.
+      targetUpstream = "nextcloud-aio-apache:11000";
       caddyDirectives = ''
         header Strict-Transport-Security max-age=31536000;
       '';
