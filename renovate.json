@@ -21,11 +21,11 @@
       "description": "Track digest-pinned OCI images referenced in Nix homelab modules",
       "managerFilePatterns": ["**/*.nix"],
       "matchStrings": [
-        "image\\s*=\\s*(?:lib\\.mkDefault\\s*)?\"(?<depName>[\\w.\\-/]+):(?<currentValue>[\\w.\\-]+)@sha256:(?<currentDigest>[a-f0-9]{64})\""
+        "image\\s*=\\s*(?<mkDefault>(?:lib\\.mkDefault\\s*)?)\"(?<depName>[\\w.\\-/]+):(?<currentValue>[\\w.\\-]+)@sha256:(?<currentDigest>[a-f0-9]{64})\""
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker",
-      "autoReplaceStringTemplate": "{{{depName}}}:{{{newValue}}}@{{{newDigest}}}"
+      "autoReplaceStringTemplate": "image = {{{mkDefault}}}\"{{{depName}}}:{{{newValue}}}@{{{newDigest}}}\""
     }
   ],
   "packageRules": [
