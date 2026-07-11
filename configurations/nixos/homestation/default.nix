@@ -119,6 +119,7 @@ in
   # Packages
   environment.systemPackages = with pkgs; [
     ghostty.terminfo
+    intel-gpu-tools
   ];
 
   # Allowed SSH clients
