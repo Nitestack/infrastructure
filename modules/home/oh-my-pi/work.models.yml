@@ -1,0 +1,8 @@
+providers:
+  work-litellm:
+    baseUrl: "@LITELLM_BASE_URL@"
+    apiKey: LITELLM_API_KEY
+    authHeader: true
+    api: openai-completions
+    discovery:
+      type: litellm

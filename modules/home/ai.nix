@@ -10,7 +10,7 @@ in
   imports = [
     inputs.agent-skills.homeManagerModules.default
 
-    self.homeModules.pi-coding-agent
+    self.homeModules.oh-my-pi
   ];
   programs = {
     agent-skills = {

@@ -47,5 +47,20 @@ in
           key = "aix/base_url";
         };
       };
+
+    templates = {
+      "oh-my-pi-work-models-yml" = {
+        content =
+          lib.replaceStrings [ "@LITELLM_BASE_URL@" ] [ "${config.sops.placeholder."aix/base-url"}/v1" ]
+            (builtins.readFile (self + /modules/home/oh-my-pi/work.models.yml));
+        owner = config.meta.username;
+        mode = "0400";
+      };
+      "oh-my-pi-work-litellm-base-url" = {
+        content = "${config.sops.placeholder."aix/base-url"}/v1";
+        owner = config.meta.username;
+        mode = "0400";
+      };
+    };
   };
 }
