@@ -30,6 +30,10 @@
 
       environmentFiles = [ config.sops.templates."immich.env".path ];
 
+      # Intel UHD 630 acceleration for Quick Sync video transcoding.
+      privileges.devices = [ "/dev/dri:/dev/dri" ];
+      extraServiceConfig.group_add = [ (toString config.ids.gids.render) ];
+
       volumes = [
         {
           type = "bind";
@@ -47,8 +51,12 @@
 
     services."machine-learning" = {
       enable = true;
-      image = "ghcr.io/immich-app/immich-machine-learning:v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3";
+      image = "ghcr.io/immich-app/immich-machine-learning:v2.7.5-openvino@sha256:71cd5a681823c4b818f4b24b3f05816eccc3d085559e7615f695bde77e64f1f2";
       containerName = "immich_machine_learning";
+
+      # Intel UHD 630 acceleration for Smart Search / Facial Recognition.
+      privileges.devices = [ "/dev/dri:/dev/dri" ];
+      extraServiceConfig.group_add = [ (toString config.ids.gids.render) ];
 
       volumes = [
         {

@@ -47,6 +47,14 @@ in
   # ── Networking ────────────────────────────────────────────────────────
   networking.hostName = "homestation";
 
+  # ── Graphics ──────────────────────────────────────────────────────────
+  # Intel UHD 630 (i5-9500T): VAAPI for QSV transcoding + OpenVINO for
+  # Immich's machine-learning acceleration.
+  hardware.graphics = {
+    enable = true;
+    extraPackages = [ pkgs.intel-media-driver ];
+  };
+
   # ── Home Manager ──────────────────────────────────────────────────────
   home-manager.users.${meta.username} = {
     imports = [ (self + /configurations/home/server.nix) ];
