@@ -14,12 +14,23 @@ concurrency:
 jobs:
   nix:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            nix:
+              - "**/*.nix"
+              - "flake.lock"
       - uses: DeterminateSystems/determinate-nix-action@c70cb8ae92d68c66953db28a26a63db1665bc837 # v3
       - name: Check formatting
         run: nix fmt -- --check
       - name: Check flake evaluation
+        if: steps.changes.outputs.nix == 'true'
         run: |
           nix eval .#nixosConfigurations.nixstation.config.system.build.toplevel.drvPath --no-write-lock-file
           nix eval .#nixosConfigurations.wslstation.config.system.build.toplevel.drvPath --no-write-lock-file
