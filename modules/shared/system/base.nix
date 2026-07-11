@@ -15,7 +15,7 @@ let
 
   nix-flake-update = pkgs.writeShellApplication {
     name = "nix-flake-update";
-    text = ''nix flake update --commit-lock-file --flake ~/nix-config "$@"'';
+    text = ''nix flake update --commit-lock-file --flake ~/infrastructure "$@"'';
   };
 in
 {

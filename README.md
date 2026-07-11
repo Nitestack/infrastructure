@@ -1,29 +1,37 @@
 <div align="center">
 <h1>
-  📂 Cross-Platform Nix Configuration
+  📂 Personal Infrastructure as Code
 </h1>
 <h2>
-  For NixOS (including WSL) and macOS (with nix-darwin)
+  Nix system configs, a self-hosted homelab, and DNS/edge managed declaratively
   <br/>
   <sup>
-    <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a> and <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a></sub>
+    <sub>Powered by <a href="https://nixos.org" target="_blank">Nix</a>, <a href="https://nix-community.github.io/home-manager" target="_blank">Home Manager</a>, and <a href="https://opentofu.org" target="_blank">OpenTofu</a></sub>
   </sup>
 </h2>
 
-![Latest commit](https://img.shields.io/github/last-commit/Nitestack/nix-config?style=for-the-badge)
-![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/nix-config?style=for-the-badge)
-![Github Created At](https://img.shields.io/github/created-at/Nitestack/nix-config?style=for-the-badge)
+![Latest commit](https://img.shields.io/github/last-commit/Nitestack/infrastructure?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/Nitestack/infrastructure?style=for-the-badge)
+![Github Created At](https://img.shields.io/github/created-at/Nitestack/infrastructure?style=for-the-badge)
 
-[Requirements](#️-requirements) • [Getting Started](#-getting-started) • [License](#-license)
+[What's in here](#-whats-in-here) • [Requirements](#️-requirements) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [License](#-license)
 
 ![NixOS](https://github.com/user-attachments/assets/e3e520d4-79e7-48d9-b744-5f0f5cec378a)
 
-_A comprehensive, cross-platform [Nix](https://nixos.org) configuration repository managing system settings and user environments across multiple operating systems. This repository provides reproducible, declarative configurations for [NixOS](https://nixos.org) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)) and [macOS](https://apple.com/macos)._
+_This repository is my personal infrastructure, managed as code: reproducible [Nix](https://nixos.org)/[Home Manager](https://nix-community.github.io/home-manager) system configurations for [NixOS](https://nixos.org) (including [NixOS via WSL](https://nix-community.github.io/NixOS-WSL)) and [macOS](https://apple.com/macos), a self-hosted homelab of containerized services, and the [OpenTofu](https://opentofu.org)/Cloudflare edge that fronts them — all declarative, all version-controlled._
 
 <p>
   <strong>Be sure to <a href="#" title="star">⭐️</a> or fork this repo if you find it useful!</strong>
 </p>
 </div>
+
+## 📦 What's in here
+
+- **System & user configs** — `configurations/` and `modules/` define NixOS, nix-darwin, and Home Manager setups for every host (desktop, laptop, server, WSL), wired together via [nixos-unified](https://github.com/srid/nixos-unified).
+- **Homelab services** — `modules/nixos/homelab/` is a small module API for declaring self-hosted apps, their containers, and how traffic reaches them (Caddy, DNS, Cloudflare Tunnel). See [`docs/homelab-services.md`](docs/homelab-services.md).
+- **Edge/DNS as code** — `opentofu/cloudflare/` manages Cloudflare-side DNS and zone settings with OpenTofu. See [`opentofu/cloudflare/README.md`](opentofu/cloudflare/README.md).
+- **Secrets** — encrypted with [sops-nix](https://github.com/Mic92/sops-nix) (`secrets/`), scoped per host via `.sops.yaml`.
+- **Automation** — GitHub Actions CI (`.github/workflows/`) and Renovate keep the flake and container images up to date; see [`docs/renovate-setup.md`](docs/renovate-setup.md).
 
 ## ⚙️ Requirements
 
@@ -76,7 +84,7 @@ curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 Clone the repository:
 
 ```nu
-git clone https://git.npham.de/Nitestack/nix-config.git
+git clone https://github.com/Nitestack/infrastructure.git
 ```
 
 ### NixOS
@@ -84,7 +92,7 @@ git clone https://git.npham.de/Nitestack/nix-config.git
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nixos-rebuild boot --flake ~/nix-config#nixstation
+sudo nixos-rebuild boot --flake ~/infrastructure#nixstation
 ```
 
 Please reboot the system.
@@ -94,7 +102,7 @@ Please reboot the system.
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nixos-rebuild boot --flake ~/nix-config#homestation
+sudo nixos-rebuild boot --flake ~/infrastructure#homestation
 ```
 
 Please reboot the system.
@@ -104,7 +112,7 @@ Please reboot the system.
 Before continuing with the installation, initialize the Nix system:
 
 ```sh
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/nix-config#macstation
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/infrastructure#macstation
 ```
 
 Please reboot the system.
@@ -114,7 +122,7 @@ Please reboot the system.
 Initialize the Nix system inside of NixOS-WSL:
 
 ```sh
-sudo nixos-rebuild boot --flake ~/nix-config#wslstation
+sudo nixos-rebuild boot --flake ~/infrastructure#wslstation
 ```
 
 Execute the following commands on Windows to correctly apply the custom username:
@@ -126,6 +134,13 @@ wsl -t NixOS
 ```
 
 Restart WSL.
+
+## 📚 Documentation
+
+- [`docs/homelab-services.md`](docs/homelab-services.md) — the `homelab` NixOS module: options, recipes, validation
+- [`docs/adguard-home-client-caveats.md`](docs/adguard-home-client-caveats.md) — AdGuard Home client-config gotchas
+- [`docs/renovate-setup.md`](docs/renovate-setup.md) — one-time Renovate GitHub App setup
+- [`opentofu/cloudflare/README.md`](opentofu/cloudflare/README.md) — managing Cloudflare DNS/edge state
 
 ## 📝 License
 

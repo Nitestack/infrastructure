@@ -34,7 +34,7 @@
     in
     {
       formatter = pkgs.writeShellApplication {
-        name = "nix-config-fmt";
+        name = "infrastructure-fmt";
         runtimeInputs = [
           pkgs.findutils
           pkgs.nixfmt
@@ -43,7 +43,7 @@
       };
 
       packages.check = pkgs.writeShellApplication {
-        name = "nix-config-check";
+        name = "infrastructure-check";
         runtimeInputs = [
           pkgs.git-lfs
           pkgs.nix
@@ -68,7 +68,7 @@
 
       apps.check = {
         type = "app";
-        program = "${config.packages.check}/bin/nix-config-check";
+        program = "${config.packages.check}/bin/infrastructure-check";
         meta.description = "Run formatting and flake evaluation checks";
       };
     };

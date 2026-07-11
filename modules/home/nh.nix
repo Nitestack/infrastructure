@@ -9,7 +9,7 @@
 }:
 let
   nh = lib.getExe pkgs.nh;
-  flakeDir = "${config.home.homeDirectory}/nix-config";
+  flakeDir = "${config.home.homeDirectory}/infrastructure";
   nix-rebuild = pkgs.writeShellScriptBin "nix-rebuild" ''
     action="$1"
     shift

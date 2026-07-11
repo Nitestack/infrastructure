@@ -13,9 +13,6 @@ Cloudflare Tunnel ingress is not managed in OpenTofu. Source of truth is NixOS:
 That NixOS config generates wildcard tunnel ingress to
 `http://127.0.0.1:<caddy.tunnelPort>`, not `https://caddy:443`.
 
-See `docs/superpowers/specs/2026-07-08-opentofu-cloudflare-dns-design.md` for
-the full design and rationale.
-
 ## Setup
 
 Enter the repo's dev shell so `tofu` is on `PATH`:
