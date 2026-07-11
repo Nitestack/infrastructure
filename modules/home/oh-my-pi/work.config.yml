@@ -4,8 +4,8 @@ modelRoles:
   commit: work-litellm/qwen-3.6-35b-sovereign
   default: work-litellm/qwen3-coder-480b
   task: work-litellm/qwen3-coder-480b
-  plan: work-litellm/claude-sonnet-5
-  slow: work-litellm/claude-opus-4-8
+  plan: work-litellm/claude-sonnet-5*
+  slow: work-litellm/claude-opus-4-8*
   vision: work-litellm/gemini-2.5-flash
   advisor: work-litellm/gpt-5-mini
 
@@ -13,8 +13,8 @@ enabledModels:
   - work-litellm/qwen-3.6-35b-sovereign
   - work-litellm/deepseek-v4-flash-sovereign
   - work-litellm/qwen3-coder-480b
-  - work-litellm/claude-sonnet-5
-  - work-litellm/claude-opus-4-8
+  - work-litellm/claude-sonnet-5*
+  - work-litellm/claude-opus-4-8*
   - work-litellm/gemini-2.5-flash
   - work-litellm/gpt-5-mini
 

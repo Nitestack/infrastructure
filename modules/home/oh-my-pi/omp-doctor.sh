@@ -34,7 +34,8 @@ pending_step() {
 
 require_link() {
   path="$1"
-  if [ ! -L "$path" ] || ! realpath "$path" | grep -q '^/nix/store/'; then
+  target="$(readlink "$path" 2>/dev/null || true)"
+  if [ -z "$target" ] || ! echo "$target" | grep -q '^/nix/store/'; then
     fail "expected Nix-managed link: $path"
   fi
 }
@@ -60,7 +61,7 @@ check_profile() {
       ;;
     work)
       overlay="$OMP_WORK_CONFIG"
-      selectors='work-litellm/qwen-3.6-35b-sovereign work-litellm/deepseek-v4-flash-sovereign work-litellm/qwen3-coder-480b work-litellm/claude-sonnet-5 work-litellm/claude-opus-4-8 work-litellm/gemini-2.5-flash work-litellm/gpt-5-mini'
+      selectors='work-litellm/qwen-3.6-35b-sovereign work-litellm/deepseek-v4-flash-sovereign work-litellm/qwen3-coder-480b work-litellm/claude-sonnet-5* work-litellm/claude-opus-4-8* work-litellm/gemini-2.5-flash work-litellm/gpt-5-mini'
       ;;
   esac
 
@@ -72,7 +73,8 @@ check_profile() {
   require_link "$agent_dir/AGENTS.md"
   require_link "$agent_dir/RULES.md"
 
-  if realpath "$agent_dir" | grep -q '^/nix/store/'; then
+  resolved="$(readlink -f "$agent_dir" 2>/dev/null || echo "")"
+  if [ -n "$resolved" ] && echo "$resolved" | grep -q '^/nix/store/'; then
     fail "profile state must be writable outside /nix/store: $agent_dir"
   fi
 
@@ -144,7 +146,7 @@ fi
 
 private_dir="$HOME/.omp/profiles/private/agent"
 work_dir="$HOME/.omp/profiles/work/agent"
-if [ "$private_dir" = "$work_dir" ] || [ "$(realpath -m "$private_dir")" = "$(realpath -m "$work_dir")" ]; then
+if [ "$private_dir" = "$work_dir" ] || [ "$(readlink -f "$private_dir" 2>/dev/null)" = "$(readlink -f "$work_dir" 2>/dev/null)" ]; then
   fail "private and work state directories are not isolated"
 fi
 
