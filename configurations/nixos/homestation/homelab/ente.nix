@@ -63,12 +63,6 @@ in
           target = "/museum.yaml";
           readOnly = true;
         }
-        {
-          type = "bind";
-          source = "data";
-          target = "/data";
-          readOnly = true;
-        }
       ];
 
       healthcheck = {

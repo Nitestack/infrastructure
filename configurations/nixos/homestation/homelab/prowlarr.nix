@@ -34,16 +34,6 @@ in
       image = "flaresolverr/flaresolverr:v3.5.0@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47";
 
       helpers.timezone = true;
-
-      volumes = [
-        {
-          type = "bind";
-          source = "flaresolverr/data";
-          target = "/config";
-          owner = username;
-          group = "users";
-        }
-      ];
     };
   };
 }

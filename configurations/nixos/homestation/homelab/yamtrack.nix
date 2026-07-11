@@ -49,8 +49,8 @@ in
 
       volumes = [
         {
-          type = "bind";
-          source = "redis";
+          type = "volume";
+          volume = "redis_data";
           target = "/data";
         }
       ];
