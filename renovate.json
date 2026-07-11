@@ -24,7 +24,8 @@
         "image\\s*=\\s*(?:lib\\.mkDefault\\s*)?\"(?<depName>[\\w.\\-/]+):(?<currentValue>[\\w.\\-]+)@sha256:(?<currentDigest>[a-f0-9]{64})\""
       ],
       "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
+      "versioningTemplate": "docker",
+      "autoReplaceStringTemplate": "{{{depName}}}:{{{newValue}}}@{{{newDigest}}}"
     }
   ],
   "packageRules": [
