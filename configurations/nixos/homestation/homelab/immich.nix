@@ -2,9 +2,6 @@
   config,
   ...
 }:
-let
-  cfg = config.homelab;
-in
 {
   homelab.apps.immich = {
     expose = {
@@ -36,7 +33,7 @@ in
       volumes = [
         {
           type = "bind";
-          source = "upload";
+          source = "library";
           target = "/data";
         }
         {
@@ -52,8 +49,6 @@ in
       enable = true;
       image = "ghcr.io/immich-app/immich-machine-learning:v2.7.5@sha256:a2501141440f10516d329fdfba2c68082e19eb9ba6016c061ac80d23beadf7f3";
       containerName = "immich_machine_learning";
-
-      helpers.timezone = true;
 
       volumes = [
         {
@@ -93,7 +88,7 @@ in
       volumes = [
         {
           type = "bind";
-          source = "db";
+          source = "postgres";
           target = "/var/lib/postgresql/data";
         }
       ];
