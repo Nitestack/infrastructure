@@ -10,7 +10,7 @@ let
 in
 {
   homestation.renderedFiles.${renderedConfigName} = {
-    source = ./beets/config.yaml;
+    source = ./config.yaml;
     replacements = {
       "@LASTFM_KEY@" = config.sops.placeholder."beets/lastfm-key";
     };
@@ -48,7 +48,7 @@ in
       }
       {
         type = "bind";
-        source = "${./beets/classical.yaml}";
+        source = "${./classical.yaml}";
         target = "/config/classical.yaml";
         readOnly = true;
       }

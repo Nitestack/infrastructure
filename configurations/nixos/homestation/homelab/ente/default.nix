@@ -10,7 +10,7 @@ let
 in
 {
   homestation.renderedFiles.${renderedMuseumConfigName} = {
-    source = ./ente/museum.yml;
+    source = ./museum.yml;
     replacements = {
       "@JWT_SECRET@" = config.sops.placeholder."ente/jwt-secret";
       "@POSTGRES_PASSWORD@" = config.sops.placeholder."ente/db-password";

@@ -52,7 +52,7 @@ in
       volumes = [
         {
           type = "bind";
-          source = "${./glance}";
+          source = "${./.}";
           target = "/app/config";
           readOnly = true;
         }
