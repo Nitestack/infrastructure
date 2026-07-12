@@ -76,10 +76,6 @@ in
           ServerAliveInterval = 0;
           UserKnownHostsFile = "~/.ssh/known_hosts";
         };
-        "raspberrypi" = {
-          hostname = "npham.de";
-          user = meta.username;
-        };
       };
     };
   };

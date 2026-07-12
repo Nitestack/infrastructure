@@ -11,9 +11,6 @@
                 - title: Cloudflare
                   url: https://dash.cloudflare.com
                   icon: di:cloudflare
-                - title: Cloudflare Zero Trust
-                  url: https://one.dash.cloudflare.com
-                  icon: di:cloudflare-zero-trust
                 - title: FRITZ!Box
                   url: http://192.168.178.1
                   icon: di:fritzbox
@@ -22,9 +19,9 @@
                   icon: di:namecheap
             - title: Documentation
               links:
-                - title: Ansible
-                  url: https://docs.ansible.com
-                  icon: si:ansible
+                - title: Audiomuse-AI
+                  url: https://neptunehub.github.io/AudioMuse-AI
+                  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/audiomuse-ai.webp
                 - title: AdGuard Home
                   url: https://adguard-dns.io/kb
                   icon: di:adguard-home
@@ -91,6 +88,20 @@
                 - title: Zerobyte
                   url: https://github.com/nicotsx/zerobyte
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/zerobyte.webp
+            - title: Nix
+              links:
+                - title: Packages
+                  url: https://search.nixos.org/packages?channel=unstable
+                  icon: di:nixos
+                - title: Options
+                  url: https://search.nixos.org/options?channel=unstable
+                  icon: di:nixos
+                - title: Home Manager
+                  url: https://nix-community.github.io/home-manager/options/home-manager/index.html
+                  icon: di:nixos
+                - title: Wiki
+                  url: https://wiki.nixos.org
+                  icon: di:nixos
             - title: Selfhosted
               links:
                 - title: Awesome Selfhosted
@@ -107,8 +118,8 @@
                   icon: di:selfh-st
             - title: Repositories
               links:
-                - title: Raspberry Pi 5
-                  url: https://github.com/Nitestack/raspberry-pi-5
+                - title: Infrastructure
+                  url: https://github.com/Nitestack/infrastructure
                   icon: di:github
 
     - size: full
@@ -116,6 +127,21 @@
         - type: docker-containers
           hide-header: true
           containers:
+            audiomuse-ai-flask-app:
+              name: Audiomuse-AI
+              icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/audiomuse-ai.webp
+              url: ${AUDIOMUSE_AI_URL}
+              description: Music Analysis
+              id: audiomuse-ai
+            audiomuse-ai-worker-instance:
+              name: Worker
+              parent: audiomuse-ai
+            audiomuse-redis:
+              name: Redis
+              parent: audiomuse-ai
+            audiomuse-postgres:
+              name: PostgreSQL
+              parent: audiomuse-ai
             adguard-home:
               name: AdGuard Home
               icon: di:adguard-home
@@ -311,8 +337,9 @@
           token: ${GITHUB_API_TOKEN}
           show-source-icon: true
           collapse-after: -1
-          limit: 26
+          limit: 24
           repositories:
+            - NeptuneHub/AudioMuse-AI
             - AdguardTeam/AdGuardHome
             - seanmorley15/AdventureLog
             - beetbox/beets

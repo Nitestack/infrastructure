@@ -176,7 +176,6 @@ nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-wr
 ## Further reading
 
 - [`docs/homelab-services.md`](docs/homelab-services.md) — homelab module options, validation, and recipes.
-- [`docs/raspberry-pi-5-migration-checklist.md`](docs/raspberry-pi-5-migration-checklist.md) — service placement and migration procedure for the Raspberry Pi 5.
 - [`docs/adguard-home-client-caveats.md`](docs/adguard-home-client-caveats.md) — AdGuard Home client configuration caveats.
 - [`docs/renovate-setup.md`](docs/renovate-setup.md) — one-time Renovate GitHub App setup.
 - [`opentofu/cloudflare/README.md`](opentofu/cloudflare/README.md) — Cloudflare edge and DNS state with OpenTofu.
