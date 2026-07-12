@@ -24,12 +24,12 @@ in
     ./sops.nix
     ./homelab/adguard-home.nix
     ./homelab/adventure-log.nix
-    ./homelab/beets.nix
+    ./homelab/beets
     ./homelab/beszel.nix
     ./homelab/calibre-web-automated.nix
-    ./homelab/ente.nix
+    ./homelab/ente
     ./homelab/freshrss.nix
-    ./homelab/glance.nix
+    ./homelab/glance
     ./homelab/immich.nix
     ./homelab/it-tools.nix
     ./homelab/navidrome.nix
