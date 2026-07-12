@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   ...
 }:
 let
@@ -7,6 +8,17 @@ let
   userUid = config.users.users.${username}.uid;
   userGid = config.ids.gids.users;
   effectiveUid = if userUid != null then toString userUid else "1000";
+
+  audiomusePlugin = pkgs.fetchurl {
+    url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/latest/download/audiomuseai.ndp";
+    hash = "sha256-hOanUJBKgsW+p2gZgHEhN64lS0oUlsu8mXTaseSzndg=";
+  };
+  navidromePlugins = pkgs.runCommand "navidrome-plugins" { } ''
+    mkdir -p "$out"
+    install -m 0444 \
+      ${audiomusePlugin} \
+      "$out/audiomuseai.ndp"
+  '';
 in
 {
   homelab.apps.navidrome = {
@@ -30,6 +42,8 @@ in
         ND_DEFAULTTHEME = "Spotify-ish";
         ND_ENABLESHARING = "true";
         ND_ENABLESTARRATING = "false";
+        ND_PLUGINS_ENABLED = "true";
+        ND_AGENTS = "audiomuseai,deezer,lastfm,listenbrainz";
       };
 
       environmentFiles = [ config.sops.templates."navidrome.env".path ];
@@ -46,6 +60,12 @@ in
           type = "library";
           library = "music";
           target = "/music";
+          readOnly = true;
+        }
+        {
+          type = "bind";
+          source = "${navidromePlugins}";
+          target = "/data/plugins";
           readOnly = true;
         }
       ];

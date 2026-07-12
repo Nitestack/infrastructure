@@ -22,6 +22,7 @@ in
     self.nixosModules.homelab
     ./rendered-files.nix
     ./sops.nix
+    ./homelab/audiomuse-ai.nix
     ./homelab/adguard-home.nix
     ./homelab/adventure-log.nix
     ./homelab/beets

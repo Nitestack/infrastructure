@@ -12,6 +12,7 @@ let
 
   infraSecretsFile = self + /secrets/hosts/homestation/infra.yaml;
   adventureLogSecretsFile = self + /secrets/hosts/homestation/adventure-log.yaml;
+  audiomuseAiSecretsFile = self + /secrets/hosts/homestation/audiomuse-ai.yaml;
   beetsSecretsFile = self + /secrets/hosts/homestation/beets.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
   enteSecretsFile = self + /secrets/hosts/homestation/ente.yaml;
@@ -199,6 +200,11 @@ in
       key = "password-hash";
       mode = "0400";
     };
+    secrets."audiomuse-ai/db-password" = {
+      sopsFile = audiomuseAiSecretsFile;
+      key = "db-password";
+      mode = "0400";
+    };
     templates."caddy.env" = {
       content = ''
         CLOUDFLARE_API_TOKEN=${config.sops.placeholder."caddy/cloudflare-api-token"}
@@ -309,6 +315,12 @@ in
         }","secret":"${
           config.sops.placeholder."yamtrack/oidc-client-secret"
         }","settings":{"server_url":"${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration"}}]}}
+      '';
+      mode = "0400";
+    };
+    templates."audiomuse-ai.env" = {
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."audiomuse-ai/db-password"}
       '';
       mode = "0400";
     };
