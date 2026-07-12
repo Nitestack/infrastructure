@@ -23,6 +23,7 @@ in
       port = 8080;
 
       environment = {
+        AUDIOMUSE_AI_URL = appUrl cfg.apps.audiomuse-ai;
         ADGUARD_HOME_URL = adguardHomeUrl;
         ADVENTURE_LOG_URL = appUrl cfg.apps.adventure-log;
         BESZEL_URL = appUrl cfg.apps.beszel;
