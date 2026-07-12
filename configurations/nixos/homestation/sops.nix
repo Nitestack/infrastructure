@@ -18,6 +18,7 @@ let
   enteSecretsFile = self + /secrets/hosts/homestation/ente.yaml;
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   immichSecretsFile = self + /secrets/hosts/homestation/immich.yaml;
+  obsidianLivesyncSecretsFile = self + /secrets/hosts/homestation/obsidian-livesync.yaml;
   pocketIdSecretsFile = self + /secrets/hosts/homestation/pocket-id.yaml;
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
   wealthfolioSecretsFile = self + /secrets/hosts/homestation/wealthfolio.yaml;
@@ -215,6 +216,11 @@ in
       key = "db-password";
       mode = "0400";
     };
+    secrets."obsidian-livesync/db-password" = {
+      sopsFile = obsidianLivesyncSecretsFile;
+      key = "db-password";
+      mode = "0400";
+    };
     templates."caddy.env" = {
       content = ''
         CLOUDFLARE_API_TOKEN=${config.sops.placeholder."caddy/cloudflare-api-token"}
@@ -333,6 +339,12 @@ in
     templates."audiomuse-ai.env" = {
       content = ''
         POSTGRES_PASSWORD=${config.sops.placeholder."audiomuse-ai/db-password"}
+      '';
+      mode = "0400";
+    };
+    templates."obsidian-livesync.env" = {
+      content = ''
+        COUCHDB_PASSWORD=${config.sops.placeholder."obsidian-livesync/db-password"}
       '';
       mode = "0400";
     };
