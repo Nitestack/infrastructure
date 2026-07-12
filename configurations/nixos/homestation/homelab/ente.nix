@@ -83,7 +83,7 @@ in
 
     services.postgres = {
       enable = true;
-      image = "postgres:15@sha256:bcab099bfaab33333a73a2ebe8c1d615c9f4c2402dd43452f989a36c6da9a5ba";
+      image = "postgres:18@sha256:22c89fe0d0f507606260237fd55e51f6137f58b2d5bcf6152242b96d9fe8f9a4";
       containerName = "ente-postgres";
 
       environment = {
