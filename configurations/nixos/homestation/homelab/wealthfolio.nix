@@ -25,6 +25,10 @@ in
         WF_CORS_ALLOW_ORIGINS = appUrl cfg.apps.wealthfolio;
         WF_AUTH_TOKEN_TTL_MINUTES = "60";
         WF_REQUEST_TIMEOUT_MS = "30000";
+
+        WF_OIDC_ISSUER_URL = appUrl cfg.apps.pocket-id;
+        WF_OIDC_REDIRECT_URL = "${appUrl cfg.apps.wealthfolio}/api/v1/auth/oidc/callback";
+        WF_OIDC_ALLOW_ANY = "true";
       };
 
       environmentFiles = [ config.sops.templates."wealthfolio.env".path ];

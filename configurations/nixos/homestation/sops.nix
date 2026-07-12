@@ -200,6 +200,16 @@ in
       key = "password-hash";
       mode = "0400";
     };
+    secrets."wealthfolio/oidc-client-id" = {
+      sopsFile = wealthfolioSecretsFile;
+      key = "oidc-client-id";
+      mode = "0400";
+    };
+    secrets."wealthfolio/oidc-client-secret" = {
+      sopsFile = wealthfolioSecretsFile;
+      key = "oidc-client-secret";
+      mode = "0400";
+    };
     secrets."audiomuse-ai/db-password" = {
       sopsFile = audiomuseAiSecretsFile;
       key = "db-password";
@@ -303,7 +313,9 @@ in
     templates."wealthfolio.env" = {
       content = ''
         WF_SECRET_KEY=${config.sops.placeholder."wealthfolio/secret-key"}
-        WF_AUTH_PASSWORD_HASH='${config.sops.placeholder."wealthfolio/password-hash"}'
+        # WF_AUTH_PASSWORD_HASH='${config.sops.placeholder."wealthfolio/password-hash"}'
+        WF_OIDC_CLIENT_ID=${config.sops.placeholder."wealthfolio/oidc-client-id"}
+        WF_OIDC_CLIENT_SECRET=${config.sops.placeholder."wealthfolio/oidc-client-secret"}
       '';
       mode = "0400";
     };
