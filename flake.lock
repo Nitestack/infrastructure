@@ -613,6 +613,22 @@
         "type": "github"
       }
     },
+    "humanizer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782765784,
+        "narHash": "sha256-3+LoQ18+lcMxuEz8TLro0haScrgv3yJ6lDpMvU1qL3M=",
+        "owner": "blader",
+        "repo": "humanizer",
+        "rev": "1b48564898e999219882660237fde01bf4843a0f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "blader",
+        "repo": "humanizer",
+        "type": "github"
+      }
+    },
     "hyprcursor": {
       "inputs": {
         "hyprlang": [
@@ -1277,6 +1293,7 @@
         "home-manager": "home-manager_2",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
+        "humanizer": "humanizer",
         "hyprland": "hyprland",
         "hyprland-contrib": "hyprland-contrib",
         "llm-agents-nix": "llm-agents-nix",
@@ -1289,7 +1306,6 @@
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",
-        "superpowers": "superpowers",
         "tmux-sessionx": "tmux-sessionx",
         "zen-browser": "zen-browser"
       }
@@ -1432,22 +1448,6 @@
       "original": {
         "owner": "zjeffer",
         "repo": "split-monitor-workspaces",
-        "type": "github"
-      }
-    },
-    "superpowers": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1783029415,
-        "narHash": "sha256-kHdQ9e44doBk2yYW88tMSCqVG8ycYcvJSZlrIziXhpA=",
-        "owner": "obra",
-        "repo": "superpowers",
-        "rev": "d884ae04edebef577e82ff7c4e143debd0bbec99",
-        "type": "github"
-      },
-      "original": {
-        "owner": "obra",
-        "repo": "superpowers",
         "type": "github"
       }
     },

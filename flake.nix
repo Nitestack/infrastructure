@@ -74,6 +74,11 @@
     };
     # Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    # Humanizer
+    humanizer = {
+      url = "github:blader/humanizer";
+      flake = false;
+    };
     # Hyprland
     hyprland.url = "github:hyprwm/Hyprland";
     # Hyprland Contrib
@@ -94,11 +99,6 @@
     # split-monitor-workspaces
     split-monitor-workspaces = {
       url = "github:zjeffer/split-monitor-workspaces";
-      flake = false;
-    };
-    # Superpowers Claude Plugin
-    superpowers = {
-      url = "github:obra/superpowers";
       flake = false;
     };
     # Tmux SessionX
