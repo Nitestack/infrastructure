@@ -15,9 +15,12 @@ in
   programs = {
     agent-skills = {
       enable = true;
-      sources.caveman = {
-        path = inputs.caveman;
-        subdir = "skills";
+      sources = {
+        caveman = {
+          path = inputs.caveman;
+          subdir = "skills";
+        };
+        humanizer.path = inputs.humanizer;
       };
       skills.enableAll = true;
       targets.claude.enable = true;
@@ -41,9 +44,6 @@ in
           command = "bash \"${inputs.caveman}/src/hooks/caveman-statusline.sh\"";
         };
       };
-      plugins = [
-        inputs.superpowers
-      ];
     };
     # codex = {
     #   enable = true;
