@@ -31,8 +31,26 @@ in
     ssh-agent.enable = true;
     startMenuLaunchers = true;
     useWindowsDriver = true;
-    wslConf.network.hostname = "wslstation";
+    wslConf = {
+      network.hostname = "wslstation";
+      interop.appendWindowsPath = false;
+    };
   };
+
+  # Packages
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "clip.exe" ''
+      exec /mnt/c/Windows/System32/clip.exe "$@"
+    '')
+    (pkgs.writeShellScriptBin "powershell.exe" ''
+      exec /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe "$@"
+    '')
+  ];
+
+  systemd.tmpfiles.rules = [
+    "d /usr/bin 0755 root root - -"
+    "L+ /usr/bin/bash - - - - ${pkgs.bashInteractive}/bin/bash"
+  ];
 
   # ── Home Manager ──────────────────────────────────────────────────────
   home-manager.users.${meta.username} = {
