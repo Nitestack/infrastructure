@@ -26,11 +26,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1783782393,
-        "narHash": "sha256-TUlz2eQXHNfreQ4cfzsTb5wG7TaEDS2XyyjcpY3XwD8=",
+        "lastModified": 1784187180,
+        "narHash": "sha256-WqV64xYAMHVSMq6B3lcCCDTY81HoDMc06nTpxEWylKA=",
         "owner": "Nitestack",
         "repo": "aix",
-        "rev": "aaa22387293fc62423e437cfd861d0658514185c",
+        "rev": "c71bc349b2e6d29291ca54158b67fdd43150d827",
         "type": "github"
       },
       "original": {
