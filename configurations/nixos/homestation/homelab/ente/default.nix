@@ -38,7 +38,7 @@ in
 
     services.web = {
       enable = true;
-      image = "ghcr.io/ente/web:latest@sha256:a0bc969c02cc563037a7e3ac1b0ad6def906164674b332380324d35a3d9bc853";
+      image = "ghcr.io/ente/web:latest@sha256:c4f88228ae01c4eff02c4e481424b363301f74ab1c20bbd9b0f9f41c1fc82dc8";
       containerName = "ente-web";
       port = 3003;
 
