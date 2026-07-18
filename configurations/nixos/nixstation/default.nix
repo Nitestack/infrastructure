@@ -72,9 +72,9 @@ in
 
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    (bottles.override {
-      removeWarningPopup = true;
-    })
+    # (bottles.override {
+    #   removeWarningPopup = true;
+    # })
     endeavour
     ente-auth
     flacon
