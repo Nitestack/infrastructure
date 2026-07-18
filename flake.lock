@@ -967,6 +967,22 @@
         "type": "github"
       }
     },
+    "matt-pocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784192592,
+        "narHash": "sha256-S6pARK99oGGSi6XdFm6zYKHT4gjOCN0wIPZFcl1hREE=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "9603c1cc8118d08bc1b3bf34cf714f62178dea3b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -1271,6 +1287,7 @@
         "hyprland": "hyprland",
         "hyprland-contrib": "hyprland-contrib",
         "llm-agents-nix": "llm-agents-nix",
+        "matt-pocock-skills": "matt-pocock-skills",
         "nix-darwin": "nix-darwin",
         "nix-flatpak": "nix-flatpak",
         "nix-homebrew": "nix-homebrew",

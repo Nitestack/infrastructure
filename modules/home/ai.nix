@@ -21,6 +21,10 @@ in
           subdir = "skills";
         };
         humanizer.path = inputs.humanizer;
+        matt-pocock-skills = {
+          path = inputs.matt-pocock-skills;
+          subdir = "skills";
+        };
       };
       skills.enableAll = true;
       targets.claude.enable = true;
