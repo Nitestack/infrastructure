@@ -18,6 +18,7 @@ in
       kvantumTheme.package
     ];
     pointerCursor = cursorTheme // {
+      enable = true;
       gtk.enable = true;
     };
     sessionVariables = {
