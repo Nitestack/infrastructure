@@ -91,6 +91,11 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Matt Pocock's skills
+    matt-pocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
     # Spicetify
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
