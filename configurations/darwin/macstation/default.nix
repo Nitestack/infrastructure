@@ -28,6 +28,7 @@ in
   # Configuration
   nixpkgs.config.permittedInsecurePackages = [
     "electron-39.8.10"
+    "electron-40.10.5"
   ];
   nixpkgs.hostPlatform = "aarch64-darwin";
   networking.hostName = "macstation";
