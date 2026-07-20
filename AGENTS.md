@@ -27,7 +27,7 @@ Use Nix defaults enforced by `nixfmt`. Prefer 2-space indentation, small focused
 There is no separate unit test suite. Treat evaluation as the test boundary. Before committing, run `nix run .#check`. For host-sensitive edits, also evaluate the affected host configuration. Do not update `flake.lock` unless the change intentionally upgrades inputs.
 
 ## Commit & Pull Request Guidelines
-Recent history uses Conventional Commit style, for example `feat(codex): add Codex Desktop` and `refactor: wire shared config and LFS assets`. Use concise subjects under 50 characters when practical. In PRs, include the affected host or module, verification commands run, and screenshots only for visible desktop or wallpaper changes.
+Work happens directly on `main`; this repo does not use a pull request workflow. Only branch or open a PR when explicitly asked to. Recent history uses Conventional Commit style, for example `feat(codex): add Codex Desktop` and `refactor: wire shared config and LFS assets`. Use concise subjects under 50 characters when practical. When a change does go through a PR, include the affected host or module, verification commands run, and screenshots only for visible desktop or wallpaper changes.
 
 ## Asset & Configuration Tips
 Binary assets in `images/` are Git LFS tracked. Keep large personal or machine-local files out of the repo; use ignored paths such as `images/local/` when needed. Never commit unrelated local changes from another device or workflow.
