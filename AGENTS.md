@@ -32,6 +32,20 @@ Work happens directly on `main`; this repo does not use a pull request workflow.
 ## Asset & Configuration Tips
 Binary assets in `images/` are Git LFS tracked. Keep large personal or machine-local files out of the repo; use ignored paths such as `images/local/` when needed. Never commit unrelated local changes from another device or workflow.
 
+## Agent skills
+
+### Issue tracker
+
+Issues live as GitHub Issues in `Nitestack/infrastructure`, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
 ## Documentation Sync Rules
 
 `docs/homelab-services.md` is the reference for the `homelab` NixOS module
