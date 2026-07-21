@@ -16,6 +16,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./sops.nix
 
     self.nixosModules.base
     self.nixosModules.bare-metal-only

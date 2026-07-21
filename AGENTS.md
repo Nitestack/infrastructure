@@ -30,7 +30,7 @@ There is no separate unit test suite. Treat evaluation as the test boundary. Bef
 Work happens directly on `main`; this repo does not use a pull request workflow. Only branch or open a PR when explicitly asked to. Recent history uses Conventional Commit style, for example `feat(codex): add Codex Desktop` and `refactor: wire shared config and LFS assets`. Use concise subjects under 50 characters when practical. When a change does go through a PR, include the affected host or module, verification commands run, and screenshots only for visible desktop or wallpaper changes.
 
 ## Asset & Configuration Tips
-Binary assets in `images/` are Git LFS tracked. Keep large personal or machine-local files out of the repo; use ignored paths such as `images/local/` when needed. Never commit unrelated local changes from another device or workflow.
+Binary assets in `images/` are Git LFS tracked. Keep large personal or machine-local files out of the repo; use ignored paths such as `images/local/` when needed. Never commit unrelated local changes from another device or workflow. Never expose, print, commit, or copy secrets into the Nix store — reference them through sops (`config.sops.secrets.*.path` / `config.sops.placeholder.*`) instead.
 
 ## Agent skills
 
