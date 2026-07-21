@@ -67,7 +67,6 @@
     stylua
 
     gcc
-    gemini-cli-bin
     ghostscript
     github-copilot-cli
     imagemagick
