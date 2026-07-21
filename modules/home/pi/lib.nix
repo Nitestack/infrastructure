@@ -19,7 +19,7 @@ in
       defaultProvider = d.provider;
       defaultModel = d.model;
       defaultThinkingLevel = d.thinking or "medium";
-      theme = "catppuccin-tui-mocha";
+      theme = "catppuccin-mocha";
       quietStartup = true;
       packages = map (e: "npm:${e}") extensions;
     };

@@ -1,5 +1,5 @@
 {
-  extensions = [ "@diegovisk/pi-nvidia-nim@1.1.0" ];
+  extensions = [ "@diegovisk/pi-nvidia-nim" ];
 
   roles = {
     default = {
