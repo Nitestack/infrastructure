@@ -2,12 +2,6 @@ keys:
   - &admin_nhan 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
   - &wslstation_ssh age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6
   - &homestation_ssh age1jrffh0x49q62pvk5z666yy03spps0v4tctacfckdytl4enh94c8q3ypt2w
-  # TODO(user): replace with the real key from
-  # `nix run nixpkgs#ssh-to-age -- -i ~/.ssh/id_ed25519.pub` run on nixstation.
-  - &nixstation_ssh age1TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTO
-  # TODO(user): replace with the real key from
-  # `nix run nixpkgs#ssh-to-age -- -i ~/.ssh/id_ed25519.pub` run on macstation.
-  - &macstation_ssh age1TODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTODOTO
 
 creation_rules:
   - path_regex: secrets/shared/.*
@@ -26,17 +20,3 @@ creation_rules:
           - *admin_nhan
         age:
           - *homestation_ssh
-
-  - path_regex: secrets/hosts/nixstation/.*
-    key_groups:
-      - pgp:
-          - *admin_nhan
-        age:
-          - *nixstation_ssh
-
-  - path_regex: secrets/hosts/macstation/.*
-    key_groups:
-      - pgp:
-          - *admin_nhan
-        age:
-          - *macstation_ssh

@@ -13,8 +13,6 @@ let
 in
 {
   imports = [
-    ./sops.nix
-
     self.darwinModules.base
     self.darwinModules.interactive-only
 

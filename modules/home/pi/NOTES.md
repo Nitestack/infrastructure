@@ -45,31 +45,67 @@ module layers on top of that, overriding `package` to
   strongest-model-at-high-thinking command (story 6) is exposed as `/think`
   instead to avoid the collision.
 
-## NIM secret rollout (not wired on any host yet — corrected after review)
+## Prior art discovered mid-implementation: an abandoned pi-coding-agent module
 
-`nim/api-key` is **not** declared on any host in this change, wslstation
-included. Earlier drafts of this module assumed it would be wired on
-wslstation (which already has real sops + an age key), but doing that
-requires a `sops.secrets."nim/api-key".sopsFile` pointing at a real,
-existing encrypted file: `self + /secrets/hosts/wslstation/pi.yaml` (or
-similar) would need to physically exist for the flake to evaluate at all
-(the same way `secrets/hosts/wslstation/aix.yaml` already must exist for the
-`aix` secrets today) — and creating that file means running `sops` against a
-brand-new secret value, which is exactly the "edit to encrypted secrets
-files" the issue puts out of scope and hands to the human. So this change
-adds no `nim/api-key` secret anywhere; `hasNimKey` in `default.nix`
-evaluates `false` on all three hosts today. The private profile still
-renders and works fully — NIM-routed roles (`commit`, `scout`, `vision`)
-just have no key until the user, on wslstation, creates
-`secrets/hosts/wslstation/pi.yaml` (`sops secrets/hosts/wslstation/pi.yaml`
-with a `nim/api-key: <value>` entry) and adds the matching
-`sops.secrets."nim/api-key"` declaration to
-`configurations/nixos/wslstation/sops.nix`. `nixstation` and `macstation`
-got `sops.nix` scaffolding and `.sops.yaml` key-group entries in this same
-change (module import + `age.sshKeyPaths`, no secrets declared yet) so that
-follow-up is a small diff once real age keys exist for those hosts too —
-see the TODOs in `.sops.yaml` and those two `sops.nix` files. No encrypted
-file was created or edited by this change.
+Before writing NIM/FHS handling from scratch, `git log` turned up a real,
+previously-shipped attempt at exactly this — `modules/home/pi-coding-agent/`
+(commits `95bd9f86`..`b1aeaf29`, 2026-06-27 to 2026-07-11), replaced by
+oh-my-pi in `ec881746`. I missed this on the first pass (didn't check
+`secrets/` or `git log` for prior pi work before designing), which produced
+two wrong turns that a round of `/code-review` caught and this section
+corrects. Two things from that prior attempt are proven-real and reused
+here:
+
+- **`secrets/shared/nim.yaml` already exists** (added in `95bd9f86`, moved
+  from `modules/secrets/nim.yaml` to its current path in a later secrets
+  reorg). Top-level key `nim-api-key`, encrypted with the admin's PGP key
+  only (`secrets/shared/.*`'s `creation_rules` entry — no age keys, by
+  design). There was never a need to create a new secrets file or a new
+  per-host secret for this — I initially missed the existing file, then
+  (still wrongly) tried to invent a new host-scoped one.
+- **pi's extension installer needs a real FHS layout.** `npm install`-based
+  extensions with native addons need `make`/`gcc`/`python` on a real
+  filesystem, which a plain Nix closure doesn't provide — the prior
+  attempt's commit history is a trail of one-package-at-a-time fixes
+  (`gnumake`+`gcc`, `jq`, `python3+pyyaml`, ...) before landing on wrapping
+  `pi` in `pkgs.buildFHSEnv` (Linux only; Darwin has no `buildFHSEnv`, falls
+  back to the unwrapped package). `default.nix` now does the same, wrapping
+  whichever binary `llm-agents-nix` provides instead of `pkgs.pi-coding-agent`
+  (this repo's nixpkgs pin may or may not have that attribute; unverified,
+  moot since the issue explicitly chose the `llm-agents-nix` package).
+
+## NIM secret delivery (Home Manager + GPG, not NixOS + age)
+
+`nim-api-key` is decrypted **at the Home Manager level**, not through
+`osConfig`/per-host age keys: `default.nix` imports
+`sops-nix.homeManagerModules.sops`, points `sops.gnupg.home` at the user's
+own `~/.gnupg`, and declares `sops.secrets.nim-api-key.sopsFile =
+secrets/shared/nim.yaml`. `models.json`'s NIM provider then sets `apiKey =
+"!cat ${config.sops.secrets.nim-api-key.path}"` (pi's `!command` syntax),
+matching the prior attempt's exact approach. This works identically on
+**every** host running this module (wslstation, nixstation, macstation) as
+long as the user's GPG key is present there — no per-host NixOS age key or
+new encrypted file needed at all, unlike the `pi-work` profile's
+NixOS-level, host-gated secrets.
+
+An earlier draft of this change tried to solve this the NixOS-`osConfig`
+way instead (a `nim/api-key` NixOS secret, gated per host, with new
+`sops.nix` scaffolding added for nixstation/macstation and placeholder age
+keys in `.sops.yaml`) before this prior art was found. That was reverted —
+wrong mechanism for a personal credential like this, and speculative
+scaffolding for hosts that didn't need it for this secret. If nixstation or
+macstation ever need a genuine host-level NixOS secret for something else,
+that's a fresh, separate decision, not a byproduct of this change.
+
+## Historical compatibility note
+
+The abandoned prior attempt dropped `pi-web-access` and `pi-lean-ctx` in
+commit `40d6a0f1` (2026-06-27) as "incompatible with 0.79.1". `pi-lean-ctx`
+is out of scope here anyway (context-compression, see below). `pi-web-access`
+is back in this roster per the issue — the incompatibility was against a pi
+version from over three weeks before the `llm-agents-nix` pin this module
+uses (2026-07-18), so it's likely resolved, but worth a first-use check
+given it's the one roster entry with known history of breaking.
 
 ## Extensions installed with upstream defaults (not custom-Nix-configured)
 
