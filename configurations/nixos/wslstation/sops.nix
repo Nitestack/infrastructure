@@ -8,6 +8,19 @@ let
   inherit (flake) inputs;
   inherit (inputs) self;
 
+  piLib = import (self + /modules/home/pi/lib.nix) { inherit lib; };
+  workRoles = import (self + /modules/home/pi/roles/work.nix);
+  workModels = piLib.mkModels {
+    providers.work-litellm = {
+      baseUrl = "@LITELLM_BASE_URL@";
+      api = "openai-completions";
+      apiKey = "\${LITELLM_API_KEY}";
+      models = map (m: { id = m; }) (
+        lib.unique (map (r: lib.removePrefix "work-litellm/" r) (piLib.allModelRefs workRoles))
+      );
+    };
+  };
+
   aixProfiles = [
     "p"
     "adp"
@@ -49,14 +62,18 @@ in
       };
 
     templates = {
-      "oh-my-pi-work-models-yml" = {
+      "pi-work-models-json" = {
         content =
-          lib.replaceStrings [ "@LITELLM_BASE_URL@" ] [ "${config.sops.placeholder."aix/base-url"}/v1" ]
-            (builtins.readFile (self + /modules/home/oh-my-pi/work.models.yml));
+          lib.replaceStrings
+            [ "@LITELLM_BASE_URL@" ]
+            [
+              "${config.sops.placeholder."aix/base-url"}/v1"
+            ]
+            (builtins.toJSON workModels);
         owner = config.meta.username;
         mode = "0400";
       };
-      "oh-my-pi-work-litellm-base-url" = {
+      "pi-work-litellm-base-url" = {
         content = "${config.sops.placeholder."aix/base-url"}/v1";
         owner = config.meta.username;
         mode = "0400";

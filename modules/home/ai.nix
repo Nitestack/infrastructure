@@ -34,7 +34,7 @@ in
   imports = [
     inputs.agent-skills.homeManagerModules.default
 
-    self.homeModules.oh-my-pi
+    self.homeModules.pi
   ];
   programs = {
     agent-skills = {
