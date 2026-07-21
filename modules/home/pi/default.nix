@@ -1,9 +1,4 @@
-# ╭──────────────────────────────────────────────────────────╮
-# │ Pi                                                        │
-# ╰──────────────────────────────────────────────────────────╯
-#
-# Personal pi distribution replacing oh-my-pi. See NOTES.md for the
-# decision record and corrections made against the originating issue.
+# Pi
 {
   pkgs,
   flake,
@@ -16,27 +11,46 @@ let
   inherit (inputs) self;
 
   piLib = import ./lib.nix { inherit lib; };
-  extensions = import ./extensions.nix;
-  privateExtensions = extensions.common ++ extensions.private;
-  workExtensions = extensions.common ++ extensions.work;
-  privateRoles = import ./roles/private.nix;
-  workRoles = import ./roles/work.nix;
+  private = import ./roles/private.nix;
+  work = import ./roles/work.nix;
 
-  piRaw = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi;
+  commonExtensions = [
+    "pi-subagents@0.35.1"
+    "pi-prompt-template-model@0.10.0"
+    "pi-provider-fallback@1.0.4"
+    "pi-web-access@0.13.0"
+    "cc-safety-net@1.0.6"
+    "pi-plan-mode@0.4.8"
+    "@ayulab/pi-rewind@0.4.6"
+    "@juicesharp/rpiv-ask-user-question@1.20.0"
+    "pi-notify@1.4.0"
+    "@narumitw/pi-codex-usage@0.20.0"
+    "pi-btw@0.4.1"
+    "@narumitw/pi-statusline@0.23.0"
+    "pi-catppuccin-tui@0.1.3"
+    # Probation
+    "pi-hermes-memory@0.8.1"
+    "pi-agent-browser-native@0.2.71"
+    "pi-lens@3.8.71"
+    # pi-vim@0.12.1 removed: runtime "Cannot find module
+    # '@earendil-works/pi-coding-agent'" error. Probation extensions get
+    # removed, not fixed — see NOTES.md.
+  ];
 
-  # pi-nvidia-nim reads its key from NVIDIA_NIM_API_KEY, not models.json's
-  # apiKey — export it here instead (same trick pi-work uses below for
-  # LITELLM_BASE_URL).
+  privateExtensions = commonExtensions ++ private.extensions;
+  workExtensions = commonExtensions ++ work.extensions;
+  privateRoles = private.roles;
+  workRoles = work.roles;
+
   piRunScript = ''
     export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"
-    exec ${piRaw}/bin/pi "$@"
+    # pi-provider-fallback hardcodes ~/.pi/agent/... and ignores
+    # PI_CODING_AGENT_DIR, so redirect it here or pi-work loads the private
+    # profile's fallback config instead of its own.
+    export PI_PROVIDER_FALLBACK_CONFIG="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/extensions/provider-fallback.json"
+    exec ${lib.getExe inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi} "$@"
   '';
 
-  # pi's extension installer shells out to `npm install`, which needs a real
-  # FHS layout to find make/gcc/python for native addons — a plain Nix store
-  # closure doesn't have one. Proven by the abandoned pi-coding-agent module
-  # this repo carried before oh-my-pi (see NOTES.md); Darwin has no
-  # buildFHSEnv, so it falls back to the unwrapped package there.
   piFhs = pkgs.buildFHSEnv {
     name = "pi";
     targetPkgs =
@@ -59,18 +73,12 @@ let
   };
   piPackage = if pkgs.stdenv.isLinux then piFhs else pkgs.writeShellScriptBin "pi" piRunScript;
 
-  theme = "catppuccin-tui-mocha";
-
-  # Only hosts with aix (the LITELLM_BASE_URL/LITELLM_API_KEY env var
-  # bridge, modules/home/aix.nix) get the work profile; private-only hosts
-  # skip it entirely.
   hasWorkProfile = config.programs.aix.enable or false;
 
   workConfigDir = "${config.home.homeDirectory}/.pi/agent-work";
 
-  # Non-role-varying files shared by both profiles.
   statuslineConfig = {
-    palette = "tokyo-night"; # no Catppuccin option upstream; see NOTES.md
+    palette = "tokyo-night";
     density = "compact";
     separator = "powerline";
     segments = [
@@ -98,8 +106,6 @@ let
         CONTRIBUTING documents them. $@
       '';
     };
-    # Named /think, not /plan: pi-plan-mode already owns /plan as its
-    # read-only exploration toggle (see NOTES.md).
     "think.md" = piLib.mkPromptTemplate {
       description = "Switch to the strongest model at high thinking for planning or deep reasoning.";
       role = roles.plan;
@@ -171,10 +177,6 @@ let
     };
 in
 {
-  # NIM API key: a personal credential decrypted with the user's own GPG
-  # key (secrets/shared/nim.yaml, pre-existing — see NOTES.md), not a
-  # per-host NixOS secret. Works identically on every host with that GPG
-  # key present, no per-host age-key bootstrapping needed.
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
   sops = {
@@ -183,9 +185,6 @@ in
     secrets.nim-api-key.sopsFile = self + /secrets/shared/nim.yaml;
   };
 
-  # No models.json "nim" provider block anymore: the @diegovisk/pi-nvidia-nim
-  # extension (in extensions.nix) registers the "nvidia-nim" provider and
-  # its own curated model catalog itself.
   programs.pi-coding-agent = {
     enable = true;
     package = piPackage;
@@ -193,7 +192,6 @@ in
     settings = piLib.mkSettings {
       roleMap = privateRoles;
       extensions = privateExtensions;
-      inherit theme;
     };
   };
 
@@ -209,11 +207,8 @@ in
           (piLib.mkSettings {
             roleMap = workRoles;
             extensions = workExtensions;
-            inherit theme;
           })
           // {
-            # Gateway has no MCP tools; skip the discovery round-trip on
-            # every startup.
             litellm = {
               mcp.enabled = false;
               skills.enabled = false;
@@ -241,15 +236,11 @@ in
     })
   ];
 
-  # Best-effort: materializes packages declared in settings.json's
-  # `packages` array. Versioned specs (all of ours are) are skipped by
-  # `pi update --extensions` once already installed, so this only does real
-  # work on a fresh machine or when the roster changes.
-  # Must run after sops-nix's own activation entry, not just writeBoundary:
-  # piRunScript eagerly `cat`s the NIM secret, and sops-nix is what actually
-  # decrypts it. Home Manager doesn't order two writeBoundary-only entries
-  # relative to each other, so without this, piExtensions has been observed
-  # running first and reading the secret before it exists.
+  # Best-effort install of settings.json's `packages`; already-installed
+  # versioned specs are skipped, so this only bites on a fresh machine or
+  # roster change. Ordered after sops-nix, not just writeBoundary: piRunScript
+  # reads the NIM secret that sops-nix decrypts, and two writeBoundary-only
+  # entries aren't ordered relative to each other.
   home.activation.piExtensions = lib.hm.dag.entryAfter [ "writeBoundary" "sops-nix" ] ''
     ${piPackage}/bin/pi update --extensions || true
     ${lib.optionalString hasWorkProfile ''
