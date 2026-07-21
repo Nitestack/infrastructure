@@ -14,18 +14,43 @@
 }:
 let
   inherit (flake) inputs;
+  inherit (inputs) self;
 
   piLib = import ./lib.nix { inherit lib; };
   extensions = import ./extensions.nix;
   privateRoles = import ./roles/private.nix;
   workRoles = import ./roles/work.nix;
 
-  piPackage = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi;
-  theme = "catppuccin-tui-mocha";
+  piRaw = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi;
 
-  # Only wslstation has the sops secret wired up so far (see NOTES.md); on
-  # hosts without it, NIM-routed roles just have no key until it's added.
-  hasNimKey = (osConfig.sops.secrets or { }) ? "nim/api-key";
+  # pi's extension installer shells out to `npm install`, which needs a real
+  # FHS layout to find make/gcc/python for native addons — a plain Nix store
+  # closure doesn't have one. Proven by the abandoned pi-coding-agent module
+  # this repo carried before oh-my-pi (see NOTES.md); Darwin has no
+  # buildFHSEnv, so it falls back to the unwrapped package there.
+  piFhs = pkgs.buildFHSEnv {
+    name = "pi";
+    targetPkgs =
+      _: with pkgs; [
+        gnumake
+        gcc
+        binutils
+        pkg-config
+        jq
+        nodejs
+        bash
+        coreutils
+        findutils
+        gnused
+        gnugrep
+        git
+        curl
+      ];
+    runScript = "${piRaw}/bin/pi";
+  };
+  piPackage = if pkgs.stdenv.isLinux then piFhs else piRaw;
+
+  theme = "catppuccin-tui-mocha";
 
   # Only hosts wiring the pi-work-* sops templates get the work profile;
   # private-only hosts skip it entirely (same guard the old omp module used).
@@ -140,13 +165,21 @@ let
     };
 in
 {
+  # NIM API key: a personal credential decrypted with the user's own GPG
+  # key (secrets/shared/nim.yaml, pre-existing — see NOTES.md), not a
+  # per-host NixOS secret. Works identically on every host with that GPG
+  # key present, no per-host age-key bootstrapping needed.
+  imports = [ inputs.sops-nix.homeManagerModules.sops ];
+
+  sops = {
+    gnupg.home = "${config.home.homeDirectory}/.gnupg";
+    gnupg.sshKeyPaths = [ ];
+    secrets.nim-api-key.sopsFile = self + /secrets/shared/nim.yaml;
+  };
+
   programs.pi-coding-agent = {
     enable = true;
     package = piPackage;
-    extraPackages = with pkgs; [
-      nodejs
-      bun
-    ];
     context = ./context.md;
     settings = piLib.mkSettings {
       roleMap = privateRoles;
@@ -156,7 +189,7 @@ in
       providers.nim = {
         baseUrl = "https://integrate.api.nvidia.com/v1";
         api = "openai-completions";
-        apiKey = "\${NVIDIA_API_KEY}";
+        apiKey = "!cat ${config.sops.secrets.nim-api-key.path}";
         models = map (m: { id = m; }) (
           lib.unique (
             map (r: lib.removePrefix "nim/" r) (
@@ -166,10 +199,6 @@ in
         );
       };
     };
-  };
-
-  home.sessionVariables = lib.mkIf hasNimKey {
-    NVIDIA_API_KEY = "$(cat ${osConfig.sops.secrets."nim/api-key".path})";
   };
 
   home.file =
