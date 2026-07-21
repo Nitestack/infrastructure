@@ -17,6 +17,8 @@ let
 
   piLib = import ./lib.nix { inherit lib; };
   extensions = import ./extensions.nix;
+  privateExtensions = extensions.common ++ extensions.private;
+  workExtensions = extensions.common ++ extensions.work;
   privateRoles = import ./roles/private.nix;
   workRoles = import ./roles/work.nix;
 
@@ -190,7 +192,8 @@ in
     context = ./context.md;
     settings = piLib.mkSettings {
       roleMap = privateRoles;
-      inherit extensions theme;
+      extensions = privateExtensions;
+      inherit theme;
     };
   };
 
@@ -205,7 +208,8 @@ in
         "${workConfigDir}/settings.json".text = builtins.toJSON (
           (piLib.mkSettings {
             roleMap = workRoles;
-            inherit extensions theme;
+            extensions = workExtensions;
+            inherit theme;
           })
           // {
             # Gateway has no MCP tools; skip the discovery round-trip on
@@ -241,7 +245,12 @@ in
   # `packages` array. Versioned specs (all of ours are) are skipped by
   # `pi update --extensions` once already installed, so this only does real
   # work on a fresh machine or when the roster changes.
-  home.activation.piExtensions = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  # Must run after sops-nix's own activation entry, not just writeBoundary:
+  # piRunScript eagerly `cat`s the NIM secret, and sops-nix is what actually
+  # decrypts it. Home Manager doesn't order two writeBoundary-only entries
+  # relative to each other, so without this, piExtensions has been observed
+  # running first and reading the secret before it exists.
+  home.activation.piExtensions = lib.hm.dag.entryAfter [ "writeBoundary" "sops-nix" ] ''
     ${piPackage}/bin/pi update --extensions || true
     ${lib.optionalString hasWorkProfile ''
       PI_CODING_AGENT_DIR=${workConfigDir} ${piPackage}/bin/pi update --extensions || true
