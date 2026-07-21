@@ -8,7 +8,6 @@
   pkgs,
   flake,
   config,
-  osConfig,
   lib,
   ...
 }:
@@ -23,13 +22,9 @@ let
 
   piRaw = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi;
 
-  # pi-nvidia-nim (the "nvidia-nim" provider extension) resolves its API key
-  # from NVIDIA_NIM_API_KEY/NVIDIA_API_KEY or auth.json — not from
-  # models.json's apiKey field, so the "!cat <path>" shell-indirection
-  # convention pi documents for models.json doesn't apply here, and
-  # auth.json's resolution isn't documented to support it either. Exporting
-  # the sops-decrypted key as an env var right before exec is the same
-  # trick pi-work already uses below for LITELLM_API_KEY.
+  # pi-nvidia-nim reads its key from NVIDIA_NIM_API_KEY, not models.json's
+  # apiKey — export it here instead (same trick pi-work uses below for
+  # LITELLM_BASE_URL).
   piRunScript = ''
     export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"
     exec ${piRaw}/bin/pi "$@"
@@ -64,13 +59,10 @@ let
 
   theme = "catppuccin-tui-mocha";
 
-  # Only hosts wiring the pi-work-* sops templates get the work profile;
-  # private-only hosts skip it entirely (same guard the old omp module used).
-  hasWorkProfile =
-    (osConfig.sops.templates or { }) ? "pi-work-models-json"
-    && (osConfig.sops.templates or { }) ? "pi-work-litellm-base-url";
-  workModelsPath = osConfig.sops.templates."pi-work-models-json".path;
-  workLitellmBaseUrlPath = osConfig.sops.templates."pi-work-litellm-base-url".path;
+  # Only hosts with aix (the LITELLM_BASE_URL/LITELLM_API_KEY env var
+  # bridge, modules/home/aix.nix) get the work profile; private-only hosts
+  # skip it entirely.
+  hasWorkProfile = config.programs.aix.enable or false;
 
   workConfigDir = "${config.home.homeDirectory}/.pi/agent-work";
 
@@ -211,12 +203,19 @@ in
       {
         "${workConfigDir}/AGENTS.md".source = ./context.md;
         "${workConfigDir}/settings.json".text = builtins.toJSON (
-          piLib.mkSettings {
+          (piLib.mkSettings {
             roleMap = workRoles;
             inherit extensions theme;
+          })
+          // {
+            # Gateway has no MCP tools; skip the discovery round-trip on
+            # every startup.
+            litellm = {
+              mcp.enabled = false;
+              skills.enabled = false;
+            };
           }
         );
-        "${workConfigDir}/models.json".source = config.lib.file.mkOutOfStoreSymlink workModelsPath;
       }
       // mkProfileFiles {
         configDir = workConfigDir;

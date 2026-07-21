@@ -20,11 +20,8 @@
   "pi-hermes-memory@0.8.1"
   "pi-agent-browser-native@0.2.71"
   "pi-lens@3.8.71"
-  # Replaces the hand-rolled "nim" models.json provider (raw
-  # openai-completions against integrate.api.nvidia.com): registers its own
-  # "nvidia-nim" provider with per-model chat_template_kwargs handling for
-  # thinking mode, plus rate-limit retry for the NIM free tier.
   "@diegovisk/pi-nvidia-nim@1.1.0"
+  "pi-provider-litellm@1.3.0"
   # pi-vim@0.12.1 removed: fails to load at runtime ("Cannot find module
   # '@earendil-works/pi-coding-agent'" from its own node_modules). Probation
   # extension misbehaving — per the issue's own policy, removal is the
