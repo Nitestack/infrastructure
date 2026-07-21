@@ -15,14 +15,18 @@
         model = "gpt-5.6-luna";
       }
       {
-        provider = "nim";
-        model = "kimi-k2.6";
+        provider = "nvidia-nim";
+        model = "moonshotai/kimi-k2.6";
+      }
+      {
+        provider = "nvidia-nim";
+        model = "z-ai/glm-5.2";
       }
     ];
   };
 
   commit = {
-    provider = "nim";
+    provider = "nvidia-nim";
     model = "stepfun-ai/step-3.7-flash";
     fallback = [
       {
@@ -56,20 +60,28 @@
         model = "gpt-5.6-terra";
       }
       {
-        provider = "nim";
-        model = "kimi-k2.6";
+        provider = "nvidia-nim";
+        model = "moonshotai/kimi-k2.6";
+      }
+      {
+        provider = "nvidia-nim";
+        model = "nvidia/nemotron-3-ultra-550b-a55b";
+      }
+      {
+        provider = "nvidia-nim";
+        model = "deepseek-ai/deepseek-v4-pro";
       }
     ];
   };
 
   # smol is an alias of scout (same role, second invocation name).
   scout = {
-    provider = "nim";
-    model = "qwen/qwen3.5-122b-a10b";
+    provider = "nvidia-nim";
+    model = "nvidia/nemotron-3-nano-30b-a3b";
     fallback = [
       {
-        provider = "nim";
-        model = "kimi-k2.6";
+        provider = "nvidia-nim";
+        model = "moonshotai/kimi-k2.6";
       }
       {
         provider = "openai-codex";
@@ -85,19 +97,23 @@
     thinking = "low";
     fallback = [
       {
-        provider = "nim";
-        model = "kimi-k2.6";
+        provider = "nvidia-nim";
+        model = "moonshotai/kimi-k2.6";
+      }
+      {
+        provider = "nvidia-nim";
+        model = "nvidia/nemotron-3-nano-30b-a3b";
       }
     ];
   };
 
   vision = {
-    provider = "nim";
-    model = "qwen/qwen3.5-122b-a10b";
+    provider = "nvidia-nim";
+    model = "moonshotai/kimi-k2.6";
     fallback = [
       {
-        provider = "nim";
-        model = "kimi-k2.6";
+        provider = "nvidia-nim";
+        model = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning";
       }
       {
         provider = "openai-codex";

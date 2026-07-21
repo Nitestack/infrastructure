@@ -23,6 +23,18 @@ let
 
   piRaw = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi;
 
+  # pi-nvidia-nim (the "nvidia-nim" provider extension) resolves its API key
+  # from NVIDIA_NIM_API_KEY/NVIDIA_API_KEY or auth.json — not from
+  # models.json's apiKey field, so the "!cat <path>" shell-indirection
+  # convention pi documents for models.json doesn't apply here, and
+  # auth.json's resolution isn't documented to support it either. Exporting
+  # the sops-decrypted key as an env var right before exec is the same
+  # trick pi-work already uses below for LITELLM_API_KEY.
+  piRunScript = ''
+    export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"
+    exec ${piRaw}/bin/pi "$@"
+  '';
+
   # pi's extension installer shells out to `npm install`, which needs a real
   # FHS layout to find make/gcc/python for native addons — a plain Nix store
   # closure doesn't have one. Proven by the abandoned pi-coding-agent module
@@ -46,9 +58,9 @@ let
         git
         curl
       ];
-    runScript = "${piRaw}/bin/pi";
+    runScript = pkgs.writeShellScript "pi-run" piRunScript;
   };
-  piPackage = if pkgs.stdenv.isLinux then piFhs else piRaw;
+  piPackage = if pkgs.stdenv.isLinux then piFhs else pkgs.writeShellScriptBin "pi" piRunScript;
 
   theme = "catppuccin-tui-mocha";
 
@@ -177,6 +189,9 @@ in
     secrets.nim-api-key.sopsFile = self + /secrets/shared/nim.yaml;
   };
 
+  # No models.json "nim" provider block anymore: the @diegovisk/pi-nvidia-nim
+  # extension (in extensions.nix) registers the "nvidia-nim" provider and
+  # its own curated model catalog itself.
   programs.pi-coding-agent = {
     enable = true;
     package = piPackage;
@@ -184,20 +199,6 @@ in
     settings = piLib.mkSettings {
       roleMap = privateRoles;
       inherit extensions theme;
-    };
-    models = piLib.mkModels {
-      providers.nim = {
-        baseUrl = "https://integrate.api.nvidia.com/v1";
-        api = "openai-completions";
-        apiKey = "!cat ${config.sops.secrets.nim-api-key.path}";
-        models = map (m: { id = m; }) (
-          lib.unique (
-            map (r: lib.removePrefix "nim/" r) (
-              lib.filter (r: lib.hasPrefix "nim/" r) (piLib.allModelRefs privateRoles)
-            )
-          )
-        );
-      };
     };
   };
 
