@@ -97,6 +97,25 @@ scaffolding for hosts that didn't need it for this secret. If nixstation or
 macstation ever need a genuine host-level NixOS secret for something else,
 that's a fresh, separate decision, not a byproduct of this change.
 
+## pi-vim removed (probation policy exercised for real, 2026-07-21)
+
+Confirmed broken on first real use: `pi-vim@0.12.1` (`lajarre/pi-vim`) fails
+to load —
+`Cannot find module '@earendil-works/pi-coding-agent' from
+'~/.pi/agent/npm/node_modules/pi-vim/index.ts'`. Every extension in this
+roster declares `@earendil-works/pi-coding-agent` (and usually
+`@earendil-works/pi-ai`/`@earendil-works/pi-tui`) as a peer dependency —
+that's the normal shape for a pi extension — so this isn't `pi-vim` doing
+something unusual; something in how pi's own npm-based installer hoists
+that shared package for `pi-vim` specifically is failing (confirmed no
+other roster extension has errored the same way in practice). Since
+`pi-vim` was explicitly marked probation for exactly this risk ("removal is
+the remedy, not redesign"), it's dropped from `extensions.nix` rather than
+chasing the hoisting bug. This leaves story 42 (vim-style modal editing)
+unfulfilled for now. If it matters enough to revisit: `burneikis/pi-vim`
+and `pekochan069/pi-vimmode` turned up as alternative vim-mode extensions
+during this investigation, neither vetted.
+
 ## Historical compatibility note
 
 The abandoned prior attempt dropped `pi-web-access` and `pi-lean-ctx` in
@@ -114,7 +133,7 @@ statusline/theme files this module renders, the remaining roster entries are
 declared in `settings.json`'s `packages` array only — `cc-safety-net`,
 `pi-plan-mode`, `pi-web-access`, `pi-notify`, `pi-btw`, `@ayulab/pi-rewind`,
 `@juicesharp/rpiv-ask-user-question`, `@narumitw/pi-codex-usage`,
-`pi-hermes-memory`, `pi-agent-browser-native`, `pi-lens`, `pi-vim`. Each
+`pi-hermes-memory`, `pi-agent-browser-native`, `pi-lens`. Each
 ships sensible defaults on install; none needed a Nix-rendered config file
 to satisfy its user story. Tune post-install if upstream defaults don't
 match (e.g. `pi-web-access`'s search-provider order).

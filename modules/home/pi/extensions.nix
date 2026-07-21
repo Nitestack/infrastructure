@@ -20,5 +20,8 @@
   "pi-hermes-memory@0.8.1"
   "pi-agent-browser-native@0.2.71"
   "pi-lens@3.8.71"
-  "pi-vim@0.12.1"
+  # pi-vim@0.12.1 removed: fails to load at runtime ("Cannot find module
+  # '@earendil-works/pi-coding-agent'" from its own node_modules). Probation
+  # extension misbehaving — per the issue's own policy, removal is the
+  # remedy, not redesign. See NOTES.md.
 ]
