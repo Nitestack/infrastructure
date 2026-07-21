@@ -1,5 +1,5 @@
 {
-  extensions = [ "pi-provider-litellm@1.3.0" ];
+  extensions = [ "pi-provider-litellm" ];
 
   roles = {
     default = {

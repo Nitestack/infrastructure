@@ -15,26 +15,22 @@ let
   work = import ./roles/work.nix;
 
   commonExtensions = [
-    "pi-subagents@0.35.1"
-    "pi-prompt-template-model@0.10.0"
-    "pi-provider-fallback@1.0.4"
-    "pi-web-access@0.13.0"
-    "cc-safety-net@1.0.6"
-    "pi-plan-mode@0.4.8"
-    "@ayulab/pi-rewind@0.4.6"
-    "@juicesharp/rpiv-ask-user-question@1.20.0"
-    "pi-notify@1.4.0"
-    "@narumitw/pi-codex-usage@0.20.0"
-    "pi-btw@0.4.1"
-    "@narumitw/pi-statusline@0.23.0"
-    "pi-catppuccin-tui@0.1.3"
+    "pi-subagents"
+    "pi-prompt-template-model"
+    "pi-provider-fallback"
+    "pi-web-access"
+    "cc-safety-net"
+    "pi-plan-mode"
+    "@ayulab/pi-rewind"
+    "@juicesharp/rpiv-ask-user-question"
+    "pi-notify"
+    "@narumitw/pi-usage"
+    "pi-btw"
+    "@sherif-fanous/pi-catppuccin"
+    "pi-zentui"
     # Probation
-    "pi-hermes-memory@0.8.1"
-    "pi-agent-browser-native@0.2.71"
-    "pi-lens@3.8.71"
-    # pi-vim@0.12.1 removed: runtime "Cannot find module
-    # '@earendil-works/pi-coding-agent'" error. Probation extensions get
-    # removed, not fixed — see NOTES.md.
+    "pi-agent-browser-native"
+    "pi-lens"
   ];
 
   privateExtensions = commonExtensions ++ private.extensions;
@@ -76,25 +72,6 @@ let
   hasWorkProfile = config.programs.aix.enable or false;
 
   workConfigDir = "${config.home.homeDirectory}/.pi/agent-work";
-
-  statuslineConfig = {
-    palette = "tokyo-night";
-    density = "compact";
-    separator = "powerline";
-    segments = [
-      "brand"
-      "provider"
-      "model"
-      "thinking"
-      "cwd"
-      "branch"
-      "tools"
-      "context"
-      "tokens"
-      "cost"
-      "time"
-    ];
-  };
 
   slashCommands = roles: {
     "commit.md" = piLib.mkPromptTemplate {
@@ -158,6 +135,18 @@ let
     };
   };
 
+  # Only overrides of pi-zentui's defaults; missing keys fall back to
+  # Zentui's own defaults, so this stays minimal and doesn't need to track
+  # upstream default changes.
+  zentuiConfig = {
+    separator = "dot";
+    pathDisplay = {
+      mode = "full";
+      depth = 0;
+    };
+    fixedEditor.enabled = true;
+  };
+
   mkProfileFiles =
     {
       configDir,
@@ -173,7 +162,7 @@ let
       "${configDir}/extensions/provider-fallback.json".text = builtins.toJSON (
         piLib.mkProviderFallback { roleMap = roles; }
       );
-      "${configDir}/pi-statusline.json".text = builtins.toJSON statuslineConfig;
+      "${configDir}/zentui.json".text = builtins.toJSON zentuiConfig;
     };
 in
 {
