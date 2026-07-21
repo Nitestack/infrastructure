@@ -1,7 +1,7 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ AI                                                       │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, ... }:
+{ flake, pkgs, ... }:
 let
   inherit (flake) inputs;
   inherit (inputs) self;
@@ -36,41 +36,30 @@ in
 
     self.homeModules.pi
   ];
-  programs = {
-    agent-skills = {
-      enable = true;
-      sources = {
-        caveman = {
-          path = inputs.caveman;
-          subdir = "skills";
-        };
-        humanizer.path = inputs.humanizer;
-        matt-pocock-skills = mattPocockSource;
+  home.packages = with inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}; [
+    claude-code
+    codex
+  ];
+  programs.agent-skills = {
+    enable = true;
+    sources = {
+      caveman = {
+        path = inputs.caveman;
+        subdir = "skills";
       };
-      skills = {
-        enableAll = [
-          "caveman"
-          "humanizer"
-        ];
-        explicit = mattPocockExplicitSkills;
-      };
-      targets.claude.enable = true;
-      targets.codex.enable = true;
-      targets.agents.enable = true;
+      humanizer.path = inputs.humanizer;
+      matt-pocock-skills = mattPocockSource;
     };
-    claude-code = {
-      enable = true;
-      settings = {
-        includeCoAuthoredBy = false;
-        permissions = {
-          defaultMode = "bypassPermissions";
-          skipDangerousModePermissionPrompt = true;
-        };
-        env = {
-          CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS = "1";
-        };
-        model = "sonnet[1m]";
-      };
+    skills = {
+      enableAll = [
+        "caveman"
+        "humanizer"
+      ];
+      explicit = mattPocockExplicitSkills;
     };
+    targets.agents.enable = true;
+    targets.claude.enable = true;
+    targets.codex.enable = true;
+    targets.pi.enable = true;
   };
 }
