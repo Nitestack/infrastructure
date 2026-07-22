@@ -27,18 +27,6 @@ in
     # `systemd.user.services` applies to every user's manager, so scope it down.
     unitConfig.ConditionUser = meta.username;
 
-    path =
-      with pkgs;
-      [
-        git
-        openssh
-        nodejs
-      ]
-      ++ (with inputs.llm-agents-nix.packages.${system}; [
-        claude-code
-        codex
-      ]);
-
     serviceConfig = {
       ExecStart = ''
         ${orca}/bin/orca serve \
@@ -50,7 +38,4 @@ in
       RestartSec = 5;
     };
   };
-
-  # Tailscale's interface is already trusted (see ./tailscale.nix), so no
-  # extra firewall rule is needed to reach the server over the tailnet.
 }
