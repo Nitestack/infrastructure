@@ -31,7 +31,16 @@ let
     "@sherif-fanous/pi-catppuccin"
     "pi-zentui"
     "pi-working-phrase"
+    # Claude Code / Codex parity: pi's own harness lacks the persistence,
+    # background-task, and tool-call-repair behavior those CLIs bake in by
+    # default, which otherwise shows up as the agent stopping mid-task.
+    "@harms-haus/pi-til-done"
+    "pi-continue"
+    "pi-loop-police"
+    "pi-patty-bg-tasks"
+    "pi-tool-repair"
     # Probation
+    "pi-hermes-memory"
     "pi-agent-browser-native"
     "pi-lens"
   ]
@@ -94,6 +103,28 @@ let
     name = "pi-work";
     exportNim = false;
   };
+
+  # pi ships as a single compiled binary, so its core packages never exist as
+  # real npm installs on disk. Extensions that only need types (`import type
+  # ... from "@earendil-works/pi-coding-agent"`) are fine, since jiti strips
+  # those before runtime, but any extension doing a real `import.meta.resolve`
+  # against these specifiers (e.g. to reach undocumented internals) fails with
+  # "Cannot find module". Vendoring the real published packages alongside the
+  # extensions gives that resolution something real to find, for that
+  # extension and any future one hitting the same pattern.
+  piCoreNpmVersion = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi.version;
+  piCoreNpmPackages = map (pkg: "${pkg}@${piCoreNpmVersion}") [
+    "@earendil-works/pi-coding-agent"
+    "@earendil-works/pi-ai"
+    "@earendil-works/pi-tui"
+  ];
+  mkVendorCoreNpmScript =
+    npmDir:
+    ''
+      ${lib.getExe' pkgs.nodejs "npm"} --prefix ${lib.escapeShellArg npmDir} install --no-save --package-lock=false --no-audit --no-fund \
+    ''
+    + lib.concatMapStringsSep " \\\n    " lib.escapeShellArg piCoreNpmPackages
+    + " || true";
 
   hasWorkProfile = config.programs.aix.enable or false;
 
@@ -337,8 +368,10 @@ in
   # writeBoundary-only entries aren't ordered relative to each other.
   home.activation.piExtensions = lib.hm.dag.entryAfter [ "writeBoundary" "sops-nix" ] ''
     ${piPackage}/bin/pi update --extensions || true
+    ${mkVendorCoreNpmScript "${config.home.homeDirectory}/.pi/agent/npm"}
     ${lib.optionalString hasWorkProfile ''
       PI_CODING_AGENT_DIR=${workConfigDir} ${piWorkPackage}/bin/pi-work update --extensions || true
+      ${mkVendorCoreNpmScript "${workConfigDir}/npm"}
     ''}
   '';
 }
