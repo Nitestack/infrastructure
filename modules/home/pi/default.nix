@@ -21,7 +21,6 @@ let
     "@gotgenes/pi-permission-system"
     "pi-prompt-template-model"
     "pi-provider-fallback"
-    "pi-web-access"
     "cc-safety-net"
     "pi-plan-mode"
     "@ayulab/pi-rewind"
@@ -259,7 +258,7 @@ let
     ))
     // {
       "${configDir}/extensions/provider-fallback.json".text = builtins.toJSON (
-        piLib.mkProviderFallback { roleMap = roles; }
+        piLib.mkProviderFallback { role = roles.default; }
       );
       "${configDir}/zentui.json".text = builtins.toJSON zentuiConfig;
       # Starting values, not tuned optima: bound how much parallel/nested
