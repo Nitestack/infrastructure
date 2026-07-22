@@ -28,10 +28,13 @@ let
     "pi-btw"
     "@sherif-fanous/pi-catppuccin"
     "pi-zentui"
+    "pi-working-phrase"
+    "@burneikis/pi-vim"
     # Probation
     "pi-agent-browser-native"
     "pi-lens"
-  ];
+  ]
+  ++ lib.optional (config.programs.tmux.enable or false) "pi-tmux-spinner";
 
   privateExtensions = commonExtensions ++ private.extensions;
   workExtensions = commonExtensions ++ work.extensions;
