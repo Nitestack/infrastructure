@@ -18,6 +18,7 @@ let
 
   commonExtensions = [
     "pi-subagents"
+    "@gotgenes/pi-permission-system"
     "pi-prompt-template-model"
     "pi-provider-fallback"
     "pi-web-access"
@@ -128,36 +129,111 @@ let
     };
   };
 
+  # Reviewer/oracle may want to inspect the repo themselves (diff, log,
+  # status) rather than asking the main agent to hand them one; bash stays
+  # restricted to that inspection surface, everything else falls back to ask.
+  readOnlyInspectionPermission = {
+    "*" = "ask";
+    read = "allow";
+    grep = "allow";
+    find = "allow";
+    ls = "allow";
+    bash = {
+      "*" = "ask";
+      "git diff*" = "allow";
+      "git log*" = "allow";
+      "git show*" = "allow";
+      "git status" = "allow";
+      "rg *" = "allow";
+      "grep *" = "allow";
+      "find *" = "allow";
+      "cat *" = "allow";
+    };
+  };
+
   subagents = roles: {
     "reviewer.md" = piLib.mkSubagent {
       name = "reviewer";
       description = "Reviews diffs and PRs for correctness, spec alignment, and regressions before you approve them.";
       role = roles.reviewer;
+      tools = [
+        "read"
+        "grep"
+        "find"
+        "ls"
+        "bash"
+      ];
+      extensions = [ ];
+      permission = readOnlyInspectionPermission;
+      maxSubagentDepth = 0;
     };
     "oracle.md" = piLib.mkSubagent {
       name = "oracle";
       description = "Answers architecture and design judgment questions; same tier as reviewer.";
       role = roles.reviewer;
+      tools = [
+        "read"
+        "grep"
+        "find"
+        "ls"
+        "bash"
+      ];
+      extensions = [ ];
+      permission = readOnlyInspectionPermission;
+      maxSubagentDepth = 0;
     };
     "scout.md" = piLib.mkSubagent {
       name = "scout";
       description = "Explores the codebase read-mostly to answer where-is-X / how-does-Y-work questions before implementation.";
       role = roles.scout;
+      tools = [
+        "read"
+        "grep"
+        "find"
+        "ls"
+      ];
+      extensions = [ ];
+      maxSubagentDepth = 0;
     };
     "smol.md" = piLib.mkSubagent {
       name = "smol";
       description = "Cheap, fast read-mostly exploration; alias of scout for volume work.";
       role = roles.scout;
+      tools = [
+        "read"
+        "grep"
+        "find"
+        "ls"
+      ];
+      extensions = [ ];
+      maxSubagentDepth = 0;
     };
     "worker.md" = piLib.mkSubagent {
       name = "worker";
       description = "Implements code changes for a well-scoped task handed to it.";
       role = roles.worker;
+      tools = [
+        "read"
+        "grep"
+        "find"
+        "ls"
+        "edit"
+        "write"
+        "bash"
+      ];
+      # No interactive/theme extensions are meaningful in a headless child.
+      # Already trusted with edit/write at the tool-visibility layer, so
+      # bash isn't gated down separately here.
+      extensions = [ ];
+      maxSubagentDepth = 0;
     };
     "vision.md" = piLib.mkSubagent {
       name = "vision";
       description = "Understands screenshots and images: UI review, error screenshots, diagrams.";
       role = roles.vision;
+      tools = [ "read" ];
+      extensions = [ ];
+      maxSubagentDepth = 0;
     };
   };
 
@@ -186,6 +262,13 @@ let
         piLib.mkProviderFallback { roleMap = roles; }
       );
       "${configDir}/zentui.json".text = builtins.toJSON zentuiConfig;
+      # Starting values, not tuned optima: bound how much parallel/nested
+      # work pi-subagents can generate for a personal setup.
+      "${configDir}/extensions/subagent/config.json".text = builtins.toJSON {
+        asyncByDefault = false;
+        globalConcurrencyLimit = 4;
+        maxSubagentSpawnsPerSession = 24;
+      };
     };
 in
 {

@@ -75,6 +75,10 @@ in
       name,
       description,
       role,
+      tools ? null,
+      extensions ? null,
+      permission ? null,
+      maxSubagentDepth ? null,
     }:
     frontmatter (
       {
@@ -85,5 +89,9 @@ in
       // lib.optionalAttrs (role.fallback or [ ] != [ ]) {
         fallbackModels = map qualifyThinking role.fallback;
       }
+      // lib.optionalAttrs (tools != null) { inherit tools; }
+      // lib.optionalAttrs (extensions != null) { inherit extensions; }
+      // lib.optionalAttrs (permission != null) { inherit permission; }
+      // lib.optionalAttrs (maxSubagentDepth != null) { inherit maxSubagentDepth; }
     ) description;
 }
