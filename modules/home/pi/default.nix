@@ -42,36 +42,58 @@ let
   privateRoles = private.roles;
   workRoles = work.roles;
 
-  piRunScript = ''
-    export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"
-    # pi-provider-fallback hardcodes ~/.pi/agent/... and ignores
-    # PI_CODING_AGENT_DIR, so redirect it here or pi-work loads the private
-    # profile's fallback config instead of its own.
-    export PI_PROVIDER_FALLBACK_CONFIG="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/extensions/provider-fallback.json"
-    exec ${lib.getExe inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi} "$@"
-  '';
+  mkPiRunScript =
+    { exportNim }:
+    ''
+      ${lib.optionalString exportNim ''
+        export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"
+      ''}
+      # pi-provider-fallback hardcodes ~/.pi/agent/... and ignores
+      # PI_CODING_AGENT_DIR, so redirect it here or pi-work loads the private
+      # profile's fallback config instead of its own.
+      export PI_PROVIDER_FALLBACK_CONFIG="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/extensions/provider-fallback.json"
+      exec ${lib.getExe inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.pi} "$@"
+    '';
 
-  piFhs = pkgs.buildFHSEnv {
+  piFhsTargetPkgs =
+    _: with pkgs; [
+      gnumake
+      gcc
+      binutils
+      pkg-config
+      jq
+      nodejs
+      bash
+      coreutils
+      findutils
+      gnused
+      gnugrep
+      git
+      curl
+    ];
+
+  mkPiPackage =
+    { name, exportNim }:
+    let
+      runScript = mkPiRunScript { inherit exportNim; };
+    in
+    if pkgs.stdenv.isLinux then
+      pkgs.buildFHSEnv {
+        inherit name;
+        targetPkgs = piFhsTargetPkgs;
+        runScript = pkgs.writeShellScript "${name}-run" runScript;
+      }
+    else
+      pkgs.writeShellScriptBin name runScript;
+
+  piPackage = mkPiPackage {
     name = "pi";
-    targetPkgs =
-      _: with pkgs; [
-        gnumake
-        gcc
-        binutils
-        pkg-config
-        jq
-        nodejs
-        bash
-        coreutils
-        findutils
-        gnused
-        gnugrep
-        git
-        curl
-      ];
-    runScript = pkgs.writeShellScript "pi-run" piRunScript;
+    exportNim = true;
   };
-  piPackage = if pkgs.stdenv.isLinux then piFhs else pkgs.writeShellScriptBin "pi" piRunScript;
+  piWorkPackage = mkPiPackage {
+    name = "pi-work";
+    exportNim = false;
+  };
 
   hasWorkProfile = config.programs.aix.enable or false;
 
@@ -221,20 +243,20 @@ in
           exit 1
         fi
         export PI_CODING_AGENT_DIR=${workConfigDir}
-        exec ${piPackage}/bin/pi "$@"
+        exec ${piWorkPackage}/bin/pi-work "$@"
       '';
     })
   ];
 
   # Best-effort install of settings.json's `packages`; already-installed
   # versioned specs are skipped, so this only bites on a fresh machine or
-  # roster change. Ordered after sops-nix, not just writeBoundary: piRunScript
-  # reads the NIM secret that sops-nix decrypts, and two writeBoundary-only
-  # entries aren't ordered relative to each other.
+  # roster change. Ordered after sops-nix, not just writeBoundary: pi's run
+  # script reads the NIM secret that sops-nix decrypts, and two
+  # writeBoundary-only entries aren't ordered relative to each other.
   home.activation.piExtensions = lib.hm.dag.entryAfter [ "writeBoundary" "sops-nix" ] ''
     ${piPackage}/bin/pi update --extensions || true
     ${lib.optionalString hasWorkProfile ''
-      PI_CODING_AGENT_DIR=${workConfigDir} ${piPackage}/bin/pi update --extensions || true
+      PI_CODING_AGENT_DIR=${workConfigDir} ${piWorkPackage}/bin/pi-work update --extensions || true
     ''}
   '';
 }
