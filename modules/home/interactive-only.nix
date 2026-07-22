@@ -10,7 +10,6 @@ let
 in
 {
   imports = [
-    self.homeModules.ai
     self.homeModules.languages
   ];
 

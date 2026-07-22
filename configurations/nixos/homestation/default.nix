@@ -43,6 +43,7 @@ in
     ./homelab/vaultwarden.nix
     ./homelab/wealthfolio.nix
     ./homelab/yamtrack.nix
+    ./orca.nix
     ./tailscale.nix
   ];
 
