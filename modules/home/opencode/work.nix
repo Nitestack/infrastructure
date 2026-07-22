@@ -3,6 +3,11 @@
 
   plugin = [ "opencode-models-discovery@1.1.0" ];
 
+  disabled_providers = [
+    "openai"
+    "nvidia"
+  ];
+
   provider = {
     litellm-chat = {
       npm = "@ai-sdk/openai-compatible";
