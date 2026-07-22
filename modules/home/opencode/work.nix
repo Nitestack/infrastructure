@@ -21,11 +21,15 @@
             }
             {
               field = "id";
-              match = "^(gpt-5|o3-|o4-)";
+              match = "^(US-)?(gpt-5|o3-|o4-)";
             }
             {
               field = "id";
-              match = "(?i)(embed|image|vision|whisper|tts|dall-e|rerank)";
+              match = "(embed|image|vision|whisper|tts|dall-e|rerank)";
+            }
+            {
+              field = "id";
+              match = "e5-mistral";
             }
           ];
         };
@@ -45,7 +49,7 @@
           models.includeBy = [
             {
               field = "id";
-              match = "^(gpt-5|o3-|o4-)";
+              match = "^(US-)?(gpt-5|o3-|o4-)";
             }
           ];
         };
