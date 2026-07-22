@@ -16,7 +16,7 @@ let
 
   hasWorkProfile = config.programs.aix.enable or false;
 
-  workConfigFile = "${config.home.homeDirectory}/.config/opencode-work/opencode.json";
+  workConfigDir = "${config.home.homeDirectory}/.config/opencode-work";
 
   opencodePrivatePackage = pkgs.symlinkJoin {
     name = "opencode-private";
@@ -24,7 +24,7 @@ let
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/opencode \
-        --run 'export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"'
+        --run 'export NVIDIA_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"'
     '';
     passthru = {
       inherit (opencodePackage) version;
@@ -43,7 +43,7 @@ in
   };
 
   home.file = lib.optionalAttrs hasWorkProfile {
-    "${workConfigFile}".text = builtins.toJSON (import ./work.nix);
+    "${workConfigDir}/opencode.json".text = builtins.toJSON (import ./work.nix);
   };
 
   home.packages = lib.optionals hasWorkProfile [
@@ -59,7 +59,7 @@ in
           exit 1
         fi
         export LITELLM_ROOT_BASE_URL="''${LITELLM_BASE_URL%/v1}"
-        export OPENCODE_CONFIG=${workConfigFile}
+        export OPENCODE_CONFIG_DIR=${workConfigDir}
         exec ${lib.getExe opencodePackage} "$@"
       '';
     })
