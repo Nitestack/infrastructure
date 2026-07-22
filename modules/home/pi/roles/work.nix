@@ -5,6 +5,7 @@
     default = {
       provider = "litellm";
       model = "claude-sonnet-5*";
+      thinking = "medium";
       fallback = [
         {
           provider = "litellm";
@@ -20,6 +21,7 @@
     commit = {
       provider = "litellm";
       model = "qwen-3.6-35b-sovereign";
+      thinking = "low";
       fallback = [
         {
           provider = "litellm";
@@ -71,6 +73,7 @@
     scout = {
       provider = "litellm";
       model = "deepseek-v4-flash-sovereign";
+      thinking = "low";
       fallback = [
         {
           provider = "litellm";
@@ -86,6 +89,7 @@
     worker = {
       provider = "litellm";
       model = "claude-sonnet-5*";
+      thinking = "medium";
       fallback = [
         {
           provider = "litellm";
@@ -105,6 +109,7 @@
     vision = {
       provider = "litellm";
       model = "gpt-5.4";
+      thinking = "medium";
       fallback = [
         {
           provider = "litellm";
