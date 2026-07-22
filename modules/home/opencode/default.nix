@@ -16,13 +16,8 @@ let
 
   hasWorkProfile = config.programs.aix.enable or false;
 
-  workXdgConfigHome = "${config.home.homeDirectory}/.config-opencode-work";
+  workConfigFile = "${config.home.homeDirectory}/.config/opencode-work/opencode.json";
 
-  # NVIDIA_NIM_API_KEY must be read from the sops-decrypted secret at
-  # runtime, never baked into the store. Wrapped via symlinkJoin+makeWrapper
-  # (not writeShellScriptBin) so `.version` passthru survives - the
-  # home-manager opencode module reads cfg.package.version to decide the
-  # TUI-key deprecation warning.
   opencodePrivatePackage = pkgs.symlinkJoin {
     name = "opencode-private";
     paths = [ opencodePackage ];
@@ -48,7 +43,7 @@ in
   };
 
   home.file = lib.optionalAttrs hasWorkProfile {
-    "${workXdgConfigHome}/opencode/opencode.json".text = builtins.toJSON (import ./work.nix);
+    "${workConfigFile}".text = builtins.toJSON (import ./work.nix);
   };
 
   home.packages = lib.optionals hasWorkProfile [
@@ -64,7 +59,7 @@ in
           exit 1
         fi
         export LITELLM_ROOT_BASE_URL="''${LITELLM_BASE_URL%/v1}"
-        export XDG_CONFIG_HOME=${workXdgConfigHome}
+        export OPENCODE_CONFIG=${workConfigFile}
         exec ${lib.getExe opencodePackage} "$@"
       '';
     })
