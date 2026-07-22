@@ -35,6 +35,7 @@ in
     inputs.agent-skills.homeManagerModules.default
 
     self.homeModules.pi
+    self.homeModules.opencode
   ];
   home.packages = with inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}; [
     claude-code
