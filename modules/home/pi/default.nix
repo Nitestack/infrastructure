@@ -1,4 +1,6 @@
-# Pi
+# ╭──────────────────────────────────────────────────────────╮
+# │ Pi                                                       │
+# ╰──────────────────────────────────────────────────────────╯
 {
   pkgs,
   flake,
@@ -29,7 +31,6 @@ let
     "@sherif-fanous/pi-catppuccin"
     "pi-zentui"
     "pi-working-phrase"
-    "@burneikis/pi-vim"
     # Probation
     "pi-agent-browser-native"
     "pi-lens"
@@ -138,9 +139,6 @@ let
     };
   };
 
-  # Only overrides of pi-zentui's defaults; missing keys fall back to
-  # Zentui's own defaults, so this stays minimal and doesn't need to track
-  # upstream default changes.
   zentuiConfig = {
     separator = "dot";
     pathDisplay = {
