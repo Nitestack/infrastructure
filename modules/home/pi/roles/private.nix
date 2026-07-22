@@ -1,5 +1,8 @@
 {
-  extensions = [ "@diegovisk/pi-nvidia-nim" ];
+  extensions = [
+    "@diegovisk/pi-nvidia-nim"
+    "pi-web-access"
+  ];
 
   roles = {
     default = {
