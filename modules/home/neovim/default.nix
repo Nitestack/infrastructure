@@ -68,7 +68,6 @@
 
     gcc
     ghostscript
-    github-copilot-cli
     imagemagick
     tree-sitter
     typst
