@@ -25,27 +25,23 @@ in
     };
 
   mkProviderFallback =
-    { roleMap }:
+    { role }:
     let
-      # Bucket by each step's own provider, not role.provider: fallback
-      # chains can cross providers (e.g. openai-codex -> nvidia-nim), and
-      # pi-provider-fallback only resolves same-provider entries per bucket.
-      allFallbackSteps = lib.concatMap (r: r.fallback or [ ]) (lib.attrValues roleMap);
-      providersUsed = lib.unique (
-        (map (r: r.provider) (lib.attrValues roleMap)) ++ (map (s: s.provider) allFallbackSteps)
-      );
+      # This is the *global session* fallback (extensions/provider-fallback.json),
+      # which only ever governs the main agent — so it must be derived from the
+      # default role's own chain, not every role's. Subagents get their fallback
+      # chain independently via mkSubagent's fallbackModels. Bucketing here by
+      # each step's own provider, not role.provider, because the chain can cross
+      # providers (e.g. openai-codex -> nvidia-nim), and pi-provider-fallback
+      # only resolves same-provider entries per bucket.
+      steps = role.fallback or [ ];
+      providersUsed = lib.unique ([ role.provider ] ++ (map (s: s.provider) steps));
       fallbacksFor =
         provider:
-        let
-          steps = lib.filter (s: s.provider == provider) allFallbackSteps;
-          uniqueSteps = lib.foldl' (
-            acc: s: if lib.any (x: x.model == s.model) acc then acc else acc ++ [ s ]
-          ) [ ] steps;
-        in
         lib.imap1 (i: s: {
           model = s.model;
           priority = i;
-        }) uniqueSteps;
+        }) (lib.filter (s: s.provider == provider) steps);
     in
     {
       enabled = true;
