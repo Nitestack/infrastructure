@@ -25,12 +25,7 @@ let
   yamtrackSecretsFile = self + /secrets/hosts/homestation/yamtrack.yaml;
 in
 {
-  imports = [ inputs.sops-nix.nixosModules.sops ];
-
   config.sops = {
-    defaultSopsFormat = "yaml";
-    age.sshKeyPaths = [ "/home/${config.meta.username}/.ssh/id_ed25519" ];
-
     secrets."cloudflared/credentials" = {
       sopsFile = infraSecretsFile;
       key = "cloudflared/credentials";

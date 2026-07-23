@@ -31,12 +31,8 @@ let
     };
 in
 {
-  imports = [ inputs.sops-nix.nixosModules.sops ];
-
   config.sops = {
     defaultSopsFile = secretsFile;
-    defaultSopsFormat = "yaml";
-    age.sshKeyPaths = [ "/home/${config.meta.username}/.ssh/id_ed25519" ];
 
     secrets =
       builtins.listToAttrs ((map mkProfileSecret aixProfiles) ++ (map mkLabelSecret aixProfiles))
@@ -45,11 +41,6 @@ in
           owner = config.meta.username;
           mode = "0400";
           key = "aix/base_url";
-        };
-        "nim-api-key" = {
-          sopsFile = self + /secrets/hosts/wslstation/nim.yaml;
-          owner = config.meta.username;
-          mode = "0400";
         };
       };
   };
