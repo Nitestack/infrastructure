@@ -60,6 +60,6 @@ in
     targets.agents.enable = true;
     targets.claude.enable = true;
     targets.codex.enable = true;
-    targets.pi.enable = true;
+    targets.opencode.enable = true;
   };
 }
