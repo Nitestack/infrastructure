@@ -96,6 +96,11 @@
       url = "github:mattpocock/skills";
       flake = false;
     };
+    # OpenCode Vim
+    opencode-vim = {
+      url = "github:leohenon/opencode-vim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Orca
     orca-nix = {
       url = "github:kevinpita/orca-nix";
