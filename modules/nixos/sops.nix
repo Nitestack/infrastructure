@@ -1,9 +1,13 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Darwin Base Configuration                                │
+# │ NixOS Secrets (sops)                                     │
 # ╰──────────────────────────────────────────────────────────╯
+{ flake, ... }:
+let
+  inherit (flake) inputs;
+in
 {
   imports = [
-    ../shared/system/base.nix
-    ./sops.nix
+    inputs.sops-nix.nixosModules.sops
+    ../shared/system/sops.nix
   ];
 }

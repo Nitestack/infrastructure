@@ -2,10 +2,19 @@ keys:
   - &admin_nhan 8513831BE7E4992E18FBCE9CD0D0238A27FD8B89
   - &wslstation_ssh age15axfejr5vv72cgx9uy9uwg7u505c00fch9v7w7nf8ramlzy4zqyqq7wce6
   - &homestation_ssh age1jrffh0x49q62pvk5z666yy03spps0v4tctacfckdytl4enh94c8q3ypt2w
+  - &nixstation_ssh age1ay6yrmvk2rgrxvz750d6gturpgu3qvs9sxwhfaulrd9knetngapqzd5x34
+  # - &macstation_ssh TODO: add once macstation's ~/.ssh/id_ed25519.pub age key is known
 
 creation_rules:
   - path_regex: secrets/shared/.*
-    pgp: *admin_nhan
+    key_groups:
+      - pgp:
+          - *admin_nhan
+        age:
+          - *wslstation_ssh
+          - *homestation_ssh
+          - *nixstation_ssh
+          # - *macstation_ssh
 
   - path_regex: secrets/hosts/wslstation/.*
     key_groups:

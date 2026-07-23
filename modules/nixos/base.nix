@@ -12,6 +12,7 @@ in
 {
   imports = [
     ../shared/system/base.nix
+    ./sops.nix
   ];
 
   # Nix
