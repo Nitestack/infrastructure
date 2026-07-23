@@ -50,6 +50,10 @@ in
     tui = mkTui (import ./private.nix);
   };
 
+  xdg.configFile."opencode/opencode-quota/quota-toast.jsonc".text = builtins.toJSON (
+    import ./quota.nix
+  );
+
   home.file = lib.optionalAttrs hasWorkProfile {
     "${workConfigDir}/opencode.json".text = builtins.toJSON (
       { "$schema" = "https://opencode.ai/config.json"; } // mkSettings (import ./work.nix)
