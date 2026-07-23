@@ -12,7 +12,7 @@ let
   inherit (flake) inputs;
   inherit (inputs) self;
 
-  opencodePackage = inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+  opencodePackage = inputs.opencode-vim.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 
   hasWorkProfile = config.programs.aix.enable or false;
 

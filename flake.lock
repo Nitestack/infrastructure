@@ -1263,6 +1263,26 @@
         "url": "https://devimages-cdn.apple.com/design/resources/download/NY.dmg"
       }
     },
+    "opencode-vim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784790185,
+        "narHash": "sha256-uwcCEahCqlTd2FVid4pbGg1FvKwIMWasHogTuEG7uAE=",
+        "owner": "leohenon",
+        "repo": "opencode-vim",
+        "rev": "91de6e357be15bd65273fc4b4b85960ffa859397",
+        "type": "github"
+      },
+      "original": {
+        "owner": "leohenon",
+        "repo": "opencode-vim",
+        "type": "github"
+      }
+    },
     "orca-nix": {
       "inputs": {
         "flake-utils": "flake-utils_3",
@@ -1333,6 +1353,7 @@
         "nixos-unified": "nixos-unified",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_7",
+        "opencode-vim": "opencode-vim",
         "orca-nix": "orca-nix",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
