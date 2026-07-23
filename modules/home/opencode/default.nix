@@ -5,12 +5,12 @@
   pkgs,
   flake,
   config,
+  osConfig,
   lib,
   ...
 }:
 let
   inherit (flake) inputs;
-  inherit (inputs) self;
 
   opencodePackage = inputs.opencode-vim.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 
@@ -24,7 +24,7 @@ let
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/opencode \
-        --run 'export NVIDIA_API_KEY="$(cat ${config.sops.secrets.nim-api-key.path})"'
+        --run 'export NVIDIA_API_KEY="$(cat ${osConfig.sops.secrets.nim-api-key.path})"'
     '';
     passthru = {
       inherit (opencodePackage) version;
@@ -32,10 +32,6 @@ let
   };
 in
 {
-  imports = [ inputs.sops-nix.homeManagerModules.sops ];
-
-  sops.secrets.nim-api-key.sopsFile = self + /secrets/shared/nim.yaml;
-
   programs.opencode = {
     enable = true;
     package = opencodePrivatePackage;

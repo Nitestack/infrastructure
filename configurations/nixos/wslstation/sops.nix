@@ -46,6 +46,11 @@ in
           mode = "0400";
           key = "aix/base_url";
         };
+        "nim-api-key" = {
+          sopsFile = self + /secrets/hosts/wslstation/nim.yaml;
+          owner = config.meta.username;
+          mode = "0400";
+        };
       };
   };
 }
