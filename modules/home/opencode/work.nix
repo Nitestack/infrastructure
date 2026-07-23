@@ -1,7 +1,7 @@
 {
   "$schema" = "https://opencode.ai/config.json";
 
-  plugin = [ "opencode-models-discovery@1.1.0" ];
+  plugin = import ./plugins.nix ++ [ "opencode-models-discovery@1.1.0" ];
 
   disabled_providers = [
     "openai"
