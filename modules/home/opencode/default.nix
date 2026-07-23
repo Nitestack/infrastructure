@@ -18,6 +18,17 @@ let
 
   workConfigDir = "${config.home.homeDirectory}/.config/opencode-work";
 
+  sharedSettings = import ./shared.nix;
+
+  mkSettings =
+    cfg:
+    (removeAttrs sharedSettings [ "tui" ] // removeAttrs cfg [ "tui" ])
+    // {
+      plugin = sharedSettings.plugin ++ (cfg.plugin or [ ]);
+    };
+
+  mkTui = cfg: sharedSettings.tui // (cfg.tui or { });
+
   opencodePrivatePackage = pkgs.symlinkJoin {
     name = "opencode-private";
     paths = [ opencodePackage ];
@@ -35,11 +46,17 @@ in
   programs.opencode = {
     enable = true;
     package = opencodePrivatePackage;
-    settings = import ./private.nix;
+    settings = mkSettings (import ./private.nix);
+    tui = mkTui (import ./private.nix);
   };
 
   home.file = lib.optionalAttrs hasWorkProfile {
-    "${workConfigDir}/opencode.json".text = builtins.toJSON (import ./work.nix);
+    "${workConfigDir}/opencode.json".text = builtins.toJSON (
+      { "$schema" = "https://opencode.ai/config.json"; } // mkSettings (import ./work.nix)
+    );
+    "${workConfigDir}/tui.json".text = builtins.toJSON (
+      { "$schema" = "https://opencode.ai/tui.json"; } // mkTui (import ./work.nix)
+    );
   };
 
   home.packages = lib.optionals hasWorkProfile [
