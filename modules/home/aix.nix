@@ -22,14 +22,6 @@ in
         label.file = sopsPath "aix/adp-label";
         apiKey.file = sopsPath "aix/adp";
       };
-      swtb = {
-        label.file = sopsPath "aix/swtb-label";
-        apiKey.file = sopsPath "aix/swtb";
-      };
-      "p-t" = {
-        label.file = sopsPath "aix/p-t-label";
-        apiKey.file = sopsPath "aix/p-t";
-      };
     };
   };
 }
