@@ -5,6 +5,7 @@
   flake,
   config,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -15,8 +16,6 @@ let
   orca = inputs.orca-nix.packages.${system}.default;
 in
 {
-  environment.systemPackages = [ orca ];
-
   # Lets the user's systemd manager start at boot and keep running after logout.
   users.users.${meta.username}.linger = true;
 
@@ -24,12 +23,18 @@ in
     description = "Orca Remote Server";
     wantedBy = [ "default.target" ];
 
-    # `systemd.user.services` applies to every user's manager, so scope it down.
-    unitConfig.ConditionUser = meta.username;
+    environment = {
+      ORCA_STARTUP_DIAGNOSTICS = "1";
+      LIBGL_ALWAYS_SOFTWARE = "1";
+    };
+
+    path = with pkgs; [
+      xvfb
+    ];
 
     serviceConfig = {
       ExecStart = ''
-        ${orca}/bin/orca serve \
+        ${lib.getExe orca} serve \
           --port 6768 \
           --pairing-address server.tail9dadb1.ts.net
       '';
