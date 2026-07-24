@@ -12,7 +12,7 @@
 
     services.web = {
       enable = true;
-      image = "ghcr.io/immich-app/immich-server:v3.0.2@sha256:e027fa892e4c20ea8cba262e0d98dbaba14af873903408928e252596608a3a47";
+      image = "ghcr.io/immich-app/immich-server:v3.0.3@sha256:118946756b2274f741be9d301428401be8716024c407b019cd424fa1e6f518e6";
       containerName = "immich_server";
       port = 2283;
 
@@ -51,7 +51,7 @@
 
     services."machine-learning" = {
       enable = true;
-      image = "ghcr.io/immich-app/immich-machine-learning:v3.0.2-openvino@sha256:b817bc467a8f28a2b2150ae2f09845e80b5c9b59ea8832cef8f775c9ff77173c";
+      image = "ghcr.io/immich-app/immich-machine-learning:v3.0.3-openvino@sha256:d46dfbc0e190d22c6d8faa18ae2e51f2aa5e8ead942ea76f1bb0b420af9504fe";
       containerName = "immich_machine_learning";
 
       # Intel UHD 630 acceleration for Smart Search / Facial Recognition.
