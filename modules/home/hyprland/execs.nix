@@ -12,12 +12,12 @@ let
   inherit (meta) cursorTheme;
 
   # Bins
-  uwsm = "${pkgs.uwsm}/bin/uwsm app --";
+  uwsm = "${lib.getExe pkgs.uwsm} app --";
 
-  cliphist = "${pkgs.cliphist}/bin/cliphist";
-  ghostty = "${pkgs.ghostty}/bin/ghostty";
-  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
-  wl-paste = "${pkgs.wl-clipboard}/bin/wl-paste";
+  cliphist = lib.getExe pkgs.cliphist;
+  ghostty = lib.getExe pkgs.ghostty;
+  hyprctl = lib.getExe' osConfig.programs.hyprland.package "hyprctl";
+  wl-paste = lib.getExe' pkgs.wl-clipboard "wl-paste";
 in
 {
   wayland.windowManager.hyprland.settings = {

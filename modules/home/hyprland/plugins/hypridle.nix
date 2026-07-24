@@ -3,6 +3,7 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   pkgs,
+  lib,
   osConfig,
   flake,
   ...
@@ -10,9 +11,9 @@
 let
   inherit (flake) inputs;
 
-  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-  dms = "${inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
-  hyprctl = "${osConfig.programs.hyprland.package}/bin/hyprctl";
+  brightnessctl = lib.getExe pkgs.brightnessctl;
+  dms = lib.getExe inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  hyprctl = lib.getExe' osConfig.programs.hyprland.package "hyprctl";
 in
 {
   services.hypridle = {

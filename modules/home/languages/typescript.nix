@@ -1,7 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ TypeScript                                               │
 # ╰──────────────────────────────────────────────────────────╯
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   PNPM_HOME = "${config.home.homeDirectory}/.local/share/pnpm";
 
@@ -22,8 +27,8 @@ in
     sessionVariables = {
       inherit PNPM_HOME;
       PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
-      PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
-      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
+      PRISMA_QUERY_ENGINE_BINARY = lib.getExe' pkgs.prisma-engines "query-engine";
+      PRISMA_SCHEMA_ENGINE_BINARY = lib.getExe pkgs.prisma-engines;
     };
     sessionPath = [
       "${PNPM_HOME}/bin"

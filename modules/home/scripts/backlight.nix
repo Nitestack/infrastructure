@@ -7,8 +7,8 @@
 let
   inherit (meta) monitors;
 
-  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-  swayosd-client = "${pkgs.swayosd}/bin/swayosd-client";
+  brightnessctl = lib.getExe pkgs.brightnessctl;
+  swayosd-client = lib.getExe' pkgs.swayosd "swayosd-client";
 
   defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
   defaultMonitorCount = builtins.length defaultMonitors;
@@ -78,9 +78,9 @@ assert lib.assertMsg (
   defaultMonitor == null || defaultMonitor.backlight != null
 ) "The default monitor in `meta.monitors` must define `backlight`.";
 {
-  increase = { osd }: "${monitor-backlight}/bin/monitor-backlight ${if osd then "--osd " else ""}5%+";
-  decrease = { osd }: "${monitor-backlight}/bin/monitor-backlight ${if osd then "--osd " else ""}5%-";
+  increase = { osd }: "${lib.getExe monitor-backlight} ${if osd then "--osd " else ""}5%+";
+  decrease = { osd }: "${lib.getExe monitor-backlight} ${if osd then "--osd " else ""}5%-";
   set =
     { value, osd }:
-    "${monitor-backlight}/bin/monitor-backlight ${if osd then "--osd " else ""}${value}";
+    "${lib.getExe monitor-backlight} ${if osd then "--osd " else ""}${value}";
 }

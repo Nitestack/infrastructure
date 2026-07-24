@@ -44,7 +44,7 @@ in
         DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
         PROMPT_INDICATOR_VI_NORMAL = "";
         PROMPT_INDICATOR_VI_INSERT = "";
-        LS_COLORS = "(${pkgs.vivid}/bin/vivid generate catppuccin-mocha)";
+        LS_COLORS = "(${lib.getExe pkgs.vivid} generate catppuccin-mocha)";
         ENV_CONVERSIONS =
           let
             colon_conversion = {

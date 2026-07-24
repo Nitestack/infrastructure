@@ -11,6 +11,7 @@
     {
       config,
       pkgs,
+      lib,
       ...
     }:
     let
@@ -68,7 +69,7 @@
 
       apps.check = {
         type = "app";
-        program = "${config.packages.check}/bin/infrastructure-check";
+        program = lib.getExe config.packages.check;
         meta.description = "Run formatting and flake evaluation checks";
       };
     };

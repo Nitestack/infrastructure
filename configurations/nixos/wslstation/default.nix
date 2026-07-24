@@ -5,6 +5,7 @@
   flake,
   config,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -26,7 +27,7 @@ in
     docker-desktop.enable = true;
     # NOTE: with a Docker Desktop update, this suddenly must be set
     extraBin = [
-      { src = "${pkgs.coreutils}/bin/mv"; }
+      { src = lib.getExe' pkgs.coreutils "mv"; }
     ];
     ssh-agent.enable = true;
     startMenuLaunchers = true;
@@ -49,7 +50,7 @@ in
 
   systemd.tmpfiles.rules = [
     "d /usr/bin 0755 root root - -"
-    "L+ /usr/bin/bash - - - - ${pkgs.bashInteractive}/bin/bash"
+    "L+ /usr/bin/bash - - - - ${lib.getExe pkgs.bashInteractive}"
   ];
 
   # ── Home Manager ──────────────────────────────────────────────────────

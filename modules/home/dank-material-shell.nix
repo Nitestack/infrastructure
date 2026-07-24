@@ -10,9 +10,9 @@
 let
   inherit (flake) inputs;
 
-  uwsm = "${pkgs.uwsm}/bin/uwsm app --";
+  uwsm = "${lib.getExe pkgs.uwsm} app --";
 
-  dms = "${inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/dms";
+  dms = lib.getExe inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
   mkBind = keys: desc: luaDispatcher: flags: {
     _args = [
