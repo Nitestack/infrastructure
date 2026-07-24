@@ -19,7 +19,7 @@ in
   # https://wiki.nixos.org/wiki/Backlight#External_Monitors
   services.udev.extraRules =
     let
-      bash = "${pkgs.bash}/bin/bash";
+      bash = lib.getExe pkgs.bash;
     in
     lib.concatStringsSep "\n" (
       map (

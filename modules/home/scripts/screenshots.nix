@@ -2,6 +2,7 @@
   config,
   inputs,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -9,8 +10,8 @@ let
   grimblast-cmd =
     target:
     "${
-      inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
-    }/bin/grimblast --notify --freeze copysave ${target} ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png";
+      lib.getExe inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
+    } --notify --freeze copysave ${target} ${screenshots_dir}/Screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png";
 in
 {
   active-monitor = grimblast-cmd "output";

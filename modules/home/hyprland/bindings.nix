@@ -13,13 +13,20 @@ let
   inherit (flake) inputs;
 
   # Bins
-  uwsm = "${pkgs.uwsm}/bin/uwsm app --";
+  uwsm = "${lib.getExe pkgs.uwsm} app --";
 
-  ghostty = "${pkgs.ghostty}/bin/ghostty";
-  hyprpicker = "${pkgs.hyprpicker}/bin/hyprpicker";
+  ghostty = lib.getExe pkgs.ghostty;
+  hyprpicker = lib.getExe pkgs.hyprpicker;
 
   backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
-  screenshot = import ../scripts/screenshots.nix { inherit config inputs pkgs; };
+  screenshot = import ../scripts/screenshots.nix {
+    inherit
+      config
+      inputs
+      pkgs
+      lib
+      ;
+  };
 
   mkBind = keys: desc: luaDispatcher: flags: {
     _args = [

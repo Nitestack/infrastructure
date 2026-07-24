@@ -1,7 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Browser                                                  │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, pkgs, ... }:
+{
+  flake,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (flake) inputs;
 
@@ -9,7 +14,7 @@ let
 in
 {
   home = {
-    sessionVariables.BROWSER = "${zen-package}/bin/zen";
+    sessionVariables.BROWSER = lib.getExe zen-package;
     packages = [
       zen-package
     ];
