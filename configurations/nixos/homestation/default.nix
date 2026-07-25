@@ -41,6 +41,7 @@ in
     ./homelab/rdtclient.nix
     ./homelab/shelfmark.nix
     ./homelab/vaultwarden.nix
+    ./homelab/vikunja.nix
     ./homelab/wealthfolio.nix
     ./homelab/yamtrack.nix
     ./orca.nix
