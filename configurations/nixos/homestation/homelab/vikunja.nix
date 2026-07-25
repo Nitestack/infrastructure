@@ -22,6 +22,7 @@ in
 
       environment = {
         VIKUNJA_SERVICE_PUBLICURL = appUrl cfg.apps.vikunja;
+        VIKUNJA_SERVICE_ENABLEREGISTRATION = "false";
         VIKUNJA_DATABASE_PATH = "/db/vikunja.db";
         VIKUNJA_MAILER_ENABLED = "true";
         VIKUNJA_MAILER_HOST = smtp.host;
