@@ -21,6 +21,7 @@ let
   obsidianLivesyncSecretsFile = self + /secrets/hosts/homestation/obsidian-livesync.yaml;
   pocketIdSecretsFile = self + /secrets/hosts/homestation/pocket-id.yaml;
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
+  vikunjaSecretsFile = self + /secrets/hosts/homestation/vikunja.yaml;
   wealthfolioSecretsFile = self + /secrets/hosts/homestation/wealthfolio.yaml;
   yamtrackSecretsFile = self + /secrets/hosts/homestation/yamtrack.yaml;
 in
@@ -206,6 +207,11 @@ in
       key = "oidc-client-secret";
       mode = "0400";
     };
+    secrets."vikunja/service-secret" = {
+      sopsFile = vikunjaSecretsFile;
+      key = "vikunja/service-secret";
+      mode = "0400";
+    };
     secrets."audiomuse-ai/db-password" = {
       sopsFile = audiomuseAiSecretsFile;
       key = "db-password";
@@ -317,6 +323,13 @@ in
         # WF_AUTH_PASSWORD_HASH='${config.sops.placeholder."wealthfolio/password-hash"}'
         WF_OIDC_CLIENT_ID=${config.sops.placeholder."wealthfolio/oidc-client-id"}
         WF_OIDC_CLIENT_SECRET=${config.sops.placeholder."wealthfolio/oidc-client-secret"}
+      '';
+      mode = "0400";
+    };
+    templates."vikunja.env" = {
+      content = ''
+        VIKUNJA_SERVICE_SECRET=${config.sops.placeholder."vikunja/service-secret"}
+        VIKUNJA_MAILER_PASSWORD=${config.sops.placeholder."smtp/password"}
       '';
       mode = "0400";
     };
