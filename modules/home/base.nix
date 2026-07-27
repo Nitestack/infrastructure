@@ -18,12 +18,13 @@ in
     self.homeModules.direnv
     self.homeModules.eza
     self.homeModules.git
+    self.homeModules.herdr
     self.homeModules.lazygit
     self.homeModules.neovim
     self.homeModules.nh
     self.homeModules.nushell
     self.homeModules.oh-my-posh
-    self.homeModules.tmux
+    # self.homeModules.tmux
   ];
 
   home = {

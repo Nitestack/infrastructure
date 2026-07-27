@@ -92,7 +92,6 @@ in
         max-cache-ttl = 86400;
       };
     };
-    tmux.enable = true;
     zsh.enable = true;
   };
 

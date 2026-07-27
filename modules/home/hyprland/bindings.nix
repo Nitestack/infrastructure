@@ -15,7 +15,6 @@ let
   # Bins
   uwsm = "${lib.getExe pkgs.uwsm} app --";
 
-  ghostty = lib.getExe pkgs.ghostty;
   hyprpicker = lib.getExe pkgs.hyprpicker;
 
   backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
@@ -48,7 +47,6 @@ in
     {
       bind = [
         # --- Applications ---
-        (mkBind "SUPER + Slash" "Open Terminal" "hl.dsp.exec_cmd(\"${uwsm} ${ghostty} -e tmux\")" { })
         (mkBind "SUPER + E" "Open File Manager" "hl.dsp.exec_cmd(\"${uwsm} org.gnome.Nautilus.desktop\")"
           { }
         )

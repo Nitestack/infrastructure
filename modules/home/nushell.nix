@@ -61,16 +61,5 @@ in
         source ${inputs.catppuccin-nushell}/themes/catppuccin_mocha.nu
       '';
     };
-    # Start Nushell for normal interactive Zsh sessions,
-    # while keeping Zsh as the actual login shell.
-    zsh.initContent = lib.mkOrder 500 ''
-      if [[ -o interactive ]] \
-        && [[ -t 0 ]] \
-        && [[ -t 1 ]] \
-        && [[ -z "''${NO_NU:-}" ]] \
-        && [[ "''${TERM:-}" != "dumb" ]]; then
-        exec ${lib.getExe pkgs.nushell}
-      fi
-    '';
   };
 }
