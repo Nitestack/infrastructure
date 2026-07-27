@@ -36,7 +36,7 @@ in
 
             -- right monitor
             hl.exec_cmd("${uwsm} zen.desktop", { workspace = "1" })
-            hl.exec_cmd("${uwsm} ${ghostty} -e tmux", { workspace = "2" })
+            hl.exec_cmd("${uwsm} ${ghostty} -e herdr", { workspace = "2" })
             hl.exec_cmd("${uwsm} proton-mail.desktop", { workspace = "3" })
           end
         '')
