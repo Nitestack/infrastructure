@@ -44,7 +44,6 @@ in
     ./homelab/vikunja.nix
     ./homelab/wealthfolio.nix
     ./homelab/yamtrack.nix
-    ./orca.nix
     ./tailscale.nix
   ];
 

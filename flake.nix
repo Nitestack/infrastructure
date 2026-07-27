@@ -101,11 +101,6 @@
       url = "github:leohenon/opencode-vim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Orca
-    orca-nix = {
-      url = "github:kevinpita/orca-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Spicetify
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
