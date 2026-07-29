@@ -1,59 +1,46 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
-This repository is a Nix flake for NixOS, NixOS WSL, macOS, and Home Manager.
+## Layout
 
-- `flake.nix` defines inputs and wires outputs through `nixos-unified`.
-- `configurations/nixos/`, `configurations/darwin/`, and `configurations/home/` contain host and user entry points.
-- `modules/shared/` holds cross-platform system modules; `modules/nixos/`, `modules/darwin/`, and `modules/home/` hold platform-specific modules.
-- `overlays/` contains package overlays.
-- `images/` stores the current wallpaper as a normal Git-tracked asset.
-- `.github/workflows/` contains CI checks.
+Nix flake for NixOS, NixOS WSL, macOS, and Home Manager.
 
-Keep host-specific choices in `configurations/*/<host>/`. Put reusable behavior in `modules/*`.
+- `flake.nix`: inputs and `nixos-unified` outputs.
+- `configurations/{nixos,darwin,home}/`: host/user entry points.
+- `modules/{shared,nixos,darwin,home}/`: reusable cross-platform/platform modules.
+- `overlays/`, `images/` (tracked wallpaper), `.github/workflows/`: overlays, assets, CI.
 
-## Build, Test, and Development Commands
-- `nix fmt`: format Nix files with the repository formatter.
-- `nix fmt -- --check`: verify formatting without rewriting files.
-- `nix flake check --no-build --no-write-lock-file`: evaluate flake checks without building full systems or changing `flake.lock`.
-- `nix run .#check`: run the repository check app, currently formatting plus flake evaluation.
-- `nix eval .#nixosConfigurations.nixstation.config.system.build.toplevel.drvPath --no-write-lock-file`: smoke-test the main NixOS host.
-- `nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-write-lock-file`: smoke-test the macOS host.
+Keep host choices in `configurations/*/<host>/`; put reusable behaviour in `modules/*`.
 
-## Coding Style & Naming Conventions
-Use Nix defaults enforced by `nixfmt`. Prefer 2-space indentation, small focused modules, and explicit imports. Name modules by purpose, for example `audio.nix`, `git.nix`, or `profiles/networking.nix`. Avoid mixing host-specific settings into shared modules unless they are guarded by platform checks.
+## Commands
 
-## Testing Guidelines
-There is no separate unit test suite. Treat evaluation as the test boundary. Before committing, run `nix run .#check`. For host-sensitive edits, also evaluate the affected host configuration. Do not update `flake.lock` unless the change intentionally upgrades inputs.
+- `nix fmt` / `nix fmt -- --check`: format / check formatting.
+- `nix flake check --no-build --no-write-lock-file`: evaluate checks without builds or lockfile writes.
+- `nix run .#check`: formatting plus flake evaluation.
+- `nix eval .#nixosConfigurations.nixstation.config.system.build.toplevel.drvPath --no-write-lock-file`: NixOS smoke test.
+- `nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-write-lock-file`: macOS smoke test.
 
-## Commit & Pull Request Guidelines
-Work happens directly on `main`; this repo does not use a pull request workflow. Only branch or open a PR when explicitly asked to. Recent history uses Conventional Commit style, for example `feat(codex): add Codex Desktop` and `refactor: wire shared config and LFS assets`. Use concise subjects under 50 characters when practical. When a change does go through a PR, include the affected host or module, verification commands run, and screenshots only for visible desktop or wallpaper changes.
+## Code, Tests, Git
 
-## Asset & Configuration Tips
-Keep large personal or machine-local assets out of the repo; use ignored paths such as `images/local/` when needed. Never commit unrelated local changes from another device or workflow. Never expose, print, commit, or copy secrets into the Nix store — reference them through sops (`config.sops.secrets.*.path` / `config.sops.placeholder.*`) instead.
+Use `nixfmt` conventions: 2 spaces, focused modules, explicit imports, and purpose-based names (for example `audio.nix`). Do not place host settings in shared modules without platform guards.
 
-## Agent skills
+There is no separate unit-test suite; evaluation is the test boundary. Run `nix run .#check` before committing and evaluate the affected host for host-sensitive changes. Do not change `flake.lock` unless upgrading inputs intentionally.
 
-### Issue tracker
+Work on `main`; branch or open a PR only when asked. Use concise Conventional Commit subjects (ideally under 50 characters). PRs must state affected hosts/modules and verification; add screenshots only for visible desktop/wallpaper changes.
 
-Issues live as GitHub Issues in `Nitestack/infrastructure`, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+## Assets and secrets
 
-### Triage labels
+Keep personal or machine-local assets out of Git (for example `images/local/`) and never commit unrelated local changes. Never expose, print, commit, copy, or put secrets in the Nix store; use `config.sops.secrets.*.path` or `config.sops.placeholder.*`.
 
-Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+## Agent references
 
-### Domain docs
+- Issues: GitHub Issues in `Nitestack/infrastructure` via `gh`; see `docs/agents/issue-tracker.md`.
+- Triage labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`; see `docs/agents/triage-labels.md`.
+- Domain context: `CONTEXT.md` and `docs/adr/`; see `docs/agents/domain.md`.
 
-Single-context layout — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+## Documentation
 
-## Documentation Sync Rules
+Treat documentation outside `docs/agents/` as maintained operator documentation, not agent memory. When a change affects durable user knowledge (setup, host/service behaviour or exposure, commands, integrations, secrets/state, backup/recovery, or limitations), update or add focused `docs/` documentation in the same change; link broadly useful docs from the README.
 
-`docs/homelab-services.md` is the reference for the `homelab` NixOS module
-(`modules/nixos/homelab/`). **Any time you modify the module API** — adding,
-renaming, or removing options in `options.nix`, changing validation rules in
-`validation.nix`, or altering networking/Caddy/DNS behaviour — update the corresponding
-sections in `docs/homelab-services.md`:
+Keep it concise, actionable, and safe to share: omit secrets, local credentials, and transient details; document operational gaps accurately.
 
-- Option tables under the affected heading (global, app, container, caddy, dns, etc.)
-- The Validation section if assertions change
-- Any recipe that relied on removed or renamed options
+`docs/homelab-services.md` is authoritative for `modules/nixos/homelab/`. When changing its API (options or validation) or networking/Caddy/DNS behaviour, update affected option tables, validation notes, and recipes.
