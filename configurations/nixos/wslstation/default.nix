@@ -46,6 +46,7 @@ in
     (pkgs.writeShellScriptBin "powershell.exe" ''
       exec /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe "$@"
     '')
+    pkgs.glab
   ];
 
   systemd.tmpfiles.rules = [
