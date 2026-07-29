@@ -142,6 +142,9 @@ wsl -t NixOS
 
 Restart WSL.
 
+For Herdr navigation in Windows Terminal, configure the required CSI-u
+keybindings described in [`docs/windows-terminal-herdr.md`](docs/windows-terminal-herdr.md).
+
 ## Start here
 
 This is personal infrastructure, not a drop-in distribution. It is useful as a reference or starting point, but before applying it elsewhere, replace host names, hardware configuration, secrets, DNS zones, and service-specific settings with your own.
@@ -182,6 +185,7 @@ nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-wr
 - [`docs/secrets.md`](docs/secrets.md) — maintain sops-encrypted configuration safely.
 - [`docs/adguard-home-client-caveats.md`](docs/adguard-home-client-caveats.md) — AdGuard Home client configuration caveats.
 - [`docs/renovate-setup.md`](docs/renovate-setup.md) — one-time Renovate GitHub App setup.
+- [`docs/windows-terminal-herdr.md`](docs/windows-terminal-herdr.md) — Windows Terminal keybindings required by Herdr in NixOS-WSL.
 - [`opentofu/cloudflare/README.md`](opentofu/cloudflare/README.md) — Cloudflare edge and DNS state with OpenTofu.
 
 ## License
