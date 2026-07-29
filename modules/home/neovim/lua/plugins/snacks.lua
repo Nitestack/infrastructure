@@ -57,6 +57,7 @@ return utils.plugin.with_extensions({
       },
       -- Terminal
       terminal = {
+        shell = "nu",
         win = {
           style = "float",
         },
