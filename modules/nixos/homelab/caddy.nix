@@ -110,7 +110,7 @@ let
   mkAppHandle =
     scheme: appName:
     let
-      matcherName = lib.replaceStrings [ "_" ] [ "-" ] appName;
+      matcherName = cfg.lib.normalizeName appName;
       body =
         if scheme == "http" && isPrivateApp appName then
           ''

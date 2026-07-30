@@ -4,7 +4,6 @@
 }:
 let
   cfg = config.homelab;
-  smtp = cfg.smtp;
   username = config.meta.username;
   inherit (cfg.lib) appUrl;
 in
@@ -25,10 +24,12 @@ in
         VIKUNJA_SERVICE_ENABLEREGISTRATION = "false";
         VIKUNJA_DATABASE_PATH = "/db/vikunja.db";
         VIKUNJA_MAILER_ENABLED = "true";
-        VIKUNJA_MAILER_HOST = smtp.host;
-        VIKUNJA_MAILER_PORT = toString smtp.port;
-        VIKUNJA_MAILER_USERNAME = smtp.username;
-        VIKUNJA_MAILER_FROMEMAIL = smtp.from;
+      }
+      // cfg.lib.smtpEnv {
+        hostVar = "VIKUNJA_MAILER_HOST";
+        portVar = "VIKUNJA_MAILER_PORT";
+        usernameVar = "VIKUNJA_MAILER_USERNAME";
+        fromVar = "VIKUNJA_MAILER_FROMEMAIL";
       };
 
       environmentFiles = [ config.sops.templates."vikunja.env".path ];

@@ -8,7 +8,6 @@ let
     attrNames
     concatMap
     filter
-    hasPrefix
     mapAttrsToList
     mkIf
     unique
@@ -28,24 +27,17 @@ let
     }) (attrNames services)
   ) (attrNames internal.enabledApps);
 
-  isRelativeBindSource =
-    volume: volume.type == "bind" && volume.source != null && !hasPrefix "/" volume.source;
-
-  needsTmpfiles = volume: volume.type == "bind" && isRelativeBindSource volume;
-
-  resolveBindSource =
-    appName: volume:
-    if isRelativeBindSource volume then "${cfg.dataDir}/${appName}/${volume.source}" else volume.source;
+  inherit (cfg.lib) isRelativeBindSource;
 
   volumeRules = concatMap (
     { appName, service }:
     map (
       volume:
       let
-        source = resolveBindSource appName volume;
+        source = cfg.lib.resolveBindSource appName volume.source;
       in
       "d ${source} ${volume.mode} ${volume.owner} ${volume.group} -"
-    ) (filter needsTmpfiles service.volumes)
+    ) (filter isRelativeBindSource service.volumes)
   ) enabledServicesWithApp;
 
   # Per-app base dirs — created whenever an app has at least one relative bind-source volume

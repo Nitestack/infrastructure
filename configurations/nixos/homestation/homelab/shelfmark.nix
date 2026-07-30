@@ -34,12 +34,6 @@ in
         SEARCH_MODE = "universal";
         METADATA_PROVIDER = "hardcover";
         METADATA_PROVIDER_AUDIOBOOK = "hardcover";
-        # Downloads
-        EMAIL_SMTP_HOST = cfg.smtp.host;
-        EMAIL_SMTP_PORT = toString cfg.smtp.port;
-        EMAIL_SMTP_SECURITY = cfg.smtp.security;
-        EMAIL_SMTP_USERNAME = cfg.smtp.username;
-        EMAIL_FROM = cfg.smtp.from;
         # Security
         AUTH_METHOD = "oidc";
         OIDC_DISCOVERY_URL = "${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration";
@@ -56,6 +50,13 @@ in
         QBITTORRENT_DOWNLOAD_DIR = "/data/downloads";
         # Hardcover
         HARDCOVER_ENABLED = "true";
+      }
+      // cfg.lib.smtpEnv {
+        hostVar = "EMAIL_SMTP_HOST";
+        portVar = "EMAIL_SMTP_PORT";
+        securityVar = "EMAIL_SMTP_SECURITY";
+        usernameVar = "EMAIL_SMTP_USERNAME";
+        fromVar = "EMAIL_FROM";
       };
 
       environmentFiles = [ config.sops.templates."shelfmark.env".path ];

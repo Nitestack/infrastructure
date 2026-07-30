@@ -71,12 +71,24 @@ in
         DISABLE_REGISTRATION = "True";
         SOCIALACCOUNT_ALLOW_SIGNUP = "True";
         EMAIL_BACKEND = "email";
-        EMAIL_HOST = cfg.smtp.host;
-        EMAIL_USE_TLS = if cfg.smtp.security == "starttls" then "True" else "False";
-        EMAIL_PORT = toString cfg.smtp.port;
-        EMAIL_USE_SSL = if cfg.smtp.security == "force_tls" then "True" else "False";
-        EMAIL_HOST_USER = cfg.smtp.username;
-        DEFAULT_FROM_EMAIL = cfg.smtp.from;
+      }
+      // cfg.lib.smtpEnv {
+        hostVar = "EMAIL_HOST";
+        portVar = "EMAIL_PORT";
+        usernameVar = "EMAIL_HOST_USER";
+        fromVar = "DEFAULT_FROM_EMAIL";
+      }
+      // {
+        EMAIL_USE_TLS = cfg.lib.smtpSecurityMapped {
+          starttls = "True";
+          forceTls = "False";
+          off = "False";
+        };
+        EMAIL_USE_SSL = cfg.lib.smtpSecurityMapped {
+          starttls = "False";
+          forceTls = "True";
+          off = "False";
+        };
       };
 
       environmentFiles = [ config.sops.templates."adventure-log-server.env".path ];

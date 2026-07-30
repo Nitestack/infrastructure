@@ -5,13 +5,6 @@
 let
   cfg = config.homelab;
   inherit (cfg.lib) appUrl;
-  smtpTls =
-    if cfg.smtp.security == "force_tls" then
-      "tls"
-    else if cfg.smtp.security == "off" then
-      "none"
-    else
-      cfg.smtp.security;
 in
 {
   homelab.apps.pocket-id = {
@@ -33,12 +26,20 @@ in
         EMAILS_VERIFIED = "true";
         ALLOW_USER_SIGNUPS = "disabled";
         HOME_PAGE_URL = "/settings/apps";
-        SMTP_HOST = cfg.smtp.host;
-        SMTP_PORT = toString cfg.smtp.port;
-        SMTP_FROM = cfg.smtp.from;
-        SMTP_USER = cfg.smtp.username;
-        SMTP_TLS = smtpTls;
         EMAIL_API_KEY_EXPIRATION_ENABLED = "true";
+      }
+      // cfg.lib.smtpEnv {
+        hostVar = "SMTP_HOST";
+        portVar = "SMTP_PORT";
+        fromVar = "SMTP_FROM";
+        usernameVar = "SMTP_USER";
+      }
+      // {
+        SMTP_TLS = cfg.lib.smtpSecurityMapped {
+          starttls = "starttls";
+          forceTls = "tls";
+          off = "none";
+        };
       };
 
       environmentFiles = [

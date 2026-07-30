@@ -22,21 +22,12 @@ let
   userUid = config.users.users.${username}.uid;
   userGid = config.ids.gids.users;
 
-  resolveBindSource =
-    appName: volume:
-    if volume.source == null then
-      throw "bind volume for app '${appName}' has null source (validation should have caught this)"
-    else if hasPrefix "/" volume.source then
-      volume.source
-    else
-      "${cfg.dataDir}/${appName}/${volume.source}";
-
   volumeToCompose =
     appName: volume:
     let
       source =
         if volume.type == "bind" then
-          resolveBindSource appName volume
+          cfg.lib.resolveBindSource appName volume.source
         else if volume.type == "library" then
           cfg.libraries.${volume.library}.path
         else

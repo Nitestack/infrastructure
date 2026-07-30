@@ -4,7 +4,6 @@
 }:
 let
   cfg = config.homelab;
-  smtp = cfg.smtp;
   inherit (cfg.lib) appUrl;
 in
 {
@@ -22,11 +21,13 @@ in
       environment = {
         DOMAIN = appUrl cfg.apps.vaultwarden;
         SIGNUPS_ALLOWED = "false";
-        SMTP_HOST = smtp.host;
-        SMTP_PORT = toString smtp.port;
-        SMTP_SECURITY = smtp.security;
-        SMTP_FROM = smtp.from;
-        SMTP_USERNAME = smtp.username;
+      }
+      // cfg.lib.smtpEnv {
+        hostVar = "SMTP_HOST";
+        portVar = "SMTP_PORT";
+        securityVar = "SMTP_SECURITY";
+        fromVar = "SMTP_FROM";
+        usernameVar = "SMTP_USERNAME";
       };
 
       environmentFiles = [
