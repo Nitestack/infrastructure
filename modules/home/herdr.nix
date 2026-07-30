@@ -2,11 +2,16 @@
 # │ Herdr                                                    │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  lib,
+  pkgs,
+  ...
+}:
+{
   programs.herdr = {
     enable = true;
     settings = {
       onboarding = false;
-      terminal.default_shell = "nu";
+      terminal.default_shell = lib.getExe pkgs.nushell;
       keys = {
         prefix = "ctrl+a";
         previous_tab = "ctrl+alt+h";

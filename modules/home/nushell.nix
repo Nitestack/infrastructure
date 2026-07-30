@@ -58,6 +58,7 @@ in
           };
       };
       extraConfig = ''
+        $env.GPG_TTY = (tty | str trim)
         source ${inputs.catppuccin-nushell}/themes/catppuccin_mocha.nu
       '';
     };
