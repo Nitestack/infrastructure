@@ -31,6 +31,6 @@ in
         ''
           SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${backlight.busName}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > ${ddcciNode}'"
         ''
-      ) (builtins.filter (monitor: monitor.backlight != null) monitors)
+      ) (lib.filter (monitor: monitor.backlight != null) monitors)
     );
 }

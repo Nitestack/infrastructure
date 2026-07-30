@@ -164,7 +164,7 @@ in
           };
           maxRefreshRate = lib.mkOption {
             type = int;
-            default = builtins.foldl' (
+            default = lib.foldl' (
               max: monitor: if monitor.refreshRate > max then monitor.refreshRate else max
             ) 0 config.meta.monitors;
             readOnly = true;
@@ -180,6 +180,6 @@ in
     meta = import ../../../meta.nix {
       inherit pkgs inputs;
     };
-    theme = builtins.fromJSON (builtins.readFile ../../../theme.json);
+    theme = lib.importJSON ../../../theme.json;
   };
 }
