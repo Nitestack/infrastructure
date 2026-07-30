@@ -8,14 +8,14 @@
   ...
 }:
 let
-  inherit (meta) font;
+  inherit (meta) font catppuccinFlavor;
 in
 {
   programs.ghostty = {
     enable = true;
     package = lib.mkIf pkgs.stdenv.isDarwin pkgs.ghostty-bin;
     settings = {
-      theme = "Catppuccin Mocha";
+      theme = "Catppuccin ${catppuccinFlavor}";
       font-family = font.nerd.name;
       font-family-italic = "${font.nerd.name} Italic";
       font-feature = "ss01";

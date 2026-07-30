@@ -3,12 +3,14 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   lib,
+  meta,
   pkgs,
   flake,
   ...
 }:
 let
   inherit (flake) inputs;
+  flavor = lib.toLower meta.catppuccinFlavor;
 in
 {
   programs = {
@@ -44,7 +46,7 @@ in
         DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
         PROMPT_INDICATOR_VI_NORMAL = "";
         PROMPT_INDICATOR_VI_INSERT = "";
-        LS_COLORS = "(${lib.getExe pkgs.vivid} generate catppuccin-mocha)";
+        LS_COLORS = "(${lib.getExe pkgs.vivid} generate catppuccin-${flavor})";
         ENV_CONVERSIONS =
           let
             colon_conversion = {
@@ -59,7 +61,7 @@ in
       };
       extraConfig = ''
         $env.GPG_TTY = (tty | str trim)
-        source ${inputs.catppuccin-nushell}/themes/catppuccin_mocha.nu
+        source ${inputs.catppuccin-nushell}/themes/catppuccin_${flavor}.nu
       '';
     };
   };

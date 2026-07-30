@@ -1,9 +1,16 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ Spicetify                                                │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, pkgs, ... }:
+{
+  flake,
+  lib,
+  meta,
+  pkgs,
+  ...
+}:
 let
   inherit (flake) inputs;
+  flavor = lib.toLower meta.catppuccinFlavor;
 in
 {
   imports = [
@@ -17,7 +24,7 @@ in
     {
       enable = true;
       theme = spicePkgs.themes.catppuccin;
-      colorScheme = "mocha";
+      colorScheme = flavor;
       enabledExtensions = with spicePkgs.extensions; [
         adblock
         autoSkipVideo

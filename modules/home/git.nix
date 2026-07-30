@@ -2,13 +2,15 @@
 # │ Git                                                      │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  lib,
   meta,
   flake,
   ...
 }:
 let
-  inherit (meta) git;
+  inherit (meta) git catppuccinFlavor;
   inherit (flake) inputs;
+  flavor = lib.toLower catppuccinFlavor;
 in
 {
   programs = {
@@ -53,8 +55,8 @@ in
       enable = true;
       enableGitIntegration = true;
       options = {
-        dark = true;
-        features = "catppuccin-mocha";
+        dark = catppuccinFlavor != "Latte";
+        features = "catppuccin-${flavor}";
         line-numbers = true;
         navigate = true;
         side-by-side = true;

@@ -1,4 +1,14 @@
 { pkgs, inputs, ... }:
+let
+  # Title case matches how upstream Catppuccin themes spell their display
+  # names; `flavor` is the lower-case form used by package attrs, file names
+  # and config values.
+  catppuccinFlavor = "Mocha";
+  flavor = pkgs.lib.toLower catppuccinFlavor;
+  # magnetic-catppuccin-gtk only distinguishes light from dark, so every dark
+  # flavour maps onto the same GTK theme.
+  gtkShade = if catppuccinFlavor == "Latte" then "Light" else "Dark";
+in
 {
   # User Info
   username = "nhan";
@@ -33,17 +43,19 @@
     };
   };
   # Themes
+  inherit catppuccinFlavor;
   gtkTheme = {
-    name = "Catppuccin-GTK-Blue-Dark-Compact";
+    name = "Catppuccin-GTK-Blue-${gtkShade}-Compact";
     package = pkgs.magnetic-catppuccin-gtk.override {
       accent = [ "blue" ];
+      shade = pkgs.lib.toLower gtkShade;
       size = "compact";
       tweaks = [ "macos" ];
     };
   };
   cursorTheme = {
-    name = "catppuccin-mocha-blue-cursors";
-    package = pkgs.catppuccin-cursors.mochaBlue;
+    name = "catppuccin-${flavor}-blue-cursors";
+    package = pkgs.catppuccin-cursors."${flavor}Blue";
     size = 24;
   };
   iconTheme = {
@@ -53,9 +65,9 @@
     };
   };
   kvantumTheme = {
-    name = "catppuccin-mocha-blue";
+    name = "catppuccin-${flavor}-blue";
     package = pkgs.catppuccin-kvantum.override {
-      variant = "mocha";
+      variant = flavor;
     };
   };
 }

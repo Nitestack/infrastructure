@@ -1,17 +1,19 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ bat                                                      │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, ... }:
+{ flake, meta, ... }:
 let
   inherit (flake) inputs;
+  inherit (meta) catppuccinFlavor;
+  themeName = "Catppuccin ${catppuccinFlavor}";
 in
 {
   programs.bat = {
     enable = true;
-    config.theme = "Catppuccin Mocha";
-    themes."Catppuccin Mocha" = {
+    config.theme = themeName;
+    themes.${themeName} = {
       src = inputs.catppuccin-bat;
-      file = "themes/Catppuccin Mocha.tmTheme";
+      file = "themes/${themeName}.tmTheme";
     };
   };
 }

@@ -99,6 +99,15 @@ in
               };
             };
           };
+          catppuccinFlavor = mkOption {
+            type = lib.types.enum [
+              "Latte"
+              "Frappe"
+              "Macchiato"
+              "Mocha"
+            ];
+            description = "Catppuccin flavour, in the title case upstream themes use for display names. Lower-case it for package attrs and file names.";
+          };
           gtkTheme = mkThemeOption;
           cursorTheme = mkOption {
             type = submodule {
