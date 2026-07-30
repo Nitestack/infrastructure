@@ -1,9 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-nix_files=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.nix$' || true)
-[ -z "$nix_files" ] && exit 0
+if [ -z "$(git diff --cached --name-only --diff-filter=ACMR -- '*.nix')" ]; then
+  exit 0
+fi
 
 echo "Formatting Nix files..."
-echo "$nix_files" | xargs nixfmt
-echo "$nix_files" | xargs git add
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+while IFS= read -r -d '' file; do
+  # Format the staged blob rather than the worktree copy. A file can be
+  # partially staged (git add -p, or a hand-built patch), and re-adding the
+  # whole worktree file would drag unstaged hunks into the commit.
+  git cat-file blob ":$file" | nixfmt - >"$tmp/formatted"
+
+  if git diff --quiet -- "$file"; then
+    # Worktree matches the index, so keep the two in sync.
+    cp "$tmp/formatted" "$file"
+    git add -- "$file"
+  else
+    # Partially staged: rewrite just the index entry and leave the worktree
+    # (and its unstaged hunks) alone.
+    mode=$(git ls-files --stage -- "$file" | cut -d' ' -f1)
+    hash=$(git hash-object -w -- "$tmp/formatted")
+    git update-index --add --cacheinfo "$mode,$hash,$file"
+    echo "  $file: formatted staged content only (worktree left untouched)"
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACMR -z -- '*.nix')
