@@ -109,22 +109,20 @@ let
           message = "homelab.apps.${appName}.services.${serviceName}.dependsOn references a missing service.";
         }
         {
+          assertion = builtins.all (volume: volume.type != "bind" || volume.source != null) service.volumes;
+          message = "homelab.apps.${appName}.services.${serviceName}.volumes: bind volumes require `source` to be set.";
+        }
+        {
           assertion = builtins.all (
             volume:
-            builtins.elem volume.type [
-              "bind"
-              "library"
-              "volume"
-            ]
-            && (
-              (volume.type == "bind" && volume.source != null)
-              || (
-                volume.type == "library" && volume.library != null && builtins.hasAttr volume.library cfg.libraries
-              )
-              || (volume.type == "volume" && volume.volume != null)
-            )
+            volume.type != "library"
+            || (volume.library != null && builtins.hasAttr volume.library cfg.libraries)
           ) service.volumes;
-          message = "homelab.apps.${appName}.services.${serviceName}.volumes has an invalid type/source/library/volume combination.";
+          message = "homelab.apps.${appName}.services.${serviceName}.volumes: library volumes require `library` to reference a name defined in `homelab.libraries`.";
+        }
+        {
+          assertion = builtins.all (volume: volume.type != "volume" || volume.volume != null) service.volumes;
+          message = "homelab.apps.${appName}.services.${serviceName}.volumes: volume-type volumes require `volume` to be set.";
         }
         {
           assertion = builtins.all (

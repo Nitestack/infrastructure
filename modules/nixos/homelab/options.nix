@@ -6,8 +6,6 @@
 let
   inherit (lib) mkEnableOption mkOption types;
 
-  port = types.ints.between 1 65535;
-
   libraryType = types.submodule {
     options = {
       path = mkOption { type = types.str; };
@@ -87,7 +85,7 @@ let
       };
       image = mkOption { type = types.str; };
       port = mkOption {
-        type = types.nullOr port;
+        type = types.nullOr types.port;
         default = null;
       };
       command = mkOption {
@@ -359,7 +357,7 @@ in
         description = "SMTP host shared by homelab apps. Keep passwords in app-specific environmentFiles.";
       };
       port = mkOption {
-        type = types.nullOr port;
+        type = types.nullOr types.port;
         default = null;
         description = "SMTP port shared by homelab apps.";
       };

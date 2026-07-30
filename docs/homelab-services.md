@@ -376,8 +376,6 @@ The public schema in `options.nix` enforces these constraints:
 - `expose.protocol` is one of `"http"` or `"https"`
 - `dependsOn.<service>.condition` is limited to the supported dependency modes
 - Volume `type` is limited to `"bind"`, `"library"`, or `"volume"`
-- DNS record `type` is limited to `"A"`, `"AAAA"`, or `"CNAME"`
-- DNS record `visibility` is limited to `"lan"` or `"public"`
 
 At evaluation time, `validation.nix` adds runtime assertions:
 
@@ -389,7 +387,9 @@ At evaluation time, `validation.nix` adds runtime assertions:
 - `expose.targetService` must reference an enabled service in the same app
 - `expose.mode = "public"` requires `cloudflared.enable` and `cloudflared.tunnelId`
 - `services.<name>.dependsOn` may only reference enabled services in the same app
-- `services.<name>.volumes` must use a valid `type/source/library/volume` combination
+- `services.<name>.volumes` with `type = "bind"` must set `source`
+- `services.<name>.volumes` with `type = "library"` must set `library` to a name defined in `homelab.libraries`
+- `services.<name>.volumes` with `type = "volume"` must set `volume`
 - Relative bind sources may not escape the app data directory
 - `owner/group/mode` may only be set on relative bind sources
 - Exposed hostnames must be globally unique
