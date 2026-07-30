@@ -24,7 +24,6 @@ in
     self.homeModules.nh
     self.homeModules.nushell
     self.homeModules.oh-my-posh
-    # self.homeModules.tmux
   ];
 
   home = {

@@ -111,8 +111,6 @@
       url = "github:zjeffer/split-monitor-workspaces";
       flake = false;
     };
-    # Tmux SessionX
-    tmux-sessionx.url = "github:omerxx/tmux-sessionx";
     # Zen Browser
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";

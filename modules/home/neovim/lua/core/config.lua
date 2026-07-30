@@ -86,7 +86,6 @@ M.plugins = {
 
     "ssh_config",
     "ini",
-    "tmux",
     "xml",
     "desktop",
   },
