@@ -10,9 +10,7 @@ let
   brightnessctl = lib.getExe pkgs.brightnessctl;
   swayosd-client = lib.getExe' pkgs.swayosd "swayosd-client";
 
-  defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
-  defaultMonitorCount = builtins.length defaultMonitors;
-  defaultMonitor = if defaultMonitorCount == 1 then builtins.head defaultMonitors else null;
+  inherit (import ../lib/monitors.nix { inherit monitors; }) defaultMonitorCount defaultMonitor;
   backlightMonitors = builtins.filter (monitor: monitor.backlight != null) monitors;
 
   default-device =

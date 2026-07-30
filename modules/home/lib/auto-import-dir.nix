@@ -1,10 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Hyprland Plugins                                         │
+# │ Auto-import every *.nix file in a directory (non-recursive) │
 # ╰──────────────────────────────────────────────────────────╯
-{ lib, ... }:
-{
-  imports = import ../../lib/auto-import-dir.nix {
-    inherit lib;
-    dir = ./.;
-  };
-}
+{ lib, dir }:
+let
+  dirEntries = builtins.readDir dir;
+in
+builtins.map (name: dir + "/${name}") (
+  builtins.filter (
+    name: name != "default.nix" && dirEntries.${name} == "regular" && lib.hasSuffix ".nix" name
+  ) (builtins.attrNames dirEntries)
+)

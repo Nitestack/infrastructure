@@ -1,10 +1,12 @@
 # ╭──────────────────────────────────────────────────────────╮
-# │ Hyprland Plugins                                         │
+# │ Shared default-monitor derivation from meta.monitors      │
 # ╰──────────────────────────────────────────────────────────╯
-{ lib, ... }:
+{ monitors }:
+let
+  defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
+  defaultMonitorCount = builtins.length defaultMonitors;
+in
 {
-  imports = import ../../lib/auto-import-dir.nix {
-    inherit lib;
-    dir = ./.;
-  };
+  inherit defaultMonitorCount;
+  defaultMonitor = if defaultMonitorCount == 1 then builtins.head defaultMonitors else null;
 }

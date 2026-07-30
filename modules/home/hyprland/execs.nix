@@ -12,7 +12,7 @@ let
   inherit (meta) cursorTheme;
 
   # Bins
-  uwsm = "${lib.getExe pkgs.uwsm} app --";
+  inherit (import ../lib/hyprland.nix { inherit lib pkgs; }) uwsm;
 
   cliphist = lib.getExe pkgs.cliphist;
   ghostty = lib.getExe pkgs.ghostty;

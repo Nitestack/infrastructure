@@ -12,15 +12,11 @@
 let
   inherit (flake) inputs;
   inherit (meta) monitors maxRefreshRate;
-  dirEntries = builtins.readDir ./.;
-  autoImports = map (name: ./${name}) (
-    builtins.filter (
-      name: name != "default.nix" && dirEntries.${name} == "regular" && lib.hasSuffix ".nix" name
-    ) (builtins.attrNames dirEntries)
-  );
-  defaultMonitors = builtins.filter (monitor: monitor.isDefault) monitors;
-  defaultMonitorCount = builtins.length defaultMonitors;
-  defaultMonitor = if defaultMonitorCount == 1 then builtins.head defaultMonitors else null;
+  autoImports = import ../lib/auto-import-dir.nix {
+    inherit lib;
+    dir = ./.;
+  };
+  inherit (import ../lib/monitors.nix { inherit monitors; }) defaultMonitorCount defaultMonitor;
 
   smw-pkg = inputs.split-monitor-workspaces;
 in

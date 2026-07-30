@@ -2,13 +2,9 @@
 # │ Languages                                                │
 # ╰──────────────────────────────────────────────────────────╯
 { lib, ... }:
-let
-  dirEntries = builtins.readDir ./.;
-in
 {
-  imports = builtins.map (name: ./${name}) (
-    builtins.filter (
-      name: name != "default.nix" && dirEntries.${name} == "regular" && lib.hasSuffix ".nix" name
-    ) (builtins.attrNames dirEntries)
-  );
+  imports = import ../lib/auto-import-dir.nix {
+    inherit lib;
+    dir = ./.;
+  };
 }

@@ -10,19 +10,9 @@
 let
   inherit (flake) inputs;
 
-  uwsm = "${lib.getExe pkgs.uwsm} app --";
+  inherit (import ./lib/hyprland.nix { inherit lib pkgs; }) uwsm mkBind;
 
   dms = lib.getExe inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-  mkBind = keys: desc: luaDispatcher: flags: {
-    _args = [
-      keys
-      (lib.generators.mkLuaInline luaDispatcher)
-    ]
-    ++ lib.optional (flags != { } || desc != "") (
-      flags // lib.optionalAttrs (desc != "") { description = desc; }
-    );
-  };
 in
 {
   imports = [
