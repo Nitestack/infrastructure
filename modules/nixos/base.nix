@@ -34,7 +34,6 @@ in
   programs = {
     git = {
       enable = true;
-      lfs.enable = true;
       prompt.enable = true;
     };
     neovim = {

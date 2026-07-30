@@ -60,7 +60,6 @@ in
   # INFO: any package that hasn't a `programs` or `services` entry on Nix Darwin (look at `nixos/linux-only.nix`)
   environment.systemPackages = with pkgs; [
     git
-    git-lfs
     tailscale-gui
     whatsapp-for-mac
   ];

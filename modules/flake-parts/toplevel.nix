@@ -46,7 +46,6 @@
       packages.check = pkgs.writeShellApplication {
         name = "infrastructure-check";
         runtimeInputs = [
-          pkgs.git-lfs
           pkgs.nix
         ];
         text = ''
