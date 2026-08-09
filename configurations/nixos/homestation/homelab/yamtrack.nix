@@ -16,7 +16,7 @@ in
 
     services.web = {
       enable = true;
-      image = "ghcr.io/fuzzygrim/yamtrack:0.25.3@sha256:742faeac188635289afbe74eaaf5a355270d44c246a39098249e5c62eb63468a";
+      image = "ghcr.io/fuzzygrim/yamtrack:0.26.1@sha256:d99f600b95b6a7d3fa03701f43a57a21540a815c5bfe1d0448104da4058dcfae";
       port = 8000;
       dependsOn.redis.condition = "service_started";
 
