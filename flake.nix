@@ -72,6 +72,11 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Dank Greeter
+    dank-greeter = {
+      url = "github:AvengeMedia/dank-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     # Humanizer

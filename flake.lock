@@ -53,11 +53,11 @@
         "sf-pro": "sf-pro"
       },
       "locked": {
-        "lastModified": 1782587760,
-        "narHash": "sha256-I9PRLePA5QNKEyDFsN5eIVk0dxFRGAL0Z/LjOWnA75Y=",
+        "lastModified": 1786018145,
+        "narHash": "sha256-4cjJFmq6JC0Gk9wWt3aZzqovtmM9mikrDWjsBL2ZWu8=",
         "owner": "Lyndeno",
         "repo": "apple-fonts.nix",
-        "rev": "ce044f6829c6b3ccde9624116577ba2c173ca49d",
+        "rev": "66b5379c6a429ad4ea6ff3943cc1f651df55cc70",
         "type": "github"
       },
       "original": {
@@ -317,19 +317,73 @@
         "type": "github"
       }
     },
+    "dank-greeter": {
+      "inputs": {
+        "dank-qml-common": "dank-qml-common",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785444417,
+        "narHash": "sha256-9hxIB6McRAsHGlsy4HZIv5FJpfKwlpeuVmPntxj4J8I=",
+        "owner": "AvengeMedia",
+        "repo": "dank-greeter",
+        "rev": "f353eafdee856a2e1c6ce87ce551304e8a6ed404",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dank-greeter",
+        "type": "github"
+      }
+    },
+    "dank-qml-common": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784433462,
+        "narHash": "sha256-8MdKtu/tSYrCenhtmgYW+lcv9JhGPTE3BnSE6WuqO1U=",
+        "owner": "AvengeMedia",
+        "repo": "dank-qml-common",
+        "rev": "8d36f668d73e7a4391ea9ead3939c5de137aa1f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dank-qml-common",
+        "type": "github"
+      }
+    },
+    "dank-qml-common_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786309712,
+        "narHash": "sha256-VMUI9bvzHOXdyp99EoJ917KgsV9AaEg9dMVL6Xh+w4M=",
+        "owner": "AvengeMedia",
+        "repo": "dank-qml-common",
+        "rev": "83518beaf2c28b87ca0b3862eceeb0917a6c47a0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dank-qml-common",
+        "type": "github"
+      }
+    },
     "dms": {
       "inputs": {
+        "dank-qml-common": "dank-qml-common_2",
         "flake-compat": "flake-compat",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1784336998,
-        "narHash": "sha256-VgXCn1CntFGbQZwAwhoVTB3cBfuVln2u0SfaXDkyQoQ=",
+        "lastModified": 1786309844,
+        "narHash": "sha256-UYzTw5DVjp0lw7JPvHjrTTxRh0Vs4eX+zZxaJC4NMU8=",
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
-        "rev": "5dfd875b9ec012a15a6c986be25e6552659dd7fb",
+        "rev": "db1ab5b7b42a222d5a4e7bcc9c4bc2c6efab65dd",
         "type": "github"
       },
       "original": {
@@ -1247,6 +1301,7 @@
         "catppuccin-nushell": "catppuccin-nushell",
         "caveman": "caveman",
         "codex-desktop-linux": "codex-desktop-linux",
+        "dank-greeter": "dank-greeter",
         "dms": "dms",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager_2",
@@ -1297,7 +1352,7 @@
     "sf-compact": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-C2TR3mVBorgBfdP7+L0YDq1ctefH62+iEBi19zlEpLU=",
+        "narHash": "sha256-83JwqfF9O4+gemMQXWHLRg2GNz2jHxsej1F1IkM2dug=",
         "type": "file",
         "url": "https://devimages-cdn.apple.com/design/resources/download/SF-Compact.dmg"
       },
@@ -1345,7 +1400,7 @@
     "sf-pro": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-56SORX7J5qTO9xrd4Zvgfwr8GBUrIzLc6pzg5C0c+zU=",
+        "narHash": "sha256-vINUEMyFmNzZRBOX2aQ4heScWur6RyA/MPmsqlMPIx4=",
         "type": "file",
         "url": "https://devimages-cdn.apple.com/design/resources/download/SF-Pro.dmg"
       },
