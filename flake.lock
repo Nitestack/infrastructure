@@ -1278,11 +1278,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786493904,
-        "narHash": "sha256-qD4mJk0MIqqfHeDLr9d7f8fBnqeBq1E5sApPflgB1XY=",
+        "lastModified": 1786516097,
+        "narHash": "sha256-6a/MjEAHmch19SjDscd5grwmp+UFZiOGaFKxQXIIoA4=",
         "owner": "leohenon",
         "repo": "opencode-vim",
-        "rev": "773cc548c67894fabae0f7ceacf1b3acb7abc947",
+        "rev": "da38c3d5808eb0f1087c6be6e1d4f00132e810b2",
         "type": "github"
       },
       "original": {
