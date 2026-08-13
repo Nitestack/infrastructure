@@ -91,11 +91,6 @@
       url = "github:hyprwm/contrib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # LLM Agents
-    llm-agents-nix = {
-      url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Matt Pocock's skills
     matt-pocock-skills = {
       url = "github:mattpocock/skills";

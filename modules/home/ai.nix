@@ -36,9 +36,9 @@ in
 
     self.homeModules.opencode
   ];
-  home.packages = with inputs.llm-agents-nix.packages.${pkgs.stdenv.hostPlatform.system}; [
-    claude-code
+  home.packages = with pkgs; [
     codex
+    claude-code
   ];
   programs.agent-skills = {
     enable = true;
