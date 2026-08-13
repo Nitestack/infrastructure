@@ -11,7 +11,7 @@ let
 
   audiomusePlugin = pkgs.fetchurl {
     url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/latest/download/audiomuseai.ndp";
-    hash = "sha256-hOanUJBKgsW+p2gZgHEhN64lS0oUlsu8mXTaseSzndg=";
+    hash = "sha256-vKC4SrKTWfNkpkX7qWjEV0ubyB71jG8z0DlXrjO1DPw=";
   };
   navidromePlugins = pkgs.runCommand "navidrome-plugins" { } ''
     mkdir -p "$out"
