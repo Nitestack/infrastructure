@@ -75,7 +75,6 @@ in
           echo "LITELLM_BASE_URL is required for opencode-work" >&2
           exit 1
         fi
-        export LITELLM_ROOT_BASE_URL="''${LITELLM_BASE_URL%/v1}"
         export OPENCODE_CONFIG_DIR=${workConfigDir}
         exec ${lib.getExe opencodePackage} "$@"
       '';

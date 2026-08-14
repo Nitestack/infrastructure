@@ -63,7 +63,7 @@
       npm = "@ai-sdk/anthropic";
       name = "Anthropic";
       options = {
-        baseURL = "{env:LITELLM_ROOT_BASE_URL}/anthropic";
+        baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
       };
       models = builtins.listToAttrs (
@@ -84,7 +84,34 @@
   };
 
   agent = {
-    build.model = "litellm-anthropic/claude-sonnet-5*";
-    plan.model = "litellm-anthropic/claude-opus-5*";
+    build = {
+      model = "litellm-anthropic/claude-sonnet-5*";
+      effort = "max";
+    };
+    plan = {
+      model = "litellm-anthropic/claude-opus-5*";
+      effort = "high";
+    };
+    general = {
+      model = "litellm-responses/gpt-5.6-terra";
+      reasoningEffort = "high";
+    };
+    explore = {
+      model = "litellm-responses/gpt-5.6-luna";
+      reasoningEffort = "medium";
+    };
+    compaction = {
+      model = "litellm-responses/gpt-5.6-terra";
+      reasoningEffort = "medium";
+      textVerbosity = "medium";
+    };
+    title = {
+      model = "litellm-responses/gpt-5.6-luna";
+      reasoningEffort = "none";
+    };
+    summary = {
+      model = "litellm-responses/gpt-5.6-luna";
+      reasoningEffort = "low";
+    };
   };
 }
