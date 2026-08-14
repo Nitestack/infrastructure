@@ -15,6 +15,7 @@
   "nix": {
     "enabled": true
   },
+  "pinDigests": true,
   "customManagers": [
     {
       "customType": "regex",
@@ -28,6 +29,33 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker",
       "autoReplaceStringTemplate": "{{{newValue}}}@{{{newDigest}}}"
+    },
+    {
+      "customType": "regex",
+      "description": "Track unpinned OCI image tags referenced in Nix homelab modules",
+      "managerFilePatterns": [
+        "/(^|/)configurations/nixos/[^/]+/homelab/.*\\.nix$/",
+        "/(^|/)modules/nixos/homelab/.*\\.nix$/"
+      ],
+      "matchStringsStrategy": "recursive",
+      "matchStrings": [
+        "image\\s*=\\s*(?:lib\\.mkDefault\\s*)?\"(?<depName>(?:[\\w.-]+(?::\\d+)?/)*[\\w.-]+):[\\w.-]+\"",
+        ":(?<currentValue>[\\w.-]+)\""
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker",
+      "autoReplaceStringTemplate": ":{{{newValue}}}{{#if newDigest}}@{{{newDigest}}}{{/if}}\""
+    },
+    {
+      "customType": "regex",
+      "description": "Track npm plugins configured for OpenCode",
+      "managerFilePatterns": ["/(^|/)modules/home/opencode/.*\\.nix$/"],
+      "matchStrings": [
+        "(?<depName>@[\\w.-]+/[\\w.-]+|[\\w.-]+)@(?<currentValue>v?\\d+(?:\\.\\d+){1,2}(?:[-+][0-9A-Za-z.-]+)?)"
+      ],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm",
+      "autoReplaceStringTemplate": "{{{depName}}}@{{{newValue}}}"
     }
   ],
   "packageRules": [
@@ -38,6 +66,11 @@
     {
       "matchDatasources": ["docker"],
       "addLabels": ["docker"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/nextcloud-releases/all-in-one"],
+      "enabled": false
     },
     {
       "matchDatasources": ["docker"],

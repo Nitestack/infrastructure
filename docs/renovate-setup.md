@@ -1,9 +1,10 @@
 # Renovate Setup
 
-Dependency updates (Nix flake inputs and digest-pinned container images) are
-handled by [Renovate](https://docs.renovatebot.com). The update policy itself
-lives in [`renovate.json`](../renovate.json); this doc only covers the
-one-time GitHub App setup.
+Dependency updates (Nix flake inputs, OpenTofu providers, GitHub Actions,
+OpenCode npm plugins, and OCI images referenced in Nix modules) are handled by
+[Renovate](https://docs.renovatebot.com). The update policy itself lives in
+[`renovate.json`](../renovate.json); this doc only covers the one-time GitHub
+App setup.
 
 ## Install the app
 
