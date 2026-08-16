@@ -65,8 +65,6 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
-    # Codex CLI
-    codex-desktop-linux.url = "github:ilysenko/codex-desktop-linux";
     # Dank Material Shell
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
