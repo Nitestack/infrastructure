@@ -1,6 +1,6 @@
 {
   plugin = [
-    "@slkiser/opencode-quota@4.7.0"
+    "@slkiser/opencode-quota@4.8.0"
   ];
 
   provider.openai = { };
@@ -39,6 +39,6 @@
   };
 
   tui.plugin = [
-    "@slkiser/opencode-quota@4.7.0"
+    "@slkiser/opencode-quota@4.8.0"
   ];
 }
