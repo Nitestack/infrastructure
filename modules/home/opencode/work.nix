@@ -73,11 +73,11 @@
             value = { };
           })
           [
-            "claude-opus-5*"
-            "claude-sonnet-5*"
-            "claude-opus-4-8*"
-            "claude-sonnet-4-6*"
-            "claude-haiku-4-5*"
+            "claude-opus-5"
+            "claude-sonnet-5"
+            "claude-opus-4-8"
+            "claude-sonnet-4-6"
+            "claude-haiku-4-5"
           ]
       );
     };
@@ -85,11 +85,11 @@
 
   agent = {
     build = {
-      model = "litellm-anthropic/claude-sonnet-5*";
+      model = "litellm-anthropic/claude-sonnet-5";
       effort = "max";
     };
     plan = {
-      model = "litellm-anthropic/claude-opus-5*";
+      model = "litellm-anthropic/claude-opus-5";
       effort = "high";
     };
     general = {
