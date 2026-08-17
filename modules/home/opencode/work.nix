@@ -1,5 +1,5 @@
 {
-  plugin = [ "opencode-models-discovery@1.3.1" ];
+  plugin = [ "opencode-models-discovery@1.4.0" ];
 
   disabled_providers = [
     "openai"
