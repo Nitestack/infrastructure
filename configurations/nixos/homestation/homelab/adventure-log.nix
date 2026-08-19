@@ -32,7 +32,7 @@ in
 
     services.db = {
       enable = true;
-      image = "postgis/postgis:16-3.5@sha256:4e07b425403ba55c20b541884db2e80c686dd6476bf9265046ac9c163895605d";
+      image = "postgis/postgis:16-3.5@sha256:19b6ffa248d2f864d29d6c338459f02d63c0d7ce341fa86b3bcba8484a130bff";
       containerName = "adventurelog-db";
 
       environment = {
