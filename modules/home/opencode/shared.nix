@@ -14,6 +14,7 @@
   # not implemented in the pinned revision — only vim_enter_submit is wired
   # up (packages/tui/src/component/prompt/index.tsx, submitFromTextarea).
   tui = {
+    theme = "catppuccin";
     vim_enter_submit = true;
   };
 }
