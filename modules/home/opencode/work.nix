@@ -1,9 +1,10 @@
 {
   plugin = [ "opencode-models-discovery@1.4.0" ];
 
-  disabled_providers = [
-    "openai"
-    "nvidia"
+  enabled_providers = [
+    "litellm-chat"
+    "litellm-responses"
+    "litellm-anthropic"
   ];
 
   provider = {

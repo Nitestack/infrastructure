@@ -4,6 +4,7 @@
   ];
 
   provider.openai = { };
+  provider.openrouter = { };
 
   agent = {
     build = {
