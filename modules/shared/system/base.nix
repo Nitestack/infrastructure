@@ -40,7 +40,7 @@ in
         nix-path = config.nix.nixPath;
         trusted-users = [
           "root"
-          (if pkgs.stdenv.isDarwin then meta.username else "@wheel")
+          (if pkgs.stdenv.hostPlatform.isDarwin then meta.username else "@wheel")
         ];
         auto-optimise-store = true;
       };
@@ -79,14 +79,14 @@ in
 
   users.users.${meta.username} = {
     inherit (meta) description;
-    home = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/${meta.username}";
+    home = "/${if pkgs.stdenv.hostPlatform.isDarwin then "Users" else "home"}/${meta.username}";
   };
 
   programs = {
     gnupg.agent = {
       enable = true;
     }
-    // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+    // lib.optionalAttrs (!pkgs.stdenv.hostPlatform.isDarwin) {
       settings = {
         default-cache-ttl = 86400;
         max-cache-ttl = 86400;

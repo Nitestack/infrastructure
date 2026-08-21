@@ -46,5 +46,5 @@ in
     clean.enable = true;
   };
 
-  home.packages = if pkgs.stdenv.isDarwin then [ darwin-switch ] else linuxPackages;
+  home.packages = if pkgs.stdenv.hostPlatform.isDarwin then [ darwin-switch ] else linuxPackages;
 }

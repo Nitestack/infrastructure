@@ -13,7 +13,7 @@ in
 {
   programs.ghostty = {
     enable = true;
-    package = lib.mkIf pkgs.stdenv.isDarwin pkgs.ghostty-bin;
+    package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin pkgs.ghostty-bin;
     settings = {
       theme = "Catppuccin ${catppuccinFlavor}";
       font-family = font.nerd.name;

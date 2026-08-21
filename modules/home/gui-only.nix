@@ -43,6 +43,6 @@ in
 
   programs = {
     cava.enable = true;
-    chromium.enable = !pkgs.stdenv.isDarwin;
+    chromium.enable = !pkgs.stdenv.hostPlatform.isDarwin;
   };
 }
