@@ -93,25 +93,23 @@
       effort = "high";
     };
     general = {
-      model = "litellm-responses/gpt-5.6-terra";
-      reasoningEffort = "high";
+      model = "litellm-anthropic/claude-sonnet-5";
+      effort = "high";
     };
     explore = {
-      model = "litellm-responses/gpt-5.6-luna";
+      model = "litellm-responses/gpt-5-mini";
       reasoningEffort = "medium";
     };
     compaction = {
-      model = "litellm-responses/gpt-5.6-terra";
-      reasoningEffort = "medium";
+      model = "litellm-responses/gpt-5-mini";
+      reasoningEffort = "high";
       textVerbosity = "medium";
     };
     title = {
-      model = "litellm-responses/gpt-5.6-luna";
-      reasoningEffort = "none";
+      model = "litellm-chat/deepseek-v4-flash-sovereign";
     };
     summary = {
-      model = "litellm-responses/gpt-5.6-luna";
-      reasoningEffort = "low";
+      model = "litellm-chat/qwen-3.6-35b-sovereign";
     };
   };
 }
