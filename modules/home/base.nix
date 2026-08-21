@@ -28,7 +28,9 @@ in
 
   home = {
     inherit (meta) username;
-    homeDirectory = "/${if pkgs.stdenv.hostPlatform.isDarwin then "Users" else "home"}/${meta.username}";
+    homeDirectory = "/${
+      if pkgs.stdenv.hostPlatform.isDarwin then "Users" else "home"
+    }/${meta.username}";
     stateVersion = "26.05";
 
     shellAliases = {

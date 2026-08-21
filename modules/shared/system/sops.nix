@@ -10,7 +10,9 @@
 let
   inherit (flake.inputs) self;
   inherit (config) meta;
-  homeDirectory = "/${if pkgs.stdenv.hostPlatform.isDarwin then "Users" else "home"}/${meta.username}";
+  homeDirectory = "/${
+    if pkgs.stdenv.hostPlatform.isDarwin then "Users" else "home"
+  }/${meta.username}";
 in
 {
   sops = {
