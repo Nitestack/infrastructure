@@ -82,8 +82,6 @@
       url = "github:blader/humanizer";
       flake = false;
     };
-    # Hyprland
-    hyprland.url = "github:hyprwm/Hyprland";
     # Hyprland Contrib
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
