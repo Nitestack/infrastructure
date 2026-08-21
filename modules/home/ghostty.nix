@@ -18,6 +18,7 @@ in
       theme = "Catppuccin ${catppuccinFlavor}";
       font-family = font.nerd.name;
       font-family-italic = "${font.nerd.name} Italic";
+      font-size = 12;
       font-feature = "ss01";
       adjust-cell-height = "25%";
       adjust-cursor-height = "25%";
