@@ -18,7 +18,6 @@ M.filename = {
 
 M.pattern = {
   ["tsconfig*.json"] = "jsonc",
-  [".*/%.vscode/.*%.json"] = "jsonc",
   ["tsconfig.tsbuildinfo"] = "json",
 }
 

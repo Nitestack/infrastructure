@@ -12,5 +12,4 @@ return {
   { import = "lazyvim.plugins.extras.editor.refactoring" },
   { import = "lazyvim.plugins.extras.ui.smear-cursor" },
   { import = "lazyvim.plugins.extras.util.dot" },
-  { import = "lazyvim.plugins.extras.vscode" },
 }
