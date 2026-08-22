@@ -334,7 +334,7 @@
     - size: small
       widgets:
         - type: releases
-          token: ${GITHUB_API_TOKEN}
+          token: ${secret:glance_github_api_token}
           show-source-icon: true
           collapse-after: -1
           limit: 24

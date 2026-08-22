@@ -38,3 +38,9 @@ hostname.
 Glance also links to `backup.npham.de`, but no corresponding homelab app is
 declared in this repository. Its ownership and operation are therefore outside
 this inventory.
+
+Glance auth secrets (user, password hash, secret key) and the GitHub token are
+not passed as environment variables: Docker Compose interpolates `$` sequences
+in `env_file` values, which corrupts bcrypt password hashes. They are rendered
+as individual sops templates and bind-mounted into the container under
+`/run/secrets/`, consumed via Glance's `${secret:NAME}` config syntax.

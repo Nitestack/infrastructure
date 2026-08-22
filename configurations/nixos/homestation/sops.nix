@@ -242,12 +242,27 @@ in
       '';
       mode = "0400";
     };
-    templates."glance.env" = {
+    templates."glance-user" = {
       content = ''
-        GITHUB_API_TOKEN=${config.sops.placeholder."glance/github-api-token"}
-        GLANCE_USER=${config.sops.placeholder."glance/user"}
-        GLANCE_PASSWORD_HASH=${config.sops.placeholder."glance/password-hash"}
-        GLANCE_SECRET=${config.sops.placeholder."glance/secret"}
+        ${config.sops.placeholder."glance/user"}
+      '';
+      mode = "0400";
+    };
+    templates."glance-password-hash" = {
+      content = ''
+        ${config.sops.placeholder."glance/password-hash"}
+      '';
+      mode = "0400";
+    };
+    templates."glance-secret" = {
+      content = ''
+        ${config.sops.placeholder."glance/secret"}
+      '';
+      mode = "0400";
+    };
+    templates."glance-github-api-token" = {
+      content = ''
+        ${config.sops.placeholder."glance/github-api-token"}
       '';
       mode = "0400";
     };

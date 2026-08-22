@@ -10,10 +10,10 @@ theme:
   negative-color: 347 70 65
 
 auth:
-  secret-key: ${GLANCE_SECRET}
+  secret-key: ${secret:glance_secret}
   users:
-    ${GLANCE_USER}:
-      password-hash: ${GLANCE_PASSWORD_HASH}
+    ${secret:glance_user}:
+      password-hash: ${secret:glance_password_hash}
 
 branding:
   logo-text: Dashboard

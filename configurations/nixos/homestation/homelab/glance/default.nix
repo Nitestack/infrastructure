@@ -48,8 +48,6 @@ in
         ZEROBYTE_URL = mkUrl "backup";
       };
 
-      environmentFiles = [ config.sops.templates."glance.env".path ];
-
       volumes = [
         {
           type = "bind";
@@ -61,6 +59,30 @@ in
           type = "bind";
           source = "/var/run/docker.sock";
           target = "/var/run/docker.sock";
+          readOnly = true;
+        }
+        {
+          type = "bind";
+          source = config.sops.templates."glance-user".path;
+          target = "/run/secrets/glance_user";
+          readOnly = true;
+        }
+        {
+          type = "bind";
+          source = config.sops.templates."glance-password-hash".path;
+          target = "/run/secrets/glance_password_hash";
+          readOnly = true;
+        }
+        {
+          type = "bind";
+          source = config.sops.templates."glance-secret".path;
+          target = "/run/secrets/glance_secret";
+          readOnly = true;
+        }
+        {
+          type = "bind";
+          source = config.sops.templates."glance-github-api-token".path;
+          target = "/run/secrets/glance_github_api_token";
           readOnly = true;
         }
       ];
