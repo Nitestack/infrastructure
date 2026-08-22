@@ -756,23 +756,24 @@
         "url": "https://devimages-cdn.apple.com/design/resources/download/NY.dmg"
       }
     },
-    "opencode-vim": {
+    "opencode": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1786516097,
-        "narHash": "sha256-6a/MjEAHmch19SjDscd5grwmp+UFZiOGaFKxQXIIoA4=",
-        "owner": "leohenon",
-        "repo": "opencode-vim",
-        "rev": "da38c3d5808eb0f1087c6be6e1d4f00132e810b2",
+        "lastModified": 1787403002,
+        "narHash": "sha256-wE2qaArof5Tz1xq6lxtfyoIQafMdxE7vcPVq4jrddpQ=",
+        "owner": "anomalyco",
+        "repo": "opencode",
+        "rev": "3a31c4ea801915c0b050df4b3842997ea62b6e93",
         "type": "github"
       },
       "original": {
-        "owner": "leohenon",
-        "repo": "opencode-vim",
+        "owner": "anomalyco",
+        "ref": "dev",
+        "repo": "opencode",
         "type": "github"
       }
     },
@@ -801,7 +802,7 @@
         "nixos-unified": "nixos-unified",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_5",
-        "opencode-vim": "opencode-vim",
+        "opencode": "opencode",
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",

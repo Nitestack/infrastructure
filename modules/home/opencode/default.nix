@@ -12,7 +12,7 @@
 let
   inherit (flake) inputs;
 
-  opencodePackage = inputs.opencode-vim.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+  opencodePackage = inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
 
   hasWorkProfile = config.programs.aix.enable or false;
 
@@ -27,7 +27,12 @@ let
       plugin = sharedSettings.plugin ++ (cfg.plugin or [ ]);
     };
 
-  mkTui = cfg: sharedSettings.tui // (cfg.tui or { });
+  mkTui =
+    cfg:
+    (sharedSettings.tui // (cfg.tui or { }))
+    // {
+      plugin = (sharedSettings.tui.plugin or [ ]) ++ ((cfg.tui or { }).plugin or [ ]);
+    };
 
   opencodePrivatePackage = pkgs.symlinkJoin {
     name = "opencode-private";

@@ -92,9 +92,9 @@
       url = "github:mattpocock/skills";
       flake = false;
     };
-    # OpenCode Vim
-    opencode-vim = {
-      url = "github:leohenon/opencode-vim";
+    # OpenCode
+    opencode = {
+      url = "github:anomalyco/opencode/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Spicetify

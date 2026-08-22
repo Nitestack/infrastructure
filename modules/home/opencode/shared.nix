@@ -8,13 +8,18 @@
     ]
   ];
 
-  # Enter submits from insert mode. `Ctrl+Enter` still inserts a newline
-  # (input_newline's default binding), so this doesn't need a keybind
-  # override. `input_force_submit`, mentioned in the opencode-vim README, is
-  # not implemented in the pinned revision — only vim_enter_submit is wired
-  # up (packages/tui/src/component/prompt/index.tsx, submitFromTextarea).
   tui = {
     theme = "catppuccin";
-    vim_enter_submit = true;
+    plugin = [
+      [
+        "@leohenon/opencode-vim-plugin@0.1.6"
+        {
+          enabled = true;
+          vim_enter_submit = true;
+          vim_insert_after_submit = true;
+          vim_system_clipboard_register = true;
+        }
+      ]
+    ];
   };
 }
