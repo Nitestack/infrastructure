@@ -8,8 +8,10 @@
 
   agent = {
     build = {
-      model = "openai/gpt-5.6-luna";
-      reasoningEffort = "max";
+      # model = "openai/gpt-5.6-luna";
+      # reasoningEffort = "max";
+      model = "opencode/x-preview-f-free";
+      reasoningEffort = "high";
     };
     plan = {
       model = "openai/gpt-5.6-sol";
@@ -17,12 +19,16 @@
       textVerbosity = "medium";
     };
     general = {
-      model = "openai/gpt-5.6-terra";
+      # model = "openai/gpt-5.6-terra";
+      # reasoningEffort = "high";
+      model = "opencode/x-preview-f-free";
       reasoningEffort = "high";
     };
     explore = {
-      model = "openai/gpt-5.6-luna";
-      reasoningEffort = "medium";
+      # model = "openai/gpt-5.6-luna";
+      # reasoningEffort = "medium";
+      model = "opencode/x-preview-f-free";
+      reasoningEffort = "high";
     };
     compaction = {
       model = "openai/gpt-5.6-terra";
