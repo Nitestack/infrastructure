@@ -24,11 +24,38 @@ in
           "::"
         ];
         port = 53;
+        upstream_dns = [
+          "https://dns10.quad9.net/dns-query"
+        ];
         bootstrap_dns = [
-          "1.1.1.1"
-          "1.0.0.1"
+          "9.9.9.10"
+          "149.112.112.10"
+          "2620:fe::10"
+          "2620:fe::fe:10"
         ];
       };
+
+      filtering = {
+        protection_enabled = true;
+        filtering_enabled = true;
+        parental_enabled = false;
+        safe_search.enabled = false;
+      };
+
+      filters = [
+        {
+          enabled = true;
+          url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.plus.txt";
+        }
+        {
+          enabled = true;
+          url = "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.medium.txt";
+        }
+        {
+          enabled = true;
+          url = "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareAdGuardHome.txt";
+        }
+      ];
     };
   };
 
