@@ -110,7 +110,7 @@
       model = "litellm-chat/deepseek-v4-flash-sovereign";
     };
     summary = {
-      model = "litellm-chat/qwen-3.6-35b-sovereign";
+      model = "litellm-chat/qwen-3.8-27b-sovereign";
     };
   };
 }
