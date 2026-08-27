@@ -66,6 +66,7 @@
       options = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
+        modelsDiscovery.enabled = false;
       };
       models = builtins.listToAttrs (
         map
