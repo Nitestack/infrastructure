@@ -34,7 +34,7 @@ Keep personal or machine-local assets out of Git (for example `images/local/`) a
 ## Agent references
 
 - Issues: GitHub Issues in `Nitestack/infrastructure` via `gh`; see `docs/agents/issue-tracker.md`.
-- Triage labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`; see `docs/agents/triage-labels.md`.
+- Triage labels: `ready-for-agent`, `wontfix`, and the tracker labels documented in `docs/agents/triage-labels.md`.
 - Domain context: `CONTEXT.md` and `docs/adr/`; see `docs/agents/domain.md`.
 
 ## Documentation

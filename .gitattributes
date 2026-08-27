@@ -1,3 +1,2 @@
 *flake.lock linguist-generated=true
 *lazy*.json linguist-generated=true
-.agents/skills/darwin-skill/assets/*.png !text !filter !merge !diff
