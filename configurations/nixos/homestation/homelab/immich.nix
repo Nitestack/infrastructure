@@ -69,7 +69,7 @@
 
     services.redis = {
       enable = true;
-      image = "docker.io/valkey/valkey:9@sha256:70739f85ad2ee01a726a965584a0f94895f01b0c60b3cc8b0aeef11eaa6888cf";
+      image = "docker.io/valkey/valkey:9@sha256:a91d34ab33975b1054e26f1bd9995b268f7e0c507b5ded7f3d181a1a25521630";
       containerName = "immich_redis";
 
       healthcheck = {
