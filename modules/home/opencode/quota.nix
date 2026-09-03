@@ -1,4 +1,5 @@
 {
+  enabledProviders = [ "openai" ];
   percentDisplayMode = "used";
   formatStyle = "allWindows";
   enableToast = false;
