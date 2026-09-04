@@ -1,5 +1,5 @@
 {
-  plugin = [ "opencode-models-discovery@1.4.0" ];
+  plugin = [ "opencode-models-discovery@1.5.3" ];
 
   enabled_providers = [
     "litellm-chat"
