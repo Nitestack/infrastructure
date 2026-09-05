@@ -18,6 +18,7 @@ in
   imports = [
     ./hardware-configuration.nix
 
+    inputs.codex-desktop-linux.nixosModules.default
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.interactive-only
@@ -108,6 +109,7 @@ in
 
   # Services
   programs = {
+    codexDesktopLinux.enable = true;
     gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
     virt-manager.enable = true;
   };
