@@ -149,14 +149,15 @@ Restic password is separate from the local Restic password and is also rendered
 only below `/run/secrets`.
 
 The first successful offsite run emits a OneDrive Restic `rclone size` report and
-a retention dry run. Remote retention defaults to the local seven-daily,
-four-weekly, and twelve-monthly policy, while remote pruning is initially
-disabled. Review the size report and OneDrive quota before changing
-`offsiteResticRetention` in `configurations/nixos/homestation/backup.nix`.
-If the default policy fits, keep those values; only then set
-`offsiteResticPrune = true` and `offsiteRetentionValidated = true`. Any extended
-remote history must be selected explicitly after that size review. Evaluation
-rejects enabling pruning without the validation marker.
+a retention dry run before applying the policy. Remote retention defaults to the
+local seven-daily, four-weekly, and twelve-monthly policy, and the current
+configuration prunes to that policy after the dry-run validation. Review the
+size report and OneDrive quota before changing `offsiteResticRetention` in
+`configurations/nixos/homestation/backup.nix`. If the default policy fits, keep
+those values. Any extended remote history must be selected explicitly after that
+size review by changing the retention values and setting
+`offsiteRetentionReviewed = true`; evaluation rejects an unreviewed extended
+policy before pruning can run.
 
 ### Nextcloud AIO Borg
 

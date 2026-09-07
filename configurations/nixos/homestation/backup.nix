@@ -19,13 +19,16 @@ let
   oneDriveAioRclonePath = "${oneDriveRemote}:${oneDriveAioPath}";
   oneDriveRcloneConfig = config.sops.secrets."backup/onedrive-rclone-config".path;
   offsiteResticPassword = config.sops.secrets."backup/offsite-restic-password".path;
-  offsiteResticRetention = {
+  localResticRetention = {
     daily = 7;
     weekly = 4;
     monthly = 12;
   };
-  offsiteResticPrune = false;
-  offsiteRetentionValidated = false;
+  offsiteResticRetention = localResticRetention;
+  offsiteRetentionReviewed = false;
+  offsiteResticPrune = true;
+  offsiteRetentionValidated =
+    offsiteResticRetention == localResticRetention || offsiteRetentionReviewed;
   nextcloudAioBackupScript = pkgs.writeShellApplication {
     name = "nextcloud-aio-backup";
     runtimeInputs = [
@@ -146,6 +149,9 @@ let
     assert oneDriveResticPath != oneDriveAioPath;
     assert !(hasPrefix "${oneDriveResticPath}/" oneDriveAioPath);
     assert !(hasPrefix "${oneDriveAioPath}/" oneDriveResticPath);
+    assert offsiteResticRetention.daily > 0;
+    assert offsiteResticRetention.weekly > 0;
+    assert offsiteResticRetention.monthly > 0;
     assert !offsiteResticPrune || offsiteRetentionValidated;
     pkgs.writeShellApplication {
       name = "offsite-backup";
@@ -270,9 +276,7 @@ in
     };
 
     retention = {
-      daily = 7;
-      weekly = 4;
-      monthly = 12;
+      inherit (localResticRetention) daily weekly monthly;
     };
 
     managedRepositories = [ nextcloudAioRepository ];
