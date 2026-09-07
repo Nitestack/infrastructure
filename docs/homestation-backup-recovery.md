@@ -17,7 +17,7 @@ service can be restored and started.
 
 | Store | Local location | OneDrive location | Retention |
 | --- | --- | --- | --- |
-| Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:homestation/restic` | 7 daily, 4 weekly, 12 monthly |
+| Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:homestation/restic` | Local: 7 daily, 4 weekly, 12 monthly. Remote: same target, with pruning disabled until the first-size review |
 | Nextcloud AIO Borg | `/mnt/backup/nextcloud-borg/borg` | `onedrive:homestation/nextcloud-aio-borg` | AIO's configured Borg policy; the OneDrive copy mirrors the local repository |
 
 The local Restic repository uses the `restic-password` secret. The OneDrive
@@ -56,8 +56,9 @@ The daily pipeline runs in this order:
 3. Local Restic creates a snapshot and applies the 7/4/12 retention policy.
 4. Local Restic runs a structural `restic check`.
 5. The independent OneDrive Restic repository receives copied snapshots,
-   checks its own structure, reports its size, and applies the validated 7/4/12
-   policy.
+   checks its own structure, reports its size, and reports the proposed 7/4/12
+   retention. It prunes only after the first-size review is recorded in the
+   host configuration.
 6. The verified local AIO Borg repository is mirrored to its isolated
    OneDrive prefix.
 
@@ -117,6 +118,15 @@ after the AIO preparation step. A missing mount or failed gate leaves the
 local Restic snapshot and its retention unchanged; the service fails and the
 alert is logged. AIO may already have completed its own backup and compaction
 before the second gate fails.
+
+The AIO native daily schedule must remain disabled because
+`local-backup.timer` is the scheduling authority. After AIO backup and integrity
+checks complete, the pipeline verifies AIO's actual `/mnt/borgbackup` host mount
+and pauses the mastercontainer while Restic and OneDrive work run. An
+`ExecStopPost` cleanup unpauses it whether the service succeeds, fails, or times
+out. The complete service has a 24-hour timeout, and each AIO Borg operation has
+an eight-hour deadline plus a one-minute forced-termination grace period, so a
+stuck container eventually fails visibly.
 
 The local Restic snapshot and retention are completed before OneDrive work
 starts. If the remote Restic copy, remote check, remote retention, rclone
@@ -278,7 +288,10 @@ restic_local restore "$SNAPSHOT" \
   --target "$RESTORE_ROOT" \
   --include "$DUMP_PATH"
 DUMP_FILE="$RESTORE_ROOT$DUMP_PATH"
-sudo gzip -t -- "$DUMP_FILE"
+if ! sudo gzip -t -- "$DUMP_FILE"; then
+  printf 'selected backup dump is invalid; aborting restore\n' >&2
+  return 1 2>/dev/null || exit 1
+fi
 ```
 
 Before changing the live database, capture a rollback dump of its current
@@ -299,9 +312,15 @@ if ! sudo docker exec -i immich_postgres sh -c \
   printf 'could not capture the current database; aborting restore\n' >&2
   return 1 2>/dev/null || exit 1
 fi
-gzip -t -- "$CURRENT_DUMP"
+if ! gzip -t -- "$CURRENT_DUMP"; then
+  printf 'rollback dump is invalid; aborting restore\n' >&2
+  return 1 2>/dev/null || exit 1
+fi
 
-sudo docker stop immich_server
+if ! sudo docker stop immich_server; then
+  printf 'could not stop immich_server; aborting restore\n' >&2
+  return 1 2>/dev/null || exit 1
+fi
 if sudo gzip --decompress --stdout -- "$DUMP_FILE" |
   sudo docker exec -i immich_postgres sh -c \
     'PGPASSWORD="$DB_PASSWORD" psql --username=postgres --dbname=immich --set=ON_ERROR_STOP=1'; then
@@ -314,10 +333,15 @@ else
     printf 'rollback failed; leave immich_server stopped for investigation\n' >&2
     return 1 2>/dev/null || exit 1
   fi
-  sudo docker start immich_server
+  if ! sudo docker start immich_server; then
+    printf 'rollback succeeded but immich_server could not be started\n' >&2
+  fi
   return 1 2>/dev/null || exit 1
 fi
-sudo docker start immich_server
+if ! sudo docker start immich_server; then
+  printf 'restore completed but immich_server could not be started\n' >&2
+  return 1 2>/dev/null || exit 1
+fi
 ```
 
 The selected dump contains `--clean` and `--if-exists`, so the import replaces
@@ -357,24 +381,83 @@ For one selected target, restore to `RESTORE_ROOT`, stop only its unit, move
 the current target aside, and move the verified restored directory into place:
 
 ```sh
-TARGET='/var/lib/homelab/navidrome/data'
-UNIT='arion-navidrome.service'
-RESTORED_PATH="$RESTORE_ROOT/<path-restored-from-the-snapshot>"
-PREVIOUS="${TARGET}.before-restore.$(date -u +%Y%m%dT%H%M%SZ)"
+restore_application_data() {
+  local target='/var/lib/homelab/navidrome/data'
+  local unit='arion-navidrome.service'
+  local restored_path="$RESTORE_ROOT/<path-restored-from-the-snapshot>"
+  local timestamp
+  local previous
+  local candidate
+  local failed_restore
+  local had_previous=false
 
-sudo systemctl stop "$UNIT"
-if sudo test -e "$TARGET"; then
-  sudo mv -- "$TARGET" "$PREVIOUS"
-fi
-sudo install -d -m 0755 -- "$(dirname "$TARGET")"
-sudo mv -- "$RESTORED_PATH" "$TARGET"
-sudo systemctl start "$UNIT"
-systemctl status "$UNIT"
+  timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+  previous="${target}.before-restore.${timestamp}"
+  candidate="${target}.restore-candidate.${timestamp}"
+  failed_restore="${target}.failed-restore.${timestamp}"
+
+  if ! sudo test -e "$restored_path"; then
+    printf 'restored data is missing; aborting before service stop\n' >&2
+    return 1
+  fi
+  if sudo test -e "$candidate"; then
+    printf 'restore candidate already exists: %s\n' "$candidate" >&2
+    return 1
+  fi
+  if ! sudo install -d -m 0755 -- "$(dirname "$target")" ||
+    ! sudo cp -a -- "$restored_path" "$candidate"; then
+    sudo rm -rf -- "$candidate"
+    printf 'could not stage restored data; aborting before service stop\n' >&2
+    return 1
+  fi
+  if ! sudo systemctl stop "$unit"; then
+    sudo rm -rf -- "$candidate"
+    printf 'could not stop %s; live data is unchanged\n' "$unit" >&2
+    return 1
+  fi
+  if sudo test -e "$target"; then
+    if ! sudo mv -- "$target" "$previous"; then
+      sudo rm -rf -- "$candidate"
+      sudo systemctl start "$unit" || true
+      printf 'could not preserve live data; restore aborted\n' >&2
+      return 1
+    fi
+    had_previous=true
+  fi
+  if ! sudo mv -- "$candidate" "$target"; then
+    printf 'could not install restored data; attempting rollback\n' >&2
+    if [[ "$had_previous" == "true" ]] && sudo mv -- "$previous" "$target"; then
+      sudo systemctl start "$unit" || true
+    else
+      printf 'rollback unavailable or failed; leave %s stopped\n' "$unit" >&2
+    fi
+    return 1
+  fi
+  if ! sudo systemctl start "$unit"; then
+    printf 'restored data failed to start; attempting rollback\n' >&2
+    sudo systemctl stop "$unit" || true
+    if [[ "$had_previous" == "true" ]] &&
+      sudo mv -- "$target" "$failed_restore" &&
+      sudo mv -- "$previous" "$target"; then
+      if ! sudo systemctl start "$unit"; then
+        printf 'previous data was restored but %s still failed to start\n' "$unit" >&2
+      fi
+    else
+      printf 'rollback unavailable or failed; leave %s stopped\n' "$unit" >&2
+    fi
+    return 1
+  fi
+  systemctl status "$unit"
+}
+
+restore_application_data
 ```
 
-This procedure changes one service directory only. Do not move or restore the
-whole `/var/lib/homelab` tree, and keep the `*.before-restore.*` directory until
-the service has been verified. Shared libraries such as the music and book
+This procedure stages the restored directory beside the target before stopping
+the service, so the final replacement is on one filesystem and can be rolled
+back. It changes one service directory only. Do not move or restore the whole
+`/var/lib/homelab` tree, and keep the `*.before-restore.*` directory until the
+service has been verified. Shared libraries such as the music and book
 libraries must be restored separately and must not be used to replace another
 service's configuration.
 
@@ -414,6 +497,10 @@ Open the AIO interface, select its **Backup and restore** page, point it at
 the supported restore flow. This restores Nextcloud through AIO without
 replacing unrelated Arion services or their data. Start and verify the
 Nextcloud service before removing any pre-restore AIO state.
+
+After recovery, disable AIO's native daily backup schedule again before
+re-enabling `local-backup.timer`; overlapping schedulers are rejected by the
+pipeline.
 
 After any recovery, re-enable the timer and run a complete backup only after
 the restored service is healthy:

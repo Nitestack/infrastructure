@@ -152,15 +152,13 @@ Restic password is separate from the local Restic password and is also rendered
 only below `/run/secrets`.
 
 The first successful offsite run emits a OneDrive Restic `rclone size` report and
-a retention dry run before applying the policy. Remote retention defaults to the
-local seven-daily, four-weekly, and twelve-monthly policy, and the current
-configuration prunes to that policy after the dry-run validation. Review the
-size report and OneDrive quota before changing `offsiteResticRetention` in
-`configurations/nixos/homestation/backup.nix`. If the default policy fits, keep
-those values. Any extended remote history must be selected explicitly after that
-size review by changing the retention values and setting
-`offsiteRetentionReviewed = true`; evaluation rejects an unreviewed extended
-policy before pruning can run.
+a retention dry run, but pruning is initially disabled. Review that report and
+the OneDrive quota before changing `configurations/nixos/homestation/backup.nix`.
+If the default seven-daily, four-weekly, and twelve-monthly policy fits, keep
+`offsiteResticRetention` unchanged; otherwise select the extended history that
+fits. Then set both `offsiteRetentionReviewed = true` and
+`offsiteResticPrune = true`. Evaluation rejects pruning before that explicit
+review marker is set.
 
 ### Nextcloud AIO Borg
 
@@ -175,6 +173,11 @@ directory:
 
 AIO creates the actual Borg repository at
 `/mnt/backup/nextcloud-borg/borg`. Keep the passphrase shown by AIO separately.
+Disable AIO's native daily backup schedule after completing setup;
+`local-backup.timer` is the sole scheduler, and the service refuses to run while
+the native schedule is enabled. Manual backup and restore operations must not be
+started while `local-backup.service` is active.
+
 After setup on `homestation`, add it to the encrypted host backup file as
 `nextcloud-borg-passphrase` using the existing sops workflow from the repository
 root:
@@ -199,11 +202,16 @@ successfully, and then invokes the `CHECK_BACKUP=1 /daily-backup.sh` trigger.
 Although AIO's check trigger is asynchronous, the pipeline waits for its Borg
 container to exit successfully. AIO performs its configured retention pruning
 and compaction before the integrity check. Both operations must succeed before
-the generic Restic stage begins.
+the generic Restic stage begins. The pipeline verifies that AIO mounted
+`/mnt/backup/nextcloud-borg` at `/mnt/borgbackup` and rejects an AIO remote Borg
+configuration so a stale local repository cannot be replicated.
 
 The complete pipeline holds `/run/local-backup/lock`; the OneDrive stage runs
 inside that same lock after the local Restic stage. It does not read the AIO
 repository until the AIO backup, compaction, and verification have succeeded.
+The AIO mastercontainer is paused before Restic and repository replication, then
+an `ExecStopPost` cleanup unpauses it on every service exit path. Nextcloud's
+application containers remain running during this pause.
 
 ## Storage and recovery
 

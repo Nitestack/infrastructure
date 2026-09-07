@@ -19,6 +19,7 @@ let
   oneDriveAioRclonePath = "${oneDriveRemote}:${oneDriveAioPath}";
   oneDriveRcloneConfig = config.sops.secrets."backup/onedrive-rclone-config".path;
   offsiteResticPassword = config.sops.secrets."backup/offsite-restic-password".path;
+  aioOperationTimeoutSeconds = 8 * 60 * 60;
   localResticRetention = {
     daily = 7;
     weekly = 4;
@@ -26,24 +27,41 @@ let
   };
   offsiteResticRetention = localResticRetention;
   offsiteRetentionReviewed = false;
-  offsiteResticPrune = true;
-  offsiteRetentionValidated =
-    offsiteResticRetention == localResticRetention || offsiteRetentionReviewed;
+  offsiteResticPrune = false;
+  offsiteRetentionValidated = offsiteRetentionReviewed;
   nextcloudAioBackupScript = pkgs.writeShellApplication {
     name = "nextcloud-aio-backup";
     runtimeInputs = [
       pkgs.coreutils
       pkgs.docker
+      pkgs.gnugrep
     ];
     text = ''
       aio_master_container=nextcloud-aio-mastercontainer
       aio_borg_container=nextcloud-aio-borgbackup
+      aio_backup_directory=${escapeShellArg nextcloudAioBackupDirectory}
       aio_repository=${escapeShellArg nextcloudAioRepository}
+      aio_operation_timeout=${toString aioOperationTimeoutSeconds}
+      aio_pause_marker=/run/local-backup/aio-master-paused
+      aio_master_paused=false
 
       die() {
         printf 'Nextcloud AIO backup: %s\n' "$*" >&2
         exit 1
       }
+
+      cleanup_failed_pause() {
+        local status="$?"
+
+        trap - EXIT
+        if [[ "$status" -ne 0 && "$aio_master_paused" == "true" ]]; then
+          if docker unpause "$aio_master_container" >/dev/null 2>&1; then
+            rm -f -- "$aio_pause_marker"
+          fi
+        fi
+        exit "$status"
+      }
+      trap cleanup_failed_pause EXIT
 
       # AIO's trigger does not propagate the Borg exit status. The child
       # container's start transition and final status are the result boundary.
@@ -51,6 +69,7 @@ let
         local previous_id="$1"
         local previous_started_at="$2"
         local operation="$3"
+        local deadline="$4"
         local current_id=""
         local current_started_at=""
         local state=""
@@ -68,6 +87,9 @@ let
             )
           ]]; then
             break
+          fi
+          if (( $(date +%s) >= deadline )); then
+            die "AIO $operation did not start within $aio_operation_timeout seconds"
           fi
           sleep 5
         done
@@ -92,6 +114,9 @@ let
               return 0
               ;;
             created|running|restarting)
+              if (( $(date +%s) >= deadline )); then
+                die "AIO $operation did not finish within $aio_operation_timeout seconds"
+              fi
               sleep 30
               ;;
             *)
@@ -105,6 +130,7 @@ let
         local operation="$1"
         local previous_id
         local previous_started_at
+        local deadline
         local -a trigger_environment
 
         if ! docker inspect "$aio_master_container" >/dev/null 2>&1; then
@@ -113,22 +139,27 @@ let
         if [[ "$(docker inspect --format '{{.State.Running}}' "$aio_master_container")" != "true" ]]; then
           die "AIO mastercontainer $aio_master_container is not running"
         fi
+        if docker exec "$aio_master_container" test -e /mnt/docker-aio-config/data/daily_backup_time >/dev/null 2>&1; then
+          die "disable AIO's native daily schedule before using local-backup.timer"
+        fi
         if docker exec "$aio_master_container" test -e /mnt/docker-aio-config/data/daily_backup_running >/dev/null 2>&1; then
           die "another AIO backup operation is already running"
         fi
         previous_id="$(docker inspect --format '{{.Id}}' "$aio_borg_container" 2>/dev/null || true)"
         previous_started_at="$(docker inspect --format '{{.State.StartedAt}}' "$aio_borg_container" 2>/dev/null || true)"
+        deadline=$(($(date +%s) + aio_operation_timeout))
 
         if [[ "$operation" == "backup" ]]; then
           trigger_environment=(--env DAILY_BACKUP=1 --env START_CONTAINERS=1)
         else
           trigger_environment=(--env CHECK_BACKUP=1)
         fi
-        if ! docker exec "''${trigger_environment[@]}" "$aio_master_container" /daily-backup.sh; then
-          die "AIO $operation trigger failed"
+        if ! timeout --foreground --kill-after=1m "$aio_operation_timeout" \
+          docker exec "''${trigger_environment[@]}" "$aio_master_container" /daily-backup.sh; then
+          die "AIO $operation trigger failed or exceeded $aio_operation_timeout seconds"
         fi
 
-        wait_for_aio_borg "$previous_id" "$previous_started_at" "$operation"
+        wait_for_aio_borg "$previous_id" "$previous_started_at" "$operation" "$deadline"
       }
 
       printf 'starting Nextcloud AIO native Borg backup\n' >&2
@@ -141,6 +172,52 @@ let
       printf 'starting Nextcloud AIO Borg integrity check\n' >&2
       run_aio_operation check
       printf 'AIO Borg integrity check completed\n' >&2
+
+      if [[ -e "$aio_pause_marker" ]]; then
+        die "AIO pause ownership marker already exists"
+      fi
+      : >"$aio_pause_marker"
+      if ! docker pause "$aio_master_container" >/dev/null; then
+        rm -f -- "$aio_pause_marker"
+        die "could not pause the AIO mastercontainer before repository copying"
+      fi
+      aio_master_paused=true
+      if [[ "$(docker inspect --format '{{.State.Status}}' "$aio_borg_container" 2>/dev/null || true)" != "exited" ]]; then
+        die "AIO Borg container became active before the mastercontainer was paused"
+      fi
+      if docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' "$aio_borg_container" |
+        grep -Eq '^BORG_REMOTE_REPO=.+$'; then
+        die "AIO is configured with a remote Borg repository instead of the required local repository"
+      fi
+      actual_backup_directory="$(docker inspect --format '{{range .Mounts}}{{if eq .Destination "/mnt/borgbackup"}}{{.Source}}{{end}}{{end}}' "$aio_borg_container")"
+      if [[ "$actual_backup_directory" != "$aio_backup_directory" ]]; then
+        die "AIO Borg mount is $actual_backup_directory, expected $aio_backup_directory"
+      fi
+      if [[ ! -f "$aio_repository/config" ]]; then
+        die "verified AIO Borg repository is unavailable at $aio_repository"
+      fi
+      printf 'AIO mastercontainer paused while the verified repository is copied\n' >&2
+      trap - EXIT
+    '';
+  };
+  nextcloudAioCleanupScript = pkgs.writeShellApplication {
+    name = "nextcloud-aio-backup-cleanup";
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.docker
+    ];
+    text = ''
+      aio_master_container=nextcloud-aio-mastercontainer
+      aio_pause_marker=/run/local-backup/aio-master-paused
+
+      if [[ -e "$aio_pause_marker" ]]; then
+        if docker inspect "$aio_master_container" >/dev/null 2>&1 &&
+          [[ "$(docker inspect --format '{{.State.Paused}}' "$aio_master_container")" == "true" ]]; then
+          docker unpause "$aio_master_container" >/dev/null
+          printf 'Nextcloud AIO backup: mastercontainer unpaused\n' >&2
+        fi
+        rm -f -- "$aio_pause_marker"
+      fi
     '';
   };
   offsiteBackupScript =
@@ -157,6 +234,7 @@ let
       name = "offsite-backup";
       runtimeInputs = [
         pkgs.coreutils
+        pkgs.docker
         pkgs.rclone
         pkgs.restic
       ];
@@ -169,6 +247,7 @@ let
         rclone_config=${escapeShellArg oneDriveRcloneConfig}
         remote_password_file=${escapeShellArg offsiteResticPassword}
         aio_repository=${escapeShellArg nextcloudAioRepository}
+        aio_pause_marker=/run/local-backup/aio-master-paused
         remote_name=${escapeShellArg oneDriveRemote}
         tag=${escapeShellArg "local-application"}
 
@@ -256,6 +335,15 @@ let
         }
 
         printf 'offsite backup: syncing completed AIO Borg repository\n' >&2
+        if [[ ! -e "$aio_pause_marker" ]]; then
+          die "AIO mastercontainer pause is not owned by this backup run"
+        fi
+        if [[ "$(docker inspect --format '{{.State.Paused}}' nextcloud-aio-mastercontainer 2>/dev/null || true)" != "true" ]]; then
+          die "AIO mastercontainer is not paused before Borg replication"
+        fi
+        if [[ "$(docker inspect --format '{{.State.Status}}' nextcloud-aio-borgbackup 2>/dev/null || true)" != "exited" ]]; then
+          die "AIO Borg container is active before repository replication"
+        fi
         if ! rclone --config "$rclone_config" sync "$aio_repository" "$remote_aio_path"; then
           die "AIO Borg repository replication failed"
         fi
@@ -515,4 +603,7 @@ in
       }
     ];
   };
+
+  systemd.services.local-backup.serviceConfig.ExecStopPost =
+    "${nextcloudAioCleanupScript}/bin/nextcloud-aio-backup-cleanup";
 }

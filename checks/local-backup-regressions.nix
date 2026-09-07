@@ -106,6 +106,7 @@ in
 assert builtins.elem "/mnt/backup" service.unitConfig.RequiresMountsFor;
 assert builtins.elem "local-backup-alert.service" service.unitConfig.OnFailure;
 assert lib.hasInfix "/run/local-backup/lock" service.serviceConfig.ExecStart;
+assert service.serviceConfig.TimeoutStartSec == "24h";
 assert timer.timerConfig.Persistent;
 assert timer.timerConfig.OnCalendar == "*-*-* 03:30:00";
 assert lib.hasInfix "Retention: 7 daily, 4 weekly, 12 monthly" manifest;

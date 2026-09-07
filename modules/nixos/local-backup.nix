@@ -854,7 +854,7 @@ in
         RuntimeDirectory = "local-backup";
         RuntimeDirectoryMode = "0700";
         UMask = "0077";
-        TimeoutStartSec = "infinity";
+        TimeoutStartSec = "24h";
         ExecStart = "${pkgs.util-linux}/bin/flock --exclusive /run/local-backup/lock ${backupScript}/bin/local-backup";
       };
     };
