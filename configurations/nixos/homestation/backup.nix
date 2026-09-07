@@ -1,10 +1,129 @@
 {
   config,
+  lib,
+  pkgs,
   ...
 }:
 let
+  inherit (lib) escapeShellArg;
   dataDir = config.homelab.dataDir;
   musicLibrary = config.homelab.libraries.music.path;
+  nextcloudAioBackupDirectory = "/mnt/backup/nextcloud-borg";
+  nextcloudAioRepository = "${nextcloudAioBackupDirectory}/borg";
+  nextcloudAioBackupScript = pkgs.writeShellApplication {
+    name = "nextcloud-aio-backup";
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.docker
+    ];
+    text = ''
+      aio_master_container=nextcloud-aio-mastercontainer
+      aio_borg_container=nextcloud-aio-borgbackup
+      aio_repository=${escapeShellArg nextcloudAioRepository}
+
+      die() {
+        printf 'Nextcloud AIO backup: %s\n' "$*" >&2
+        exit 1
+      }
+
+      # AIO's trigger does not propagate the Borg exit status. The child
+      # container's start transition and final status are the result boundary.
+      wait_for_aio_borg() {
+        local previous_id="$1"
+        local previous_started_at="$2"
+        local operation="$3"
+        local current_id=""
+        local current_started_at=""
+        local state=""
+        local exit_code=""
+        local attempt
+
+        for ((attempt = 0; attempt < 60; attempt++)); do
+          current_id="$(docker inspect --format '{{.Id}}' "$aio_borg_container" 2>/dev/null || true)"
+          current_started_at="$(docker inspect --format '{{.State.StartedAt}}' "$aio_borg_container" 2>/dev/null || true)"
+          if [[
+            -n "$current_id"
+            && (
+              "$current_id" != "$previous_id"
+              || "$current_started_at" != "$previous_started_at"
+            )
+          ]]; then
+            break
+          fi
+          sleep 5
+        done
+        if [[
+          -z "$current_id"
+          || (
+            "$current_id" == "$previous_id"
+            && "$current_started_at" == "$previous_started_at"
+          )
+        ]]; then
+          die "AIO $operation did not start a Borg operation"
+        fi
+
+        while :; do
+          state="$(docker inspect --format '{{.State.Status}}' "$aio_borg_container" 2>/dev/null || true)"
+          case "$state" in
+            exited)
+              exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$aio_borg_container")"
+              if [[ "$exit_code" != "0" ]]; then
+                die "AIO $operation failed (Borg container exit code $exit_code)"
+              fi
+              return 0
+              ;;
+            created|running|restarting)
+              sleep 30
+              ;;
+            *)
+              die "AIO $operation ended in unexpected Borg container state: $state"
+              ;;
+          esac
+        done
+      }
+
+      run_aio_operation() {
+        local operation="$1"
+        local previous_id
+        local previous_started_at
+        local -a trigger_environment
+
+        if ! docker inspect "$aio_master_container" >/dev/null 2>&1; then
+          die "AIO mastercontainer $aio_master_container is missing"
+        fi
+        if [[ "$(docker inspect --format '{{.State.Running}}' "$aio_master_container")" != "true" ]]; then
+          die "AIO mastercontainer $aio_master_container is not running"
+        fi
+        if docker exec "$aio_master_container" test -e /mnt/docker-aio-config/data/daily_backup_running >/dev/null 2>&1; then
+          die "another AIO backup operation is already running"
+        fi
+        previous_id="$(docker inspect --format '{{.Id}}' "$aio_borg_container" 2>/dev/null || true)"
+        previous_started_at="$(docker inspect --format '{{.State.StartedAt}}' "$aio_borg_container" 2>/dev/null || true)"
+
+        if [[ "$operation" == "backup" ]]; then
+          trigger_environment=(--env DAILY_BACKUP=1 --env START_CONTAINERS=1)
+        else
+          trigger_environment=(--env CHECK_BACKUP=1)
+        fi
+        if ! docker exec "''${trigger_environment[@]}" "$aio_master_container" /daily-backup.sh; then
+          die "AIO $operation trigger failed"
+        fi
+
+        wait_for_aio_borg "$previous_id" "$previous_started_at" "$operation"
+      }
+
+      printf 'starting Nextcloud AIO native Borg backup\n' >&2
+      run_aio_operation backup
+      if [[ ! -f "$aio_repository/config" ]]; then
+        die "AIO Borg repository was not created at $aio_repository"
+      fi
+      printf 'AIO Borg backup, retention, and compaction completed\n' >&2
+
+      printf 'starting Nextcloud AIO Borg integrity check\n' >&2
+      run_aio_operation check
+      printf 'AIO Borg integrity check completed\n' >&2
+    '';
+  };
 in
 {
   services.localBackup = {
@@ -26,9 +145,8 @@ in
       monthly = 12;
     };
 
-    managedRepositories = [
-      "/mnt/backup/nextcloud-borg"
-    ];
+    managedRepositories = [ nextcloudAioRepository ];
+    preResticScript = nextcloudAioBackupScript;
 
     sources = [
       {

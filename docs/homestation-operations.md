@@ -85,8 +85,9 @@ Cloudflare DNS or zone settings require the separate OpenTofu workflow in
 `homestation` runs a root-owned local Restic job from the `local-backup` systemd
 timer. The job runs daily at approximately 03:30, keeps seven daily, four weekly,
 and twelve monthly snapshots, and stores the encrypted repository at
-`/mnt/backup/restic/homestation`. The separate Nextcloud AIO Borg repository is
-counted by the capacity gate but is not written by this job.
+`/mnt/backup/restic/homestation`. When enabled, the job also runs the separate
+Nextcloud AIO Borg backup and integrity check; AIO's repository is counted by
+the capacity gate but is not copied into Restic.
 
 Review the report-only coverage manifest and runtime AudioMuse plugin inspection:
 
@@ -108,6 +109,49 @@ briefly stops the configured mutable-state services, and restarts services that
 were active even when preparation or Restic fails. A failed capacity gate or
 preparation step leaves retention untouched and marks the systemd service failed.
 
+### Nextcloud AIO Borg
+
+The AIO backup location and encryption key are configured through the AIO
+interface, not by editing generated Docker state. Before relying on the timer,
+complete the AIO **Backup and restore** setup and enter this local backup
+directory:
+
+```text
+/mnt/backup/nextcloud-borg
+```
+
+AIO creates the actual Borg repository at
+`/mnt/backup/nextcloud-borg/borg`. Keep the passphrase shown by AIO separately.
+After setup on `homestation`, add it to the encrypted host backup file as
+`nextcloud-borg-passphrase` using the existing sops workflow from the repository
+root:
+
+```sh
+cd ~/infrastructure
+sops secrets/hosts/homestation/backup.yaml
+```
+
+The file is encrypted for both the `homestation` age identity and the
+administrator PGP recipient, so the administrator PGP key is the recovery path
+when restoring AIO. Do not put the passphrase in Nix, the Nix store, shell
+arguments, or logs.
+
+This is recovery escrow only and is intentionally not mapped into `sops.nix`:
+AIO keeps the operational passphrase in its own configuration and its
+supported trigger does not accept a passphrase file.
+
+`local-backup.service` invokes AIO's supported
+`DAILY_BACKUP=1 /daily-backup.sh` trigger, waits for the Borg container to exit
+successfully, and then invokes the `CHECK_BACKUP=1 /daily-backup.sh` trigger.
+Although AIO's check trigger is asynchronous, the pipeline waits for its Borg
+container to exit successfully. AIO performs its configured retention pruning
+and compaction before the integrity check. Both operations must succeed before
+the generic Restic stage begins.
+
+The complete pipeline holds `/run/local-backup/lock`. Any later repository-copy
+stage must take this same lock, and must not read the AIO repository until this
+service has completed successfully.
+
 ## Storage and recovery
 
 The external `/mnt/backup` filesystem is mounted on demand with `nofail` and is
@@ -120,6 +164,6 @@ df -h /mnt/backup
 
 The local job is an application-data backup, not a tested restore workflow. The
 manifest records the deliberate Obsidian LiveSync gap and the separate
-Nextcloud Borg coverage. Before relying on recovery, restore a database dump and
-an application-data snapshot into an isolated location and verify the relevant
-service startup procedure.
+Nextcloud Borg coverage. Before relying on recovery, restore a database dump,
+an application-data snapshot, and an AIO Borg archive into an isolated location
+and verify the relevant service startup procedure.

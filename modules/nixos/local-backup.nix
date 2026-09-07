@@ -191,6 +191,12 @@ let
 
   managedRepositoryManifest = concatMapStringsSep "\n" (path: "- `${path}`") managedRepositories;
 
+  preResticManifest =
+    if cfg.preResticScript == null then
+      "- None"
+    else
+      "- Configured command (runs under the pipeline lock before the Restic stage)";
+
   manifestFile = "/etc/local-backup/manifest";
 
   manifestText = ''
@@ -202,6 +208,9 @@ let
     Schedule: ${cfg.timer.onCalendar}
     Retention: ${toString cfg.retention.daily} daily, ${toString cfg.retention.weekly} weekly, ${toString cfg.retention.monthly} monthly
     Tag: ${cfg.tag}
+
+    Pre-Restic backup step:
+    ${preResticManifest}
 
     Included service data:
     ${includedManifest}
@@ -224,7 +233,9 @@ let
     Preparation behavior:
     - The backup filesystem is verified as mounted before any repository or staging path is created.
     - Services associated with mutable sources or runtime volumes are stopped only while their staged copy is made and are restarted on every exit path.
+    - Any configured pre-Restic backup step completes before the Restic snapshot starts.
     - One Restic snapshot is created only after all required preparation and the capacity gate succeed.
+    - The systemd service holds `/run/local-backup/lock` for the complete pipeline.
   '';
 
   reportScript = pkgs.writeShellApplication {
@@ -324,6 +335,17 @@ let
       repository_bytes=$((repository_bytes + $(measure_bytes ${escapeShellArg path})))
     fi
   '') managedRepositories;
+
+  preResticCommands =
+    if cfg.preResticScript == null then
+      ""
+    else
+      ''
+        printf 'local backup: running pre-Restic backup step\n' >&2
+        if ! ${escapeShellArg (toString cfg.preResticScript)}; then
+          die "pre-Restic backup step failed"
+        fi
+      '';
 
   backupScript = pkgs.writeShellApplication {
     name = "local-backup";
@@ -543,20 +565,28 @@ let
         du --bytes --summarize --one-file-system -- "$1" | awk '{ print $1 }'
       }
 
-      source_bytes=0
-      for backup_path in "''${backup_paths[@]}"; do
-        source_bytes=$((source_bytes + $(measure_bytes "$backup_path")))
-      done
+      capacity_gate() {
+        source_bytes=0
+        for backup_path in "''${backup_paths[@]}"; do
+          source_bytes=$((source_bytes + $(measure_bytes "$backup_path")))
+        done
 
-      repository_bytes=0
-      ${managedRepositoryCommands}
+        repository_bytes=0
+        ${managedRepositoryCommands}
 
-      free_bytes="$(df --block-size=1 --output=avail -- "$required_mount" | awk 'NR == 2 { print $1 }')"
-      required_bytes=$((source_bytes + repository_bytes + ${toString cfg.safetyMarginBytes}))
-      if [[ -z "$free_bytes" ]] || ((free_bytes < required_bytes)); then
-        die "capacity gate failed: free=$free_bytes required=$required_bytes (sources=$source_bytes repositories=$repository_bytes margin=${toString cfg.safetyMarginBytes})"
-      fi
-      printf 'local backup: capacity gate passed: free=%s required=%s\n' "$free_bytes" "$required_bytes" >&2
+        free_bytes="$(df --block-size=1 --output=avail -- "$required_mount" | awk 'NR == 2 { print $1 }')"
+        required_bytes=$((source_bytes + repository_bytes + ${toString cfg.safetyMarginBytes}))
+        if [[ -z "$free_bytes" ]] || ((free_bytes < required_bytes)); then
+          die "capacity gate failed: free=$free_bytes required=$required_bytes (sources=$source_bytes repositories=$repository_bytes margin=${toString cfg.safetyMarginBytes})"
+        fi
+        printf 'local backup: capacity gate passed: free=%s required=%s\n' "$free_bytes" "$required_bytes" >&2
+      }
+
+      capacity_gate
+
+      ${preResticCommands}
+
+      ${optionalString (cfg.preResticScript != null) "capacity_gate"}
 
       install -d -m 0700 -- "$repository"
       if [[ ! -e "$repository/config" ]]; then
@@ -593,7 +623,7 @@ let
 in
 {
   options.services.localBackup = {
-    enable = mkEnableOption "a locked local Restic application backup";
+    enable = mkEnableOption "a locked local application backup pipeline";
 
     repository = mkOption {
       type = types.str;
@@ -676,6 +706,12 @@ in
       description = "Other backup repositories whose existing size is included in the capacity gate.";
     };
 
+    preResticScript = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = "Optional command run under the pipeline lock after the initial capacity gate and before the Restic stage. The command must return zero before Restic continues.";
+    };
+
     sources = mkOption {
       type = types.listOf sourceType;
       default = [ ];
@@ -756,7 +792,7 @@ in
     systemd.services."local-backup-alert" = alertService;
 
     systemd.services."local-backup" = {
-      description = "Create a consistent local application Restic backup";
+      description = "Create the locked local application backups";
       after = [
         "docker.service"
         "docker.socket"
@@ -788,7 +824,7 @@ in
     };
 
     systemd.timers."local-backup" = {
-      description = "Run the local application Restic backup daily";
+      description = "Run the local application backup pipeline daily";
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = cfg.timer.onCalendar;
