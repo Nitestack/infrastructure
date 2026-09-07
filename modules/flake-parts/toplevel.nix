@@ -19,6 +19,10 @@
         inherit inputs pkgs;
         system = pkgs.stdenv.hostPlatform.system;
       };
+      localBackupRegressions = import ../../checks/local-backup-regressions.nix {
+        inherit inputs pkgs;
+        system = pkgs.stdenv.hostPlatform.system;
+      };
 
       formatNixFiles = ''
         args=("$@")
@@ -65,6 +69,7 @@
       };
 
       checks.homelab-arion-regressions = homelabArionRegressions;
+      checks.local-backup-regressions = localBackupRegressions;
 
       apps.check = {
         type = "app";

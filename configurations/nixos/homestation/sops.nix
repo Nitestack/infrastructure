@@ -11,6 +11,7 @@ let
   inherit (cfg.lib) appUrl;
 
   infraSecretsFile = self + /secrets/hosts/homestation/infra.yaml;
+  backupSecretsFile = self + /secrets/hosts/homestation/backup.yaml;
   adventureLogSecretsFile = self + /secrets/hosts/homestation/adventure-log.yaml;
   audiomuseAiSecretsFile = self + /secrets/hosts/homestation/audiomuse-ai.yaml;
   beetsSecretsFile = self + /secrets/hosts/homestation/beets.yaml;
@@ -35,6 +36,11 @@ in
     secrets."cloudflared/certificate" = {
       sopsFile = infraSecretsFile;
       key = "cloudflared/certificate";
+      mode = "0400";
+    };
+    secrets."backup/restic-password" = {
+      sopsFile = backupSecretsFile;
+      key = "restic-password";
       mode = "0400";
     };
     secrets."smtp/password" = {

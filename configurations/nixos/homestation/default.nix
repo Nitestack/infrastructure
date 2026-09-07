@@ -20,8 +20,10 @@ in
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.homelab
+    self.nixosModules.local-backup
     ./rendered-files.nix
     ./sops.nix
+    ./backup.nix
     ./homelab/audiomuse-ai.nix
     ./homelab/adguard-home.nix
     ./homelab/adventure-log.nix

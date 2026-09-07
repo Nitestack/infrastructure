@@ -80,6 +80,34 @@ After activation, repeat the relevant status and log checks. Changes to
 Cloudflare DNS or zone settings require the separate OpenTofu workflow in
 [`opentofu/cloudflare/README.md`](../opentofu/cloudflare/README.md).
 
+## Local application backup
+
+`homestation` runs a root-owned local Restic job from the `local-backup` systemd
+timer. The job runs daily at approximately 03:30, keeps seven daily, four weekly,
+and twelve monthly snapshots, and stores the encrypted repository at
+`/mnt/backup/restic/homestation`. The separate Nextcloud AIO Borg repository is
+counted by the capacity gate but is not written by this job.
+
+Review the report-only coverage manifest and runtime AudioMuse plugin inspection:
+
+```sh
+local-backup-manifest
+```
+
+Run one complete backup manually and inspect its result:
+
+```sh
+sudo systemctl start local-backup.service
+systemctl status local-backup.service
+journalctl -u local-backup.service --no-pager
+```
+
+The service refuses to create staging or repository paths unless `/mnt/backup`
+is mounted. It serializes concurrent runs, creates PostgreSQL logical dumps,
+briefly stops the configured mutable-state services, and restarts services that
+were active even when preparation or Restic fails. A failed capacity gate or
+preparation step leaves retention untouched and marks the systemd service failed.
+
 ## Storage and recovery
 
 The external `/mnt/backup` filesystem is mounted on demand with `nofail` and is
@@ -90,11 +118,8 @@ findmnt /mnt/backup
 df -h /mnt/backup
 ```
 
-This repository does **not** currently configure a backup job or a tested
-restore workflow. The mount is not evidence that application data is backed up.
-Before relying on it for recovery, choose a backup tool, define which bind
-mounts and named volumes it covers, document retention and off-site copies, and
-test restoring an application into an isolated location.
-
-Until then, treat the Nix configuration as reproducible but application data as
-state requiring a separate recovery plan.
+The local job is an application-data backup, not a tested restore workflow. The
+manifest records the deliberate Obsidian LiveSync gap and the separate
+Nextcloud Borg coverage. Before relying on recovery, restore a database dump and
+an application-data snapshot into an isolated location and verify the relevant
+service startup procedure.
