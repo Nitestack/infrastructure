@@ -96,15 +96,15 @@
       textVerbosity = "medium";
     };
     general = {
-      model = "litellm-anthropic/claude-sonnet-5";
+      model = "litellm-responses/gpt-5.6-terra";
       reasoningEffort = "high";
     };
     explore = {
-      model = "litellm-chat/qwen3-coder-480b";
-      reasoningEffort = "medium";
+      model = "litellm-chat/deepseek-v4-flash-sovereign";
+      reasoningEffort = "high";
     };
     compaction = {
-      model = "litellm-chat/qwen-3.6-35b-sovereign";
+      model = "litellm-responses/gpt-5.6-terra";
       reasoningEffort = "medium";
       textVerbosity = "medium";
     };
