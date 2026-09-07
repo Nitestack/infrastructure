@@ -23,9 +23,10 @@ service can be restored and started.
 The local Restic repository uses the `restic-password` secret. The OneDrive
 Restic repository is independent and uses `offsite-restic-password`; it cannot
 be opened with the local password. The AIO Borg passphrase is configured in
-the AIO interface and is escrowed as `nextcloud-borg-passphrase` in the
-encrypted host backup file when AIO is set up. It is not wired into Nix because
-AIO's supported trigger does not accept a passphrase file.
+the AIO interface and must be escrowed as `nextcloud-borg-passphrase` in the
+encrypted host backup file before AIO recovery is considered covered. It is
+not wired into Nix because AIO's supported trigger does not accept a passphrase
+file.
 
 The generated coverage manifest is the source of truth for application paths,
 PostgreSQL dumps, runtime volumes, and deliberate exclusions:
@@ -144,7 +145,16 @@ cd ~/infrastructure
 sops decrypt --decryption-order pgp \
   --extract '["restic-password"]' \
   secrets/hosts/homestation/backup.yaml >/dev/null
+
+sops decrypt --decryption-order pgp \
+  --extract '["nextcloud-borg-passphrase"]' \
+  secrets/hosts/homestation/backup.yaml >/dev/null
 ```
+
+The second command is a required AIO recovery preflight. If it fails because
+the key is absent, add the passphrase currently shown by AIO with `sops` while
+the host is still available; do not mark the AIO repository recoverable until
+the command succeeds.
 
 Do not run the decrypt command by itself, paste a password into a shell
 command, or commit a temporary decrypted file. The following helpers pipe the
@@ -270,22 +280,50 @@ DUMP_FILE="$RESTORE_ROOT$DUMP_PATH"
 sudo gzip -t -- "$DUMP_FILE"
 ```
 
-Stop only the application container that writes the selected database, keep
-the database container running, and import the dump into that database. The
-database containers already receive the password through their environment
-file; setting `PGPASSWORD` inside the container avoids putting the password in
-the host command line. The dumps contain `--clean` and `--if-exists`; treat
-this as a replacement of that one database, not as an additive import. Confirm
-the container, database, user, and password variable against the table before
-running it:
+Before changing the live database, capture a rollback dump of its current
+state. Stop only the application container that writes the selected database;
+keep the database container running. The database containers already receive
+the password through their environment file; setting `PGPASSWORD` inside the
+container avoids putting the password in the host command line. Confirm the
+container, database, user, and password variable against the table before
+running these commands:
 
 ```sh
+set -o pipefail
+CURRENT_DUMP="$RESTORE_ROOT/current-immich.sql.gz"
+if ! sudo docker exec -i immich_postgres sh -c \
+  'PGPASSWORD="$DB_PASSWORD" pg_dump --clean --if-exists --no-owner --no-privileges --format=plain --username=postgres --dbname=immich' |
+  gzip --stdout > "$CURRENT_DUMP"; then
+  rm -f -- "$CURRENT_DUMP"
+  printf 'could not capture the current database; aborting restore\n' >&2
+  return 1 2>/dev/null || exit 1
+fi
+gzip -t -- "$CURRENT_DUMP"
+
 sudo docker stop immich_server
-sudo docker exec -i immich_postgres sh -c \
-  'PGPASSWORD="$DB_PASSWORD" psql --username=postgres --dbname=immich --set=ON_ERROR_STOP=1' \
-  < "$DUMP_FILE"
+if gzip --decompress --stdout -- "$DUMP_FILE" |
+  sudo docker exec -i immich_postgres sh -c \
+    'PGPASSWORD="$DB_PASSWORD" psql --username=postgres --dbname=immich --set=ON_ERROR_STOP=1'; then
+  :
+else
+  printf 'restore failed; rolling the database back\n' >&2
+  if ! gzip --decompress --stdout -- "$CURRENT_DUMP" |
+    sudo docker exec -i immich_postgres sh -c \
+      'PGPASSWORD="$DB_PASSWORD" psql --username=postgres --dbname=immich --set=ON_ERROR_STOP=1'; then
+    printf 'rollback failed; leave immich_server stopped for investigation\n' >&2
+    return 1 2>/dev/null || exit 1
+  fi
+  sudo docker start immich_server
+  return 1 2>/dev/null || exit 1
+fi
 sudo docker start immich_server
 ```
+
+The selected dump contains `--clean` and `--if-exists`, so the import replaces
+that one database rather than adding to it. The rollback dump uses the same
+options. A failed rollback requires database investigation before the
+application is started; do not delete `CURRENT_DUMP` or the pre-restore
+service data until the service is healthy.
 
 If a rebuilt container does not contain the expected password variable, stop
 and repair the sops-rendered environment rather than putting `PGPASSWORD` or
