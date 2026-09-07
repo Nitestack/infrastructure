@@ -216,6 +216,11 @@ let
           die "generic Restic repository replication failed"
         fi
 
+        printf 'offsite backup: checking remote Restic repository integrity\n' >&2
+        if ! restic --repo "$remote_repository" --password-file "$remote_password_file" check; then
+          die "remote Restic integrity check failed"
+        fi
+
         printf 'offsite backup: OneDrive Restic size report\n' >&2
         if ! rclone --config "$rclone_config" size --human-readable "$remote_restic_path"; then
           die "remote Restic size report failed"

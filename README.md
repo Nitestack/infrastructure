@@ -190,6 +190,7 @@ docker ps
 
 - [`docs/homelab-services.md`](docs/homelab-services.md) — homelab module options, validation, and recipes.
 - [`docs/homestation-operations.md`](docs/homestation-operations.md) — operate and diagnose homestation services.
+- [`docs/homestation-backup-recovery.md`](docs/homestation-backup-recovery.md) — inspect, verify, and recover homestation backups.
 - [`docs/homestation-services.md`](docs/homestation-services.md) — current homestation service inventory and exposure.
 - [`docs/operations.md`](docs/operations.md) — routine validation, activation, input updates, and recovery.
 - [`docs/secrets.md`](docs/secrets.md) — maintain sops-encrypted configuration safely.

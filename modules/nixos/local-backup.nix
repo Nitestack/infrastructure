@@ -215,6 +215,9 @@ let
     Retention: ${toString cfg.retention.daily} daily, ${toString cfg.retention.weekly} weekly, ${toString cfg.retention.monthly} monthly
     Tag: ${cfg.tag}
 
+    Integrity checks:
+    - Restic runs a structural `restic check` after local retention on every pipeline run.
+
     Pre-Restic backup step:
     ${preResticManifest}
 
@@ -629,6 +632,10 @@ let
         --keep-weekly ${toString cfg.retention.weekly} \
         --keep-monthly ${toString cfg.retention.monthly} \
         --prune
+
+      printf 'local backup: checking Restic repository integrity\n' >&2
+      restic --repo "$repository" --password-file "$password_file" check
+      printf 'local backup: Restic repository integrity check passed\n' >&2
 
       ${postResticCommands}
 

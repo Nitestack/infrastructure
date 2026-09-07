@@ -82,6 +82,9 @@ Cloudflare DNS or zone settings require the separate OpenTofu workflow in
 
 ## Local application backup
 
+The full coverage, check, failure, and restore procedure is in the
+[Homestation backup and recovery runbook](homestation-backup-recovery.md).
+
 `homestation` runs a root-owned local Restic job from the `local-backup` systemd
 timer. The job runs daily at approximately 03:30, keeps seven daily, four weekly,
 and twelve monthly snapshots, and stores the encrypted repository at
