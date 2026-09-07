@@ -66,6 +66,16 @@ in
   # Virtualization
   virtualisation = {
     arion.backend = "docker";
+    arion.package = inputs.arion.packages.${pkgs.system}.arion.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace src/nix/modules/nixos/container-systemd.nix \
+          --replace-fail 'services.journald.console = "/dev/console";' \
+            'services.journald.settings.Journal = {
+              ForwardToConsole = true;
+              TTYPath = "/dev/console";
+            };'
+      '';
+    });
     oci-containers.backend = "docker";
     docker.autoPrune = {
       enable = true;
@@ -109,11 +119,11 @@ in
   };
 
   # systemd
-  services.journald.extraConfig = ''
-    SystemMaxUse=2G
-    SystemKeepFree=50G
-    MaxRetentionSec=30day
-  '';
+  services.journald.settings.Journal = {
+    SystemMaxUse = "2G";
+    SystemKeepFree = "50G";
+    MaxRetentionSec = "30day";
+  };
 
   systemd.tmpfiles.rules = [
     "f /home/${meta.username}/.hushlogin 0644 ${meta.username} users -"
