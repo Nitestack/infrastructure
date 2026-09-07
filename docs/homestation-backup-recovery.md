@@ -301,7 +301,7 @@ fi
 gzip -t -- "$CURRENT_DUMP"
 
 sudo docker stop immich_server
-if gzip --decompress --stdout -- "$DUMP_FILE" |
+if sudo gzip --decompress --stdout -- "$DUMP_FILE" |
   sudo docker exec -i immich_postgres sh -c \
     'PGPASSWORD="$DB_PASSWORD" psql --username=postgres --dbname=immich --set=ON_ERROR_STOP=1'; then
   :
