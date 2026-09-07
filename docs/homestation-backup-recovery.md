@@ -111,11 +111,12 @@ df -h /mnt/backup
 ```
 
 The capacity gate accounts for the staged source data, the existing local
-Restic repository, the AIO Borg repository, and a 1 GiB safety margin. It runs
-before preparation and again after the AIO preparation step. A missing mount
-or failed gate leaves the local Restic snapshot and its retention unchanged;
-the service fails and the alert is logged. AIO may already have completed its
-own backup and compaction before the second gate fails.
+Restic repository (always included by the module), the configured AIO Borg
+repository, and a 1 GiB safety margin. It runs before preparation and again
+after the AIO preparation step. A missing mount or failed gate leaves the
+local Restic snapshot and its retention unchanged; the service fails and the
+alert is logged. AIO may already have completed its own backup and compaction
+before the second gate fails.
 
 The local Restic snapshot and retention are completed before OneDrive work
 starts. If the remote Restic copy, remote check, remote retention, rclone
