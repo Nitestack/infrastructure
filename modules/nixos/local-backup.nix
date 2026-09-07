@@ -197,6 +197,12 @@ let
     else
       "- Configured command (runs under the pipeline lock before the Restic stage)";
 
+  postResticManifest =
+    if cfg.postResticScript == null then
+      "- None"
+    else
+      "- Configured command (runs under the pipeline lock after the local Restic stage)";
+
   manifestFile = "/etc/local-backup/manifest";
 
   manifestText = ''
@@ -211,6 +217,9 @@ let
 
     Pre-Restic backup step:
     ${preResticManifest}
+
+    Post-Restic backup step:
+    ${postResticManifest}
 
     Included service data:
     ${includedManifest}
@@ -235,6 +244,7 @@ let
     - Services associated with mutable sources or runtime volumes are stopped only while their staged copy is made and are restarted on every exit path.
     - Any configured pre-Restic backup step completes before the Restic snapshot starts.
     - One Restic snapshot is created only after all required preparation and the capacity gate succeed.
+    - Any configured post-Restic backup step completes before this service is successful.
     - The systemd service holds `/run/local-backup/lock` for the complete pipeline.
   '';
 
@@ -344,6 +354,17 @@ let
         printf 'local backup: running pre-Restic backup step\n' >&2
         if ! ${escapeShellArg (toString cfg.preResticScript)}; then
           die "pre-Restic backup step failed"
+        fi
+      '';
+
+  postResticCommands =
+    if cfg.postResticScript == null then
+      ""
+    else
+      ''
+        printf 'local backup: running post-Restic backup step\n' >&2
+        if ! ${escapeShellArg (toString cfg.postResticScript)}; then
+          die "post-Restic backup step failed"
         fi
       '';
 
@@ -609,6 +630,8 @@ let
         --keep-monthly ${toString cfg.retention.monthly} \
         --prune
 
+      ${postResticCommands}
+
       printf 'local backup: completed one Restic snapshot\n' >&2
     '';
   };
@@ -710,6 +733,12 @@ in
       type = types.nullOr types.path;
       default = null;
       description = "Optional command run under the pipeline lock after the initial capacity gate and before the Restic stage. The command must return zero before Restic continues.";
+    };
+
+    postResticScript = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = "Optional command run under the pipeline lock after local Restic retention. The command must return zero before the backup service succeeds.";
     };
 
     sources = mkOption {

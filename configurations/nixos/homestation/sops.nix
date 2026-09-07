@@ -43,6 +43,16 @@ in
       key = "restic-password";
       mode = "0400";
     };
+    secrets."backup/offsite-restic-password" = {
+      sopsFile = backupSecretsFile;
+      key = "offsite-restic-password";
+      mode = "0400";
+    };
+    secrets."backup/onedrive-rclone-config" = {
+      sopsFile = backupSecretsFile;
+      key = "onedrive-rclone-config";
+      mode = "0400";
+    };
     secrets."smtp/password" = {
       sopsFile = infraSecretsFile;
       key = "smtp/password";

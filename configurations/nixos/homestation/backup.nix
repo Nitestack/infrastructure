@@ -5,11 +5,27 @@
   ...
 }:
 let
-  inherit (lib) escapeShellArg;
+  inherit (lib) escapeShellArg hasPrefix;
   dataDir = config.homelab.dataDir;
   musicLibrary = config.homelab.libraries.music.path;
+  localResticRepository = "/mnt/backup/restic/homestation";
   nextcloudAioBackupDirectory = "/mnt/backup/nextcloud-borg";
   nextcloudAioRepository = "${nextcloudAioBackupDirectory}/borg";
+  oneDriveRemote = "onedrive";
+  oneDriveResticPath = "homestation/restic";
+  oneDriveAioPath = "homestation/nextcloud-aio-borg";
+  oneDriveResticRepository = "rclone:${oneDriveRemote}:${oneDriveResticPath}";
+  oneDriveResticRclonePath = "${oneDriveRemote}:${oneDriveResticPath}";
+  oneDriveAioRclonePath = "${oneDriveRemote}:${oneDriveAioPath}";
+  oneDriveRcloneConfig = config.sops.secrets."backup/onedrive-rclone-config".path;
+  offsiteResticPassword = config.sops.secrets."backup/offsite-restic-password".path;
+  offsiteResticRetention = {
+    daily = 7;
+    weekly = 4;
+    monthly = 12;
+  };
+  offsiteResticPrune = false;
+  offsiteRetentionValidated = false;
   nextcloudAioBackupScript = pkgs.writeShellApplication {
     name = "nextcloud-aio-backup";
     runtimeInputs = [
@@ -124,12 +140,126 @@ let
       printf 'AIO Borg integrity check completed\n' >&2
     '';
   };
+  offsiteBackupScript =
+    assert oneDriveResticPath != "";
+    assert oneDriveAioPath != "";
+    assert oneDriveResticPath != oneDriveAioPath;
+    assert !(hasPrefix "${oneDriveResticPath}/" oneDriveAioPath);
+    assert !(hasPrefix "${oneDriveAioPath}/" oneDriveResticPath);
+    assert !offsiteResticPrune || offsiteRetentionValidated;
+    pkgs.writeShellApplication {
+      name = "offsite-backup";
+      runtimeInputs = [
+        pkgs.coreutils
+        pkgs.rclone
+        pkgs.restic
+      ];
+      text = ''
+        local_repository=${escapeShellArg localResticRepository}
+        local_password_file=${escapeShellArg config.sops.secrets."backup/restic-password".path}
+        remote_repository=${escapeShellArg oneDriveResticRepository}
+        remote_restic_path=${escapeShellArg oneDriveResticRclonePath}
+        remote_aio_path=${escapeShellArg oneDriveAioRclonePath}
+        rclone_config=${escapeShellArg oneDriveRcloneConfig}
+        remote_password_file=${escapeShellArg offsiteResticPassword}
+        aio_repository=${escapeShellArg nextcloudAioRepository}
+        remote_name=${escapeShellArg oneDriveRemote}
+        tag=${escapeShellArg "local-application"}
+
+        die() {
+          printf 'offsite backup: %s\n' "$*" >&2
+          exit 1
+        }
+
+        for required_file in \
+          "$local_password_file" \
+          "$remote_password_file" \
+          "$rclone_config"; do
+          if [[ ! -r "$required_file" ]]; then
+            die "required offsite secret is unavailable: $required_file"
+          fi
+        done
+        if [[ ! -f "$aio_repository/config" ]]; then
+          die "AIO Borg repository is unavailable at $aio_repository"
+        fi
+
+        export RCLONE_CONFIG="$rclone_config"
+        if ! rclone --config "$rclone_config" lsd "$remote_name:" >/dev/null; then
+          die "OneDrive rclone remote $remote_name is unavailable"
+        fi
+        if ! restic --repo "$local_repository" --password-file "$local_password_file" cat config >/dev/null 2>&1; then
+          die "local Restic repository is unavailable at $local_repository"
+        fi
+
+        if restic --repo "$remote_repository" --password-file "$remote_password_file" cat config >/dev/null 2>&1; then
+          printf 'offsite backup: remote Restic repository is initialized\n' >&2
+        else
+          printf 'offsite backup: initializing independent remote Restic repository\n' >&2
+          if ! restic --repo "$remote_repository" --password-file "$remote_password_file" init; then
+            die "could not initialize the remote Restic repository"
+          fi
+        fi
+
+        printf 'offsite backup: copying generic Restic snapshots\n' >&2
+        if ! restic \
+          --repo "$remote_repository" \
+          --password-file "$remote_password_file" \
+          --from-repo "$local_repository" \
+          --from-password-file "$local_password_file" \
+          copy; then
+          die "generic Restic repository replication failed"
+        fi
+
+        printf 'offsite backup: OneDrive Restic size report\n' >&2
+        if ! rclone --config "$rclone_config" size --human-readable "$remote_restic_path"; then
+          die "remote Restic size report failed"
+        fi
+
+        printf 'offsite backup: remote Restic retention report\n' >&2
+        if ! restic --repo "$remote_repository" --password-file "$remote_password_file" forget \
+          --tag "$tag" \
+          --keep-daily ${toString offsiteResticRetention.daily} \
+          --keep-weekly ${toString offsiteResticRetention.weekly} \
+          --keep-monthly ${toString offsiteResticRetention.monthly} \
+          --dry-run; then
+          die "remote Restic retention report failed"
+        fi
+
+        ${
+          if offsiteResticPrune then
+            ''
+              printf 'offsite backup: pruning remote Restic snapshots after validated retention policy\n' >&2
+              if ! restic --repo "$remote_repository" --password-file "$remote_password_file" forget \
+                --tag "$tag" \
+                --keep-daily ${toString offsiteResticRetention.daily} \
+                --keep-weekly ${toString offsiteResticRetention.weekly} \
+                --keep-monthly ${toString offsiteResticRetention.monthly} \
+                --prune; then
+                die "remote Restic retention and pruning failed"
+              fi
+            ''
+          else
+            ''
+              printf 'offsite backup: remote Restic pruning is disabled until the first size report is reviewed\n' >&2
+            ''
+        }
+
+        printf 'offsite backup: syncing completed AIO Borg repository\n' >&2
+        if ! rclone --config "$rclone_config" sync "$aio_repository" "$remote_aio_path"; then
+          die "AIO Borg repository replication failed"
+        fi
+        if ! rclone --config "$rclone_config" lsf "$remote_aio_path/config" >/dev/null; then
+          die "remote AIO Borg repository is missing its config after sync"
+        fi
+        printf 'offsite backup: completed Restic and AIO Borg replication\n' >&2
+      '';
+    };
 in
 {
   services.localBackup = {
     enable = true;
     requiredMount = "/mnt/backup";
-    repository = "/mnt/backup/restic/homestation";
+    repository = localResticRepository;
     stagingDirectory = "/mnt/backup/.local-backup-staging";
     passwordFile = config.sops.secrets."backup/restic-password".path;
     requiresSops = true;
@@ -147,6 +277,7 @@ in
 
     managedRepositories = [ nextcloudAioRepository ];
     preResticScript = nextcloudAioBackupScript;
+    postResticScript = offsiteBackupScript;
 
     sources = [
       {

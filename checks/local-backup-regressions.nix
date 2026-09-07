@@ -39,6 +39,10 @@ let
           name = "pre-restic-regression";
           text = "true";
         };
+        postResticScript = pkgs.writeShellApplication {
+          name = "post-restic-regression";
+          text = "true";
+        };
         sources = [
           {
             label = "application data";
@@ -107,6 +111,7 @@ assert timer.timerConfig.OnCalendar == "*-*-* 03:30:00";
 assert lib.hasInfix "Retention: 7 daily, 4 weekly, 12 monthly" manifest;
 assert lib.hasInfix "PostgreSQL logical dumps" manifest;
 assert lib.hasInfix "Pre-Restic backup step" manifest;
+assert lib.hasInfix "Post-Restic backup step" manifest;
 assert lib.hasInfix "/mnt/backup/nextcloud-aio/borg" manifest;
 assert !invalidRepositoryEval.success;
 assert !invalidSourcesEval.success;

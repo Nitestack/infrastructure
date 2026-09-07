@@ -109,6 +109,55 @@ briefly stops the configured mutable-state services, and restarts services that
 were active even when preparation or Restic fails. A failed capacity gate or
 preparation step leaves retention untouched and marks the systemd service failed.
 
+### OneDrive offsite stage
+
+After the local Restic snapshot and local retention complete successfully, the
+same locked `local-backup.service` runs the OneDrive offsite stage. It initializes
+and updates an independent encrypted Restic repository, then mirrors the
+verified AIO Borg repository. Failure of either replication fails the systemd
+service and triggers the backup alert.
+
+The remote paths are deliberately separate:
+
+```text
+rclone:onedrive:homestation/restic
+onedrive:homestation/nextcloud-aio-borg
+```
+
+The AIO `rclone sync` destination is only the second prefix, so it cannot delete
+generic Restic objects or unrelated OneDrive content. Both stages use the same
+`/run/local-backup/lock`; an offsite operation cannot overlap another local or
+offsite backup run.
+
+The OneDrive remote and the independent Restic password are runtime-only sops
+secrets. Before activating the homestation configuration, add these keys to the
+encrypted host file with `sops`:
+
+```sh
+cd ~/infrastructure
+sops secrets/hosts/homestation/backup.yaml
+```
+
+```text
+offsite-restic-password: <password for the remote Restic repository>
+onedrive-rclone-config: <complete rclone config containing a remote named onedrive>
+```
+
+The rclone config contains the OneDrive OAuth token and must remain encrypted;
+do not place it in Nix, the Nix store, command arguments, or logs. The remote
+Restic password is separate from the local Restic password and is also rendered
+only below `/run/secrets`.
+
+The first successful offsite run emits a OneDrive Restic `rclone size` report and
+a retention dry run. Remote retention defaults to the local seven-daily,
+four-weekly, and twelve-monthly policy, while remote pruning is initially
+disabled. Review the size report and OneDrive quota before changing
+`offsiteResticRetention` in `configurations/nixos/homestation/backup.nix`.
+If the default policy fits, keep those values; only then set
+`offsiteResticPrune = true` and `offsiteRetentionValidated = true`. Any extended
+remote history must be selected explicitly after that size review. Evaluation
+rejects enabling pruning without the validation marker.
+
 ### Nextcloud AIO Borg
 
 The AIO backup location and encryption key are configured through the AIO
@@ -148,9 +197,9 @@ container to exit successfully. AIO performs its configured retention pruning
 and compaction before the integrity check. Both operations must succeed before
 the generic Restic stage begins.
 
-The complete pipeline holds `/run/local-backup/lock`. Any later repository-copy
-stage must take this same lock, and must not read the AIO repository until this
-service has completed successfully.
+The complete pipeline holds `/run/local-backup/lock`; the OneDrive stage runs
+inside that same lock after the local Restic stage. It does not read the AIO
+repository until the AIO backup, compaction, and verification have succeeded.
 
 ## Storage and recovery
 
