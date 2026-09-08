@@ -22,10 +22,6 @@ in
         label.file = sopsPath "aix/adp-label";
         apiKey.file = sopsPath "aix/adp";
       };
-      auth = {
-        label.file = sopsPath "aix/auth-label";
-        apiKey.file = sopsPath "aix/auth";
-      };
     };
   };
 }

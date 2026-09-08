@@ -11,7 +11,6 @@ let
   aixProfiles = [
     "p"
     "adp"
-    "auth"
   ];
   secretsFile = self + /secrets/hosts/wslstation/aix.yaml;
   mkProfileSecret =
