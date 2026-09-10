@@ -41,8 +41,9 @@ Keep host choices in `configurations/*/<host>/`; put reusable behaviour in
   flows or changes that must be selected at the next boot; the WSL exception is
   documented in `configurations/nixos/wslstation/AGENTS.md`.
 - When the current machine is `wslstation`, sudo is passwordless. Read the WSL
-  guide and use `sudo -n` so rebuilds and privileged checks run non-interactively
-  instead of waiting for a prompt.
+  guide, verify it with `sudo -n true`, and use its `nix-switch` workflow so the
+  configured `nh` wrapper selects `wslstation` and `~/infrastructure` without
+  waiting for a prompt.
 
 ## Git and CI
 

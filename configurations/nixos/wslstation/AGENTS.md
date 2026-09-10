@@ -14,11 +14,16 @@ waiting for a password prompt:
 sudo -n true
 nix run .#check
 nix eval .#nixosConfigurations.wslstation.config.system.build.toplevel.drvPath --no-write-lock-file
-sudo -n nixos-rebuild switch --flake .#wslstation
+nix-switch
 nixos-version
 systemctl --failed
 docker ps
 ```
+
+`nix-switch` is the ordinary-change command on this host. The Home Manager
+wrapper calls `nh os switch`, detects WSL as `wslstation`, and uses the
+configured `~/infrastructure` flake. If it is unavailable, use the explicit
+fallback `sudo -n nixos-rebuild switch --flake .#wslstation`.
 
 Do not generalize this passwordless assumption to other hosts. If `sudo -n
 true` fails, stop the privileged step and report that the environment differs;

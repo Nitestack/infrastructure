@@ -19,8 +19,11 @@ Evaluate a changed host with:
 nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath --no-write-lock-file
 ```
 
-Use `sudo nixos-rebuild switch --flake .#<host>` for an ordinary change. Use
-`boot` only for first-install flows or when the next boot must select the new
-generation. The WSL host has a noninteractive verification loop documented in
+Use `sudo nixos-rebuild switch --flake .#<host>` for an ordinary change. On the
+running `wslstation`, first verify passwordless sudo with `sudo -n true`, then
+use `nix-switch`; it is the configured `nh` wrapper for that host and flake. Use
+`sudo -n nixos-rebuild switch --flake .#wslstation` only as the explicit
+fallback. Use `boot` only for first-install flows or when the next boot must
+select the new generation. The WSL verification loop is documented in
 `wslstation/AGENTS.md`; homelab changes have additional service and inventory
 rules in `homestation/AGENTS.md`.
