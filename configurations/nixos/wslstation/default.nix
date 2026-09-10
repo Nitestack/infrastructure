@@ -25,10 +25,6 @@ in
     enable = true;
     defaultUser = meta.username;
     docker-desktop.enable = true;
-    # NOTE: with a Docker Desktop update, this suddenly must be set
-    extraBin = [
-      { src = lib.getExe' pkgs.coreutils "mv"; }
-    ];
     ssh-agent.enable = true;
     startMenuLaunchers = true;
     useWindowsDriver = true;
