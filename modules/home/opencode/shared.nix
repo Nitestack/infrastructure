@@ -1,4 +1,24 @@
+let
+  externalDirectories = [
+    "/nix/store/*"
+    "/tmp/opencode/*"
+    "~/.cargo/registry/src/*"
+  ];
+in
 {
+  permission.external_directory = builtins.listToAttrs (
+    map (resource: {
+      name = resource;
+      value = "allow";
+    }) externalDirectories
+  );
+
+  permissions = map (resource: {
+    action = "external_directory";
+    inherit resource;
+    effect = "allow";
+  }) externalDirectories;
+
   plugin = [
     [
       "opencode-claude-code-bridge@0.2.1"

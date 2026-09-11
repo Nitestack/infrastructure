@@ -102,6 +102,11 @@
       url = "github:anomalyco/opencode/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # OpenCode 2 preview
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Spicetify
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
