@@ -7,7 +7,7 @@
 
     services.web = {
       enable = true;
-      image = "freshrss/freshrss:1.29.1@sha256:ab6b363102ccdbc39f6a62db926f567c61a5289bf25ba460f1c34423d8cc1a4d";
+      image = "freshrss/freshrss:1.30.0@sha256:258b8edfc8a76a61f60d2d6a14d8f8d12495d78abf38646a2137612dfa264a21";
       port = 80;
 
       helpers.timezone = true;
