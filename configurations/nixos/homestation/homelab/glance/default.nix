@@ -19,7 +19,7 @@ in
 
     services.web = {
       enable = true;
-      image = "glanceapp/glance:v0.8.5@sha256:32ab73d80f2b8b5fb0735b0431deb36b93fbb6b2fb43592449b0178c8b83e350";
+      image = "glanceapp/glance:v0.8.6@sha256:9dfb09470b207dcb67ac715994bdb1929374ba3f9c0d7df7462c24adf10fd073";
       port = 8080;
 
       environment = {
