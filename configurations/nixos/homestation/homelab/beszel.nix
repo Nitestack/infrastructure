@@ -16,7 +16,7 @@ in
 
     services.hub = {
       enable = true;
-      image = "henrygd/beszel:0.18.7@sha256:a849ad80814b6a1a3be665304dcace5d4854b3bed7bde4dd1227e8ce1b82d477";
+      image = "henrygd/beszel:0.19.0@sha256:fefb27166f5e1611ebf67f8697ea928a23f44efdb00af922e2ac3b5faa2efd5c";
       port = 8090;
 
       environment = {
