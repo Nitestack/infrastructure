@@ -2,8 +2,12 @@ let
   externalDirectories = [
     "/nix/store/*"
     "/tmp/*"
-    "~/.cargo/registry/src/*"
+    "~/.cargo/*"
     "~/go/pkg/mod/*"
+    "~/go/pkg/sumdb/*"
+    "~/.local/share/pnpm/*"
+    "~/.gradle/*"
+    "~/.m2/repository/*"
   ];
 in
 {

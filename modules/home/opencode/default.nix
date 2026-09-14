@@ -39,6 +39,7 @@ let
     );
   sharedSettings = import ./shared.nix;
   privateSettings = import ./private.nix;
+  v2Settings = import ./v2.nix;
 
   mkSettings =
     cfg:
@@ -73,7 +74,8 @@ let
     permissions = sharedSettings.permissions;
     providers = privateSettings.provider or { };
     agents = lib.mapAttrs (_: mkOpenCode2Agent) (privateSettings.agent or { });
-  };
+  }
+  // v2Settings;
 
   opencodePrivatePackage = pkgs.symlinkJoin {
     name = "opencode-private";
