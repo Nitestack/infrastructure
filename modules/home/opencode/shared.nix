@@ -1,8 +1,9 @@
 let
   externalDirectories = [
     "/nix/store/*"
-    "/tmp/opencode/*"
+    "/tmp/*"
     "~/.cargo/registry/src/*"
+    "~/go/pkg/mod/*"
   ];
 in
 {

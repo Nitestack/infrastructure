@@ -53,7 +53,7 @@
           models.includeBy = [
             {
               field = "id";
-              match = "^(gpt-5\\.6)";
+              match = "^(US-)?gpt-(5\\.6|6)-.+$";
             }
           ];
         };
