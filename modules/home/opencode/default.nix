@@ -16,10 +16,27 @@ let
   opencode2Package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2;
 
   hasWorkProfile = config.programs.aix.enable or false;
+  isWsl = osConfig.wsl.enable or false;
 
   opencode2ConfigDir = "${config.home.homeDirectory}/.config/opencode2";
   workConfigDir = "${config.home.homeDirectory}/.config/opencode-work";
 
+  platformDescription =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "This is a Nix-managed macOS environment (`${pkgs.stdenv.hostPlatform.system}`)."
+    else if isWsl then
+      "This is a NixOS environment running under WSL2 (`${pkgs.stdenv.hostPlatform.system}`)."
+    else
+      "This is a NixOS environment (`${pkgs.stdenv.hostPlatform.system}`).";
+
+  contextSections = lib.splitString "<!-- WSL_ONLY -->" (builtins.readFile ./context.md);
+  context =
+    assert lib.assertMsg (
+      builtins.length contextSections == 2
+    ) "context.md must contain one WSL marker";
+    lib.replaceStrings [ "@platformDescription@" ] [ platformDescription ] (
+      builtins.elemAt contextSections 0 + lib.optionalString isWsl (builtins.elemAt contextSections 1)
+    );
   sharedSettings = import ./shared.nix;
   privateSettings = import ./private.nix;
 
@@ -83,6 +100,7 @@ in
   programs.opencode = {
     enable = true;
     package = opencodePrivatePackage;
+    inherit context;
     settings = mkSettings privateSettings;
     tui = mkTui privateSettings;
   };
@@ -92,9 +110,11 @@ in
   );
 
   home.file = {
+    "${opencode2ConfigDir}/AGENTS.md".text = context;
     "${opencode2ConfigDir}/opencode.json".text = builtins.toJSON opencode2Settings;
   }
   // lib.optionalAttrs hasWorkProfile {
+    "${workConfigDir}/AGENTS.md".text = context;
     "${workConfigDir}/opencode.json".text = builtins.toJSON (
       { "$schema" = "https://opencode.ai/config.json"; } // mkSettings (import ./work.nix)
     );

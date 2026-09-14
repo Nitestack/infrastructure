@@ -3,6 +3,9 @@
 This module renders the agent tooling installed by the Home Manager profiles.
 
 - `default.nix` assembles the package and generated config files.
+- `context.md` is the global instruction template. Keep exactly one
+  `<!-- WSL_ONLY -->` marker; `default.nix` includes the text after it only on
+  the WSL host.
 - `shared.nix` is merged into both profiles.
 - `private.nix` configures the local/private OpenCode profile.
 - `work.nix` configures the optional `opencode-work` profile and reads
