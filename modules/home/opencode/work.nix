@@ -66,7 +66,21 @@
       options = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
-        modelsDiscovery.enabled = false;
+        modelsDiscovery = {
+          enabled = true;
+          modelInfoFormat = "litellm";
+          smartModelName = true;
+          cache = {
+            enabled = true;
+            ttlSeconds = 86400;
+          };
+          models.includeBy = [
+            {
+              field = "id";
+              match = "^(claude-opus-5|claude-sonnet-5|claude-fable-5-1|claude-opus-4-8|claude-sonnet-4-6|claude-haiku-4-5)$";
+            }
+          ];
+        };
       };
       models = builtins.listToAttrs (
         map
@@ -77,6 +91,7 @@
           [
             "claude-opus-5"
             "claude-sonnet-5"
+            "claude-fable-5-1"
             "claude-opus-4-8"
             "claude-sonnet-4-6"
             "claude-haiku-4-5"
@@ -100,8 +115,8 @@
       reasoningEffort = "high";
     };
     explore = {
-      model = "litellm-chat/deepseek-v4-flash-sovereign";
-      reasoningEffort = "high";
+      model = "litellm-responses/gpt-5.6-luna";
+      reasoningEffort = "medium";
     };
     compaction = {
       model = "litellm-responses/gpt-5.6-terra";
