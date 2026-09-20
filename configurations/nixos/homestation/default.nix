@@ -20,7 +20,6 @@ in
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.homelab
-    self.nixosModules.local-backup
     ./rendered-files.nix
     ./sops.nix
     ./backup.nix

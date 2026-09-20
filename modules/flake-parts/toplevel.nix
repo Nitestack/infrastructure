@@ -19,7 +19,7 @@
         inherit inputs pkgs;
         system = pkgs.stdenv.hostPlatform.system;
       };
-      localBackupRegressions = import ../../checks/local-backup-regressions.nix {
+      homestationBackupRegressions = import ../../checks/local-backup-regressions.nix {
         inherit inputs pkgs;
         system = pkgs.stdenv.hostPlatform.system;
       };
@@ -69,7 +69,7 @@
       };
 
       checks.homelab-arion-regressions = homelabArionRegressions;
-      checks.local-backup-regressions = localBackupRegressions;
+      checks.homestation-backup-regressions = homestationBackupRegressions;
 
       apps.check = {
         type = "app";

@@ -6,117 +6,94 @@
 let
   lib = inputs.nixpkgs.lib;
 
-  baseModule = {
-    fileSystems."/" = {
-      device = "none";
-      fsType = "tmpfs";
-    };
-    boot.loader.grub.devices = [ "/dev/null" ];
-    system.stateVersion = "26.05";
-  };
-
-  mkSystem =
-    extraModules:
-    lib.nixosSystem {
-      inherit system;
-      modules = [
-        ../modules/nixos/local-backup.nix
-        baseModule
-      ]
-      ++ extraModules;
-    };
-
-  goodConfig = mkSystem [
-    {
-      services.localBackup = {
-        enable = true;
-        requiredMount = "/mnt/backup";
-        repository = "/mnt/backup/restic";
-        stagingDirectory = "/mnt/backup/.staging";
-        passwordFile = "/run/secrets/restic-password";
-        managedRepositories = [ "/mnt/backup/nextcloud-aio/borg" ];
-        preResticScript = pkgs.writeShellApplication {
-          name = "pre-restic-regression";
-          text = "true";
-        };
-        postResticScript = pkgs.writeShellApplication {
-          name = "post-restic-regression";
-          text = "true";
-        };
-        sources = [
-          {
-            label = "application data";
-            path = "/var/lib/application";
-            purpose = "persistent state";
-          }
-        ];
-        postgresDumps = [
-          {
-            label = "application PostgreSQL";
-            container = "application-postgres";
-            database = "application";
-            user = "application";
-            passwordFile = "/run/secrets/application-password";
-            outputName = "postgres/application.sql.gz";
-          }
-        ];
-      };
-    }
+  secretNames = [
+    "backup/restic-password"
+    "backup/offsite-restic-password"
+    "backup/onedrive-rclone-config"
+    "adventure-log/db-password"
+    "audiomuse-ai/db-password"
+    "ente/db-password"
+    "immich/db-password"
   ];
 
-  invalidRepositoryEval = builtins.tryEval (
-    (mkSystem [
-      {
-        services.localBackup = {
-          enable = true;
-          requiredMount = "/mnt/backup";
-          repository = "/var/lib/restic";
-          stagingDirectory = "/mnt/backup/.staging";
-          passwordFile = "/run/secrets/restic-password";
-          sources = [
-            {
-              label = "application data";
-              path = "/var/lib/application";
-              purpose = "persistent state";
-            }
-          ];
-        };
-      }
-    ]).config.system.build.toplevel.drvPath
-  );
+  baseModule = {
+    options.sops.secrets = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options.path = lib.mkOption { type = lib.types.str; };
+        }
+      );
+      default = { };
+    };
+    config = {
+      fileSystems."/" = {
+        device = "none";
+        fsType = "tmpfs";
+      };
+      system.stateVersion = "26.05";
+      homelab.libraries.music.path = "/var/lib/homelab/music";
+      sops.secrets = lib.genAttrs secretNames (name: {
+        path = "/run/secrets/${name}";
+      });
+    };
+  };
 
-  invalidSourcesEval = builtins.tryEval (
-    (mkSystem [
-      {
-        services.localBackup = {
-          enable = true;
-          requiredMount = "/mnt/backup";
-          repository = "/mnt/backup/restic";
-          stagingDirectory = "/mnt/backup/.staging";
-          passwordFile = "/run/secrets/restic-password";
-        };
-      }
-    ]).config.system.build.toplevel.drvPath
-  );
+  testSystem = lib.nixosSystem {
+    inherit system;
+    modules = [
+      inputs.arion.nixosModules.arion
+      ../modules/nixos/homelab
+      ../configurations/nixos/homestation/backup.nix
+      baseModule
+    ];
+  };
 
-  service = goodConfig.config.systemd.services.local-backup;
-  timer = goodConfig.config.systemd.timers.local-backup;
-  manifest = goodConfig.config.environment.etc."local-backup/manifest".text;
+  localService = testSystem.config.systemd.services."restic-backups-local";
+  localTimer = testSystem.config.systemd.timers."restic-backups-local";
+  offsiteService = testSystem.config.systemd.services."restic-backups-offsite";
+  localRestic = testSystem.config.services.restic.backups.local;
+  offsiteBackup = testSystem.config.services.restic.backups.offsite;
 in
-assert builtins.elem "/mnt/backup" service.unitConfig.RequiresMountsFor;
-assert builtins.elem "local-backup-alert.service" service.unitConfig.OnFailure;
-assert lib.hasInfix "/run/local-backup/lock" service.serviceConfig.ExecStart;
-assert service.serviceConfig.TimeoutStartSec == "24h";
-assert timer.timerConfig.Persistent;
-assert timer.timerConfig.OnCalendar == "*-*-* 03:30:00";
-assert lib.hasInfix "Retention: 7 daily, 4 weekly, 12 monthly" manifest;
-assert lib.hasInfix "Restic runs a structural `restic check`" manifest;
-assert lib.hasInfix "PostgreSQL logical dumps" manifest;
-assert lib.hasInfix "Pre-Restic backup step" manifest;
-assert lib.hasInfix "Post-Restic backup step" manifest;
-assert lib.hasInfix "/mnt/backup/nextcloud-aio/borg" manifest;
-assert !invalidRepositoryEval.success;
-assert !invalidSourcesEval.success;
-pkgs.runCommand "local-backup-regressions" { } ''
+assert localRestic.repository == "/mnt/backup/restic/homestation";
+assert
+  localRestic.paths == [
+    "/var/lib/homelab/adventure-log/data"
+    "/var/lib/homelab/immich/library"
+    "/var/lib/homelab/music"
+    "/var/lib/homelab/calibre-web-automated/library"
+    "/var/lib/homelab/calibre-web-automated/upload"
+    "/var/lib/homelab/rdtclient/downloads"
+    "/var/lib/homelab/vikunja/files"
+  ];
+assert localRestic.initialize;
+assert localRestic.runCheck;
+assert
+  localRestic.pruneOpts == [
+    "--tag local-application"
+    "--keep-daily 7"
+    "--keep-weekly 4"
+    "--keep-monthly 12"
+  ];
+assert localTimer.timerConfig.OnCalendar == "*-*-* 03:30:00";
+assert localTimer.timerConfig.Persistent;
+assert localTimer.timerConfig.RandomizedDelaySec == "30m";
+assert builtins.elem "/mnt/backup" localService.unitConfig.RequiresMountsFor;
+assert builtins.elem "/mnt/backup/.local-backup-staging" localService.unitConfig.RequiresMountsFor;
+assert builtins.elem "/mnt/backup/nextcloud-borg/borg" localService.unitConfig.RequiresMountsFor;
+assert localService.serviceConfig.TimeoutStartSec == "24h";
+assert lib.hasInfix "restic-backups-offsite.service" localService.serviceConfig.ExecStartPost;
+assert lib.hasInfix "backupPrepareCommand" localService.preStart;
+assert lib.hasInfix "backupCleanupCommand" localService.postStop;
+assert lib.hasInfix "homestation-backup-prepare" localRestic.backupPrepareCommand;
+assert lib.hasInfix "homestation-backup-cleanup" localRestic.backupCleanupCommand;
+assert offsiteBackup.repository == "rclone:onedrive:homestation/restic";
+assert offsiteBackup.timerConfig == null;
+assert lib.hasInfix "homestation-offsite-prepare" offsiteBackup.backupPrepareCommand;
+assert offsiteBackup.runCheck;
+assert builtins.elem pkgs.rclone offsiteService.path;
+assert lib.hasInfix "restic check" (builtins.head offsiteService.serviceConfig.ExecStart);
+assert offsiteService.serviceConfig.TimeoutStartSec == "24h";
+assert offsiteService.unitConfig.ConditionPathExists == "/run/restic-backups-local/aio-paused";
+pkgs.runCommand "homestation-backup-regressions" { } ''
   touch "$out"
 ''

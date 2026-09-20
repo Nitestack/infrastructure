@@ -17,7 +17,7 @@ service can be restored and started.
 
 | Store | Local location | OneDrive location | Retention |
 | --- | --- | --- | --- |
-| Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:homestation/restic` | Local: 7 daily, 4 weekly, 12 monthly. Remote: same target, with pruning disabled until the first-size review |
+| Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:homestation/restic` | Local: 7 daily, 4 weekly, 12 monthly. Remote: copied and checked; pruning disabled by default |
 | Nextcloud AIO Borg | `/mnt/backup/nextcloud-borg/borg` | `onedrive:homestation/nextcloud-aio-borg` | AIO's configured Borg policy; the OneDrive copy mirrors the local repository |
 
 The local Restic repository uses the `restic-password` secret. The OneDrive
@@ -28,24 +28,23 @@ encrypted host backup file before AIO recovery is considered covered. It is
 not wired into Nix because AIO's supported trigger does not accept a passphrase
 file.
 
-The generated coverage manifest is the source of truth for application paths,
-PostgreSQL dumps, runtime volumes, and deliberate exclusions:
-
-```sh
-sudo local-backup-manifest
-```
+The explicit coverage lists in
+`configurations/nixos/homestation/backup.nix` are the source of truth for
+application paths, PostgreSQL dumps, and runtime volumes. The local job stages
+mutable sources below `/mnt/backup/.local-backup-staging` for the snapshot and
+removes that staging data during cleanup.
 
 Obsidian LiveSync is explicitly deferred. Its CouchDB state is not in either
 backup repository and must not be presented as covered. Beszel history,
 AdGuard state, Redis, temporary/model caches, logs, PostgreSQL data directories,
 and generated container state are also outside the application-data snapshot
-for the reasons shown in the manifest.
+for the reasons documented in this runbook.
 
 ## Schedule And Checks
 
-`local-backup.timer` runs every day at `03:30` with a randomized delay of up to
-30 minutes and is persistent across downtime. One run holds
-`/run/local-backup/lock` from preparation through OneDrive replication.
+`restic-backups-local.timer` runs every day at `03:30` with a randomized delay
+of up to 30 minutes and is persistent across downtime. The offsite unit has no
+timer; the local unit starts it synchronously after the local Restic work.
 
 The daily pipeline runs in this order:
 
@@ -53,38 +52,36 @@ The daily pipeline runs in this order:
    its configured retention and compaction.
 2. The pipeline invokes AIO's `CHECK_BACKUP=1` operation and waits for the Borg
    container to exit successfully.
-3. Local Restic creates a snapshot and applies the 7/4/12 retention policy.
-4. Local Restic runs a structural `restic check`.
-5. The independent OneDrive Restic repository receives copied snapshots,
-   checks its own structure, reports its size, and reports the proposed 7/4/12
-   retention. It prunes only after the first-size review is recorded in the
-   host configuration.
-6. The verified local AIO Borg repository is mirrored to its isolated
-   OneDrive prefix.
+3. Nixpkgs' local Restic unit creates a snapshot, applies the 7/4/12 retention
+   policy, and runs a structural `restic check`.
+4. The offsite prepare hook uses Restic's native `copy` command to update the
+   independent OneDrive Restic repository.
+5. The verified local AIO Borg repository is mirrored to its isolated OneDrive
+   prefix.
+6. Nixpkgs' offsite Restic unit checks the remote repository and prunes only
+   when the explicit host retention-review switch is enabled.
 
 The pipeline is operator-visible through systemd. A failure in preparation,
-capacity validation, either AIO operation, either Restic check, or either
-OneDrive replication stage makes `local-backup.service` fail. Its
-`OnFailure` unit writes a `daemon.err` journal message; this is logging, not a
-pager or email notification.
+either AIO operation, either Restic check, or either OneDrive replication stage
+makes `restic-backups-local.service` fail. The native Restic service status and
+journal are the failure signal; there is no custom alerting layer.
 
-Inspect the latest run and the failure alert on `homestation`:
+Inspect the latest run and its failure journal on `homestation`:
 
 ```sh
-systemctl list-timers local-backup.timer
-systemctl status local-backup.service
-journalctl -u local-backup.service -b --no-pager
-journalctl -u local-backup-alert.service -b --no-pager
-journalctl -t local-backup -p err..alert --since today --no-pager
+systemctl list-timers restic-backups-local.timer
+systemctl status restic-backups-local.service
+journalctl -u restic-backups-local.service -b --no-pager
+journalctl -u restic-backups-offsite.service -b --no-pager
 ```
 
 Run the complete pipeline manually when investigating, rather than invoking a
-sub-step that could bypass the lock:
+preparation or replication hook by hand:
 
 ```sh
-sudo systemctl start local-backup.service
-systemctl status local-backup.service
-journalctl -u local-backup.service --no-pager
+sudo systemctl start restic-backups-local.service
+systemctl status restic-backups-local.service
+journalctl -u restic-backups-local.service --no-pager
 ```
 
 The automated Restic check is the normal structural check. A full pack-data
@@ -103,7 +100,7 @@ without putting a password in a command argument or terminal output.
 
 The backup filesystem is an external ext4 filesystem mounted at
 `/mnt/backup`. It uses `nofail` and systemd automount, but the backup service
-still refuses to create staging or repository paths unless it is actually
+still refuses to initialize or access the repository unless it is actually
 mounted:
 
 ```sh
@@ -111,22 +108,20 @@ findmnt /mnt/backup
 df -h /mnt/backup
 ```
 
-The capacity gate accounts for the staged source data, the existing local
-Restic repository (always included by the module), the configured AIO Borg
-repository, and a 1 GiB safety margin. It runs before preparation and again
-after the AIO preparation step. A missing mount or failed gate leaves the
-local Restic snapshot and its retention unchanged; the service fails and the
-alert is logged. AIO may already have completed its own backup and compaction
-before the second gate fails.
+Preparation staging is kept in `/mnt/backup/.local-backup-staging` and is
+removed after each run. There is deliberately no custom capacity gate: a full
+local filesystem or repository makes the native Restic unit fail, while cleanup
+still restarts services and unpauses AIO.
 
 The AIO native daily schedule must remain disabled because
-`local-backup.timer` is the scheduling authority. After AIO backup and integrity
-checks complete, the pipeline verifies AIO's actual `/mnt/borgbackup` host mount
-and pauses the mastercontainer while Restic and OneDrive work run. An
-`ExecStopPost` cleanup unpauses it whether the service succeeds, fails, or times
-out. The complete service has a 24-hour timeout, and each AIO Borg operation has
-an eight-hour deadline plus a one-minute forced-termination grace period, so a
-stuck container eventually fails visibly.
+`restic-backups-local.timer` is the scheduling authority. After AIO backup and
+integrity checks complete, the prepare hook verifies AIO's actual
+`/mnt/borgbackup` host mount and pauses the mastercontainer while Restic and
+OneDrive work run. The native Restic cleanup hook retries the unpause whether
+the service succeeds, fails, or times out; an unpause failure fails the unit and
+requires operator attention. The complete services have a 24-hour timeout, and
+each AIO Borg operation has an eight-hour deadline plus a one-minute
+forced-termination grace period, so a stuck container eventually fails visibly.
 
 The local Restic snapshot and retention are completed before OneDrive work
 starts. If the remote Restic copy, remote check, remote retention, rclone
@@ -135,9 +130,9 @@ service is failed, and the next run retries the remote stages. The AIO mirror
 uses only `onedrive:homestation/nextcloud-aio-borg`; it cannot delete unrelated
 OneDrive content.
 
-Do not create `/mnt/backup/restic`, `/mnt/backup/nextcloud-borg`, or the
-staging directory by hand on the root filesystem when the disk is unavailable.
-Fix the mount first and rerun the service.
+Do not create `/mnt/backup/restic` or `/mnt/backup/nextcloud-borg` by hand on the
+root filesystem when the disk is unavailable. Fix the mount first and rerun the
+service.
 
 ## Recover Repository Access
 
@@ -255,10 +250,10 @@ sudo find "$RESTORE_ROOT" -maxdepth 8 -type f -print
 ```
 
 Sources whose services are stopped during backup are captured under the run's
-staging directory rather than their live path. Use the manifest and the
-snapshot listing to select the matching `source-*` tree, then restore its
-contents to the service's target path below. Never infer a source number from
-a different snapshot.
+staging directory rather than their live path. Use the source list in
+`configurations/nixos/homestation/backup.nix` and the snapshot listing to select
+the matching `source-*` tree, then restore its contents to the service's target
+path below. Never infer a source number from a different snapshot.
 
 When the isolated copy is verified, remove it or keep it as evidence. Do not
 leave restored secrets in `/var/tmp`:
@@ -283,7 +278,7 @@ Find and extract one dump into the isolated directory:
 
 ```sh
 restic_local find --snapshot "$SNAPSHOT" '*.sql.gz'
-DUMP_PATH='/mnt/backup/.local-backup-staging/<run>/postgres/immich.sql.gz'
+DUMP_PATH='/mnt/backup/.local-backup-staging/postgres/immich.sql.gz'
 restic_local restore "$SNAPSHOT" \
   --target "$RESTORE_ROOT" \
   --include "$DUMP_PATH"
@@ -499,14 +494,14 @@ replacing unrelated Arion services or their data. Start and verify the
 Nextcloud service before removing any pre-restore AIO state.
 
 After recovery, disable AIO's native daily backup schedule again before
-re-enabling `local-backup.timer`; overlapping schedulers are rejected by the
-pipeline.
+re-enabling `restic-backups-local.timer`; overlapping schedulers are rejected by
+the prepare hook.
 
 After any recovery, re-enable the timer and run a complete backup only after
 the restored service is healthy:
 
 ```sh
-sudo systemctl start local-backup.timer
-sudo systemctl start local-backup.service
-systemctl status local-backup.service
+sudo systemctl start restic-backups-local.timer
+sudo systemctl start restic-backups-local.service
+systemctl status restic-backups-local.service
 ```
