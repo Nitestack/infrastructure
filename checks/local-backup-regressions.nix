@@ -53,6 +53,27 @@ let
   offsiteService = testSystem.config.systemd.services."restic-backups-offsite";
   localRestic = testSystem.config.services.restic.backups.local;
   offsiteBackup = testSystem.config.services.restic.backups.offsite;
+  localPrepareScript = builtins.readFile localRestic.backupPrepareCommand;
+  offsitePrepareScript = builtins.readFile offsiteBackup.backupPrepareCommand;
+  offsiteMirrorScript = builtins.readFile offsiteService.serviceConfig.ExecStartPost;
+  stableStageNames = [
+    "caddy-data"
+    "caddy-config"
+    "calibre-web-automated-config"
+    "calibre-web-automated-plugins"
+    "beets-config"
+    "freshrss-data"
+    "freshrss-extensions"
+    "navidrome-data"
+    "pocket-id-data"
+    "prowlarr-data"
+    "rdtclient-db"
+    "shelfmark-config"
+    "vaultwarden-data"
+    "vikunja-db"
+    "wealthfolio-data"
+    "yamtrack-db"
+  ];
 in
 assert localRestic.repository == "/mnt/backup/restic/homestation";
 assert
@@ -86,12 +107,24 @@ assert lib.hasInfix "backupPrepareCommand" localService.preStart;
 assert lib.hasInfix "backupCleanupCommand" localService.postStop;
 assert lib.hasInfix "homestation-backup-prepare" localRestic.backupPrepareCommand;
 assert lib.hasInfix "homestation-backup-cleanup" localRestic.backupCleanupCommand;
+assert builtins.all (
+  stageName: lib.hasInfix "/sources/${stageName}" localPrepareScript
+) stableStageNames;
+assert !lib.hasInfix "/sources/source-" localPrepareScript;
+assert lib.hasInfix ''
+  done <"$stopped_services_file"
+    : >"$stopped_services_file"'' localPrepareScript;
+assert lib.hasInfix "cleanup will retry" localPrepareScript;
 assert offsiteBackup.repository == "rclone:onedrive:homestation/restic";
 assert offsiteBackup.timerConfig == null;
 assert lib.hasInfix "homestation-offsite-prepare" offsiteBackup.backupPrepareCommand;
 assert offsiteBackup.runCheck;
 assert builtins.elem pkgs.rclone offsiteService.path;
 assert lib.hasInfix "restic check" (builtins.head offsiteService.serviceConfig.ExecStart);
+assert lib.hasInfix "homestation-offsite-mirror" offsiteService.serviceConfig.ExecStartPost;
+assert !lib.hasInfix " sync " offsitePrepareScript;
+assert lib.hasInfix " sync " offsiteMirrorScript;
+assert lib.hasInfix "State.Paused" offsiteMirrorScript;
 assert offsiteService.serviceConfig.TimeoutStartSec == "24h";
 assert offsiteService.unitConfig.ConditionPathExists == "/run/restic-backups-local/aio-paused";
 pkgs.runCommand "homestation-backup-regressions" { } ''

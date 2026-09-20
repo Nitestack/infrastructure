@@ -56,10 +56,10 @@ The daily pipeline runs in this order:
    policy, and runs a structural `restic check`.
 4. The offsite prepare hook uses Restic's native `copy` command to update the
    independent OneDrive Restic repository.
-5. The verified local AIO Borg repository is mirrored to its isolated OneDrive
-   prefix.
-6. Nixpkgs' offsite Restic unit checks the remote repository and prunes only
-   when the explicit host retention-review switch is enabled.
+5. Nixpkgs' offsite Restic unit runs its native remote repository check and
+   prunes only when the explicit host retention-review switch is enabled.
+6. Its post-start hook mirrors the verified local AIO Borg repository to its
+   isolated OneDrive prefix.
 
 The pipeline is operator-visible through systemd. A failure in preparation,
 either AIO operation, either Restic check, or either OneDrive replication stage
@@ -111,7 +111,7 @@ df -h /mnt/backup
 Preparation staging is kept in `/mnt/backup/.local-backup-staging` and is
 removed after each run. There is deliberately no custom capacity gate: a full
 local filesystem or repository makes the native Restic unit fail, while cleanup
-still restarts services and unpauses AIO.
+still retries any pending service restarts and unpauses AIO.
 
 The AIO native daily schedule must remain disabled because
 `restic-backups-local.timer` is the scheduling authority. After AIO backup and
@@ -250,10 +250,31 @@ sudo find "$RESTORE_ROOT" -maxdepth 8 -type f -print
 ```
 
 Sources whose services are stopped during backup are captured under the run's
-staging directory rather than their live path. Use the source list in
-`configurations/nixos/homestation/backup.nix` and the snapshot listing to select
-the matching `source-*` tree, then restore its contents to the service's target
-path below. Never infer a source number from a different snapshot.
+staging directory rather than their live path. Current snapshots use stable,
+semantic names under `sources/`; source-list reordering does not change those
+names. Use the table below and the snapshot listing to select the matching
+tree, then restore its contents to the service's target path. Snapshots from
+the first version of this configuration used positional names; their fixed
+mapping is retained here so those snapshots remain understandable:
+
+| Legacy name | Source |
+| --- | --- |
+| `source-0` | Caddy `data` |
+| `source-1` | Caddy `config` |
+| `source-2` | Calibre-Web Automated `config` |
+| `source-3` | Calibre-Web Automated `plugins` |
+| `source-4` | Beets `config` |
+| `source-5` | FreshRSS `data` |
+| `source-6` | FreshRSS `extensions` |
+| `source-7` | Navidrome `data` |
+| `source-8` | Pocket ID `data` |
+| `source-9` | Prowlarr `data` |
+| `source-10` | RdtClient `db` |
+| `source-11` | Shelfmark `config` |
+| `source-12` | Vaultwarden `data` |
+| `source-13` | Vikunja `db` |
+| `source-14` | Wealthfolio `data` |
+| `source-15` | Yamtrack `db` |
 
 When the isolated copy is verified, remove it or keep it as evidence. Do not
 leave restored secrets in `/var/tmp`:
@@ -355,22 +376,27 @@ or the isolated dump.
 
 The following are the important service data targets. The systemd unit is the
 unit to stop while replacing that target; the snapshot path may be a staged
-`source-*` path, as described above.
+`sources/<stable-name>` path, or a legacy `source-*` path for an older snapshot,
+as described above.
 
-| Service | Restore target | Unit |
-| --- | --- | --- |
-| Calibre-Web Automated | `/var/lib/homelab/calibre-web-automated/config` | `arion-calibre-web-automated.service` |
-| Beets | `/var/lib/homelab/beets/config` | `arion-beets.service` |
-| FreshRSS | `/var/lib/homelab/freshrss/data` and `extensions` | `arion-freshrss.service` |
-| Navidrome | `/var/lib/homelab/navidrome/data` | `arion-navidrome.service` |
-| Pocket ID | `/var/lib/homelab/pocket-id/data` | `arion-pocket-id.service` |
-| Prowlarr | `/var/lib/homelab/prowlarr/data` | `arion-prowlarr.service` |
-| RdtClient | `/var/lib/homelab/rdtclient/db` | `arion-rdtclient.service` |
-| Shelfmark | `/var/lib/homelab/shelfmark/config` | `arion-shelfmark.service` |
-| Vaultwarden | `/var/lib/homelab/vaultwarden/data` | `arion-vaultwarden.service` |
-| Vikunja | `/var/lib/homelab/vikunja/db` and `files` | `arion-vikunja.service` |
-| Wealthfolio | `/var/lib/homelab/wealthfolio/data` | `arion-wealthfolio.service` |
-| Yamtrack | `/var/lib/homelab/yamtrack/db` | `arion-yamtrack.service` |
+| Service/data | Stable staged name | Restore target | Unit |
+| --- | --- | --- | --- |
+| Caddy data | `caddy-data` | `/var/lib/homelab/caddy/data` | `docker-caddy.service` |
+| Caddy config | `caddy-config` | `/var/lib/homelab/caddy/config` | `docker-caddy.service` |
+| Calibre-Web Automated config | `calibre-web-automated-config` | `/var/lib/homelab/calibre-web-automated/config` | `arion-calibre-web-automated.service` |
+| Calibre-Web Automated plugins | `calibre-web-automated-plugins` | `/var/lib/homelab/calibre-web-automated/plugins` | `arion-calibre-web-automated.service` |
+| Beets config | `beets-config` | `/var/lib/homelab/beets/config` | `arion-beets.service` |
+| FreshRSS data | `freshrss-data` | `/var/lib/homelab/freshrss/data` | `arion-freshrss.service` |
+| FreshRSS extensions | `freshrss-extensions` | `/var/lib/homelab/freshrss/extensions` | `arion-freshrss.service` |
+| Navidrome data | `navidrome-data` | `/var/lib/homelab/navidrome/data` | `arion-navidrome.service` |
+| Pocket ID data | `pocket-id-data` | `/var/lib/homelab/pocket-id/data` | `arion-pocket-id.service` |
+| Prowlarr data | `prowlarr-data` | `/var/lib/homelab/prowlarr/data` | `arion-prowlarr.service` |
+| RdtClient database | `rdtclient-db` | `/var/lib/homelab/rdtclient/db` | `arion-rdtclient.service` |
+| Shelfmark config | `shelfmark-config` | `/var/lib/homelab/shelfmark/config` | `arion-shelfmark.service` |
+| Vaultwarden data | `vaultwarden-data` | `/var/lib/homelab/vaultwarden/data` | `arion-vaultwarden.service` |
+| Vikunja database | `vikunja-db` | `/var/lib/homelab/vikunja/db` | `arion-vikunja.service` |
+| Wealthfolio data | `wealthfolio-data` | `/var/lib/homelab/wealthfolio/data` | `arion-wealthfolio.service` |
+| Yamtrack database | `yamtrack-db` | `/var/lib/homelab/yamtrack/db` | `arion-yamtrack.service` |
 
 For one selected target, restore to `RESTORE_ROOT`, stop only its unit, move
 the current target aside, and move the verified restored directory into place:

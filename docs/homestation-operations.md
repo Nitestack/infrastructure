@@ -102,20 +102,22 @@ journalctl -u restic-backups-local.service --no-pager
 The local unit requires the backup mount before Restic can initialize or access
 the repository. Its prepare hook creates PostgreSQL logical dumps, briefly
 stops the configured mutable-state services while copying them to staging, and
-restarts services that were active. Its cleanup hook repeats those restarts and
-retries the AIO unpause on every exit path. Staging is removed after the run; a
-failed prepare, snapshot, retention, check, or offsite stage fails the systemd
-unit.
+restarts services that were active. Once those restarts all succeed, it clears
+their tracking state; cleanup retries only pending service restarts after a
+preparation failure and retries the AIO unpause on every exit path. Staging is
+removed after the run; a failed prepare, snapshot, retention, check, or
+offsite stage fails the systemd unit.
 
 ### OneDrive offsite stage
 
 After the local Restic snapshot, retention, and check complete successfully,
 `restic-backups-local.service` starts the manual-only
 `restic-backups-offsite.service` and waits for it. The offsite prepare hook uses
-Restic's `copy` command to update an independent encrypted repository, then
-mirrors the verified AIO Borg repository. The native Restic unit performs the
-remote check and any explicitly enabled retention. Failure of either
-replication or the remote check fails the local systemd unit.
+Restic's `copy` command to update an independent encrypted repository. The
+native Restic unit then performs the remote check and any explicitly enabled
+retention; its post-start hook mirrors the verified AIO Borg repository only
+after those native operations complete. Failure of either replication or the
+remote check fails the local systemd unit.
 
 The remote paths are deliberately separate:
 

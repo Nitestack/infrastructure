@@ -8,7 +8,6 @@ let
   inherit (lib)
     concatMapStringsSep
     escapeShellArg
-    imap0
     optionals
     unique
     ;
@@ -57,81 +56,89 @@ let
     "${dataDir}/vikunja/files"
   ];
 
-  mutableSources =
-    imap0
-      (
-        index: source:
-        source
-        // {
-          stageName = "source-${toString index}";
-        }
-      )
-      [
-        {
-          path = "${dataDir}/caddy/data";
-          service = "docker-caddy.service";
-        }
-        {
-          path = "${dataDir}/caddy/config";
-          service = "docker-caddy.service";
-        }
-        {
-          path = "${dataDir}/calibre-web-automated/config";
-          service = "arion-calibre-web-automated.service";
-        }
-        {
-          path = "${dataDir}/calibre-web-automated/plugins";
-          service = "arion-calibre-web-automated.service";
-        }
-        {
-          path = "${dataDir}/beets/config";
-          service = "arion-beets.service";
-        }
-        {
-          path = "${dataDir}/freshrss/data";
-          service = "arion-freshrss.service";
-        }
-        {
-          path = "${dataDir}/freshrss/extensions";
-          service = "arion-freshrss.service";
-        }
-        {
-          path = "${dataDir}/navidrome/data";
-          service = "arion-navidrome.service";
-        }
-        {
-          path = "${dataDir}/pocket-id/data";
-          service = "arion-pocket-id.service";
-        }
-        {
-          path = "${dataDir}/prowlarr/data";
-          service = "arion-prowlarr.service";
-        }
-        {
-          path = "${dataDir}/rdtclient/db";
-          service = "arion-rdtclient.service";
-        }
-        {
-          path = "${dataDir}/shelfmark/config";
-          service = "arion-shelfmark.service";
-        }
-        {
-          path = "${dataDir}/vaultwarden/data";
-          service = "arion-vaultwarden.service";
-        }
-        {
-          path = "${dataDir}/vikunja/db";
-          service = "arion-vikunja.service";
-        }
-        {
-          path = "${dataDir}/wealthfolio/data";
-          service = "arion-wealthfolio.service";
-        }
-        {
-          path = "${dataDir}/yamtrack/db";
-          service = "arion-yamtrack.service";
-        }
-      ];
+  # Stage names are part of the snapshot format; keep them independent of list order.
+  mutableSources = [
+    {
+      path = "${dataDir}/caddy/data";
+      service = "docker-caddy.service";
+      stageName = "caddy-data";
+    }
+    {
+      path = "${dataDir}/caddy/config";
+      service = "docker-caddy.service";
+      stageName = "caddy-config";
+    }
+    {
+      path = "${dataDir}/calibre-web-automated/config";
+      service = "arion-calibre-web-automated.service";
+      stageName = "calibre-web-automated-config";
+    }
+    {
+      path = "${dataDir}/calibre-web-automated/plugins";
+      service = "arion-calibre-web-automated.service";
+      stageName = "calibre-web-automated-plugins";
+    }
+    {
+      path = "${dataDir}/beets/config";
+      service = "arion-beets.service";
+      stageName = "beets-config";
+    }
+    {
+      path = "${dataDir}/freshrss/data";
+      service = "arion-freshrss.service";
+      stageName = "freshrss-data";
+    }
+    {
+      path = "${dataDir}/freshrss/extensions";
+      service = "arion-freshrss.service";
+      stageName = "freshrss-extensions";
+    }
+    {
+      path = "${dataDir}/navidrome/data";
+      service = "arion-navidrome.service";
+      stageName = "navidrome-data";
+    }
+    {
+      path = "${dataDir}/pocket-id/data";
+      service = "arion-pocket-id.service";
+      stageName = "pocket-id-data";
+    }
+    {
+      path = "${dataDir}/prowlarr/data";
+      service = "arion-prowlarr.service";
+      stageName = "prowlarr-data";
+    }
+    {
+      path = "${dataDir}/rdtclient/db";
+      service = "arion-rdtclient.service";
+      stageName = "rdtclient-db";
+    }
+    {
+      path = "${dataDir}/shelfmark/config";
+      service = "arion-shelfmark.service";
+      stageName = "shelfmark-config";
+    }
+    {
+      path = "${dataDir}/vaultwarden/data";
+      service = "arion-vaultwarden.service";
+      stageName = "vaultwarden-data";
+    }
+    {
+      path = "${dataDir}/vikunja/db";
+      service = "arion-vikunja.service";
+      stageName = "vikunja-db";
+    }
+    {
+      path = "${dataDir}/wealthfolio/data";
+      service = "arion-wealthfolio.service";
+      stageName = "wealthfolio-data";
+    }
+    {
+      path = "${dataDir}/yamtrack/db";
+      service = "arion-yamtrack.service";
+      stageName = "yamtrack-db";
+    }
+  ];
 
   runtimeVolumes = [
     {
@@ -355,8 +362,11 @@ let
 
       if [[ -s "$stopped_services_file" ]]; then
         while IFS= read -r service; do
-          systemctl start "$service"
+          if ! systemctl start "$service"; then
+            die "could not restart $service; cleanup will retry"
+          fi
         done <"$stopped_services_file"
+        : >"$stopped_services_file"
       fi
 
       aio_master_container=nextcloud-aio-mastercontainer
@@ -556,6 +566,42 @@ let
     '';
   };
 
+  offsiteMirrorScript = pkgs.writeShellApplication {
+    name = "homestation-offsite-mirror";
+    runtimeInputs = [
+      pkgs.docker
+      pkgs.rclone
+    ];
+    text = ''
+      aio_repository=${escapeShellArg nextcloudAioRepository}
+      aio_pause_marker=${escapeShellArg aioPauseMarker}
+      remote_aio_repository=${escapeShellArg oneDriveAioRepository}
+      rclone_config=${escapeShellArg oneDriveRcloneConfig}
+
+      die() {
+        printf 'homestation offsite backup: %s\n' "$*" >&2
+        exit 1
+      }
+
+      if [[ ! -e "$aio_pause_marker" ]]; then
+        die "AIO pause is not owned by the local backup run"
+      fi
+      if [[ "$(docker inspect --format '{{.State.Paused}}' nextcloud-aio-mastercontainer 2>/dev/null || true)" != "true" ]]; then
+        die "AIO mastercontainer is not paused"
+      fi
+      if [[ "$(docker inspect --format '{{.State.Status}}' nextcloud-aio-borgbackup 2>/dev/null || true)" != "exited" ]]; then
+        die "AIO Borg container is active"
+      fi
+      if [[ ! -f "$aio_repository/config" ]]; then
+        die "local AIO Borg repository is unavailable"
+      fi
+
+      printf 'homestation offsite backup: mirroring AIO Borg repository\n' >&2
+      rclone --config "$rclone_config" sync "$aio_repository" "$remote_aio_repository"
+      rclone --config "$rclone_config" lsf "$remote_aio_repository/config" >/dev/null
+    '';
+  };
+
   offsitePrepareScript = pkgs.writeShellApplication {
     name = "homestation-offsite-prepare";
     runtimeInputs = [
@@ -573,7 +619,6 @@ let
       remote_name=${escapeShellArg oneDriveRemote}
       aio_repository=${escapeShellArg nextcloudAioRepository}
       aio_pause_marker=${escapeShellArg aioPauseMarker}
-      remote_aio_repository=${escapeShellArg oneDriveAioRepository}
 
       die() {
         printf 'homestation offsite backup: %s\n' "$*" >&2
@@ -619,10 +664,6 @@ let
         --from-repo "$local_repository" \
         --from-password-file "$local_password_file" \
         copy
-
-      printf 'homestation offsite backup: mirroring AIO Borg repository\n' >&2
-      rclone --config "$rclone_config" sync "$aio_repository" "$remote_aio_repository"
-      rclone --config "$rclone_config" lsf "$remote_aio_repository/config" >/dev/null
     '';
   };
 
@@ -708,6 +749,9 @@ assert !offsiteResticPrune || offsiteRetentionReviewed;
         nextcloudAioRepository
       ];
     };
-    serviceConfig.TimeoutStartSec = "24h";
+    serviceConfig = {
+      TimeoutStartSec = "24h";
+      ExecStartPost = "${offsiteMirrorScript}/bin/homestation-offsite-mirror";
+    };
   };
 }
