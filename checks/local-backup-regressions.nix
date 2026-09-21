@@ -72,7 +72,8 @@ let
     "vaultwarden-data"
     "vikunja-db"
     "wealthfolio-data"
-    "yamtrack-db"
+    "floppy-db"
+    "floppy-backups"
   ];
 in
 assert localRestic.repository == "/mnt/backup/restic/homestation";

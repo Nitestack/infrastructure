@@ -33,7 +33,7 @@ hostname.
 | Vaultwarden | Public `vault.npham.de` | Password-manager server | [`vaultwarden.nix`](../configurations/nixos/homestation/homelab/vaultwarden.nix) |
 | Vikunja | Public `tasks.npham.de` | Task management | [`vikunja.nix`](../configurations/nixos/homestation/homelab/vikunja.nix) |
 | Wealthfolio | Public `wealth.npham.de` | Portfolio tracking | [`wealthfolio.nix`](../configurations/nixos/homestation/homelab/wealthfolio.nix) |
-| Yamtrack | Public `track.npham.de` | Media tracking | [`yamtrack.nix`](../configurations/nixos/homestation/homelab/yamtrack.nix) |
+| Floppy | Public `track.npham.de` | Media tracking | [`floppy.nix`](../configurations/nixos/homestation/homelab/floppy.nix) |
 
 Glance also links to `backup.npham.de`, but no corresponding homelab app is
 declared in this repository. Its ownership and operation are therefore outside

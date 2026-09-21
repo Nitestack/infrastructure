@@ -274,7 +274,7 @@ mapping is retained here so those snapshots remain understandable:
 | `source-12` | Vaultwarden `data` |
 | `source-13` | Vikunja `db` |
 | `source-14` | Wealthfolio `data` |
-| `source-15` | Yamtrack `db` |
+| `source-15` | Retired media-tracker `db` |
 
 When the isolated copy is verified, remove it or keep it as evidence. Do not
 leave restored secrets in `/var/tmp`:
@@ -396,7 +396,8 @@ as described above.
 | Vaultwarden data | `vaultwarden-data` | `/var/lib/homelab/vaultwarden/data` | `arion-vaultwarden.service` |
 | Vikunja database | `vikunja-db` | `/var/lib/homelab/vikunja/db` | `arion-vikunja.service` |
 | Wealthfolio data | `wealthfolio-data` | `/var/lib/homelab/wealthfolio/data` | `arion-wealthfolio.service` |
-| Yamtrack database | `yamtrack-db` | `/var/lib/homelab/yamtrack/db` | `arion-yamtrack.service` |
+| Floppy database | `floppy-db` | `/var/lib/homelab/floppy/db` | `arion-floppy.service` |
+| Floppy backups | `floppy-backups` | `/var/lib/homelab/floppy/backups` | `arion-floppy.service` |
 
 For one selected target, restore to `RESTORE_ROOT`, stop only its unit, move
 the current target aside, and move the verified restored directory into place:

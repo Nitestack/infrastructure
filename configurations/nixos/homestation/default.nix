@@ -30,6 +30,7 @@ in
     ./homelab/beszel.nix
     ./homelab/calibre-web-automated.nix
     ./homelab/ente
+    ./homelab/floppy.nix
     ./homelab/freshrss.nix
     ./homelab/glance
     ./homelab/immich.nix
@@ -44,7 +45,6 @@ in
     ./homelab/vaultwarden.nix
     ./homelab/vikunja.nix
     ./homelab/wealthfolio.nix
-    ./homelab/yamtrack.nix
     ./tailscale.nix
   ];
 

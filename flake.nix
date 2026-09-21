@@ -100,7 +100,6 @@
     # OpenCode
     opencode = {
       url = "github:anomalyco/opencode/dev";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     # OpenCode 2 preview
     llm-agents = {

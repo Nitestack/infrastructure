@@ -134,9 +134,14 @@ let
       stageName = "wealthfolio-data";
     }
     {
-      path = "${dataDir}/yamtrack/db";
-      service = "arion-yamtrack.service";
-      stageName = "yamtrack-db";
+      path = "${dataDir}/floppy/db";
+      service = "arion-floppy.service";
+      stageName = "floppy-db";
+    }
+    {
+      path = "${dataDir}/floppy/backups";
+      service = "arion-floppy.service";
+      stageName = "floppy-backups";
     }
   ];
 

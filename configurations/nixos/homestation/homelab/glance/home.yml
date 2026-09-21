@@ -52,6 +52,9 @@
                 - title: FreshRSS
                   url: https://freshrss.github.io/FreshRSS/en
                   icon: di:freshrss
+                - title: Floppy
+                  url: https://github.com/dannyvfilms/Floppy/wiki
+                  icon: https://raw.githubusercontent.com/dannyvfilms/Floppy/latest/docs/brand/floppy-logo-white.png
                 - title: Glance
                   url: https://github.com/glanceapp/glance/blob/main/docs/configuration.md
                   icon: di:glance
@@ -82,9 +85,6 @@
                 - title: Wealthfolio
                   url: https://wealthfolio.app/docs/introduction
                   icon: sh:wealthfolio
-                - title: Yamtrack
-                  url: https://github.com/FuzzyGrim/Yamtrack/wiki
-                  icon: di:yamtrack
                 - title: Zerobyte
                   url: https://github.com/nicotsx/zerobyte
                   icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/zerobyte.webp
@@ -201,6 +201,15 @@
               icon: di:freshrss
               url: ${FRESHRSS_URL}
               description: Feed Aggregator
+            floppy:
+              name: Floppy
+              icon: https://raw.githubusercontent.com/dannyvfilms/Floppy/latest/docs/brand/floppy-logo-white.png
+              url: ${FLOPPY_URL}
+              description: Media Tracker
+              id: floppy
+            floppy-redis:
+              name: Redis
+              parent: floppy
             glance:
               name: Glance
               icon: di:glance
@@ -296,15 +305,6 @@
               icon: sh:wealthfolio
               url: ${WEALTHFOLIO_URL}
               description: Investment Tracker
-            yamtrack-web:
-              name: Yamtrack
-              icon: di:yamtrack
-              url: ${YAMTRACK_URL}
-              description: Media Tracker
-              id: yamtrack
-            yamtrack-redis:
-              name: Redis
-              parent: yamtrack
             zerobyte:
               name: Zerobyte
               icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/zerobyte.webp
@@ -361,5 +361,5 @@
             - calibrain/shelfmark
             - dani-garcia/vaultwarden
             - wealthfolio/wealthfolio
-            - FuzzyGrim/Yamtrack
+            - dannyvfilms/Floppy
             - nicotsx/zerobyte

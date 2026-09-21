@@ -17,6 +17,7 @@ let
   beetsSecretsFile = self + /secrets/hosts/homestation/beets.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
   enteSecretsFile = self + /secrets/hosts/homestation/ente.yaml;
+  floppySecretsFile = self + /secrets/hosts/homestation/floppy.yaml;
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
   immichSecretsFile = self + /secrets/hosts/homestation/immich.yaml;
   obsidianLivesyncSecretsFile = self + /secrets/hosts/homestation/obsidian-livesync.yaml;
@@ -24,7 +25,6 @@ let
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
   vikunjaSecretsFile = self + /secrets/hosts/homestation/vikunja.yaml;
   wealthfolioSecretsFile = self + /secrets/hosts/homestation/wealthfolio.yaml;
-  yamtrackSecretsFile = self + /secrets/hosts/homestation/yamtrack.yaml;
 in
 {
   config.sops = {
@@ -163,18 +163,18 @@ in
       key = "db-password";
       mode = "0400";
     };
-    secrets."yamtrack/secret-key" = {
-      sopsFile = yamtrackSecretsFile;
+    secrets."floppy/secret-key" = {
+      sopsFile = floppySecretsFile;
       key = "secret-key";
       mode = "0400";
     };
-    secrets."yamtrack/oidc-client-id" = {
-      sopsFile = yamtrackSecretsFile;
+    secrets."floppy/oidc-client-id" = {
+      sopsFile = floppySecretsFile;
       key = "oidc-client-id";
       mode = "0400";
     };
-    secrets."yamtrack/oidc-client-secret" = {
-      sopsFile = yamtrackSecretsFile;
+    secrets."floppy/oidc-client-secret" = {
+      sopsFile = floppySecretsFile;
       key = "oidc-client-secret";
       mode = "0400";
     };
@@ -364,13 +364,13 @@ in
       '';
       mode = "0400";
     };
-    templates."yamtrack.env" = {
+    templates."floppy.env" = {
       content = ''
-        SECRET=${config.sops.placeholder."yamtrack/secret-key"}
+        SECRET=${config.sops.placeholder."floppy/secret-key"}
         SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocketid","name":"Pocket ID","client_id":"${
-          config.sops.placeholder."yamtrack/oidc-client-id"
+          config.sops.placeholder."floppy/oidc-client-id"
         }","secret":"${
-          config.sops.placeholder."yamtrack/oidc-client-secret"
+          config.sops.placeholder."floppy/oidc-client-secret"
         }","settings":{"server_url":"${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration"}}]}}
       '';
       mode = "0400";

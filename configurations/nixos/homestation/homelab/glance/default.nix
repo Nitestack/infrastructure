@@ -29,6 +29,7 @@ in
         BESZEL_URL = appUrl cfg.apps.beszel;
         CALIBRE_WEB_AUTOMATED_URL = appUrl cfg.apps.calibre-web-automated;
         ENTE_AUTH_URL = appUrl cfg.apps.ente;
+        FLOPPY_URL = appUrl cfg.apps.floppy;
         FRESHRSS_URL = appUrl cfg.apps.freshrss;
         GLANCE_URL = appUrl cfg.apps.glance;
         # IMMICH_URL = appUrl cfg.apps.immich;
@@ -43,7 +44,6 @@ in
         SHELFMARK_URL = appUrl cfg.apps.shelfmark;
         VAULTWARDEN_URL = appUrl cfg.apps.vaultwarden;
         WEALTHFOLIO_URL = appUrl cfg.apps.wealthfolio;
-        YAMTRACK_URL = appUrl cfg.apps.yamtrack;
         # No backing homelab.apps entry exists for this service; keep the manual host.
         ZEROBYTE_URL = mkUrl "backup";
       };
