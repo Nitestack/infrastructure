@@ -20,16 +20,9 @@ configuration are outputs of that source.
 
 ## Verification
 
-From the repository root, run the generic check and exact host evaluation before
-activating:
-
-```sh
-nix run .#check
-nix eval .#nixosConfigurations.homestation.config.system.build.toplevel.drvPath --no-write-lock-file
-```
-
-After reviewing the result, activate on `homestation` with
-`sudo nixos-rebuild switch --flake .#homestation`, then follow
-`docs/homestation-operations.md` for systemd, container, ingress, and storage
-checks. Cloudflare DNS and zone changes belong to
+Use [`docs/operations.md`](../../../docs/operations.md) for validation and
+activation, then follow
+[`docs/homestation-operations.md`](../../../docs/homestation-operations.md) for
+systemd, container, ingress, and storage checks. Cloudflare DNS and zone changes
+belong to
 `opentofu/cloudflare/`, not to a manual edit on the server.

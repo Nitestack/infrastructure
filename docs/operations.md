@@ -29,33 +29,22 @@ and make sure the intended host name is used.
 
 ## Activate a configuration
 
-### NixOS desktop
+### NixOS
+
+Run this from the repository root on the target host:
 
 ```sh
-sudo nixos-rebuild switch --flake .#nixstation
+nix-switch
 ```
 
-### Homestation
-
-Run this on `homestation` after validating the homelab change. See
+For `homestation`, validate the homelab change first, then follow
 [Homestation operations](homestation-operations.md) for service checks after
 activation.
 
-```sh
-sudo nixos-rebuild switch --flake .#homestation
-```
+#### WSL-specific checks
 
-### NixOS-WSL
-
-For ordinary changes in the running WSL instance:
-
-```sh
-sudo -n nixos-rebuild switch --flake .#wslstation
-```
-
-`wslstation` is passwordless for sudo, so an agent can activate and inspect a
-change without waiting for human input. Use `sudo -n` for privileged commands,
-then check the running generation and the services that matter:
+On the running `wslstation`, sudo is passwordless. Use `sudo -n` for privileged
+commands, then check the running generation and services:
 
 ```sh
 sudo -n true
@@ -98,7 +87,7 @@ new generation was activated but needs to be undone immediately, switch back to
 the previous generation:
 
 ```sh
-sudo nixos-rebuild switch --rollback
+nix-switch --rollback
 ```
 
 If the machine cannot boot the current generation, select a previous generation
