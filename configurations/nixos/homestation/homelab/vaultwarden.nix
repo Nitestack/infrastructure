@@ -15,7 +15,7 @@ in
 
     services.web = {
       enable = true;
-      image = "vaultwarden/server:1.37.1@sha256:ebdfe70701c60ac0c28c697e787cea767d7972940b786037b29fe0d507f821e8";
+      image = "vaultwarden/server:1.37.3@sha256:1587c45feaa479f1f5e8af3b00eded36bff77bcf1880cf8dbf0541706dd470e0";
       port = 80;
 
       environment = {
