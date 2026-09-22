@@ -1,45 +1,19 @@
 {
-  plugin = [
-    "@slkiser/opencode-quota@4.9.0"
-  ];
+  formatter = true;
+  warming = true;
 
-  provider.openai = { };
-  provider.openrouter = { };
-
-  agent = {
-    build = {
-      model = "openai/gpt-5.6-luna";
-      reasoningEffort = "max";
-    };
-    plan = {
-      model = "openai/gpt-5.6-sol";
-      reasoningEffort = "high";
-      textVerbosity = "medium";
-    };
-    general = {
-      model = "openai/gpt-5.6-terra";
-      reasoningEffort = "high";
-    };
-    explore = {
-      model = "openai/gpt-5.6-luna";
-      reasoningEffort = "medium";
-    };
-    compaction = {
-      model = "openai/gpt-5.6-terra";
-      reasoningEffort = "medium";
-      textVerbosity = "medium";
-    };
-    title = {
-      model = "openai/gpt-5.6-luna";
-      reasoningEffort = "none";
-    };
-    summary = {
-      model = "openai/gpt-5.6-luna";
-      reasoningEffort = "low";
-    };
+  providers = {
+    nvidia = { };
+    openai = { };
+    openrouter = { };
   };
 
-  tui.plugin = [
-    "@slkiser/opencode-quota@4.9.0"
-  ];
+  agents = {
+    build.model = "openai/gpt-6-luna#max";
+    plan.model = "openai/gpt-6-sol#high";
+    general.model = "openai/gpt-6-luna#max";
+    explore.model = "openai/gpt-6-luna#medium";
+    title.model = "openai/gpt-6-luna#none";
+    summary.model = "openai/gpt-6-luna#low";
+  };
 }

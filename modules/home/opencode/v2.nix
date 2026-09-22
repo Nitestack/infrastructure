@@ -1,4 +1,0 @@
-{
-  formatter = true;
-  warming = true;
-}

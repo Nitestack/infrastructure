@@ -1,3 +1,36 @@
+let
+  mkClaudeModel =
+    {
+      name,
+      family,
+      context,
+      output,
+      inputCost,
+      outputCost,
+    }:
+    {
+      inherit name family;
+      attachment = true;
+      reasoning = true;
+      tool_call = true;
+      options.thinking.blockBinding = false;
+      cost = {
+        input = inputCost;
+        output = outputCost;
+      };
+      limit = {
+        inherit context output;
+      };
+      modalities = {
+        input = [
+          "text"
+          "image"
+          "pdf"
+        ];
+        output = [ "text" ];
+      };
+    };
+in
 {
   plugin = [ "opencode-models-discovery@1.5.3" ];
 
@@ -29,7 +62,7 @@
             }
             {
               field = "id";
-              match = "^(US-)?(gpt-4|gpt-5|o3-|o4-)";
+              match = "^(?:US-)?(?:gpt-[4-6]|o[3-4]-)";
             }
           ];
         };
@@ -53,7 +86,7 @@
           models.includeBy = [
             {
               field = "id";
-              match = "^(US-)?gpt-(5\\.6|6)-.+$";
+              match = "^(?:US-)?gpt-6-.+$";
             }
           ];
         };
@@ -66,62 +99,76 @@
       options = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
-        modelsDiscovery = {
-          enabled = true;
-          modelInfoFormat = "litellm";
-          smartModelName = true;
-          cache = {
-            enabled = true;
-            ttlSeconds = 86400;
-          };
-          models.includeBy = [
-            {
-              field = "id";
-              match = "^(claude-opus-5|claude-sonnet-5|claude-fable-5-1|claude-opus-4-8|claude-sonnet-4-6|claude-haiku-4-5)$";
-            }
-          ];
+      };
+      models = {
+        "claude-opus-5-5" = mkClaudeModel {
+          name = "Claude Opus 5.5";
+          family = "claude-opus";
+          context = 1000000;
+          output = 128000;
+          inputCost = 4.4;
+          outputCost = 22.0;
+        };
+        "claude-opus-5" = mkClaudeModel {
+          name = "Claude Opus 5";
+          family = "claude-opus";
+          context = 1000000;
+          output = 128000;
+          inputCost = 5.5;
+          outputCost = 27.5;
+        };
+        "claude-haiku-4-5" = mkClaudeModel {
+          name = "Claude Haiku 4.5";
+          family = "claude-haiku";
+          context = 200000;
+          output = 64000;
+          inputCost = 1.1;
+          outputCost = 5.5;
+        };
+        "claude-sonnet-4-6" = mkClaudeModel {
+          name = "Claude Sonnet 4.6";
+          family = "claude-sonnet";
+          context = 1000000;
+          output = 128000;
+          inputCost = 3.3;
+          outputCost = 16.5;
+        };
+        "claude-sonnet-5" = mkClaudeModel {
+          name = "Claude Sonnet 5";
+          family = "claude-sonnet";
+          context = 1000000;
+          output = 128000;
+          inputCost = 2.2;
+          outputCost = 11.0;
+        };
+        "claude-fable-5-1" = mkClaudeModel {
+          name = "Claude Fable 5.1";
+          family = "claude-fable";
+          context = 1000000;
+          output = 128000;
+          inputCost = 11.0;
+          outputCost = 55.0;
         };
       };
-      models = builtins.listToAttrs (
-        map
-          (id: {
-            name = id;
-            value = { };
-          })
-          [
-            "claude-opus-5"
-            "claude-sonnet-5"
-            "claude-fable-5-1"
-            "claude-opus-4-8"
-            "claude-sonnet-4-6"
-            "claude-haiku-4-5"
-          ]
-      );
     };
   };
 
   agent = {
     build = {
-      model = "litellm-responses/gpt-5.6-luna";
+      model = "litellm-responses/gpt-6-luna";
       reasoningEffort = "max";
     };
     plan = {
-      model = "litellm-anthropic/claude-opus-5";
-      reasoningEffort = "high";
-      textVerbosity = "medium";
+      model = "litellm-anthropic/claude-opus-5-5";
+      variant = "high";
     };
     general = {
-      model = "litellm-responses/gpt-5.6-terra";
-      reasoningEffort = "high";
+      model = "litellm-responses/gpt-6-luna";
+      reasoningEffort = "max";
     };
     explore = {
-      model = "litellm-responses/gpt-5.6-luna";
+      model = "litellm-responses/gpt-6-luna";
       reasoningEffort = "medium";
-    };
-    compaction = {
-      model = "litellm-responses/gpt-5.6-terra";
-      reasoningEffort = "medium";
-      textVerbosity = "medium";
     };
     title = {
       model = "litellm-chat/deepseek-v4-flash-sovereign";
