@@ -16,7 +16,7 @@ let
   musicLibrary = config.homelab.libraries.music.path;
 
   localResticRepository = "/mnt/backup/restic/homestation";
-  nextcloudAioBackupDirectory = "/mnt/backup/nextcloud-borg";
+  nextcloudAioBackupDirectory = "/mnt/backup";
   nextcloudAioRepository = "${nextcloudAioBackupDirectory}/borg";
 
   oneDriveRemote = "onedrive";

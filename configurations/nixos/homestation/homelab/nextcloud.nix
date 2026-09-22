@@ -9,7 +9,10 @@ let
 in
 {
   systemd.tmpfiles.rules = [
-    "d ${nextcloudDataDir} 0755 root root -"
+    # Nextcloud AIO's Apache container runs as www-data (UID/GID 33).
+    "d ${nextcloudDataDir} 0750 33 33 -"
+    # `d` does not repair ownership on an existing directory.
+    "z ${nextcloudDataDir} 0750 33 33 -"
   ];
 
   homelab.caddy.extraHosts = ''

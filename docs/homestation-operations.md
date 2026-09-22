@@ -166,11 +166,11 @@ complete the AIO **Backup and restore** setup and enter this local backup
 directory:
 
 ```text
-/mnt/backup/nextcloud-borg
+/mnt/backup
 ```
 
 AIO creates the actual Borg repository at
-`/mnt/backup/nextcloud-borg/borg`. Keep the passphrase shown by AIO separately.
+`/mnt/backup/borg`. Keep the passphrase shown by AIO separately.
 Disable AIO's native daily backup schedule after completing setup;
 `restic-backups-local.timer` is the sole scheduler, and the service refuses to
 run while the native schedule is enabled. Manual backup and restore operations
@@ -201,7 +201,7 @@ Although AIO's check trigger is asynchronous, the pipeline waits for its Borg
 container to exit successfully. AIO performs its configured retention pruning
 and compaction before the integrity check. Both operations must succeed before
 the local Restic stage begins. The prepare hook verifies that AIO mounted
-`/mnt/backup/nextcloud-borg` at `/mnt/borgbackup` and rejects an AIO remote Borg
+`/mnt/backup` at `/mnt/borgbackup` and rejects an AIO remote Borg
 configuration so a stale local repository cannot be replicated.
 
 The AIO mastercontainer is paused after its backup and check, before the local

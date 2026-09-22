@@ -18,7 +18,7 @@ service can be restored and started.
 | Store | Local location | OneDrive location | Retention |
 | --- | --- | --- | --- |
 | Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:homestation/restic` | Local: 7 daily, 4 weekly, 12 monthly. Remote: copied and checked; pruning disabled by default |
-| Nextcloud AIO Borg | `/mnt/backup/nextcloud-borg/borg` | `onedrive:homestation/nextcloud-aio-borg` | AIO's configured Borg policy; the OneDrive copy mirrors the local repository |
+| Nextcloud AIO Borg | `/mnt/backup/borg` | `onedrive:homestation/nextcloud-aio-borg` | AIO's configured Borg policy; the OneDrive copy mirrors the local repository |
 
 The local Restic repository uses the `restic-password` secret. The OneDrive
 Restic repository is independent and uses `offsite-restic-password`; it cannot
@@ -130,8 +130,8 @@ service is failed, and the next run retries the remote stages. The AIO mirror
 uses only `onedrive:homestation/nextcloud-aio-borg`; it cannot delete unrelated
 OneDrive content.
 
-Do not create `/mnt/backup/restic` or `/mnt/backup/nextcloud-borg` by hand on the
-root filesystem when the disk is unavailable. Fix the mount first and rerun the
+Do not create `/mnt/backup/restic` or `/mnt/backup/borg` by hand on the root
+filesystem when the disk is unavailable. Fix the mount first and rerun the
 service.
 
 ## Recover Repository Access
@@ -494,7 +494,7 @@ and contains the Borg repository:
 
 ```sh
 findmnt /mnt/backup
-sudo test -f /mnt/backup/nextcloud-borg/borg/config
+sudo test -f /mnt/backup/borg/config
 ```
 
 For a OneDrive-only recovery, restore only the AIO prefix into the local AIO
@@ -505,17 +505,17 @@ do not put the OAuth token in this document or in a command argument:
 nix shell nixpkgs#rclone
 RCLONE="$(command -v rclone)"
 RCLONE_CONFIG=/run/secrets/backup/onedrive-rclone-config
-sudo install -d -m 0700 /mnt/backup/nextcloud-borg/borg
+sudo install -d -m 0700 /mnt/backup/borg
 sudo env RCLONE_CONFIG="$RCLONE_CONFIG" "$RCLONE" copy \
   onedrive:homestation/nextcloud-aio-borg \
-  /mnt/backup/nextcloud-borg/borg
+  /mnt/backup/borg
 sudo env RCLONE_CONFIG="$RCLONE_CONFIG" "$RCLONE" lsf \
   onedrive:homestation/nextcloud-aio-borg/config
-sudo test -f /mnt/backup/nextcloud-borg/borg/config
+sudo test -f /mnt/backup/borg/config
 ```
 
 Open the AIO interface, select its **Backup and restore** page, point it at
-`/mnt/backup/nextcloud-borg`, provide the escrowed AIO passphrase, and follow
+`/mnt/backup`, provide the escrowed AIO passphrase, and follow
 the supported restore flow. This restores Nextcloud through AIO without
 replacing unrelated Arion services or their data. Start and verify the
 Nextcloud service before removing any pre-restore AIO state.

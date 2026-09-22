@@ -101,7 +101,7 @@ assert localTimer.timerConfig.Persistent;
 assert localTimer.timerConfig.RandomizedDelaySec == "30m";
 assert builtins.elem "/mnt/backup" localService.unitConfig.RequiresMountsFor;
 assert builtins.elem "/mnt/backup/.local-backup-staging" localService.unitConfig.RequiresMountsFor;
-assert builtins.elem "/mnt/backup/nextcloud-borg/borg" localService.unitConfig.RequiresMountsFor;
+assert builtins.elem "/mnt/backup/borg" localService.unitConfig.RequiresMountsFor;
 assert localService.serviceConfig.TimeoutStartSec == "24h";
 assert lib.hasInfix "restic-backups-offsite.service" localService.serviceConfig.ExecStartPost;
 assert lib.hasInfix "backupPrepareCommand" localService.preStart;
