@@ -15,7 +15,7 @@ in
 
     services.web = {
       enable = true;
-      image = "linuxserver/prowlarr:2.5.2@sha256:aaa16ba7d66e413db6d0358d3b6c68d833578ba7f176f24a51807181e7637fce";
+      image = "linuxserver/prowlarr:2.6.5@sha256:f2b26429893d4c4cb71941b7ee50b1bdecd9d5f9f9e02d5410615e9f4f7c8d95";
       port = 9696;
 
       volumes = [
