@@ -17,8 +17,8 @@ service can be restored and started.
 
 | Store | Local location | OneDrive location | Retention |
 | --- | --- | --- | --- |
-| Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:homestation/restic` | Local: 7 daily, 4 weekly, 12 monthly. Remote: copied and checked; pruning disabled by default |
-| Nextcloud AIO Borg | `/mnt/backup/borg` | `onedrive:homestation/nextcloud-aio-borg` | AIO's configured Borg policy; the OneDrive copy mirrors the local repository |
+| Restic application data | `/mnt/backup/restic/homestation` | `rclone:onedrive:backups/homestation/restic` | Local: 7 daily, 4 weekly, 12 monthly. Remote: copied and checked; pruning disabled by default |
+| Nextcloud AIO Borg | `/mnt/backup/borg` | `onedrive:backups/homestation/nextcloud-aio-borg` | AIO's configured Borg policy; the OneDrive copy mirrors the local repository |
 
 The local Restic repository uses the `restic-password` secret. The OneDrive
 Restic repository is independent and uses `offsite-restic-password`; it cannot
@@ -96,6 +96,147 @@ RESTIC="$(command -v restic)"
 Use the secret-recovery procedure below to run `"$RESTIC" check --read-data`
 without putting a password in a command argument or terminal output.
 
+## Set Up Or Reconfigure The OneDrive Remote
+
+The offsite job requires a remote named exactly `onedrive`. It first runs
+`rclone lsd onedrive:`; on success, the local service continues with the remote
+Restic copy and check, then mirrors the AIO Borg repository. These steps are
+defined in [`backup.nix`](../configurations/nixos/homestation/backup.nix).
+
+Run this from `~/infrastructure` on `homestation` when repairing the live host,
+or from a trusted administrator workstation for a first deployment. Use the
+rclone package declared by the `homestation` flake output so the saved
+configuration is accepted by the deployed version. Create a private, temporary
+config and run the interactive wizard against it; `--config` keeps rclone from
+writing to its default user config location ([rclone config-file docs](https://rclone.org/docs/#config-config-file)):
+
+```sh
+cd ~/infrastructure
+RCLONE_STORE="$(
+  nix build --quiet --no-link --no-write-lock-file --print-out-paths \
+    .#nixosConfigurations.homestation.pkgs.rclone |
+    while IFS= read -r candidate; do
+      if test -x "$candidate/bin/rclone"; then
+        printf '%s\n' "$candidate"
+      fi
+    done |
+    head -n 1
+)"
+test -n "$RCLONE_STORE"
+RCLONE="$RCLONE_STORE/bin/rclone"
+test -x "$RCLONE"
+"$RCLONE" --version
+
+umask 077
+: "${XDG_RUNTIME_DIR:?use a homestation login session with a private runtime directory}"
+RCLONE_CONFIG="$(mktemp "$XDG_RUNTIME_DIR/onedrive-rclone-config.XXXXXX")"
+cleanup() {
+  if test -n "${RCLONE_CONFIG:-}"; then
+    rm -f -- "$RCLONE_CONFIG"
+  fi
+}
+trap cleanup EXIT HUP INT TERM
+"$RCLONE" --config "$RCLONE_CONFIG" config
+```
+
+Keep this shell open until the temporary config has been copied into the SOPS
+editor. The exit trap removes it if setup is abandoned.
+
+In the wizard, create a OneDrive remote named `onedrive`, authenticate to the
+intended Microsoft account, and accept the drive selected by the wizard. The
+official [OneDrive configuration guide](https://rclone.org/onedrive/#configuration)
+documents the browser authentication and drive-selection flow; its generated
+configuration includes the OAuth token and the selected `drive_id` and
+`drive_type`. The wizard may show a config summary containing the token, so use
+a private terminal with session recording disabled. Never record or share that
+summary, and do not deliberately print the config with `cat` or `rclone config
+show`/`dump`, or put it in shell arguments, logs, or chat. For a headless
+session, follow rclone's
+[remote setup guide](https://rclone.org/remote_setup/) rather than copying a
+token through an untrusted channel.
+
+Validate the new config with the same read-only root listing the service uses:
+
+```sh
+"$RCLONE" --config "$RCLONE_CONFIG" lsd onedrive: >/dev/null
+```
+
+If this fails, do not replace the encrypted value yet. For the current
+`unable to get drive_id and drive_type` error, re-run the wizard with the
+deployed rclone version and select the intended drive there; do not guess or
+hand-write drive IDs or types. Stop if the intended drive cannot be identified.
+
+When validation succeeds, edit the existing encrypted host file:
+
+```sh
+sops secrets/hosts/homestation/backup.yaml
+```
+
+Replace only `onedrive-rclone-config` with the complete temporary config as a
+YAML literal block (`onedrive-rclone-config: |`, with each rclone line indented
+under it). Use the editor's file-insert function so the config is not emitted as
+shell output. The secret is rendered by
+[`sops.nix`](../configurations/nixos/homestation/sops.nix) as
+`/run/secrets/backup/onedrive-rclone-config` with mode `0400`; never put the
+plaintext in Nix, the Nix store, or Git. After saving the encrypted file, remove
+the temporary config:
+
+```sh
+rm -f -- "$RCLONE_CONFIG"
+```
+
+Review the encrypted diff from the repository checkout:
+
+```sh
+git diff --check
+git diff -- secrets/hosts/homestation/backup.yaml
+nix run .#check
+```
+
+Make the encrypted file available in the deployment checkout. For an existing
+installation, activate the updated secret on `homestation`:
+
+```sh
+sudo nixos-rebuild switch --flake .#homestation
+```
+
+For a first deployment, include the encrypted file before the initial
+`homestation` system activation. Follow the repository's first-install workflow
+for the initial `boot`; do not copy the plaintext rclone config to the host.
+
+After activation, use the active system's rclone package again and validate the
+rendered runtime config as root. This mirrors the offsite prepare hook's
+`rclone lsd` preflight without changing OneDrive data:
+
+```sh
+RCLONE_STORE="$(
+  nix build --quiet --no-link --no-write-lock-file --print-out-paths \
+    .#nixosConfigurations.homestation.pkgs.rclone |
+    while IFS= read -r candidate; do
+      if test -x "$candidate/bin/rclone"; then
+        printf '%s\n' "$candidate"
+      fi
+    done |
+    head -n 1
+)"
+test -n "$RCLONE_STORE"
+RCLONE="$RCLONE_STORE/bin/rclone"
+test -x "$RCLONE"
+sudo "$RCLONE" --config /run/secrets/backup/onedrive-rclone-config \
+  lsd onedrive: >/dev/null
+```
+
+If that succeeds, rerun and inspect the **full** pipeline through the local
+service; it owns the offsite stage and its AIO pause lifecycle. Do not start the
+offsite unit directly:
+
+```sh
+sudo systemctl start restic-backups-local.service
+systemctl status restic-backups-local.service
+journalctl -u restic-backups-local.service -u restic-backups-offsite.service \
+  --no-pager
+```
+
 ## Mount And Failure Handling
 
 The backup filesystem is an external ext4 filesystem mounted at
@@ -127,7 +268,7 @@ The local Restic snapshot and retention are completed before OneDrive work
 starts. If the remote Restic copy, remote check, remote retention, rclone
 connectivity, or AIO mirror fails, the local result remains available, the
 service is failed, and the next run retries the remote stages. The AIO mirror
-uses only `onedrive:homestation/nextcloud-aio-borg`; it cannot delete unrelated
+uses only `onedrive:backups/homestation/nextcloud-aio-borg`; it cannot delete unrelated
 OneDrive content.
 
 Do not create `/mnt/backup/restic` or `/mnt/backup/borg` by hand on the root
@@ -203,7 +344,7 @@ restic_remote() {
   sops decrypt --decryption-order pgp --extract '["offsite-restic-password"]' \
     secrets/hosts/homestation/backup.yaml |
     sudo env RCLONE_CONFIG="$RCLONE_CONFIG" "$RESTIC" \
-      --repo rclone:onedrive:homestation/restic \
+      --repo rclone:onedrive:backups/homestation/restic \
       --password-file /dev/stdin \
       "$@"
 }
@@ -507,10 +648,10 @@ RCLONE="$(command -v rclone)"
 RCLONE_CONFIG=/run/secrets/backup/onedrive-rclone-config
 sudo install -d -m 0700 /mnt/backup/borg
 sudo env RCLONE_CONFIG="$RCLONE_CONFIG" "$RCLONE" copy \
-  onedrive:homestation/nextcloud-aio-borg \
+  onedrive:backups/homestation/nextcloud-aio-borg \
   /mnt/backup/borg
 sudo env RCLONE_CONFIG="$RCLONE_CONFIG" "$RCLONE" lsf \
-  onedrive:homestation/nextcloud-aio-borg/config
+  onedrive:backups/homestation/nextcloud-aio-borg/config
 sudo test -f /mnt/backup/borg/config
 ```
 

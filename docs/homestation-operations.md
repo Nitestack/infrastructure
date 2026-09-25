@@ -122,13 +122,17 @@ remote check fails the local systemd unit.
 The remote paths are deliberately separate:
 
 ```text
-rclone:onedrive:homestation/restic
-onedrive:homestation/nextcloud-aio-borg
+rclone:onedrive:backups/homestation/restic
+onedrive:backups/homestation/nextcloud-aio-borg
 ```
 
 The AIO `rclone sync` destination is only the second prefix, so it cannot delete
 generic Restic objects or unrelated OneDrive content. The offsite service has no
-timer and runs only while the local service owns the AIO pause marker.
+independent timer: the local timer is the schedule source, and the local service
+starts and waits for the remote stage after its own backup completes. Thus every
+scheduled local run includes the remote run, which begins after the local phase
+rather than simultaneously. The offsite service runs only while the local
+service owns the AIO pause marker.
 If the remote Restic repository is absent, the first successful offsite stage
 initializes it with the separate offsite password; an existing incompatible
 repository fails rather than being reinitialized.
@@ -151,6 +155,10 @@ The rclone config contains the OneDrive OAuth token and must remain encrypted;
 do not place it in Nix, the Nix store, command arguments, or logs. The remote
 Restic password is separate from the local Restic password and is also rendered
 only below `/run/secrets`.
+
+For the first-time rclone wizard, repairing an existing remote, and validating
+the runtime config, follow
+[Set up or reconfigure the OneDrive remote](homestation-backup-recovery.md#set-up-or-reconfigure-the-onedrive-remote).
 
 Remote pruning is initially disabled. Review the OneDrive quota and the remote
 repository with the recovery commands before changing

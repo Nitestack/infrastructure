@@ -116,7 +116,7 @@ assert lib.hasInfix ''
   done <"$stopped_services_file"
     : >"$stopped_services_file"'' localPrepareScript;
 assert lib.hasInfix "cleanup will retry" localPrepareScript;
-assert offsiteBackup.repository == "rclone:onedrive:homestation/restic";
+assert offsiteBackup.repository == "rclone:onedrive:backups/homestation/restic";
 assert offsiteBackup.timerConfig == null;
 assert lib.hasInfix "homestation-offsite-prepare" offsiteBackup.backupPrepareCommand;
 assert offsiteBackup.runCheck;
@@ -125,6 +125,7 @@ assert lib.hasInfix "restic check" (builtins.head offsiteService.serviceConfig.E
 assert lib.hasInfix "homestation-offsite-mirror" offsiteService.serviceConfig.ExecStartPost;
 assert !lib.hasInfix " sync " offsitePrepareScript;
 assert lib.hasInfix " sync " offsiteMirrorScript;
+assert lib.hasInfix "backups/homestation/nextcloud-aio-borg" offsiteMirrorScript;
 assert lib.hasInfix "State.Paused" offsiteMirrorScript;
 assert offsiteService.serviceConfig.TimeoutStartSec == "24h";
 assert offsiteService.unitConfig.ConditionPathExists == "/run/restic-backups-local/aio-paused";

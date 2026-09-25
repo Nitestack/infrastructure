@@ -20,8 +20,8 @@ let
   nextcloudAioRepository = "${nextcloudAioBackupDirectory}/borg";
 
   oneDriveRemote = "onedrive";
-  oneDriveResticPath = "homestation/restic";
-  oneDriveAioPath = "homestation/nextcloud-aio-borg";
+  oneDriveResticPath = "backups/homestation/restic";
+  oneDriveAioPath = "backups/homestation/nextcloud-aio-borg";
   oneDriveResticRepository = "rclone:${oneDriveRemote}:${oneDriveResticPath}";
   oneDriveAioRepository = "${oneDriveRemote}:${oneDriveAioPath}";
 
