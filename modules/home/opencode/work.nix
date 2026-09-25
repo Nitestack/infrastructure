@@ -32,7 +32,7 @@ let
     };
 in
 {
-  plugin = [ "opencode-models-discovery@1.5.3" ];
+  plugin = [ "opencode-models-discovery@1.5.5" ];
 
   enabled_providers = [
     "litellm-chat"
