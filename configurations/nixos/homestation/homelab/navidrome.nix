@@ -29,7 +29,7 @@ in
 
     services.web = {
       enable = true;
-      image = "deluan/navidrome:0.64.0@sha256:a384948b81bd1529986c5960169e7fc4fa00f46bde6bd517971a4c36671db2af";
+      image = "deluan/navidrome:0.64.2@sha256:38dc2727bfcfd5ede290f8ada114fc90368146f265ae4701ddddbcbe2a44ee52";
       port = 4533;
       runtime.user = "${effectiveUid}:${toString userGid}";
 
