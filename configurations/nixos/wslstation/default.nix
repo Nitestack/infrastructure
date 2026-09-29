@@ -43,7 +43,7 @@ in
       exec /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe "$@"
     '')
     pkgs.glab
-    pkgs.acli
+    self.packages.${pkgs.stdenv.hostPlatform.system}.twg
   ];
 
   systemd.tmpfiles.rules = [
