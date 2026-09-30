@@ -97,11 +97,7 @@
       url = "github:mattpocock/skills";
       flake = false;
     };
-    # OpenCode
-    opencode = {
-      url = "github:anomalyco/opencode/dev";
-    };
-    # OpenCode 2 preview
+    # OpenCode 2
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";

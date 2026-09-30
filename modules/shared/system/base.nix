@@ -40,7 +40,7 @@ in
           "flakes"
         ];
         flake-registry = "";
-        nix-path = config.nix.nixPath;
+        nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
         trusted-users = [
           "root"
           (if pkgs.stdenv.hostPlatform.isDarwin then meta.username else "@wheel")
@@ -49,7 +49,6 @@ in
       };
       channel.enable = false;
       registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
-      nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
     };
 
   environment.systemPackages = with pkgs; [

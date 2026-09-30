@@ -23,7 +23,6 @@
         inherit inputs pkgs;
         system = pkgs.stdenv.hostPlatform.system;
       };
-
       formatNixFiles = ''
         args=("$@")
         find . \
@@ -70,7 +69,6 @@
 
       checks.homelab-arion-regressions = homelabArionRegressions;
       checks.homestation-backup-regressions = homestationBackupRegressions;
-
       apps.check = {
         type = "app";
         program = lib.getExe config.packages.check;
