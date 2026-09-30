@@ -10,10 +10,6 @@ let
     }:
     {
       inherit name family;
-      attachment = true;
-      reasoning = true;
-      tool_call = true;
-      options.thinking.blockBinding = false;
       cost = {
         input = inputCost;
         output = outputCost;
@@ -21,40 +17,46 @@ let
       limit = {
         inherit context output;
       };
-      modalities = {
-        input = [
-          "text"
-          "image"
-          "pdf"
-        ];
-        output = [ "text" ];
-      };
     };
 in
 {
-  plugin = [ "opencode-models-discovery@1.5.3" ];
+  plugins = [ "opencode-models-discovery@1.6.2" ];
 
-  enabled_providers = [
-    "litellm-chat"
-    "litellm-responses"
-    "litellm-anthropic"
+  experimental.policies = [
+    {
+      action = "provider.use";
+      resource = "*";
+      effect = "deny";
+    }
+    {
+      action = "provider.use";
+      resource = "litellm-chat";
+      effect = "allow";
+    }
+    {
+      action = "provider.use";
+      resource = "litellm-responses";
+      effect = "allow";
+    }
+    {
+      action = "provider.use";
+      resource = "litellm-anthropic";
+      effect = "allow";
+    }
   ];
 
-  provider = {
+  providers = {
     litellm-chat = {
-      npm = "@ai-sdk/openai-compatible";
+      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `openai-compatible/responses` when fixed: https://github.com/anomalyco/opencode/issues/49670
       name = "LiteLLM";
-      options = {
+      env = [ "LITELLM_API_KEY" ];
+      settings = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
         modelsDiscovery = {
           enabled = true;
           modelInfoFormat = "litellm";
           smartModelName = true;
-          cache = {
-            enabled = true;
-            ttlSeconds = 86400;
-          };
           models.excludeBy = [
             {
               field = "id";
@@ -70,23 +72,20 @@ in
     };
 
     litellm-responses = {
-      npm = "@ai-sdk/openai";
+      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `anthropic-compatible` when fixed: https://github.com/anomalyco/opencode/issues/49670
       name = "OpenAI";
-      options = {
+      env = [ "LITELLM_API_KEY" ];
+      settings = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
         modelsDiscovery = {
           enabled = true;
           modelInfoFormat = "litellm";
           smartModelName = true;
-          cache = {
-            enabled = true;
-            ttlSeconds = 86400;
-          };
           models.includeBy = [
             {
               field = "id";
-              match = "^(?:US-)?gpt-6-.+$";
+              match = "^(?:US-)?(?:gpt-6-astra|gpt-6[.]1-sol|gpt-6-luna)$";
             }
           ];
         };
@@ -94,13 +93,22 @@ in
     };
 
     litellm-anthropic = {
-      npm = "@ai-sdk/anthropic";
+      package = "@opencode/ai/providers/openai-compatible";
       name = "Anthropic";
-      options = {
+      env = [ "LITELLM_API_KEY" ];
+      settings = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
       };
       models = {
+        "claude-sonnet-5-5" = mkClaudeModel {
+          name = "Claude Sonnet 5.5";
+          family = "claude-sonnet";
+          context = 1000000;
+          output = 128000;
+          inputCost = 2.2;
+          outputCost = 11.0;
+        };
         "claude-opus-5-5" = mkClaudeModel {
           name = "Claude Opus 5.5";
           family = "claude-opus";
@@ -108,38 +116,6 @@ in
           output = 128000;
           inputCost = 4.4;
           outputCost = 22.0;
-        };
-        "claude-opus-5" = mkClaudeModel {
-          name = "Claude Opus 5";
-          family = "claude-opus";
-          context = 1000000;
-          output = 128000;
-          inputCost = 5.5;
-          outputCost = 27.5;
-        };
-        "claude-haiku-4-5" = mkClaudeModel {
-          name = "Claude Haiku 4.5";
-          family = "claude-haiku";
-          context = 200000;
-          output = 64000;
-          inputCost = 1.1;
-          outputCost = 5.5;
-        };
-        "claude-sonnet-4-6" = mkClaudeModel {
-          name = "Claude Sonnet 4.6";
-          family = "claude-sonnet";
-          context = 1000000;
-          output = 128000;
-          inputCost = 3.3;
-          outputCost = 16.5;
-        };
-        "claude-sonnet-5" = mkClaudeModel {
-          name = "Claude Sonnet 5";
-          family = "claude-sonnet";
-          context = 1000000;
-          output = 128000;
-          inputCost = 2.2;
-          outputCost = 11.0;
         };
         "claude-fable-5-1" = mkClaudeModel {
           name = "Claude Fable 5.1";
@@ -153,30 +129,12 @@ in
     };
   };
 
-  agent = {
-    build = {
-      model = "litellm-responses/gpt-6-luna";
-      reasoningEffort = "max";
-    };
-    plan = {
-      model = "litellm-anthropic/claude-opus-5-5";
-      variant = "high";
-    };
-    general = {
-      model = "litellm-responses/gpt-6-luna";
-      reasoningEffort = "max";
-    };
-    explore = {
-      model = "litellm-responses/gpt-6-luna";
-      reasoningEffort = "medium";
-    };
-    title = {
-      model = "litellm-chat/deepseek-v4-flash-sovereign";
-      reasoningEffort = "none";
-    };
-    summary = {
-      model = "litellm-chat/qwen-3.6-35b-sovereign";
-      reasoningEffort = "low";
-    };
+  agents = {
+    build.model = "litellm-responses/gpt-6-luna#max";
+    plan.model = "litellm-anthropic/claude-opus-5-5#medium";
+    general.model = "litellm-responses/gpt-6-luna#max";
+    explore.model = "litellm-responses/gpt-6-luna#medium";
+    title.model = "litellm-chat/deepseek-v4-flash-sovereign#none";
+    summary.model = "litellm-chat/qwen-3.6-35b-sovereign#low";
   };
 }

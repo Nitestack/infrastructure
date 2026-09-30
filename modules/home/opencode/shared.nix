@@ -11,12 +11,7 @@ let
   ];
 in
 {
-  permission.external_directory = builtins.listToAttrs (
-    map (resource: {
-      name = resource;
-      value = "allow";
-    }) externalDirectories
-  );
+  formatter = true;
 
   permissions = map (resource: {
     action = "external_directory";
@@ -24,5 +19,5 @@ in
     effect = "allow";
   }) externalDirectories;
 
-  tui.theme = "catppuccin";
+  cli.theme.name = "catppuccin";
 }

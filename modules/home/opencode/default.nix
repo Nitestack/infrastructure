@@ -17,8 +17,7 @@ let
   hasWorkProfile = config.programs.aix.enable or false;
   isWsl = osConfig.wsl.enable or false;
 
-  opencode2ConfigDir = "${config.home.homeDirectory}/.config/opencode2";
-  workConfigDir = "${config.home.homeDirectory}/.config/opencode-work";
+  workConfigDir = "${config.xdg.configHome}/opencode-work";
 
   platformDescription =
     if pkgs.stdenv.hostPlatform.isDarwin then
@@ -37,78 +36,69 @@ let
       builtins.elemAt contextSections 0 + lib.optionalString isWsl (builtins.elemAt contextSections 1)
     );
   sharedSettings = import ./shared.nix;
-  privateSettings = import ./private.nix;
 
   mkSettings =
     cfg:
-    (
-      removeAttrs sharedSettings [
-        "tui"
-        "permissions"
-      ]
-      // removeAttrs cfg [ "tui" ]
-    )
-    // {
-      plugin = (sharedSettings.plugin or [ ]) ++ (cfg.plugin or [ ]);
-    };
+    let
+      plugins = (sharedSettings.plugins or [ ]) ++ (cfg.plugins or [ ]);
+    in
+    (removeAttrs sharedSettings [
+      "cli"
+      "plugins"
+    ])
+    // removeAttrs cfg [
+      "cli"
+      "plugins"
+    ]
+    // lib.optionalAttrs (plugins != [ ]) { inherit plugins; };
 
-  mkTui =
-    cfg:
-    (sharedSettings.tui // (cfg.tui or { }))
-    // {
-      plugin = (sharedSettings.tui.plugin or [ ]) ++ ((cfg.tui or { }).plugin or [ ]);
-    };
+  workLaunch =
+    if hasWorkProfile then
+      ''
+        if [ -n "''${AIX_PROFILE:-}" ]; then
+          if [ -z "''${LITELLM_API_KEY:-}" ]; then
+            echo "AIX_PROFILE is set, but LITELLM_API_KEY is missing" >&2
+            exit 1
+          fi
+          if [ -z "''${LITELLM_BASE_URL:-}" ]; then
+            echo "AIX_PROFILE is set, but LITELLM_BASE_URL is missing" >&2
+            exit 1
+          fi
+          export OPENCODE_CONFIG_DIR=${lib.escapeShellArg workConfigDir}
+          if [ "$#" -eq 0 ] || [[ "$1" == -* ]] || [ -d "$1" ]; then
+            set -- --standalone "$@"
+          fi
+          exec ${lib.escapeShellArg "${opencode2Package}/bin/opencode2"} "$@"
+        fi
+      ''
+    else
+      "";
 
-  opencode2Settings = {
-    permissions = sharedSettings.permissions;
-  }
-  // privateSettings;
-
-  opencodePrivatePackage = pkgs.symlinkJoin {
-    name = "opencode2";
-    paths = [ opencode2Package ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/opencode2 \
-        --set OPENCODE_CONFIG_DIR ${lib.escapeShellArg opencode2ConfigDir} \
-        --run 'export NVIDIA_API_KEY="$(cat ${osConfig.sops.secrets.nim-api-key.path})"'
+  opencodeLauncher = pkgs.writeShellApplication {
+    name = "opencode";
+    text = workLaunch + ''
+      NVIDIA_API_KEY="$(cat ${lib.escapeShellArg osConfig.sops.secrets.nim-api-key.path})"
+      export NVIDIA_API_KEY
+      exec ${lib.escapeShellArg "${opencode2Package}/bin/opencode2"} "$@"
     '';
-    passthru = {
-      inherit (opencode2Package) version;
-    };
   };
 in
 {
-  home.file = {
-    "${opencode2ConfigDir}/AGENTS.md".text = context;
-    "${opencode2ConfigDir}/opencode.json".text = builtins.toJSON (
-      { "$schema" = "https://opencode.ai/config.json"; } // opencode2Settings
-    );
-  }
-  // lib.optionalAttrs hasWorkProfile {
-    "${workConfigDir}/AGENTS.md".text = context;
-    "${workConfigDir}/opencode.json".text = builtins.toJSON (mkSettings (import ./work.nix));
-    "${workConfigDir}/tui.json".text = builtins.toJSON (mkTui (import ./work.nix));
+  programs.opencode = {
+    enable = true;
+    package = null;
+    inherit context;
+    settings = mkSettings (import ./private.nix);
   };
 
-  home.packages = [
-    opencodePrivatePackage
-  ]
-  ++ lib.optionals hasWorkProfile [
-    (pkgs.writeShellApplication {
-      name = "opencode";
-      text = ''
-        if [ -z "''${LITELLM_API_KEY:-}" ]; then
-          echo "LITELLM_API_KEY is required for the work profile" >&2
-          exit 1
-        fi
-        if [ -z "''${LITELLM_BASE_URL:-}" ]; then
-          echo "LITELLM_BASE_URL is required for the work profile" >&2
-          exit 1
-        fi
-        export OPENCODE_CONFIG_DIR=${workConfigDir}
-        exec ${lib.getExe pkgs.opencode} "$@"
-      '';
-    })
-  ];
+  xdg.configFile = {
+    "opencode/cli.json".text = builtins.toJSON sharedSettings.cli;
+    "opencode/opencode-quota/quota-toast.json".text = builtins.toJSON (import ./quota.nix);
+  }
+  // lib.optionalAttrs hasWorkProfile {
+    "opencode-work/AGENTS.md".text = context;
+    "opencode-work/opencode.json".text = builtins.toJSON (mkSettings (import ./work.nix));
+  };
+
+  home.packages = [ opencodeLauncher ];
 }
