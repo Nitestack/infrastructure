@@ -136,11 +136,15 @@ in
     intel-gpu-tools
   ];
 
-  # Allowed SSH clients
-  users.users.${meta.username}.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixstation"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6egS4kyK6TIE4+3nZUonv3BtDR9tnyCzMn9RO5Q3fJ nhan@winstation"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqfwTlUnVgk7oLwIy5b9wFn1yShMOYU7eYXqnpK4VD0 nhan@wslstation"
-    "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNRYpZjGy6COglYwmsF/RUnbK03WHBKXODo4+8De+olUfUKNsVsFAwvrJQHR51/d5UijZPuaVbumSxbr5u1O1Fo= nhan@phonestation"
-  ];
+  users.users.${meta.username} = {
+    # Keep the user agent and its in-memory cache alive after the last SSH logout.
+    linger = true;
+    # Allowed SSH clients
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixstation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6egS4kyK6TIE4+3nZUonv3BtDR9tnyCzMn9RO5Q3fJ nhan@winstation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqfwTlUnVgk7oLwIy5b9wFn1yShMOYU7eYXqnpK4VD0 nhan@wslstation"
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNRYpZjGy6COglYwmsF/RUnbK03WHBKXODo4+8De+olUfUKNsVsFAwvrJQHR51/d5UijZPuaVbumSxbr5u1O1Fo= nhan@phonestation"
+    ];
+  };
 }
