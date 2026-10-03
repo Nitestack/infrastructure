@@ -54,7 +54,7 @@ in
 
     services.agent = {
       enable = true;
-      image = "henrygd/beszel-agent-intel:0.20.0@sha256:b3aff88e74fbfb173557902c2b4d792d1aa93f399a7d23811acc1787491fc236";
+      image = "henrygd/beszel-agent-intel:0.21.0@sha256:4ca051605018b4877d438102bc975f46f8e9318c94a1afbdcb71f12107abe535";
 
       environment = {
         LISTEN = "/beszel_socket/beszel.sock";
