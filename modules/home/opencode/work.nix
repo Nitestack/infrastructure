@@ -20,7 +20,7 @@ let
     };
 in
 {
-  plugins = [ "opencode-models-discovery@1.6.2" ];
+  plugins = [ "opencode-models-discovery@1.7.0" ];
 
   experimental.policies = [
     {
