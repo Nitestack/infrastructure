@@ -11,6 +11,7 @@
     enable = true;
     settings = {
       onboarding = false;
+      theme.custom.sidebar_bg = "#181825";
       terminal.default_shell = lib.getExe pkgs.nushell;
       keys = {
         prefix = "ctrl+a";
