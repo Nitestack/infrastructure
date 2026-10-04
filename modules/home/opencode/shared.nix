@@ -12,6 +12,7 @@ let
 in
 {
   formatter = true;
+  websearch.provider = "random";
 
   permissions = map (resource: {
     action = "external_directory";

@@ -2,7 +2,6 @@
   plugins = [ "@slkiser/opencode-quota@5.0.0" ];
 
   warming = true;
-  websearch.provider = "random";
 
   providers = {
     nvidia = { };

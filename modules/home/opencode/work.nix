@@ -21,7 +21,10 @@ let
 in
 {
   plugins = [ "opencode-models-discovery@1.6.2" ];
+  experimental.quotaToast.enabled = false;
+  warming = false;
 
+  # Deny inherited private providers; only the LiteLLM providers below are allowed.
   experimental.policies = [
     {
       action = "provider.use";
