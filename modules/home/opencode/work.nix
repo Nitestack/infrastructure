@@ -20,7 +20,7 @@ let
     };
 in
 {
-  plugins = [ "opencode-models-discovery@1.6.2" ];
+  plugins = [ "opencode-models-discovery@1.7.0" ];
   experimental.quotaToast.enabled = false;
   warming = false;
 
@@ -50,7 +50,7 @@ in
 
   providers = {
     litellm-chat = {
-      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `openai-compatible/responses` when fixed: https://github.com/anomalyco/opencode/issues/49670
+      package = "@opencode/ai/providers/openai-compatible";
       name = "LiteLLM";
       env = [ "LITELLM_API_KEY" ];
       settings = {
@@ -75,7 +75,7 @@ in
     };
 
     litellm-responses = {
-      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `anthropic-compatible` when fixed: https://github.com/anomalyco/opencode/issues/49670
+      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `openai-compatible/responses` when fixed: https://github.com/anomalyco/opencode/issues/49670
       name = "OpenAI";
       env = [ "LITELLM_API_KEY" ];
       settings = {
@@ -96,7 +96,7 @@ in
     };
 
     litellm-anthropic = {
-      package = "@opencode/ai/providers/openai-compatible";
+      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `anthropic-compatible` when fixed: https://github.com/anomalyco/opencode/issues/49670
       name = "Anthropic";
       env = [ "LITELLM_API_KEY" ];
       settings = {
@@ -134,7 +134,7 @@ in
 
   agents = {
     build.model = "litellm-responses/gpt-6-luna#max";
-    plan.model = "litellm-anthropic/claude-opus-5-5#medium";
+    plan.model = "litellm-anthropic/gpt-6.1-sol#high";
     general.model = "litellm-responses/gpt-6-luna#max";
     explore.model = "litellm-responses/gpt-6-luna#medium";
     title.model = "litellm-chat/deepseek-v4-flash-sovereign#none";
