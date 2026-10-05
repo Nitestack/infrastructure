@@ -15,7 +15,7 @@ in
 
     services.web = {
       enable = true;
-      image = "pocketid/pocket-id:v2.17.0@sha256:19f556d5852115c8ebbef271f6f7cf610d8803312a1fa63f29e1b342fe9d2939";
+      image = "pocketid/pocket-id:v2.18.0@sha256:323e7ef5bfacf7cf32f22f3d10ccdf48e0c97c94d67e7e40b0b996830deb5165";
       port = 1411;
 
       environment = {
