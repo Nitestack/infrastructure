@@ -20,9 +20,7 @@ let
   workConfigDir = "${config.xdg.configHome}/opencode-work";
 
   platformDescription =
-    if pkgs.stdenv.hostPlatform.isDarwin then
-      "This is a Nix-managed macOS environment (`${pkgs.stdenv.hostPlatform.system}`)."
-    else if isWsl then
+    if isWsl then
       "This is a NixOS environment running under WSL2 (`${pkgs.stdenv.hostPlatform.system}`)."
     else
       "This is a NixOS environment (`${pkgs.stdenv.hostPlatform.system}`).";

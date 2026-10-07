@@ -5,7 +5,7 @@ modules. A change here can affect several hosts, so trace the profile imports
 before editing and evaluate every affected target.
 
 - Keep cross-profile behaviour in focused modules and use the existing profile
-  boundaries (`desktop`, `server`, `wsl`, and `mac`).
+  boundaries (`desktop`, `server`, and `wsl`).
 - `ai.nix` installs the agent skill sources and enables the Codex, Claude Code,
   and OpenCode targets. Generated agent directories are outputs; edit the Nix
   source or flake input instead of editing generated files in a home directory.

@@ -29,11 +29,7 @@ let
       exec ${lib.getExe nix-rebuild} ${action} "$@"
     '';
 
-  darwin-switch = pkgs.writeShellScriptBin "darwin-switch" ''
-    exec ${nh} darwin switch -H macstation -- "$@"
-  '';
-
-  linuxPackages = map mkRebuildAction [
+  rebuildPackages = map mkRebuildAction [
     "switch"
     "boot"
     "test"
@@ -46,5 +42,5 @@ in
     clean.enable = true;
   };
 
-  home.packages = if pkgs.stdenv.hostPlatform.isDarwin then [ darwin-switch ] else linuxPackages;
+  home.packages = rebuildPackages;
 }

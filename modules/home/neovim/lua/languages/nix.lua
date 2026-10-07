@@ -21,11 +21,6 @@ return utils.plugin.get_language_spec({
               nixos = {
                 expr = "(builtins.getFlake (toString " .. nix_flake_root .. ")).nixosConfigurations.nixstation.options",
               },
-              ["nix-darwin"] = {
-                expr = "(builtins.getFlake (toString "
-                  .. nix_flake_root
-                  .. ")).darwinConfigurations.macstation.options",
-              },
               ["nix-wsl"] = {
                 expr = "(builtins.getFlake (toString " .. nix_flake_root .. ")).nixosConfigurations.wslstation.options",
               },

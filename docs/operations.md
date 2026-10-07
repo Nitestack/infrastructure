@@ -21,7 +21,6 @@ without building an entire system or modifying `flake.lock`:
 nix eval .#nixosConfigurations.nixstation.config.system.build.toplevel.drvPath --no-write-lock-file
 nix eval .#nixosConfigurations.homestation.config.system.build.toplevel.drvPath --no-write-lock-file
 nix eval .#nixosConfigurations.wslstation.config.system.build.toplevel.drvPath --no-write-lock-file
-nix eval .#darwinConfigurations.macstation.system --apply 's: s.drvPath' --no-write-lock-file
 ```
 
 Run configuration activation on the host being changed. Review the diff first
@@ -56,12 +55,6 @@ docker ps
 The first-install flow intentionally uses `boot` and terminates the WSL
 instance; retain that sequence from the [README](../README.md).
 
-### macOS
-
-```sh
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#macstation
-```
-
 ## Update inputs deliberately
 
 Configuration activation uses the locked inputs already in `flake.lock`.
@@ -94,10 +87,6 @@ If the machine cannot boot the current generation, select a previous generation
 from the boot menu. A WSL `switch` is active immediately; terminate and restart
 the distribution only after a `boot`-based change or when the WSL configuration
 requires it.
-
-For macOS, keep the last known-good nix-darwin generation available and consult
-the installed `darwin-rebuild` help before rolling back; its generation commands
-must be run on the Mac.
 
 ## Related runbooks
 

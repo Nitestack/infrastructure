@@ -7,8 +7,6 @@ behaviour in `modules/`.
 
 - `configurations/nixos/<host>/` owns NixOS host wiring, hardware references,
   host-specific services, storage, and packages.
-- `configurations/darwin/<host>/` owns nix-darwin host wiring and macOS-only
-  choices.
 - `configurations/home/*.nix` contains profiles imported by host entries. A
   profile change can affect every host that imports it, so trace its imports
   before editing.
@@ -25,12 +23,6 @@ host rather than relying only on a generic flake check:
 ```sh
 nix run .#check
 nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath --no-write-lock-file
-```
-
-For macOS, use:
-
-```sh
-nix eval .#darwinConfigurations.<host>.system --apply 's: s.drvPath' --no-write-lock-file
 ```
 
 Read the deeper NixOS and host guides before changing `configurations/nixos/`.

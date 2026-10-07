@@ -5,11 +5,11 @@
 This file applies to the whole repository. A deeper `AGENTS.md` adds rules for
 that subtree; read it before editing there.
 
-Nix flake for NixOS, NixOS WSL, macOS, and Home Manager.
+Nix flake for NixOS, NixOS WSL, and Home Manager.
 
 - `flake.nix`: inputs and `nixos-unified` outputs.
 - `configurations/`: host and Home Manager entry points; see its `AGENTS.md`.
-- `modules/`: reusable cross-platform and platform-specific behaviour; see its
+- `modules/`: reusable shared and platform-specific behaviour; see its
   `AGENTS.md`.
 - `checks/`: evaluation-time regression checks.
 - `opentofu/cloudflare/`: Cloudflare edge state managed separately from NixOS.
@@ -34,9 +34,7 @@ Keep host choices in `configurations/*/<host>/`; put reusable behaviour in
 - Run `git diff --check` and `nix run .#check` after Nix changes. There is no
   separate unit-test suite; evaluation is the test boundary.
 - For a host-sensitive change, evaluate the exact target with
-  `nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath --no-write-lock-file`
-  or
-  `nix eval .#darwinConfigurations.<host>.system --apply 's: s.drvPath' --no-write-lock-file`.
+  `nix eval .#nixosConfigurations.<host>.config.system.build.toplevel.drvPath --no-write-lock-file`.
 - Use `switch` for ordinary NixOS changes. Reserve `boot` for first-install
   flows or changes that must be selected at the next boot; the WSL exception is
   documented in `configurations/nixos/wslstation/AGENTS.md`.
@@ -51,7 +49,7 @@ Keep host choices in `configurations/*/<host>/`; put reusable behaviour in
   formats staged Nix blobs and preserves unstaged hunks; do not replace that
   partial-staging-safe flow with whole-worktree formatting followed by `git add`.
 - CI always checks formatting. Changes to `*.nix` or `flake.lock` also evaluate
-  all four host outputs; run the affected-host evaluation locally before
+  all three host outputs; run the affected-host evaluation locally before
   relying on CI.
 - Do not stage or commit unless the user asks for it. Never include unrelated
   staged or unstaged work in a task patch.

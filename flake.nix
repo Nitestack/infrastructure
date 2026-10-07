@@ -2,18 +2,13 @@
 # │ Nix Flake                                                │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  description = "Nix Configuration for NixOS (including WSL) and macOS";
+  description = "Nix Configuration for NixOS (including WSL)";
 
   # ── Inputs ────────────────────────────────────────────────────────────
   inputs = {
     # ── Principle Inputs ──────────────────────────────────────────────────
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Nix Darwin
-    nix-darwin = {
-      url = "github:nix-darwin/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # NixOS WSL
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     # Home Manager
@@ -21,8 +16,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Homebrew
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     # NixOS Unified
     nixos-unified.url = "github:srid/nixos-unified";
     # Flake Parts
@@ -118,15 +111,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # ── Homebrew Taps ─────────────────────────────────────────────────────
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
   };
 
   # ── Outputs ───────────────────────────────────────────────────────────
@@ -134,10 +118,7 @@
     inputs:
     inputs.nixos-unified.lib.mkFlake {
       inherit inputs;
-      systems = [
-        "aarch64-darwin"
-        "x86_64-linux"
-      ];
+      systems = [ "x86_64-linux" ];
       root = ./.;
     };
 }

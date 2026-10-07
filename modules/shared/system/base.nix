@@ -43,7 +43,7 @@ in
         nix-path = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
         trusted-users = [
           "root"
-          (if pkgs.stdenv.hostPlatform.isDarwin then meta.username else "@wheel")
+          "@wheel"
         ];
         auto-optimise-store = true;
       };
@@ -76,14 +76,12 @@ in
 
   users.users.${meta.username} = {
     inherit (meta) description;
-    home = "/${if pkgs.stdenv.hostPlatform.isDarwin then "Users" else "home"}/${meta.username}";
+    home = "/home/${meta.username}";
   };
 
   programs = {
     gnupg.agent = {
       enable = true;
-    }
-    // lib.optionalAttrs (!pkgs.stdenv.hostPlatform.isDarwin) {
       settings = {
         default-cache-ttl = 86400;
         max-cache-ttl = 86400;
