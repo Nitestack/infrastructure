@@ -1,5 +1,5 @@
 {
-  plugins = [ "@slkiser/opencode-quota@5.0.0" ];
+  plugins = [ "@slkiser/opencode-quota@5.0.1" ];
 
   warming = true;
 
