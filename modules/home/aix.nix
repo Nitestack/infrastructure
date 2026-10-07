@@ -22,9 +22,13 @@ in
         label.file = sopsPath "aix/adp-label";
         apiKey.file = sopsPath "aix/adp";
       };
-      ao = {
-        label.file = sopsPath "aix/ao-label";
-        apiKey.file = sopsPath "aix/ao";
+      tw = {
+        label.file = sopsPath "aix/tw-label";
+        apiKey.file = sopsPath "aix/tw";
+      };
+      ae = {
+        label.file = sopsPath "aix/ae-label";
+        apiKey.file = sopsPath "aix/ae";
       };
     };
   };
