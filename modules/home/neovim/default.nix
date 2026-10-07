@@ -42,7 +42,7 @@
     yaml-language-server
 
     # Debuggers
-    python312Packages.debugpy
+    python314Packages.debugpy
     vscode-js-debug
 
     # Linters

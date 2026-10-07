@@ -23,6 +23,9 @@
               accentBgColor
               "bold"
             ];
+            authorColors = {
+              "*" = windowFgColor;
+            };
             inactiveBorderColor = [ windowFgColor ];
             optionsTextColor = [ accentBgColor ];
             selectedLineBgColor = [ headerbarBorderColor ];
@@ -31,9 +34,6 @@
             unstagedChangesColor = [ errorBgColor ];
             defaultFgColor = [ windowFgColor ];
             searchingActiveBorderColor = [ warningBgColor ];
-          };
-          authorColors = {
-            "*" = windowFgColor;
           };
         };
         os.editPreset = "nvim-remote";
