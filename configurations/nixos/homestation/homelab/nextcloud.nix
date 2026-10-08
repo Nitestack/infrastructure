@@ -52,7 +52,7 @@ in
 
       environment = {
         APACHE_PORT = "11000";
-        APACHE_IP_BINDING = "0.0.0.0";
+        APACHE_IP_BINDING = "@INTERNAL";
         APACHE_ADDITIONAL_NETWORK = cfg.ingressNetwork;
         SKIP_DOMAIN_VALIDATION = "false";
         NEXTCLOUD_DATADIR = nextcloudDataDir;

@@ -16,22 +16,31 @@ in
   services.adguardhome = {
     enable = true;
     mutableSettings = false;
-    openFirewall = true;
+    openFirewall = false;
+    host = cfg.lanAddress;
     settings = {
       dns = {
         bind_hosts = [
-          cfg.lanAddress
+          "0.0.0.0"
           "::"
         ];
-        port = 53;
+        ratelimit = 0;
         upstream_dns = [
-          "https://dns10.quad9.net/dns-query"
+          "https://cloudflare-dns.com/dns-query"
+          "https://dns.google/dns-query"
         ];
+        upstream_mode = "parallel";
+        upstream_timeout = "3s";
         bootstrap_dns = [
-          "9.9.9.10"
-          "149.112.112.10"
-          "2620:fe::10"
-          "2620:fe::fe:10"
+          "1.1.1.1"
+          "8.8.8.8"
+        ];
+        fallback_dns = [
+          "1.1.1.1"
+          "8.8.8.8"
+        ];
+        local_ptr_upstreams = [
+          "192.168.178.1"
         ];
       };
 
@@ -62,5 +71,11 @@ in
   networking.firewall = {
     allowedTCPPorts = [ 53 ];
     allowedUDPPorts = [ 53 ];
+
+    # Permit Docker containers to reach AdGuard's admin UI.
+    # Do not expose port 3000 generally to the LAN.
+    extraInputRules = ''
+      iifname "br-*" tcp dport ${toString config.services.adguardhome.port} accept
+    '';
   };
 }
