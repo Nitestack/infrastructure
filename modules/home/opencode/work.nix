@@ -104,6 +104,14 @@ in
         apiKey = "{env:LITELLM_API_KEY}";
       };
       models = {
+        "claude-haiku-5-5" = mkClaudeModel {
+          name = "Claude Haiku 5.5";
+          family = "claude-haiku";
+          context = 1000000;
+          output = 128000;
+          inputCost = 0.11;
+          outputCost = 0.55;
+        };
         "claude-sonnet-5-5" = mkClaudeModel {
           name = "Claude Sonnet 5.5";
           family = "claude-sonnet";
