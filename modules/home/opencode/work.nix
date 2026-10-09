@@ -10,6 +10,7 @@ let
     }:
     {
       inherit name family;
+      compatibility.supportsThinkingBlockBinding = false;
       cost = {
         input = inputCost;
         output = outputCost;
@@ -75,7 +76,7 @@ in
     };
 
     litellm-responses = {
-      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `openai-compatible/responses` when fixed: https://github.com/anomalyco/opencode/issues/49670
+      package = "@opencode/ai/providers/openai-compatible/responses";
       name = "OpenAI";
       env = [ "LITELLM_API_KEY" ];
       settings = {
@@ -96,7 +97,7 @@ in
     };
 
     litellm-anthropic = {
-      package = "@opencode/ai/providers/openai-compatible"; # TODO: replace with `anthropic-compatible` when fixed: https://github.com/anomalyco/opencode/issues/49670
+      package = "@opencode/ai/providers/anthropic-compatible";
       name = "Anthropic";
       env = [ "LITELLM_API_KEY" ];
       settings = {
@@ -142,7 +143,7 @@ in
 
   agents = {
     build.model = "litellm-responses/gpt-6-luna#max";
-    plan.model = "litellm-anthropic/gpt-6.1-sol#high";
+    plan.model = "litellm-responses/gpt-6.1-sol#high";
     general.model = "litellm-responses/gpt-6-luna#max";
     explore.model = "litellm-responses/gpt-6-luna#medium";
     title.model = "litellm-chat/deepseek-v4-flash-sovereign#none";
