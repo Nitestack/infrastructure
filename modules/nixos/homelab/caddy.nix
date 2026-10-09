@@ -414,7 +414,7 @@ in
       # pre-built Caddy image with the caddy-dns/cloudflare plugin, so
       # automatic HTTPS works via DNS-01 for hostnames that are only
       # privately resolvable (LAN/Tailnet), not just publicly reachable ones
-      image = lib.mkDefault "caddybuilds/caddy-cloudflare:2.11.4@sha256:62639363ceb043393da9c3895d7c97a9a49ccf840bea0cc7e6479465d12ade96";
+      image = lib.mkDefault "caddybuilds/caddy-cloudflare:2.11.7@sha256:202f0928fe075b7a914703b7a4759506de6c95c33ce5a256cecbd5c44d8869d0";
       globalConfig = lib.mkDefault ''
         {
           acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
