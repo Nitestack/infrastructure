@@ -34,6 +34,8 @@ in
     };
   };
 
+  programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
+
   # Packages
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "clip.exe" ''

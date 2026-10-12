@@ -52,6 +52,9 @@ systemctl --failed
 docker ps
 ```
 
+The WSL host uses `pinentry-gnome3` for GPG unlock prompts, presenting a GUI
+instead of an ncurses prompt.
+
 The first-install flow intentionally uses `boot` and terminates the WSL
 instance; retain that sequence from the [README](../README.md).
 
