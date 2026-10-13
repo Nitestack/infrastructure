@@ -21,7 +21,7 @@ let
     };
 in
 {
-  plugins = [ "opencode-models-discovery@1.7.0" ];
+  plugins = [ "opencode-models-discovery@1.9.0" ];
   experimental.quotaToast.enabled = false;
   warming = false;
 
