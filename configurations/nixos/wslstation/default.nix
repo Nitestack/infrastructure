@@ -44,6 +44,9 @@ in
     (pkgs.writeShellScriptBin "powershell.exe" ''
       exec /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe "$@"
     '')
+    (pkgs.writeShellScriptBin "explorer.exe" ''
+      exec /mnt/c/Windows/explorer.exe "$@"
+    '')
     pkgs.glab
     self.packages.${pkgs.stdenv.hostPlatform.system}.twg
   ];

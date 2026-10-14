@@ -125,6 +125,9 @@ in
 
   services = {
     blueman.enable = true;
+    # Avoid nsncd worker exhaustion causing five-second NSS stalls.
+    # https://github.com/twosigma/nsncd/issues/158
+    nscd.enableNsncd = false;
     playerctld.enable = true;
     tailscale = {
       useRoutingFeatures = "client";

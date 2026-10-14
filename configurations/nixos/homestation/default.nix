@@ -126,10 +126,6 @@ in
     MaxRetentionSec = "30day";
   };
 
-  systemd.tmpfiles.rules = [
-    "f /home/${meta.username}/.hushlogin 0644 ${meta.username} users -"
-  ];
-
   # Packages
   environment.systemPackages = with pkgs; [
     ghostty.terminfo
@@ -142,9 +138,6 @@ in
     # Allowed SSH clients
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixstation"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6egS4kyK6TIE4+3nZUonv3BtDR9tnyCzMn9RO5Q3fJ nhan@winstation"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqfwTlUnVgk7oLwIy5b9wFn1yShMOYU7eYXqnpK4VD0 nhan@wslstation"
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNRYpZjGy6COglYwmsF/RUnbK03WHBKXODo4+8De+olUfUKNsVsFAwvrJQHR51/d5UijZPuaVbumSxbr5u1O1Fo= nhan@phonestation"
     ];
   };
 }

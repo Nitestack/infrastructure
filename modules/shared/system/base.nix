@@ -55,12 +55,14 @@ in
     curl
     wget
 
+    bind
     duf
     ncdu
+    nmap
     openssl
     sops
-    tree
     unzip
+    zip
 
     nix-flake-update
     nix-prefetch-git
