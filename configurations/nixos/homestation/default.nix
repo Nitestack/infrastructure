@@ -44,6 +44,7 @@ in
     ./homelab/shelfmark.nix
     ./homelab/vaultwarden.nix
     ./homelab/vikunja.nix
+    ./homelab/upsnap.nix
     ./homelab/wealthfolio.nix
     ./tailscale.nix
   ];

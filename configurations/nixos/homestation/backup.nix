@@ -143,6 +143,12 @@ let
       service = "arion-floppy.service";
       stageName = "floppy-backups";
     }
+    {
+      # PocketBase stores the device list, users, and settings here.
+      path = "${dataDir}/upsnap/data";
+      service = "arion-upsnap.service";
+      stageName = "upsnap-data";
+    }
   ];
 
   runtimeVolumes = [
