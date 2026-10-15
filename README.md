@@ -154,6 +154,7 @@ updates, and rollback.
 - [`docs/homestation-backup-recovery.md`](docs/homestation-backup-recovery.md) — inspect, verify, and recover homestation backups.
 - [`docs/homestation-services.md`](docs/homestation-services.md) — current homestation service inventory and exposure.
 - [`docs/operations.md`](docs/operations.md) — routine validation, activation, input updates, and recovery.
+- [`docs/wake-on-lan.md`](docs/wake-on-lan.md) — hardware, firmware, NixOS, and tailnet prerequisites for waking nixstation remotely.
 - [`docs/secrets.md`](docs/secrets.md) — maintain sops-encrypted configuration safely.
 - [`docs/adguard-home-client-caveats.md`](docs/adguard-home-client-caveats.md) — AdGuard Home client configuration caveats.
 - [`docs/renovate-setup.md`](docs/renovate-setup.md) — one-time Renovate GitHub App setup.
