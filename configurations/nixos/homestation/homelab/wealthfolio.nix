@@ -16,7 +16,7 @@ in
 
     services.web = {
       enable = true;
-      image = "wealthfolio/wealthfolio:3.9.1@sha256:0ebd0147463f3637afce8cf33e0601a7c5c060e70f15c19d5762435f5819234a";
+      image = "wealthfolio/wealthfolio:3.11.0@sha256:3e996e9b3fbf9c945eca89e7b89eb03e0966beb1c51b977ccccb811f76ae2994";
       port = 8088;
 
       environment = {
