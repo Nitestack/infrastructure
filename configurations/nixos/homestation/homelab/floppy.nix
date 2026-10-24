@@ -17,7 +17,7 @@ in
     services.web = {
       enable = true;
       containerName = "floppy";
-      image = "ghcr.io/dannyvfilms/floppy:26.10.8@sha256:b90eb406e0b19725f9bef1bb6356f2492afc2991e8ba7dd6cd413b7514d60a4d";
+      image = "ghcr.io/dannyvfilms/floppy:26.10.22@sha256:c4959b1f2544f3cc6f8f305118ba4cd80360bf33f4e9562d66de7a4404b69b50";
       port = 8000;
       dependsOn.redis.condition = "service_healthy";
 
