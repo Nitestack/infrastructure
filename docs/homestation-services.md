@@ -31,15 +31,9 @@ hostname.
 | RdtClient | Public `magnets.npham.de` | Download-client bridge | [`rdtclient.nix`](../configurations/nixos/homestation/homelab/rdtclient.nix) |
 | Shelfmark | Public `books.npham.de` | Book discovery and download workflow; delivers into BookOrbit's Book Dock | [`shelfmark.nix`](../configurations/nixos/homestation/homelab/shelfmark.nix) |
 | Vaultwarden | Public `vault.npham.de` | Password-manager server | [`vaultwarden.nix`](../configurations/nixos/homestation/homelab/vaultwarden.nix) |
-| UpSnap | Private Caddy host `power.npham.de` | Wake-on-LAN dashboard (host-network container; HTTPS via Caddy, no Cloudflare Tunnel ingress) | [`upsnap.nix`](../configurations/nixos/homestation/homelab/upsnap.nix) |
 | Vikunja | Public `tasks.npham.de` | Task management | [`vikunja.nix`](../configurations/nixos/homestation/homelab/vikunja.nix) |
 | Wealthfolio | Public `wealth.npham.de` | Portfolio tracking | [`wealthfolio.nix`](../configurations/nixos/homestation/homelab/wealthfolio.nix) |
 | Floppy | Public `track.npham.de` | Media tracking | [`floppy.nix`](../configurations/nixos/homestation/homelab/floppy.nix) |
-
-UpSnap's host-network container is exposed through `homelab.caddy.extraHosts`
-rather than the standard app ingress network. Its port 8090 is firewall-limited
-to Docker bridges; only the local HTTPS route is intended for users.
-Tailnet clients need private DNS resolving `power.npham.de` to homestation.
 
 Glance also links to `backup.npham.de`, but no corresponding homelab app is
 declared in this repository. Its ownership and operation are therefore outside

@@ -9,7 +9,7 @@ Remote device --Tailscale--> homestation --local Ethernet/LAN--> nixstation
                                (192.168.178.20)             (off/asleep)
 ```
 
-Tailscale carries the *request* to homestation, not the WoL broadcast directly. The existing `192.168.178.0/24` subnet route is Layer 3 and does not forward Layer 2 broadcasts. The deployed UpSnap web UI on `homestation` provides the remote wake-up request; the hardware setup and local test below are still required.
+Tailscale carries a remote SSH session to homestation, not the WoL broadcast directly. The existing `192.168.178.0/24` subnet route is Layer 3 and does not forward Layer 2 broadcasts. Run the wake command on homestation; the hardware setup and local test below are still required.
 
 ## Prerequisites
 
@@ -123,52 +123,18 @@ First test **suspend**, then **full shutdown**, because they exercise different 
 
 ## 5. Wake from another tailnet device
 
-[UpSnap](https://github.com/seriousm4x/UpSnap) runs on **homestation** as
-`arion-upsnap.service`. It uses host networking to send WoL broadcasts on the
-LAN, and its PocketBase user/device database lives in
-`/var/lib/homelab/upsnap/data`. The service is configured in
-[`upsnap.nix`](../configurations/nixos/homestation/homelab/upsnap.nix).
+From a tailnet device, SSH to **homestation** using its Tailscale IP or
+MagicDNS name and your existing SSH access. Run the same sender command from
+step 4 on homestation, replacing the example MAC with nixstation's permanent
+wired MAC:
 
-1. Deploy the committed configuration from `~/infrastructure` on **homestation**:
+```nu
+nix shell nixpkgs#wakeonlan -c wakeonlan -i 192.168.178.255 AA:BB:CC:DD:EE:FF
+```
 
-   ```nu
-   cd ~/infrastructure
-   sudo nixos-rebuild switch --flake .#homestation
-   systemctl status arion-upsnap.service
-   ```
-
-2. Open **https://power.npham.de** from the LAN, or from a tailnet device using
-   the same private DNS. Create UpSnap's first administrator account.
-3. Add **nixstation** using its **permanent wired MAC address** (step 1),
-   its LAN IPv4 address, and its subnet mask **`255.255.255.0`** (not
-   `/24`). The device's IP is useful for status checks; the WoL packet
-   targets its Ethernet MAC address. Test the Wake action while nixstation
-   is suspended and again after a full shutdown.
-4. Bookmark the HTTPS URL on a phone, tablet, or other tailnet client.
-   UpSnap requires no client-side installation beyond a browser.
-
-**Private access:** Caddy serves `power.npham.de` over local HTTPS, but
-Cloudflare Tunnel does **not** expose the app. The UpSnap HTTP listener uses
-homestation's LAN IP on port `8090`, with firewall access from Docker bridges
-only. Do not forward that port to the internet. For remote clients, configure
-the tailnet's DNS settings to resolve `npham.de` via **homestation's AdGuard
-Home** (split DNS), and ensure they can reach `192.168.178.20` through the
-approved Tailscale subnet route. Tailnet DNS and route approval are managed
-outside this repository. Without those settings, a remote browser may hit
-Cloudflare's public DNS/tunnel and receive a `403` rather than the private UI.
-
-**Authentication:** Configure the UpSnap administrator immediately; give
-other users only the device permissions they need. Custom shutdown commands
-execute inside the container and should be avoided unless deliberately
-configured and reviewed. UpSnap runs without root privileges and is restricted
-to `NET_RAW` for network discovery/pings.
-
-**Backup:** The existing Restic job stops the UpSnap service briefly while it
-stages the PocketBase database, then restarts it. See
-[Homestation backup and recovery](homestation-backup-recovery.md).
-
-**Fallback CLI:** SSH to homestation over Tailscale and run the
-`wakeonlan` command from step 4 if the dashboard is unavailable.
+This requires homestation to be online and reachable over SSH from the tailnet.
+No dashboard or additional service is needed; the WoL broadcast is sent from
+homestation's LAN connection.
 
 ## Troubleshooting
 
@@ -178,8 +144,7 @@ stages the PocketBase database, then restarts it. See
 | `Wake-on: d` after reboot | NetworkManager profile may be overriding the NixOS setting; check the *active wired profile*, then retest after reconnect/reboot. |
 | Wakes from suspend, not shutdown | Check whether firmware supports S5 wake; PCIe/PME wake, ErP, Deep Sx, and standby power are common causes. |
 | Never wakes despite `Wake-on: g` | Verify the **Ethernet** MAC, cable, correct subnet broadcast, sender interface, and VLAN/client isolation. |
-| Works locally, not from tailnet | Verify homestation is online, Tailscale's subnet route and split DNS are configured, and `power.npham.de` resolves to `192.168.178.20` rather than public Cloudflare ingress. |
-| `power.npham.de` returns 502 | On homestation check `systemctl status arion-upsnap.service`, Docker logs, and whether Caddy can access the host's TCP/8090 through a Docker bridge. |
+| Cannot wake from tailnet | Verify homestation is online and reachable over SSH from the tailnet, then run the sender command on homestation. |
 | Intermittent wake-up | Test with wired homestation and nixstation on the same VLAN; inspect NIC standby power and firmware behavior after shutdown. |
 
 For packet-delivery debugging, run `tcpdump -ni <interface> 'udp port 9'` on **nixstation while it is awake**, and send the test packet from homestation. This verifies arrival while the OS runs; it does **not** prove that the NIC remains powered and armed after shutdown. Install `tcpdump` temporarily if needed.
@@ -189,6 +154,3 @@ For packet-delivery debugging, run `tcpdump -ni <interface> 'udp port 9'` on **n
 - [NixOS Wiki: Wake on LAN](https://wiki.nixos.org/wiki/Wake_on_LAN)
 - [NetworkManager: Ethernet wake-on-lan profile setting](https://www.networkmanager.dev/docs/api/latest/nm-settings-nmcli.html)
 - [ethtool manual: WoL modes](https://man7.org/linux/man-pages/man8/ethtool.8.html)
-- [Tailscale: Wake-on-LAN through an always-on node](https://tailscale.com/blog/wake-on-lan-tailscale-upsnap)
-- [UpSnap Docker deployment](https://github.com/seriousm4x/UpSnap/blob/master/docker-compose.yml)
-- [Tailscale subnet routing](https://tailscale.com/kb/1019/subnets)

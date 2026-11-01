@@ -32,10 +32,7 @@ The explicit coverage lists in
 `configurations/nixos/homestation/backup.nix` are the source of truth for
 application paths, PostgreSQL dumps, and runtime volumes. The local job stages
 mutable sources below `/mnt/backup/.local-backup-staging` for the snapshot and
-removes that staging data during cleanup. UpSnap's PocketBase state
-(`/var/lib/homelab/upsnap/data`) is captured as `sources/upsnap-data` after
-temporarily stopping `arion-upsnap.service`; restore it only while UpSnap is
-stopped.
+removes that staging data during cleanup.
 
 Obsidian LiveSync is explicitly deferred. Its CouchDB state is not in either
 backup repository and must not be presented as covered. Beszel history,
