@@ -398,15 +398,13 @@ staging directory rather than their live path. Current snapshots use stable,
 semantic names under `sources/`; source-list reordering does not change those
 names. Use the table below and the snapshot listing to select the matching
 tree, then restore its contents to the service's target path. Snapshots from
-the first version of this configuration used positional names; their fixed
-mapping is retained here so those snapshots remain understandable:
+the first version of this configuration used positional names; retained legacy
+mappings are listed here:
 
 | Legacy name | Source |
 | --- | --- |
 | `source-0` | Caddy `data` |
 | `source-1` | Caddy `config` |
-| `source-2` | Calibre-Web Automated `config` |
-| `source-3` | Calibre-Web Automated `plugins` |
 | `source-4` | Beets `config` |
 | `source-5` | FreshRSS `data` |
 | `source-6` | FreshRSS `extensions` |
@@ -436,6 +434,7 @@ directories:
 | --- | --- | --- | --- | --- | --- |
 | AdventureLog | `adventurelog-db` | `database` | `adventure` | `POSTGRES_PASSWORD` | `/run/secrets/adventure-log/db-password` |
 | AudioMuse-AI | `audiomuse-postgres` | `audiomusedb` | `audiomuse` | `POSTGRES_PASSWORD` | `/run/secrets/audiomuse-ai/db-password` |
+| BookOrbit | `bookorbit-db` | `bookorbit` | `bookorbit` | `POSTGRES_PASSWORD` | `/run/secrets/bookorbit/db-password` |
 | Ente | `ente-postgres` | `ente_db` | `pguser` | `POSTGRES_PASSWORD` | `/run/secrets/ente/db-password` |
 | Immich | `immich_postgres` | `immich` | `postgres` | `DB_PASSWORD` | `/run/secrets/immich/db-password` |
 
@@ -527,9 +526,10 @@ as described above.
 | --- | --- | --- | --- |
 | Caddy data | `caddy-data` | `/var/lib/homelab/caddy/data` | `docker-caddy.service` |
 | Caddy config | `caddy-config` | `/var/lib/homelab/caddy/config` | `docker-caddy.service` |
-| Calibre-Web Automated config | `calibre-web-automated-config` | `/var/lib/homelab/calibre-web-automated/config` | `arion-calibre-web-automated.service` |
-| Calibre-Web Automated plugins | `calibre-web-automated-plugins` | `/var/lib/homelab/calibre-web-automated/plugins` | `arion-calibre-web-automated.service` |
 | Beets config | `beets-config` | `/var/lib/homelab/beets/config` | `arion-beets.service` |
+| BookOrbit app data | `bookorbit-data` | `/var/lib/homelab/bookorbit/data` | `arion-bookorbit.service` |
+| BookOrbit Book Dock | `bookorbit-book-dock` | `/var/lib/homelab/bookorbit/book-dock` | `arion-bookorbit.service` |
+| BookOrbit library | direct path | `/var/lib/homelab/bookorbit/books` | `arion-bookorbit.service` |
 | FreshRSS data | `freshrss-data` | `/var/lib/homelab/freshrss/data` | `arion-freshrss.service` |
 | FreshRSS extensions | `freshrss-extensions` | `/var/lib/homelab/freshrss/extensions` | `arion-freshrss.service` |
 | Navidrome data | `navidrome-data` | `/var/lib/homelab/navidrome/data` | `arion-navidrome.service` |

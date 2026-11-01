@@ -48,10 +48,9 @@ let
 
   directPaths = [
     "${dataDir}/adventure-log/data"
+    "${dataDir}/bookorbit/books"
     "${dataDir}/immich/library"
     musicLibrary
-    "${dataDir}/calibre-web-automated/library"
-    "${dataDir}/calibre-web-automated/upload"
     "${dataDir}/rdtclient/downloads"
     "${dataDir}/vikunja/files"
   ];
@@ -69,19 +68,19 @@ let
       stageName = "caddy-config";
     }
     {
-      path = "${dataDir}/calibre-web-automated/config";
-      service = "arion-calibre-web-automated.service";
-      stageName = "calibre-web-automated-config";
-    }
-    {
-      path = "${dataDir}/calibre-web-automated/plugins";
-      service = "arion-calibre-web-automated.service";
-      stageName = "calibre-web-automated-plugins";
-    }
-    {
       path = "${dataDir}/beets/config";
       service = "arion-beets.service";
       stageName = "beets-config";
+    }
+    {
+      path = "${dataDir}/bookorbit/data";
+      service = "arion-bookorbit.service";
+      stageName = "bookorbit-data";
+    }
+    {
+      path = "${dataDir}/bookorbit/book-dock";
+      service = "arion-bookorbit.service";
+      stageName = "bookorbit-book-dock";
     }
     {
       path = "${dataDir}/freshrss/data";
@@ -178,6 +177,13 @@ let
       passwordFile = config.sops.secrets."audiomuse-ai/db-password".path;
       outputName = "postgres/audiomuse.sql.gz";
       user = "audiomuse";
+    }
+    {
+      container = "bookorbit-db";
+      database = "bookorbit";
+      passwordFile = config.sops.secrets."bookorbit/db-password".path;
+      outputName = "postgres/bookorbit.sql.gz";
+      user = "bookorbit";
     }
     {
       container = "ente-postgres";

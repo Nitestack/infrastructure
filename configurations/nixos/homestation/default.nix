@@ -28,7 +28,7 @@ in
     ./homelab/adventure-log.nix
     ./homelab/beets
     ./homelab/beszel.nix
-    ./homelab/calibre-web-automated.nix
+    ./homelab/bookorbit.nix
     ./homelab/ente
     ./homelab/floppy.nix
     ./homelab/freshrss.nix

@@ -6,11 +6,11 @@ let
   cfg = config.homelab;
   username = config.meta.username;
   inherit (cfg.lib) serviceUrl appUrl;
-  calibreWebAutomated = cfg.apps.calibre-web-automated;
+  bookorbit = cfg.apps.bookorbit;
 in
 {
   homelab.apps.shelfmark = {
-    enable = calibreWebAutomated.enable;
+    enable = bookorbit.enable;
 
     expose = {
       mode = "public";
@@ -29,7 +29,8 @@ in
         DOCKERMODE = "true";
         ONBOARDING = "false";
         # General
-        CALIBRE_WEB_URL = appUrl cfg.apps.calibre-web-automated;
+        CALIBRE_WEB_URL = appUrl bookorbit;
+        INGEST_DIR = "/bookorbit-bookdock";
         BOOK_LANGUAGE = "en,de";
         SEARCH_MODE = "universal";
         METADATA_PROVIDER = "hardcover";
@@ -64,8 +65,8 @@ in
       volumes = [
         {
           type = "bind";
-          source = "${cfg.dataDir}/calibre-web-automated/upload";
-          target = "/books";
+          source = "${cfg.dataDir}/bookorbit/book-dock";
+          target = "/bookorbit-bookdock";
         }
         {
           type = "bind";

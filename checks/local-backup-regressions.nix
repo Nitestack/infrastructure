@@ -12,6 +12,7 @@ let
     "backup/onedrive-rclone-config"
     "adventure-log/db-password"
     "audiomuse-ai/db-password"
+    "bookorbit/db-password"
     "ente/db-password"
     "immich/db-password"
   ];
@@ -59,9 +60,9 @@ let
   stableStageNames = [
     "caddy-data"
     "caddy-config"
-    "calibre-web-automated-config"
-    "calibre-web-automated-plugins"
     "beets-config"
+    "bookorbit-data"
+    "bookorbit-book-dock"
     "freshrss-data"
     "freshrss-extensions"
     "navidrome-data"
@@ -80,10 +81,9 @@ assert localRestic.repository == "/mnt/backup/restic/homestation";
 assert
   localRestic.paths == [
     "/var/lib/homelab/adventure-log/data"
+    "/var/lib/homelab/bookorbit/books"
     "/var/lib/homelab/immich/library"
     "/var/lib/homelab/music"
-    "/var/lib/homelab/calibre-web-automated/library"
-    "/var/lib/homelab/calibre-web-automated/upload"
     "/var/lib/homelab/rdtclient/downloads"
     "/var/lib/homelab/vikunja/files"
   ];
@@ -111,6 +111,8 @@ assert lib.hasInfix "homestation-backup-cleanup" localRestic.backupCleanupComman
 assert builtins.all (
   stageName: lib.hasInfix "/sources/${stageName}" localPrepareScript
 ) stableStageNames;
+assert lib.hasInfix "bookorbit-db" localPrepareScript;
+assert lib.hasInfix "postgres/bookorbit.sql.gz" localPrepareScript;
 assert !lib.hasInfix "/sources/source-" localPrepareScript;
 assert lib.hasInfix ''
   done <"$stopped_services_file"

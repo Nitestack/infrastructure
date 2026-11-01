@@ -27,7 +27,7 @@ in
         ADGUARD_HOME_URL = adguardHomeUrl;
         ADVENTURE_LOG_URL = appUrl cfg.apps.adventure-log;
         BESZEL_URL = appUrl cfg.apps.beszel;
-        CALIBRE_WEB_AUTOMATED_URL = appUrl cfg.apps.calibre-web-automated;
+        BOOKORBIT_URL = appUrl cfg.apps.bookorbit;
         ENTE_AUTH_URL = appUrl cfg.apps.ente;
         FLOPPY_URL = appUrl cfg.apps.floppy;
         FRESHRSS_URL = appUrl cfg.apps.freshrss;

@@ -37,9 +37,9 @@
                 - title: Caddy
                   url: https://caddyserver.com/docs
                   icon: di:caddy
-                - title: Calibre Web Automated
-                  url: https://github.com/crocodilestick/Calibre-Web-Automated/wiki
-                  icon: di:calibre-web
+                - title: BookOrbit
+                  url: https://bookorbit.app
+                  icon: di:bookstack
                 - title: Cloudflared
                   url: https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel
                   icon: di:cloudflare
@@ -176,11 +176,15 @@
               name: Caddy
               icon: di:caddy
               description: HTTPS Server
-            calibre-web-automated:
-              name: Calibre Web Automated
-              icon: di:calibre-web
-              url: ${CALIBRE_WEB_AUTOMATED_URL}
-              description: eBook Manager
+            bookorbit-app:
+              name: BookOrbit
+              icon: di:bookstack
+              url: ${BOOKORBIT_URL}
+              description: E-book Library
+              id: bookorbit
+            bookorbit-db:
+              name: PostgreSQL
+              parent: bookorbit
             ente-web:
               name: Ente Auth
               icon: https://cdn.jsdelivr.net/gh/selfhst/icons/webp/ente-auth.webp
@@ -344,8 +348,8 @@
             - seanmorley15/AdventureLog
             - beetbox/beets
             - henrygd/beszel
+            - bookorbit/bookorbit
             - caddyserver/caddy
-            - crocodilestick/Calibre-Web-Automated
             - cloudflare/cloudflared
             - ente-io/ente
             - FlareSolverr/FlareSolverr

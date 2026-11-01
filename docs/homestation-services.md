@@ -17,7 +17,7 @@ hostname.
 | AudioMuse-AI | Private `muse.npham.de` | Music analysis and processing | [`audiomuse-ai.nix`](../configurations/nixos/homestation/homelab/audiomuse-ai.nix) |
 | Beets | Internal | Music-library management | [`beets/default.nix`](../configurations/nixos/homestation/homelab/beets/default.nix) |
 | Beszel | Public `status.npham.de` | Host and container monitoring | [`beszel.nix`](../configurations/nixos/homestation/homelab/beszel.nix) |
-| Calibre-Web Automated | Public `lib.npham.de` | E-book library and ingestion | [`calibre-web-automated.nix`](../configurations/nixos/homestation/homelab/calibre-web-automated.nix) |
+| BookOrbit | Public `lib.npham.de` | E-book library, reader, and Book Dock | [`bookorbit.nix`](../configurations/nixos/homestation/homelab/bookorbit.nix) |
 | Ente | Public `2fa.npham.de`; Museum at `ente.npham.de` | Ente web application and Museum API | [`ente/default.nix`](../configurations/nixos/homestation/homelab/ente/default.nix) |
 | FreshRSS | Public `feed.npham.de` | Feed reader | [`freshrss.nix`](../configurations/nixos/homestation/homelab/freshrss.nix) |
 | Glance | Public `dash.npham.de` | Dashboard | [`glance/default.nix`](../configurations/nixos/homestation/homelab/glance/default.nix) |
@@ -29,7 +29,7 @@ hostname.
 | Pocket ID | Public `id.npham.de` | Identity provider | [`pocket-id.nix`](../configurations/nixos/homestation/homelab/pocket-id.nix) |
 | Prowlarr | Public `index.npham.de` | Indexer management | [`prowlarr.nix`](../configurations/nixos/homestation/homelab/prowlarr.nix) |
 | RdtClient | Public `magnets.npham.de` | Download-client bridge | [`rdtclient.nix`](../configurations/nixos/homestation/homelab/rdtclient.nix) |
-| Shelfmark | Public `books.npham.de` | Book discovery and download workflow | [`shelfmark.nix`](../configurations/nixos/homestation/homelab/shelfmark.nix) |
+| Shelfmark | Public `books.npham.de` | Book discovery and download workflow; delivers into BookOrbit's Book Dock | [`shelfmark.nix`](../configurations/nixos/homestation/homelab/shelfmark.nix) |
 | Vaultwarden | Public `vault.npham.de` | Password-manager server | [`vaultwarden.nix`](../configurations/nixos/homestation/homelab/vaultwarden.nix) |
 | UpSnap | Private Caddy host `power.npham.de` | Wake-on-LAN dashboard (host-network container; HTTPS via Caddy, no Cloudflare Tunnel ingress) | [`upsnap.nix`](../configurations/nixos/homestation/homelab/upsnap.nix) |
 | Vikunja | Public `tasks.npham.de` | Task management | [`vikunja.nix`](../configurations/nixos/homestation/homelab/vikunja.nix) |
@@ -50,3 +50,15 @@ not passed as environment variables: Docker Compose interpolates `$` sequences
 in `env_file` values, which corrupts bcrypt password hashes. They are rendered
 as individual sops templates and bind-mounted into the container under
 `/run/secrets/`, consumed via Glance's `${secret:NAME}` config syntax.
+
+BookOrbit serves its library at `lib.npham.de`. Its books live in
+`/var/lib/homelab/bookorbit/books`; Shelfmark writes incoming downloads to the
+shared Book Dock at `/var/lib/homelab/bookorbit/book-dock` for review and import
+in BookOrbit. Complete BookOrbit's first-run setup with the token rendered in
+the protected `bookorbit-app.env` template, then create a library rooted at
+`/books`. Shelfmark's environment sets `/bookorbit-bookdock` as its initial
+download destination and links back to BookOrbit. If Shelfmark already has
+saved download settings, update **Settings → Downloads → Destination** to
+`/bookorbit-bookdock`; its saved settings can override environment defaults.
+Update Shelfmark's library link to BookOrbit as well if an older URL remains
+saved there.

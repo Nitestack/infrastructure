@@ -16,6 +16,7 @@ let
   audiomuseAiSecretsFile = self + /secrets/hosts/homestation/audiomuse-ai.yaml;
   beetsSecretsFile = self + /secrets/hosts/homestation/beets.yaml;
   beszelSecretsFile = self + /secrets/hosts/homestation/beszel.yaml;
+  bookOrbitSecretsFile = self + /secrets/hosts/homestation/bookorbit.yaml;
   enteSecretsFile = self + /secrets/hosts/homestation/ente.yaml;
   floppySecretsFile = self + /secrets/hosts/homestation/floppy.yaml;
   glanceSecretsFile = self + /secrets/hosts/homestation/glance.yaml;
@@ -116,6 +117,21 @@ in
     secrets."beszel/agent-key" = {
       sopsFile = beszelSecretsFile;
       key = "agent-key";
+      mode = "0400";
+    };
+    secrets."bookorbit/db-password" = {
+      sopsFile = bookOrbitSecretsFile;
+      key = "postgres/password";
+      mode = "0400";
+    };
+    secrets."bookorbit/jwt-secret" = {
+      sopsFile = bookOrbitSecretsFile;
+      key = "jwt-secret";
+      mode = "0400";
+    };
+    secrets."bookorbit/setup-bootstrap-token" = {
+      sopsFile = bookOrbitSecretsFile;
+      key = "setup-bootstrap-token";
       mode = "0400";
     };
     secrets."adventure-log/db-password" = {
@@ -318,9 +334,17 @@ in
       '';
       mode = "0400";
     };
-    templates."calibre-web-automated.env" = {
+    templates."bookorbit-app.env" = {
       content = ''
-        HARDCOVER_TOKEN=${config.sops.placeholder."hardcover/api-key"}
+        POSTGRES_PASSWORD=${config.sops.placeholder."bookorbit/db-password"}
+        JWT_SECRET=${config.sops.placeholder."bookorbit/jwt-secret"}
+        SETUP_BOOTSTRAP_TOKEN=${config.sops.placeholder."bookorbit/setup-bootstrap-token"}
+      '';
+      mode = "0400";
+    };
+    templates."bookorbit-db.env" = {
+      content = ''
+        POSTGRES_PASSWORD=${config.sops.placeholder."bookorbit/db-password"}
       '';
       mode = "0400";
     };
