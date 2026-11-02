@@ -1,25 +1,3 @@
-let
-  mkClaudeModel =
-    {
-      name,
-      family,
-      context,
-      output,
-      inputCost,
-      outputCost,
-    }:
-    {
-      inherit name family;
-      compatibility.supportsThinkingBlockBinding = false;
-      cost = {
-        input = inputCost;
-        output = outputCost;
-      };
-      limit = {
-        inherit context output;
-      };
-    };
-in
 {
   plugins = [ "opencode-models-discovery@1.10.0" ];
   experimental.quotaToast.enabled = false;
@@ -89,7 +67,7 @@ in
           models.includeBy = [
             {
               field = "id";
-              match = "^(?:US-)?(?:gpt-6-astra|gpt-6[.]1-sol|gpt-6-luna)$";
+              match = "^(?:US-)?(?:gpt-6-astra|gpt-6[.]1-(?:sol|terra)|gpt-6-luna)$";
             }
           ];
         };
@@ -103,39 +81,18 @@ in
       settings = {
         baseURL = "{env:LITELLM_BASE_URL}";
         apiKey = "{env:LITELLM_API_KEY}";
-      };
-      models = {
-        "claude-haiku-5-5" = mkClaudeModel {
-          name = "Claude Haiku 5.5";
-          family = "claude-haiku";
-          context = 1000000;
-          output = 128000;
-          inputCost = 0.11;
-          outputCost = 0.55;
-        };
-        "claude-sonnet-5-5" = mkClaudeModel {
-          name = "Claude Sonnet 5.5";
-          family = "claude-sonnet";
-          context = 1000000;
-          output = 128000;
-          inputCost = 2.2;
-          outputCost = 11.0;
-        };
-        "claude-opus-5-5" = mkClaudeModel {
-          name = "Claude Opus 5.5";
-          family = "claude-opus";
-          context = 1000000;
-          output = 128000;
-          inputCost = 4.4;
-          outputCost = 22.0;
-        };
-        "claude-fable-5-1" = mkClaudeModel {
-          name = "Claude Fable 5.1";
-          family = "claude-fable";
-          context = 1000000;
-          output = 128000;
-          inputCost = 11.0;
-          outputCost = 55.0;
+        modelsDiscovery = {
+          enabled = true;
+          endpoint = "/v1/models?return_wildcard_routes=true";
+          modelInfoEndpoint = "/v2/model/info";
+          modelInfoFormat = "litellm";
+          smartModelName = true;
+          models.includeBy = [
+            {
+              field = "id";
+              match = "^claude-(?:.*-5-5|fable-5-1)\\*?$";
+            }
+          ];
         };
       };
     };
