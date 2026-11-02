@@ -18,17 +18,13 @@ in
         label.file = sopsPath "aix/p-label";
         apiKey.file = sopsPath "aix/p";
       };
-      adp = {
-        label.file = sopsPath "aix/adp-label";
-        apiKey.file = sopsPath "aix/adp";
-      };
-      tw = {
-        label.file = sopsPath "aix/tw-label";
-        apiKey.file = sopsPath "aix/tw";
-      };
       ae = {
         label.file = sopsPath "aix/ae-label";
         apiKey.file = sopsPath "aix/ae";
+      };
+      nim = {
+        label.file = sopsPath "aix/nim-label";
+        apiKey.file = sopsPath "aix/nim";
       };
     };
   };
