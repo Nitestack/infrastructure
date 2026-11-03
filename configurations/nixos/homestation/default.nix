@@ -133,8 +133,6 @@ in
   ];
 
   users.users.${meta.username} = {
-    # Keep the user agent and its in-memory cache alive after the last SSH logout.
-    linger = true;
     # Allowed SSH clients
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixstation"

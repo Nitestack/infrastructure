@@ -78,6 +78,7 @@ in
 
   users.users.${meta.username} = {
     inherit (meta) description;
+    linger = true;
     home = "/home/${meta.username}";
   };
 

@@ -18,4 +18,6 @@ in
   ];
 
   home.shellAliases.beet = lib.mkIf (osConfig.homelab.apps.beets.services.main.enable) "docker exec -it beets beet";
+
+  programs.t3code.server.enable = true;
 }

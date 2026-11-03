@@ -1,7 +1,11 @@
 # ╭──────────────────────────────────────────────────────────╮
 # │ AI                                                       │
 # ╰──────────────────────────────────────────────────────────╯
-{ flake, pkgs, ... }:
+{
+  flake,
+  pkgs,
+  ...
+}:
 let
   inherit (flake) inputs;
   inherit (inputs) self;
@@ -61,7 +65,7 @@ let
   };
   addyAgentSkillsExplicit =
     explicitSkillsFromCatalog "addy-agent-skills" addyAgentSkillsCatalog
-      builtins.baseNameOf;
+      baseNameOf;
 
   # Emil's skills are flat under skills/. Only select prototype specially
   # because its name conflicts with Matt Pocock's flattened prototype skill.
@@ -85,6 +89,21 @@ let
     path = inputs.taste-skill;
     subdir = "skills";
   };
+
+  t3codePackage = pkgs.t3code.override {
+    enableClaude = true;
+    enableCodex = true;
+    enableOpencode = true;
+    enableGit = true;
+    enableGitHub = true;
+    enableGitLab = true;
+    t3code-unwrapped = pkgs.t3code.unwrapped.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        # T3 Connect configuration is compiled into the client and CLI.
+        cp .env.example .env
+      '';
+    });
+  };
 in
 {
   imports = [
@@ -96,26 +115,32 @@ in
     codex
     claude-code
   ];
-  programs.agent-skills = {
-    enable = true;
-    sources = {
-      addy-agent-skills = addyAgentSkillsSource;
-      emil-skills = emilSkillsSource;
-      humanizer.path = inputs.humanizer;
-      matt-pocock-skills = mattPocockSource;
-      taste-skill = tasteSkillSource;
+  programs = {
+    agent-skills = {
+      enable = true;
+      sources = {
+        addy-agent-skills = addyAgentSkillsSource;
+        emil-skills = emilSkillsSource;
+        humanizer.path = inputs.humanizer;
+        matt-pocock-skills = mattPocockSource;
+        taste-skill = tasteSkillSource;
+      };
+      skills = {
+        enableAll = [
+          "humanizer"
+          "taste-skill"
+        ];
+        enable = emilSkillsToEnable;
+        explicit = mattPocockExplicitSkills // addyAgentSkillsExplicit // emilPrototypeExplicit;
+      };
+      targets.agents.enable = true;
+      targets.claude.enable = true;
+      targets.codex.enable = true;
+      targets.opencode.enable = true;
     };
-    skills = {
-      enableAll = [
-        "humanizer"
-        "taste-skill"
-      ];
-      enable = emilSkillsToEnable;
-      explicit = mattPocockExplicitSkills // addyAgentSkillsExplicit // emilPrototypeExplicit;
+    t3code = {
+      enable = true;
+      package = t3codePackage;
     };
-    targets.agents.enable = true;
-    targets.claude.enable = true;
-    targets.codex.enable = true;
-    targets.opencode.enable = true;
   };
 }

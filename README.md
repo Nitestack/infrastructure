@@ -156,6 +156,7 @@ updates, and rollback.
 - [`docs/operations.md`](docs/operations.md) — routine validation, activation, input updates, and recovery.
 - [`docs/wake-on-lan.md`](docs/wake-on-lan.md) — firmware, NixOS, and tailnet wake-up setup for nixstation.
 - [`docs/secrets.md`](docs/secrets.md) — maintain sops-encrypted configuration safely.
+- [`docs/t3code.md`](docs/t3code.md) — T3 Code desktop and headless Home Manager setup.
 - [`docs/adguard-home-client-caveats.md`](docs/adguard-home-client-caveats.md) — AdGuard Home client configuration caveats.
 - [`docs/renovate-setup.md`](docs/renovate-setup.md) — one-time Renovate GitHub App setup.
 - [`docs/windows-terminal-herdr.md`](docs/windows-terminal-herdr.md) — Windows Terminal keybindings required by Herdr in NixOS-WSL.
