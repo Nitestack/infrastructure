@@ -53,11 +53,6 @@
       url = "github:catppuccin/nushell";
       flake = false;
     };
-    # ChatGPT desktop for Linux
-    codex-desktop-linux = {
-      url = "github:ilysenko/codex-desktop-linux";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Dank Material Shell
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";

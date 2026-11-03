@@ -8,7 +8,6 @@
   ...
 }:
 let
-  inherit (flake) inputs;
   inherit (flake.inputs) self;
   inherit (config) meta;
 
@@ -18,7 +17,6 @@ in
   imports = [
     ./hardware-configuration.nix
 
-    inputs.codex-desktop-linux.nixosModules.default
     self.nixosModules.base
     self.nixosModules.bare-metal-only
     self.nixosModules.interactive-only
@@ -72,11 +70,16 @@ in
     imports = [ (self + /configurations/home/desktop.nix) ];
   };
 
+  # OnlyOffice 9.4 still requires GTK2. Keep the exception on this host and
+  # retain Nixpkgs' warning for the broken package.
+  nixpkgs.config.problems.handlers."gtk+".broken = "warn";
+
   # ── Packages ──────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
     (bottles.override {
       removeWarningPopup = true;
     })
+    chatgpt
     endeavour
     ente-auth
     flacon
@@ -108,7 +111,6 @@ in
 
   # Services
   programs = {
-    codexDesktopLinux.enable = true;
     gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
     virt-manager.enable = true;
   };
