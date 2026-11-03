@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "addy-agent-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791922866,
+        "narHash": "sha256-HxaYbxuZwVo2wybYazM05YUJG/udQNQP6X0qA5wfYIs=",
+        "owner": "addyosmani",
+        "repo": "agent-skills",
+        "rev": "aeac41d4d005999432bb7312f7ff06383a91d59d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "addyosmani",
+        "repo": "agent-skills",
+        "type": "github"
+      }
+    },
     "agent-skills": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -195,22 +211,6 @@
         "type": "github"
       }
     },
-    "caveman": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1791257471,
-        "narHash": "sha256-XKMTm1D5/kwYaT007Tf1NHZo8vnlHSWKnV9BlvyLtPY=",
-        "owner": "JuliusBrussee",
-        "repo": "caveman",
-        "rev": "99aafe151a1be72be783e662858e8a0955add59f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "JuliusBrussee",
-        "repo": "caveman",
-        "type": "github"
-      }
-    },
     "ci": {
       "inputs": {
         "blueprint": "blueprint",
@@ -341,6 +341,22 @@
       "original": {
         "owner": "AvengeMedia",
         "repo": "DankMaterialShell",
+        "type": "github"
+      }
+    },
+    "emil-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791727112,
+        "narHash": "sha256-4/xWVt4HqB1nwqdLMFC3No07vkEWqRcQDtqNY8FHwh8=",
+        "owner": "emilkowalski",
+        "repo": "skills",
+        "rev": "2d228630ba1446365f614a108cb8252f1feda202",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emilkowalski",
+        "repo": "skills",
         "type": "github"
       }
     },
@@ -744,6 +760,7 @@
     },
     "root": {
       "inputs": {
+        "addy-agent-skills": "addy-agent-skills",
         "agent-skills": "agent-skills",
         "aix": "aix",
         "apple-fonts": "apple-fonts",
@@ -751,10 +768,10 @@
         "catppuccin-bat": "catppuccin-bat",
         "catppuccin-delta": "catppuccin-delta",
         "catppuccin-nushell": "catppuccin-nushell",
-        "caveman": "caveman",
         "codex-desktop-linux": "codex-desktop-linux",
         "dank-greeter": "dank-greeter",
         "dms": "dms",
+        "emil-skills": "emil-skills",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "humanizer": "humanizer",
@@ -768,6 +785,7 @@
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",
+        "taste-skill": "taste-skill",
         "zen-browser": "zen-browser"
       }
     },
@@ -969,6 +987,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "taste-skill": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791990049,
+        "narHash": "sha256-Az0uKXlv0Gv+yEcftnB4mdBYJKr9Mj7iSXG+2RzOQ9I=",
+        "owner": "Leonxlnx",
+        "repo": "taste-skill",
+        "rev": "f624f37a8c650b9cc550253104925efe4c8de246",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Leonxlnx",
+        "repo": "taste-skill",
         "type": "github"
       }
     },

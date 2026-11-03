@@ -53,11 +53,6 @@
       url = "github:catppuccin/nushell";
       flake = false;
     };
-    # caveman
-    caveman = {
-      url = "github:JuliusBrussee/caveman";
-      flake = false;
-    };
     # ChatGPT desktop for Linux
     codex-desktop-linux = {
       url = "github:ilysenko/codex-desktop-linux";
@@ -78,6 +73,21 @@
     # Humanizer
     humanizer = {
       url = "github:blader/humanizer";
+      flake = false;
+    };
+    # Taste skill pack
+    taste-skill = {
+      url = "github:Leonxlnx/taste-skill";
+      flake = false;
+    };
+    # Emil Kowalski's skills
+    emil-skills = {
+      url = "github:emilkowalski/skills";
+      flake = false;
+    };
+    # Addy Osmani's agent skills
+    addy-agent-skills = {
+      url = "github:addyosmani/agent-skills";
       flake = false;
     };
     # Hyprland Contrib
