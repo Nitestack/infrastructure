@@ -5,14 +5,11 @@
   pkgs,
   lib,
   osConfig,
-  flake,
   ...
 }:
 let
-  inherit (flake) inputs;
-
   brightnessctl = lib.getExe pkgs.brightnessctl;
-  dms = lib.getExe inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  dms = lib.getExe' pkgs.dux-shell "dms";
   hyprctl = lib.getExe' osConfig.programs.hyprland.package "hyprctl";
 in
 {

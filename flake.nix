@@ -53,16 +53,6 @@
       url = "github:catppuccin/nushell";
       flake = false;
     };
-    # Dank Material Shell
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # Dank Greeter
-    dank-greeter = {
-      url = "github:AvengeMedia/dank-greeter";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     # Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     # Humanizer
@@ -84,11 +74,6 @@
     addy-agent-skills = {
       url = "github:addyosmani/agent-skills";
       flake = false;
-    };
-    # Hyprland Contrib
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     # Matt Pocock's skills
     matt-pocock-skills = {

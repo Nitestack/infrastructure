@@ -23,8 +23,8 @@ in
 
     self.nixosModules.audio
     self.nixosModules.backlight
-    self.nixosModules.dank-material-shell
     self.nixosModules.davinci-resolve
+    self.nixosModules.dux
     self.nixosModules.flatpak
     self.nixosModules.games
     self.nixosModules.gnome
@@ -125,11 +125,9 @@ in
   };
 
   services = {
-    blueman.enable = true;
     # Avoid nsncd worker exhaustion causing five-second NSS stalls.
     # https://github.com/twosigma/nsncd/issues/158
     nscd.enableNsncd = false;
-    playerctld.enable = true;
     tailscale = {
       useRoutingFeatures = "client";
       extraSetFlags = [ "--accept-routes" ];

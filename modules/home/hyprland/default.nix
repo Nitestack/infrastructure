@@ -159,8 +159,5 @@ in
     };
   };
 
-  services = {
-    polkit-gnome.enable = true;
-    gnome-keyring.enable = true;
-  };
+  services.gnome-keyring.enable = true;
 }

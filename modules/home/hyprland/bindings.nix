@@ -2,7 +2,6 @@
 # │ Bindings                                                 │
 # ╰──────────────────────────────────────────────────────────╯
 {
-  flake,
   pkgs,
   config,
   lib,
@@ -10,22 +9,19 @@
   ...
 }:
 let
-  inherit (flake) inputs;
-
   # Bins
   inherit (import ../lib/hyprland.nix { inherit lib pkgs; }) uwsm mkBind;
 
-  hyprpicker = lib.getExe pkgs.hyprpicker;
-
-  backlight = import ../scripts/backlight.nix { inherit pkgs lib meta; };
-  screenshot = import ../scripts/screenshots.nix {
-    inherit
-      config
-      inputs
-      pkgs
-      lib
-      ;
+  backlight = import ../scripts/backlight.nix {
+    inherit pkgs lib meta;
   };
+
+  dms = lib.getExe' pkgs.dux-shell "dms";
+  dfiles = lib.getExe' pkgs.dux-files "dfiles";
+
+  screenshotDir = "${config.xdg.userDirs.pictures}/Screenshots";
+
+  screenshotCmd = mode: "${dms} screenshot ${mode} --dir ${lib.escapeShellArg screenshotDir}";
 in
 {
   wayland.windowManager.hyprland.settings =
@@ -37,29 +33,27 @@ in
     {
       bind = [
         # --- Applications ---
-        (mkBind "SUPER + E" "Open File Manager" "hl.dsp.exec_cmd(\"${uwsm} org.gnome.Nautilus.desktop\")"
-          { }
-        )
+        (mkBind "SUPER + E" "Open File Manager" "hl.dsp.exec_cmd(\"${uwsm} ${dfiles}\")" { })
         (mkBind "SUPER + W" "Open Browser" "hl.dsp.exec_cmd(\"${uwsm} zen.desktop\")" { })
 
         # --- Screenshots ---
-        (mkBind "Print" "Take Screenshot (Select Area)"
-          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.area-select}\")"
+        (mkBind "Print" "Take Screenshot (Select Area)" "hl.dsp.exec_cmd(\"${uwsm} ${screenshotCmd ""}\")"
           { }
         )
         (mkBind "SUPER + Print" "Take Screenshot (All Monitors)"
-          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.all-monitors}\")"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshotCmd "all"}\")"
           { }
         )
         (mkBind "ALT + Print" "Take Screenshot (Active Window)"
-          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.active-window}\")"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshotCmd "window"}\")"
           { }
         )
         (mkBind "CTRL + Print" "Take Screenshot (Active Monitor)"
-          "hl.dsp.exec_cmd(\"${uwsm} ${screenshot.active-monitor}\")"
+          "hl.dsp.exec_cmd(\"${uwsm} ${screenshotCmd "full"}\")"
           { }
         )
-        (mkBind "SUPER + SHIFT + C" "Launch Colorpicker" "hl.dsp.exec_cmd(\"${uwsm} ${hyprpicker} -a\")"
+        (mkBind "SUPER + SHIFT + C" "Pick Screen Color"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} color pick --autocopy\")"
           { }
         )
 
@@ -87,8 +81,6 @@ in
         (mkBind "SUPER + T" "Toggle Active Window Floating" "hl.dsp.window.float({ action = \"toggle\" })"
           { }
         )
-      ]
-      ++ [
         (mkBind "SUPER + CTRL + SHIFT + h" "Move Workspace to Previous Monitor"
           "hl.dsp.window.move({ direction = \"left\" })"
           { }
@@ -107,14 +99,56 @@ in
 
         # --- Hardware Controls ---
         (mkBind "XF86MonBrightnessUp" "Increase Screen Brightness"
-          "hl.dsp.exec_cmd(\"${uwsm} ${backlight.increase { osd = true; }}\")"
+          "hl.dsp.exec_cmd(\"${uwsm} ${backlight.increase}\")"
           {
             locked = true;
             repeating = true;
           }
         )
         (mkBind "XF86MonBrightnessDown" "Decrease Screen Brightness"
-          "hl.dsp.exec_cmd(\"${uwsm} ${backlight.decrease { osd = true; }}\")"
+          "hl.dsp.exec_cmd(\"${uwsm} ${backlight.decrease}\")"
+          {
+            locked = true;
+            repeating = true;
+          }
+        )
+        (mkBind "XF86AudioPlay" "Play/Pause" "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris playPause\")"
+          { locked = true; }
+        )
+        (mkBind "XF86AudioPause" "Play/Pause" "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris playPause\")"
+          { locked = true; }
+        )
+        (mkBind "XF86AudioNext" "Skip to Next Track"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris next\")"
+          { locked = true; }
+        )
+        (mkBind "XF86AudioPrev" "Return to Previous Track"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call mpris previous\")"
+          { locked = true; }
+        )
+        (mkBind "XF86AudioRaiseVolume" "Increase Volume"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio increment 2\")"
+          {
+            locked = true;
+            repeating = true;
+          }
+        )
+        (mkBind "XF86AudioLowerVolume" "Decrease Volume"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio decrement 2\")"
+          {
+            locked = true;
+            repeating = true;
+          }
+        )
+        (mkBind "XF86AudioMute" "Mute/Unmute Volume"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio mute\")"
+          {
+            locked = true;
+            repeating = true;
+          }
+        )
+        (mkBind "XF86AudioMicMute" "Mute/Unmute Microphone"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call audio micmute\")"
           {
             locked = true;
             repeating = true;
@@ -123,6 +157,27 @@ in
 
         # --- Mouse Controls ---
         (mkBind "SUPER + ${lmb}" "Move Window" "hl.dsp.window.drag()" { mouse = true; })
+
+        (mkBind "ALT + space" "Toggle App Launcher"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call spotlight toggle\")"
+          { }
+        )
+        (mkBind "SUPER + V" "Toggle Clipboard History"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call clipboard toggle\")"
+          { }
+        )
+        (mkBind "SUPER + TAB" "Toggle Overview"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call hypr toggleOverview\")"
+          { }
+        )
+        (mkBind "CTRL + SHIFT + Escape" "Toggle System Monitor"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call processlist toggle\")"
+          { }
+        )
+        (mkBind "CTRL + SHIFT + Delete" "Toggle Power Menu"
+          "hl.dsp.exec_cmd(\"${uwsm} ${dms} ipc call powermenu toggle\")"
+          { }
+        )
       ];
     };
 }

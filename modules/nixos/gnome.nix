@@ -14,6 +14,7 @@
     baobab
     epiphany
     gnome-text-editor
+    gnome-calendar
     gnome-characters
     gnome-console
     gnome-logs
@@ -21,6 +22,7 @@
     gnome-system-monitor
     gnome-weather
     gnome-connections
+    nautilus
     yelp
 
     # Disabling GNOME core shell apps

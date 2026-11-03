@@ -90,10 +90,6 @@ in
           titlebar-uses-system-font = false;
           titlebar-font = font.sans.titleName;
         };
-        "org/gnome/nautilus/preferences" = {
-          default-folder-viewer = "icon-view";
-          show-delete-permanently = true;
-        };
         "org/gnome/calculator" = {
           show-thousands = true;
         };

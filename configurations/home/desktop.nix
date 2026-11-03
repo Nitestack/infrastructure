@@ -3,7 +3,6 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   flake,
-  config,
   ...
 }:
 let
@@ -17,7 +16,6 @@ in
     self.homeModules.interactive-only
     self.homeModules.gui-only
 
-    self.homeModules.dank-material-shell
     self.homeModules.hyprland
     self.homeModules.theme
     self.homeModules.zen-browser
@@ -30,21 +28,6 @@ in
     enable = true;
     createDirectories = true;
   };
-
-  # Nautilus
-  gtk.gtk3.bookmarks =
-    let
-      home = config.home.homeDirectory;
-    in
-    [
-      "file://${home}/Studium"
-      "file://${home}/Games"
-      "file://${config.xdg.userDirs.documents}"
-      "file://${config.xdg.userDirs.pictures}"
-      "file://${config.xdg.userDirs.videos}"
-      "file://${config.xdg.userDirs.download}"
-      "file://${config.xdg.userDirs.music}"
-    ];
 
   # Programs
   programs.onlyoffice = {

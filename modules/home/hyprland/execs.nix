@@ -14,10 +14,8 @@ let
   # Bins
   inherit (import ../lib/hyprland.nix { inherit lib pkgs; }) uwsm;
 
-  cliphist = lib.getExe pkgs.cliphist;
   ghostty = lib.getExe pkgs.ghostty;
   hyprctl = lib.getExe' osConfig.programs.hyprland.package "hyprctl";
-  wl-paste = lib.getExe' pkgs.wl-clipboard "wl-paste";
 in
 {
   wayland.windowManager.hyprland.settings = {
@@ -27,7 +25,6 @@ in
         (lib.generators.mkLuaInline ''
           function()
             hl.exec_cmd("${uwsm} ${hyprctl} setcursor ${cursorTheme.name} ${toString cursorTheme.size}")
-            hl.exec_cmd("${uwsm} ${wl-paste} --watch ${cliphist} store")
 
             -- left monitor
             hl.exec_cmd("${uwsm} vesktop.desktop", { workspace = "6" })

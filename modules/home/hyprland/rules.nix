@@ -51,13 +51,11 @@
         (floatByExactClass "org.gnome.Calculator")
         (floatByExactClass "org.gnome.Decibels")
         (floatByExactClass "org.gnome.FileRoller")
-        (floatByExactClass "org.gnome.Nautilus")
         (floatByExactClass "org.gnome.SystemMonitor")
         (floatByExactClass "org.gnome.Settings")
         (floatByExactClass "dconf-editor")
 
         (floatByClass "xdg-desktop-portal")
-        (floatByClass ".blueman-manager")
 
         {
           match.class = "^(gcr-prompter)$";
@@ -149,6 +147,16 @@
         {
           match.class = "^(Ryujinx)$";
           idle_inhibit = "focus";
+        }
+
+        {
+          match.class = "^(dev.duxlabs.files)$";
+          float = true;
+          size = [
+            1000
+            700
+          ];
+          center = true;
         }
       ];
     };

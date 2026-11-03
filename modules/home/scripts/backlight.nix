@@ -7,78 +7,29 @@
 let
   inherit (meta) monitors;
 
-  brightnessctl = lib.getExe pkgs.brightnessctl;
-  swayosd-client = lib.getExe' pkgs.swayosd "swayosd-client";
+  dms = lib.getExe' pkgs.dux-shell "dms";
+  flock = lib.getExe' pkgs.util-linux "flock";
 
-  inherit (import ../lib/monitors.nix { inherit monitors; }) defaultMonitorCount defaultMonitor;
   backlightMonitors = builtins.filter (monitor: monitor.backlight != null) monitors;
 
-  default-device =
-    if defaultMonitor != null && defaultMonitor.backlight != null then
-      defaultMonitor.backlight.device
-    else
-      "";
-  monitor-backlight = pkgs.writeShellScriptBin "monitor-backlight" ''
-    #!/usr/bin/env bash
+  mkScript =
+    action:
+    pkgs.writeShellScriptBin "monitor-brightness-${action}" ''
+      set -euo pipefail
 
-    LOCK_DIR="/tmp/monitor-backlight.lock"
+      # Serialize brightness changes when keys are held down.
+      exec 9>"$XDG_RUNTIME_DIR/monitor-brightness.lock"
+      ${flock} -x 9
 
-    if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-        exit 1
-    fi
-
-    trap 'rmdir "$LOCK_DIR"' EXIT
-
-    SHOW_OSD=false
-    if [ "$1" = "--osd" ]; then
-        SHOW_OSD=true
-        shift
-    fi
-
-    ${lib.concatStringsSep "\n" (
-      map (monitor: "${brightnessctl} --device ${monitor.backlight.device} set $1 &") backlightMonitors
-    )}
-
-    wait
-
-    if [ "$SHOW_OSD" = true ]; then
-      percent="$(${brightnessctl} --device ${default-device} get)"
-      progress="$(echo "scale=2; $percent / 100" | bc -l)"
-
-      if [ $((percent)) -eq 100 ]; then
-        icon_name="display-brightness-high-symbolic"
-      elif [ $((percent)) -ge 50 ]; then
-        icon_name="display-brightness-medium-symbolic"
-      elif [ $((percent)) -eq 0 ]; then
-        icon_name="display-brightness-off-symbolic"
-      else
-        icon_name="display-brightness-low-symbolic"
-      fi
-
-      if [ "$percent" == "0" ]; then
-        progress="0.001"
-      fi
-
-      ${swayosd-client} \
-        --custom-icon="$icon_name" \
-        --custom-progress="$progress" \
-        --custom-progress-text="$percent%"
-    fi
-  '';
+      ${lib.concatMapStringsSep "\n" (
+        monitor: "${dms} ipc call brightness ${action} 5 backlight:${monitor.backlight.device}"
+      ) backlightMonitors}
+    '';
 in
 assert lib.assertMsg (
-  defaultMonitorCount == 1
-) "Expected exactly one monitor with `isDefault = true` in `meta.monitors`.";
-assert lib.assertMsg (
   builtins.length backlightMonitors > 0
-) "Backlight script requires at least one monitor with `backlight` configured.";
-assert lib.assertMsg (
-  defaultMonitor == null || defaultMonitor.backlight != null
-) "The default monitor in `meta.monitors` must define `backlight`.";
+) "Brightness control requires at least one configured monitor.";
 {
-  increase = { osd }: "${lib.getExe monitor-backlight} ${if osd then "--osd " else ""}5%+";
-  decrease = { osd }: "${lib.getExe monitor-backlight} ${if osd then "--osd " else ""}5%-";
-  set =
-    { value, osd }:
-    "${lib.getExe monitor-backlight} ${if osd then "--osd " else ""}${value}";
+  increase = lib.getExe (mkScript "increment");
+  decrease = lib.getExe (mkScript "decrement");
 }
