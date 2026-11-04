@@ -10,8 +10,8 @@ let
   effectiveUid = if userUid != null then toString userUid else "1000";
 
   audiomusePlugin = pkgs.fetchurl {
-    url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/latest/download/audiomuseai.ndp";
-    hash = "sha256-wTjprxbwl9jNB6yVf7iknZGn2gZuW0oUV8rb1HmqEKc=";
+    url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/download/v11/audiomuseai.ndp";
+    hash = "sha256-O+k+6/5XPxlaNpbF5PQRok/iKuR5mbQSSf88vsmxm6A=";
   };
   navidromePlugins = pkgs.runCommand "navidrome-plugins" { } ''
     mkdir -p "$out"

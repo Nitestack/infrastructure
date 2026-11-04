@@ -67,16 +67,7 @@ in
   # Virtualization
   virtualisation = {
     arion.backend = "docker";
-    arion.package = inputs.arion.packages.${pkgs.stdenv.hostPlatform.system}.arion.overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace src/nix/modules/nixos/container-systemd.nix \
-          --replace-fail 'services.journald.console = "/dev/console";' \
-            'services.journald.settings.Journal = {
-              ForwardToConsole = true;
-              TTYPath = "/dev/console";
-            };'
-      '';
-    });
+    arion.package = inputs.arion.packages.${pkgs.stdenv.hostPlatform.system}.arion;
     oci-containers.backend = "docker";
     docker.autoPrune = {
       enable = true;

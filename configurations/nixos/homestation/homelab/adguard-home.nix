@@ -4,12 +4,14 @@
 }:
 let
   cfg = config.homelab;
+  webPort = 3000;
+  webAddress = "${cfg.lanAddress}:${toString webPort}";
 in
 {
   homelab.caddy.extraHosts = ''
     @dns host dns.${cfg.domain}
     handle @dns {
-      reverse_proxy ${cfg.lanAddress}:${toString config.services.adguardhome.port}
+      reverse_proxy ${webAddress}
     }
   '';
 
@@ -17,8 +19,9 @@ in
     enable = true;
     mutableSettings = false;
     openFirewall = false;
-    host = cfg.lanAddress;
     settings = {
+      http.address = webAddress;
+
       dns = {
         bind_hosts = [
           "0.0.0.0"
@@ -75,7 +78,7 @@ in
     # Permit Docker containers to reach AdGuard's admin UI.
     # Do not expose port 3000 generally to the LAN.
     extraInputRules = ''
-      iifname "br-*" tcp dport ${toString config.services.adguardhome.port} accept
+      iifname "br-*" tcp dport ${toString webPort} accept
     '';
   };
 }
