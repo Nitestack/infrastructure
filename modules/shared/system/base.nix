@@ -56,6 +56,7 @@ in
     wget
 
     bind
+    devenv
     duf
     ncdu
     nmap

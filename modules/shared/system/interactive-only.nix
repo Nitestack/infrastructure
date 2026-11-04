@@ -7,7 +7,6 @@
     python3
 
     ansible
-    devenv
     ffmpeg
     rclone
   ];
