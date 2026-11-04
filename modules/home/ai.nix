@@ -112,6 +112,7 @@ in
     self.homeModules.opencode
   ];
   home.packages = with pkgs; [
+    antigravity-acp
     codex
     claude-code
   ];
