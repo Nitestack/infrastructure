@@ -67,7 +67,7 @@
           models.includeBy = [
             {
               field = "id";
-              match = "^(?:US-)?(?:gpt-6-astra|gpt-6[.]1-(?:sol|terra)|gpt-6-luna)$";
+              match = "^gpt-6(?:[.]1-(?:sol|terra)|-(?:luna|astra))$";
             }
           ];
         };
