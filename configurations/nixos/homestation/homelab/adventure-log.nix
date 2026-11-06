@@ -16,7 +16,7 @@ in
 
     services.web = {
       enable = true;
-      image = "ghcr.io/seanmorley15/adventurelog-frontend:v0.13.0@sha256:db459d08b5f3b900e9a646920e58c1087497a9f070f9142ed8f0fca8e81b1350";
+      image = "ghcr.io/seanmorley15/adventurelog-frontend:v0.13.1@sha256:cff6177bc30fcc2e96deb2c5dd4e626720e9bd20dea9d8d5f79e521c8ce1709c";
       containerName = "adventurelog-frontend";
       port = 3000;
       dependsOn.server.condition = "service_started";
@@ -53,7 +53,7 @@ in
 
     services.server = {
       enable = true;
-      image = "ghcr.io/seanmorley15/adventurelog-backend:v0.13.0@sha256:00724fc1f511635e3675538a326915474d486fcc9409a8b0f574da543e5980a1";
+      image = "ghcr.io/seanmorley15/adventurelog-backend:v0.13.1@sha256:01324c091da066333a2efb0f124a80dc2f0afcc87ffd79f948bf2436f9d0b1aa";
       containerName = "adventurelog-backend";
       port = 80;
       dependsOn.db.condition = "service_started";
