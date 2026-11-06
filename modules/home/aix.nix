@@ -26,6 +26,10 @@ in
         label.file = sopsPath "aix/nim-label";
         apiKey.file = sopsPath "aix/nim";
       };
+      adp = {
+        label.file = sopsPath "aix/adp-label";
+        apiKey.file = sopsPath "aix/adp";
+      };
     };
   };
 }
