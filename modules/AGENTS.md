@@ -1,6 +1,5 @@
-# Reusable Modules
+ Reusable Modules
 
-Modules provide behaviour shared by host configurations. Keep machine choices
 in `configurations/*/<host>/` and keep each module focused on one purpose.
 
 - `modules/shared/` contains behaviour shared by the NixOS hosts.

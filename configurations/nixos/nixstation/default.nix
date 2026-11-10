@@ -102,12 +102,17 @@ in
     interfaces.enp8s0.wakeOnLan.enable = true;
   };
 
-  # User Groups
-  users.users.${meta.username}.extraGroups = [
-    "audio"
-    "libvirtd"
-    "video"
-  ];
+  # Users
+  users.users.${meta.username} = {
+    extraGroups = [
+      "audio"
+      "libvirtd"
+      "video"
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0+BKbfkmqQWRQ8ptCy6qKa6M4m1kEZ7Fh35Ry1I5cG nhan@homestation"
+    ];
+  };
 
   # Services
   programs = {

@@ -29,20 +29,20 @@ in
     ++ font.nerd.packages
     # Apps
     ++ (with pkgs; [
-      anki
       bitwarden-desktop
       feishin
       localsend
       musescore
-      obsidian
       protonmail-desktop
       signal-desktop
       spek
-      vesktop
     ]);
 
   programs = {
+    anki.enable = true;
     cava.enable = true;
     chromium.enable = true;
+    obsidian.enable = true;
+    vesktop.enable = true;
   };
 }

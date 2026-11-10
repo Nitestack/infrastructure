@@ -843,11 +843,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1794820723,
-        "narHash": "sha256-bn4Zeb487TzKCIJmckn+hV15OIw2WeJj9PSBMC6jAno=",
+        "lastModified": 1794827548,
+        "narHash": "sha256-OQw7SFX0c/la5rfZcefmg2+z+sv6v5uVK8bxSwP0sXk=",
         "owner": "Nitestack",
         "repo": "t3code",
-        "rev": "0f62f455463bc531430532d3126a9e9ac47285b6",
+        "rev": "f9afba449ba46959ee9f91660fe1a9db94d7d23a",
         "type": "github"
       },
       "original": {

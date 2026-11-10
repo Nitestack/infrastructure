@@ -56,7 +56,6 @@ in
     wget
 
     bind
-    devenv
     duf
     kubectl
     ncdu

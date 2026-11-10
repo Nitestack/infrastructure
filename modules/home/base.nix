@@ -48,8 +48,10 @@ in
   programs = {
     btop.enable = true;
     carapace.enable = true;
+    devenv.enable = true;
     fd.enable = true;
     home-manager.enable = true;
+    jq.enable = true;
     nix-your-shell.enable = true;
     ripgrep.enable = true;
     zoxide = {
