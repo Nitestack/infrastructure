@@ -30,6 +30,14 @@ in
         label.file = sopsPath "aix/adp-label";
         apiKey.file = sopsPath "aix/adp";
       };
+      ac = {
+        label.file = sopsPath "aix/ac-label";
+        apiKey.file = sopsPath "aix/ac";
+      };
+      acs = {
+        label.file = sopsPath "aix/acs-label";
+        apiKey.file = sopsPath "aix/acs";
+      };
     };
   };
 }
