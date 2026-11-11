@@ -18,7 +18,7 @@ in
     services.app = {
       enable = true;
       containerName = "bookorbit-app";
-      image = "ghcr.io/bookorbit/bookorbit:3.6.0@sha256:bbb5da52e96dbbff1dd36f55454f9845e6cde264b4b3428a3ea783124a4ca62e";
+      image = "ghcr.io/bookorbit/bookorbit:3.8.0@sha256:d318f7732f6f6330312e2c5f854f7899f858b54cc4b18a13cde1f43b5bea0515";
       port = 3000;
       dependsOn.db.condition = "service_healthy";
 
