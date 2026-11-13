@@ -15,6 +15,8 @@ let
     "adp"
     "ac"
     "acs"
+    "nim4"
+    "ae2"
   ];
   secretsFile = self + /secrets/hosts/wslstation/aix.yaml;
   mkProfileSecret =

@@ -38,6 +38,16 @@ in
         label.file = sopsPath "aix/acs-label";
         apiKey.file = sopsPath "aix/acs";
       };
+      nim4 = {
+        label.file = sopsPath "aix/nim4-label";
+        apiKey.file = sopsPath "aix/nim4";
+      };
+      ae2 = {
+        label.file = sopsPath "aix/ae2-label";
+        apiKey.file = sopsPath "aix/ae2";
+        # Anthropic-only key; talks to Anthropic directly instead of the gateway.
+        baseUrl = "https://api.anthropic.com";
+      };
     };
   };
 }
