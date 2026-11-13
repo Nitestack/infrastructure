@@ -58,11 +58,13 @@ in
     bind
     devenv
     duf
+    kubectl
     ncdu
     nmap
     openssl
     sops
     unzip
+    yq
     zip
 
     nix-flake-update
