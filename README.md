@@ -36,7 +36,7 @@ flowchart LR
 - **System and user configs** — `configurations/` and `modules/` define NixOS and Home Manager setups for every host, wired together via [nixos-unified](https://github.com/srid/nixos-unified).
 - **Homelab services** — `modules/nixos/homelab/` is the module API for declaring self-hosted apps, their container or host workloads, and how traffic reaches them through Caddy, DNS, and Cloudflare Tunnel. See [`docs/homelab-services.md`](docs/homelab-services.md).
 - **Edge and DNS as code** — `opentofu/cloudflare/` manages Cloudflare-side DNS and zone settings with OpenTofu. See [`opentofu/cloudflare/README.md`](opentofu/cloudflare/README.md).
-- **Secrets** — `secrets/` stores encrypted secrets with [sops-nix](https://github.com/Mic92/sops-nix), scoped per host via `.sops.yaml`.
+- **Secrets** — `secrets/` stores encrypted secrets with [sops-nix](https://github.com/Mic92/sops-nix), scoped to the hosts that need them via `.sops.yaml`.
 - **Automation** — GitHub Actions CI (`.github/workflows/`) and Renovate keep the flake and container images up to date; see [`docs/renovate-setup.md`](docs/renovate-setup.md).
 
 ## Requirements

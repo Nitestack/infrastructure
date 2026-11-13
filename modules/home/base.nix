@@ -13,6 +13,7 @@ in
 {
   imports = [
     self.homeModules.ai
+    self.homeModules.aix
     self.homeModules.bat
     self.homeModules.direnv
     self.homeModules.eza

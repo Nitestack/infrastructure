@@ -16,7 +16,6 @@ in
 {
   imports = [
     inputs.nixos-wsl.nixosModules.default
-    ./sops.nix
 
     self.nixosModules.base
     self.nixosModules.interactive-only

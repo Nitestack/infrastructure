@@ -11,6 +11,10 @@ environment variables, command output, the Nix store, and Git history.
 - The shared system module uses each machine's `~/.ssh/id_ed25519` as a
   sops-nix age identity. A machine can therefore decrypt only files for which
   its corresponding age recipient is configured.
+- `secrets/shared/aix.yaml` holds the AIX gateway endpoint and profiles used by
+  the desktop, server, and WSL Home Manager profiles. Its shared recipient rule
+  grants access to all three host identities and the administrator recovery
+  key.
 - Nix modules reference secrets through `config.sops.secrets.*.path` or
   `config.sops.placeholder.*`. Templates and environment files are rendered at
   activation; values must never be copied into a Nix string.
