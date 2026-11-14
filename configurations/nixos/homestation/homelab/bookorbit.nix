@@ -87,7 +87,7 @@ in
     services.db = {
       enable = true;
       containerName = "bookorbit-db";
-      image = "pgvector/pgvector:pg18@sha256:c29f30688a9ad961691bdf0ec1650717cc132a5814619d80f80463d6e4c42e47";
+      image = "pgvector/pgvector:pg18@sha256:38681dc6eaf55308e2a4c6de392d131652dcfac70e1263e35cd9b5ea3fe39782";
 
       environment = {
         PGDATA = "/var/lib/postgresql/data/pgdata";
