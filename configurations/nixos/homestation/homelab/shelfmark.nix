@@ -19,7 +19,7 @@ in
 
     services.web = {
       enable = true;
-      image = "ghcr.io/calibrain/shelfmark:v1.6.2@sha256:543d8696a140938438ae5a5838f8b0d258429b2fdeb462e1c52bd69ee5ed07e2";
+      image = "ghcr.io/calibrain/shelfmark:v1.7.0@sha256:94217011ca1b743ba4ad2923fe8c435b932840dc4e4a227114c83b677b52e51c";
       port = 8084;
 
       helpers.userIds = true;
