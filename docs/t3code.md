@@ -1,7 +1,8 @@
 # T3 Code
 
-T3 Code 0.1.6 is configured with Home Manager's native `programs.t3code` module
-in `modules/home/ai.nix`; host mode is selected by profiles under
+The Nitestack T3 Code fork is configured with Home Manager's native
+`programs.t3code` module in `modules/home/ai.nix`; its package comes from the
+`t3code` flake input rather than nixpkgs. Host mode is selected by profiles under
 `configurations/home/`.
 
 | Host | Mode |
@@ -17,10 +18,14 @@ user profiles. The wrapper still references the upstream combined package in
 the Nix store. The T3 CLI wrapper includes Codex, Claude Code, and OpenCode on
 its `PATH`.
 
-The Nixpkgs source build needs T3 Connect's public build-time configuration or
-the app hides its cloud controls and CLI support. `modules/home/ai.nix` copies
-the upstream `.env.example` into the build environment to enable them; it
-contains public identifiers, not credentials.
+The source build needs T3 Connect's public build-time configuration or the app
+hides its cloud controls and CLI support. `modules/home/ai.nix` copies
+`.env.example` into the fork package's build environment to enable them; it
+contains public identifiers, not credentials. The fork adds native aix
+support; see the [fork repository](https://github.com/Nitestack/t3code) and its
+[Nix installation guide](https://github.com/Nitestack/t3code/blob/main/docs/user/install.md).
+The package sets `T3CODE_AIX=1` for its desktop and server launchers, using the
+aix profiles already configured in Home Manager.
 
 On `homestation` and `wslstation`, the server is a Home Manager user unit named
 `t3code.service`, managed declaratively by each profile. User lingering is
@@ -88,7 +93,7 @@ To check service health on `homestation` or `wslstation`, use
 `journalctl --user -u t3code.service -f`. To disable T3 Connect on a headless
 host, run `t3 connect unlink` as the same user; on `nixstation`, turn it off in
 **Settings → Sharing & access**. See the
-[T3 Code 0.1.6 remote-access guide](https://github.com/pingdotgg/t3code/blob/v0.1.6/docs/user/remote-access.md)
+[T3 Code remote-access guide](https://github.com/Nitestack/t3code/blob/main/docs/user/remote-access.md)
 and [Home Manager's native module](https://github.com/nix-community/home-manager/blob/master/modules/programs/t3code.nix)
 for details.
 

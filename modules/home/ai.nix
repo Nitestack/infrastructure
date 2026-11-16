@@ -90,20 +90,33 @@ let
     subdir = "skills";
   };
 
-  t3codePackage = pkgs.t3code.override {
-    enableClaude = true;
-    enableCodex = true;
-    enableOpencode = true;
-    enableGit = true;
-    enableGitHub = true;
-    enableGitLab = true;
-    t3code-unwrapped = pkgs.t3code.unwrapped.overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        # T3 Connect configuration is compiled into the client and CLI.
-        cp .env.example .env
-      '';
-    });
-  };
+  t3codeBase = inputs.t3code.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  t3codeUnwrapped = t3codeBase.unwrapped.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      # T3 Connect configuration is compiled into the client and CLI.
+      cp .env.example .env
+    '';
+  });
+  t3codePackage =
+    (t3codeBase.override {
+      enableClaude = true;
+      enableCodex = true;
+      enableOpencode = true;
+      enableGit = true;
+      enableGitHub = true;
+      enableGitLab = true;
+      claude-code = pkgs.claude-code;
+      t3code-unwrapped = t3codeUnwrapped;
+    }).overrideAttrs
+      (old: {
+        # aix support is opt-in in the Nitestack fork. Expose the existing Home
+        # Manager aix profiles to both the desktop app and the headless server.
+        postBuild = (old.postBuild or "") + ''
+          for program in "$out/bin"/*; do
+            wrapProgram "$program" --set T3CODE_AIX 1
+          done
+        '';
+      });
 in
 {
   imports = [

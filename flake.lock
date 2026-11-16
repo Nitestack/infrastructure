@@ -596,6 +596,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_6": {
+      "locked": {
+        "lastModified": 1794386569,
+        "narHash": "sha256-x9sADJvoVG0L6RejZB+/BB4YiGZFBZrfTlhF4uBq1tQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
+        "type": "github"
+      }
+    },
     "ny": {
       "flake": false,
       "locked": {
@@ -631,6 +647,7 @@
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "split-monitor-workspaces": "split-monitor-workspaces",
+        "t3code": "t3code",
         "taste-skill": "taste-skill",
         "zen-browser": "zen-browser"
       }
@@ -818,6 +835,24 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "t3code": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_6"
+      },
+      "locked": {
+        "lastModified": 1794820723,
+        "narHash": "sha256-bn4Zeb487TzKCIJmckn+hV15OIw2WeJj9PSBMC6jAno=",
+        "owner": "Nitestack",
+        "repo": "t3code",
+        "rev": "0f62f455463bc531430532d3126a9e9ac47285b6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Nitestack",
+        "repo": "t3code",
         "type": "github"
       }
     },
