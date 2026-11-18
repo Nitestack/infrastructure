@@ -14,7 +14,6 @@ let
   # Bins
   inherit (import ../lib/hyprland.nix { inherit lib pkgs; }) uwsm;
 
-  ghostty = lib.getExe pkgs.ghostty;
   hyprctl = lib.getExe' osConfig.programs.hyprland.package "hyprctl";
 in
 {
@@ -33,7 +32,7 @@ in
 
             -- right monitor
             hl.exec_cmd("${uwsm} zen.desktop", { workspace = "1" })
-            hl.exec_cmd("${uwsm} ${ghostty} -e herdr", { workspace = "2" })
+            hl.exec_cmd("${uwsm} t3code.desktop", { workspace = "2" })
             hl.exec_cmd("${uwsm} proton-mail.desktop", { workspace = "3" })
           end
         '')

@@ -18,6 +18,7 @@ in
     self.homeModules.direnv
     self.homeModules.eza
     self.homeModules.git
+    self.homeModules.helix
     self.homeModules.herdr
     self.homeModules.lazygit
     self.homeModules.neovim
