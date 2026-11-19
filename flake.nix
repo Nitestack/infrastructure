@@ -35,9 +35,9 @@
     # agent-skills-nix
     agent-skills.url = "github:Kyure-A/agent-skills-nix";
     # aix
-    aix.url = "github:Nitestack/aix";
+    aix.url = "github:get-aix/aix";
     # T3 Code with native aix support
-    t3code.url = "github:Nitestack/t3code";
+    t3code.url = "github:get-aix/t3code";
     # Apple Fonts
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
     # Catppuccin Bat Theme

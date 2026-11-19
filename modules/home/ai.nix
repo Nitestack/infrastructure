@@ -98,6 +98,8 @@ let
     enableGit = true;
     enableGitHub = true;
     enableGitLab = true;
+    # Use claude-code from our nixpkgs (allowUnfree = true); the pinned
+    # t3code flake evaluates its own nixpkgs without unfree allowed.
     claude-code = pkgs.claude-code;
   };
 in
@@ -107,12 +109,52 @@ in
 
     self.homeModules.opencode
   ];
-  home.packages = with pkgs; [
-    antigravity-acp
-    codex
-    claude-code
-  ];
+  home.packages = [ pkgs.antigravity-acp ];
   programs = {
+    claude-code = {
+      enable = true;
+      mutableSettings = true;
+      settings = {
+        attribution = {
+          commit = "";
+          pr = "";
+        };
+        autoMemoryEnabled = false;
+        syncClaudeAiPlugins = false;
+        env = {
+          DISABLE_AUTOUPDATER = "1";
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
+          DISABLE_FEEDBACK_COMMAND = "1";
+          CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY = "1";
+          ENABLE_PROMPT_CACHING_1H = "1";
+        };
+      };
+    };
+    codex = {
+      enable = true;
+      mutableSettings = true;
+      settings = {
+        check_for_update_on_startup = false;
+        web_search = "live";
+        personality = "none";
+        analytics.enabled = false;
+        feedback.enabled = false;
+        otel = {
+          exporter = "none";
+          trace_exporter = "none";
+          metrics_exporter = "none";
+        };
+        features = {
+          memories = false;
+          remote_plugin = false;
+          skill_mcp_dependency_install = false;
+        };
+        memories = {
+          generate_memories = false;
+          use_memories = false;
+        };
+      };
+    };
     agent-skills = {
       enable = true;
       sources = {
