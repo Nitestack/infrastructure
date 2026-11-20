@@ -41,15 +41,15 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1794864200,
-        "narHash": "sha256-zqDD6HYXa1Kr0blTPdwzrbVy+IoFaqJrHH1ZwoMM25A=",
-        "owner": "Nitestack",
+        "lastModified": 1795189998,
+        "narHash": "sha256-X4HtsLL+M//q12bm9rKH3Rr13yYypSE9Dbw7h/5+03s=",
+        "owner": "get-aix",
         "repo": "aix",
-        "rev": "d079a74b3aea7957d37c76126d3afa7b1537450f",
+        "rev": "6859da41c17b4466828d2bf441dda3bd9ac7e4df",
         "type": "github"
       },
       "original": {
-        "owner": "Nitestack",
+        "owner": "get-aix",
         "repo": "aix",
         "type": "github"
       }
@@ -843,15 +843,15 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1795000422,
-        "narHash": "sha256-E9l4EEGLJJ1xcpciYLk/Hdp4rtlmJ0eA1FAOIBdLx3A=",
-        "owner": "Nitestack",
+        "lastModified": 1795128174,
+        "narHash": "sha256-s2yrJAbzx1lRUR4gYUGOF4cAp3Gh7WGMKOa05Mn9y/c=",
+        "owner": "get-aix",
         "repo": "t3code",
-        "rev": "eb0a5c1477c6fc344f709091613e8511d8d1d166",
+        "rev": "c6d6b495f1b6f30525feffd0ff283afd85126334",
         "type": "github"
       },
       "original": {
-        "owner": "Nitestack",
+        "owner": "get-aix",
         "repo": "t3code",
         "type": "github"
       }
