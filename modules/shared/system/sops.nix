@@ -19,7 +19,12 @@ let
     "adp"
     "ac"
     "acs"
+    "nim1"
+    "nim2"
+    "nim3"
     "nim4"
+    "nim5"
+    "nim6"
     "ae2"
   ];
   aixSecretsFile = self + /secrets/shared/aix.yaml;

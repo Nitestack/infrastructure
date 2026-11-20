@@ -38,9 +38,29 @@ in
         label.file = sopsPath "aix/acs-label";
         apiKey.file = sopsPath "aix/acs";
       };
+      nim1 = {
+        label.file = sopsPath "aix/nim1-label";
+        apiKey.file = sopsPath "aix/nim1";
+      };
+      nim2 = {
+        label.file = sopsPath "aix/nim2-label";
+        apiKey.file = sopsPath "aix/nim2";
+      };
+      nim3 = {
+        label.file = sopsPath "aix/nim3-label";
+        apiKey.file = sopsPath "aix/nim3";
+      };
       nim4 = {
         label.file = sopsPath "aix/nim4-label";
         apiKey.file = sopsPath "aix/nim4";
+      };
+      nim5 = {
+        label.file = sopsPath "aix/nim5-label";
+        apiKey.file = sopsPath "aix/nim5";
+      };
+      nim6 = {
+        label.file = sopsPath "aix/nim6-label";
+        apiKey.file = sopsPath "aix/nim6";
       };
       ae2 = {
         label.file = sopsPath "aix/ae2-label";
