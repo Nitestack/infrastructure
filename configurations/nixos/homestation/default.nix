@@ -49,7 +49,12 @@ in
   ];
 
   # ── Networking ────────────────────────────────────────────────────────
-  networking.hostName = "homestation";
+  networking = {
+    hostName = "homestation";
+    firewall.allowedTCPPorts = [
+      3773 # T3 Code headless server: direct LAN access and route learning
+    ];
+  };
 
   # ── Graphics ──────────────────────────────────────────────────────────
   # Intel UHD 630 (i5-9500T): VAAPI for QSV transcoding + OpenVINO for
@@ -126,7 +131,7 @@ in
   users.users.${meta.username} = {
     # Allowed SSH clients
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nhan@nixstation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAE51+iQSvnNjWATieu+alWv351eNsQmF7jRXUvty/ZH nixstation"
     ];
   };
 }

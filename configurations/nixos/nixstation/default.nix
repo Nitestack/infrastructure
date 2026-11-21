@@ -110,7 +110,7 @@ in
       "video"
     ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0+BKbfkmqQWRQ8ptCy6qKa6M4m1kEZ7Fh35Ry1I5cG nhan@homestation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ0+BKbfkmqQWRQ8ptCy6qKa6M4m1kEZ7Fh35Ry1I5cG homestation"
     ];
   };
 

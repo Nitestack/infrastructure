@@ -38,10 +38,6 @@ Keep host choices in `configurations/*/<host>/`; put reusable behaviour in
 - Use `switch` for ordinary NixOS changes. Reserve `boot` for first-install
   flows or changes that must be selected at the next boot; the WSL exception is
   documented in `configurations/nixos/wslstation/AGENTS.md`.
-- When the current machine is `wslstation`, sudo is passwordless. Read the WSL
-  guide, verify it with `sudo -n true`, and use its `nix-switch` workflow so the
-  configured `nh` wrapper selects `wslstation` and `~/infrastructure` without
-  waiting for a prompt.
 
 ## Git and CI
 

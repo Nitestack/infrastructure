@@ -8,15 +8,20 @@ The Nitestack T3 Code fork is configured with Home Manager's native
 | Host | Mode |
 | --- | --- |
 | `nixstation` | Desktop app owns the local environment and T3 Connect route. |
-| `homestation` | Headless `t3 serve` user service. |
+| `homestation` | Headless `t3 serve --lan` user service (TCP port `3773` open on LAN and Tailscale). |
 | `wslstation` | Headless `t3 serve` user service. |
 
-The T3 Code package bundles its desktop executable and server CLI. On the
-headless-only profiles, Home Manager is given a small package wrapper that
-exposes only the `t3` launcher, so no T3 Code desktop launcher is added to those
-user profiles. The wrapper still references the upstream combined package in
-the Nix store. The T3 CLI wrapper includes Codex, Claude Code, and OpenCode on
-its `PATH`.
+The T3 Code package bundles its desktop executable and server CLI. `modules/home/ai.nix`
+uses `t3code-full.override` from the `t3code` flake input, which provides
+browser preview runtime libraries (via `NIX_LD_LIBRARY_PATH`, backed by
+`programs.nix-ld.enable = true` in `modules/nixos/base.nix`), the local Android
+emulator/device toolchain (`ANDROID_HOME`, `nodejs`, `ffmpeg`, JDK, and Android
+SDK tools on `PATH`), `cloudflared` (via `T3CODE_CLOUDFLARED_PATH`), and
+enables Codex, Claude Code, OpenCode, `git`, `gh`, `glab`, and
+`antigravity-acp` on `PATH`. On the headless-only profiles, Home Manager is
+given a small package wrapper that exposes only the `t3` launcher, so no T3
+Code desktop launcher is added to those user profiles. The wrapper still
+references the upstream combined package in the Nix store.
 
 The source build needs T3 Connect's public build-time configuration or the app
 hides its cloud controls and CLI support. `modules/home/ai.nix` copies
@@ -28,7 +33,10 @@ The package sets `T3CODE_AIX=1` for its desktop and server launchers, using the
 aix profiles already configured in Home Manager.
 
 On `homestation` and `wslstation`, the server is a Home Manager user unit named
-`t3code.service`, managed declaratively by each profile. User lingering is
+`t3code.service`, managed declaratively by each profile. `homestation` passes
+`--lan` in `configurations/home/server.nix` and opens TCP port `3773` in
+`configurations/nixos/homestation/default.nix` so paired and T3 Connect clients
+can use direct LAN and Tailscale routes. User lingering is
 enabled on both hosts, so the unit can run after logout and start when the
 user manager starts. On `wslstation`, this does not start a stopped WSL distro:
 Windows must be running and the distro must have started. Check either service

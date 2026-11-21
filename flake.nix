@@ -82,7 +82,7 @@
       url = "github:mattpocock/skills";
       flake = false;
     };
-    # OpenCode 2
+    # llm-agents.nix
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";

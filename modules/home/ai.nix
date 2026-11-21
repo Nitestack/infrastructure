@@ -90,17 +90,14 @@ let
     subdir = "skills";
   };
 
-  t3codeBase = inputs.t3code.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  t3codePackage = t3codeBase.override {
+  t3codePackage = inputs.t3code.packages.${pkgs.stdenv.hostPlatform.system}.t3code-full.override {
     enableClaude = true;
     enableCodex = true;
     enableOpencode = true;
     enableGit = true;
     enableGitHub = true;
     enableGitLab = true;
-    # Use claude-code from our nixpkgs (allowUnfree = true); the pinned
-    # t3code flake evaluates its own nixpkgs without unfree allowed.
-    claude-code = pkgs.claude-code;
+    extraRuntimePackages = [ pkgs.antigravity-acp ];
   };
 in
 {

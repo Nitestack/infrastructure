@@ -16,6 +16,7 @@ in
     self.homeModules.interactive-only
     self.homeModules.gui-only
 
+    self.homeModules.herdr-app
     self.homeModules.hyprland
     self.homeModules.theme
     self.homeModules.zen-browser

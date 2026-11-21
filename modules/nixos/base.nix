@@ -50,15 +50,18 @@ in
   };
 
   # ── Services ──────────────────────────────────────────────────────────
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true; # Enable mDNS for IPv4
-    nssmdns6 = true; # Enable mDNS for IPv6
-    openFirewall = true; # Open the firewall for Avahi
-    settings.server = {
-      use-ipv4 = true; # Ensure IPv4 support
-      use-ipv6 = true; # Ensure IPv6 support
+  services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true; # Enable mDNS for IPv4
+      nssmdns6 = true; # Enable mDNS for IPv6
+      openFirewall = true; # Open the firewall for Avahi
+      settings.server = {
+        use-ipv4 = true; # Ensure IPv4 support
+        use-ipv6 = true; # Ensure IPv6 support
+      };
     };
+    fstrim.enable = true;
   };
 
   # ── Localization ──────────────────────────────────────────────────────

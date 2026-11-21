@@ -2,10 +2,14 @@
 # │ Herdr                                                    │
 # ╰──────────────────────────────────────────────────────────╯
 {
+  flake,
   lib,
   pkgs,
   ...
 }:
+let
+  hc = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core;
+in
 {
   programs.herdr = {
     enable = true;
@@ -34,4 +38,23 @@
       };
     };
   };
+
+  home.packages = [ hc ];
+
+  systemd.user.services.herdr-core = {
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${lib.getExe hc} server start";
+    };
+
+    Install.WantedBy = [ "default.target" ];
+  };
+
+  xdg.configFile."herdr-core/config.toml".source =
+    (pkgs.formats.toml { }).generate "herdr-core-config.toml"
+      {
+        shell = [
+          (lib.getExe pkgs.nushell)
+        ];
+      };
 }

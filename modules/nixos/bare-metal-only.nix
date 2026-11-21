@@ -21,10 +21,10 @@ in
     extraGroups = [ "networkmanager" ];
     # SSH clients authorized on both bare-metal hosts.
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6egS4kyK6TIE4+3nZUonv3BtDR9tnyCzMn9RO5Q3fJ nhan@winstation"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqfwTlUnVgk7oLwIy5b9wFn1yShMOYU7eYXqnpK4VD0 nhan@wslstation"
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNRYpZjGy6COglYwmsF/RUnbK03WHBKXODo4+8De+olUfUKNsVsFAwvrJQHR51/d5UijZPuaVbumSxbr5u1O1Fo= nhan@phonestation"
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIwde2muSk5nnpqQmDHipfT/sMJ43i9Fq5AYGpXkFRc7sD1Wp/y0fPlzQg4GWRyy1gQDjBf8w61UomM2TK5NgQ0= nhan@ipadstation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6egS4kyK6TIE4+3nZUonv3BtDR9tnyCzMn9RO5Q3fJ winstation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINqfwTlUnVgk7oLwIy5b9wFn1yShMOYU7eYXqnpK4VD0 wslstation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7L6GoOmhnNLml0F4i6kFFNSyWZ3uF1LeJ+MpDk22JT phonestation"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILXfvlV4sodQ/69iAmNiHBqv6ge6yTSjIhmvgedqQjoH ipadstation"
     ];
   };
 

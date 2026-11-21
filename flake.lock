@@ -843,11 +843,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1795128174,
-        "narHash": "sha256-s2yrJAbzx1lRUR4gYUGOF4cAp3Gh7WGMKOa05Mn9y/c=",
+        "lastModified": 1795293440,
+        "narHash": "sha256-w6+4zfnsLspdnIMOsUZFpexjKflLLWvJ17ngd0kWmLc=",
         "owner": "get-aix",
         "repo": "t3code",
-        "rev": "c6d6b495f1b6f30525feffd0ff283afd85126334",
+        "rev": "80a119e92daded9839d27ea0631ea7aa2cfe6929",
         "type": "github"
       },
       "original": {

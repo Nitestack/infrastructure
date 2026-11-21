@@ -3,17 +3,12 @@
 # ╰──────────────────────────────────────────────────────────╯
 {
   pkgs,
-  flake,
   config,
   osConfig,
   lib,
   ...
 }:
 let
-  inherit (flake) inputs;
-
-  opencode2Package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2;
-
   hasWorkProfile = config.programs.aix.enable or false;
   isWsl = osConfig.wsl.enable or false;
 
@@ -66,7 +61,7 @@ let
           if [ "$#" -eq 0 ] || [[ "$1" == -* ]] || [ -d "$1" ]; then
             set -- --standalone "$@"
           fi
-          exec ${lib.escapeShellArg "${opencode2Package}/bin/opencode2"} "$@"
+          exec ${lib.getExe pkgs.opencode} "$@"
         fi
       ''
     else
@@ -77,7 +72,7 @@ let
     text = workLaunch + ''
       NVIDIA_API_KEY="$(cat ${lib.escapeShellArg osConfig.sops.secrets.nim-api-key.path})"
       export NVIDIA_API_KEY
-      exec ${lib.escapeShellArg "${opencode2Package}/bin/opencode2"} "$@"
+      exec ${lib.getExe pkgs.opencode} "$@"
     '';
   };
 in
