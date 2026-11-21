@@ -20,7 +20,7 @@ in
 
   homelab.apps.beets.services.main = {
     enable = true;
-    image = "linuxserver/beets:2.14.1@sha256:01e4d6177968a8312843f0b1b19d766ee2f07eb08b327ef2ae9422a5dcd2364a";
+    image = "linuxserver/beets:2.14.1@sha256:94c3689c43f4ef99ccfe6b117c62c4d779734f8f773b53736b1223cc5c36901e";
 
     volumes = [
       {
