@@ -24,8 +24,9 @@ hostname.
 | Immich | Public `media.npham.de` | Photo and video management | [`immich.nix`](../configurations/nixos/homestation/homelab/immich.nix) |
 | IT-Tools | Public `it.npham.de` | Browser-based technical utilities | [`it-tools.nix`](../configurations/nixos/homestation/homelab/it-tools.nix) |
 | Navidrome | Public `music.npham.de` | Music streaming | [`navidrome.nix`](../configurations/nixos/homestation/homelab/navidrome.nix) |
-| Nextcloud AIO | Public `cloud.npham.de` | File collaboration and sync | [`nextcloud.nix`](../configurations/nixos/homestation/homelab/nextcloud.nix) |
+| Nextcloud AIO | Private `cloud.npham.de` | File collaboration and sync | [`nextcloud.nix`](../configurations/nixos/homestation/homelab/nextcloud.nix) |
 | Obsidian LiveSync | Public `obsidian.npham.de` | CouchDB endpoint for Obsidian sync | [`obsidian-livesync.nix`](../configurations/nixos/homestation/homelab/obsidian-livesync.nix) |
+| Paperless-ngx | Private `docs.npham.de` until Pocket ID setup; then public | Household document archive; optional Proton Mail intake through native Proton Bridge | [`paperless.nix`](../configurations/nixos/homestation/homelab/paperless.nix), [`protonmail-bridge.nix`](../configurations/nixos/homestation/protonmail-bridge.nix), [runbook](homestation-paperless.md) |
 | Pocket ID | Public `id.npham.de` | Identity provider | [`pocket-id.nix`](../configurations/nixos/homestation/homelab/pocket-id.nix) |
 | Prowlarr | Public `index.npham.de` | Indexer management | [`prowlarr.nix`](../configurations/nixos/homestation/homelab/prowlarr.nix) |
 | RdtClient | Public `magnets.npham.de` | Download-client bridge | [`rdtclient.nix`](../configurations/nixos/homestation/homelab/rdtclient.nix) |

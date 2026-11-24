@@ -103,6 +103,16 @@ let
       stageName = "pocket-id-data";
     }
     {
+      path = "${dataDir}/paperless/data";
+      service = "arion-paperless.service";
+      stageName = "paperless-data";
+    }
+    {
+      path = "${dataDir}/paperless/media";
+      service = "arion-paperless.service";
+      stageName = "paperless-media";
+    }
+    {
       path = "${dataDir}/prowlarr/data";
       service = "arion-prowlarr.service";
       stageName = "prowlarr-data";
@@ -192,6 +202,13 @@ let
       passwordFile = config.sops.secrets."immich/db-password".path;
       outputName = "postgres/immich.sql.gz";
       user = "postgres";
+    }
+    {
+      container = "paperless-db";
+      database = "paperless";
+      passwordFile = config.sops.secrets."paperless/db-password".path;
+      outputName = "postgres/paperless.sql.gz";
+      user = "paperless";
     }
   ];
 

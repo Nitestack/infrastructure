@@ -38,6 +38,7 @@ in
         NAVIDROME_URL = appUrl cfg.apps.navidrome;
         # NEXTCLOUD_URL = appUrl cfg.apps.nextcloud;
         NEXTCLOUD_URL = "https://cloud.npham.de";
+        PAPERLESS_URL = appUrl cfg.apps.paperless;
         POCKET_ID_URL = appUrl cfg.apps.pocket-id;
         PROWLARR_URL = appUrl cfg.apps.prowlarr;
         RDTCLIENT_URL = appUrl cfg.apps.rdtclient;

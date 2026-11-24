@@ -15,6 +15,7 @@ let
     "bookorbit/db-password"
     "ente/db-password"
     "immich/db-password"
+    "paperless/db-password"
   ];
 
   baseModule = {
@@ -67,6 +68,8 @@ let
     "freshrss-extensions"
     "navidrome-data"
     "pocket-id-data"
+    "paperless-data"
+    "paperless-media"
     "prowlarr-data"
     "rdtclient-db"
     "shelfmark-config"
@@ -113,6 +116,8 @@ assert builtins.all (
 ) stableStageNames;
 assert lib.hasInfix "bookorbit-db" localPrepareScript;
 assert lib.hasInfix "postgres/bookorbit.sql.gz" localPrepareScript;
+assert lib.hasInfix "paperless-db" localPrepareScript;
+assert lib.hasInfix "postgres/paperless.sql.gz" localPrepareScript;
 assert !lib.hasInfix "/sources/source-" localPrepareScript;
 assert lib.hasInfix ''
   done <"$stopped_services_file"

@@ -38,6 +38,7 @@ in
     ./homelab/navidrome.nix
     ./homelab/nextcloud.nix
     ./homelab/obsidian-livesync.nix
+    ./homelab/paperless.nix
     ./homelab/pocket-id.nix
     ./homelab/prowlarr.nix
     ./homelab/rdtclient.nix
@@ -45,6 +46,7 @@ in
     ./homelab/vaultwarden.nix
     ./homelab/vikunja.nix
     ./homelab/wealthfolio.nix
+    ./protonmail-bridge.nix
     ./tailscale.nix
   ];
 

@@ -153,6 +153,7 @@ updates, and rollback.
 - [`docs/homestation-operations.md`](docs/homestation-operations.md) — operate and diagnose homestation services.
 - [`docs/homestation-backup-recovery.md`](docs/homestation-backup-recovery.md) — inspect, verify, and recover homestation backups.
 - [`docs/homestation-services.md`](docs/homestation-services.md) — current homestation service inventory and exposure.
+- [`docs/homestation-paperless.md`](docs/homestation-paperless.md) — Paperless document archive, Pocket ID, Proton Mail intake, and recovery.
 - [`docs/operations.md`](docs/operations.md) — routine validation, activation, input updates, and recovery.
 - [`docs/wake-on-lan.md`](docs/wake-on-lan.md) — firmware, NixOS, and tailnet wake-up setup for nixstation.
 - [`docs/secrets.md`](docs/secrets.md) — maintain sops-encrypted configuration safely.

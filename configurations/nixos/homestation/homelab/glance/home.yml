@@ -67,6 +67,9 @@
                 - title: Nextcloud
                   url: https://github.com/nextcloud/all-in-one
                   icon: di:nextcloud
+                - title: Paperless-ngx
+                  url: https://docs.paperless-ngx.com
+                  icon: di:paperless-ngx
                 - title: Pocket ID
                   url: https://pocket-id.org/docs
                   icon: di:pocket-id
@@ -278,6 +281,27 @@
               hide: true
             nextcloud-aio-watchtower:
               hide: true
+            paperless-web:
+              name: Paperless-ngx
+              icon: di:paperless-ngx
+              url: ${PAPERLESS_URL}
+              description: Document Archive
+              id: paperless
+            paperless-db:
+              name: PostgreSQL
+              parent: paperless
+            paperless-redis:
+              name: Valkey
+              parent: paperless
+            paperless-gotenberg:
+              name: Gotenberg
+              parent: paperless
+            paperless-tika:
+              name: Tika
+              parent: paperless
+            paperless-imap-relay:
+              name: IMAP Relay
+              parent: paperless
             pocket-id:
               name: Pocket ID
               icon: di:pocket-id
@@ -359,6 +383,7 @@
             - CorentinTh/it-tools
             - navidrome/navidrome
             - nextcloud/all-in-one
+            - paperless-ngx/paperless-ngx
             - pocket-id/pocket-id
             - Prowlarr/Prowlarr
             - rogerfar/rdt-client

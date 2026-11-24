@@ -1,6 +1,7 @@
 {
   config,
   flake,
+  lib,
   ...
 }:
 let
@@ -23,393 +24,452 @@ let
   immichSecretsFile = self + /secrets/hosts/homestation/immich.yaml;
   obsidianLivesyncSecretsFile = self + /secrets/hosts/homestation/obsidian-livesync.yaml;
   pocketIdSecretsFile = self + /secrets/hosts/homestation/pocket-id.yaml;
+  paperlessSecretsFile = self + /secrets/hosts/homestation/paperless.yaml;
   shelfmarkSecretsFile = self + /secrets/hosts/homestation/shelfmark.yaml;
   vikunjaSecretsFile = self + /secrets/hosts/homestation/vikunja.yaml;
   wealthfolioSecretsFile = self + /secrets/hosts/homestation/wealthfolio.yaml;
 in
 {
-  config.sops = {
-    secrets."cloudflared/credentials" = {
-      sopsFile = infraSecretsFile;
-      key = "cloudflared/credentials";
-      mode = "0400";
-    };
-    secrets."cloudflared/certificate" = {
-      sopsFile = infraSecretsFile;
-      key = "cloudflared/certificate";
-      mode = "0400";
-    };
-    secrets."backup/restic-password" = {
-      sopsFile = backupSecretsFile;
-      key = "restic-password";
-      mode = "0400";
-    };
-    secrets."backup/offsite-restic-password" = {
-      sopsFile = backupSecretsFile;
-      key = "offsite-restic-password";
-      mode = "0400";
-    };
-    secrets."backup/onedrive-rclone-config" = {
-      sopsFile = backupSecretsFile;
-      key = "onedrive-rclone-config";
-      mode = "0400";
-    };
-    secrets."smtp/password" = {
-      sopsFile = infraSecretsFile;
-      key = "smtp/password";
-      mode = "0400";
-    };
-    secrets."caddy/cloudflare-api-token" = {
-      sopsFile = infraSecretsFile;
-      key = "cloudflare/api-token";
-      mode = "0400";
-    };
-    secrets."pocket-id/encryption-key" = {
-      sopsFile = pocketIdSecretsFile;
-      key = "encryption-key";
-      mode = "0400";
-    };
-    secrets."beets/lastfm-key" = {
-      sopsFile = beetsSecretsFile;
-      key = "lastfm-key";
-      mode = "0400";
-    };
-    secrets."pocket-id/maxmind-license-key" = {
-      sopsFile = pocketIdSecretsFile;
-      key = "maxmind-license-key";
-      mode = "0400";
-    };
-    secrets."glance/github-api-token" = {
-      sopsFile = infraSecretsFile;
-      key = "github/api-token";
-      mode = "0400";
-    };
-    secrets."glance/user" = {
-      sopsFile = glanceSecretsFile;
-      key = "user";
-      mode = "0400";
-    };
-    secrets."glance/password-hash" = {
-      sopsFile = glanceSecretsFile;
-      key = "password-hash";
-      mode = "0400";
-    };
-    secrets."glance/secret" = {
-      sopsFile = glanceSecretsFile;
-      key = "secret";
-      mode = "0400";
-    };
-    secrets."beszel/email" = {
-      sopsFile = beszelSecretsFile;
-      key = "email";
-      mode = "0400";
-    };
-    secrets."beszel/password" = {
-      sopsFile = beszelSecretsFile;
-      key = "password";
-      mode = "0400";
-    };
-    secrets."beszel/agent-token" = {
-      sopsFile = beszelSecretsFile;
-      key = "agent-token";
-      mode = "0400";
-    };
-    secrets."beszel/agent-key" = {
-      sopsFile = beszelSecretsFile;
-      key = "agent-key";
-      mode = "0400";
-    };
-    secrets."bookorbit/db-password" = {
-      sopsFile = bookOrbitSecretsFile;
-      key = "postgres/password";
-      mode = "0400";
-    };
-    secrets."bookorbit/jwt-secret" = {
-      sopsFile = bookOrbitSecretsFile;
-      key = "jwt-secret";
-      mode = "0400";
-    };
-    secrets."bookorbit/setup-bootstrap-token" = {
-      sopsFile = bookOrbitSecretsFile;
-      key = "setup-bootstrap-token";
-      mode = "0400";
-    };
-    secrets."adventure-log/db-password" = {
-      sopsFile = adventureLogSecretsFile;
-      key = "db-password";
-      mode = "0400";
-    };
-    secrets."adventure-log/secret-key" = {
-      sopsFile = adventureLogSecretsFile;
-      key = "secret-key";
-      mode = "0400";
-    };
-    secrets."adventure-log/admin-password" = {
-      sopsFile = adventureLogSecretsFile;
-      key = "admin-password";
-      mode = "0400";
-    };
-    secrets."navidrome/lastfm-key" = {
-      sopsFile = infraSecretsFile;
-      key = "lastfm/key";
-      mode = "0400";
-    };
-    secrets."navidrome/lastfm-secret" = {
-      sopsFile = infraSecretsFile;
-      key = "lastfm/secret";
-      mode = "0400";
-    };
-    secrets."hardcover/api-key" = {
-      sopsFile = infraSecretsFile;
-      key = "hardcover/api-key";
-      mode = "0400";
-    };
-    secrets."ente/db-password" = {
-      sopsFile = enteSecretsFile;
-      key = "db-password";
-      mode = "0400";
-    };
-    secrets."ente/jwt-secret" = {
-      sopsFile = enteSecretsFile;
-      key = "jwt-secret";
-      mode = "0400";
-    };
-    secrets."immich/db-password" = {
-      sopsFile = immichSecretsFile;
-      key = "db-password";
-      mode = "0400";
-    };
-    secrets."floppy/secret-key" = {
-      sopsFile = floppySecretsFile;
-      key = "secret-key";
-      mode = "0400";
-    };
-    secrets."floppy/oidc-client-id" = {
-      sopsFile = floppySecretsFile;
-      key = "oidc-client-id";
-      mode = "0400";
-    };
-    secrets."floppy/oidc-client-secret" = {
-      sopsFile = floppySecretsFile;
-      key = "oidc-client-secret";
-      mode = "0400";
-    };
-    secrets."shelfmark/prowlarr-api-key" = {
-      sopsFile = shelfmarkSecretsFile;
-      key = "prowlarr/api-key";
-      mode = "0400";
-    };
-    secrets."shelfmark/oidc-client-id" = {
-      sopsFile = shelfmarkSecretsFile;
-      key = "oidc-client-id";
-      mode = "0400";
-    };
-    secrets."shelfmark/oidc-client-secret" = {
-      sopsFile = shelfmarkSecretsFile;
-      key = "oidc-client-secret";
-      mode = "0400";
-    };
-    secrets."shelfmark/rdtclient-username" = {
-      sopsFile = shelfmarkSecretsFile;
-      key = "rdtclient/username";
-      mode = "0400";
-    };
-    secrets."shelfmark/rdtclient-password" = {
-      sopsFile = shelfmarkSecretsFile;
-      key = "rdtclient/password";
-      mode = "0400";
-    };
-    secrets."wealthfolio/secret-key" = {
-      sopsFile = wealthfolioSecretsFile;
-      key = "secret-key";
-      mode = "0400";
-    };
-    secrets."wealthfolio/password-hash" = {
-      sopsFile = wealthfolioSecretsFile;
-      key = "password-hash";
-      mode = "0400";
-    };
-    secrets."wealthfolio/oidc-client-id" = {
-      sopsFile = wealthfolioSecretsFile;
-      key = "oidc-client-id";
-      mode = "0400";
-    };
-    secrets."wealthfolio/oidc-client-secret" = {
-      sopsFile = wealthfolioSecretsFile;
-      key = "oidc-client-secret";
-      mode = "0400";
-    };
-    secrets."vikunja/service-secret" = {
-      sopsFile = vikunjaSecretsFile;
-      key = "vikunja/service-secret";
-      mode = "0400";
-    };
-    secrets."audiomuse-ai/db-password" = {
-      sopsFile = audiomuseAiSecretsFile;
-      key = "db-password";
-      mode = "0400";
-    };
-    secrets."obsidian-livesync/db-password" = {
-      sopsFile = obsidianLivesyncSecretsFile;
-      key = "db-password";
-      mode = "0400";
-    };
-    templates."caddy.env" = {
-      content = ''
-        CLOUDFLARE_API_TOKEN=${config.sops.placeholder."caddy/cloudflare-api-token"}
-      '';
-      mode = "0400";
-    };
-    templates."vaultwarden-smtp.env" = {
-      content = ''
-        SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
-      '';
-      mode = "0400";
-    };
-    templates."pocket-id.env" = {
-      content = ''
-        MAXMIND_LICENSE_KEY=${config.sops.placeholder."pocket-id/maxmind-license-key"}
-        ENCRYPTION_KEY=${config.sops.placeholder."pocket-id/encryption-key"}
-        SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
-      '';
-      mode = "0400";
-    };
-    templates."glance-user" = {
-      content = ''
-        ${config.sops.placeholder."glance/user"}
-      '';
-      mode = "0400";
-    };
-    templates."glance-password-hash" = {
-      content = ''
-        ${config.sops.placeholder."glance/password-hash"}
-      '';
-      mode = "0400";
-    };
-    templates."glance-secret" = {
-      content = ''
-        ${config.sops.placeholder."glance/secret"}
-      '';
-      mode = "0400";
-    };
-    templates."glance-github-api-token" = {
-      content = ''
-        ${config.sops.placeholder."glance/github-api-token"}
-      '';
-      mode = "0400";
-    };
-    templates."beszel-hub.env" = {
-      content = ''
-        USER_EMAIL=${config.sops.placeholder."beszel/email"}
-        USER_PASSWORD=${config.sops.placeholder."beszel/password"}
-      '';
-      mode = "0400";
-    };
-    templates."beszel-agent.env" = {
-      content = ''
-        TOKEN=${config.sops.placeholder."beszel/agent-token"}
-        KEY=${config.sops.placeholder."beszel/agent-key"}
-      '';
-      mode = "0400";
-    };
-    templates."adventure-log-db.env" = {
-      content = ''
-        POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
-      '';
-      mode = "0400";
-    };
-    templates."adventure-log-server.env" = {
-      content = ''
-        POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
-        SECRET_KEY=${config.sops.placeholder."adventure-log/secret-key"}
-        DJANGO_ADMIN_PASSWORD=${config.sops.placeholder."adventure-log/admin-password"}
-        EMAIL_HOST_PASSWORD=${config.sops.placeholder."smtp/password"}
-      '';
-      mode = "0400";
-    };
-    templates."navidrome.env" = {
-      content = ''
-        ND_LASTFM_APIKEY=${config.sops.placeholder."navidrome/lastfm-key"}
-        ND_LASTFM_SECRET=${config.sops.placeholder."navidrome/lastfm-secret"}
-      '';
-      mode = "0400";
-    };
-    templates."bookorbit-app.env" = {
-      content = ''
-        POSTGRES_PASSWORD=${config.sops.placeholder."bookorbit/db-password"}
-        JWT_SECRET=${config.sops.placeholder."bookorbit/jwt-secret"}
-        SETUP_BOOTSTRAP_TOKEN=${config.sops.placeholder."bookorbit/setup-bootstrap-token"}
-      '';
-      mode = "0400";
-    };
-    templates."bookorbit-db.env" = {
-      content = ''
-        POSTGRES_PASSWORD=${config.sops.placeholder."bookorbit/db-password"}
-      '';
-      mode = "0400";
-    };
-    templates."ente.env" = {
-      content = ''
-        POSTGRES_PASSWORD=${config.sops.placeholder."ente/db-password"}
-      '';
-      mode = "0400";
-    };
-    templates."immich.env" = {
-      content = ''
-        DB_PASSWORD=${config.sops.placeholder."immich/db-password"}
-      '';
-      mode = "0400";
-    };
-    templates."shelfmark.env" = {
-      content = ''
-        EMAIL_SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
-        PROWLARR_API_KEY=${config.sops.placeholder."shelfmark/prowlarr-api-key"}
-        HARDCOVER_API_KEY=${config.sops.placeholder."hardcover/api-key"}
-        OIDC_CLIENT_ID=${config.sops.placeholder."shelfmark/oidc-client-id"}
-        OIDC_CLIENT_SECRET=${config.sops.placeholder."shelfmark/oidc-client-secret"}
-        QBITTORRENT_USERNAME=${config.sops.placeholder."shelfmark/rdtclient-username"}
-        QBITTORRENT_PASSWORD=${config.sops.placeholder."shelfmark/rdtclient-password"}
-      '';
-      mode = "0400";
-    };
-    templates."wealthfolio.env" = {
-      content = ''
-        WF_SECRET_KEY=${config.sops.placeholder."wealthfolio/secret-key"}
-        # WF_AUTH_PASSWORD_HASH='${config.sops.placeholder."wealthfolio/password-hash"}'
-        WF_OIDC_CLIENT_ID=${config.sops.placeholder."wealthfolio/oidc-client-id"}
-        WF_OIDC_CLIENT_SECRET=${config.sops.placeholder."wealthfolio/oidc-client-secret"}
-      '';
-      mode = "0400";
-    };
-    templates."vikunja.env" = {
-      content = ''
-        VIKUNJA_SERVICE_SECRET=${config.sops.placeholder."vikunja/service-secret"}
-        VIKUNJA_MAILER_PASSWORD=${config.sops.placeholder."smtp/password"}
-      '';
-      mode = "0400";
-    };
-    templates."floppy.env" = {
-      content = ''
-        SECRET=${config.sops.placeholder."floppy/secret-key"}
-        SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocketid","name":"Pocket ID","client_id":"${
-          config.sops.placeholder."floppy/oidc-client-id"
-        }","secret":"${
-          config.sops.placeholder."floppy/oidc-client-secret"
-        }","settings":{"server_url":"${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration"}}]}}
-      '';
-      mode = "0400";
-    };
-    templates."audiomuse-ai.env" = {
-      content = ''
-        POSTGRES_PASSWORD=${config.sops.placeholder."audiomuse-ai/db-password"}
-      '';
-      mode = "0400";
-    };
-    templates."obsidian-livesync.env" = {
-      content = ''
-        COUCHDB_PASSWORD=${config.sops.placeholder."obsidian-livesync/db-password"}
-      '';
-      mode = "0400";
-    };
-  };
+  config.sops = lib.mkMerge [
+    {
+      secrets."cloudflared/credentials" = {
+        sopsFile = infraSecretsFile;
+        key = "cloudflared/credentials";
+        mode = "0400";
+      };
+      secrets."cloudflared/certificate" = {
+        sopsFile = infraSecretsFile;
+        key = "cloudflared/certificate";
+        mode = "0400";
+      };
+      secrets."backup/restic-password" = {
+        sopsFile = backupSecretsFile;
+        key = "restic-password";
+        mode = "0400";
+      };
+      secrets."backup/offsite-restic-password" = {
+        sopsFile = backupSecretsFile;
+        key = "offsite-restic-password";
+        mode = "0400";
+      };
+      secrets."backup/onedrive-rclone-config" = {
+        sopsFile = backupSecretsFile;
+        key = "onedrive-rclone-config";
+        mode = "0400";
+      };
+      secrets."smtp/password" = {
+        sopsFile = infraSecretsFile;
+        key = "smtp/password";
+        mode = "0400";
+      };
+      secrets."caddy/cloudflare-api-token" = {
+        sopsFile = infraSecretsFile;
+        key = "cloudflare/api-token";
+        mode = "0400";
+      };
+      secrets."pocket-id/encryption-key" = {
+        sopsFile = pocketIdSecretsFile;
+        key = "encryption-key";
+        mode = "0400";
+      };
+      secrets."beets/lastfm-key" = {
+        sopsFile = beetsSecretsFile;
+        key = "lastfm-key";
+        mode = "0400";
+      };
+      secrets."pocket-id/maxmind-license-key" = {
+        sopsFile = pocketIdSecretsFile;
+        key = "maxmind-license-key";
+        mode = "0400";
+      };
+      secrets."glance/github-api-token" = {
+        sopsFile = infraSecretsFile;
+        key = "github/api-token";
+        mode = "0400";
+      };
+      secrets."glance/user" = {
+        sopsFile = glanceSecretsFile;
+        key = "user";
+        mode = "0400";
+      };
+      secrets."glance/password-hash" = {
+        sopsFile = glanceSecretsFile;
+        key = "password-hash";
+        mode = "0400";
+      };
+      secrets."glance/secret" = {
+        sopsFile = glanceSecretsFile;
+        key = "secret";
+        mode = "0400";
+      };
+      secrets."beszel/email" = {
+        sopsFile = beszelSecretsFile;
+        key = "email";
+        mode = "0400";
+      };
+      secrets."beszel/password" = {
+        sopsFile = beszelSecretsFile;
+        key = "password";
+        mode = "0400";
+      };
+      secrets."beszel/agent-token" = {
+        sopsFile = beszelSecretsFile;
+        key = "agent-token";
+        mode = "0400";
+      };
+      secrets."beszel/agent-key" = {
+        sopsFile = beszelSecretsFile;
+        key = "agent-key";
+        mode = "0400";
+      };
+      secrets."bookorbit/db-password" = {
+        sopsFile = bookOrbitSecretsFile;
+        key = "postgres/password";
+        mode = "0400";
+      };
+      secrets."bookorbit/jwt-secret" = {
+        sopsFile = bookOrbitSecretsFile;
+        key = "jwt-secret";
+        mode = "0400";
+      };
+      secrets."bookorbit/setup-bootstrap-token" = {
+        sopsFile = bookOrbitSecretsFile;
+        key = "setup-bootstrap-token";
+        mode = "0400";
+      };
+      secrets."adventure-log/db-password" = {
+        sopsFile = adventureLogSecretsFile;
+        key = "db-password";
+        mode = "0400";
+      };
+      secrets."adventure-log/secret-key" = {
+        sopsFile = adventureLogSecretsFile;
+        key = "secret-key";
+        mode = "0400";
+      };
+      secrets."adventure-log/admin-password" = {
+        sopsFile = adventureLogSecretsFile;
+        key = "admin-password";
+        mode = "0400";
+      };
+      secrets."navidrome/lastfm-key" = {
+        sopsFile = infraSecretsFile;
+        key = "lastfm/key";
+        mode = "0400";
+      };
+      secrets."navidrome/lastfm-secret" = {
+        sopsFile = infraSecretsFile;
+        key = "lastfm/secret";
+        mode = "0400";
+      };
+      secrets."hardcover/api-key" = {
+        sopsFile = infraSecretsFile;
+        key = "hardcover/api-key";
+        mode = "0400";
+      };
+      secrets."ente/db-password" = {
+        sopsFile = enteSecretsFile;
+        key = "db-password";
+        mode = "0400";
+      };
+      secrets."ente/jwt-secret" = {
+        sopsFile = enteSecretsFile;
+        key = "jwt-secret";
+        mode = "0400";
+      };
+      secrets."immich/db-password" = {
+        sopsFile = immichSecretsFile;
+        key = "db-password";
+        mode = "0400";
+      };
+      secrets."paperless/db-password" = {
+        sopsFile = paperlessSecretsFile;
+        key = "db-password";
+        mode = "0400";
+      };
+      secrets."paperless/secret-key" = {
+        sopsFile = paperlessSecretsFile;
+        key = "secret-key";
+        mode = "0400";
+      };
+      secrets."floppy/secret-key" = {
+        sopsFile = floppySecretsFile;
+        key = "secret-key";
+        mode = "0400";
+      };
+      secrets."floppy/oidc-client-id" = {
+        sopsFile = floppySecretsFile;
+        key = "oidc-client-id";
+        mode = "0400";
+      };
+      secrets."floppy/oidc-client-secret" = {
+        sopsFile = floppySecretsFile;
+        key = "oidc-client-secret";
+        mode = "0400";
+      };
+      secrets."shelfmark/prowlarr-api-key" = {
+        sopsFile = shelfmarkSecretsFile;
+        key = "prowlarr/api-key";
+        mode = "0400";
+      };
+      secrets."shelfmark/oidc-client-id" = {
+        sopsFile = shelfmarkSecretsFile;
+        key = "oidc-client-id";
+        mode = "0400";
+      };
+      secrets."shelfmark/oidc-client-secret" = {
+        sopsFile = shelfmarkSecretsFile;
+        key = "oidc-client-secret";
+        mode = "0400";
+      };
+      secrets."shelfmark/rdtclient-username" = {
+        sopsFile = shelfmarkSecretsFile;
+        key = "rdtclient/username";
+        mode = "0400";
+      };
+      secrets."shelfmark/rdtclient-password" = {
+        sopsFile = shelfmarkSecretsFile;
+        key = "rdtclient/password";
+        mode = "0400";
+      };
+      secrets."wealthfolio/secret-key" = {
+        sopsFile = wealthfolioSecretsFile;
+        key = "secret-key";
+        mode = "0400";
+      };
+      secrets."wealthfolio/password-hash" = {
+        sopsFile = wealthfolioSecretsFile;
+        key = "password-hash";
+        mode = "0400";
+      };
+      secrets."wealthfolio/oidc-client-id" = {
+        sopsFile = wealthfolioSecretsFile;
+        key = "oidc-client-id";
+        mode = "0400";
+      };
+      secrets."wealthfolio/oidc-client-secret" = {
+        sopsFile = wealthfolioSecretsFile;
+        key = "oidc-client-secret";
+        mode = "0400";
+      };
+      secrets."vikunja/service-secret" = {
+        sopsFile = vikunjaSecretsFile;
+        key = "vikunja/service-secret";
+        mode = "0400";
+      };
+      secrets."audiomuse-ai/db-password" = {
+        sopsFile = audiomuseAiSecretsFile;
+        key = "db-password";
+        mode = "0400";
+      };
+      secrets."obsidian-livesync/db-password" = {
+        sopsFile = obsidianLivesyncSecretsFile;
+        key = "db-password";
+        mode = "0400";
+      };
+      templates."caddy.env" = {
+        content = ''
+          CLOUDFLARE_API_TOKEN=${config.sops.placeholder."caddy/cloudflare-api-token"}
+        '';
+        mode = "0400";
+      };
+      templates."vaultwarden-smtp.env" = {
+        content = ''
+          SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
+        '';
+        mode = "0400";
+      };
+      templates."pocket-id.env" = {
+        content = ''
+          MAXMIND_LICENSE_KEY=${config.sops.placeholder."pocket-id/maxmind-license-key"}
+          ENCRYPTION_KEY=${config.sops.placeholder."pocket-id/encryption-key"}
+          SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
+        '';
+        mode = "0400";
+      };
+      templates."glance-user" = {
+        content = ''
+          ${config.sops.placeholder."glance/user"}
+        '';
+        mode = "0400";
+      };
+      templates."glance-password-hash" = {
+        content = ''
+          ${config.sops.placeholder."glance/password-hash"}
+        '';
+        mode = "0400";
+      };
+      templates."glance-secret" = {
+        content = ''
+          ${config.sops.placeholder."glance/secret"}
+        '';
+        mode = "0400";
+      };
+      templates."glance-github-api-token" = {
+        content = ''
+          ${config.sops.placeholder."glance/github-api-token"}
+        '';
+        mode = "0400";
+      };
+      templates."beszel-hub.env" = {
+        content = ''
+          USER_EMAIL=${config.sops.placeholder."beszel/email"}
+          USER_PASSWORD=${config.sops.placeholder."beszel/password"}
+        '';
+        mode = "0400";
+      };
+      templates."beszel-agent.env" = {
+        content = ''
+          TOKEN=${config.sops.placeholder."beszel/agent-token"}
+          KEY=${config.sops.placeholder."beszel/agent-key"}
+        '';
+        mode = "0400";
+      };
+      templates."adventure-log-db.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
+        '';
+        mode = "0400";
+      };
+      templates."adventure-log-server.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."adventure-log/db-password"}
+          SECRET_KEY=${config.sops.placeholder."adventure-log/secret-key"}
+          DJANGO_ADMIN_PASSWORD=${config.sops.placeholder."adventure-log/admin-password"}
+          EMAIL_HOST_PASSWORD=${config.sops.placeholder."smtp/password"}
+        '';
+        mode = "0400";
+      };
+      templates."navidrome.env" = {
+        content = ''
+          ND_LASTFM_APIKEY=${config.sops.placeholder."navidrome/lastfm-key"}
+          ND_LASTFM_SECRET=${config.sops.placeholder."navidrome/lastfm-secret"}
+        '';
+        mode = "0400";
+      };
+      templates."bookorbit-app.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."bookorbit/db-password"}
+          JWT_SECRET=${config.sops.placeholder."bookorbit/jwt-secret"}
+          SETUP_BOOTSTRAP_TOKEN=${config.sops.placeholder."bookorbit/setup-bootstrap-token"}
+        '';
+        mode = "0400";
+      };
+      templates."bookorbit-db.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."bookorbit/db-password"}
+        '';
+        mode = "0400";
+      };
+      templates."ente.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."ente/db-password"}
+        '';
+        mode = "0400";
+      };
+      templates."immich.env" = {
+        content = ''
+          DB_PASSWORD=${config.sops.placeholder."immich/db-password"}
+        '';
+        mode = "0400";
+      };
+      templates."paperless-db.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."paperless/db-password"}
+        '';
+        mode = "0400";
+      };
+      templates."paperless-web.env" = {
+        content = ''
+          PAPERLESS_DBPASS=${config.sops.placeholder."paperless/db-password"}
+          PAPERLESS_SECRET_KEY=${config.sops.placeholder."paperless/secret-key"}
+          PAPERLESS_EMAIL_HOST_PASSWORD=${config.sops.placeholder."smtp/password"}
+        '';
+        mode = "0400";
+      };
+      templates."shelfmark.env" = {
+        content = ''
+          EMAIL_SMTP_PASSWORD=${config.sops.placeholder."smtp/password"}
+          PROWLARR_API_KEY=${config.sops.placeholder."shelfmark/prowlarr-api-key"}
+          HARDCOVER_API_KEY=${config.sops.placeholder."hardcover/api-key"}
+          OIDC_CLIENT_ID=${config.sops.placeholder."shelfmark/oidc-client-id"}
+          OIDC_CLIENT_SECRET=${config.sops.placeholder."shelfmark/oidc-client-secret"}
+          QBITTORRENT_USERNAME=${config.sops.placeholder."shelfmark/rdtclient-username"}
+          QBITTORRENT_PASSWORD=${config.sops.placeholder."shelfmark/rdtclient-password"}
+        '';
+        mode = "0400";
+      };
+      templates."wealthfolio.env" = {
+        content = ''
+          WF_SECRET_KEY=${config.sops.placeholder."wealthfolio/secret-key"}
+          # WF_AUTH_PASSWORD_HASH='${config.sops.placeholder."wealthfolio/password-hash"}'
+          WF_OIDC_CLIENT_ID=${config.sops.placeholder."wealthfolio/oidc-client-id"}
+          WF_OIDC_CLIENT_SECRET=${config.sops.placeholder."wealthfolio/oidc-client-secret"}
+        '';
+        mode = "0400";
+      };
+      templates."vikunja.env" = {
+        content = ''
+          VIKUNJA_SERVICE_SECRET=${config.sops.placeholder."vikunja/service-secret"}
+          VIKUNJA_MAILER_PASSWORD=${config.sops.placeholder."smtp/password"}
+        '';
+        mode = "0400";
+      };
+      templates."floppy.env" = {
+        content = ''
+          SECRET=${config.sops.placeholder."floppy/secret-key"}
+          SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocketid","name":"Pocket ID","client_id":"${
+            config.sops.placeholder."floppy/oidc-client-id"
+          }","secret":"${
+            config.sops.placeholder."floppy/oidc-client-secret"
+          }","settings":{"server_url":"${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration"}}]}}
+        '';
+        mode = "0400";
+      };
+      templates."audiomuse-ai.env" = {
+        content = ''
+          POSTGRES_PASSWORD=${config.sops.placeholder."audiomuse-ai/db-password"}
+        '';
+        mode = "0400";
+      };
+      templates."obsidian-livesync.env" = {
+        content = ''
+          COUCHDB_PASSWORD=${config.sops.placeholder."obsidian-livesync/db-password"}
+        '';
+        mode = "0400";
+      };
+    }
+    # Paperless rollout switches live in homelab/paperless.nix; these keys are
+    # only required once the matching feature is enabled there.
+    (lib.mkIf (cfg.apps.paperless.expose.mode == "public") {
+      secrets."paperless/oidc-client-id" = {
+        sopsFile = paperlessSecretsFile;
+        key = "oidc-client-id";
+        mode = "0400";
+      };
+      secrets."paperless/oidc-client-secret" = {
+        sopsFile = paperlessSecretsFile;
+        key = "oidc-client-secret";
+        mode = "0400";
+      };
+      templates."paperless-oidc.env" = {
+        content = ''
+          PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocketid","name":"Pocket ID","client_id":"${
+            config.sops.placeholder."paperless/oidc-client-id"
+          }","secret":"${
+            config.sops.placeholder."paperless/oidc-client-secret"
+          }","settings":{"server_url":"${appUrl cfg.apps.pocket-id}/.well-known/openid-configuration"}}]}}
+        '';
+        mode = "0400";
+      };
+    })
+    (lib.mkIf cfg.apps.paperless.services.imap-relay.enable {
+      # Public certificate; world-readable so Paperless (uid 1000) can load it.
+      secrets."paperless/bridge-certificate" = {
+        sopsFile = paperlessSecretsFile;
+        key = "bridge-certificate";
+        mode = "0444";
+      };
+    })
+  ];
 }

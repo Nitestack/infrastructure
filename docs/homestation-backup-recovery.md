@@ -434,6 +434,7 @@ directories:
 | BookOrbit | `bookorbit-db` | `bookorbit` | `bookorbit` | `POSTGRES_PASSWORD` | `/run/secrets/bookorbit/db-password` |
 | Ente | `ente-postgres` | `ente_db` | `pguser` | `POSTGRES_PASSWORD` | `/run/secrets/ente/db-password` |
 | Immich | `immich_postgres` | `immich` | `postgres` | `DB_PASSWORD` | `/run/secrets/immich/db-password` |
+| Paperless-ngx | `paperless-db` | `paperless` | `paperless` | `POSTGRES_PASSWORD` | `/run/secrets/paperless/db-password` |
 
 Find and extract one dump into the isolated directory:
 
@@ -539,6 +540,8 @@ as described above.
 | Wealthfolio data | `wealthfolio-data` | `/var/lib/homelab/wealthfolio/data` | `arion-wealthfolio.service` |
 | Floppy database | `floppy-db` | `/var/lib/homelab/floppy/db` | `arion-floppy.service` |
 | Floppy backups | `floppy-backups` | `/var/lib/homelab/floppy/backups` | `arion-floppy.service` |
+| Paperless data | `paperless-data` | `/var/lib/homelab/paperless/data` | `arion-paperless.service` |
+| Paperless media and documents | `paperless-media` | `/var/lib/homelab/paperless/media` | `arion-paperless.service` |
 
 For one selected target, restore to `RESTORE_ROOT`, stop only its unit, move
 the current target aside, and move the verified restored directory into place:

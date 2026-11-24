@@ -28,7 +28,8 @@ in
 
   homelab.apps.nextcloud = {
     expose = {
-      mode = "public";
+      # Temporarily network-only: local HTTPS ingress, no Cloudflare Tunnel.
+      mode = "private";
       host = "cloud";
       # The actual Nextcloud web server is nextcloud-aio-apache, spawned
       # dynamically by the mastercontainer via the Docker socket rather than
