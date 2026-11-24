@@ -9,6 +9,12 @@
 }:
 let
   hc = flake.inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core;
+
+  # Start the herdr-core server from a login zsh so Home Manager session
+  # variables (e.g. NH_FLAKE) are loaded once. Panes inherit that environment.
+  herdrCoreStart = pkgs.writeShellScript "herdr-core-start" ''
+    exec ${lib.getExe pkgs.zsh} -l -c 'exec ${lib.getExe hc} server start'
+  '';
 in
 {
   programs.herdr = {
@@ -44,7 +50,7 @@ in
   systemd.user.services.herdr-core = {
     Service = {
       Type = "oneshot";
-      ExecStart = "${lib.getExe hc} server start";
+      ExecStart = "${herdrCoreStart}";
     };
 
     Install.WantedBy = [ "default.target" ];

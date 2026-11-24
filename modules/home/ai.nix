@@ -106,7 +106,9 @@ in
 
     self.homeModules.opencode
   ];
-  home.packages = [ pkgs.antigravity-acp ];
+  # The CLI is installed from the Nix store, so its self-updater cannot
+  # replace it. Turn it off here, matching Claude Code's DISABLE_AUTOUPDATER.
+  home.sessionVariables.AGY_CLI_DISABLE_AUTO_UPDATE = "1";
   programs = {
     claude-code = {
       enable = true;
@@ -150,6 +152,13 @@ in
           generate_memories = false;
           use_memories = false;
         };
+      };
+    };
+    antigravity-cli = {
+      enable = true;
+      mutableSettings = true;
+      settings = {
+        showFeedbackSurvey = false;
       };
     };
     agent-skills = {
