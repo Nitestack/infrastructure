@@ -1,33 +1,50 @@
 # OpenTofu: Cloudflare Edge
 
-Manages Cloudflare-side edge state for homestation:
+Manages Cloudflare-side DNS and zone settings for both zones:
 
-- `*.npham.de` proxied CNAME -> `f4320d83-db5c-4280-808f-93822cd737c5.cfargotunnel.com`
-- zone setting `always_use_https = on`
+| Zone | Purpose | File |
+|---|---|---|
+| `npham.de` | Proton Mail, Vercel projects, homelab wildcard (`*` → tunnel) | `zone-npham-de.tf` |
+| `nhanph.am` | Future homelab and personal site; apex currently 302 → `npham.de`, `www` 301 → apex; no mail | `zone-nhanph-am.tf` |
 
-Cloudflare Tunnel ingress is not managed in OpenTofu. Source of truth is NixOS:
+Every zone also gets `modules/zone-baseline`:
 
-- generator: `modules/nixos/homelab/cloudflared.nix`
-- host wiring: `configurations/nixos/homestation/default.nix`
+- `ssl = strict`, `always_use_https`, `automatic_https_rewrites`, TLS ≥ 1.2, TLS 1.3
+- HSTS: six months, `includeSubDomains`, `nosniff`, **no** preload
+- DNSSEC on Cloudflare's side (see [DNSSEC](#dnssec))
+- CAA: only `letsencrypt.org` (Caddy, Vercel) plus the Universal SSL CAs that
+  Cloudflare adds itself; `iodef` reports go to the address in `main.tf`
 
-That NixOS config generates wildcard tunnel ingress to
-`http://127.0.0.1:<caddy.tunnelPort>`, not `https://caddy:443`.
+`nhanph.am` receives no mail: null MX, `v=spf1 -all`, DMARC `p=reject`, and an
+empty `*._domainkey` record. Replace these records when mail moves to the
+domain.
 
-## Setup
+Cloudflare Tunnel ingress is not managed here. The source of truth is NixOS:
+`modules/nixos/homelab/cloudflared.nix` generates wildcard ingress for
+`*.${homelab.domain}` to `http://127.0.0.1:<caddy.tunnelPort>`. Until
+`homelab.domain` is `nhanph.am`, `*.nhanph.am` reaches the tunnel and gets a 404.
 
-Enter the repo's dev shell so `tofu` is on `PATH`:
+## API token
 
-```sh
-nix develop
-```
+OpenTofu uses its own token, separate from the Caddy DNS-01 token on
+homestation. Create it under *My Profile → API Tokens → Custom token*, scoped to
+the zones `npham.de` and `nhanph.am`:
 
-Get the Cloudflare API token (same token Caddy uses for DNS-01 ACME) from sops
-without printing it or writing plaintext to disk. Process substitution feeds it
-directly to `read`; do not replace this with command substitution or a redirect:
+| Permission | Level |
+|---|---|
+| Zone → Zone | Read |
+| Zone → Zone Settings | Edit |
+| Zone → DNS | Edit |
+| Zone → Single Redirect | Edit |
+
+It is stored in `secrets/operator/opentofu.yaml` (`cloudflare.api-token`),
+readable by the administrator key and the workstations. Load it without printing
+it or writing plaintext to disk. Process substitution feeds it directly to
+`read`; do not replace this with command substitution or a redirect:
 
 ```bash
 IFS= read -r CLOUDFLARE_API_TOKEN < <(
-  sops -d --extract '["cloudflare"]["api-token"]' secrets/hosts/homestation/infra.yaml
+  sops -d --extract '["cloudflare"]["api-token"]' secrets/operator/opentofu.yaml
 )
 export CLOUDFLARE_API_TOKEN
 trap 'unset CLOUDFLARE_API_TOKEN' EXIT
@@ -36,41 +53,51 @@ trap 'unset CLOUDFLARE_API_TOKEN' EXIT
 ## Everyday use
 
 ```sh
+nix develop
 cd opentofu/cloudflare
 tofu init
 tofu plan
 tofu apply
 ```
 
-## Looking up the zone ID or an existing record ID
+State is local (`terraform.tfstate`, gitignored). Back it up or run OpenTofu
+from one machine only; a second machine without the state would try to create
+existing objects again.
 
-Needed only when re-bootstrapping on new machine, or if `local.zone_id` in
-`dns.tf` ever changes:
+## Adding a record
 
-```sh
-# Zone ID
-curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  "https://api.cloudflare.com/client/v4/zones?name=npham.de" | jq '.result[] | {id, name}'
+Add an entry to the zone's `*_records` map. `name = "@"` is the apex; other
+names are relative to the zone. Keep TXT content quoted (`"\"v=...\""`), the
+form Cloudflare returns, so plans stay clean.
 
-# Existing wildcard DNS record ID (for import)
-curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/dns_records?type=CNAME&name=*.npham.de" \
-  | jq '.result[] | {id, name, content, proxied}'
+## Adopting an existing object
 
-# Existing Always Use HTTPS zone setting
-curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/settings/always_use_https" \
-  | jq '.result | {id, value, editable}'
-```
-
-## Adopting an already-existing record
-
-If the wildcard record already exists in Cloudflare (created by hand), import
-it instead of applying blind — applying without importing first will error
-on a duplicate record:
+Look up its ID, add an `import` block, and require a plan
+that shows `0 to change` for the imported object before applying:
 
 ```sh
-tofu import cloudflare_dns_record.tunnel_wildcard <ZONE_ID>/<RECORD_ID>
-tofu import cloudflare_zone_setting.always_use_https <ZONE_ID>/always_use_https
-tofu plan   # must show "No changes" before you apply
+curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  "https://api.cloudflare.com/client/v4/zones?name=<zone>" | jq '.result[] | {id, name}'
+
+curl -s -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  "https://api.cloudflare.com/client/v4/zones/<ZONE_ID>/dns_records?per_page=100" \
+  | jq '.result[] | {id, type, name, content, proxied, comment}'
 ```
+
+Zone settings and DNSSEC need no import: applying sets them, and they cannot be
+destroyed from OpenTofu (removing them from config only drops them from state).
+
+## DNSSEC
+
+Applying enables signing at Cloudflare, but DNSSEC becomes active only once the
+DS record is entered at the registrar (`name.am` for `nhanph.am`):
+
+```sh
+tofu output dnssec_ds_records
+```
+
+Until then Cloudflare reports the zone as `pending`, and every plan shows
+`status: "pending" -> "active"` for that zone; that drift is expected and
+disappears once the registrar publishes the DS record. Remove the DS record at the
+registrar **before** moving a zone away from Cloudflare's nameservers or
+disabling DNSSEC here; otherwise the domain stops resolving.

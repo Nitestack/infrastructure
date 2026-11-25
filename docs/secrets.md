@@ -7,7 +7,9 @@ environment variables, command output, the Nix store, and Git history.
 ## Model
 
 - [`.sops.yaml`](../.sops.yaml) is the recipient policy. It chooses recipients
-  by path: shared secrets, `wslstation` secrets, and `homestation` secrets.
+  by path: shared secrets, operator secrets (`secrets/operator/`, credentials
+  used from workstations such as the OpenTofu Cloudflare token), `wslstation`
+  secrets, and `homestation` secrets.
 - The shared system module uses each machine's `~/.ssh/id_ed25519` as a
   sops-nix age identity. A machine can therefore decrypt only files for which
   its corresponding age recipient is configured.

@@ -14,6 +14,15 @@ creation_rules:
           - *homestation_ssh
           - *nixstation_ssh
 
+  # Operator credentials used from workstations, never rendered on a host.
+  - path_regex: secrets/operator/.*
+    key_groups:
+      - pgp:
+          - *admin_nhan
+        age:
+          - *wslstation_ssh
+          - *nixstation_ssh
+
   - path_regex: secrets/hosts/wslstation/.*
     key_groups:
       - pgp:
