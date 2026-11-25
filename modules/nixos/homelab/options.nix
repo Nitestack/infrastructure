@@ -344,6 +344,11 @@ in
         default = "";
         description = "Extra hand-written Caddy host handling that should live alongside the generated app hosts.";
       };
+      publicExtraHosts = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Like extraHosts, but also rendered in the HTTP block the Cloudflare Tunnel forwards to, so the hosts are reachable from outside the LAN. Use only for hosts meant to be public.";
+      };
       extraVolumes = mkOption {
         type = types.listOf types.str;
         default = [ ];

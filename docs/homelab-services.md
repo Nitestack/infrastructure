@@ -105,7 +105,8 @@ added only when some public app explicitly resolves to the apex, for example
 | `caddy.environment` | attrs of string | `{}` | Environment variables for the Caddy container |
 | `caddy.environmentFiles` | list of path | `[]` | Environment files for the Caddy container; the homestation host supplies its sops-rendered `caddy.env` file |
 | `caddy.globalConfig` | lines | `""` | Raw global Caddy config prepended before generated hosts; the enabled module supplies the Cloudflare DNS-01 block by default |
-| `caddy.extraHosts` | lines | `""` | Extra hand-written Caddy host handling that should live next to the generated app hosts |
+| `caddy.extraHosts` | lines | `""` | Extra hand-written Caddy host handling that should live next to the generated app hosts; LAN-only (HTTPS entry point) |
+| `caddy.publicExtraHosts` | lines | `""` | Like `extraHosts`, but also served on the HTTP block that the Cloudflare Tunnel forwards to, so the host is reachable from outside the LAN. Only for hosts meant to be public |
 | `caddy.extraVolumes` | list of string | `[]` | Extra bind mounts or named-volume mounts for the Caddy container |
 
 By default, `modules/nixos/homelab/caddy.nix` configures HTTPS via

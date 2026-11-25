@@ -41,7 +41,8 @@ let
   otherAppNames = filter (appName: !isWildcardHost (internal.effectiveHost appName)) exposedAppNames;
 
   isPrivateApp = appName: internal.enabledApps.${appName}.expose.mode == "private";
-  needsForbiddenSnippet = any isPrivateApp exposedAppNames || cfg.caddy.extraHosts != "";
+  needsForbiddenSnippet =
+    any isPrivateApp exposedAppNames || cfg.caddy.extraHosts != "" || cfg.caddy.publicExtraHosts != "";
 
   indentLines =
     prefix: text:
@@ -131,12 +132,16 @@ let
   mkWildcardBlock =
     scheme:
     let
+      # `extraHosts` is LAN-only (https entry point). `publicExtraHosts` also
+      # goes into the http block that the Cloudflare Tunnel forwards to.
       includeExtraHosts = scheme == "https" && cfg.caddy.extraHosts != "";
+      includePublicExtraHosts = cfg.caddy.publicExtraHosts != "";
       body = concatStringsSep "\n" (
         lib.optional needsForbiddenSnippet "import forbidden_403"
         ++ lib.optional needsForbiddenSnippet forbiddenAssetsHandle
         ++ map (appName: indentLines "  " (mkAppHandle scheme appName)) wildcardAppNames
         ++ lib.optional includeExtraHosts (indentLines "  " cfg.caddy.extraHosts)
+        ++ lib.optional includePublicExtraHosts (indentLines "  " cfg.caddy.publicExtraHosts)
         ++ [
           (
             if scheme == "http" then
@@ -155,7 +160,7 @@ let
         ]
       );
     in
-    if wildcardAppNames != [ ] || includeExtraHosts then
+    if wildcardAppNames != [ ] || includeExtraHosts || includePublicExtraHosts then
       ''
         ${mkEntryPointAddress scheme "*.${cfg.domain}"} {
         ${body}

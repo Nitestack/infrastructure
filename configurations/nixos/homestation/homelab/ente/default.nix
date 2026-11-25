@@ -22,7 +22,7 @@ in
     };
   };
 
-  homelab.caddy.extraHosts = ''
+  homelab.caddy.publicExtraHosts = ''
     @ente-museum host ${enteApiHost}
     handle @ente-museum {
       reverse_proxy ${cfg.lib.serviceUrl "ente" "museum"}
