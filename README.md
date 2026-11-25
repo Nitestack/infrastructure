@@ -162,6 +162,7 @@ updates, and rollback.
 - [`docs/renovate-setup.md`](docs/renovate-setup.md) — one-time Renovate GitHub App setup.
 - [`docs/windows-terminal-herdr.md`](docs/windows-terminal-herdr.md) — Windows Terminal keybindings required by Herdr in NixOS-WSL.
 - [`opentofu/cloudflare/README.md`](opentofu/cloudflare/README.md) — Cloudflare edge and DNS state with OpenTofu.
+- [`docs/cloudflare-domains.md`](docs/cloudflare-domains.md) — adding a domain, the OpenTofu API token, and DNSSEC at the registrar.
 
 ## License
 

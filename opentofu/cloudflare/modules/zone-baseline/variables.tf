@@ -24,3 +24,9 @@ variable "hsts_max_age" {
   type        = number
   default     = 15552000
 }
+
+variable "dnssec" {
+  description = "Sign the zone. Enable only if the registrar can publish the DS record."
+  type        = bool
+  default     = true
+}

@@ -39,6 +39,9 @@ module "npham_de_baseline" {
   zone_id         = local.npham_de.zone_id
   zone_name       = local.npham_de.name
   caa_iodef_email = local.caa_iodef_email
+
+  # The registrar cannot submit DNSSEC key material for .de.
+  dnssec = false
 }
 
 resource "cloudflare_dns_record" "npham_de" {

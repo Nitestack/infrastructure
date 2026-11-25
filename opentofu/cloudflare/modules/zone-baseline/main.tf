@@ -48,9 +48,11 @@ resource "cloudflare_zone_setting" "hsts" {
   }
 }
 
+# Signing only takes effect once the registrar publishes the DS record. Keep it
+# disabled where the registrar cannot do that, so the zone is not left pending.
 resource "cloudflare_zone_dnssec" "this" {
   zone_id = var.zone_id
-  status  = "active"
+  status  = var.dnssec ? "active" : "disabled"
 }
 
 resource "cloudflare_dns_record" "caa" {

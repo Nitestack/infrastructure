@@ -11,7 +11,7 @@ Every zone also gets `modules/zone-baseline`:
 
 - `ssl = strict`, `always_use_https`, `automatic_https_rewrites`, TLS ≥ 1.2, TLS 1.3
 - HSTS: six months, `includeSubDomains`, `nosniff`, **no** preload
-- DNSSEC on Cloudflare's side (see [DNSSEC](#dnssec))
+- DNSSEC signing, unless the zone opts out (see [DNSSEC](#dnssec))
 - CAA: only `letsencrypt.org` (Caddy, Vercel) plus the Universal SSL CAs that
   Cloudflare adds itself; `iodef` reports go to the address in `main.tf`
 
@@ -27,16 +27,8 @@ Cloudflare Tunnel ingress is not managed here. The source of truth is NixOS:
 ## API token
 
 OpenTofu uses its own token, separate from the Caddy DNS-01 token on
-homestation. Create it under *My Profile → API Tokens → Custom token*, scoped to
-the zones `npham.de` and `nhanph.am`:
-
-| Permission | Level |
-|---|---|
-| Zone → Zone | Read |
-| Zone → Zone Settings | Edit |
-| Zone → DNS | Edit |
-| Zone → Single Redirect | Edit |
-
+homestation. Required permissions, creation, and rotation are in
+[`docs/cloudflare-domains.md`](../../docs/cloudflare-domains.md#opentofu-api-token).
 It is stored in `secrets/operator/opentofu.yaml` (`cloudflare.api-token`),
 readable by the administrator key and the workstations. Load it without printing
 it or writing plaintext to disk. Process substitution feeds it directly to
@@ -89,15 +81,9 @@ destroyed from OpenTofu (removing them from config only drops them from state).
 
 ## DNSSEC
 
-Applying enables signing at Cloudflare, but DNSSEC becomes active only once the
-DS record is entered at the registrar (`name.am` for `nhanph.am`):
-
-```sh
-tofu output dnssec_ds_records
-```
-
-Until then Cloudflare reports the zone as `pending`, and every plan shows
-`status: "pending" -> "active"` for that zone; that drift is expected and
-disappears once the registrar publishes the DS record. Remove the DS record at the
-registrar **before** moving a zone away from Cloudflare's nameservers or
-disabling DNSSEC here; otherwise the domain stops resolving.
+`zone-baseline` signs each zone unless it sets `dnssec = false` (`npham.de`: the
+registrar cannot submit DNSSEC data for `.de`). Publishing the DS record at the
+registrar, verifying the chain, and the order of steps before leaving Cloudflare
+are in [`docs/cloudflare-domains.md`](../../docs/cloudflare-domains.md#dnssec).
+Until the DS is live, plans show `status: "pending" -> "active"` for the zone;
+that drift is expected.
