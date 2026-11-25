@@ -41,11 +41,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1795218538,
-        "narHash": "sha256-uy09I20MWEjA1jhoSsG6+HQ3Iim9I7HQcSK5mR6FCEo=",
+        "lastModified": 1795617199,
+        "narHash": "sha256-5vlApY0fm3247lcJf4s75FExO8qnTS0LFYD8zwlmYZI=",
         "owner": "get-aix",
         "repo": "aix",
-        "rev": "8b047964a3ae05eb7eab5ab998bb99a1338c4e5c",
+        "rev": "d129b1aa0fd6d1f144ae351d06c68d6c0becb1b4",
         "type": "github"
       },
       "original": {
@@ -843,11 +843,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1795540955,
-        "narHash": "sha256-0LBA8uRCqN2SznMyuvXq9U/n6mSzyM+CTZkzXBfAp2w=",
+        "lastModified": 1795646763,
+        "narHash": "sha256-IOiLGfaJkXCt6lRa6dRVCve2ItQFqlXdMU390nJfwFE=",
         "owner": "get-aix",
         "repo": "t3code",
-        "rev": "105188ae43587bb0fd54532d8d4dc47a4459348f",
+        "rev": "aa2cd1b22a5a90d6744e66dae943348bd5e31da6",
         "type": "github"
       },
       "original": {
