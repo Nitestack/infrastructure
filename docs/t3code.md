@@ -27,8 +27,8 @@ The source build needs T3 Connect's public build-time configuration or the app
 hides its cloud controls and CLI support. `modules/home/ai.nix` copies
 `.env.example` into the fork package's build environment to enable them; it
 contains public identifiers, not credentials. The fork adds native aix
-support; see the [fork repository](https://github.com/get-aix/t3code) and its
-[Nix installation guide](https://github.com/get-aix/t3code/blob/main/docs/user/install.md).
+support; see the [fork repository](https://github.com/get-aix/aix-code) and its
+[Nix installation guide](https://github.com/get-aix/aix-code/blob/main/docs/user/install.md).
 The package sets `T3CODE_AIX=1` for its desktop and server launchers, using the
 aix profiles already configured in Home Manager.
 
@@ -101,7 +101,7 @@ To check service health on `homestation` or `wslstation`, use
 `journalctl --user -u t3code.service -f`. To disable T3 Connect on a headless
 host, run `t3 connect unlink` as the same user; on `nixstation`, turn it off in
 **Settings → Sharing & access**. See the
-[T3 Code remote-access guide](https://github.com/get-aix/t3code/blob/main/docs/user/remote-access.md)
+[T3 Code remote-access guide](https://github.com/get-aix/aix-code/blob/main/docs/user/remote-access.md)
 and [Home Manager's native module](https://github.com/nix-community/home-manager/blob/master/modules/programs/t3code.nix)
 for details.
 

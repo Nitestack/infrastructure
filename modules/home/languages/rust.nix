@@ -12,6 +12,9 @@
 
       cargo-watch
       cargo-expand
+      # Installed for opt-in pilot benchmarking via host-local T3 env; do not set global
+      # RUSTC_WRAPPER until nixpkgs ships sccache >= 0.20.0 (rustc 1.100+ compat).
+      sccache
 
       sea-orm-cli
     ];

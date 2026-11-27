@@ -35,4 +35,9 @@ in
     npm.enable = true;
     pnpm.enable = true;
   };
+
+  # Share one content-addressable pnpm store across git worktrees on the same filesystem.
+  xdg.configFile."pnpm/rc".text = ''
+    store-dir=${config.xdg.dataHome}/pnpm/store
+  '';
 }

@@ -843,16 +843,16 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1795646763,
-        "narHash": "sha256-IOiLGfaJkXCt6lRa6dRVCve2ItQFqlXdMU390nJfwFE=",
+        "lastModified": 1795787040,
+        "narHash": "sha256-65t/uuxJztyXdXtUlFDKvf7OyeG1PfUkiO0GZWoJ7/A=",
         "owner": "get-aix",
-        "repo": "t3code",
-        "rev": "aa2cd1b22a5a90d6744e66dae943348bd5e31da6",
+        "repo": "aix-code",
+        "rev": "76510d85313564c9e0ff4ddcf22650652e7efcba",
         "type": "github"
       },
       "original": {
         "owner": "get-aix",
-        "repo": "t3code",
+        "repo": "aix-code",
         "type": "github"
       }
     },
