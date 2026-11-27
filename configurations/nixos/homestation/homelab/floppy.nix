@@ -56,7 +56,7 @@ in
     services.redis = {
       enable = true;
       containerName = "floppy-redis";
-      image = "redis:8-alpine@sha256:71885d8cc6e42f2bc0aa2eb853bfc4be200b5108a46ac50e117ae1df0531fb80";
+      image = "redis:8-alpine@sha256:5af80107c1eeecb484a2269b80a26d12bfa6521787da4663bd9f19f60a163483";
       command = [
         "redis-server"
         "--appendonly"
