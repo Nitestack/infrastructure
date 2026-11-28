@@ -12,7 +12,7 @@
 
     services.web = {
       enable = true;
-      image = "ghcr.io/immich-app/immich-server:v3.4.1@sha256:4351dd621899ecc8ed317ae87cdcaeb968ec8ba4f9d8053d913a73eb6f6dd7c2";
+      image = "ghcr.io/immich-app/immich-server:v3.4.2@sha256:17eee2e51be12fe7c2d0bc0b5a851c5ffbdf62fca97b975373df7c5d62a13b4b";
       containerName = "immich_server";
       port = 2283;
 
